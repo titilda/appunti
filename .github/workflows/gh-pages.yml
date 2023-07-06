@@ -37,7 +37,8 @@ jobs:
           for doc in $(find . -type f -name "*.md"); do
             output_dir=$(dirname "${doc}")
             output_html="${output_dir}/index.html"
-            pandoc -s --toc -c "/style.css" --katex -o "${output_html}" "${doc}" --metadata title="$(basename ${output_dir})"
+            cp ./style.css "${output_dir}"
+            pandoc -s --toc -c "style.css" --katex -o "${output_html}" "${doc}" --metadata title="$(basename ${output_dir})"
           done
       - name: Create index.html
         run: |
