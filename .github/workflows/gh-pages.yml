@@ -41,6 +41,11 @@ jobs:
             output_html="${output_dir}/index.html"
             pandoc -s --toc -c style.css --katex -o "${output_html}" "${doc}" --metadata title="$(basename '${output_html}')"
           done
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: github-pages
+          path: ./
     
   # Deploy job
   deploy:
