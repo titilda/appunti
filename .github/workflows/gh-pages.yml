@@ -34,7 +34,7 @@ jobs:
           sudo apt install -y pandoc
       - name: Build docs
         run: |
-          for doc in $(find . -type f -name "*.md"); do
+          for doc in $(find . -type f -name "*.md" -mindepth 2); do
             output_dir=$(dirname "${doc}")
             output_html="${output_dir}/index.html"
             cp ./style.css "${output_dir}"
@@ -43,7 +43,7 @@ jobs:
       - name: Create index.html
         run: |
           echo "<html><head><script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js "></script><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'></head><body><h1>TiTilda Appunti</h1><ul class='list-group'>" > index.html
-          for doc_dir in $(find . -type d -mindepth 1 | sort); do
+          for doc_dir in $(find . -type d -mindepth 1 -maxdepth 1 | sort); do
             if [[ -f "${doc_dir}/index.html" ]]; then
               echo "<li><a href=\"${doc_dir}/index.html\">$(basename "${doc_dir}")</a></li>" >> index.html
             fi
