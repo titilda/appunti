@@ -31,14 +31,14 @@ jobs:
       - name: Setup dependencies
         run: |
           sudo apt update
-          sudo apt install -y pandoc
+          sudo apt install -y pandoc libjs-mathjax
       - name: Build docs
         run: |
           for doc in $(find . -type f -name "*.md" -mindepth 2); do
             output_dir=$(dirname "${doc}")
             output_html="${output_dir}/index.html"
             cp ./style.css "${output_dir}"
-            pandoc -s --toc -c "style.css" --katex -o "${output_html}" "${doc}" --metadata title="$(basename ${output_dir})"
+            pandoc -s --toc -c "style.css" --mathjax -o "${output_html}" "${doc}" --metadata title="$(basename ${output_dir})"
           done
       - name: Create index.html
         run: |
