@@ -31,14 +31,15 @@ jobs:
       - name: Setup dependencies
         run: |
           sudo apt update
-          sudo apt install -y pandoc libjs-mathjax
+          sudo apt install -y pandoc
       - name: Build docs
         run: |
+          MATHJAX_URI="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/mml-chtml.min.js"
           for doc in $(find . -type f -name "*.md" -mindepth 2); do
             output_dir=$(dirname "${doc}")
             output_html="${output_dir}/index.html"
             cp ./style.css "${output_dir}"
-            pandoc -s --toc -c "style.css" --mathjax -o "${output_html}" "${doc}" --metadata title="$(basename ${output_dir})"
+            pandoc -s --toc -c "style.css" --mathjax=${MATHJAX_URI} -o "${output_html}" "${doc}" --metadata title="$(basename ${output_dir})"
           done
       - name: Create index.html
         run: |
