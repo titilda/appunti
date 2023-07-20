@@ -339,10 +339,10 @@ th, td {
 /*** In caso ci si trovi su un dispositivo mobile ***/
 
 @media (max-width: 600px) {
-    * {
+    /** {
         font-size: 0.9em;
         padding: 12px;
-    }
+    }*/
 
     h1 {
         font-size: 1.8em;
