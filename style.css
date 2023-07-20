@@ -338,11 +338,12 @@ th, td {
 
 /*** In caso ci si trovi su un dispositivo mobile ***/
 
+/*
 @media (max-width: 600px) {
-    *:not(#TOC *) {
+    /* *:not(#TOC *) {
         font-size: 0.9em;
         padding: 12px;
-    }
+    }*/
 
     h1 {
         font-size: 1.8em;
@@ -351,7 +352,7 @@ th, td {
     figure > figcaption {
         max-width: 90%;
     }
-}
+}*/
 
 /*** Evitiamo di far finire una cartuccia intera di toner per stampare una pagina ***/
 
