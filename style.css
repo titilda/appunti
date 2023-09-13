@@ -13,12 +13,18 @@ body {
     font-kerning: normal;
     font-size: 1.2em;
     font-family: Helvetica, sans-serif;
+    text-align: justify;
 }
 
-body :not(header):not(nav) {
-    max-width: 64em;
-    margin-left: auto;
-    margin-right: auto;
+@media screen and (min-width: 768px) {
+    body {
+        width: 64vw;
+        margin-left: calc(50vw - 32vw);
+    }
+
+    * {
+        max-width: 100%;
+    }
 }
 
 header {
@@ -30,16 +36,16 @@ header {
 
 table {
     overflow: scroll;
-    max-width: 100vw;
+    max-width: 100%;
 }
 
-p:has(.katex-display) {
-    overflow-x: auto;
-}
-  
-table, .katex-display {
+table {
     width: 100%;
     table-layout: fixed;
+}
+
+p:has(.math.display) {
+    overflow-x: auto;
 }
 
 th, td {
@@ -94,7 +100,8 @@ th, td {
 /*** Stile dei contenuti ***/
 
 p {
-    margin: 1em 0;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 img {
@@ -128,7 +135,8 @@ li > ol, li > ul {
 }
 
 blockquote {
-    margin: 1em 0 1em 1.7em;
+    margin-top: 1em;
+    margin-bottom: 1em;
     padding-left: 1em;
     border-left: 2px solid #e6e6e6;
     color: #606060;
@@ -165,7 +173,8 @@ hr {
 }
 
 table {
-    margin: 1em 0;
+    margin-top: 1em;
+    margin-bottom: 1em;
     border-collapse: collapse;
     width: 100%;
     overflow-x: auto;
@@ -245,7 +254,8 @@ figure > figcaption > strong {
 }
 
 dl {
-    margin: 1em 0;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 dt {
