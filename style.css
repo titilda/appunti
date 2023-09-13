@@ -15,7 +15,7 @@ body {
     font-family: Helvetica, sans-serif;
 }
 
-body > :not(header):not(nav) > * {
+body :not(header):not(nav) {
     max-width: 64em;
     margin-left: auto;
     margin-right: auto;
