@@ -126,6 +126,7 @@ Problema che consiste nel trovare la soluzione particolare che soddisfa una data
     \end{cases}$$  
 
 **NB:**
+
 * il problema di Cauchy ha **una e una sola soluzione** (Teorema di esistenza e unicità delle soluzioni, che NON verrà dimostrato)
 
 * per determinare la soluzione del problema di Cauchy, è utile ripartire il dominio di $f$ in regioni su $t$ ed $y(t)$ ove $f$ è continua, e considerare solo l'integrale generale relativo all'intervallo o regione che contiene $(t_0, y_0)$ (perché la soluzione è unica, quindi non può cambiare in intervalli diversi); questo può semplificare i conti, specialmente quando integrando si ottengono moduli
