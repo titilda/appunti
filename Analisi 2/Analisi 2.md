@@ -222,6 +222,7 @@ Per dimostrare che $W$ ha dimensione 2 devo:
     quindi, per il teorema di esistenza e unicità delle soluzioni del problema di Cauchy, $z(t) = y_O(t)\, \forall t \in J$.
 
 $\square$
+
 ## Problema di Cauchy
 
 Problema che consiste nel trovare la soluzione particolare che soddisfa una data condizione iniziale:  
