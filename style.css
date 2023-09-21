@@ -27,7 +27,7 @@ header {
     max-width: 100vw;
 }
 
-.contenuti, p:has(.katex-display) {
+.contenuti, .katex {
     overflow-x: auto;
 }
   
