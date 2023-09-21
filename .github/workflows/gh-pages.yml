@@ -41,7 +41,7 @@ jobs:
               output_dir_name=$(basename "${output_dir}")
               output_html="${output_dir}/index.html"
               cp ./style.css "${output_dir}"
-              pandoc --template "template.html" -s --toc -c "style.css" --katex -o "${output_html}" "${doc}" --metadata title="${output_dir_name}" --metadata "toc-title=Indice" --metadata "lang=it"
+              pandoc --template "template.html" --toc -c "style.css" --katex="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/" -o "${output_html}" "${doc}" --metadata title="${output_dir_name}" --metadata "toc-title=Indice" --metadata "lang=it"
             done
       - name: Create index.html
         run: |
