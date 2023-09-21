@@ -35,14 +35,13 @@ jobs:
           sudo apt install -y pandoc
       - name: Build docs
         run: |
-          MATHJAX_URI="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/mml-chtml.min.js"
           find . -type f -name "*.md" -mindepth 2 -print0 | while read -d $'\0' doc
             do
               output_dir=$(dirname "${doc}")
               output_dir_name=$(basename "${output_dir}")
               output_html="${output_dir}/index.html"
               cp ./style.css "${output_dir}"
-              pandoc --template "template.html" -s --toc -c "style.css" --katex="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/" -o "${output_html}" "${doc}" --metadata title="${output_dir_name} --metadata "toc-title=Indice" --metadata "lang=it"
+              pandoc --template "template.html" -s --toc -c "style.css" --katex -o "${output_html}" "${doc}" --metadata title="${output_dir_name} --metadata "toc-title=Indice" --metadata "lang=it"
             done
       - name: Create index.html
         run: |
