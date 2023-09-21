@@ -81,7 +81,7 @@ $\square$
 ### Equazioni di Bernoulli
 
 * **Forma normale:** $y'(t) = k(t) \cdot y(t) + h(t) \cdot y(t)^\alpha$  
-    (con $\alpha \in \mathbb{R},\ \alpha \ne 0,\ \alpha \ne 1$)  
+    (con $\alpha \in \mathbb{R},\, \alpha \ne 0,\, \alpha \ne 1$)  
     (con $k, h$ funzioni continue)
 
 Premesse:
@@ -117,13 +117,118 @@ Per risolvere le equazioni di Bernoulli:
 5. Ritorno alla variabile $y$:
     $$y(t) = z(t)^{\frac{1}{1-\alpha}}$$
 
+## Equazioni Differenziali Ordinarie (EDO) di secondo ordine
+
+Vediamo inizialmente il caso delle omogenee:
+
+$$a(t)y''(t) + b(t)y'(t) + c(t)y(t) = 0$$
+
+con $a, b, c: J \subseteq \mathbb{R} \to \mathbb{R}$ funzioni continue su $J$ e $a \ne 0$ in $J$.
+
+Consideriamo lo scenario più semplice, cioè con $a, b, c$ costanti reali.
+
+### EDO di secondo ordine lineari omogenee a coefficienti costanti
+* **Forma normale:** $ay''(t) + by'(t) + cy(t) = 0$  
+    (con $a, b, c \in \mathbb{R}$)
+
+Per risolvere le EDO di secondo ordine lineari omogenee a coefficienti costanti, si considera l'equazione caratteristica:
+
+$$a \lambda^2 + b \lambda + c = 0$$
+
+e si risolve per $\lambda_1, \lambda_2$:
+
+$$\lambda_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+
+* Se $\Delta = b^2 - 4ac > 0$, allora $\lambda_1, \lambda_2 \in \mathbb{R}$ e l'integrale generale è una combinazione lineare di esponenziali reali:
+    $$y(t) = c_1 e^{\lambda_1 t} + c_2 e^{\lambda_2 t}$$
+
+* Se $\Delta = 0$, allora $\lambda_1 = \lambda_2 = \frac{-b}{2a} \in \mathbb{R}$ e l'integrale generale è una combinazione lineare di esponenziali reali, uno dei quali moltiplicato per $t$:
+    $$y(t) = c_1 e^{\lambda_1 t} + c_2 t e^{\lambda_2 t}$$
+
+* Se $\Delta < 0$, allora $\lambda_1, \lambda_2 \in \mathbb{C}$ e posso scrivere $\lambda$ come:  
+    $$\lambda = m \pm ui$$  
+    L'integrale generale diventa:  
+    $$y(t) = e^{mt} \left[ c_1 \cos u + c_2 \sin {ut} \right]$$
+
+### ***Teorema II:*** Teorema di struttura per le EDO di secondo ordine omogenee
+
+Siano $a, b, c : J \subseteq \mathbb{R} \to \mathbb{R}$ continue, con $a \ne 0$ in $J$, l'integrale generale dell'equazione omogenea:
+
+$$a(t) y''(t) + b(t) y'(t) + c(t) y(t) = 0$$
+
+è uno spazio vettoriale di dimensione 2, cioè le soluzioni sono tutte e sole della forma:
+
+$$y_O (t) = c_1 y_{O_1}(t) + c_2 y_{O_2}(t)$$
+
+con $c_1, c_2 \in \mathbb{R}$, dove $y_{O_1}, y_{O_2}$ sono soluzioni linearmente indipendenti.
+
+#### Dimostrazione:
+Sia $V$ lo spazio vettoriale delle funzioni $y \in C^2(J)$, cioè:
+
+$$C^2 (J) = \{y \in C^1(J) \mid \text{$y''$ derivabile due volte e $y''$ continua su $J$}\}$$
+
+L'integrale generale dell'omogenea è il seguente sottoinsieme di $V$:
+
+$$W=\{y \in V \mid ay'' + by'' + cy'' = 0\} = \ker \mathcal{L}$$
+
+dove $\mathcal{L}$ è l'operatore definito nel *principio di sovrapposizione*. $W$, in quanto nucleo di un'applicazione lineare, è un sottospazio vettoriale.
+
+Per dimostrare che $W$ ha dimensione 2 devo:
+
+1. **esibire due soluzioni linearmente indipendenti dell'equazione:**  
+    $$\begin{cases}
+    ay_{O_1}'' + by_{O_1}' + cy_{O_1} = 0 \\
+    y_{O_1}(t_0) = 1 \\
+    y_{O_1}'(t_0) = 0
+    \end{cases}
+    \qquad
+    \begin{cases}
+    ay_{O_2}'' + by_{O_2}' + cy_{O_2} = 0 \\
+    y_{O_2}(t_0) = 0 \\
+    y_{O_2}'(t_0) = 1
+    \end{cases}$$
+    verifico che $y_{O_1}, y_{O_2}$ sono linearmente indipendenti:
+
+    se per assurdo fossero una multiplo dell'altra:
+
+    $$y_{I_1} (t) = k y_{O_2} (t)\, \forall t \in J$$
+
+    in particolare, per $t = t_0$:
+
+    $$y_{O_1} (t_0) = k y_{O_2} (t_0) \implies 1 = 0$$
+
+    che è assurdo, quindi $y_{O_1}, y_{O_2}$ sono linearmente indipendenti.
+2. **dimostrare che ogni altra soluzione dell'equazione si scrive come combinazione lineare di $y_{O_1}, y_{O_2}$:**  
+    Data una qualunque soluzione $y_O$ dell'equazione, pongo:
+
+    $$\begin{cases}
+    k_1 = y_O(t_0) \\
+    k_2 = y_O'(t_0)
+    \end{cases}
+    $$
+
+    e
+
+    $$z(t) k_1 y_{O_1}(t) + k_2 y_{O_2}(t)$$
+
+    e affermo che $z(t) = y_O(t)\, \forall t$.
+
+    Infatti $z(t)$ è soluzione della EDO e soddisfa il medesimo problema di Cauchy:
+
+    $$z(t_0) = k_1 \underbrace{y_{O_1}(t_0)}_1 + k_2 \underbrace{y_{O_2}(t_0)}_0 = k_1 = y_O(t_0)$$
+
+    $$z'(t_0) = k_1 y_{O_1}'(t) + k_2 y_{O_2}'(t) = k_1 = y_O(t_0)$$
+
+    quindi, per il teorema di esistenza e unicità delle soluzioni del problema di Cauchy, $z(t) = y_O(t)\, \forall t \in J$.
+
+$\square$
 ## Problema di Cauchy
 
 Problema che consiste nel trovare la soluzione particolare che soddisfa una data condizione iniziale:  
     $$\begin{cases}
         y' = f(t, y(t)) \\
         y(t_0) = y_0
-    \end{cases}$$  
+    \end{cases}$$
 
 **NB:**
 
@@ -138,4 +243,3 @@ Per risolvere il problema di Cauchy:
 2. impongo la condizione $y(t_0) = y_0$ e determino la costante $c$
 
 3. sostituisco la costante $c$ nell'integrale generale e ottengo la soluzione particolare
-
