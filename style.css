@@ -29,6 +29,7 @@ header {
 
 .contenuti, .katex {
     overflow-x: auto;
+    overflow-y: hidden; /* Altrimenti compare la scrollbar verticale */
 }
   
 table, .katex-display {
