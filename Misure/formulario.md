@@ -44,6 +44,14 @@ $$
 u_r(x) = \frac{u(x)}{\overline x}
 $$
 
+Date $N$ misurazioni, è anche possibile calcolare l'incertezza dell'incertezza:
+
+siano $\nu = N - 1$ i gradi di libertà della misura allora
+
+$$
+u(u) = \frac{1}{\sqrt{2 \nu}} = \frac{1}{\sqrt{2 \cdot (N - 1)}}
+$$
+
 ### Misure indirette
 
 Nel caso in cui si debba compiere una misurazione indiretta, il cui risultato è descritto dalla funzione $R = R(x_1, x_2, \dots, x_N)$ dove $x_1, x_2, \dots, x_N$ sono i valori utilizzati nel calcolo, l'incertezza finale è data dalla formula
