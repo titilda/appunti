@@ -133,3 +133,22 @@ $$
 x_{mp} = \frac{x_1 \cdot \frac{1}{u^2(x_1)} + x_2 \cdot \frac{1}{u^2(x_2)} + \dots}{\frac{1}{u^2(x_1)} + \frac{1}{u^2(x_2)}} + \dots \\
 u(x_{mp}) = \sqrt{\frac{1}{\frac{1}{u^2(x_1)}+\frac{1}{u^2(x_2)} + \dots}}
 $$
+
+## Regressione lineare
+
+Data una serie di coppie $(x_i, y_i)$ è possibile calcolarne la regressione lineare (nella forma $y = mx + q$) con le seguenti formule.
+
+$$
+m = \frac{n\sum[x_i y_i] - \sum x_i \sum y_i}{n \sum x_i^2 - (\sum x_i)^2} \\
+q = \frac{\sum x_i^2 \sum y_i - \sum x_i \sum x_i y_i}{n \sum x_i^2 - (\sum x_i)^2} = \frac{\sum y_i - m \sum x_i}{n} = \overline y - m \overline x
+$$
+
+La formula per la soglia si può derivare dalla formula della regressione una volta che si conoscono $m$ e $q$:
+
+$$
+\begin{cases}
+  y = mx + q \\
+  y = 0
+\end{cases} \implies x = -\frac{q}{m}
+$$
+
