@@ -1,4 +1,4 @@
-# Formulario di Misure
+# Riassuntino di Misure
 
 ## Formule di base
 
@@ -160,3 +160,98 @@ $$
 \end{cases} \implies x = -\frac{q}{m}
 $$
 
+<!--
+## Bit Equivalenti
+-->
+
+## Definizioni varie
+
+### Definizioni base
+
+Accuratezza
+: Grado di concordanza tra un valore misurato ed il valore vero del misurando.
+
+Incertezza
+: Stima quantitativa, con metodi convenzionali, del livello di non conoscenza del misurando.
+
+Sensibilità
+: Rapporto tra la variazione della grandezza di uscita e la corrispondente variazione della grandezza d'ingresso.
+
+Risoluzione
+: Capacità di uno strumento di risolvere stati diversi del misurando.
+
+Ripetibilità
+: Capacità di ottenere, per uno stesso misurando, valori di lettura vicini tra loro nel breve periodo e nelle stesse condizioni.
+
+Stabilità
+: Capacità di ottenere, per uno stesso misurando, valori di lettura vicini tra loro in un periodo di tempo ben definito e chiaramente specificato.
+
+Riproducibilità
+: Capacità di ottenere, per uno stesso misurando, valori di lettura vicini tra loro in diverse e specificate condizioni di misura (il tempo non conta).
+
+Riferibilità
+: Proprietà di una misura di essere messa in relazione (riferita) con quella fornita da un campione riconosciuto.
+
+### Unità di misura del nuovo Sistema Internazionale
+
+Secondo 
+: L'intervallo di tempo che contiene 9192631770 periodi della radiazione emessa da un atomo di cesio imperturbato che decade tra due livelli iperfini dello stato fondamentale.
+
+Metro
+: Il tragitto compiuto dalla luce nel vuoto in $\frac{1}{299792458}$ secondi.
+
+Chilogrammo
+: La quantità di massa necessaria per bilanciare una forza di $6.62607015 \cdot 10^{-34} \, J \cdot s$ in una bilancia di Watt.
+
+Ampere
+: L'intensità di corrente in un conduttore attravarsato da una corrente di 1 C in un secondo (dove la carica di un elettrone è pari a $1.602176565 \cdot 10^{-19}$).
+
+Kelvin
+: E' derivato dalla costante di Boltzmann $k_B = 1.3086488 \cdot 10^{23} \frac{J}{K}$
+
+Mole
+: La quantità di sostanza che contiene esattamente $6.02214129 \cdot 10^{23}$ (pari al numero di Avogadro) entità elementari.
+
+Candela
+: L'intensità luminosa in una data direzione di una sorgente che emette radiazione monocromatica alla frequenza di $540 \cdot 10^{12} Hz$ con intensità radiante di $\frac{1}{683} W$ 
+
+### Taratura e messa in punto
+
+Taratura
+: E' una fotografia dello stato di uno strumento che consente di valutarne l'incertezza. ☻
+
+Messa in punto
+: La regolazione dello strumento per fare in modo che operi nelle migliori condizioni possibili.
+
+### Errori
+
+E. sistematici
+: Errori che si presentano nella stessa entità ogni volta che si ripete la misura (offset/polarizzazione)
+
+E. accidentali
+: Errori che si presentano in maniera impredicibile ogni volta che si ripete la misura
+
+### Tipologie di campioni
+
+C. primari
+: Realizzano l'unità con i maggiori livelli di accuratezza possibili.
+
+C. secondari
+: Consentono di trasferire l'unità e di effettuare confronti tra i c. primari e gli altri.
+
+C. di trasferimento
+: Adatti al trasporto e usati per trasferire l'unità.
+
+C. locali
+: Si trovano all'interno degli istituti o delle aziente e si dividono in c. di lavoro e c. di riferimento.
+
+C. di riferimento
+: Usati nei centri di taratura e di certificazione; usati poco frequentemente.
+
+C. di lavoro
+: Usati nei lavori di routine previo confronto con quelli di riferimento.
+
+### Gradi di libertà
+
+Gradi di libertà
+: Misurano la bontà della stima, in quanto ogni stima dell'incertezza è a sua volta incerta.
