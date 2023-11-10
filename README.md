@@ -18,7 +18,7 @@ Al momento i metadati supportati sono i seguenti
 2. author
 3. date
 
-Per aggiungere tali metadati ad un file markdown, è sufficiente aggiungere le seguenti righe al sui inizio:
+Per aggiungere tali metadati ad un file markdown, è sufficiente aggiungere le seguenti righe al suo inizio:
 
     ---
     title: "Titolo"
