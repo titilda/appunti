@@ -1,3 +1,13 @@
+<!--
+---
+title: "Riassunto di Analisi II"
+author: 
+- "Alessandro Modica"
+- "Joele Andrea Ortore"
+date: "3 Novembre 2023"
+---
+-->
+
 # Equazioni Differenziali
 
 ## Equazioni Differenziali Ordinarie (EDO) di primo ordine
