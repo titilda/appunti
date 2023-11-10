@@ -1,3 +1,12 @@
+---
+title: Riassuntino di Misure
+author:
+- Andrea Oggioni
+- Alessio Perini
+- Joele Andrea Ortore
+- Alexandru Nechita
+---
+
 # Riassuntino di Misure
 
 ## Formule di base
