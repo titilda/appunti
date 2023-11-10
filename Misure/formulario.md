@@ -1,11 +1,11 @@
 ---
-title: Riassuntino di Misure
+title: "Riassuntino di Misure"
 author:
 - "Andrea Oggioni"
 - "Alessio Perini"
 - "Joele Andrea Ortore"
 - "Alexandru Nechita"
-date: 3 Novembre 2023
+date: "3 Novembre 2023"
 ---
 
 # Riassuntino di Misure

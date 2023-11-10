@@ -57,23 +57,23 @@
 			$abstract$
 		</div>
 		$endif$
+		<div>
+			$if(author-meta)$
+			<div class="author">
+				Scritto da: 
+				$for(author-meta)$
+				<i>$author-meta$</i> &nbsp;
+				$endfor$
+			</div>
+			$endif$
+			$if(date-meta)$
+			<div class="date">
+				<i>Ultima modifica: $date-meta$</i>
+			</div>
+			$endif$
+		</div>
 	</header>
 	$endif$
-	<div>
-		$if(author-meta)$
-		<div class="author">
-			Scritto da: 
-			$for(author-meta)$
-			<i>$author-meta$</i> &nbsp;
-			$endfor$
-		</div>
-		$endif$
-		$if(date-meta)$
-		<div class="date">
-			<i>Ultima modifica: $date-meta$</i>
-		</div>
-		$endif$
-	</div>
 	$if(toc)$
 	<nav id="$idprefix$TOC" role="doc-toc">
 		$if(toc-title)$
