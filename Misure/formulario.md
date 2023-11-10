@@ -1,3 +1,4 @@
+<!--
 ---
 title: "Riassuntino di Misure"
 author:
@@ -7,6 +8,7 @@ author:
 - "Alexandru Nechita"
 date: "3 Novembre 2023"
 ---
+-->
 
 # Riassuntino di Misure
 
