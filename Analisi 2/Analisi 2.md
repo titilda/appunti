@@ -231,6 +231,31 @@ Per dimostrare che $W$ ha dimensione 2 devo:
 
 $\square$
 
+## EDO di secondo ordine lineari non omogenee a coefficienti costanti
+
+* **Forma normale:** $ay''(t) + by'(t) + cy(t) = f(t)$  
+    (con $a, b, c \in \mathbb{R}$ e $f: J \subseteq \mathbb{R} \to \mathbb{R}$ continua)
+
+La funzione $f$ è detta *"forzante"*.
+
+L'integrale generale è dato dalla somma dell'integrale generale dell'omogenea associata e di una soluzione particolare dell'equazione non omogenea:
+
+$$y(t) = y_O(t) + y_P(t)$$
+
+Per prima cosa quindi individuo l'integrale generale dell'omogenea associata, e successivamente cerco una soluzione particolare dell'equazione non omogenea con il Metodo di Somiglianza.
+
+In base al tipo di forzante $f$, si sceglie la forma di $y_P$:
+
+| $f(t)$                                | $y_P(t)$                                |
+| ------------------------------------- | --------------------------------------- |
+| $a_1 t^n + a_2 t^{n-1} + ... + a_n$   | polinomio di grado $n$ \*               |
+| $a \cos(\omega t) + b \sin(\omega t)$ | $A \cos (\omega t) + B \sin (\omega t)$ |
+| $a e^{\lambda t}$                     | $A e^{\lambda t}$                       |
+
+Se la forzante è combinazione lineare di queste funzioni, allora la soluzione particolare è la somma delle soluzioni particolari associate a ciascuna forzante caratteristica.
+
+Se la soluzione particolare è una soluzione dell'omogenea associata (un caso specifico dell'integrale generale già trovato), si riprova a calcolarla moltiplicando la forma generale dell'integrale particolare per un coefficiente $t$, esponenziato quanto necessario affinché non vi sia più il problema.
+
 ## Problema di Cauchy
 
 Problema che consiste nel trovare la soluzione particolare che soddisfa una data condizione iniziale:  
@@ -252,3 +277,6 @@ Per risolvere il problema di Cauchy:
 2. impongo la condizione $y(t_0) = y_0$ e determino la costante $c$
 
 3. sostituisco la costante $c$ nell'integrale generale e ottengo la soluzione particolare
+
+## Sistemi differenziali lineari
+
