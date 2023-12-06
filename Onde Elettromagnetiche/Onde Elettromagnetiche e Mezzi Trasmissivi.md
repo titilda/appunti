@@ -135,3 +135,106 @@ esempio:
 $$\begin{align*}P &= \mu\text{W} = 10^{-6} \text{ W} = 10^{-3} \text{ mW}\\
 P_{\text{dBm}} &= 10 \log_{10} \frac{10^{-3}}{1} = -30\ \text{dBm}\\
 \end{align*}$$
+
+## Lunghezza d'onda
+La lunghezza d'onda $\lambda$ (misuata in metri) è il periodo spaziale di una sinusoide che si propaga nello spazio allo scorrere del tempo:
+
+$$\lambda = \frac{v_f}{f_0}\ \left[\text{m}\right]$$
+
+dove $v_f$ è la velocità di fase e $f_0$ è la frequenza fondamentale. Poiché $v_f$ dipende dal mezzo di trasmissione, anche $\lambda$ dipende dal mezzo di trasmissione.
+
+Nello spazio vuoto, la velocità di fase è pari alla velocità della luce $c = 3 \cdot 10^8\ \left[\frac{m}{s}\right]$.
+
+# Linee di trasmissione
+
+Una linea di trasmissione è un mezzo di trasmissione che permette di trasmettere segnali elettrici da un punto a un altro.
+
+Data la lunghezza $l$ del mezzo di trasmissione e la lunghezza d'onda $\lambda$ del segnale:
+
+ * se $l \ll \lambda$, posso usare un modello a parametri concentrati (v. Elettrotecnica)
+ * se $l \approx \lambda$, devo usare un modello a parametri distribuiti
+
+## Modello a parametri distribuiti
+
+Il modello a parametri distribuiti è un modello a circuito equivalente che considera la linea di trasmissione come una serie di tratti infinitesimi $dz$, più piccoli della lunghezza d'onda del segnale.
+
+![Modello a parametri distribuiti](01_Modello_Distribuito_dz.png)
+
+Sono presenti:
+
+ * $R$ e $G$: resistenza (serie) e conduttanza (parallela) per unità di lunghezza (misurate in $\left[\frac{\Omega}{m}\right]$ e $\left[\frac{S}{m}\right]$)
+ * $L$ e $C$: induttanza (serie) e capacità (parallela) per unità di lunghezza (misurate in $\left[\frac{H}{m}\right]$ e $\left[\frac{F}{m}\right]$)
+
+## Equazioni dei telegrafisti
+
+Applicando le leggi di Kirchhoff, si ottengono le due equazioni differenziali che prendono il nome di Equazioni dei Telegrafisti (nel dominio del tempo):
+
+$$\begin{cases}
+\displaystyle - \frac{\partial v(z,t)}{\partial z} = R \frac{\partial i(z,t)}{\partial z} + L \frac{\partial i(z,t)}{\partial t}\\
+\\
+\displaystyle - \frac{\partial i(z,t)}{\partial z} = G \frac{\partial v(z,t)}{\partial z} + C \frac{\partial v(z,t)}{\partial t}\\
+\end{cases}$$
+
+Nel dominio dei fasori, le equazioni dei telegrafisti diventano:
+
+$$\begin{cases}
+\displaystyle - \frac{d V(z)}{d z} = (R + j \omega L)\, I(z)\, e^{j \omega t}\\
+\\
+\displaystyle - \frac{d I(z)}{d z} = (G + j \omega C)\, V(z)\, e^{j \omega t}\\
+\end{cases}$$
+
+## Equazioni delle onde
+
+Derivando nuovamente ciascuna equazione rispetto a $z$ e sostituendo l'altra equazione, si ottengono le equazioni delle onde per le tensioni e le correnti:
+
+$$\begin{cases}
+\displaystyle - \frac{d^2 V(z)}{d z^2} = (R + j\omega L) (G + j\omega C)\, V(z) = 0\\
+\\
+\displaystyle - \frac{d^2 I(z)}{d z^2} = (R + j\omega L) (G + j\omega C)\, I(z) = 0\\
+\end{cases}$$
+
+###  Costante di propagazione
+
+Definita la *costante di propagazione* (complessa) $\gamma$ come:
+
+$$\gamma = \sqrt{(R + j\omega L) (G + j\omega C)}$$
+
+le equazioni delle onde diventano:
+
+$$\begin{cases}
+\displaystyle \frac{d^2 V(z)}{d z^2} - \gamma^2 V(z) = 0\\
+\\
+\displaystyle \frac{d^2 I(z)}{d z^2} - \gamma^2 I(z) = 0\\
+\end{cases}$$
+
+**Nota**: $\gamma$ si misura in $\left[m^{-1}\right]$.
+
+$$\gamma = \Re\{\gamma\} + j \Im\{\gamma\} = \alpha + j\beta$$
+
+dove $\alpha$ è la costante di attenuazione (misurata in $\left[\frac{Np}{m}\right]$) e $\beta$ è la costante di fase (misurata in $\left[\frac{rad}{m}\right]$).
+
+### Soluzione delle equazioni delle onde (per linee senza perdite)
+
+![Linea senza perdite](02_Linea_Senza_Perdite.png)
+
+Nel caso di un mezzo di trasmissione senza perdite ($R = 0$, $G = 0$), si ha che:
+
+$$\begin{align*}\gamma^2 = &\, (j \omega L)(j \omega C) = - \omega^2 LC\\
+\gamma = &\, \pm  j \omega \sqrt{LC}
+\end{align*}$$
+
+In altre parole, essendo in un caso ideale, la costante di attenuazione $\alpha$ è nulla e la costante di fase $\beta$ è pari a $\omega \sqrt{LC}$ (la costante di propagazione $\gamma$ è puramente immaginaria).
+
+La soluzione delle equazioni delle onde è:
+
+$$\begin{cases}
+V(z) &= &V_0^+ e^{-j \beta z} + V_0^- e^{j \beta z}\\
+I(z) &= &I_0^+ e^{-j \beta z} - I_0^- e^{j \beta z}\\
+\end{cases}$$
+
+Nel dominio del tempo, la soluzione è:
+
+$$\begin{cases}
+v(z,t) &= &V_0^+ \cos(\omega t - \beta z) + V_0^- \cos(\omega t + \beta z)\\
+i(z,t) &= &I_0^+ \cos(\omega t - \beta z) - I_0^- \cos(\omega t + \beta z)\\
+\end{cases}$$
