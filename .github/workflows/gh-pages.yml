@@ -56,7 +56,7 @@ jobs:
             <div class="container"> \
             <h1>TiTilda Appunti</h1> \
             <ul>" > index.html
-          find . -type d -mindepth 1 -maxdepth 1 | sort | while read -d $'\0' doc_dir
+          find . -type d -mindepth 1 -maxdepth 1 -print0 | sort -z | while read -d $'\0' doc_dir
             do
               if [[ -f "${doc_dir}/index.html" ]]; then
                 echo "<li><a href=\"${doc_dir}/index.html\">$(basename "${doc_dir}")</a></li>" >> index.html
