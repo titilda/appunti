@@ -51,6 +51,7 @@ jobs:
                   sed -i "s@{{{PLACEHOLDER}}}@<li><a href=\"${dir}/index.html\">$(basename "${dir}")</a></li>{{{PLACEHOLDER}}}@" index.html
                 fi
             done
+          sed -i "s@{{{PLACEHOLDER}}}@@g" index.html
       - name: Delete symlinks if any
         run: |
           find . -type l -delete
