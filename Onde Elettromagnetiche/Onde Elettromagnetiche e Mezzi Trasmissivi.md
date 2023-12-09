@@ -37,7 +37,7 @@ $$s(t) = \sum_{k=-\infty}^{+\infty} S_k e^{j2\pi k f_0t}$$
 
 dove $f_0$ è la frequenza fondamentale e $S_k$ sono i coefficienti complessi:
 
-$$S_K = \left|S_k\right| e^{j\phi_k}$$
+$$S_k = \left|S_k\right| e^{j\phi_k}$$
 
 ### Formule di Eulero
 
@@ -136,14 +136,6 @@ $$\begin{align*}P &= \mu\text{W} = 10^{-6} \text{ W} = 10^{-3} \text{ mW}\\
 P_{\text{dBm}} &= 10 \log_{10} \frac{10^{-3}}{1} = -30\ \text{dBm}\\
 \end{align*}$$
 
-## Lunghezza d'onda
-La lunghezza d'onda $\lambda$ (misuata in metri) è il periodo spaziale di una sinusoide che si propaga nello spazio allo scorrere del tempo:
-
-$$\lambda = \frac{v_f}{f_0}\ \left[\text{m}\right]$$
-
-dove $v_f$ è la velocità di fase e $f_0$ è la frequenza fondamentale. Poiché $v_f$ dipende dal mezzo di trasmissione, anche $\lambda$ dipende dal mezzo di trasmissione.
-
-Nello spazio vuoto, la velocità di fase è pari alla velocità della luce $c = 3 \cdot 10^8\ \left[\frac{m}{s}\right]$.
 
 # Linee di trasmissione
 
@@ -213,7 +205,25 @@ $$\gamma = \Re\{\gamma\} + j \Im\{\gamma\} = \alpha + j\beta$$
 
 dove $\alpha$ è la costante di attenuazione (misurata in $\left[\frac{Np}{m}\right]$) e $\beta$ è la costante di fase (misurata in $\left[\frac{rad}{m}\right]$).
 
-### Soluzione delle equazioni delle onde (per linee senza perdite)
+### Lunghezza d'onda
+La lunghezza d'onda $\lambda$ (misuata in metri) è il periodo spaziale di una sinusoide che si propaga nello spazio allo scorrere del tempo:
+
+$$\lambda = \frac{v_f}{f_0}\ \left[\text{m}\right]$$
+
+dove $v_f$ è la velocità di fase e $f_0$ è la frequenza fondamentale. Poiché $v_f$ dipende dal mezzo di trasmissione, anche $\lambda$ dipende dal mezzo di trasmissione.
+
+Nello spazio vuoto, la velocità di fase è pari alla velocità della luce $c = 3 \cdot 10^8\ \left[\frac{m}{s}\right]$.
+
+La lungheza d'onda è sempre legata alla costante di fase $\beta$:
+
+$$\lambda = \frac{2\pi}{\beta}$$
+
+Nelle linee **senza perdite**, la lunghezza d'onda $\lambda$ è pari a:
+
+$$\lambda = \frac{1}{f \sqrt{LC}}$$
+
+
+### Soluzione delle equazioni delle onde (per linee senza perdite, ovvero $R = 0$, $G = 0$)
 
 ![Linea senza perdite](02_Linea_Senza_Perdite.png)
 
@@ -238,3 +248,12 @@ $$\begin{cases}
 v(z,t) &= &V_0^+ \cos(\omega t - \beta z) + V_0^- \cos(\omega t + \beta z)\\
 i(z,t) &= &I_0^+ \cos(\omega t - \beta z) - I_0^- \cos(\omega t + \beta z)\\
 \end{cases}$$
+
+Essendo la fase $\beta z$ lineare con $f$, in una linea senza perdite non si ha alcuna dispersione cromatica.
+
+## Onda progressiva e regressiva
+
+La parte $V_0^+ \cos(\omega t - \beta z)$ rappresenta un'onda che si propaga in avanti (**progressiva**/**propagante**), mentre la parte $V_0^- \cos(\omega t + \beta z)$ rappresenta un'onda che torna indietro (**regressiva**).
+
+L'obiettivo dei problemi di adattamento è quello di eliminare le onde regressive.
+
