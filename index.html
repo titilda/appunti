@@ -1,22 +1,3 @@
-<!-- echo "<html> \
-            <head> \
-            <meta name="viewport" content="width=device-width, initial-scale=1"> \
-            <title>TiTilda Appunti</title> \
-            <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js'></script> \
-            <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'> \
-            </head> \
-            <body> \
-            <div class="container"> \
-            <h1>TiTilda Appunti</h1> \
-            <ul>" > index.html
-          find . -type d -mindepth 1 -maxdepth 1 -print0 | sort -z | while read -d $'\0' doc_dir
-            do
-              if [[ -f "${doc_dir}/index.html" ]]; then
-                echo "<li><a href=\"${doc_dir}/index.html\">$(basename "${doc_dir}")</a></li>" >> index.html
-              fi
-            done
-          echo "</ul></div></body></html>" >> index.html-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
