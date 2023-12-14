@@ -2,7 +2,7 @@
 title: "Riassuntino di Logica e Algebra"
 author:
 - "Andrea Oggioni"
-date: "13 Dicembre 2023"
+date: "14 Dicembre 2023"
 ---
 
 # Relazioni
@@ -205,3 +205,40 @@ Sia $B \sube A$ allora
 - Il minimo dei maggioranti è detto **estremo superiore**
 
 Non è detto che il maggiorante o il minorante esistano.
+
+# Funzioni
+
+Una relazione $f \sube A \times B$ che si può scrivere anche $f : A \to B$ è detta **funzione** se $\forall a \in A \exist ! b\in B : (a, b) \in f$; in tal caso vale che:
+
+- $f(a) = b$
+- $f(A) = \{ b \in B | \exist a \in A : b = f(a) \}$
+- $f^{-1}(b) = \{ a \in A | f(a) = b \}$
+
+Siano $f : A \to B$ e $G : B \to C$ allora $(f \cdot g)(a) = g(f(a))$.
+
+Notare che la notazione algebrica è opposta a quella analitica.
+
+La matrice di adiacenza di una funzione contiene un "1" in ciascuna riga.
+
+Una funzione $f : A \to B$ è iniettiva se (condizioni equivalenti):
+
+- $\forall b \in B$ ha al più una controimmagine in $A$
+- $\forall a_1, a_2 \in A \ f(a_1) = f(a_2) \implies a_1 = a_2$
+- $\forall a_1, a_2 \in A \ a_1 \ne a_2 \implies f(a_1) \ne f(a_2)$
+
+Nel grafo di adiacenza, si nota l'iniettività se in ogni elemento di $B$ entra al massimo una freccia.
+
+Nella matrice di adiacenza, si nota l'iniettività se in ogni colonna vi è al massimo un "1".
+
+Se $f$ e $g$ sono iniettive allora $f \cdot g$ è a sua volta iniettiva.
+
+Una funzione $f : A \to B$ è suriettiva se (condizioni equivalenti):
+
+- $\forall b \in B$ ha almeno una controimmagine in $A$
+- $f(A) = B$
+
+Nel grafo di adiacenza, si nota la suriettività se in ogni elemento di $B$ arriva almeno una freccia.
+
+Nella matrice di adiacenza, si nota la suriettività se in ogni colonna vi è almeno un "1".
+
+Se $f$ è una funzione qualunque (non necessariamente suriettiva) e $g$ è suriettiva allora $f \cdot g$ è suriettiva.
