@@ -7,11 +7,11 @@ date: "13 Dicembre 2023"
 
 # Relazioni
 
-Dati $N$ insiemi $A_1, A_2, \dots, A_N$, si defisce _relazione N-aria_ o _di arità N_ tra gli insiemi dati un qualunque sottoinsieme del prodotto cartesiano $A_1 \times A_2 \times \dots \times A_N$.
+Dati $N$ insiemi $A_1, A_2, \dots, A_N$, si defisce **relazione N-aria** o **di arità N** tra gli insiemi dati un qualunque sottoinsieme del prodotto cartesiano $A_1 \times A_2 \times \dots \times A_N$.
 
 ## Relazioni binarie
 
-Una _relazione binaria_ è tale se è una relazione tra solo due insiemi.
+Una **relazione binaria** è tale se è una relazione tra solo due insiemi.
 
 Può essere rappresentata con il grafo di adiacenza o con la matrice di adiacenza
 
@@ -139,3 +139,69 @@ Affiche la $P$-chiusura di una relazione esista, è necessario che le proprietà
 Se ne deduce che esistono solamente le chiusure riflessive, simmetriche e transitive (le stesse proprietà delle relazioni di equivalenza).
 
 Se esistesse la chiusura antisimmetrica di una relazione, vuol dire che tale relazione è già antisimmetrica e quindi il problema non si pone.
+
+Sia $S$ la chiusura di $R \sube A \times A$ rispetto alle proprietà date di volta in volta, allora
+
+- Per ottenere la chiusura riflessiva si deve fare $S = R \cup I_A$
+- Per ottenere la chiusura simmetrica si deve fare $S = R \cup R^{-1}$
+- Per ottenere la chiusura transitiva si deve fare $S = \underset{i \gt 0}{\bigcup} R^i$ (iterando fino ad arrivare al fix point)
+- Per ottenere la chiusura riflessiva e simmetrica si deve fare $S = R \cup I_A \cup R^{-1}$
+- Per ottenere la chiusura riflessiva e transitiva si deve fare $S = \underset{i \ge 0}{\bigcup} R^i$ (iterando fino ad arrivare al fix point)
+- Per ottenere la chiusura riflessiva, simmetrica e transitiva si deve fare $S = \underset{i \ge 0}{\bigcup} (R \cup I_A \cup R^{-1})$
+
+## Relazioni di equivalenza
+
+Una relazione è detta **relazione di equivalenza** se gode delle proprietà riflessiva, simmetrica e transitiva.
+
+LA chiusura riflessiva, simmetrica e transitiva di $R$ (che, notare, esiste sempre) è detta **relazione di equivalenza generata da $R$**.
+
+Sia $\rho$ una relazione di equivalenza si $A$ e $a \in A$, allora si definisce **classe di equivalenza di $a$ rispetto a $\rho$** l'insieme $\rho_a = \{ b \in A : b \rho a \}$.
+
+Se uno stesso elemento compare in due classi di equivalenza, allora le due classi sono la stessa classe.
+
+## Partizioni
+
+Sia $A$ un insieme e $B_i \in A$ allora $\{ B_i \}$ è detta **partizione di $A$** se (i) $\underset{i \ in I}{\bigcup} B_i = A$ e (ii) $\forall B_i, B_j, i \ne j, B_i \cap B_j = \emptyset$.
+
+In una partizione non ci sono insiemi vuoti.
+
+## Insieme quoziente
+
+Data una relazione di equivalenza $\rho$ su $A$, si definisce **insieme quoziente di $A$ rispetto a $\rho$** il seguente insieme:
+
+$$
+\frac{A}{\rho} = \left\{ \rho_a : a \in A \right\}
+$$
+
+L'insieme quoziente contiene tutte le classi di equivalenza di un insieme e costituisce una partizione dell'insieme da cui origina.
+
+## Relazioni d'ordine
+
+Una relazione è detta **relazione d'ordine** se gode delle proprietà riflessiva, antisimmetrica e transitiva.
+
+Se la relazione invece che essere riflessiva è antiriflessiva ($\forall a \in A \ a \cancel R a$) allora viene detta **relazione d'ordine stretto**.
+
+Non è detto che la chiusura d'ordine esista: condizione necessaria affichè la chiusura d'ordine di $R$ esista è che $R$ sia antisimmetrica.
+
+### Massimi, minimi e simili
+
+Siano $A$ un insieme e $\le$ una relazione d'ordine, allora
+
+- $m \in A$ è detto **minimo di $A$** se $\forall a \in A \ m \le a$
+- $M \in A$ è detto **massimo di $A$** se $\forall a \in A \ a \le M$
+- $m \in A$ è detto **minimale di $A$** se $a \le m, a \in A \implies a = m$
+- $M \in A$ è detto **massimale di $A$** se $M \le a, a \in A \implies a = M$
+
+Non è detto che il minimo o il massimo esistano ma, se esistono, allora sono unici.
+Neanche i minimali e massimali esistono per forza, però possono non essere unici.
+
+In pratica, i minimali e massimali si un insieme sono quelli che sono "più in alto" o "più in basso" degli altri o sono direttamente non confrontabili.
+
+Sia $B \sube A$ allora 
+
+- $m \in A$ è detto **minorante di $B$** se $m \le b \forall b \in B$
+- $M \in A$ è detto **maggiorante di $B$** se $b \le M \forall b \in B$
+- Il massimo dei minoranti è detto **estremo inferiore**
+- Il minimo dei maggioranti è detto **estremo superiore**
+
+Non è detto che il maggiorante o il minorante esistano.
