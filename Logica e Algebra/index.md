@@ -2,7 +2,7 @@
 title: "Riassuntino di Logica e Algebra"
 author:
 - "Andrea Oggioni"
-date: "14 Dicembre 2023"
+date: "16 Dicembre 2023"
 ---
 
 # Relazioni
@@ -298,8 +298,107 @@ Un insieme ha la potenza del continuo se può essere messo in corrispondenza biu
 
 La cardinalità di un insieme è sempre minore di quella del suo insieme delle parti.
 
+# Logica
+
+La sintassi della logica è composta da
+
+- Un infinito al più numerabile di lettere enunciative: $A, B, \dots$
+- Connettivi logici: $\neg, \cap, \cup, \implies, \iff$
+- Simboli ausiliari: $(,)$
+- Altri simboli: $\top, \bot$
+  
+Le formule ben formate sono come segue:
+
+- Ogni lettera enunciativa è una f.b.f.
+- Se $A$ è una f.b.f. allora che $\neg A$ lo è
+- Se $A$ e $B$ sono f.b.f. allora anche $A \cap B, A \cup B, A \implies B, A \iff B$ lo sono
+- Le uniche f.b.f. sono quelle definite ai punti precedenti.
+
+Le precedenze tra i vari connettivi logici segue l'ordine $\neg \to \cap \to \cup \to \implies \to \iff$; nel caso di più connettivi uguali in serie, si associa da sinistra verso destra.
+
+Data una f.b.f. le sue sottoformule ($\text{Stfm}$) sono definite come
+
+- Se $A$ è una lettera enunciativa allora $\text{Stfm}(A) = \{A\}$
+- Se $A \equiv \neg B$ allora $\text{Stfm}(A) = \{A\} \cup \text{Stfm}(B)$
+- Se $A$ è equivalente a uno tra $B \cup C$, $B \cap C$, $B \implies C$, $B \iff C$ allora $\text{Stfm}(A) = \{A\} \cup \text{Stfm}(B) \cup \text{Stfm}(B)$
+
+Un' interpretazione $v$ è una funzione $v : \{ \text{f.b.f.} \} \to \{ 0, 1 \}$ tale che
+
+- $v(\neg A) = 1 - v(A)$
+- $v(A \cap B) =\min(v(A), v(B))$
+- $v(A \cup B) = \max(v(A), v(B))$
+- $v(A \implies B) = \max(1 - v(A), v(B))$
+- $v(A \iff B) = \max(1 - v(A), v(B)) = \max(v(A), 1 - v(B))$
+- $v(\bot) = 0$
+- $v(\top) = 1$
+
+Segue carrellata di definizioni per poter categorizzare le f.b.f.
+
+Una f.b.f. $A$ è detta detta **soddisfacibile** se esiste un interpretazione tale che $v(A) = 1$; $v$ è detto modello di $A$.
+
+Una f.b.f. è **insoddisfacibile** o **contraddizione** se non ammette modelli.
+
+Una f.b.f. è detta **tautologia** se ogni interpretazione è modello, quindi se è sempre vera.
+
+$B$ è detta **conseguenza semantica** di $A$ ($A \models B$) se ogni modello di $A$ è anche modello di $B$.
+
+$A$ e $B$ sono dette **semanticamente equivalenti** ($A \equiv B$) se $A \models B$ e $B \models A$.
+
+Sia $\Gamma$ un insieme di f.b.f., $v$ è modello di $\Gamma$ se è modello di ogni f.b.f. di $\Gamma$.
+
+Un insieme $\Gamma$ di f.b.f. è detto **soddisfacibile** se ammette un modello.
+
+Un insieme $\Gamma$ di f.b.f. è detto **insoddisfacibile** se non ammette modelli.
+
+## Teorema di deduzione semantica
+
+Sia $\Gamma$ un insieme di f.b.f. e $A$ e $B$ due f.b.f.
+
+Il teorema di deduzione semantica afferma che $\Gamma \cup \{ B \} \models A$ se e solo se $\Gamma \models B \implies A$.
+
+Se ne deduce che $B \models A$ se e solo se $B \implies A$ è una tautologia.
+
+Il teorema contrario afferma che $\Gamma \models A$ se e solo se $\Gamma \cup \{ \neg A \}$ è insoddisfacibile.
+
+## Teorema di compattezza
+
+Un insieme $\Gamma$ di f.b.f. è soddisfacibile se e solo se ogni suo sottoinsieme finito lo è.
+
+Questo teorema è più utile se enunciato al contrario.
+
+Un insieme $\Gamma$ di f.b.f. è insoddisfacibile se esiste un suo sottoinsieme finito che è anch'esso insoddisfacibile.
+
+## Equivalenze semantiche
+
+Una f.b.f. è detta in **forma normale congiuntiva** se è scritta come congiunzione di disgiunzioni.
+
+Una f.b.f. è detta in **forma normale disgiuntiva** se è scritta come disgiunzione di congiunzioni.
+
+Qualunque f.b.f. può essere scritta utilizzando solo connettivi logici da un **insieme adeguato di connettivi**, ad esempio $\{ \neg, \implies \}$, $\{ \neg, \cap \}$, $\{ \neg, \cup \}$.
+
+- $A \cup A \equiv A$
+- $A \cap A \equiv A$
+- $A \cup B \equiv B \cup A$
+- $A \cap B \equiv B \cap A$
+- $A \cap \neg A \equiv \bot$
+- $A \cup \neg A \equiv \top$
+- $(A \cup B) \cup C \equiv A \cup (B \cup C)$
+- $(A \cap B) \cap C \equiv A \cap (B \cap C)$
+- $A \cup (B \cap C) \equiv (A \cup B) \cap (A \cap C)$
+- $A \cap (B \cup C) \equiv (A \cap B) \cup (A \cap C)$
+- $\neg(\neg A) \equiv A$
+- $A \cap (A \cup B) \equiv A$
+- $A \cup (A \cap B) \equiv A$
+- $A \cap \top \equiv A$
+- $A \cup \bot \equiv A$
+- $\neg(A \cup B) \equiv \neg A \cap \neg B$
+- $\neg(A \cap B) \equiv \neg A \cup \neg B$
+- $A \iff B \equiv (A \implies B) \cap (B \implies A) \equiv (\neg A \cup B) \cap (\neg B \cup A)$
 
 
-
-
-
+<!-- 
+Cose che potrebbero risultare utili da aggiungere:
+- Tabella riassuntiva di ciascuna teoria con alfabeti, assiomi e teoremi vari
+- Tabella riassuntiva assiomi A1..ABOh
+- Tabella riassuntiva strutture algebriche
+-->
