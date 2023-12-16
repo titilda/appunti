@@ -257,3 +257,45 @@ La parte $V_0^+ \cos(\omega t - \beta z)$ rappresenta un'onda che si propaga in 
 
 L'obiettivo dei problemi di adattamento è quello di eliminare le onde regressive.
 
+Il **coefficiente di riflessione sul carico** $\Gamma_L$ indica quanto dell'onda incidente viene riflessa dal carico:
+
+$$\Gamma_L = \frac{V_0^-}{V_0^+}$$
+
+## Impedenza caratteristica
+
+L'impedenza caratteristica $Z_0$ di una linea di trasmissione è l'impedenza costante (che non cambia in diversi punti della linea) associata alla linea di trasmissione che lega la tensione alla corrente nella soluzione delle equazioni delle onde. **In una linea senza perdite:**
+
+$$Z_0 = \sqrt{\frac{L}{C}}\ \ \left[ \Omega \right]$$
+
+L'impedenza caratteristica lega la corrente dell'onda progressiva e quella dell'onda regressiva alla tensione dell'onda progressiva e di quella regressiva, rispettivamente, prese singolarmente:
+
+$$\begin{cases}
+I_0^+ &= &\displaystyle \frac{V_0^+}{Z_0}\\
+I_0^- &= &\displaystyle \frac{V_0^-}{Z_0}\\
+\end{cases}$$
+
+L'impedenza caratteristica non dipende da:
+
+  * lunghezza della linea
+  * frequenza del segnale
+  * terminazione della linea
+
+## Adattamento di impedenza
+
+Considerando un carico $Z_L$ collegato a una linea di trasmissione con impedenza caratteristica $Z_0$, si ha che:
+
+$$V_0^- = \frac{Z_L - Z_0}{Z_L + Z_0} V_0^+$$
+
+In altre parole, se $Z_L = Z_0$, non ci sono onde regressive.
+
+## Impedenza d'onda
+
+L'impedenza d'onda $Z(z)$ è l'impedenza vista da un punto $z$ della linea di trasmissione. **In una linea senza perdite:**
+
+$$Z(z) = \frac{V(z)}{I(z)} = \frac{V_0^+ e^{-j \beta z} + V_0^- e^{-j \beta z}}{\underbrace{\frac{V_0^+}{Z_0}e^{-j\beta z}}_{I_0^+} - \underbrace{\frac{V_0^-}{Z_0} e^{+j \beta z}}_{I_0^-}} = Z_0 \frac{1 + \Gamma_L e^{+2j\beta z}}{1 - \Gamma_L e^{+2j\beta z}}$$
+
+Alternativamente, definita $l$ la distanza dal carico ($z :=-l$), si ha che:
+
+$$Z(l) = Z_0 \frac{Z_L + j Z_0 \tan(\beta l)}{Z_0 + j Z_L \tan(\beta l)}$$
+
+dove $\beta = \frac{2\pi}{\lambda}$
