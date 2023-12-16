@@ -220,7 +220,7 @@ Notare che la notazione algebrica è opposta a quella analitica.
 
 La matrice di adiacenza di una funzione contiene un "1" in ciascuna riga.
 
-Una funzione $f : A \to B$ è iniettiva se (condizioni equivalenti):
+Una funzione $f : A \to B$ è **iniettiva** se (condizioni equivalenti):
 
 - $\forall b \in B$ ha al più una controimmagine in $A$
 - $\forall a_1, a_2 \in A \ f(a_1) = f(a_2) \implies a_1 = a_2$
@@ -232,7 +232,7 @@ Nella matrice di adiacenza, si nota l'iniettività se in ogni colonna vi è al m
 
 Se $f$ e $g$ sono iniettive allora $f \cdot g$ è a sua volta iniettiva.
 
-Una funzione $f : A \to B$ è suriettiva se (condizioni equivalenti):
+Una funzione $f : A \to B$ è **suriettiva** se (condizioni equivalenti):
 
 - $\forall b \in B$ ha almeno una controimmagine in $A$
 - $f(A) = B$
@@ -242,3 +242,64 @@ Nel grafo di adiacenza, si nota la suriettività se in ogni elemento di $B$ arri
 Nella matrice di adiacenza, si nota la suriettività se in ogni colonna vi è almeno un "1".
 
 Se $f$ è una funzione qualunque (non necessariamente suriettiva) e $g$ è suriettiva allora $f \cdot g$ è suriettiva.
+
+Se una funzione è sia iniettiva che suriettiva allora è **binuivoca** o **biiettiva**.
+
+Nel grafo di adiacenza, si nota la biunivocità se da ogni 
+
+Nella matrice di adiacenza, si nota la biunivocità se in ogni riga e in ogni colonna compare esattamente un "1". (Il singolo "1" sulle righe verifica la biunivocità mentre il singolo "1" sulle colonne verifica il fatto che la relazione è una funzione).
+
+Se $f$ e $g$ sono biunivoche allora $f \cdot g$ è a sua volta binuivoca.
+
+Se $f \cdot g$ è biunivoca allora $f$ è almeno iniettiva e $g$ è almeno suriettiva.
+
+## Funzioni inverse
+
+Sia $f : A \to B$ una funzione, allora si definisce **inversa di f** una funzione $g : B \to A$ tale che $g \cdot f = i_B$ (inversa sinistra) e che $f \cdot g i_A$ (inversa destra).
+
+Se $f$ ammette sia inversa destra che inversa sinistra allora coincidono e l'inversa di $f$ è unica.
+
+Una funzione è iniettiva se e solo se ammette inversa destra mentre è suriettiva se e solo se ammette inversa sinistra.
+
+## Teorema di fattorizzazione
+
+Sia $f : A \to B$ una funzione, allora si può definire la relazione $\ker(f)$ come segue:
+
+$$
+a \ker(f) b \iff f(a) = f(b) \quad \forall a, b \in A
+$$
+
+Tale relazione è una relazione di equivalenza su A.
+
+Definiamo anche la funzione $P_\rho : A \to \frac{A}{\rho}$ chiamata **proiezione canonica** che associa ad ogni elemento la sua classe di equivalenza.
+
+Il **teorema di fattorizzazione** afferma che date $f : A \to B$ e $P_{\ker(f)}$ esiste ed è unica la funzione $g : \frac{A}{\ker(f)} \to B$ tale che $P_{\ker(f)} \cdot g = f$. Inoltre $g$ è iniettiva.
+
+## Cardinalità di insiemi
+
+Due insiemi $A$ e $B$ hanno la stessa cardinalità ($|A| = |B|$) se e solo se esiste una funzione biunivoca $f : A \to B$.
+
+_Avere la stessa cardinalità_ è una relazione di equivalenza.
+
+Dati due insiemi $A$ è $B$ allora
+
+- $A$ ha **cardinalità inferiore** a quella di $B$ se esiste una funzione almeno iniettiva $f : A \to B$
+- $A$ ha **cardinalità strettamente inferiore** a quella di $B$ se esiste una funzione iniettiva e non suriettiva $f : A \to B$
+
+Le due relazioni precedenti sono relazioni d'ordine nell'insieme di tutti gli insiemi.
+
+Un insieme si dice **finito di cardinalità $n$** se può essere messo in corrispondenza biunivoca con l'insieme $\{ 1, 2, \dots, n \}$.
+
+Un insieme è detto numerabile se può essere messo in corrispondenza biunivoca con $\mathbb{N}$.
+
+Un insieme ha la potenza del continuo se può essere messo in corrispondenza biunivoca con $\mathbb{R}$.
+
+## Teorema di Cantor
+
+La cardinalità di un insieme è sempre minore di quella del suo insieme delle parti.
+
+
+
+
+
+
