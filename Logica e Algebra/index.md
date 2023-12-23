@@ -2,7 +2,7 @@
 title: "Riassuntino di Logica e Algebra"
 author:
 - "Andrea Oggioni"
-date: "16 Dicembre 2023"
+date: "23 Dicembre 2023"
 ---
 
 # Relazioni
@@ -395,6 +395,58 @@ Qualunque f.b.f. può essere scritta utilizzando solo connettivi logici da un **
 - $\neg(A \cap B) \equiv \neg A \cup \neg B$
 - $A \iff B \equiv (A \implies B) \cap (B \implies A) \equiv (\neg A \cup B) \cap (\neg B \cup A)$
 
+# Teorie formali
+
+Una **teoria formale** è definita da
+
+- un alfabeto
+- un insieme di f.b.f.
+- un insieme di assiomi eventualmente vuoto
+- un insieme di regole d'inferenza (o di riscrittura)
+
+Una **dimostrazione** in una teoria formale $\mathcal H$ è una sequenza finita di f.b.f. di $\mathcal H$ che siano o assiomi o ottenute dalle precedenti tramite regole di inferenza.
+
+Un **teorema** di una teoria formale $\mathcal H$ è l'ultima riga di una dimostrazione in $\mathcal H$.
+
+Una formula $\mathscr A$ si deduce sintatticamente da un insieme $\Gamma$ di f.b.f ($\Gamma \vdash_\mathcal H \mathscr A$) se esiste una dimostrazione di $\mathscr A$ da $\Gamma$ cioè esiste una sequenza finita di righe in cui $\mathscr A$ è l'ultima riga nella quale le f.b.f. sono o assiomi di $\mathcal H$ o f.b.f. dedotte dalle precedenti mediante regole di inferenza di $\mathcal H$ oppure f.b.f. di $\Gamma$.
+
+## Teoria $\mathcal L$
+
+- Alfabeto: unione di
+  - $\{A, B, \dots\}$  insieme al più numerabile di lettere enunciative
+  - $\{\neg, \implies\}$
+  - $\{(, )\}$
+- f.b.f.:
+  - ogni lettera enunciativa è una f.b.f.
+  - se $\mathscr A$ è una f.b.f. allora anche $\neg \mathscr A$ lo è, se anche $\mathscr B$ è una f.b.f. allora anche $\mathscr A \implies \mathscr B$ lo è
+  - non ci sono altre f.b.f..
+- Assiomi:
+  - A1: $\mathscr A \implies (\mathscr B \implies \mathscr A)$
+  - A2: $(\mathscr A \implies (\mathscr B \implies \mathscr C)) \implies ((\mathscr A \implies \mathscr B) \implies (\mathscr A \implies \mathscr C))$
+  - A3: $(\neg \mathscr A \implies \neg \mathscr B) \implies ((\neg \mathscr A \implies \mathscr B) \implies \mathscr A)$
+- Regole di inferenza:
+  - MP - Modus Ponens: se $\mathscr A$ e $\mathscr A \implies \mathscr B$ allora $\mathscr B$
+
+### Esempio: dimostrazione di  $\vdash_\mathcal L \mathscr A \implies \mathscr A$
+
+1.  $\mathscr A \implies ((\mathscr A \implies \mathscr A) \implies \mathscr A) \quad A1$
+2.  $\mathscr A \implies (\mathscr A \implies \mathscr A) \quad A1$
+3.  $(\mathscr A \implies ((\mathscr A \implies \mathscr A) \implies \mathscr A)) \implies ((\mathscr A \implies (\mathscr A \implies \mathscr A)) \implies (\mathscr A \implies \mathscr A)) \quad A2$
+4.  $(\mathscr A \implies (\mathscr A \implies \mathscr A)) \implies (\mathscr A \implies \mathscr A) \quad MP1,3$
+5.  $\mathscr A \implies \mathscr A \quad MP2,4$
+
+### Teorema di correttezza e completezza di $\mathcal L$
+
+$\Gamma \vdash_\mathcal L \mathscr A$ se e solo se $\Gamma \models \mathscr A$.
+
+Grazie al teorema di completezza e correttezza, si può affermare che i teoremi di $\mathcal L$ sono tutte e sole le tautologie, per sui per dimostrare che una formula $\mathscr A$ è teorema di $\mathcal L$, invece che fare la dimostrazione, si può costruire la tavola di verità che è molto più veloce.
+
+### Teorema di deduzione sintattica in $\mathcal L$
+
+$\Gamma \cup \{\mathscr B\} \vdash_\mathcal L \mathscr A$ se e solo se $\Gamma \vdash_\mathcal L \mathscr B \implies \mathscr A$.
+
+
+
 
 <!-- 
 Cose che potrebbero risultare utili da aggiungere:
@@ -402,3 +454,13 @@ Cose che potrebbero risultare utili da aggiungere:
 - Tabella riassuntiva assiomi A1..ABOh
 - Tabella riassuntiva strutture algebriche
 -->
+
+# Tabelle riassuntive
+
+## Assiomi
+
+| Numero | Assioma                                                                                                                                        | Note |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| A1     | $\mathscr A \implies (\mathscr B \implies \mathscr A)$                                                                                         |      |
+| A2     | $(\mathscr A \implies (\mathscr B \implies \mathscr C)) \implies ((\mathscr A \implies \mathscr B) \implies (\mathscr A \implies \mathscr C))$ |      |
+| A3     | $(\neg \implies \mathscr A \implies \neg \mathscr B) \implies ((\neg \mathscr A \implies \mathscr B) \implies \mathscr A)$                     |      |
