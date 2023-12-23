@@ -314,7 +314,7 @@ Le formule ben formate sono come segue:
 - Se $A$ e $B$ sono f.b.f. allora anche $A \cap B, A \cup B, A \implies B, A \iff B$ lo sono
 - Le uniche f.b.f. sono quelle definite ai punti precedenti.
 
-Le precedenze tra i vari connettivi logici segue l'ordine $\neg \to \cap \to \cup \to \implies \to \iff$; nel caso di più connettivi uguali in serie, si associa da sinistra verso destra.
+La precedenza tra i vari connettivi logici segue l'ordine $\neg \to \cap \to \cup \to \implies \to \iff$; nel caso di più connettivi uguali in serie, si associa da sinistra verso destra.
 
 Data una f.b.f. le sue sottoformule ($\text{Stfm}$) sono definite come
 
@@ -490,6 +490,99 @@ Se $\Gamma \vdash_\mathcal R \mathscr A$ allora $\Gamma \models \mathscr A$ ma n
 $S \vdash_\mathcal R \square$ se e solo se $S$ è insoddisfacibile (infatti $S \models \mathscr A$ se e solo se $S \cup \mathscr A$ è insoddisfacibile se e solo se $S^C \cup \{\neg \mathscr A\}^C \vdash_\mathscr R \square$, ove $^C$ significa "scritto in forma a clausole").
 
 Ne segue che S è insoddisfacibile se e solo se $\square \in \text{Ris}^*(S)$.
+
+# Logica del primo ordine
+
+La sintassi della logica del primo ordine è composta da
+
+- variabili ($x, y, z, \dots$)
+- costanti ($a, b, c, \dots$)
+- lettere funzionali ($f_i^n,\ i,n \in \mathbb{N}^0$)
+- lettere predicative ($\mathscr{A}_j^m, \ j,m \in \mathbb{N}^0$)
+- connettivi e quantificatori ($\{ (, ), \neg, \cap, \cup, \implies, \iff, \forall x, \exists x \}$)
+
+I **termini** sono definiti come segue:
+
+- Ogni costante è un termine.
+- Ogni variabile è un termine.
+- Se $t_1, \dots, t_n$ sono termini $f_i^n(t_1, \dots, t_n)$ è un termine.
+- Null'altro è un termine.
+
+Le **formule atomiche** sono definite come segue:
+
+- Se $t_1, \dots, t_n$ sono termini allora $\mathscr{A}_j^m(t_1, \dots, t_n)$ è una f.a..
+
+Le **formule ben formate** sono definite come segue:
+
+- Una f.a. è una f.b.f.
+- Se $\mathscr{A,B}$ sono f.b.f. allora anche $\neg \mathscr{A}, (\forall x) \mathscr{A}, (\exists x) \mathscr{A}, \mathscr{A} \cap \mathscr{B}, \mathscr{A} \cup \mathscr{B}, \mathscr{A} \implies \mathscr{B}, \mathscr{A} \iff \mathscr{B}$ lo sono.
+- Null'altro è una f.b.f.
+
+La precedenza tra i vari connettivi e quantificatori sono $\neg \rarr \forall \rarr \exists \rarr \cap \rarr \cup \rarr \implies \rarr \iff$; nel caso di più connettivi uguali in serie, si associa da sinistra verso destra.
+
+$\forall$ e $\exists$ vengono detti **quantificatori**, rispettivamente, **universale** ed **esistenziale**.
+
+Il **campo d'azione di un quantificatore** è la sottoformula al quale è applicato.
+
+Una variabile nel campo di azione di un quantificatore è **vincolata** se appare accanto al quantificatore, altrimenti è **libera**.
+
+Una formula è **chiusa** se tutte le occorrenze di tutte le variabili sono vincolate.
+
+Un **termine $t$ si dice libero per una variabile $x$ in una formula $\mathscr A$** se nessuna occorrenza libera di $x$ in $\mathscr A$ cade nel campo di azione di un quantificatore che quantifica una variabile che compare in $t$.
+
+La **chiusura universale** di una formula $\mathscr A$ si ottiene facendo precedere $\mathscr A$ da quantificatori universali che quantificano tutte le variabili libere di $\mathscr A$. Il procedimento è analogo per la **chiusura esistenziale**.
+
+Un'**operazione** in $D$ di arità $n$ è una funzione $D^n \to D$.
+
+Un'**interpretazione** $\lang D, I \rang$ è costituita da un insieme non vuoto $D$ e da $I = \{I_1, I_2, I_3\}$ con
+
+$$
+\begin{align*}
+    I_1 &: \{\text{costanti}\} \to D \\
+    I_2 &: \{f_i^n\} \to \{\text{operazioni n-arie su $D$}\} \\
+    I_3 &: \{\mathscr{A}_j^m\} \to \{\text{relazioni m-arie su $D$}\}
+\end{align*}
+$$
+
+In pratica, si dà un significato ad ogni lettera funzionale, ad ogni costante e ad ogni formula atomica, poi si procede ad analizzare ciò che si è ottenuto.
+
+Una formula si dice **soddisfacibile** se esiste un'interpretazione che la soddisfa.
+
+Una formula si dice **vera** in una sua interpretazione se ogni assegnamento di variabili in quell'interpretazione la soddisfa.
+
+Una formula si dice **falsa** in una sua interpretazione se ogni assegnamento di variabili in quell'interpretazione non la soddisfa.
+
+Una formula si dice **logicamente valida** se è vera in ogni sua interpretazione.
+
+Una formula si dice **logicamente contraddittoria** se è falsa in ogni sua interpretazione.
+
+La chiusura esistenziale di una formula è vera se e solo se la formula è soddisfacibile.
+
+La chiusura universale di una formula è vera se e solo se la formula è vera.
+
+Una formula si dice in **forma normale prenessa** se tutti i quantificatori compaiono all'inizio della formula stessa.
+
+E' possibile portare una qualsiasi f.b.f. in forma normale prenessa attraverso alcuni lemmi.
+
+## Equivalenze semantiche
+
+- $(\forall x)(\forall y) \mathscr A \equiv (\forall y)(\forall x) \mathscr A$
+- $(\exists x)(\exists y) \mathscr A \equiv (\exists y)(\exists x) \mathscr A$
+- $(\exists x)(\forall y) \mathscr A \equiv (\forall y)(\exists x) \mathscr A$
+- $(\forall x) \mathscr A \equiv \neg(\exists x) \neg \mathscr A$
+- $(\forall x) \mathscr A \cap (\forall x) \mathscr B \equiv (\forall x)(\mathscr A \cap \mathscr B)$
+- $(\forall x) \mathscr A \cup (\forall x) \mathscr B \equiv (\forall x)(\mathscr A \cup \mathscr B)$
+
+## Lemmi per le forme normai prenesse
+
+- $(\forall x) \mathscr A(x) \implies \mathscr B \equiv (\exists t)(\mathscr A(t) \implies \mathscr B)$ (se $\mathscr B$ non contiene occorrenze libere di $t$)
+- $(\exists x) \mathscr A(x) \implies \mathscr B \equiv (\forall t)(\mathscr A(t) \implies \mathscr B)$ (se $\mathscr B$ non contiene occorrenze libere di $t$)
+- $\mathscr A \implies (\forall x) \mathscr B(x) \equiv (\forall t)(\mathscr A \implies \mathscr B(t))$ (se $\mathscr A$ non contiene occorrenze libere di $t$)
+- $\mathscr A \implies (\exists x) \mathscr B(x) \equiv (\exists t)(\mathscr A \implies \mathscr B(t))$ (se $\mathscr A$ non contiene occorrenze libere di $t$)
+
+Esistono anche molti altri lemmi che però sono derivabili dai quattro riportati.
+
+Se necessario, nel portare in forma normale prenessa è possibile andare a cambiare nome alle variabili, per evitare che si vadano a quantificare variabili che non erano nel campo d'azione del quantificatore che si vuole spostare.
 
 <!-- 
 Cose che potrebbero risultare utili da aggiungere:
