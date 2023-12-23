@@ -445,8 +445,51 @@ Grazie al teorema di completezza e correttezza, si può affermare che i teoremi 
 
 $\Gamma \cup \{\mathscr B\} \vdash_\mathcal L \mathscr A$ se e solo se $\Gamma \vdash_\mathcal L \mathscr B \implies \mathscr A$.
 
+## Teoria della risoluzione $\mathscr R$
 
+Un **letterale** è una lettera enunciativa o la sua negazione.
 
+Una **clausola** è la disgiunzione di zero o più letterali (ad esempio $a \cup B \cup C$ diventa $\{A, B, C\}$).
+
+Una clausola priva di letterali è detta **clausola vuota** $\square$.
+
+Una clausola è **soddisfacibile** se almeno uno dei suoi letterali è soddisfacibile ($\square$ non è mai soddisfacibile in quanto priva di letterali).
+
+Scrivere una formula in notazione a clausole significa scriverla in forma normale congiuntiva utilizzando la notazione a clausole ($(\neg A \cup B) \cap (A \cup C)$ diventa ${\{\neg A, B\} \cup \{A, C\}}$).
+
+- Alfabeto: insieme dei letterali unito a $\{,\}$
+- f.b.f.: formule scritte in forma a clausole
+- Assiomi: $\emptyset$
+- Regole di inferenza: "risolvente"
+
+Siano $C_1$ e $C_2$ due clausole, sia $l \in C_1$ tale che $\neg l \in C_2$. Allora la **risolvente** $R$ è $R = (C_1 \backslash \{l\}) \cup (C_2 \backslash \{\neg l\})$.
+
+Se $R$ è la risolvente di $C_1$ e $C_2$ allora $\{C_1, C_2\}\models R$
+
+Sia $S$ un insieme, allora la risolvente di $S$ è definita come
+
+$$
+\text{Ris}(S) = S \cup \left\{ C_{ij} : C_{ij} = (\text{Risolvente di $C_i$ e $C_j$}), C_i, C_j \in S \right\} \\
+\text{Ris}^2(S) = \text{Ris}(\text{Ris}(S)) \qquad \text{Ris}^n(S) = \text{Ris}(\text{Ris}^{n-1}(S)) \qquad \text{Ris}^*(S) = \underset{n \gt 0}{\bigcup} \text{Ris}^n(S)
+$$
+
+Se $S \vdash_\mathcal R \square$ allora esiste una **risoluzione lineare**, cioè ad ogni passo della risoluzione si usa sempre la clausola ottenuta nel passo precedente.
+
+Una risoluzione è **lineare per input** se è lineare e nella risoluzione vengono usate solo clausole di input.
+
+Un **insieme di clausole di Horn** è un insieme di clausole nel quale ciascuna clausola contiene al più un letterale positivo.
+
+Se $S$ è un insieme di clausole di Horn allora $S \vdash_\mathcal R \square$ se e solo se esiste una risoluzione lineare per input.
+
+### Teorema di correttezza
+
+Se $\Gamma \vdash_\mathcal R \mathscr A$ allora $\Gamma \models \mathscr A$ ma non vale il contrario.
+
+### Teorema di correttezza e completezza per refutazione
+
+$S \vdash_\mathcal R \square$ se e solo se $S$ è insoddisfacibile (infatti $S \models \mathscr A$ se e solo se $S \cup \mathscr A$ è insoddisfacibile se e solo se $S^C \cup \{\neg \mathscr A\}^C \vdash_\mathscr R \square$, ove $^C$ significa "scritto in forma a clausole").
+
+Ne segue che S è insoddisfacibile se e solo se $\square \in \text{Ris}^*(S)$.
 
 <!-- 
 Cose che potrebbero risultare utili da aggiungere:
