@@ -2,7 +2,7 @@
 title: "Riassuntino di Logica e Algebra"
 author:
 - "Andrea Oggioni"
-date: "23 Dicembre 2023"
+date: "24 Dicembre 2023"
 ---
 
 # Relazioni
@@ -584,6 +584,86 @@ Esistono anche molti altri lemmi che però sono derivabili dai quattro riportati
 
 Se necessario, nel portare in forma normale prenessa è possibile andare a cambiare nome alle variabili, per evitare che si vadano a quantificare variabili che non erano nel campo d'azione del quantificatore che si vuole spostare.
 
+In pratica, se estraendo un quantificatore si va a vincolare occorrenze di variabili che prima non erano vincolate, è necessario, prima di procedere all'estrazione, cambiare nome alla variabile quantificata e a tutte le occorrenze vincolate.
+
+## Forma normale di Skolem
+
+Skolemizzare una formula significa trasformarla in un modo tale per cui si ottiene una formula non equivalente ma che conserva la soddisfacibilità.
+
+Per portare una formula in forma normale di Skolem, è prima necessario portarla in forma normale prenessa, successivamente, se comincia con dei quantificatori esistenziali, li tolgo e sostituisco le variabili da essi quantificate con delle costanti; poi per ogni altro quantificatore esistenziale, lo tolgo e sostituisco la variabile quantificata con una lettera funzionale che prende come argomenti tutte le lettere quantificate dai $\forall$ prima del $\exists$ appena rimosso.
+
+## Sostituzioni
+
+Una sostituzione $\sigma$ è una scrittura finita del tipo
+
+$$
+\sigma = \left\{ \frac{t_1}{x_1}, \frac{t_2}{x_2}, \dots, \frac{t_n}{x_n} \right\} \qquad i \ne j \implies x_i \ne x_j, \forall i = 1, \dots, n \ x_i \ne t_i
+$$
+
+ove $t_i$ è un termine e $x_i$ è una variabile.
+
+Applicare una sostituzione ad una formula significa sostituire ogni occorrenza della variabile $x_i$ con il termine $t_i$.
+
+Sia $\sigma = \left\{ \frac{v_1}{x_1}, \frac{v_2}{x_2}, \dots, \frac{v_n}{x_n} \right\}$ e $\theta = \left\{ \frac{u_1}{y_1}, \frac{u_2}{y_2}, \dots, \frac{u_m}{y_m} \right\}$ allora il **prodotto tra le due sostituzioni** si ottiene dalla scrittura
+
+$$
+\sigma \theta = \left\{ \frac{v_1}{x_1}\theta, \frac{v_2}{x_2}\theta, \dots, \frac{v_n}{x_n}\theta \right\}
+$$
+
+cancellando tutti i $\frac{u_j}{y_j}$ tali che per qualche $i$ si ha che $x_i = y_j$ e tutti i $\frac{t_k}{x_k}\theta$ tali per cui $t_k \theta = x_k$ (in pratica, vanno eliminate tutte le sostituzioni di $\theta$ che vanno ad operare su una variabile su cui già opera una sostituzione di $\sigma$ ed elimino tutte le sostituzioni di $\sigma \theta$ che mandano una variabile in se stessa).
+
+Una sostituzione $\sigma$ è detta **unificatore** di $E_1, E_2, \dots, E_N$ espressioni se $E_1 \sigma = E_2 \sigma = \dots = E_N \sigma$.
+
+Un unificatore $\sigma$ di $E_1, E_2, \dots, E_N$ è detto **unificatore più generale (m.g.u.)** se ogni altro unificatore di tali espressioni si può ottenere componendo $\sigma$ con qualche sostituzione.
+
+Il m.g.u., a parte ordine e nome delle variabili, è unico.
+
+## Risolvente per una logica del primo ordine
+
+Siano $C_1, C_2$ due clausole di un linguaggio del primo ordine.
+
+1. Si applicano alle due clausole due sostituzioni ($\sigma_1$ e $\sigma_2$) per fare in modo che non abbiano variabili in comune
+2. Se esistono $\{l_1, l_2, \dots, l_n\}$ letterali di $C_1$ e $\{l_{n+1}, l_{n+2}, \dots, l_{n+r}\}$ letterali di $C_2$ tali che $\{l_1, l_2, \dots, l_{n+r}\}$ sia unificabile, detto $\sigma$ il m.g.u. di tale insieme, allora $R = (C_1 \sigma_1 \backslash \{l_1, l_2, \dots, l_n\}) \sigma \cup (C_2 \sigma_2 \backslash \{l_{n+1}, l_{n+2}, \dots, l_{n+r}\})$
+
+In pratica, è come la risoluzione vista [precedentemente](#teoria-della-risoluzione) ma senza tenere conto del nome diverso delle variabili.
+
+## Teorema di risoluzione
+
+$S \vdash_\mathcal R \square$ se e solo se $S$ è insoddisfacibil; $S \models \mathscr A$ se e solo se $S \cup \{\neg \mathscr A\}$ è insoddisfacibile.
+
+## Teoria formale $\mathcal K$
+
+La teoria formale $\mathcal K$ è l'equivalente della teoria $\mathcal L$ ma per la logica del primo ordine.
+
+- Alfabeto: $\{\text{Formule atomiche}\} \cup \{\neg, \implies, \forall, (, )\}$
+- f.b.f.:
+  - ogni formula atomica è una f.b.f.
+  - se $\mathscr A$ è una f.b.f. allora anche $\neg \mathscr A, (\forall x) \mathscr A$ lo sono
+  - se $\mathscr A, \mathscr B$ sono f.b.f. allora anche $\mathscr A \implies \mathscr B$ lo è
+- Assiomi logici:
+  - A1, A2, A3
+  - A4: $(\forall x)(\mathscr A(x)) \implies \mathscr A(t)$, $t$ è un termine libero per $x$ in $\mathscr A(t)$
+  - A5: $(\forall x)(\mathscr A \implies \mathscr B) \implies (\mathscr A \implies (\forall x) \mathscr B)$, $\mathscr A$ non contiene occorrenze libere di $x$
+- Regole di inferenza
+  - Modus Ponens
+  - Generalizzazione - Se $\mathscr A$ allora $(\forall x) \mathscr A$
+
+Una teoria del primo ordine priva di assiomi propri è detta **calcolo predicativo del primo ordine**.
+
+Una teoria formale è detta **consistente** se non esiste una f.b.f. $\mathscr A$ tale che $\vdash \mathscr A$ e $\vdash \neg \mathscr A$ (in ogni teoria non consistente, ogni f.b.f. è un teorema).
+
+I teoremi di $\mathcal K$ sono tutte e sole le f.b.f.
+
+Un modello di una teoria del primo ordine $\mathcal K$ è un interpretazione nella quale tutti gli assiomi propri sono veri.
+
+### Teorema di correttezza e completezza per una teoria del primo ordine $\mathcal K$
+
+I teoremi di $\mathcal K$ sono tutte e sole le f.b.f. vere in ogni modello di $\mathcal K$
+
+### Teorema di deduzione sintattica
+
+$\Gamma \mathscr A \vdash \mathscr B$ se e solo se $\Gamma \vdash \mathscr A \implies \mathscr B$ se nessuna applicazione della generalizzazione è stata fatta su f.b.f. che dipendono da $\mathscr A$ quantificando variabili libere in $\mathscr A$.
+
 <!-- 
 Cose che potrebbero risultare utili da aggiungere:
 - Tabella riassuntiva di ciascuna teoria con alfabeti, assiomi e teoremi vari
@@ -595,8 +675,11 @@ Cose che potrebbero risultare utili da aggiungere:
 
 ## Assiomi
 
-| Numero | Assioma                                                                                                                                        | Note |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
-| A1     | $\mathscr A \implies (\mathscr B \implies \mathscr A)$                                                                                         |      |
-| A2     | $(\mathscr A \implies (\mathscr B \implies \mathscr C)) \implies ((\mathscr A \implies \mathscr B) \implies (\mathscr A \implies \mathscr C))$ |      |
-| A3     | $(\neg \implies \mathscr A \implies \neg \mathscr B) \implies ((\neg \mathscr A \implies \mathscr B) \implies \mathscr A)$                     |      |
+| Numero | Assioma                                                                                                                                        | Note                                               |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| A1     | $\mathscr A \implies (\mathscr B \implies \mathscr A)$                                                                                         |                                                    |
+| A2     | $(\mathscr A \implies (\mathscr B \implies \mathscr C)) \implies ((\mathscr A \implies \mathscr B) \implies (\mathscr A \implies \mathscr C))$ |                                                    |
+| A3     | $(\neg \implies \mathscr A \implies \neg \mathscr B) \implies ((\neg \mathscr A \implies \mathscr B) \implies \mathscr A)$                     |                                                    |
+| A4     | $(\forall x)(\mathscr A(x)) \implies \mathscr A(t)$                                                                                            | $t$ è un termine libero per $x$ in $\mathscr A(t)$ |
+| A5     | $(\forall x)(\mathscr A \implies \mathscr B) \implies (\mathscr A \implies (\forall x) \mathscr B)$                                            | $\mathscr A$ non contiene occorrenze libere di $x$ |
+
