@@ -1,7 +1,6 @@
 ---
 title: "Riassunto di Elettrotecnica"
 author: "Andrea Oggioni"
-date: "3 Luglio 2023"
 ---
 
 # Teoria

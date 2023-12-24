@@ -1,7 +1,6 @@
 ---
 title: "Elenco Teoremi con relative dimostrazioni per esame GAL"
 author: "Andrea Oggioni"
-date: "13 Marzo 2023"
 ---
 
 # Elenco Teoremi con relative dimostrazioni per esame GAL

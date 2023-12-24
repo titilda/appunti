@@ -2,7 +2,6 @@
 title: "Onde Elettromagnetiche e Mezzi Trasmissivi"
 author: 
 - "Alessandro Modica"
-date: "25 Novembre 2023"
 ---
 
 # Segnali
