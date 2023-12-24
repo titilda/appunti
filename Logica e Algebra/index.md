@@ -719,6 +719,8 @@ Sia $\lang A, \cdot \rang$ una struttura algebrica, allora
 - Un **gruppo** è un monoide nel quale ogni elemento ammette inverso.
 - Un **gruppo abeliano** è un gruppo dotato di operazione commutativa.
 
+Notare come $\{\text{Semigruppi}\} \sub \{\text{Monoidi}\} \sub \{\text{Gruppi}\} \sub \{\text{Gruppi abeliani}\}$.
+
 Sia $\lang A, +, \cdot \rang$ una struttura algebrica, allora
 
 - $\lang A, +, \cdot \rang$ è detto **anello** se
@@ -728,7 +730,13 @@ Sia $\lang A, +, \cdot \rang$ una struttura algebrica, allora
 - Un **corpo** è un anello $\lang A, +, \cdot \rang$ nel quale $\lang A \backslash \{0\}, \cdot \rang$ è un gruppo.
 - Un **campo** è un corpo in cui vale la proprietà commutativa dell'operazione $\cdot$
 
-<!-- TODO: reticolo -->
+$\lang A, \cap, \cup \rang$ si dice **reticolo** se
+
+1. $a \cap b = b \cap a, a \cup b = b \cup a \quad \forall a,b \in A$
+2. $a \cap (b \cap c) = (a \cap b) \cap c, a \cup (b \cup c) = (a \cup b) \cup c \quad \forall a,b,c \in A$
+3. $a \cup (a \cap b) = a, a \cap (a \cup b) = a \quad a,b \in A$
+
+Notare come $\{\text{Anelli}\} \sub \{\text{Corpi}\} \sub \{\text{Campi}\} \sub \{\text{Reticoli}\}$.
 
 ## Teorema di risoluzione dei postulati
 
@@ -751,10 +759,62 @@ Se $\lang A, +, \cdot \rang$ è un anello in cui $\cdot$ è commutativa, allora 
 
 Se $\lang A, +, \cdot \rang$ è un anello in cui esiste l'elemento neutro rispetto a $\cdot$, allora $\lang A, +, \cdot \rang$ è detto **anello con unità**.
 
-<!-- TODO: divisori dello zero -->
-<!-- TODO: teorema leggi di cancellazione -->
-<!-- ... -->
+Sia $\lang A, +, \cdot \rang$ un anello. Due elementi $a,b \in A$ si dicono **divisori dello zero** di $A$ se $a \ne 0, b \ne 0$ ma $a \cdot b = 0$.
 
+I divisori dello zero di $A$ sono tutti gli elementi non invertibili.
+
+Un anello è privo di divisori dello zero se e solo se valgono le leggi di cancellazione.
+
+Un anello commutativo privo di divisori dello zero è detto **dominio d'integrità**.
+
+## Sottostrutture algebriche
+
+Sia $\lang A, \Omega \rang$ una struttura algebrica. $\lang H \sube A, \Omega \rang$ è detto **sottostruttura algebrica** di $\lang A, \Omega \rang$ se è una struttura algebrica dello stesso tipo di $\lang A, \Omega \rang$ rispetto alle operazioni di $\Omega$.
+
+Sia $\lang A, \cdot \rang$ un semigruppo. $H \sube A, H \ne \emptyset$ è **sottosemigruppo** se $\forall a,b \in H \ a \cdot b \in H$.
+
+Sia $\lang A, \cdot \rang$ un monoide. $H \sube A, H \ne \emptyset$ è **sottomonoide** se $\forall a,b \in H \ a \cdot b \in H$ e $e \in H$.
+
+Sia $\lang A, \cdot \rang$ un gruppo. $H \sube A, H \ne \emptyset$ è **sottogruppo** se $\forall a,b \in H \ a \cdot b \in H$, $e \in H$ e $\forall a \in H \ a^{-1} \in H$.
+
+Sia $\lang A, +, \cdot \rang$ un anello. $H \sube A, H \ne \emptyset$ è **sottoanello** se $\forall a,b \in H \ a + b \in H, \forall a,b \in H \ a \cdot b \in H, \forall a \in H \ -a \in H$.
+
+Sia $\lang A, +, \cdot \rang$ un corpo. $H \sube A, H \ne \emptyset$ è **sottocorpo** se $\forall a,b \in H \ a + b \in H$, $0 \in H$, $\forall a \in H \ -a \in H$, $\forall a,b \in H_0 \ a + b \in H$, $1 \in H$ e $\forall a \in H_0 \ a^{-1} \in H_0$.
+
+Sia $\lang A, \cap, \cup \rang$ un reticolo. $H \sube A, H \ne \emptyset$ è **sottoreticolo** se $\forall a, b \in H \ a \cap b \in H, \forall a,b \in H \ a \cup b \in H$.
+
+### Criteri
+
+Esistono dei criteri per semplificare la ricerca di alcune sottostrutture algebriche.
+
+Per dimostrare che un insieme è una certa struttura algebrica, a volte, può risultare più semplice dimostrare che è sottostruttura di qualcosa d'altro attracerso i criteri invece che dimostrare direttamente che è una struttura.
+
+$\lang H, \cdot \rang$ è sottogruppo se (condizioni equivalenti):
+
+1. $\forall a,b \in H \ a \cdot b \in H$, $\forall a \in A \ a^{-1} \in H$
+2. $\forall a,b \in H \ a \cdot b^{-1} \in H$
+3. $\forall a,b \in H \ a \cdot b \in H$
+
+$\lang H, +, \cdot \rang$ è sottoanello se $\forall a,b \in H \ a - b \in H$ e $\forall a,b \in H \ a \cdot b \in H$.
+
+$\lang H, +, \cdot \rang$ è sottocorpo se $\forall a,b \in H \ a - b \in H$, $\forall a,b \in H_0 \ a \cdot b^{-1} \in H$.
+
+## Relazioni di equivalenza tra strutture algebriche
+
+Dati un insieme $A$, una relazione di equivalenza $\rho$ su $A$ ed un'operazione $\omega$ $n$-aria su A, si dice che **$\rho$ è compatibile con $\omega$** se $\forall a_1, a_2, \dots, a_n, b_1, b_2, \dots, b_n \in A$ vale che da $\forall i \ a_i \rho b_i$ segue che $\omega(a_1, a_2, \dots, a_n) \rho \omega(b_1, b_2, \dots, b_n)$.
+
+In pratica, $\rho$ è compatibile con $\omega$ se, cambiando gli oggetti con cui si lavora con altri nelle stesse classi di equivalenza, il risultato non cambia.
+
+Sia $\lang A, \Omega \rang$ una struttura algebrica e $\rho$ una relazione di equivalenza su $A$. Si dice che $\rho$ è una **congruenza** su $A$ se è compatibile con tutte le operazioni in $\Omega$.
+
+Sia $A$ un insieme, $\omega$ un'operazione n-aria su $A$ e $\rho$ una relazione di equivalenza su $A$ compatibile con $\omega$. Allora, sull'insieme quoziente $\frac{A}{\rho}$ è possibile definire una nuova **operazione indotta** da $\omega$ detta $\omega'$ nel seguente modo:
+
+$$
+\omega' : \frac{A}{\rho} \times \frac{A}{\rho} \times \dots \times \frac{A}{\rho} \to \frac{A}{\rho} \\
+\omega' (\rho_{a_1}, \rho_{a_2}, \dots, \rho_{a_n}) = \rho_{\omega(a_1, a_2, \dots, a_n)}
+$$
+
+Data una struttura algebrica $\lang A, \Omega \rang$ ed una congruenza $\rho$ su $A$, è possibile definire sull'insieme $\frac{A}{\rho}$ una **struttura quoziente** nella quale l'insieme delle operazioni indotte $\Omega'$ è costituito dalle operazioni indotte dalle $\omega \in \Omega$.
 
 <!-- 
 Cose che potrebbero risultare utili da aggiungere:
