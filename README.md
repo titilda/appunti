@@ -16,7 +16,7 @@ Al momento i metadati supportati sono i seguenti
 
 1. title
 2. author
-3. date
+3. ~~date~~ (a partire dal 24 dicembre 2023 non è più necessario aggiungere manualmente la data di ultima modifica in quanto viene presa autimaticamente dalla data dell'ultimo commit per ciascun file)
 
 Per aggiungere tali metadati ad un file markdown, è sufficiente aggiungere le seguenti righe al suo inizio:
 
@@ -25,5 +25,4 @@ Per aggiungere tali metadati ad un file markdown, è sufficiente aggiungere le s
     author:
     - "Autore 1"
     - "Autore 2"
-    date: 1 Gennaio 1970
     ---
