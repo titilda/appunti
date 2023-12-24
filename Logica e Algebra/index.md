@@ -664,6 +664,99 @@ I teoremi di $\mathcal K$ sono tutte e sole le f.b.f. vere in ogni modello di $\
 
 $\Gamma \mathscr A \vdash \mathscr B$ se e solo se $\Gamma \vdash \mathscr A \implies \mathscr B$ se nessuna applicazione della generalizzazione è stata fatta su f.b.f. che dipendono da $\mathscr A$ quantificando variabili libere in $\mathscr A$.
 
+Se vengono usate solamente formule chiuse, non vi sono variabili libere e quindi il teorema di deduzione sintattica vale sempre.
+
+# Strutture algebriche
+
+Una **struttura algebrica** è una coppia $\lang A, \Omega \rang$ con $A$ un insieme qualsiasi e $\Omega$ un insieme di operazioni interne su $A$ e n-arie
+
+## Proprietà delle operazioni
+
+Sia $\lang A, \star \rang$
+
+Le operazioni di $\Omega$ possono avere alcune proprietà
+
+1. P. commutativa: $\forall a,b \in A \quad a \star b = b \star a$
+2. P. associativa: $\forall a,b,c \in A \quad (a \star b) \star c = a \star (b \star c)$
+3. Elemento neutro: 
+   $$
+   \begin{align*}
+    e \in A :& \quad \forall a \in A \quad a \star e = e \star a = a \\
+    e_s \in A :& \quad \forall a \in A \quad e_s \star a = a \\
+    e_d \in A :& \quad \forall a \in A \quad a \star e_d = a
+   \end{align*}
+   $$
+   Gli inversi destro e sinistro, se esistono entrambi, allora corrispondono.
+4. Zero di $A$ rispetto a $\star$:
+   $$
+   \begin{align*}
+    z \in A :& \quad \forall a \in A \quad a \star z = z \star a = z \\
+    z_s \in A :& \quad \forall a \in A \quad z_s \star a = z_s \\
+    z_d \in A :& \quad \forall a \in A \quad a \star z_d = z_d
+   \end{align*}
+   $$
+5. Inverso di $a \in A$ rispetto a $\star$: $e,a \in A$, $b \in A$ è inverso di $a$ se $a \star b = b \star a = e$
+6. Esponenziazione: sia $\star$ associativa, allora
+   $$
+   a^n = \begin{cases}
+    \underbrace{a \star a \star \dots \star a}_{n \text{ volte}} & n \gt 0 \\
+    \underbrace{b \star b \star \dots \star b}_{n \text{ volte}} & n \lt 0, b \text{ inverso di } a
+   \end{cases}
+   $$
+7. Sia $\star$ associativa, $e \in A$, $a \in A$ abbia inverso, allora le equazioni $a \star x = c$ e $x \star a = c$ hanno una e una sola soluzione che si ottiene componendo a sinistra e a destra con gli inversi destro e sinistro.
+8. Sia $\star$ associativa, $e \in A$, $a \in A$ abbia inverso allora
+  $$
+  a \star c = a \star b \implies c = b \\
+  b \star a = c \star a \implies b = c
+  $$
+9. Sia $\star$ associativa, $e \in A$, $a,b \in A$ abbiano inversi, rispettivamente, $a^{-1}$ e $b^{-1}$, allora $(a \star b)^{-1} = b^{-1} \star a^{-1}$.
+
+## Lista di strutture algebriche
+
+Sia $\lang A, \cdot \rang$ una struttura algebrica, allora
+
+- Un **semigruppo** è un insieme $A$ dotato di un operazione binaria associativa.
+- Un **monoide** è un semigruppo nel quale esiste l'elemento neutro.
+- Un **gruppo** è un monoide nel quale ogni elemento ammette inverso.
+- Un **gruppo abeliano** è un gruppo dotato di operazione commutativa.
+
+Sia $\lang A, +, \cdot \rang$ una struttura algebrica, allora
+
+- $\lang A, +, \cdot \rang$ è detto **anello** se
+  1. $\lang A, + \rang$ è un gruppo abeliano
+  2. $\lang A, \cdot \rang$ è un semigruppo
+  3. vale la proprietà distributiva dell'operazione $\cdot$ rispetto all'operazione $+$, ovvero $a \cdot (b + c) = (a \cdot b) + (a \cdot c)$ e $(a + b) \cdot c = (a \cdot c) + (b \cdot c)$
+- Un **corpo** è un anello $\lang A, +, \cdot \rang$ nel quale $\lang A \backslash \{0\}, \cdot \rang$ è un gruppo.
+- Un **campo** è un corpo in cui vale la proprietà commutativa dell'operazione $\cdot$
+
+<!-- TODO: reticolo -->
+
+## Teorema di risoluzione dei postulati
+
+Sia $\lang A, \cdot \rang$ una struttura algebrica, $\cdot$ associativa, allora sono equivalenti le seguenti affermazioni
+
+1. $\lang A, \cdot \rang$ è un gruppo.
+2. $\exists e \in A : \forall a \in A \ e \cdot a = a$ e $\forall a \in A \ \exists b \in A : b \cdot a = e$.
+3. Ogni equazione del tipo $a \cdot x = b$ e $x \cdot a = b$ ha una e una sola soluzione.
+
+## Proprietà degli anelli
+
+Sia $\lang A, +, \cdot \rang$ un anello e $a - b = a + (-b)$, allora valgono le seguenti
+
+- $\forall a \in A \quad a \cdot 0 = 0 \cdot a = 0$
+- $\forall a,b \in A \quad a \cdot (-b) = (-a) \cdot b = -(ab)$
+- $\forall a,b \in A, \forall n \in \mathbb{Z} \quad a \cdot (n \cdot b) = (n \cdot a) \cdot b = n \cdot (a \cdot b)$
+- $\forall a,b,c \in A \quad (a - b) \cdot c = (a \cdot c) - (b \cdot c), a \cdot (b - c) = (a \cdot b) - (a \cdot c)$
+
+Se $\lang A, +, \cdot \rang$ è un anello in cui $\cdot$ è commutativa, allora $\lang A, +, \cdot \rang$ è detto **anello commutativo**.
+
+Se $\lang A, +, \cdot \rang$ è un anello in cui esiste l'elemento neutro rispetto a $\cdot$, allora $\lang A, +, \cdot \rang$ è detto **anello con unità**.
+
+<!-- TODO: divisori dello zero -->
+<!-- TODO: teorema leggi di cancellazione -->
+<!-- ... -->
+
+
 <!-- 
 Cose che potrebbero risultare utili da aggiungere:
 - Tabella riassuntiva di ciascuna teoria con alfabeti, assiomi e teoremi vari
