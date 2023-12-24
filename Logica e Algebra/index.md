@@ -2,7 +2,6 @@
 title: "Riassuntino di Logica e Algebra"
 author:
 - "Andrea Oggioni"
-date: "24 Dicembre 2023"
 ---
 
 # Relazioni
