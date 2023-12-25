@@ -816,6 +816,69 @@ $$
 
 Data una struttura algebrica $\lang A, \Omega \rang$ ed una congruenza $\rho$ su $A$, è possibile definire sull'insieme $\frac{A}{\rho}$ una **struttura quoziente** nella quale l'insieme delle operazioni indotte $\Omega'$ è costituito dalle operazioni indotte dalle $\omega \in \Omega$.
 
+Date due strutture algebriche $\lang A, \Omega \rang$ e $\lang A', \Omega' \rang$, esse si dicono **simili** se esiste una congruenza biunivoca $\tau$ tale che $\omega \in \Omega$ e $\tau(\omega) \in \Omega'$ abbiano la stessa arità.
+
+Date due strutture algebriche $\lang A, \Omega \rang$ e $\lang A', \Omega' \rang$ simili, una funzione $f : A \to A'$ si dice **morfismo** o **omomorfismo** se $\forall \omega \in \Omega \ \forall a_1, a_2, \dots, a_n \in A$ si ha che $f(\Omega(a_1, a_2, \dots, a_n)) = \omega'(f(a_1), f(a_2), \dots, f(a_n))$.
+
+Se un morfismo è iniettivo, è detto **monomorfismo**.
+
+Se un morfismo è suriettivo, è detto **epimorfismo**.
+
+Se un morfismo è biiettivo, è detto **isomorfismo**.
+
+Di seguito alcune specifiche per morfismi tra strutture algebriche:
+
+- Un morfismo tra monoidi deve conservare l'elemento neutro.
+- Un morfismo tra un gruppo e se stesso, per essere tale, deve operare su un gruppo abeliano.
+- $f : \lang A, +, \cdot \rang \to \lang A, \oplus, \odot \rang$ è isomorfismo di anelli se valgono le condizioni
+  - $f(a_1 + a_2) = f(a_1) \oplus f(a_2) \quad \forall a_1,a_2 \in A$
+  - $f(a_1 \cdot a_2) = f(a_1) \odot f(a_2) \quad \forall a_1,a_2 \in A$
+
+## Laterali e ideali
+
+Sia $\lang A, \cdot \rang$ un gruppo, $H \sube A$ un suo sottogruppo e $a \in A$. Sono detti **laterale destro** di $H$ in $A$ l'insieme $Ha = \{h \cdot a : h \in H\}$ e **laterale sinistro** di $H$ in $A$ l'insieme $aH = \{a \cdot h : h \in H\}$.
+
+$\{Ha\}_{a \in A}$ è una partizione di $A$ (vale anche per i laterali sinistri).
+
+La relazione di equivalenza che ha come partizione $\{Ha\}_{a \in A}$ è la relazione $\rho$ definita come $a \rho b \iff a \cdot b^{-1} \in H$.
+
+Sia $\lang A, \cdot \rang$ un gruppo finito di ordine $n$ ($|A| = n$), se $H$ è sottogruppo di $A$ allora $|H|$ divide $|A|$.
+
+Sia $\lang A, \cdot \rang$ un gruppo, un sottogruppo $H \sube A$ è detto **normale** in $A$ ($H \triangleleft A$) se $\forall a \in A \ \forall h \in H \ a^{-1} h a \in H$. $a^{-1}ha$ si dice trasferimento di $h$ mediante $a$.
+
+Se $\lang A, \cdot \rang$ è gruppo abeliano, tutti i sottogruppi sono normali, infatti $a^{-1}ha = a^{-1}ah = h \in H$.
+
+Sia $\lang A, \cdot \rang$ un gruppo e $H$ un suo sottogruppo, allora $\forall a \in H \ aH = Ha \iff H \triangleleft A$ e se $\frac{|A|}{|H|} = 2$ allora $H \triangleleft A$.
+
+Sia $\lang A, \cdot \rang$ un gruppo e $\rho$ una congruenza su $A$, allora
+
+1. $\rho_e \sube A$ è un sottogruppo
+2. $\rho_e \triangleleft A$
+3. Sia $\rho_e = N$; le classi di equivalenza di $\rho$ in $A$ sono tutti e soli i laterali di $N$ in $A$.
+
+Gli ideali sono l'analogo dei laterali ma per gli anelli.
+
+Sia $\lang A, +, \cdot \rang$ un anello; un sottoanello $I$ di $A$ è detto **ideale** di $A$ se $\forall a \in A \ \forall i \in I \ a \cdot i \in I, i \cdot a \in I$. Esistono le variazioni destra e sinistra.
+
+Notare che per dimostrare che un sottoinsieme $I$ è un ideale, serve dimostrare anche che è sottoanello.
+
+Sia $\lang A, +, \cdot \rang$ un anello e $\rho$ una congruenza su $A$, allora
+
+1. $\rho_a$ è sottoanello di $A$
+2. $\rho_a$ è un ideale di $A$
+3. Sia $\rho_a = I$; le classi di equivalenza di $\rho$ in $A$ sono tutti e soli i laterali di $I$ in $A$.
+
+Vale che $I + a = I + b \iff a - b \in I$.
+
+Le operazioni indotte sono
+
+- $(I + a) + (I + b) = I + (a + b)$
+- $(I + a) \cdot (I + b) = I + (a \cdot b)$
+
+# Equazioni in $\mathbb{Z}_n$
+
+
+
 <!-- 
 Cose che potrebbero risultare utili da aggiungere:
 - Tabella riassuntiva di ciascuna teoria con alfabeti, assiomi e teoremi vari
