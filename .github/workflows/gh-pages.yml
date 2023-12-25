@@ -37,7 +37,7 @@ jobs:
       #   uses: chetan/git-restore-mtime-action@v2
       - name: test
         run: |
-          git log --pretty=fuller
+          git log --pretty=fuller ./Misure/formulario.md
       - name: Build docs
         run: |
           find . -type f -name "*.md" -mindepth 2 -print0 | while read -d $'\0' doc
