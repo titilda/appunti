@@ -36,7 +36,7 @@ jobs:
       # - name: restore timestamps
       #   uses: chetan/git-restore-mtime-action@v2
       - name: test
-        run: \
+        run: |
           git log --pretty=fuller
       - name: Build docs
         run: |
