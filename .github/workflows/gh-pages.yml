@@ -33,6 +33,8 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y pandoc language-pack-it
+      - name: restore timestamps
+        uses: chetan/git-restore-mtime-action@v2
       - name: Build docs
         run: |
           find . -type f -name "*.md" -mindepth 2 -print0 | while read -d $'\0' doc
