@@ -877,7 +877,13 @@ Le operazioni indotte sono
 
 # Equazioni in $\mathbb{Z}_n$
 
+Sia $\lang \mathbb{Z}_n, \oplus, \cdot \rang$ un anello. Si vogliono risolvere equazioni del tipo $[a]x = [b]$ in $\mathbb{Z}_n$.
 
+Se $\text{MCD}(a, n) = 1$ allora l'equazione ha una e una sola soluzione, in caso contrario ne ha zero oppure molteplici.
+
+Nel primo caso, moltiplico entrambi i lati dell'equazione per $[a]^{-1}$ e ho finito.
+
+Nel secondo caso, se possibile, cerco una soluzione a tentativi (non è detto che esista) e poi cerco una classe $[d]$ tale che $[a][d] = [0]$ e $[x + d]$ è un'altra soluzione (ripeto il procedimento per ogni nuova soluzione trovata).
 
 <!-- 
 Cose che potrebbero risultare utili da aggiungere:
