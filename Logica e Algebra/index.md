@@ -885,22 +885,54 @@ Nel primo caso, moltiplico entrambi i lati dell'equazione per $[a]^{-1}$ e ho fi
 
 Nel secondo caso, se possibile, cerco una soluzione a tentativi (non è detto che esista) e poi cerco una classe $[d]$ tale che $[a][d] = [0]$ e $[x + d]$ è un'altra soluzione (ripeto il procedimento per ogni nuova soluzione trovata).
 
-<!-- 
-Cose che potrebbero risultare utili da aggiungere:
-- Tabella riassuntiva di ciascuna teoria con alfabeti, assiomi e teoremi vari
-- Tabella riassuntiva assiomi A1..ABOh
-- Tabella riassuntiva strutture algebriche
--->
+# Teorie del primo ordine con identità
+
+Le **teorie del primo ordine con identità** sono teorie del primo ordine con una lettera predicativa $\mathscr A_1^2$ a cui vengono aggiunti, oltre ad A1..A5, gli assiomi propri A6 e A7.
+
+A6: $\forall x \ \mathscr A_1^2(x, x)$
+A7: $\mathscr A_1^2 (x, y) \implies (\mathscr A_1^2(x, x) \implies \mathscr A_1^2 (x, \frac{y}{x}))$
+
+E' possibile dimostrare che A6 e A7 sono equivalenti ai seguenti:
+
+1. $\mathscr A_1^2(x, x)$
+2. $\mathscr A_1^2(x, y) \implies \mathscr A_1^2(y, x)$
+3. $\mathscr A_1^2(x, y) \implies (\mathscr A_1^2(y, z) \implies \mathscr A_1^2(x, y))$
+
+Quando si va ad interpretare $\mathscr A_1^2$, questa risulta essere una congruenza.
+
+Con la definizione di $\mathscr A_1^2$ è possibile definire delle teorie basate sulle strutture algebriche viste precedentemente.
+
+| Teoria                      | Alfabeto                                   | Assiomi                   | Note                                                      |
+| --------------------------- | ------------------------------------------ | ------------------------- | --------------------------------------------------------- |
+| Teoria dei semigruppi       | $x, y, z, f_1^2, \mathscr A_1^2$           | A1..A7, A8                | $F_1^2$ è l'operazione binaria, A8 impone l'associatività |
+| Teoria dei monoidi          | $x, y, z, f_1^2, \mathscr A_1^2$           | A1..A7, A8, A9            | L'assioma A9 è da leggere come "esiste l'elemento neutro" |
+| Teoria dei monoidi alt.     | $x, y, z, f_1^2, \mathscr A_1^2, e$        | A1..A7, A8, A9'           | $e$ è l'elemento neutro                                   |
+| Teoria dei gruppi           | $x, y, z, f_1^2, \mathscr A_1^2$           | A1..A7, A8, A10           |                                                           |
+| Teoria dei gruppi alt.      | $x, y, z, f_1^2, \mathscr A_1^2, e$        | A1..A7, A8, A9', A10'     |                                                           |
+| Teoria dei gruppi alt. alt. | $x, y, z, f_1^2, \mathscr A_1^2, e, f_1^1$ | A1..A7, A8, A11           | $f_1^1$ è l'inverso                                       |
+| Teoria degli anelli         | $x, y, z, f_1^2, \mathscr A_1^2, f_2^2$    | A1..A7, A8, A10, A12, A13 |                                                           |
+
+Per il significato dei vari assiomi, vedere la [tabella riassuntiva degli assiomi](#assiomi).
 
 # Tabelle riassuntive
 
 ## Assiomi
 
-| Numero | Assioma                                                                                                                                        | Note                                               |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| A1     | $\mathscr A \implies (\mathscr B \implies \mathscr A)$                                                                                         |                                                    |
-| A2     | $(\mathscr A \implies (\mathscr B \implies \mathscr C)) \implies ((\mathscr A \implies \mathscr B) \implies (\mathscr A \implies \mathscr C))$ |                                                    |
-| A3     | $(\neg \implies \mathscr A \implies \neg \mathscr B) \implies ((\neg \mathscr A \implies \mathscr B) \implies \mathscr A)$                     |                                                    |
-| A4     | $(\forall x)(\mathscr A(x)) \implies \mathscr A(t)$                                                                                            | $t$ è un termine libero per $x$ in $\mathscr A(t)$ |
-| A5     | $(\forall x)(\mathscr A \implies \mathscr B) \implies (\mathscr A \implies (\forall x) \mathscr B)$                                            | $\mathscr A$ non contiene occorrenze libere di $x$ |
+| Numero | Assioma                                                                                                                                                                                  | Note                                               |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| A1     | $\mathscr A \implies (\mathscr B \implies \mathscr A)$                                                                                                                                   |                                                    |
+| A2     | $(\mathscr A \implies (\mathscr B \implies \mathscr C)) \implies ((\mathscr A \implies \mathscr B) \implies (\mathscr A \implies \mathscr C))$                                           |                                                    |
+| A3     | $(\neg \implies \mathscr A \implies \neg \mathscr B) \implies ((\neg \mathscr A \implies \mathscr B) \implies \mathscr A)$                                                               |                                                    |
+| A4     | $(\forall x)(\mathscr A(x)) \implies \mathscr A(t)$                                                                                                                                      | $t$ è un termine libero per $x$ in $\mathscr A(t)$ |
+| A5     | $(\forall x)(\mathscr A \implies \mathscr B) \implies (\mathscr A \implies (\forall x) \mathscr B)$                                                                                      | $\mathscr A$ non contiene occorrenze libere di $x$ |
+| A6     | $\forall x \ \mathscr A_1^2(x, x)$                                                                                                                                                       |                                                    |
+| A7     | $\mathscr A_1^2 (x, y) \implies (\mathscr A_1^2(x, x) \implies \mathscr A_1^2 (x, \frac{y}{x}))$                                                                                         |                                                    |
+| A8     | $\forall x \forall y \forall z \ \mathscr A_1^2(f_1^2(f_1^2(x, y), z), f_1^2(x, f_a^2(y, z)))$                                                                                           |                                                    |
+| A9     | $\exists x \forall y (\mathscr A_1^2(f_1^2(x, y), y) \cap \mathscr A_1^2(f_1^2(y, x), y))$                                                                                               |                                                    |
+| A9'    | $\forall x(\mathscr A_1^2(f_1^2(e, x), x) \cap \mathscr A_1^2(f_1^2(x, e), x))$                                                                                                          |                                                    |
+| A10    | $\exists x(\forall y \mathscr A_1^2(f_1^2(x, y), y) \cap \mathscr A_1^2(f_1^2(y, x), y) \cap \forall y \exists z (\mathscr A_1^2(f_1^2(y, z), x) \cap \mathscr A_1^2 (f_1^2(z, y), x)))$ |                                                    |
+| A10'   | $\forall x \exists y (\mathscr A_1^2(f_1^2(x, y), e) \cap \mathscr A_1^2(f_1^2(y, x), e))$                                                                                               |                                                    |
+| A11    | $\forall x (\mathscr A_1^2(f_1^2(x, e), x) \cap \mathscr A_1^2(f_1^2(e, x), x) \cap \mathscr A_1^2(f_1^2(x, f_1^1(x)), e) \cap \mathscr A_1^2(f_1^2(f_1^1(x), x), e))$                   |                                                    |
+| A12    | $\forall x \forall y (\mathscr A_1^2(f_1^2(x, y), f_1^2(y, x)))$                                                                                                                         |                                                    |
+| A13    | $\forall x \forall y \forall z (\mathscr A_1^2(f_2^2(f_2^2(x, y), z), f_2^2(x, f_2^2(y, z))))$                                                                                           |                                                    |
 
