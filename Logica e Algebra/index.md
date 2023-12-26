@@ -912,6 +912,8 @@ Con la definizione di $\mathscr A_1^2$ è possibile definire delle teorie basate
 | Teoria dei gruppi alt. alt. | $x, y, z, f_1^2, \mathscr A_1^2, e, f_1^1$ | A1..A7, A8, A11           | $f_1^1$ è l'inverso                                       |
 | Teoria degli anelli         | $x, y, z, f_1^2, \mathscr A_1^2, f_2^2$    | A1..A7, A8, A10, A12, A13 |                                                           |
 
+Partendo da qui, si può arrivare anche ai corpi (aggiungendo l'esistenza dell'elemento neutro rispetto a $f_2^2$ e l'esistenza dell'inverso di ogni elemento diverso da $e$ rispetto alla stessa operazione) e ai campi (aggiungendo, oltre alle caratteristiche dei corpi, anche la commutatività di $f_2^2$).
+
 Per il significato dei vari assiomi, vedere la [tabella riassuntiva degli assiomi](#assiomi).
 
 # Tabelle riassuntive
