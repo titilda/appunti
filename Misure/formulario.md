@@ -169,9 +169,101 @@ $$
 \end{cases} \implies x = -\frac{q}{m}
 $$
 
-<!--
-## Bit Equivalenti
--->
+## Voltmetro ad approssimazioni successive (SAR)
+
+Un voltemtro ad approssimazioni successive funziona un po' come una ricerca binaria su di una lista, solo che è applicata ad una tensione.
+
+La tensione in ingresso viene confrontata $n$ volte con una tansione di riferimento varaibile generata dal voltmetro, dove $n$ è il numero di bit di tale voltmetro.
+
+Tutti i bit del valore letto, inizialmente sono posti a zero. Successivamente, partendo dal MSB, per ogni bit, accade che
+
+1. Si accende tale bit;
+2. Si fa generare al voltmetro una tensione che, quando letta, corrisponde al valore letto;
+3. Se la tensione generata è minore, si mantiene il bit acceso, altrimenti lo si rispegne, successivamente si ripete il procedimento col bit successivo.
+
+Un voltmetro SAR a $n$ bit effettua sempre $n$ confronti per ciascuna misurazione, dunque
+
+$$
+T_{confronto} = \frac{1}{f_{confronto}} \qquad T_{misurazione} = n \cdot T_{confronto} \qquad f_{misurazione} = \frac{1}{T_{misurazione}}
+$$
+
+E' molto probbile che il valore letto non corrisponda esattamente con il valore in ingresso (servirebbe un numero potenzilmente infinito di bit); il valore letto si calcola come
+
+$$
+V_l = \frac{S}{2^n} \cdot D
+$$
+
+ove $S$ è il il valore della stringa di bit prdotta dalla misurazione, convertito in decimale e $D$ è la dinamica del voltmetro (assumendo che la dinamica del voltmetro parta da zero, altrimenti bisogna inserire degli offset).
+
+E' possibile calcolare $S$ in maniera veloce come segue
+
+$$
+S = \left\lfloor \frac{V_{in} \cdot 2^n}{D} \right\rfloor
+$$
+
+## Voltmetro integratore a doppia rampa
+
+Il voltmetro integratore a doppia rampa è il voltmetro più preciso e resistente ai dusturbi (ma anche quello più lento) esistente.
+
+Sinteticamente, la sequenza di operazioni che tale voltmetro effettua per arrivare ad una lettura si può schematizzare come segue
+
+1. Integrazione della tensione d'ingresso per un tempo $T_{up}$ prestabilito attraverso un opamp in configurazione integrante
+2. Integrazione con lo stesso opamp (quindi il valore da cui si parte è lo stesso ottenuto prima) di un valore di tensione costante e misura del tempo $T_{down}$ impiegato per raggiungere lo zero
+
+Le formule su cui si basa il tutto sono
+
+$$
+V_{in} \cdot T_{up} = |V_{ref}| \cdot T_{down} \qquad T_{up} = N_{up} \cdot T_{clock} \qquad T_{down} = N_{down} \cdot T_{clock}
+$$
+
+Da queste formule si possono ricavare tutte le seguenti informazioni
+
+- Tempo di misura massimo: si risolve la prima equazione per $T_{down}$ con $V_{in}$ pari alla tensione di fondoscala ($T_down = $) e $T_{mis} = T_{up} + T_{down}$
+  $$
+  V_{fs} \cdot T_{up} = |V_{ref}| \cdot T_{down} \implies T_{down} = \frac{V_{fs}}{|V_{ref}|} \cdot T_{up}
+  $$
+- Risoluzione dimensionale: si calcola la minima tensione che può essere de-integrata nella seconda fase in un solo ciclo di clock
+  $$
+  \Delta V \cdot N_{up} \cdot \cancel{T_{clock}} = |V_{ref}| \cdot 1 \cdot \cancel{T_{clock}} \implies \Delta V = \frac{|V_{ref}|}{N_{up}}
+  $$
+  Una formula alternativa può essere
+  $$
+  \Delta V = \frac{V_{in}}{N_{down}}
+  $$
+- Risoluzione adimensionale:
+  $$
+  \delta = \frac{1}{N_{down}}
+  $$
+- Incertezza teorica del valore misurato:
+  $$
+  V_{in} \cdot T_{up} = |V_{ref}| \cdot T_{down} \implies V_{in} = |V_{ref}| \cdot \frac{T_{down}}{T_{up}} = |V_{ref}| \cdot \frac{N_{down}}{N_{up}} \implies u_r(V_{in}) = \sqrt{u_r^2(V_{ref}) + u_r^2(N_{down}) + u_r^2(N_{up})}
+  $$
+  Si suppone che il voltmetro abbia un clock molto preciso per cui si può dire che $u(T_{up}) \simeq 0$ e che quindi $u(N_{up}) = 0$; per l'incertezza di $N_{down}$, invece $N_{down} = \frac{1}{\sqrt{12}}$
+
+Con i voltmetri integratori a doppia rampa è possibile scegliere un $T_{up}$ che vada a eliminare completamente (reiezione infinita) i disturbi a date frequenze (e tutti i multipli di tali frequenze). Ad esempio, con due frequenze diverse:
+
+$$
+\begin{cases}
+  n_1 = f_{d,1} \cdot T_{up} \\
+  n_2 = f_{d,2} \cdot T_{up}
+\end{cases} \implies \frac{n_1}{n_2} = \frac{f_{d,1}}{f_{d,2}} \implies \begin{cases}
+  n_1 = \dots \\
+  n_2 = \dots \\
+\end{cases} \implies T_{up} = \frac{n_1}{f_{d,1}} = \frac{n_2}{f_{d,2}}
+$$
+
+Per più frequenze, è necessario trovare il minimo comune multiplo dei periodi associati.
+
+Progettare un voltmetro integratore a doppia rampa significa, dati portata, risoluzione, frequenze dei disturbi da rigettare e tensione di riferimento, trovare $T_{up}$, $T_{clock}$, $f_{clock}$ e $N_{up}$.
+
+E' possibile anche, conoscendo la massima tensione in uscita dall'integratore ($V_0$), calcolare quanto vale la costante di tempo $RC$.
+Per raggiungere la massima tensione, è necessario misurare la tensione di fondoscala ($V_x = V_{fs}$).
+
+$$
+V_0 = - V_x \cdot \frac{T_{up}}{RC} \implies RC = \frac{-V_x \cdot T_{up}}{V_0}
+$$
+
+Il ragionamento dietro tale formula è quello di voler eguagliare l'integrale della tensione d'ingresso sul tempo con quello della tensione in uscita sulla costante di tempo.
 
 ## Definizioni varie
 
