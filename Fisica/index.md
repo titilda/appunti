@@ -532,7 +532,7 @@ $$
 
 è la direzione di massima crescita della funzione.
 
-![**Forza centrale a simmetria sferica** Si può notare come diminuisce con l'allontanarsi dal centro e come la direzione di massima crescita sia proprio verso il centro. <br> ["Campo eléctrico de una carga puntual negativa"](https://commons.wikimedia.org/wiki/File:Campo_el%C3%A9ctrico_de_una_carga_puntual_negativa.svg) by [Cristian_Quinzacara](https://commons.wikimedia.org/wiki/User:Cristian_Quinzacara) is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)][EsempioGradiente]
+![**Forza centrale a simmetria sferica** Si può notare come diminuisce con l'allontanarsi dal centro e come la direzione di massima crescita sia proprio verso il centro. <br> ["Campo eléctrico de una carga puntual negativa"](https://commons.wikimedia.org/wiki/File:Campo_el%C3%A9ctrico_de_una_carga_puntual_negativa.svg) by [Cristian Quinzacara](https://commons.wikimedia.org/wiki/User:Cristian_Quinzacara) is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)][EsempioGradiente]
 
 ### Rotore
 
