@@ -532,7 +532,7 @@ $$
 
 è la direzione di massima crescita della funzione.
 
-![**Forza centrale a simmetria sferica** Si può notare come diminuisce con l'allontanarsi dal centro e come la direzione di massima crescita sia proprio verso il centro.][EsempioGradiente]
+![**Forza centrale a simmetria sferica** Si può notare come diminuisce con l'allontanarsi dal centro e come la direzione di massima crescita sia proprio verso il centro. <br> ["Campo eléctrico de una carga puntual negativa"](https://commons.wikimedia.org/wiki/File:Campo_el%C3%A9ctrico_de_una_carga_puntual_negativa.svg) by [Cristian_Quinzacara](https://commons.wikimedia.org/wiki/User:Cristian_Quinzacara) is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)][EsempioGradiente]
 
 ### Rotore
 
@@ -564,7 +564,9 @@ $$
 \vec F = - \gamma \frac{m_1 m_2}{r^2} \hat u_r
 $$
 
+<!-- IMMAGINE NON CORRETTAMENTE ATTRIBUITA, SISTEMARE
 ![Come si può vedere dall'immagine, ovunque si spostino le masse, la forza su di esse esercitate ha sempre direzione radiale.][EsempioForzaCentraleASimmetriaSferica]
+-->
 
 Le forze centrali a simmetria sferica sono conservative, segue dimostrazione.
 
@@ -621,7 +623,7 @@ $$
 
 Con il termine _trasformismo dell'energia_ si intende il fatto che l'energia potenziale può trsformarsi in energia cinetica e viceversa purchè la somma non cambi.
 
-![In rosso l'energia meccanica totale, in blu l'energia cinetica e in verde l'energia potenziale.][EsempioTrasformismoDellEnergia]
+![In rosso l'energia meccanica totale, in blu l'energia cinetica e in verde l'energia potenziale. <br> Immagine ottenuta con Geogebra][EsempioTrasformismoDellEnergia]
 
 ### Formule per calcolare le varie energie
 
@@ -675,7 +677,7 @@ Per comprendere la gravitazione, è necessario aver compreso le nozioni di momen
 
 ## Momento di tutte le robe quì sopra
 
-![][EsempioMomentoVettore]
+![Immagine da [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:MomentoForza.svg)][EsempioMomentoVettore]
 
 Il momento del vettore $\vec F$ rispetto al polo $O$ è definito come $\vec \tau_{(O)} = \vec r \times \vec F$ da cui si può dedurre che $|\vec \tau_{(O)}| = |\vec r ||\vec F| \sin \theta = |\vec F| r \sin \theta$ e non dipende dal vettore $\vec r$ scelto, infatti, supponendo $\vec r' = \vec r + \vec a$ allora
 
@@ -868,7 +870,7 @@ $$
 E = \frac 12 m \left( \frac{dr}{dt} \right)^2 + E_p(r) + \frac{L_{(0)}^2}{2mr^2} = \frac 12 m \left( \frac{dr}{dt} \right)^2 + \left[ \underbrace{-\gamma \frac{Mm}{r}}_{(1)} \underbrace{\frac{L_{(0)}^2}{2mr^2}}_{(2)} \right]
 $$
 
-![**Energia potenziale gravitazionale** In verde la $(1)$ mentre in arancio la $(2)$ e in rosso la loro somma. (_L'effetto è scalato di 10x_).][GraficoEnergiaPotenzialeGravitazionale]
+![**Energia potenziale gravitazionale** In verde la $(1)$ mentre in arancio la $(2)$ e in rosso la loro somma. (_L'effetto è scalato di 10x_). <br> Immagine ottenuta con Geogebra][GraficoEnergiaPotenzialeGravitazionale]
 
 Similmente a quanto detto [in questo paragrafo](#energia-potenziale-gravitazionale) la $E_m$, è possibile determinare la forma dell'orbita:
 
@@ -878,10 +880,12 @@ Similmente a quanto detto [in questo paragrafo](#energia-potenziale-gravitaziona
 - $E_m = 0$: orbita iperbolica
 - $E_m > 0$: orbita parabolica
 
-[EsempioGradiente]: https://www.youmath.it/images/stories/analisi-2/gradiente-di-una-funzione-rappresentazione.png
-[EsempioReazioneVincolare]: https://www.biopills.net/wp-content/uploads/2016/07/traslazione3-300x179.gif
+[EsempioGradiente]: https://upload.wikimedia.org/wikipedia/commons/5/54/Campo_el%C3%A9ctrico_de_una_carga_puntual_negativa.svg?uselang=it
+[EsempioReazioneVincolare]: assets/reazione_vincolare.png
+<!-- IMMAGINE NON CORRETTAMENTE ATTRIBUITA, SISTEMARE
 [EsempioForzaCentraleASimmetriaSferica]: http://www.openfisica.com/fisica_ipertesto/openfisica3/immagini/orbite.jpg
+-->
 [EsempioTrasformismoDellEnergia]: https://i.imgur.com/kyBYfRh.png
 [EsempioMomentoVettore]: https://upload.wikimedia.org/wikipedia/commons/2/21/MomentoForza.svg
-[EsempioFlussoDiUnVettore]: https://ilikephysics.altervista.org/wp-content/uploads/2020/08/Flusso-di-un-vettore.png
+[EsempioFlussoDiUnVettore]: assets/flusso_vettore.png
 [GraficoEnergiaPotenzialeGravitazionale]: https://i.imgur.com/D3YOqs2.png
