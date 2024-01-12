@@ -236,7 +236,7 @@ $$
 
 ## I 3 principi della dinamica
 
-### 1 - Prncipio d'inerzia
+### 1 - Principio d'inerzia
 
 > Un corpo non soggetto ad interazioni permane nel suo stato di quiete o si muove di moto rettilineo uniforme.
 
