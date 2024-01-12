@@ -265,6 +265,76 @@ $$
 
 Il ragionamento dietro tale formula è quello di voler eguagliare l'integrale della tensione d'ingresso sul tempo con quello della tensione in uscita sulla costante di tempo.
 
+## Oscilloscopio
+
+Un oscilloscopio è uno strumento per visualizzare come cambia un segnale nel tempo.
+
+Lo schermo dell'oscilloscopio è suddiviso in 8 divisioni verticali e 10 orizzontali.
+
+![Schermata di oscilloscopio che mostra due segnalo sinusoidali sfasati. <br> Notare il numero di divisioni orizzontali e verticali. <br> Plot ottenuto con Wolfram Mathematica](assets/oscilloscopio/1.png)
+
+Su un oscilloscopio è possibile impostare il trigger su un canale per iniziare a disegnare i segnali solo quando alcune condizioni vengono rispettare.
+
+I nove parametri da regolare per visualizzare bene uno (o più) segnali su un oscilloscopio sono i seguenti:
+
+- **Amplificazione verticale**: va regolata per ciascun canale in ingresso e serve per regolare "quanto è alto" il segnale sullo schermo; si misura in $V / DIV$ e può assumere valori come $1, 2, 5$ moltiplicati per $10^n V$.
+- **Offset**: va regolato per ciascun canale e serve per spostare verticalmente il segnale sullo schermo.
+- **Coupling**: può essere _DC_ (il segnale mostrato è quello in ingresso), _AC_ (il segnale mostrato è quello in ingresso privato delle sue componenti continue) o _GND_ (il segnale mostrato è $0 V$).
+- **Amplificazione orizzontale**: serve per regolare "quanto è largo" il segnale; siccome in un oscilloscopio la base dei tempi è unica, questa impostazione va ad influenzare entrambi i segnali.
+- **Canale di trigger**: il canale su cui valutare se è momemto di iniziare a disegnare i segnali da mostrare.
+- **Modalità trigger**: può essere _NORMAL_ (il segnale viene disegnato appena la condizione di trigger è soddisfatta) o _AUTO_ (il segnale viene mostrato anche se le condizioni di trigger non sono rispettate).
+- **Livello di trigger**: regola la tensione attrraverso la qule il segnale deve passare per dare inizio al disegno del segnale.
+- **Pendenza di trigger**: regola se il segnale deve passare attraverso il livello sopra specificato; può essere _POSITIVA_ (si inizia a disegnare quando il segnale passa da sotto il livello a sopra il livello) o _NEGATIVA_ (si inizia a disegnare quando il segnale passa da sopra il livello a sotto il livello).
+- **Coupling del trigger**: come il coupling per i segnali ma applicato prima di verificare le condizioni del trigger (non influenza il trigger del segnale disegnato).
+
+Non sempre c'è un valore ottimo utilizzabile per questi parametri, spesso ci sono più combinazioni di valori che possono andare bene. L'importante è seguire alcune linee guida (e anche intuito e buon senso non fanno mai male).
+
+- Per ciascun canale, scegliese se si vuole osservarne anche la componente DC (se presente) o solamente quella AC e scegliere il coupling di conseguenza. Spesso, scegliendo AC oppure DC con offset pari all'opposto della componente continua del segnale si ottiene lo stesso risultato.
+- Scegliere un offset tale per cui il segnale sia verticalmente centrato secondo necessità sullo schermo.
+- Scegliere un'amplificazione verticale tale per cui il segnale possa spaziare il più possibile verticalmente sullo schermo (si calcola $D / 8$ e si sceglie il più piccolo valore in $V / DIV$ disponibile maggiore del rapporto calcolato)
+- Scegliere un'amplificazione temporale tale per cui si riescano a visualizzare a schermo un numero di periodi adeguiato dei segnali da analizzare; siccome l'asse dei tempi è univoca, se, ad esempio, si vuole visualizzare un periodo di due segnali, di cui uno più veloce, il calcolo si basa sul segnale più lento (sapendo che l'oscilloscopio dispone di 10 divisioni, l'amplificazione orizzontale da scegliere sarà maggiore o uguale a un decimo del periodo del segnale più lento).
+- Scegliere le impostazioni di trigger:
+  - Solitamente si usa il segnale che cresce più velocemente (ad esempio, un onda quadra è migliore rispetto ad una sinusoide e tra segnali simili, è preferibile usare quello più ampio); logicamente, si deve prestare attenzione al fatto che se un segnale è più veloce di un altro, si rischia che il trigger venga attivato più volte durante uno stesso periodo del segnale più lento, facendo in modo che il disegno sia incompleto
+  - Per scegliere livello, pendenza e coupling del trigger, si devono scegliere valori tali per cui il segnale passi per tali segnali una sola volta per periodo, per evitare che il disegno venga interrotto prima di aver completato un periodo completo
+
+Quanto riportato sopra, vale solo per segnali periodici ma è adattabile anche per segnali non periodici.
+
+Gli oscilloscopi digitali di solito montano un convertitore flash a 256 livelli (8 bit).
+
+Di seguito, le formule per calcolare dinamica e risoluzione.
+
+$$
+D = 8 \cdot A_v \qquad \Delta V = \frac{D}{256}
+$$
+
+Per un oscilloscopio analogico, la risoluzione è empiricamente deinita come "metà tacchetta" (ovvero circa un decimo di divisione; il nome deriva dal fatto che ogni divisione è divisa in 5 sottodivisioni da alcune tacchette).
+
+Il resto (incertezze varie) è identico a quanto visto precedentemente.
+
+Un oscilloscopio, ha una massima banda passante, dovuta alle caratteristiche dei componenti attraverso i quali il segnale passa. Un segnale sinusoidale di frequenza esattamente pari alla banda dell'oscilloscopio verrà disegnato con ampiezza pari alla metà dell'ampiezza originale e sfasato di $\frac{\pi}{2}$.
+
+Un segnale come un'onda quadra non ideale non può commutare di stato improvvisamente: c'è un tempo di salita (che è il tempo che impiega per passare dal 10% al 90% della sua transizione di stato).
+
+Siccome anche l'oscilloscopio non è ideale, anch'esso contribuisce ad aumentare il tempo di salita.
+
+Siano $B$ la banda dell'oscilloscopio, $t_{ss}$ il tempo di salita del segnale, $t_{so}$ il tempo di salita dell'oscilloscopio e $t_{sm}$ il tempo di salita misurato (quello visualizzato sull'oscilloscopio), allora
+
+$$
+t_{so} = \frac{0.35}{B} \qquad t_{sm} = \sqrt{t_{so} + t_{ss}}
+$$
+
+Per visualizzare due tracce contemporaneamente, è possibile scegliere tra modalità _CHOPPED_ o _ALTERNATED_.
+
+La prima è utile per segnali a bassa frequenza ($\le 1kHz$) è consiste nel disegnare, alternativamente, un pezzetto di ciascun segnale per volta.
+
+La seconda, invece, è utile per segnali più veloci e consiste nel disegnare una schermata intera alla volta, per ogni segnale.
+
+Se un segnale è molto più veloce del campionatore dell'oscilloscopio, si può utilizzare una tecnica di campionamento in tempo equivalente (tali tecniche sono utili solo per segnali periodici; è quasi impossibile riuscire ad individuare eventuali glitch nel segnale).
+
+Il campionamento in tempo equivalente sequenziale consiste nel capionare un segnale ogni $T + \tau$ tempo ($T$ è il periodo del segnale e $\tau \lt \lt T$) in modo da ottenere $\frac{T}{\tau}$ punti che poi vengono uniti per ricreare la forma d'onda.
+
+Col campionamento in tempo casuale, invece, si fa lavorare il campionatore alla massima velocità e poi si riordinano i punti in base a quanto tempo è passato dall'ultimo trigger a quando sono stati campionati, poi si visualizza il segnale.
+
 ## Definizioni varie
 
 ### Definizioni base
