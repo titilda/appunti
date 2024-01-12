@@ -1,7 +1,9 @@
-<!-- Il comando per convertire il seguente file in una pagina html è
+---
+title: "Riassuntino di Fisica"
+author:
+- "Andrea Oggioni"
+---
 
-    pandoc -s -c style.css --katex -o out.html Riassuntone\ I\ parziale.md --metadata title="Riassuntone fisica" --metadata maxwidth=64em
--->
 # Cinematica
 
 La cinematica studia i moti degli oggetti senza preoccuparsi delle cause.
