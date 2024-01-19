@@ -883,7 +883,7 @@ Se $\text{MCD}(a, n) = 1$ allora l'equazione ha una e una sola soluzione, in cas
 
 Nel primo caso, moltiplico entrambi i lati dell'equazione per $[a]^{-1}$ e ho finito.
 
-Nel secondo caso, se possibile, cerco una soluzione a tentativi (non è detto che esista) e poi cerco una classe $[d]$ tale che $[a][d] = [0]$ e $[x + d]$ è un'altra soluzione (ripeto il procedimento per ogni nuova soluzione trovata).
+Nel secondo caso, se possibile, cerco una soluzione $x_0$ a tentativi (non è detto che esista) e poi so che tutte le altre soluzioni sono della forma $x = x_0 + \frac{n}{\text{MCD}(a, n)} \cdot k$ con $k \in \mathbb{Z}$.s
 
 # Teorie del primo ordine con identità
 
