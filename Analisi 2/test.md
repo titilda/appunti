@@ -141,7 +141,7 @@ Pongo $z(t) = y(t)^{1 - \alpha}$ e calcolo $z'(t)$:
 
 $$
 \begin{align*}
-    z'(t) &= (1 - \alpha) \cdot y(t)^{1 - \alpha + 1} \cdot y'(t)\\
+    z'(t) &= (1 - \alpha) \cdot y(t)^{1 - \alpha - 1} \cdot y'(t)\\
     &= (1 - \alpha) \cdot \frac{y'(t)}{y(t)^\alpha} \\
     &= (1 - \alpha) \cdot \left( k(t) \cdot y(t)^{1 - \alpha} + h(t) \right) \\
     &= (1 - \alpha) \cdot \left( k(t) \cdot z(t) + h(t) \right) \\
