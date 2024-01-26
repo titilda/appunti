@@ -70,8 +70,9 @@ Se il dominio di $f$ è diviso in più parti, è sufficiente considerare solo la
 
 Una EDO del primo ordine **lineare** in forma normale è una EDO della forma $y'(t) = a(t) \cdot y(t) + b(t)$ con $a,b : J \sub \mathbb{R} \to R$ continue su $J$.
 
-Per le EDO del primo ordine lineari, è possibile enunciare il **teorema di esistenza e unicità globale per il problema di Cauchy**:
->   Siano $J \sub \mathbb{R}$, $a,b : J \to \mathbb{R}$ continue su $J$. Per ogni $t_0 \in J$ e $y_0 \in \mathbb{R}$ il problema di Cauchy ha un'unica soluzione definita $\forall t \in J$.
+### Teorema di esistenza e unicità globale per il problema di Cauchy
+
+Siano $J \sub \mathbb{R}$, $a,b : J \to \mathbb{R}$ continue su $J$. Per ogni $t_0 \in J$ e $y_0 \in \mathbb{R}$ il problema di Cauchy ha un'unica soluzione definita $\forall t \in J$.
 
 Da questo ne derivano 3 cose molto importanti:
 
@@ -172,18 +173,19 @@ $$
 \end{cases}
 $$
 
-E' possibile enunciare il **teorema di esistenza e unicità globale per il problema di Cauchy** anche per le EDO del secondo ordine lineari:
->   Data la EDO $a(t) \cdot y''(t) + b(t) \cdot y'(t) + c(t) \cdot y(t) = f(t)$ con $a, b, c, f, : J \sube \mathbb{R} \to \mathbb{R}$ continue e $a \ne 0$ in $J$ e assegnati $t_0 \in J$ e $y_0, v_0 \in \mathbb{R}$ allora il problema di Cauchy definito come sopra ha un'unica soluzione $y(t)$ definita $\forall t \in J$.
+### Teorema di esistenza e unicità globale per il problema di Cauchy
+
+Data la EDO $a(t) \cdot y''(t) + b(t) \cdot y'(t) + c(t) \cdot y(t) = f(t)$ con $a, b, c, f, : J \sube \mathbb{R} \to \mathbb{R}$ continue e $a \ne 0$ in $J$ e assegnati $t_0 \in J$ e $y_0, v_0 \in \mathbb{R}$ allora il problema di Cauchy definito come sopra ha un'unica soluzione $y(t)$ definita $\forall t \in J$.
 
 Per il **principio di sovrapposizione**, se $y_1$ e $y_2$ sono soluzione della stessa EDO, $y_1 - y_2$ è soluzione della EDO omogenea associata e tutte le soluzioni di quest ultima formano uno spazio vettoriale
 
-## Teorema di struttura dell'integrale generale di EDO del secondo ordine lineari omogenee
+### Teorema di struttura dell'integrale generale di EDO del secondo ordine lineari omogenee
 
 Siano $a,b,c : J \sube \mathbb{R} \to \mathbb{R}$ continue in $J$ con $a \ne 0$.
 
 L'integrale generale dell'equazione omogenea $a(t) \cdot y''(t) + b(t) \cdot y'(t) + c(t) \cdot y(t) = 0$ è uno spazio vettoriale di dimensione 2, cioè le soluzioni sono della forma $y_0(t) = C_1 \cdot y_{o1}(t) + C_2 \cdot y_{o2}(t)$ con $C_1, C_2 \in \mathbb{R}$ dove $y_{o1}$ e $y_{o2}$ sono due soluzioni linearmente indipendenti.
 
-### Dimostrazione richiesta
+#### Dimostrazione richiesta
 
 Sia $V$ lo spazio vettoriale delle funzioni di classe $\mathcal{C}^2$ su $J$.
 
@@ -260,6 +262,8 @@ A seconda del segno di $\Delta$, l'integrale generale assume forme diverse:
 | $\Delta = 0$   | $y(t) = C_1 e^{\lambda t} + C_2 t e^{\lambda t}$                              |
 | $\Delta \lt 0$ | $y(t) = e^{\Re \lambda t}(C_1 \cos(\Im \lambda t) + C_2 \sin(\Im \lambda t))$ |
 
+La soluzione particolare la si può trovare con il metodo di somiglianza.
+
 ## Sistemi differenziali lineari
 
 Un sistema differenziale lineare è un'equazione della forma $\underline y'(t) = A \underline y(t) + \underline b(t)$ con $\underline y', \underline y, \underline b \in (\mathbb{R} \to \mathbb{R})^n$, $A \in \mathcal{M}_\mathbb{R}(n)$.
@@ -285,8 +289,9 @@ $$
 \end{cases}
 $$
 
-Anche nel caso dei sistemi differenziali possibile enunciare il **teorema di esistenza e unicità globale per il problema di Cauchy**:
-> Sia $A \in \mathcal{M}_\mathbb{R}(n)$ e $b_i : j \sube \mathbb{R} \to \mathbb{R}$ continue. Dati $t_0 \in J$ e $\underline y_0 \in \mathbb{R}$, il problema di Cauchy enunciato come sopra, ha un'unica soluzione $\underline y(t)$ definita $\forall t$.
+### Teorema di esistenza e unicità globale per il problema di Cauchy
+
+Sia $A \in \mathcal{M}_\mathbb{R}(n)$ e $b_i : j \sube \mathbb{R} \to \mathbb{R}$ continue. Dati $t_0 \in J$ e $\underline y_0 \in \mathbb{R}$, il problema di Cauchy enunciato come sopra, ha un'unica soluzione $\underline y(t)$ definita $\forall t$.
 
 Questo teorema ha 2 conseguenze importanti:
 
@@ -357,7 +362,100 @@ $$
 y_{o1}(t) = \Re (e^{\lambda t} \underline v) \qquad y_{o2}(t) = \Im(e^{\lambda t} \underline v)
 $$
 
-Equivalentemente, l'integrale generale è $y_o(t) = C_1 \Re(e^{\lambda t} \underline v) + C_2 \Im(e^{\lambda t} \underline v)$
+Equivalentemente, l'integrale generale è $y_o(t) = C_1 \Re(e^{\lambda t} \underline v) + C_2 \Im(e^{\lambda t} \underline v)$.
+
+## Sistemi non omogenei
+
+### struttura dell'integrale generale dei sistemi non omogenei**:
+
+Siano $A \in \mathcal{M}_\mathbb{R}(n)$ e $b_i : J \sube \mathbb{R} \to \mathbb{R}$ continue. L'integrale generale del sistema differenziale lineare completo $\underline y'(t) = A \underline y(t) + \underline b(t)$ è $\underline y(t) = \underline y_o(t) + \underline y_p(t)$ dove $\underline y_o(t)$ è la soluzione del sistema omogeneo associato e $\underline y_p(t)$ è una soluzione particolare.
+
+Sia $\underline y' = A \underline y$ e $A \in \mathcal{M}_\mathbb{R}(2)$. Se il sistema ha soluzioni periodiche allora $A$ non è diagonalizzabile reale.
+
+Per risolvere un sistema completo $\underline y'(t) = A \cdot \underline y(t) + \underline b(t)$, prima di tutto si risolve il sistema omogeneo associato trovando la matrice wronskiana (tornerà utile nei passaggi successivi):
+
+$$
+W(t) = (\underline y_{o1}(t) | \dots | \underline y_{on}(t)) \\
+\underline y_o(t) = W(t) \cdot \underline C \qquad \underline C \in \mathbb{R}
+$$
+
+Poi si procede calcolando l'integale generale utilizzando la seguente formula:
+
+$$
+\underline y(t) = W(t) \cdot \left( \int \left[ W(\tau)^{-1} \right] \cdot \underline b(\tau) d \tau + \underline C \right) = \underbrace{W(t) \cdot \int \left[ W(\tau)^{-1} \right] \cdot \underline{b}(\tau) d\tau}_{\underline y_p(t)} + \underbrace{W(t) \cdot \underline C}_{\underline y_o(t)} \qquad \underline C \in \mathbb{R}
+$$
+
+In questa formula, per integrale di un vettore, si intende vettore di integrali, componente per componente.
+
+Ricordando le proprietà dell'[esponenziazione di matrici](#esponenziale-di-una-matrice), nel caso specifico in cui $A$ è diagonalizzabile, è possibile scegliere come matrice wronskiana $W(t) = e^{At}$, semplificando la formula e rendendola formalmente identica alla formula per le EDO del primo ordine lineari:
+
+$$
+\underline y(t) = e^{At} \left( \int e^{-A\tau} \cdot  \underline b(\tau) d \tau + \underline C \right) \qquad \underline C \in \mathbb{R}
+$$
+
+Si semplifica anche la risoluzione del problema di Cauchy:
+
+$$
+\underline y(t) = e^{At} \cdot \int_{t_0}^t e^{-A \tau} \cdot \underline b(\tau) d \tau + e^{A(t - t_0)} \underline y_o(t)
+$$
+
+# Serie di funzioni
+
+Siano $f_n : J \sube \mathbb{R} \to \mathbb{R}$ con $n=0, 1, \dots$, allora la **serie di funzioni di termine generale $f_n$**  è la successione delle somme parziali
+
+$$
+\begin{align*}
+    S_0(x) = & f_0(x) \\
+    S_1(x) = & f_0(x) + f_1(x) \\
+    \vdots & \\
+    S_k(x) = & \sum_{n = 0}^k f_n(x)
+\end{align*}
+$$
+
+Fissato un $\overline x \in J$, si ottiene una serie numerica.
+
+Diciamo che una serie converge **puntualmente o semplicemente** nel punto $\overline x \in J$ se la serie numerica di termine generale $f_n(\overline x)$ è convergente, ovvero esiste finito il seguente limite:
+
+$$
+\lim_{k \to +\infty} S_k(\overline x) = \lim_{k \to \infty} \sum_{n = 0}^{k} f_n(\overline x)
+$$
+
+_Notare che, per una stessa funzione, questo limite potrebbe convergere per alcuno $\overline x$ e divergere o essere indeterminato per altri $\overline x$_.
+
+E' detto **insieme di convergenza puntuale** il sottoinsieme $E \sube J$ di punti nei quali la serie converge (quindi dove il limite esiste finito).
+
+La funzione **somma della serie** è una funzione $f : E \to \mathbb{R}$ definita come
+
+$$
+f(x) = \sum_{n = 0}^{+ \infty} f_n(x) = \lim_{k \to + \infty} S_k(x)
+$$
+
+La serie di termine generale $f_n(x)$ con $x \in J$ converge **assolutamente** in $\overline x \in J$ se la serie numerica di termine generale $|f_n(\overline x)|$ è convergente.
+
+_Per la convergenza assoluta, se $|f_n(\overline x)|$ converge, allora anche $-|f_n(\overline x)|$ converge. Per il teorema del confronto (noto anche come t. dei carabinieri, t. degli sbirri, t. del sandwich e t. di compressione), dato che $- |f_n(\overline x)| \le f_n(\overline x) \le |f_n(\overline x)|$ allora anche $f_n(\overline x)$ converge. Ne segue che la convergenza assoluta implica la convergenza semplice ma non vale l'opposto._
+
+Diciamo che la serie di termine generale $f_n(x)$ con $x \in J$ converge **totalmente** nell'intervallo non vuoto $I \sube J$ (detto **insieme di convergenza totale**) se esiste una successione numerica $a_n \ge 0$ tale che $|f_n(x)| \le a_n \ \forall x \in I, \forall n = 0, 1, 2, \dots$ e che $\sum_{n=0}^{+\infty} a_n \lt + \infty$ (cioè $a_n$ convergente).
+
+_La convergenza totale in $I \sube J$ implica la convergenza assoluta e puntuale $\forall x \in I$ e la convergenza totale in ogni sottoinsieme non vuoto di $I$_.
+
+### Teorema di continuità della somma
+
+Siano $f_n$ funzioni definite almeno in un intervallo $I \sube R$. Se le funzioni sono continue in $I$ è la serie generale converge totalmente in $I$ allora la funzione somma è continua in $I$
+
+### Teorema di integrabilità termine a termine
+
+Nelle stesse ipotesi del teorema precedente, per un qualunque intervallo $[c, d] \sub I$ chiuso e limitato, si ha che la funzione somma $f$ è integrabile e vale che 
+
+$$
+\int_c^d f(x) dx = \int_c^d \left( \sum_{n=0}^{+\infty} f_n(x) \right) dx = \sum_{n=0}^{+\infty} \int_c^d f_n(x) dx
+$$
+
+Se le $f_n$ sono derivabili in $I$, $\sum f_n$ converge totalmente in $I$ e $\sum f'_n$ converge totalmente in $I$ allora è possibile derivare termine a termine:
+
+$$
+f' = \left( \sum_{n=0}^{+\infty} f_n \right)' = \sum_{n=0}^{+\infty} f'_n
+$$
+
 
 # Varie ed eventuali
 
@@ -366,3 +464,13 @@ Di seguito lista delle dimostrazioni da conoscere per l'esame:
 1.  [Formula risolutiva EDO del primo ordine lineari](#Dim1)
 2.  [Teorema di struttura dell'integrale generale di EDO del secondo ordine lineari omogenee](#teorema-di-struttura-dellintegrale-generale-di-edo-del-secondo-ordine-lineari-omogenee)
 3.  AAAAAAAAAAAA
+
+
+Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di funzioni
+
+| Insieme     | Convergenza       | Significato                                                                                                                 |
+| ----------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| $J$         |                   | Insieme di definizione delle $f_n(x)$                                                                                       |
+| $E \sube J$ | Semplice/puntuale | Insieme di punti nel quale la serie di funzioni converge                                                                    |
+| $I \sube J$ | Totale            | Intervallo nel quale ogni termine della serie di funzioni può essere maggiorata in modulo da una serie numerica convergente |
+|             |                   |                                                                                                                             |
