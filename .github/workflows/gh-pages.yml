@@ -46,6 +46,7 @@ jobs:
               output_html="${output_dir}/"
               output_html+=$(basename "${doc}" .md)
               output_html+=".html"
+              echo "${output_html}"
               cp ./style.css "${output_dir}"
               lm_date=$(LC_ALL=it_IT.utf8 git log -1 --format=%ad --date=format:'%d %B %Y' -- "${doc}")
               echo "${doc} ${lm_date}"
