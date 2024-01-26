@@ -366,7 +366,7 @@ Equivalentemente, l'integrale generale è $y_o(t) = C_1 \Re(e^{\lambda t} \under
 
 ## Sistemi non omogenei
 
-### struttura dell'integrale generale dei sistemi non omogenei**:
+### struttura dell'integrale generale dei sistemi non omogenei:
 
 Siano $A \in \mathcal{M}_\mathbb{R}(n)$ e $b_i : J \sube \mathbb{R} \to \mathbb{R}$ continue. L'integrale generale del sistema differenziale lineare completo $\underline y'(t) = A \underline y(t) + \underline b(t)$ è $\underline y(t) = \underline y_o(t) + \underline y_p(t)$ dove $\underline y_o(t)$ è la soluzione del sistema omogeneo associato e $\underline y_p(t)$ è una soluzione particolare.
 
@@ -529,6 +529,12 @@ $$
     \iff & |\overline x - x_0| \lt \frac{1}{\lim_{n \to +\infty} |a_n|^{\frac{1}{n}}} = \lim_{n \to +\infty} \frac{1}{|a_n|^{\frac{1}{n}}} = \lim_{n \to +\infty} \frac{1}{\sqrt[n]{|a_n|}}
 \end{align*}
 $$
+
+Se $0 \lt R \lt + \infty$ la serie converge totalmente in ogni intervallo chiuso $[c, d] \sube (x_0 - R, x_0 + R)$ (in questo caso, la convergenza è totale in $[c, d] \sub (x_0 - R, x_0 + R)$ ma non necessariamente totale anche in tutto $(x_0 - R, x_0 + R)$).
+
+Se $R = +\infty$ (cioè la $\sum$ converge assolutamente $\forall x \in \mathbb{R}$) allora la convergenza è totale per tutti gli intervalli limitati (in questo caso la convergenza è totale su tutti i limitati ma non necessariamente sull'intero $\mathbb{R}$).
+
+
 
 
 # Varie ed eventuali
