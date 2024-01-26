@@ -456,6 +456,80 @@ $$
 f' = \left( \sum_{n=0}^{+\infty} f_n \right)' = \sum_{n=0}^{+\infty} f'_n
 $$
 
+# Serie di potenze
+
+Una serie di potenze è una serie numerica della forma
+
+$$
+\sum_{n=0}^{+\infty} a_n(x - x_0)^n
+$$
+
+dove $a_n \in \mathbb{R}$ vengono detti coefficienti della serie e $x_0 \in \mathbb{R}$ è il centro della serie.
+
+_Nella seguente sezione, si considera $(x_0 - x_0)^0 = 1$_
+
+Per $x = x_0$ si ha che
+
+$$
+\sum_{n=0}^{+\infty} a_n(x_0 - x_0)^n = a_0 \cdot 1 + a_1 \cdot 0 + a_2 \cdot 0 + \dots = a_0
+$$
+
+Ne segue che tutte le serie di potenze convergono nel loro centro.
+
+L'insieme di convergenza di una serie di potenze è sempre un intervallo centrato in $x_0$ (eventualmente solo $x_0$ o tutto $\mathbb{R}$).
+
+Il raggio di tale intervallo è detto **raggio di convergenza**.
+
+### Teorema del calcolo del raggio di convergenza
+
+Data la serie di potenze
+
+$$
+\sum_{n=0}^{+\infty} (x - x_0)^n
+$$
+
+esiste almeno uno dei seguenti due limiti (che può essere eventualmente nullo o infinito), allora il raggio di convergenza è esattamente pari al risultato di tale limite:
+
+$$
+R = \lim_{n \to +\infty} \left| \frac{a_n}{a_{n+1}} \right| \qquad R = \lim_{n \to +\infty} \frac{1}{\sqrt[n]{|a_n|}}
+$$
+
+Il primo di questi limiti viene detto **criterio del rapporto** mentre il secondo viene detto **criterio della radice**.
+
+Se entrambi i limiti esistono finiti, il risultato allora corrisponde.
+
+E' possibile osservare che data una serie a termini positivi $\sum a_n$ e $l = \frac{1}{R}$ allora se $l \lt 1$ si ha convergenza e se $l \gt 1$ no.
+
+La convergenza di $\sum a_n$ e quella di $\sum a_n(x - x_0)^n$ non sono correlato in alcun modo.
+
+#### Dimostrazione
+
+La serie di potenze $\sum a_n(x - x_0)^n$ converge assolutamente in $\overline x$ se la serie numerica $\sum |a_n| |\overline x - x_0| = \sum b_n$ converge.
+
+Questa è una serie numerica a temrmini positivi per cui posso scegliere se applicare il criterio del rapporto o quello della radice.
+
+Se il criterio del rapporto è applicabile, la serie converge se 
+
+$$
+\begin{align*}
+    \lim_{n \to +\infty} \frac{b_{n+1}}{b_n} \lt 1 \iff & \lim_{n \to +\infty} \frac{a_{n+1}}{a_n} \frac{|\overline x - x_0|^{n+1}}{|\overline x - x_0|^n} \lt 1 \\
+    \iff & \lim_{n \to +\infty} \frac{|a_{n+1}|}{a_n} |\overline x - x_0| \lt 1 \\
+    \iff & |\overline x - x_0| \lim_{n \to +\infty} \frac{a_{n+1}}{a_n} \lt 1 \\
+    \iff & |\overline x - x_0| \lt \frac{1}{\lim_{n \to +\infty} \frac{|a_{n+1}|}{|a_n|}} = \lim_{n \to +\infty} \frac{a_n}{a_{n+1}} = R
+\end{align*}
+$$
+
+Se il criterio della radice è applicabile, la serie converge, se
+
+$$
+\begin{align*}
+    \lim_{n \to +\infty} \sqrt[n]{b_n} \lt 1 \iff & \lim_{n \to +\infty} \left( |a_n| |\overline x - x_0|^n \right)^{\frac{1}{n}} \lt 1 \\
+    \iff & \lim_{n \to +\infty} \left( |a_n|^{\frac{1}{n}} |\overline x - x_0| \right) \lt 1 \\
+    \iff & |\overline x - x_0| \lim_{n \to +\infty} |a_n|^{\frac{1}{n}} \lt 1 \\
+    \iff & |\overline x - x_0| \lt \frac{1}{\lim_{n \to +\infty} |a_n|^{\frac{1}{n}}} = \lim_{n \to +\infty} \frac{1}{|a_n|^{\frac{1}{n}}} = \lim_{n \to +\infty} \frac{1}{\sqrt[n]{|a_n|}}
+\end{align*}
+$$
+
 
 # Varie ed eventuali
 
@@ -463,7 +537,7 @@ Di seguito lista delle dimostrazioni da conoscere per l'esame:
 
 1.  [Formula risolutiva EDO del primo ordine lineari](#Dim1)
 2.  [Teorema di struttura dell'integrale generale di EDO del secondo ordine lineari omogenee](#teorema-di-struttura-dellintegrale-generale-di-edo-del-secondo-ordine-lineari-omogenee)
-3.  AAAAAAAAAAAA
+3.  [Calcolo del raggio di convergenza](#teorema-del-calcolo-del-raggio-di-convergenza)
 
 
 Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di funzioni
