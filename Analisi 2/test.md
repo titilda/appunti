@@ -723,7 +723,7 @@ $$
     \int_{-\pi}^{+\pi} f(x) dx &= \int_{-\pi}^{+\pi} \left[ a_0 + \sum_{n=1}^{+\infty} \left[ a_n \cos(nx) + b_n \sin(nx) \right] \right] dx \\
     &= \int_{-\pi}^{+\pi} a_0 dx + \sum_{n=1}^{+\infty} \left[ \int_{-\pi}^{+\pi} a_n \cos(nx) dx \right] + \sum_{n=1}^{+\infty} \left[ \int_{-\pi}^{+\pi} b_n \sin(nx) dx \right] \\
     &= \int_{-\pi}^{+\pi} a_0 dx + \sum_{n=1}^{+\infty} \left[ a_n \underbrace{\int_{-\pi}^{+\pi} \cos(nx) dx}_{=0} \right] + \sum_{n=1}^{+\infty} \left[ b_n \underbrace{\int_{-\pi}^{+\pi} \sin(nx) dx}_{=0} \right] \\
-    &= 2\pi a_0 \implies a_0 = \frac{1}{2\pi} \int_{-pi}^{+\pi} f(x) dx
+    &= 2\pi a_0 \implies a_0 = \frac{1}{2\pi} \int_{-\pi}^{+\pi} f(x) dx
 \end{align*}
 $$
 
