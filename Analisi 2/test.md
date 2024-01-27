@@ -534,8 +534,45 @@ Se $0 \lt R \lt + \infty$ la serie converge totalmente in ogni intervallo chiuso
 
 Se $R = +\infty$ (cioè la $\sum$ converge assolutamente $\forall x \in \mathbb{R}$) allora la convergenza è totale per tutti gli intervalli limitati (in questo caso la convergenza è totale su tutti i limitati ma non necessariamente sull'intero $\mathbb{R}$).
 
+In pratica, per calcolare il raggio di convergenza di una serie definita come $\sum a_n(x - x_0)^n$, considero la serie $\sum a_n$ e ne calcolo il limite con il criterio del rapporto o della radice (come in analisi I) è il reciproco di tale limite è il raggio di convergenza.
 
+### Teorema di integrabilità termine a termine
 
+Data una serie $\sum a_n(x - x_0)^n$ con raggio di convergenza $0 \lt R \le + \infty$, per ogni $x \in (x_0 - R, x_0 + R)$ finito, vale la formula di integrazione termine a termine:
+
+$$
+\int_{x_0}^x \sum_{n=0}^{+\infty} a_n(t - x_0)^n dt = \sum_{n=0}^{+\infty} a_n \int_{x_0}^x (t - x_0)^n dt = \sum_{n=0}^{+\infty} \frac{a_n}{n+1} (x - x_0)^{n+1}
+$$
+
+La serie di potenze integrata mantiene lo stesso raggio di convergenza infatti sia $b_n = \frac{a_n}{n+1}$, allora
+
+$$
+\lim_{n \to +\infty} \left| \frac{b_n}{b_{n+1}} \right| = \lim_{n \to +\infty} \left| \frac{a_n}{n+1} \frac{n + 2}{a_{n+1}} \right| = \lim_{n \to +\infty} \left[ \frac{n + 2}{n + 1} \left| \frac{a_n}{a_{n+1}} \right| \right] = \lim_{n \to +\infty} \left| \frac{a_n}{a_{n + 1}} \right| = R
+$$
+
+### Teorema di derivabilità termine a termine
+
+Nelle stesse ipotesi del teorema precedente, vale la formula di derivabilità termine a termine:
+
+$$
+\left[ \sum_{n=0}^{+\infty} a_n(x - x_0)^n \right]' = \sum_{n=1}^{+\infty} na_n(x - x_0)^{n - 1}
+$$
+
+Anche in questo caso la serie derivata ha raggio di convergenza $R$.
+
+Questa formula può essere iterata per ottenere serie derivate di ogni ordine, tutte con raggio di convergenza $R$.
+
+Non è detto che una serie di potenze converga negli estremi dell'intervallo di convergenza.
+
+Integrando una serie, se in un estremo convergeva, allora la serie integrata rimarrà convergente in tale estremo mentre se non era convergeva potrebbe diventare convergente.
+
+Derivando una serie si ottiene il comportamento opposto: se la serie potrebbe perdere la convergenza negli estremi ma se in un estremo era già divergente, allora rimarrà divergente.
+
+Ne segue che il comportamento negli estremi va studiato a parte.
+
+## Criterio di Leibniz
+
+Come in Alalisi I, per le serie di potenze reali, vale il criterio di Leibniz: per $\sum a_n$, $a_n = (-1)^nb_n$ con $b_n \gt 0$, arrestando la somma al termine $a_n$, si commette un errore minore a $|a_{n+1}|$.
 
 # Varie ed eventuali
 
