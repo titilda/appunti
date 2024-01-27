@@ -458,7 +458,7 @@ $$
 
 # Serie di potenze
 
-Una serie di potenze è una serie numerica della forma
+Una **serie di potenze** è una serie numerica della forma
 
 $$
 \sum_{n=0}^{+\infty} a_n(x - x_0)^n
@@ -572,7 +572,209 @@ Ne segue che il comportamento negli estremi va studiato a parte.
 
 ## Criterio di Leibniz
 
-Come in Alalisi I, per le serie di potenze reali, vale il criterio di Leibniz: per $\sum a_n$, $a_n = (-1)^nb_n$ con $b_n \gt 0$, arrestando la somma al termine $a_n$, si commette un errore minore a $|a_{n+1}|$.
+Come in Analisi I, per le serie di potenze reali, vale il criterio di Leibniz: per $\sum a_n$, $a_n = (-1)^nb_n$ con $b_n \gt 0$, arrestando la somma al termine $a_n$, si commette un errore minore a $|a_{n+1}|$.
+
+# Serie di Taylor
+
+Una funzione è detta **analitica reale** se nell'intervallo non vuoto $(a, b)$ è somma di una serie di potenze in $(a, b)$, quindi se 
+
+$$
+\exists x_0 \in (a, b), \exists a_n \in \mathbb{R} : f = \sum_{n=0}^{+\infty} a_n(x - x_0)^n \quad \forall x \in (a, b)
+$$
+
+Se $f$ è analitica in $(a, b)$ allora $f$ è derivabile ad ogni ordine.
+
+I coefficenti $a_n$ sono
+
+$$
+f(x_0) = \sum_{n=0}^{+\infty} a_n(x_0 - x_0) = a_0 \\
+f'(x) = \sum_{n=1}^{+\infty} n a_n(x - x_0)^{n-1} \implies f'(x_0) = a_1 \\
+f''(x) = \sum_{n=2}^{+\infty} n^2 a_n (x - x_0)^{n-2} \implies f''(x_0) = 2a_2 \\
+\vdots \\
+a_n = \frac{f^{(n)}(x_0)}{n!}
+$$
+
+## funzioni analitiche reali
+
+Sia $f$ una funzione di una variabile reale, analitica su di un intervallo non vuoto $(a, b)$. Allora $f$ è derivabile ad ogni ordine in $(a, b)$ e $\forall x_0 \in (a, b)$ è sviluppabile in una serie di Taylor:
+
+$$
+f(x) = \sum_{n=0}^{+\infty} \frac{f^{(n)}(x_0)}{n!}(x - x_0)^n \qquad x \in (a, b)
+$$
+
+## Serie di potenze complesse
+
+Una **serie di potenze complesse** è una serie numerica della forma
+
+$$
+\sum_{n=0}^{+\infty} a_n(z - z_0) = a_0 + a_1(z - z_0) + \dots + a_n(z - z_0)^n \qquad a_n, z, z_0 \in \mathbb{C}
+$$
+
+Restano valide le [formule per il calcolo del raggio di convergenza](#teorema-del-calcolo-del-raggio-di-convergenza).
+
+Se $R = 0$ allora la serie converge solo in $z_0$, se $R = +\infty$ la serie converge $\forall z \in \mathbb{C}$ mentre se $0 \lt R \lt +\infty$ allora la serie converge assolutamente $\forall z_0 : |z - z_0| \lt R$ ma non si può dire niente per la frontiera (la serie potrebbe convergere o meno $\forall z_0 : |z - z_0| = R$).
+
+l'esponenziale complesso si calcola come
+
+$$
+e^z = \sum_{n=0}^{\infty} \frac{z^n}{n!}
+$$
+
+ed è definito $\forall z \in \mathbb{C}$ dato che $R = +\infty$.
+
+## Serie di Fourier
+
+Con le serie di Fourier, si possono scomporre funzioni non necessariamente analitiche in una serie infinita di funzioni trigonometriche della forma
+
+$$
+f(x) = a_0 + \sum_{n=1}^{+\infty} \left[ a_n \cos (nx) + b_n \sin (nx) \right]
+$$
+
+dove gli $a_n$ e i $b_n$ sono detti **coefficenti di Fourier**.
+
+Per comprendere i successivi argomenti, è necessario avere famigliarità con le proprietà delle funzioni periodiche:
+
+-   $f$ è periodica di periodo $T$ se $f(x) = f(x + T)$.
+-   Se $f$ è periodica di periodo $T$ allora è periodica anche di periodo $kT$ con $k \in \mathbb{N}$.
+-   Se $f$ è periodica di periodo $T$ ed è pari in $[-\frac{T}{2}, \frac{T}{2}]$ allora è pari in tutto $\mathbb{R}$.
+-   Una funzione costante è periodica di qualsiasi periodo.
+
+Vengono dette **armoniche $n$-esime** le funzioni $\cos nx$ e $\sin nx$ che sono periodiche di periodo $\frac{2\pi}{n}$.
+
+Tutte le armoniche $n$-esime sono periodiche di periodo $2 \pi$.
+
+Per il calcolo dei coefficenti di Fourier, è necessario tenere a mente le formule di ortogonalità:
+
+$$
+\int_{-\pi}^{\pi} \cos(nx) \cos(kx) dx = \begin{cases}
+    0 & n \ne k \\
+    \pi & n = k \ne 0 \\
+    2\pi & n = k = 0 \\
+\end{cases} \\
+\int_{-\pi}^{\pi} \sin(nx) \sin(kx) dx = \begin{cases}
+    0 & n \ne k \\
+    \pi & n = k \ne 0 \\
+    2\pi & n= k = 0 \\
+\end{cases} \\
+\int_{-\pi}^{\pi} \sin(nx) \cos(nx) = 0 \quad \forall n,k \in \mathbb{R}
+$$
+
+Un **polinomio trigonometrico** di ordine $m \in \mathbb{N}$ è una combinazione lineare di armoniche $n$-esime con $n = 1, 2, \dots, m$ della forma
+
+$$
+a_0 + \sum_{n=1}^{m} \left[ a_n \cos(nx) + b_n \sin(nx) \right]
+$$
+
+dove $a_0, a_n, b_n$ vengono detti coefficenti del polinomio trigonometrico.
+
+Ogni polinomio trigonometrico è $2\pi$-periodico, così come qualsiasi somma, differenza o prodotto tra essi.
+
+Una **serie trigonometrica** è una serie della forma
+
+$$
+a_0 + \sum_{n=1}^{+\infty} \left[ a_n \cos(nx) + b_n \sin(nx) \right]
+$$
+
+La somma di una serie trigonometrica è $2\pi$-periodica.
+
+Una serie trigonometrica converge totalmente solo quando $|a_n| + |b_n|$ converge, infatti $|f_n(x)| = |a_n \cos(nx) + b_n \sin(nx)| \le |a_n| + |b_n| \quad \forall x \in \mathbb{R}$.
+
+Se
+
+$$
+\sum_{n=1}^{+\infty} \left[ |a_n| + |b_n| \right] \lt + \infty
+$$
+
+allora la serie trigonometrica converge totalmente in $\mathbb{R}$. In particolare la funzione somma è continua in tutto $\mathbb{R}$ e vale la formula di integrazione termine a termine in ogni sottoinsieme limitato (non server richiedere la chiusura dell'insieme dato che, essendo la funzione continua, allora non esploderà in nessun punto).
+
+Inoltre, nella stessa circostanza di quanto appena scritto, la funzione somma è derivabile in tutto $\mathbb{R}$ è vale la formula di derivazione termine a termine.
+
+## Costruzione della serie di Fourier di una funzione periodica
+
+Per calcolare i coefficenti di Fourier per esprimere una funzione periodica come serie di Fourier, ci si basa sul teorema che segue, di cui è fornita anche la dimostrazione.
+
+Il teorema si limita alle funzioni $2\pi$-periodiche; dopo la dimostrazione verranno fornite formule più generali che vanno bene per qualsiasi periodo.
+
+### Teorema del calcolo dei coefficenti di Fourier
+
+Sia $f : \mathbb{R} \to \mathbb{R}$ $2\pi$-periodica, e somma di una serie trigonometrica:
+
+$$
+f(x) = a_0 + \sum_{n=1}^{+\infty} \left[ a_n \cos(nx) + b_n \sin(nx) \right]
+$$
+
+Supponiamo inoltre di poter integrare termine a termine, allora
+
+$$
+\begin{align*}
+a_0 = \frac{1}{2 \pi} \int_{-\pi}^{+\pi} f(x) dx \qquad & a_n = \frac{1}{\pi} \int_{-\pi}^{+\pi} f(x) \cos(nx) dx \quad n \ge 1 \\
+& b_n = \frac{1}{\pi} \int_{-\pi}^{+\pi} f(x) \sin(nx) dx \quad n \ge 1
+\end{align*}
+$$
+
+_Queste formule valgono anche in caso di convergenza non totale purchè si possa integrare termine a termine._
+
+#### Dimostrazione
+
+Per calcolare $a_0$ integro $f(x)$ in $(-\pi, \pi)$ sfruttando l'integrabilità termine a termine e le formule di ortogonalità:
+
+$$
+\begin{align*}
+    \int_{-\pi}^{+\pi} f(x) dx &= \int_{-\pi}^{+\pi} \left[ a_0 + \sum_{n=1}^{+\infty} \left[ a_n \cos(nx) + b_n \sin(nx) \right] \right] dx \\
+    &= \int_{-\pi}^{+\pi} a_0 dx + \sum_{n=1}^{+\infty} \left[ \int_{-\pi}^{+\pi} a_n \cos(nx) dx \right] + \sum_{n=1}^{+\infty} \left[ \int_{-\pi}^{+\pi} b_n \sin(nx) dx \right] \\
+    &= \int_{-\pi}^{+\pi} a_0 dx + \sum_{n=1}^{+\infty} \left[ a_n \underbrace{\int_{-\pi}^{+\pi} \cos(nx) dx}_{=0} \right] + \sum_{n=1}^{+\infty} \left[ b_n \underbrace{\int_{-\pi}^{+\pi} \sin(nx) dx}_{=0} \right] \\
+    &= 2\pi a_0 \implies a_0 = \frac{1}{2\pi} \int_{-pi}^{+\pi} f(x) dx
+\end{align*}
+$$
+
+Per determinare $a_n$, moltiplico $f(x)$ per $\cos(nx)$, integro su $(-\pi, \pi)$ utilizzando ancora una volta l'integrabilità termine a termine e le formule di ortogonalità:
+
+$$
+\begin{align*}
+    \int_{-\pi}^{+\pi} f(x) \cos(nx) dx &= \int_{-\pi}^{+\pi} \left[ a_0 + \sum_{k=1}^{+\infty} \left[ a_k \cos(kx) + b_k \sin(kx)  \right] \right]\cos(nx) dx \\
+    &= \int_{-\pi}^{+\pi} a_0 \cos(nx) dx + \sum_{k=1}^{+\infty} \left[ \int_{-\pi}^{+\pi} a_k \cos(kx) \cos(nx) dx \right] + \sum_{k=1}^{+\infty} \left[ \int_{-\pi}^{+\pi} b_k \sin(kx) \cos(nx) dx \right] \\
+    &= a_0 \underbrace{\int_{-\pi}^{+\pi} \cos(nx) dx}_{=0} + \sum_{k=1}^{+\infty} \left[ a_k \underbrace{\int_{-\pi}^{+\pi} \cos(kx) \cos(nx) dx}_{\text{Si annulla se $n \ne k$}} \right] + \sum_{k=1}^{+\infty} \left[ b_k \underbrace{\int_{-\pi}^{+\pi} \sin(kx) \cos(nx) dx}_{=0} \right] \\
+    &= a_n \int_{-\pi}^{+\pi} \cos(nx)^2 dx = \pi a_n \implies a_n = \frac{1}{\pi}\int_{-\pi}^{+\pi} f(x) \cos(nx) dx
+\end{align*}
+$$
+
+Per calcolare i $b_n$ il procedimento è analogo:
+
+$$
+\begin{align*}
+    \int_{-\pi}^{+\pi} f(x) \sin(nx) dx &= \int_{-\pi}^{+\pi} \left[ a_0 + \sum_{k=1}^{+\infty} \left[ a_k \cos(kx) + b_k \sin(kx) \right] \right] \sin(nx) dx \\
+    &= \int_{-\pi}^{+\pi}a_0 \sin(nx) dx + \sum_{k=1}^{+\infty} \left[ \int_{-\pi}^{+\pi} a_k \cos(kx) \sin(nx) dx \right] + \sum_{k=1}^{+\infty} \left[ \int_{-\pi}^{+\pi} b_k \sin(kx) \sin(nx) dx \right] \\
+    &= a_0 \underbrace{\int_{-\pi}^{+\pi} \sin(nx) dx}_{=0} + \sum_{k=1}^{+\infty} \left[ a_k \underbrace{\int_{-\pi}^{+\pi} \cos(kx) \cos(nx) dx}_{=0} \right] + \sum_{k=1}^{+\infty} \left[ b_k \underbrace{\int_{-\pi}^{+\pi} \sin(kx) \sin(nx) dx}_{\text{Si annulla se $n \ne k$}} \right] \\
+    &= b_n \int_{-\pi}^{+\pi} \sin(nx)^2 dx = \pi b_n \implies b_n = \frac{1}{\pi} \int_{-\pi}^{+\pi} f(x) \sin(nx) dx
+\end{align*}
+$$
+
+Le formule generali che valgono qualsiasi sia il periodo $T$ sono
+
+$$
+\begin{align*}
+    a_0 = \frac{1}{T} \int_{-\frac{T}{2}}^{+\frac{T}{2}} \qquad & a_n = \frac{2}{T} \int_{-\frac{T}{2}}^{\frac{T}{2}} f(x) \cos \left( n \frac{2 \pi}{T} x \right) dx \\
+     & b_n = \frac{2}{T} \int_{-\frac{T}{2}}^{\frac{T}{2}} f(x) \sin \left( n \frac{2 \pi}{T} x \right) dx
+\end{align*}
+$$
+
+Chiamiamo *polinomio di Fourier* di ordine $m$ il polinomio trigonometrico
+
+$$
+F_m(x) = a_0 + \sum_{n=1}^m \left[ a_n \cos(nx) + b_n \sin(nx) \right]
+$$
+
+Chiamiamo *serie di Fourier* la serie trigonometrica
+
+$$
+\lim_{m \to \infty} F_m(x) = a_0 + \sum_{n=1}^{+\infty} \left[ a_n \cos(nx) + b_n \sin(nx) \right]
+$$
+
+E' possibile semplificare il calcolo dei coefficenti di Fourier andando a sfruttare alcune proprietà della funzione sotto analisi:
+
+- se la funzione è pari allora si sviluppa solo il coseno ($b_n = 0 \quad \forall n$)
+- se la funzione è dispari allora si sviluppa solo il seno ($a_n = 0 \quad \forall n$)
+- nei punti in cui la funzione è discontinua, la sommatoria nel polinomio vale zero
 
 # Varie ed eventuali
 
@@ -581,6 +783,7 @@ Di seguito lista delle dimostrazioni da conoscere per l'esame:
 1.  [Formula risolutiva EDO del primo ordine lineari](#Dim1)
 2.  [Teorema di struttura dell'integrale generale di EDO del secondo ordine lineari omogenee](#teorema-di-struttura-dellintegrale-generale-di-edo-del-secondo-ordine-lineari-omogenee)
 3.  [Calcolo del raggio di convergenza](#teorema-del-calcolo-del-raggio-di-convergenza)
+4.  [Calcolo dei coefficenti di Fourier](#teorema-del-calcolo-dei-coefficenti-di-fourier)
 
 
 Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di funzioni
