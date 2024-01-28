@@ -584,7 +584,7 @@ $$
 
 Se $f$ è analitica in $(a, b)$ allora $f$ è derivabile ad ogni ordine.
 
-I coefficenti $a_n$ sono
+I coefficienti $a_n$ sono
 
 $$
 f(x_0) = \sum_{n=0}^{+\infty} a_n(x_0 - x_0) = a_0 \\
@@ -630,7 +630,7 @@ $$
 f(x) = a_0 + \sum_{n=1}^{+\infty} \left[ a_n \cos (nx) + b_n \sin (nx) \right]
 $$
 
-dove gli $a_n$ e i $b_n$ sono detti **coefficenti di Fourier**.
+dove gli $a_n$ e i $b_n$ sono detti **coefficienti di Fourier**.
 
 Per comprendere i successivi argomenti, è necessario avere famigliarità con le proprietà delle funzioni periodiche:
 
@@ -643,7 +643,7 @@ Vengono dette **armoniche $n$-esime** le funzioni $\cos nx$ e $\sin nx$ che sono
 
 Tutte le armoniche $n$-esime sono periodiche di periodo $2 \pi$.
 
-Per il calcolo dei coefficenti di Fourier, è necessario tenere a mente le formule di ortogonalità:
+Per il calcolo dei coefficienti di Fourier, è necessario tenere a mente le formule di ortogonalità:
 
 $$
 \int_{-\pi}^{\pi} \cos(nx) \cos(kx) dx = \begin{cases}
@@ -665,7 +665,7 @@ $$
 a_0 + \sum_{n=1}^{m} \left[ a_n \cos(nx) + b_n \sin(nx) \right]
 $$
 
-dove $a_0, a_n, b_n$ vengono detti coefficenti del polinomio trigonometrico.
+dove $a_0, a_n, b_n$ vengono detti coefficienti del polinomio trigonometrico.
 
 Ogni polinomio trigonometrico è $2\pi$-periodico, così come qualsiasi somma, differenza o prodotto tra essi.
 
@@ -691,11 +691,11 @@ Inoltre, nella stessa circostanza di quanto appena scritto, la funzione somma è
 
 ## Costruzione della serie di Fourier di una funzione periodica
 
-Per calcolare i coefficenti di Fourier per esprimere una funzione periodica come serie di Fourier, ci si basa sul teorema che segue, di cui è fornita anche la dimostrazione.
+Per calcolare i coefficienti di Fourier per esprimere una funzione periodica come serie di Fourier, ci si basa sul teorema che segue, di cui è fornita anche la dimostrazione.
 
 Il teorema si limita alle funzioni $2\pi$-periodiche; dopo la dimostrazione verranno fornite formule più generali che vanno bene per qualsiasi periodo.
 
-### Teorema del calcolo dei coefficenti di Fourier
+### Teorema del calcolo dei coefficienti di Fourier
 
 Sia $f : \mathbb{R} \to \mathbb{R}$ $2\pi$-periodica, e somma di una serie trigonometrica:
 
@@ -770,11 +770,87 @@ $$
 \lim_{m \to \infty} F_m(x) = a_0 + \sum_{n=1}^{+\infty} \left[ a_n \cos(nx) + b_n \sin(nx) \right]
 $$
 
-E' possibile semplificare il calcolo dei coefficenti di Fourier andando a sfruttare alcune proprietà della funzione sotto analisi:
+E' possibile semplificare il calcolo dei coefficienti di Fourier andando a sfruttare alcune proprietà della funzione sotto analisi:
 
 - se la funzione è pari allora si sviluppa solo il coseno ($b_n = 0 \quad \forall n$)
 - se la funzione è dispari allora si sviluppa solo il seno ($a_n = 0 \quad \forall n$)
 - nei punti in cui la funzione è discontinua, la sommatoria nel polinomio vale zero
+
+Per studiare la convergenza della serie di Fourier, è necessario introdurre alcuni concetti.
+
+Una funtione $f : [-\pi, +\pi] \to \mathbb{R}$ è **regolare a tratti** nell'intervallo $[-\pi, +\pi]$ se esiste un numero finito di punti $-\pi \lt x_1 \lt x_2 \lt \dots \lt x_n \lt +\pi$ tali per cui $f$ è derivabile in in ogni intervallino $(x_i, x_{i+1})$ ed esistono finiti i limiti
+
+$$
+\lim_{x \to x_i^+} f(x) \quad \forall i = 1, 2, \dots, n-1 \qquad \lim_{x \to x_i^-} f(x) \quad \forall i = 2, 3, \dots, n
+$$
+
+Ovviamente, se $f$ è periodica e regolare a tratti su un dato intervallo allora è regolare a tratti ed è integrabile in qualunque intervallo limitato.
+
+Sia $f : \mathbb{R} \to \mathbb{R}$ $2-\pi$ periodica e regolare a tratti in $[-\pi, +\pi]$ allora la serie di Fourier di $f$ converge puntualmente $\forall x \in \mathbb{R}$ e inoltre
+
+$$
+\lim_{m \to \infty} F_m(x) = \frac{1}{2} \left( \lim_{S \to x^+} f(S) + \lim_{S \to x^-} f(S) \right)
+$$
+
+cioè nei punti di discontinuità-salto, il polinomio di Fourier converge alla metà tra i due punti del salto.
+
+Se $f$ è continua, allora $\lim_{m \to \infty} F_m(x) = f(x)$ che si può anche scrivere come $\lim_{m \to \infty} \left| F_m(x) - f(x) \right| = 0$.
+
+Ne segue che se $f : \mathbb{R} \to \mathbb{R}$ è anche $2\pi$-periodica, regolare a tratti in $[-\pi, +\pi]$ e continua in tutto $\mathbb{R}$ allora si ha che la serie di Fourier di $f$ converge totalmente a $f$.
+
+Sia $f : \mathbb{R} \to \mathbb{R}$, $2\pi$-periodica e regolare a tratti in $[-\pi, +\pi]$ allora vale la **convergenza in media quadratica**:
+
+$$
+\lim_{m \to +\infty} \int_{-\pi}^{+\pi} \left( F_m(x) - f(x) \right)^2 dx = 0
+$$
+
+Ciò implica che 
+
+$$
+\lim_{m \to +\infty} \int_{-\pi}^{+\pi} F_m(x)^2 dx = \int_{-\pi}^{+\pi} f(x)^2 dx
+$$
+
+Tale formula in realtà vale per qualsiasi intervallo $[c, d]$ se la $f$ è periodica, in quanto se $[c, d] \sube [-\pi, +\pi]$ allora è ovvio, altrimenti si ragiona per periodicità.
+
+Si può dunque calcolare 
+
+$$
+\int_{-\pi}^{+\pi} F_m(x)^2 dx = \int_{-\pi}^{+\pi} \left( a_0 + \sum_{n=1}^{m} (a_n \cos(nx) + b_n \sin(nx)) \right)^2 dx = 2\pi a_0^2 + \pi \sum_{n=1}^{m} (a_n^2 + b_n^2)
+$$
+
+Facendo tendere $m$ all'infinito, si arriva all'**identità di Bessel-Parsival**:
+
+$$
+\frac{1}{\pi} \int_{-\pi}^{+\pi} f(x)^2 dx = 2 a_0^2 + \sum_{n=1}^{+\infty} (a_n^2 + b_n^2)
+$$
+
+### Cenni alla forma esponenziale
+
+Conoscendo le formule di Eulero, 
+
+$$
+\cos x = \frac{e^{ix} + e^{-ix}}{2} \qquad \sin x = \frac{e^{ix} - e^{-ix}}{2i}
+$$
+
+possiamo dire che
+
+$$
+\cos nx = \frac{e^{inx} + e^{-inx}}{2} \qquad \sin x = \frac{e^{inx} - e^{-inx}}{2i}
+$$
+
+Dunque si può riscrivere la serie trigonometrica
+
+$$
+\begin{align*}
+    a_0 + \sum_{n=1}^{+\infty} \left[ a_n \cos nx + b_n \sin nx \right] &= a_0 + \sum_{n=1}^{+\infty} \left[ a_n \frac{e^{inx} + e^{-inx}}{2} + b_n \frac{e^{inx} - e^{-inx}}{2i} \right] \\
+    &= a_0 + \sum_{n=1}^{+\infty} e^{inx} \left( \frac{a_n}{2} + \frac{b_n}{2i} \right)+ \sum_{n=1}^{+\infty} e^{-inx} \left( \frac{a_n}{2} - \frac{b_n}{2i} \right) \\
+    &= a_0 + \sum_{n=1}^{+\infty} e^{inx} \left( \frac{a_n - ib_n}{2} \right) + \sum_{n=1}^{+\infty} e^{-inx} \left( \frac{a_n + ib_n}{2} \right) \\
+    &= \underbrace{a_0}_{=c_0} + \sum_{n=1}^{+\infty} e^{inx} \underbrace{\frac{a_n - ib_n}{2}}_{=c_n} + \sum_{k = -\infty}^{-1} e^{ikx} \underbrace{\frac{a_{-k} + ib_{-k}}{2}}_{=c_k} \\
+    &= c_0 + \sum_{n=1}^{+\infty} c_n e^{inx} + \sum_{k=-\infty}^{-1} c_k e^{ikx} \\
+    &= \sum_{n = -\infty}^{+\infty} C_n e^{inx} \implies c_n = \frac{1}{2\pi} \int_{-\pi}^{+\pi} f(x) e^{-inx}dx
+
+\end{align*}
+$$
 
 # Varie ed eventuali
 
@@ -783,7 +859,7 @@ Di seguito lista delle dimostrazioni da conoscere per l'esame:
 1.  [Formula risolutiva EDO del primo ordine lineari](#Dim1)
 2.  [Teorema di struttura dell'integrale generale di EDO del secondo ordine lineari omogenee](#teorema-di-struttura-dellintegrale-generale-di-edo-del-secondo-ordine-lineari-omogenee)
 3.  [Calcolo del raggio di convergenza](#teorema-del-calcolo-del-raggio-di-convergenza)
-4.  [Calcolo dei coefficenti di Fourier](#teorema-del-calcolo-dei-coefficenti-di-fourier)
+4.  [Calcolo dei coefficienti di Fourier](#teorema-del-calcolo-dei-coefficienti-di-fourier)
 
 
 Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di funzioni
