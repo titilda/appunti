@@ -366,7 +366,7 @@ Equivalentemente, l'integrale generale è $y_o(t) = C_1 \Re(e^{\lambda t} \under
 
 ## Sistemi non omogenei
 
-### struttura dell'integrale generale dei sistemi non omogenei:
+### Struttura dell'integrale generale dei sistemi non omogenei:
 
 Siano $A \in \mathcal{M}_\mathbb{R}(n)$ e $b_i : J \sube \mathbb{R} \to \mathbb{R}$ continue. L'integrale generale del sistema differenziale lineare completo $\underline y'(t) = A \underline y(t) + \underline b(t)$ è $\underline y(t) = \underline y_o(t) + \underline y_p(t)$ dove $\underline y_o(t)$ è la soluzione del sistema omogeneo associato e $\underline y_p(t)$ è una soluzione particolare.
 
@@ -1008,6 +1008,156 @@ I vari integrali, in caso di curva regolare a tratti, sono da intendersi come so
 
 Una curva $\underline r : I \to \mathbb{R}^3$ si dice **regolare a tratti** se è continua su $I$ e la curva è regolare su $I$ tranne che su un numero finito di punti. La lunghezza di una curva regolare a tratti è la somma delle lunghezze dei vari tratti.
 
+## Integrale curvilineo
+
+Siano $[a,b] \sub \mathbb{R}$ limitato, $\underline r : [a,b] \to \mathbb{R}$ curva regolare di sostegno $\gamma$, $f(\underline r(t))$ continua $\forall t \in [a,b]$, l'**integrale curvilineo** di $f$ lungo $\gamma$ è 
+
+$$
+\int_\gamma f ds = \int_a^b f(\underline r(t)) \|\underline r'(t)\| dt
+$$
+
+# Funzioni di due variabili
+
+Una **funzione di due variabili reali** $f : A \sube \mathbb{R}^2 \to \mathbb{R}$ è una relazione che associa ad ogni $(x, y) \in \mathbb{R}$ un unico valore reale $f(x, y) \in \mathbb{R}$.
+
+E' detto **insieme di livello** di $f$ al livello $k$ è 
+
+$$
+I_k = \left\{ (x, y) \in A : f(x, y) = k \right\}
+$$
+
+che è una curva piana.
+
+## Limite multivaraibile
+
+Siano $a \sube \mathbb{R}^2$ aperto, $x_0 \in A$, $f : A \backslash \{\underline x_0\} \to \mathbb{R}$.
+Diciamo che $f$ tende al limite $l \in \mathbb{R}$ per $\underline x \to \underline x_0$ e scriviamo che $\lim_{\underline x \to \underline x_0} f(x) = l$ se 
+
+$$
+\forall \epsilon \gt 0 \ \exists \delta \gt 0 : \underline x \in B_\delta(\underline x_0) \backslash \{ \underline x_0 \} \implies |f(\underline x) - l| \lt \epsilon
+$$
+
+Per stabilire che un limite non esiste, devo esibire due curve che mandano la funzione in valori diversi quando si fa tendere tale funzione nel punto limite.
+
+## Calcolo del limite con coordinate polari
+
+_La procedura di seguito è valida solo per limiti che tendono a $\underline 0$. In caso di limiti che non tendono a $\underline 0$, si transla la funzione._
+
+1. Trovo un candidato limite: ad esempio, se la funzione è identicamente nulla sugli assi cartesiani, il candidato limite è $l = 0$.
+2. Scrivo la funzione $g(r, \theta)$ come $f(x, y)$ in coordinate polari, applicando la seguente trasformazione:
+   $$
+    \begin{cases}
+        x = r \cos(\theta) \\
+        y = r \sin (\theta)
+    \end{cases}
+   $$
+3. Cerco una funzione $h(r)$ tale che
+   1. $|g(r, \theta) - l| \lt h(r)$;
+   2. $\lim_{r \to 0} h(r) = 0$.
+4. Se ho trovato la funzione $h$ di cui al punto sopra, allora il candidato limite è il limite che cercavo, altrimenti cambio candidato e riprovo.
+
+Se la funzione sotto esame non è quoziente di polinomi o radici, prima di iniziare la procedura, applico i limiti notevoli.
+
+Il metodo dei limiti notevoli è utilizzabile anche per la dimostrazione della non esistenza del limite.
+
+## Continuità
+
+Sia $A \sube \mathbb{R}^2$ aperto, $f : A \to \mathbb{R}$, $\underline x_0 \in A$. $f$ è **continua** in $\underline x_0$ se
+
+$$
+\lim_{\underline x \to \underline x_0} = f(\underline x_0)
+$$
+
+$f$ è **continua in un insieme** se è continua in tutti i punti dell'insieme.
+
+Tutte le funzioni elementari (1-dimensionali) sono continue sul loro insieme di definizione. Quando le si compone per ottenere una funzione 2-dimensionale, l'insieme di definizione della funzione ottenuta è l'intersezione delle funzioni utilizzate per la composizione.
+
+Da ciò segue che la continuità di funzioni 2-dimensionali va verificata solamente nel caso di funzioni definite a tratti.
+
+## Derivate parziali e gradienti
+
+Sia $A \sube \mathbb{R}^2$ aperto, $f : A \to \mathbb{R}$, $(x_0, y_0) \in A$. Le **derivate parziali** di $f$ in $(x_0, y_0)$ sono
+
+$$
+\frac{\partial f}{\partial x} (X_0, y_0) = \lim_{h \to 0} \frac{f(x_0 + h, y) - f(x_0, y_0)}{h} \qquad \frac{\partial f}{\partial y}(x_0, y_0) = \lim_{h \to 0} \frac{f(x_0, y_0 + h) - f(x_0, y_0)}{h}
+$$
+
+Se entrambi i limiti esistono finiti allora $f$ è detta **derivabile** in $(x_0, y_0)$.
+
+Se $f$ è derivabile, allora è possibile definire la **funzione gradiente**:
+
+$$
+\nabla f(x_0, y_0) = \begin{pmatrix}
+    \frac{\partial f}{\partial x} (x_0, y_0) \\
+    \frac{\partial f}{\partial y} (x_0, y_0)
+\end{pmatrix}
+$$
+
+Per calcolare le derivate parziali, derivo una variabile per volta, considerando tutte le altre come se fossero costanti.
+
+E' necessario usare la definizione per calcolare le derivate parziali quando la funzione sotto esame è definita per casi o quando nella definizione di tale funzione compare $t^\alpha$ con $\alpha \in (0, 1)$ o $|t|^\alpha$ con $\alpha \in (0, 1]$. In tutti gli altri casi, $f$ è sempre derivabile.
+
+## Differenziabilità e piano tangente
+
+Siano $A \sube \mathbb{R}^2$ aperto (aperto perchè serve poter fare i limiti), $f : A \to \mathbb{R}$, alloa diciamo che $f$ è **differenziabile** in $\underline x_0 \in A$ se $f$ è derivabile in $\underline x_0$ e se
+
+$$
+f(\underline x_0 + \underline h) = f(\underline x_0) + \lang \nabla f(\underline x_0, \underline h) \rang + R(h)
+$$
+
+dove $R(\underline h) = \small o(\|\underline h\|)$ cioè
+
+$$
+\lim_{\underline h \to 0} \frac{R(\|\underline h\|)}{\|\underline h\|}
+$$
+
+Per semplificare la verifica della differenziabilità di una funzione, ci si basa sul **teorema del differenziale totale** che afferma che se $f \in \mathcal{C}^1(A)$ allora $f$ è differenziabile in $A$.
+
+Se $f$ è differenziabile in un punto $\underline x_0 = (x_0, y_0)$ allora il oiano tangente al grafico di $f$ in $(x_0, y_0, f(x_0, y_0))$ è
+
+$$
+z = f(x_0) + \lang \nabla f(\underline x_0), \underline x - \underline x_0 \rang
+$$
+
+## Differenziabilità $\implies$ continuità
+
+Sia $A \sube \mathbb{R}$ aperto, $\underline x_0 \in A$, $f : A \to \mathbb{R}$ differenziabile in $\underline x_0$. Allora $f$ è continua in $\underline x_0$.
+
+### Dimostrazione
+
+Devo dimostrare che
+
+$$
+\lim_{\underline x \to \underline x_0} f(\underline x) = f(\underline x_0)
+$$
+
+In mainera equivalente, posso scrivere che
+
+$$
+\lim_{\underline x \to \underline x_0} |f(\underline x) - f(\underline x_0)| = 0
+$$
+
+Dato che $f$ è differenziabile, allora
+
+$$
+f(\underline x) - f(\underline x_0) = \lang \nabla f(\underline x_0), \underline x - \underline x_0 \rang + \small o(\|\underline x - \underline x_0 \|)
+$$
+
+Dunque
+
+$$
+\begin{align*}
+    |f(\underline x) - f(\underline x_0)| &= |\lang \nabla f(\underline x_0), \underline x - \underline x_0 \rang| \\
+    &\le |\lang \nabla f(\underline x_0), \underline x - \underline x_0 \rang| + \small o(\|\underline x - \underline x_0\|) \\
+    &\le \|\nabla f(\underline x_0)\| \cdot \|\underline x - \underline x_0\| + \small o(\|\underline x - \underline x_0\|) = 0
+\end{align*}
+$$
+
+Ne segue che $0 \le |f(\underline x) - f(\underline x_0)|$, da sui segue che
+
+$$
+\lim_{\underline x \to \underline x_0} |f(\underline x) - f(\underline x_0)|
+$$
 
 # Varie ed eventuali
 
@@ -1018,6 +1168,7 @@ Di seguito lista delle dimostrazioni da conoscere per l'esame:
 3.  [Calcolo del raggio di convergenza](#teorema-del-calcolo-del-raggio-di-convergenza)
 4.  [Calcolo dei coefficienti di Fourier](#teorema-del-calcolo-dei-coefficienti-di-fourier)
 5.  [Invarianza della lunghezza di una curva per riparametrizzazione](#Dim5)
+6.  [Differenziabilità implica continuità](#differenziabilità-continuità)
 
 
 Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di funzioni
