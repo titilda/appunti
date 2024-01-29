@@ -848,9 +848,166 @@ $$
     &= \underbrace{a_0}_{=c_0} + \sum_{n=1}^{+\infty} e^{inx} \underbrace{\frac{a_n - ib_n}{2}}_{=c_n} + \sum_{k = -\infty}^{-1} e^{ikx} \underbrace{\frac{a_{-k} + ib_{-k}}{2}}_{=c_k} \\
     &= c_0 + \sum_{n=1}^{+\infty} c_n e^{inx} + \sum_{k=-\infty}^{-1} c_k e^{ikx} \\
     &= \sum_{n = -\infty}^{+\infty} C_n e^{inx} \implies c_n = \frac{1}{2\pi} \int_{-\pi}^{+\pi} f(x) e^{-inx}dx
-
 \end{align*}
 $$
+
+# Cenni di topologia in $\mathbb{R}$
+
+Si dice **intorno sferico** o **palla** di raggio $r$ e centro in $\underline x_0 \in \mathbb{R}$ il seguente insieme:
+
+$$
+B_r(\underline x_0) = \left\{ \underline x \in \mathbb{R}^n : \|\underline x - \underline x_0\| \lt r \right\}
+$$
+
+E' importante notare che un apalla è un insieme aperto per definizione.
+
+Si dice **complementare dell'insieme** $E$ l'insieme $E^C = \mathbb{R}^n - E$.
+
+Dati un insieme $E \sub \mathbb{R}^n$ e un punto $\underline x_0 \in \mathbb{R}^n$ allora
+
+- $\underline x_0$ è **di frontiera** o **di bordo** per $E$ se $\forall r \gt 0$ vale che $B_r(\underline x_0) \cap E \ne \emptyset$ e che $B_r(\underline x_0) \cap E^C \ne \emptyset$.
+- $\underline x_0$ è **interno** ad $E$ se $\underline x_0 \in E$ e $\exists r \gt 0 : B_r(x_0) \sub E$.
+- $\underline x_0$ è esterno ad $E$ se $\underline x_0$ è interno a $E^C$.
+
+Un insieme $E \sub \mathbb{R}^n$ si dice aperto se $\forall \underline x \in E$ si ha che $\underline x$ è punto interno. Lo stesso insieme è chiuso se $E^C$ è aperto.
+
+Un insieme $E$ si dice *limitato* se esiste un $r$ tale per cui tutto l'insieme è contenuto in una palla di raggio $r$; è illimitato altrimenti.
+
+Un insieme chiuso e limitato è detto **compatto**.
+
+# Curve
+
+Una curva in $\mathbb{R}^3$ può essere descritta attraverso la sua parametrizzazione o attraverso il suo sostegno.
+
+La parametrizzazione di una curva consiste essenzialmente in 3 funzioni continue, dipendenti da un solo parametro:
+
+$$
+\underline r : I \sube \mathbb{R} \to \mathbb{R}^3 \\
+\underline r(t) = \begin{pmatrix} r_1(t) \\ r_2(t) \\ r_3(t) \end{pmatrix}
+$$
+
+Il sostegno della curva consiste nell'insieme di tutti i valori che la curva può assumere:
+
+$$
+\gamma = \left\{ (x_1, x_2, x_3) \in \mathbb{R}^3 : (x_1, x_2, x_3) = (r_1(t), t_2(t), r_3(t)) \text{ per qualche $t \in I$}\right\}
+$$
+
+Il sostegno di una curva è univocamente determinato dalla parametrizzazione ma esistono infinite parametrizzazioni associate allo stesso sostegno.
+
+Nel caso in cui $r_3(t) = 0 \quad \forall t$, la curva viene detta **curva piana**.
+
+E' possibile ottenere, per una funzione $f$ generica una parametrizzazione
+
+$$
+\underline r(t) = \begin{pmatrix} t \\ f(t) \end{pmatrix}
+$$
+
+Due parametrizzazione $\underline r(t) : I \to \mathbb{R}^n$ e $\underline v(s) : J \to \mathbb{R}^n$ si dicono **equivalenti** se esiste una mappa $\varphi : J \to I$ continua e biunivoca tale che
+
+$$
+\underline v(s) = \underline r(\varphi(s)) = \underline r \cdot \varphi(s)
+$$
+
+In pratica, due parametrizzazioni sono equivalenti se hanno lo stesso sostegno, percorso lo stesso numero di volte.
+
+Dato che $\varphi$ è biunivoca, allora è monotona: se è decrescente allora il senso di percorrenza dei due sostegni si inverte.
+
+Una curva può essere considerata come la classe di equivalenza associata che contiene tutte le parametrizzazioni equivalenti.
+
+Una curva si dice **regolare** se ammette una parametrizzazione $(r_1(t), \dots, r_n(t))$ con $t \in I$ tale per cui tutte le $r_i(t) \in \mathcal{C}^1(I)$ e $(r_1'(t), \dots, r_n'(t)) \ne \underline 0$ per ogni $t$. Se una curva è regolare allora $\|\underline r'(t)\| \ne 0$.
+
+Se $\underline r : I \to \mathbb{R}^3$, si definisce **versore tangente** il versore
+
+$$
+\underline T(t) = \frac{\underline r'(t)}{\|\underline r'(t)\|}
+$$
+
+Il versore tangente ha direzione della retta tangente alla curva nel punto $\underline r(t)$, norma unitaria e verso concorde al verso di percorrenza della curva.
+
+Data una funzione $f \in \mathcal{C}^\$ qualsiasi, una curva costruita come
+
+$$
+\underline r(t) = \begin{pmatrix} t \\ f(t) \end{pmatrix}
+$$
+
+è sempre regolare infatti
+
+$$
+\underline r'(t) = \begin{pmatrix} 1 \\ f'(t) \end{pmatrix}
+$$
+
+Siano $[a,b] \sube \mathbb{R}$ limitato e $\underline r : [a,b] \to \mathbb{R}$ la parametrizzazione di una curva regolare avente sostegno $\gamma$, allora la lunghezza di $\gamma$ si calcola come
+
+$$
+\text{len}(\gamma) = \int_a^b \|\underline r'(t)\| dt
+$$
+
+<div id="Dim5"></div>
+
+Siano $[a,b] \sub \mathbb{R}$ limitato e $\underline r : [a,b] \to \mathbb{R}^3$ parametrizzazione di una curva regolare avente sostegno $\gamma$. Se $\underline v[c,d] \to \mathbb{R}^3$ e $\underline v(s) = \underline r \cdot \varphi(s)$ è una parametrizzazione equivalente avente sostegno $\delta$ allora $\text{len}(\delta) = \text{len}(\gamma)$. Dimostrazione a seguire.
+
+Per definizione
+
+$$
+\text{len}(\gamma) = \int_a^b \|\underline r'(t)\| dt \qquad \text{len}(\delta) = \int_a^b \|\underline v'(s)\| ds
+$$
+
+Se
+
+$$
+\underline v(s) = \begin{pmatrix} r_1(\varphi(s)) \\ r_2(\varphi(s)) \end{pmatrix}
+$$
+
+allora
+
+$$
+\underline v'(s) = \begin{pmatrix} r_1'(\varphi(s)) \cdot \varphi'(s) \\ r_2'(\varphi(s)) \cdot \varphi'(s) \end{pmatrix} = \varphi'(s) \cdot \begin{pmatrix} r_1'(\varphi(s)) \\ r_2'(\varphi(s)) \end{pmatrix}
+$$
+
+da cui
+
+$$
+\| \underline v'(s) \| = |\varphi'(s)| \cdot \| \underline r'(\varphi(s)) \|
+$$
+
+quindi
+
+$$
+\text{len}(\delta) = \int_c^d |\varphi'(s)| \cdot \|\underline r'(\varphi(s))\| ds
+$$
+
+Siccome $\varphi$ è biunivoca, allora è monotona e si può togliere il valore assoluto: $\varphi' \lt 0$ p $\varphi' \gt 0$.
+
+Supponiamo che $\varphi'(s) \ge 0 \quad \forall s \in [c, d]$, allora
+
+$$
+\text{len}(\delta) = \int_c^d \varphi'(s) \|\underline r'(s)\| ds
+$$
+
+Applico ora il seguente cambio di variabili: $t = \varphi(s)$, $dt = \varphi'(s) ds$.
+
+Per gli estremi di integrazione si ha che $\varphi : [c,d] \to [a,b]$, $\varphi(c) = a$ e $\varphi(d) = b$ e quindi
+
+$$
+\text{len}(\delta) = \int_a^b \|\underline r'(t)\| dt = \text{len}(\gamma)
+$$
+
+Se invece $\varphi'(s) \le 0$ allora
+
+$$
+\text{len}(\delta) = - \int_c^d \varphi'(s) \| \underline r'(\varphi(s)) \| ds
+$$
+
+Se applico il cambiamento di variabili $t = \varphi(s)$, $dt = \varphi'(s) ds$ allora, essendo $\varphi' \lt 0$ si ha che $\varphi(c) = b$ e $\varphi(d) = a$ per cui
+
+$$
+\text{len}(\delta) = -\int_b^a \|\underline r'(t)\| dt = \int_a^b \| \underline r'(t) \| dt = \text{len}(\gamma)
+$$
+
+I vari integrali, in caso di curva regolare a tratti, sono da intendersi come somma degli integrali dei vari tratti.
+
+Una curva $\underline r : I \to \mathbb{R}^3$ si dice **regolare a tratti** se è continua su $I$ e la curva è regolare su $I$ tranne che su un numero finito di punti. La lunghezza di una curva regolare a tratti è la somma delle lunghezze dei vari tratti.
+
 
 # Varie ed eventuali
 
@@ -860,6 +1017,7 @@ Di seguito lista delle dimostrazioni da conoscere per l'esame:
 2.  [Teorema di struttura dell'integrale generale di EDO del secondo ordine lineari omogenee](#teorema-di-struttura-dellintegrale-generale-di-edo-del-secondo-ordine-lineari-omogenee)
 3.  [Calcolo del raggio di convergenza](#teorema-del-calcolo-del-raggio-di-convergenza)
 4.  [Calcolo dei coefficienti di Fourier](#teorema-del-calcolo-dei-coefficienti-di-fourier)
+5.  [Invarianza della lunghezza di una curva per riparametrizzazione](#Dim5)
 
 
 Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di funzioni
