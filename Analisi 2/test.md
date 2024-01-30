@@ -1239,6 +1239,59 @@ Siano $A \sube \mathbb{R}^2$ aperto, $\underline x_0 \in A$, $f : A \to \mathbb{
     \frac{\partial f}{\partial \underline v_{\text{max}}} (\underline x_0) = \|\nabla f(\underline x_0)\| \qquad \frac{\partial f}{\partial v_{\text{min}}}(\underline x_0) = - \|\nabla f(\underline x_0)\|
    $$
 
+# Ottimizzazione libera
+
+Sia $A \sube \mathbb{R}^2$ aperto, $f : A \to \mathbb{R}$ derivabile. Supponiamo che le derivate parziali di $f$ siano a loro volta derivabili in $A$. Definiamo le **derivate parziali seconde** come
+
+$$
+\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{x}\left(\frac{\partial f}{\partial x}\right) \qquad \frac{\partial^2 f}{\partial y \partial x} = \frac{\partial}{\partial y} \left( \frac{\partial f}{\partial x} \right) \qquad \frac{\partial^2 f}{\partial x \partial y} = \frac{\partial}{\partial x} \left( \frac{\partial f}{\partial y} \right) \qquad \frac{\partial^2 f}{\partial y^2} = \frac{\partial}{\partial y}\left( \frac{\partial f}{\partial y} \right)
+$$
+
+Diciamo che f è **derivabile 2 volte** se tutte e quattro le derivate seconde esistono; in tal caso le organizziamo nella **matrice hessiana**:
+
+$$
+H_f(\underline x_0) = \begin{bmatrix} 
+    \frac{\partial^2 f}{\partial x^2} = \frac{\partial}{x}\left(\frac{\partial f}{\partial x}\right) & \frac{\partial^2 f}{\partial y \partial x} = \frac{\partial}{\partial y} \left( \frac{\partial f}{\partial x} \right) \\
+    \frac{\partial^2 f}{\partial x \partial y} = \frac{\partial}{\partial x} \left( \frac{\partial f}{\partial y} \right) & \frac{\partial^2 f}{\partial y^2} = \frac{\partial}{\partial y}\left( \frac{\partial f}{\partial y} \right)
+\end{bmatrix} = \begin{bmatrix}
+    \left[ \nabla \left( \frac{\partial f}{\partial x} \right) \right]^T \\
+    \left[ \nabla \left( \frac{\partial f}{\partial y} \right) \right]^T \\
+\end{bmatrix}
+$$
+
+Per il **teorema si Schwarz**, se $A \sube \mathbb{R}^2$ e $f \in \mathcal{C}^2(A)$ allora $\frac{\partial^2 f}{\partial y \partial x} = \frac{\partial^2 f}{\partial x \partial y}$ cioè la matrice hessiana è simmetrica e questo può semplificare i calcoli.
+
+Chiamiamo **forma quadratica indotta** da $H_f(x_0, y_0)$ la funzsione $q : \mathbb{R}^2 \to R$ tale che
+
+$$
+q(h_1, h_2) = \begin{pmatrix} h_1, h_2 \end{pmatrix} H_f(x_0, y_0) \begin{pmatrix} h_1 \\ h_2 \end{pmatrix} = \frac{\partial^2 f}{\partial x^2} h_1^2 + 2 \frac{\partial^2 f}{\partial x \partial y}h_1h_2 + \frac{\partial^2 f}{\partial y^2} h_2^2\\
+q(\underline h) = \lang \underline h, h_f(\underline x_0) \cdot \underline h \rang = \underline h^T \cdot H_f(\underline x_0) \cdot \underline h
+$$
+
+Dalla forma quadratica indotta, si può ricavare la matrice $A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$ ($q(h_1, h_2) = a h_1^2 + 2bh_1h_2 + ch_2^2$) per poi ricavarne il segno:
+
+| $\det A$ | $a$     | Autovalori | Segno                 |
+| -------- | ------- | ---------- | --------------------- |
+| $\gt 0$  | $\gt 0$ | $++$       | Definita positiva     |
+| $\gt 0$  | $\lt 0$ | $--$       | Definita negativa     |
+| $=0$     | $\gt 0$ | $+0$       | Semidefinita positiva |
+| $=0$     | $\lt 0$ | $-0$       | Semidefinita negativa |
+| $\lt 0$  |         | $+-$       | Indefinita            |
+
+## Serie di Taylor al secondo ordine
+
+Sia $A \sube \mathbb{R}^2$, $f \in \mathcal{C}^2(A)$. $\forall \underline x_0 \in A$ vale che 
+
+$$
+f(\underline x_0 + \underline h) = f(\underline x_0) + \lang \nabla f(\underline x_0), \underline h \rang + \frac{1}{2} \lang \underline h, H_f(\underline x_0) \cdot \underline h \rang + \small o(\|\underline h\|^2)
+$$
+
+Equivalentemente se $\underline x = \underline x_0 + h$, lo sviluppo diventa
+
+$$
+f(\underline x) = f(\underline x_0) + \lang \nabla f(\underline x_0), \underline x -\underline x_0 \rang + \frac{1}{2} \lang \underline x - \underline x_0, H_f(\underline x_0)(\underline x - \underline x_0) \rang + \small o(\|\underline x - \underline x_0\|)
+$$
+
 # Varie ed eventuali
 
 Di seguito lista delle dimostrazioni da conoscere per l'esame:
