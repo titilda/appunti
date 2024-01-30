@@ -1159,6 +1159,54 @@ $$
 \lim_{\underline x \to \underline x_0} |f(\underline x) - f(\underline x_0)|
 $$
 
+Siano $A \sube \mathbb{R}$, $\underline x_0 \in A$, $\underline x_0 = (x_0, y_0)$, $f : A \to \mathbb{R}$, $\underline v = (v_1, v_2)$ e $\|\underline v\| = 1$. La **derivata direzionale** di $f$ in $\underline x_0$ nella direzione $\underline v$ è 
+
+$$
+\frac{\partial f}{\partial v} = \lim_{t \to 0} \frac{f(x_0 + tv_1, y_0 + tv_2) - f(x_0, y_0)}{t} = \lim_{t \to 0} \frac{f(\underline x_0 + t \underline v) - f(\underline x_0)}{t}
+$$
+
+E' importante notare come le derivate parziali sono due casi specifici di derivate direzionali, in particolare sono le derivate direzionali con $\underline v=(1, 0)$ e $\underline v = (0, 1)$.
+
+Il fatto che $f$ sia differenziabile in $\underline x_0$ implica che esistano tutte le derivate direzionali ma non vale il viceversa.
+
+### Teorema della formula del gradiente
+
+Siano $A \sube \mathbb{R}$ aperto, $\underline x_0 = (x_0, y_0) \in A$, $f : A \to \mathbb{R}$ differenziabile in $\underline x_0$ allora $f$ ammette derivate direzionali in $\underline x_0$ lungo qualunque direzione $\underline v \in \mathbb{R}$ tale che $\|\underline v\| = 1$ e inoltre 
+
+$$
+\frac{\partial f}{\partial \underline v} = \lang \nabla f(\underline x_0, \underline v) \rang
+$$
+
+#### Dimostrazione
+
+Devo dimostrare che se $f$ è differenziabile in $\underline x_0$ allora vale che 
+
+$$
+\lim_{t \to 0} \frac{f(\underline x_0 + t \underline v) - f(\underline x_0)}{t} = \lang \nabla f(\underline x_0), \underline v \rang
+$$
+
+Essendo $f$ differenziabile in $\underline x_0$ allora $f(\underline x_0 + \underline h) - f(\underline x_0) = \lang \nabla f(\underline x_0), \underline h \rang + \small o(\|\underline h\|)$.
+
+Scelgo $\underline h = t \underline v$ con $t \to 0$, divido per $t$ è poi calcolo il limite per $t \to 0$:
+
+$$
+\begin{align*}
+    &\lim_{t \to 0} \frac{f(\underline x_0 + t \underline v) - f(\underline x_0)}{t} \\
+    =& \lim_{t \to 0} \left[ \frac{\lang \nabla f(\underline x_0), t \underline v \rang}{t} + \frac{\small o(\|t \underline v\|)}{t} \right] \\
+    =& \lim_{t \to 0} \left[ \frac{t \lang \nabla f(\underline x_0), \underline v}{t} + \frac{\small o(\|t \underline v\|)}{t} \right] \\
+    =& \lang \nabla f(\underline x_0), \underline v \rang
+\end{align*}
+$$
+
+E' importante notare che se la funzione non è definita per casi e non contiene radici o valori assoluti, se $f \in \mathcal{C}^1(\mathbb{R}^2)$, per il teorema del differenziale totale, la $f$ è differenziabile in $\mathbb{R}^2$ e quindi vale la formula del gradiente.
+
+Siano $\underline r$ una curva piana e $f$ differenziabile e regolare, ristretta alla curva $\underline r$. 
+La **restrizione** di $f$ è la funzione $F(t) = (f \cdot \underline r)(t) = f(\underline r(t)) = f(r_1(t), r_2(t))$.
+
+Se f è differeziabile e $\underline r$ è regolare allora $F'(t) = \lang \nabla f(\underline r(t)), \underline r'(t) \rang = \lang \nabla f(r_1(t), r_2(t)), \begin{pmatrix} r_1'(t) \\ r_2'(t) \end{pmatrix} \rang$.
+
+chiamando $\underline v = \frac{\underline r'(t_0)}{\|\underline r'(t_0)\|}$ e $\underline x_0 = \underline r(t_0)$ allora $F'(t_0) = \lang \nabla f(\underline r(t_0)), \frac{\underline r'(t_0)}{\|\underline r'(t_0)\|} \rang \cdot \|\underline r'(t_0)\| = \|\underline r'(t_0)\| \frac{\partial f}{\partial \underline v} (\underline x_0)$ cioè $F'(t_0)$ è multiplo della derivata direionale di $f$ nella direzione tangente alla curva in $\underline x_0$.
+
 # Varie ed eventuali
 
 Di seguito lista delle dimostrazioni da conoscere per l'esame:
@@ -1169,6 +1217,7 @@ Di seguito lista delle dimostrazioni da conoscere per l'esame:
 4.  [Calcolo dei coefficienti di Fourier](#teorema-del-calcolo-dei-coefficienti-di-fourier)
 5.  [Invarianza della lunghezza di una curva per riparametrizzazione](#Dim5)
 6.  [Differenziabilità implica continuità](#differenziabilità-continuità)
+7.  [Formula del gradiente](#teorema-della-formula-del-gradiente)
 
 
 Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di funzioni
