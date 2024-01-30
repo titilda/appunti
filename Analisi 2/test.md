@@ -1300,6 +1300,90 @@ Siano $A \sub e\mathbb{R}^2$ un sottoinsieme qualunque e $f : A \to \mathbb{R}$,
 
 Se un punto rientra nelle definizioni appena date, allora viene detto **punto di estremo** o **estremante** o **estremale**.
 
+Il **teorema di Fermat** afferma che con $A \sube \mathbb{R}^2$ aperto e $f : A \to \mathbb{R}$, se $(x_0, y_0)$ è estremo per $f$ allora $\nabla f(x_0, y_0) = \begin{pmatrix} 0 \\ 0 \end{pmatrix}$ e viene detto **punto critico**.
+
+Se un punto è estremale allora è critico ma non vale il viceversa.
+
+Se un punto è critico ma non estremale, è detto **sella**.
+
+Nel piano, una funzione può essere simmetrica in molteplici modi:
+
+| Descrizione                   | Simmetria              |
+| ----------------------------- | ---------------------- |
+| Pari, rispetto all'origine    | $f(-x, -y) = f(x, y)$  |
+| Dispari, rispetto all'origine | $f(-x, -y) = -f(x, y)$ |
+| Pari, rispetto all'asse y     | $f(-x, y) = f(x, y)$   |
+| Dispari, rispetto all'asse y  | $f(-x, y) = -f(x, y)$  |
+| Pari, rispetto all'asse x     | $f(x, -y) = f(x, y)$   |
+| Dispari, rispetto all'asse x  | $f(x, -y) = -f(x, y)$  |
+
+E' possibile sfruttare queste simmetrie per semplificare la ricerca dei punti critici ricudendo di molto lo spazio di ricerca.
+
+Per determinare (e, successivamente, classificare) i punti critici, trovo tutti i punti nei quali $\nabla f(x, y) = \underline 0$ e tutti i punti di non derivabilità: questi punti sono tutti candidati ad essere critici e quindi vanno studiati.
+
+### Teorema del criterio della matrice hessiana
+
+Sia $A \sube \mathbb{R}^2$ aperto (in modo da poter applicare il teorema di Fermat), $f \in \mathcal{C}^2(A)$ (in modo che la matrice hessiana esista) e $\underline x_0 = (x_0, y_0)$ punto critico di $f$ (cioè $\nabla f(x_0, y_0) = 0$). Denoto con $q$ la forma quadratica indotta dalla matrice $H_f(\underline x_0)$:
+
+$$
+q(h_1, h_2) = (h_1, h_2) \cdot H_f(x_0) \cdot \begin{pmatrix} h_1 \\ h_2 \end{pmatrix}
+$$
+
+Allora
+
+1. Se $q$ è definita positiva allora $\underline x_0$ è punto di minimo
+2. Se $q$ è definita negativa allora $\underline x_0$ è punto di massimo
+3. Se $q$ è indefinita allora $\underline x_0$ è punto di sella
+
+#### Dimostrazione
+
+Essendo per ipotesi $\underline x_0$ un punto critico allora $\nabla f(x_0, y_0) = 0$ e quindi nello sviluppo di Taylor al secondo ordine non compare il gradiente:
+
+$$
+f(\underline x_0 + \underline h) = f(\underline x_0) + \frac{1}{2} q(\underline h) + \small o(\|\underline h\|)
+$$
+
+Se $q$ è definita positiva, per definizione $q(\underline h) \gt 0 \quad \forall \underline h \ne \underline 0$ quindi $f(\underline x_0 + \underline h) \gt f(\underline x_0) + \small o(\|\underline h\|)$ quindi $\underline x_0$ è un punto di minimo locale.
+
+Se $q$ è definita positiva, per definizione $q(\underline h) \lt 0 \quad \forall \underline h \ne \underline 0$ quindi $f(\underline x_0 + \underline h) \lt f(\underline x_0) + \small o(\|\underline h\|)$ quindi $\underline x_0$ è un punto di massimo locale.
+
+Se $q$ è indefinita, per definizione $\exists \underline h_1, \underline h_2 : q(\underline h_1) \gt 0, q(\underline h_2) \lt 0$ quindi $f(\underline x_0 + \underline h_1) \gt f(\underline x_0)$ e $f(\underline x_0 + \underline h_2) \lt 0$.
+
+Come volevasi dimostrare.
+
+Se $q$ è indefinita, questo criterio non permette di ricavare informazioni.
+
+Esiste una versione semplificata e più applicabile del precedente teorema:
+
+- Se $\det H_f(x_0, y_0) \gt 0$ e $\frac{\partial^2 f}{\partial x^2}(x_0, y_0) \gt 0$ allora $\underline x_0$ è minimo
+- Se $\det H_f(x_0, y_0) \gt 0$ e $\frac{\partial^2 f}{\partial x^2}(x_0, y_0) \lt 0$ allora $\underline x_0$ è massimo
+- Se $\det H_f(x_0, y_0) \lt 0$ allora $\underline x_0$ è sella
+- Se $\det H_f(x_0, y_0) = 0$ allora bisogna per forza applicare il teorema
+
+Sia $f : \mathbb{R}^2 \to R$, $f \in \mathcal{C}^2(\mathbb{R}^2)$, allora $f$ è convessa in $\mathbb{R}^2$ se $\forall (x, y) \in \mathbb{R}^2$ si ha che $H_f(x, y)$ è definita positiva o semidefinita positiva e $f$ è concava in $\mathbb{R}^2$ se $\forall (x, y) \in \mathbb{R}^2$ si ha che $H_f(x, y)$ è definita negativa o semidefinita negativa.
+
+Se $f \in \mathcal{C}^2(\mathbb{R}^2)$ è convessa e $\underline x_0$ è punto critico allora $\underline x_0$ è punto di minimo assoluto.
+
+Se $f \in \mathcal{C}^2(\mathbb{R}^2)$ è concava e $\underline x_0$ è punto critico allora $\underline x_0$ è punto di massimo assoluto.
+
+Se cerco i punti estremanti di una funzione $f$ in un insieme $A$ non aperto, non è sufficiente applicare il teorema di Fermat nell'aperto perchè potrebbero esserci estremanti sul bordo (e che quindi non verificano il teorema di Fermat).
+
+In tal caso, ci viene in soccorco il **teorema di Weierstrass**: sia $A \in \mathbb{R}^2$ chiuso e limitato e sia $f : A \to \mathbb{R}$. Allora $f$ ammette i valori di massimo e minimo assoluto, cioè esistono $(x_m, y_m), (x_M, y_M) \in A$ tali che $f(x_m y_m) \le f(x, y) \le f(x_M, y_M)$.
+
+In pratica, questo teorema ci aiuta nel senso che ci dice che possiamo analizzare la curva che costituisce la frontiera dell'insieme sotto esame e aggiungere ai candidati i punti di massimo e di minimo di tale curva.
+
+Quando utilizzo il suddetto teorema, devo specificare che lo sto utilizzando.
+
+## Vincoli di uguaglianza
+
+$x_0$ viene detto **punto di massimo relativo** per $f$ vicolato a $Z$ se $\exists \delta \gt 0 : f(\underline x_0) \ge f(\underline x) \forall x \in B_\delta(\underline x_0) \cap Z$.
+
+$x_0$ viene detto **punto di massimo assoluto** per $f$ vincolato a $Z$ se $f(\underline x_0) \forall \underline x \in Z$.
+
+Per i minimi, le definizioni sono analoghe.
+
+Se $x_0$ è detto **punto di estremo vincolato** se è massimo o minimo vincolato.
+
 # Varie ed eventuali
 
 Di seguito lista delle dimostrazioni da conoscere per l'esame:
@@ -1312,7 +1396,7 @@ Di seguito lista delle dimostrazioni da conoscere per l'esame:
 6.  [Differenziabilità implica continuità](#Dim6)
 7.  [Formula del gradiente](#teorema-della-formula-del-gradiente)
 8.  [Ortogonalità del gradiente alle curve di livello](#teorema-di-ortogonalità-del-gradiente-alle-curve-di-livello)
-
+9.  [Criterio della matrice hessiana](#teorema-del-criterio-della-matrice-hessiana)
 
 Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di funzioni
 
