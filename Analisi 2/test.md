@@ -1292,6 +1292,14 @@ $$
 f(\underline x) = f(\underline x_0) + \lang \nabla f(\underline x_0), \underline x -\underline x_0 \rang + \frac{1}{2} \lang \underline x - \underline x_0, H_f(\underline x_0)(\underline x - \underline x_0) \rang + \small o(\|\underline x - \underline x_0\|)
 $$
 
+Siano $A \sub e\mathbb{R}^2$ un sottoinsieme qualunque e $f : A \to \mathbb{R}$, allora un punto $(x_0, y_0) \in A$ si dice
+
+- **punto di massimo locale** o **relativo** per $f$ in $A$ se $\exists \delta \gt 0 : f(\underline x_0) \ge f(x, y) \quad \forall(x, y) \in B_\delta(x_0, y_0)$
+- **punto di massimo globale** o **assoluto** per $f$ in $A$ se $f(x_0, y_0) \ge f(x, y) \quad \forall(x, y) \in A$
+- definisioni analoghe per i minimi.
+
+Se un punto rientra nelle definizioni appena date, allora viene detto **punto di estremo** o **estremante** o **estremale**.
+
 # Varie ed eventuali
 
 Di seguito lista delle dimostrazioni da conoscere per l'esame:
