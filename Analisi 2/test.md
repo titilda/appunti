@@ -248,7 +248,7 @@ Siano $a,b,c : J \sube \mathbb{R} \to \mathbb{R}$ continue in $J$ con $a \ne 0$.
 
 L'integrale generale dell'equazione completa $a(t)y''(t) + b(t)y'(t) + c(t)y(t) = f(t)$ è $y(t) = y_o(t) + y_p(t) = C_1 \cdot y_{o1}(t) + C_2 \cdot y_{o2}(t) + y_p(t)$ con $y_o$ soluzione dell'omogenea associata, $y_{o1}, y_{o2}$ soluzioni particolari linearmente indipendenti dell'omogenea associata e $y_p$ soluzione particolare dell'equazione completa.
 
-In pratica, l'integrale generale di una EDO del secondo ordine lineare non omogenea è uno spaizo affine di dimensione due che consiste dello span delle soluzioni dell'omogenea associata, translata di $y_p$.
+In pratica, l'integrale generale di una EDO del secondo ordine lineare non omogenea è uno spazio affine di dimensione due che consiste dello span delle soluzioni dell'omogenea associata, translata di $y_p$.
 
 ## Risoluzione di EDO omogenee a coefficienti costanti
 
@@ -351,7 +351,7 @@ ove $S$ è è la matrice ottenuta affiancando gli autovettori di $A$ è i vari $
 
 Se $A$ è diagonalizzabile reale allora $e^{At}$ è una matrice wronskiana relativa al sistema omogeneo $\underline y' = A \underline y$ e l'integrale generale di tale sistema si scrive come $\underline y_o = e^{At} \cdot \underline C$ con $\underline C \in \mathbb{R}$.
 
-La matrice esponenziale è comoda per risolvere il problema di Cauchy: dato che $(e^{At_0})^{-1} = e^{-At_0}$, la soluzione del problema di Cauchy è $\underline t(t) = e^{A(t - t_0)}\underline y_0$.
+La matrice esponenziale è comoda per risolvere il problema di Cauchy: dato che $(e^{At_0})^{-1} = e^{-At_0}$, la soluzione del problema di Cauchy è $\underline y(t) = e^{A(t - t_0)}\underline y_0$.
 
 ## Risoluzione esplicita di sistemi con $A$ $2 \times 2$ con autovalori complessi coniugati
 
@@ -500,7 +500,7 @@ Se entrambi i limiti esistono finiti, il risultato allora corrisponde.
 
 E' possibile osservare che data una serie a termini positivi $\sum a_n$ e $l = \frac{1}{R}$ allora se $l \lt 1$ si ha convergenza e se $l \gt 1$ no.
 
-La convergenza di $\sum a_n$ e quella di $\sum a_n(x - x_0)^n$ non sono correlato in alcun modo.
+La convergenza di $\sum a_n$ e quella di $\sum a_n(x - x_0)^n$ non sono correlate in alcun modo.
 
 #### Dimostrazione
 
@@ -614,7 +614,7 @@ Restano valide le [formule per il calcolo del raggio di convergenza](#teorema-de
 
 Se $R = 0$ allora la serie converge solo in $z_0$, se $R = +\infty$ la serie converge $\forall z \in \mathbb{C}$ mentre se $0 \lt R \lt +\infty$ allora la serie converge assolutamente $\forall z_0 : |z - z_0| \lt R$ ma non si può dire niente per la frontiera (la serie potrebbe convergere o meno $\forall z_0 : |z - z_0| = R$).
 
-l'esponenziale complesso si calcola come
+L'esponenziale complesso si calcola come
 
 $$
 e^z = \sum_{n=0}^{\infty} \frac{z^n}{n!}
@@ -685,9 +685,9 @@ $$
 \sum_{n=1}^{+\infty} \left[ |a_n| + |b_n| \right] \lt + \infty
 $$
 
-allora la serie trigonometrica converge totalmente in $\mathbb{R}$. In particolare la funzione somma è continua in tutto $\mathbb{R}$ e vale la formula di integrazione termine a termine in ogni sottoinsieme limitato (non server richiedere la chiusura dell'insieme dato che, essendo la funzione continua, allora non esploderà in nessun punto).
+allora la serie trigonometrica converge totalmente in $\mathbb{R}$. In particolare la funzione somma è continua in tutto $\mathbb{R}$ e vale la formula di integrazione termine a termine in ogni sottoinsieme limitato (non serve richiedere la chiusura dell'insieme dato che, essendo la funzione continua, allora non esploderà in nessun punto).
 
-Inoltre, nella stessa circostanza di quanto appena scritto, la funzione somma è derivabile in tutto $\mathbb{R}$ è vale la formula di derivazione termine a termine.
+Inoltre, nella stessa circostanza di quanto appena scritto, la funzione somma è derivabile in tutto $\mathbb{R}$ e vale la formula di derivazione termine a termine.
 
 ## Costruzione della serie di Fourier di una funzione periodica
 
@@ -758,13 +758,13 @@ $$
 \end{align*}
 $$
 
-Chiamiamo *polinomio di Fourier* di ordine $m$ il polinomio trigonometrico
+Chiamiamo **polinomio di Fourier** di ordine $m$ il polinomio trigonometrico
 
 $$
 F_m(x) = a_0 + \sum_{n=1}^m \left[ a_n \cos(nx) + b_n \sin(nx) \right]
 $$
 
-Chiamiamo *serie di Fourier* la serie trigonometrica
+Chiamiamo **serie di Fourier** la serie trigonometrica
 
 $$
 \lim_{m \to \infty} F_m(x) = a_0 + \sum_{n=1}^{+\infty} \left[ a_n \cos(nx) + b_n \sin(nx) \right]
@@ -867,11 +867,11 @@ Dati un insieme $E \sub \mathbb{R}^n$ e un punto $\underline x_0 \in \mathbb{R}^
 
 - $\underline x_0$ è **di frontiera** o **di bordo** per $E$ se $\forall r \gt 0$ vale che $B_r(\underline x_0) \cap E \ne \emptyset$ e che $B_r(\underline x_0) \cap E^C \ne \emptyset$.
 - $\underline x_0$ è **interno** ad $E$ se $\underline x_0 \in E$ e $\exists r \gt 0 : B_r(x_0) \sub E$.
-- $\underline x_0$ è esterno ad $E$ se $\underline x_0$ è interno a $E^C$.
+- $\underline x_0$ è *esterno* ad $E$ se $\underline x_0$ è interno a $E^C$.
 
-Un insieme $E \sub \mathbb{R}^n$ si dice aperto se $\forall \underline x \in E$ si ha che $\underline x$ è punto interno. Lo stesso insieme è chiuso se $E^C$ è aperto.
+Un insieme $E \sub \mathbb{R}^n$ si dice **aperto** se $\forall \underline x \in E$ si ha che $\underline x$ è punto interno. Lo stesso insieme è chiuso se $E^C$ è aperto.
 
-Un insieme $E$ si dice *limitato* se esiste un $r$ tale per cui tutto l'insieme è contenuto in una palla di raggio $r$; è illimitato altrimenti.
+Un insieme $E$ si dice **limitato** se esiste un $r$ tale per cui tutto l'insieme è contenuto in una palla di raggio $r$; è illimitato altrimenti.
 
 Un insieme chiuso e limitato è detto **compatto**.
 
@@ -924,7 +924,7 @@ $$
 
 Il versore tangente ha direzione della retta tangente alla curva nel punto $\underline r(t)$, norma unitaria e verso concorde al verso di percorrenza della curva.
 
-Data una funzione $f \in \mathcal{C}^\$ qualsiasi, una curva costruita come
+Data una funzione $f \in \mathcal{C}^1\$ qualsiasi, una curva costruita come
 
 $$
 \underline r(t) = \begin{pmatrix} t \\ f(t) \end{pmatrix}
@@ -949,7 +949,7 @@ Siano $[a,b] \sub \mathbb{R}$ limitato e $\underline r : [a,b] \to \mathbb{R}^3$
 Per definizione
 
 $$
-\text{len}(\gamma) = \int_a^b \|\underline r'(t)\| dt \qquad \text{len}(\delta) = \int_a^b \|\underline v'(s)\| ds
+\text{len}(\gamma) = \int_a^b \|\underline r'(t)\| dt \qquad \text{len}(\delta) = \int_c^d \|\underline v'(s)\| ds
 $$
 
 Se
@@ -1008,8 +1008,6 @@ I vari integrali, in caso di curva regolare a tratti, sono da intendersi come so
 
 Una curva $\underline r : I \to \mathbb{R}^3$ si dice **regolare a tratti** se è continua su $I$ e la curva è regolare su $I$ tranne che su un numero finito di punti. La lunghezza di una curva regolare a tratti è la somma delle lunghezze dei vari tratti.
 
-## Integrale curvilineo
-
 Siano $[a,b] \sub \mathbb{R}$ limitato, $\underline r : [a,b] \to \mathbb{R}$ curva regolare di sostegno $\gamma$, $f(\underline r(t))$ continua $\forall t \in [a,b]$, l'**integrale curvilineo** di $f$ lungo $\gamma$ è 
 
 $$
@@ -1034,7 +1032,7 @@ Siano $a \sube \mathbb{R}^2$ aperto, $x_0 \in A$, $f : A \backslash \{\underline
 Diciamo che $f$ tende al limite $l \in \mathbb{R}$ per $\underline x \to \underline x_0$ e scriviamo che $\lim_{\underline x \to \underline x_0} f(x) = l$ se 
 
 $$
-\forall \epsilon \gt 0 \ \exists \delta \gt 0 : \underline x \in B_\delta(\underline x_0) \backslash \{ \underline x_0 \} \implies |f(\underline x) - l| \lt \epsilon
+\forall \varepsilon \gt 0 \ \exists \delta \gt 0 : \underline x \in B_\delta(\underline x_0) \backslash \{ \underline x_0 \} \implies |f(\underline x) - l| \lt \varepsilon
 $$
 
 Per stabilire che un limite non esiste, devo esibire due curve che mandano la funzione in valori diversi quando si fa tendere tale funzione nel punto limite.
