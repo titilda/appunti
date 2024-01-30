@@ -185,7 +185,7 @@ Siano $a,b,c : J \sube \mathbb{R} \to \mathbb{R}$ continue in $J$ con $a \ne 0$.
 
 L'integrale generale dell'equazione omogenea $a(t) \cdot y''(t) + b(t) \cdot y'(t) + c(t) \cdot y(t) = 0$ è uno spazio vettoriale di dimensione 2, cioè le soluzioni sono della forma $y_0(t) = C_1 \cdot y_{o1}(t) + C_2 \cdot y_{o2}(t)$ con $C_1, C_2 \in \mathbb{R}$ dove $y_{o1}$ e $y_{o2}$ sono due soluzioni linearmente indipendenti.
 
-#### Dimostrazione richiesta
+#### Dimostrazione
 
 Sia $V$ lo spazio vettoriale delle funzioni di classe $\mathcal{C}^2$ su $J$.
 
@@ -240,7 +240,7 @@ y_o(t) = C_1 \cdot y_{o1}(t) + C_2 \cdot y_{o2}(t) \implies \begin{cases}
 $$
 
 Definisco ora una funzione $z(t) = C_1 \cdot y_{o1}(t) + C_2 \cdot y_{o2}(t) = y_o(t)$.
-$z(t)$ risolve lo stesso problema di Cauchy di $y_o(t)$ è quindi per il teorema di esistenza e unicità globale del problema di Cauchy, sono la stessa cosa.
+$z(t)$ risolve lo stesso problema di Cauchy di $y_o(t)$ e quindi per il teorema di esistenza e unicità globale del problema di Cauchy, sono la stessa cosa.
 
 ## Struttura dell'integrale generale di EDO del secondo ordine lineari non omogenee
 
@@ -749,6 +749,8 @@ $$
 \end{align*}
 $$
 
+Come volevasi dimostrare.
+
 Le formule generali che valgono qualsiasi sia il periodo $T$ sono
 
 $$
@@ -1117,6 +1119,8 @@ $$
 z = f(x_0) + \lang \nabla f(\underline x_0), \underline x - \underline x_0 \rang
 $$
 
+<div id="Dim6"></div>
+
 ## Differenziabilità $\implies$ continuità
 
 Sia $A \sube \mathbb{R}$ aperto, $\underline x_0 \in A$, $f : A \to \mathbb{R}$ differenziabile in $\underline x_0$. Allora $f$ è continua in $\underline x_0$.
@@ -1196,6 +1200,8 @@ $$
 \end{align*}
 $$
 
+Come volevasi dimostrare.
+
 E' importante notare che se la funzione non è definita per casi e non contiene radici o valori assoluti, se $f \in \mathcal{C}^1(\mathbb{R}^2)$, per il teorema del differenziale totale, la $f$ è differenziabile in $\mathbb{R}^2$ e quindi vale la formula del gradiente.
 
 Siano $\underline r$ una curva piana e $f$ differenziabile e regolare, ristretta alla curva $\underline r$. 
@@ -1203,7 +1209,35 @@ La **restrizione** di $f$ è la funzione $F(t) = (f \cdot \underline r)(t) = f(\
 
 Se f è differeziabile e $\underline r$ è regolare allora $F'(t) = \lang \nabla f(\underline r(t)), \underline r'(t) \rang = \lang \nabla f(r_1(t), r_2(t)), \begin{pmatrix} r_1'(t) \\ r_2'(t) \end{pmatrix} \rang$.
 
-chiamando $\underline v = \frac{\underline r'(t_0)}{\|\underline r'(t_0)\|}$ e $\underline x_0 = \underline r(t_0)$ allora $F'(t_0) = \lang \nabla f(\underline r(t_0)), \frac{\underline r'(t_0)}{\|\underline r'(t_0)\|} \rang \cdot \|\underline r'(t_0)\| = \|\underline r'(t_0)\| \frac{\partial f}{\partial \underline v} (\underline x_0)$ cioè $F'(t_0)$ è multiplo della derivata direionale di $f$ nella direzione tangente alla curva in $\underline x_0$.
+chiamando $\underline v = \frac{\underline r'(t_0)}{\|\underline r'(t_0)\|}$ e $\underline x_0 = \underline r(t_0)$ allora $F'(t_0) = \lang \nabla f(\underline r(t_0)), \frac{\underline r'(t_0)}{\|\underline r'(t_0)\|} \rang \cdot \|\underline r'(t_0)\| = \|\underline r'(t_0)\| \frac{\partial f}{\partial \underline v} (\underline x_0)$ cioè $F'(t_0)$ è multiplo della derivata direzionale di $f$ nella direzione tangente alla curva in $\underline x_0$.
+
+La derivata direzionale di $f$ nella direzione tangente alla curva di livello è nulla: detto $\underline v$ il versore tangente alla curva di livello al livello $k = f(\underline x_0)$, nel punto $\underline x_0$ stesso, si ha che 
+
+$$
+\frac{\partial f}{\partial \underline v} (\underline x_0) = \lang \nabla f(\underline x_0), \underline v \rang
+$$
+
+Ne segue che il gradiente è nullo oppure ortogonale a $\underline v$.
+
+### Teorema di ortogonalità del gradiente alle curve di livello
+
+Sia $A \sube \mathbb{R}^2$ aperto, $f : A \to R$ differenziabile in $A$ e l'insieme di livello $I_k$ sostegno di una curva regolare di parametrizzazione $\underline r$. Allora $\lang \nabla f(\underline r(t)), \underline r'(t) \rang \le 0 \quad \forall t$.
+
+#### Dimostrazione
+
+Per ipotesi, $I_k$ coincide con il sostegno della curva regolare $\underline r(t)$ cioè $I_k = \{ r(t) : t \in J\}$. In particolare $f(\underline r(t)) = k \forall t \in J$.
+
+Chiamo $F(t) = f(\underline r(t)) = (f \cdot \underline r)(t)$ con $F : J \to \mathbb{R}$.
+
+Da un lato ho che $F(t) = k \quad \forall t \in J$ e che $F'(t) = 0 \quad \forall t \in J$, dall'altro, per il teorema di derivazione della composta, $F'(t) = \lang \nabla f(\underline r(t)), \underline r'(t) \rang \quad \forall t \in J$ da cui $\lang \nabla f(\underline r(t)), \underline r'(t) \rang = 0 \quad \forall t \in J$, come volevasi dimostrare.
+
+Siano $A \sube \mathbb{R}^2$ aperto, $\underline x_0 \in A$, $f : A \to \mathbb{R}$ differenziabile almeno in $\underline x_0$ e $\nabla f(\underline x_0) \ne 0$. Allora
+
+1. $\forall \underline v \in \mathbb{R}^2 : \|\underline v\| = 1$ si ha che $\left|\frac{\partial f}{\partial \underline v} (\underline x_0)\right| \le \left\| \nabla f(\underline x_0) \right\|$ cioè $-\left\|\nabla f(\underline x_0) \right\| \le \frac{\partial f}{\partial \underline v}(\underline x_0)$
+2. Detti $\underline v_{\text{max}} = \frac{\nabla f(\underline x_0)}{\|\nabla f(\underline x_0)\|}$ e $\underline v_{\text{min}} = - \underline v_{\text{max}}$ allora si ha che
+   $$
+    \frac{\partial f}{\partial \underline v_{\text{max}}} (\underline x_0) = \|\nabla f(\underline x_0)\| \qquad \frac{\partial f}{\partial v_{\text{min}}}(\underline x_0) = - \|\nabla f(\underline x_0)\|
+   $$
 
 # Varie ed eventuali
 
@@ -1214,8 +1248,9 @@ Di seguito lista delle dimostrazioni da conoscere per l'esame:
 3.  [Calcolo del raggio di convergenza](#teorema-del-calcolo-del-raggio-di-convergenza)
 4.  [Calcolo dei coefficienti di Fourier](#teorema-del-calcolo-dei-coefficienti-di-fourier)
 5.  [Invarianza della lunghezza di una curva per riparametrizzazione](#Dim5)
-6.  [Differenziabilità implica continuità](#differenziabilità-continuità)
+6.  [Differenziabilità implica continuità](#Dim6)
 7.  [Formula del gradiente](#teorema-della-formula-del-gradiente)
+8.  [Ortogonalità del gradiente alle curve di livello](#teorema-di-ortogonalità-del-gradiente-alle-curve-di-livello)
 
 
 Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di funzioni
