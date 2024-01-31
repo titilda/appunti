@@ -1376,6 +1376,8 @@ Quando utilizzo il suddetto teorema, devo specificare che lo sto utilizzando.
 
 ## Vincoli di uguaglianza
 
+Lo scopo è cercare i punti di massimo e minimo di una funzione $f(x, y)$ sotto un vincolo della forma $F(x, y) = 0$ con $F(x, y) = f(x, y) - k$, cioè $f$ ma vincolata all'insiem di livello $k$.
+
 $x_0$ viene detto **punto di massimo relativo** per $f$ vicolato a $Z$ se $\exists \delta \gt 0 : f(\underline x_0) \ge f(\underline x) \forall x \in B_\delta(\underline x_0) \cap Z$.
 
 $x_0$ viene detto **punto di massimo assoluto** per $f$ vincolato a $Z$ se $f(\underline x_0) \forall \underline x \in Z$.
@@ -1383,6 +1385,35 @@ $x_0$ viene detto **punto di massimo assoluto** per $f$ vincolato a $Z$ se $f(\u
 Per i minimi, le definizioni sono analoghe.
 
 Se $x_0$ è detto **punto di estremo vincolato** se è massimo o minimo vincolato.
+
+Per trovare massimi e minimi di una funzione vincolata, esistono principalmente tre metodi: il metodo di sostituzione in coordinate cartesiane, il metodo di sostituzione in coordinate polari e il metodo dei moltiplicatori di Lagrange.
+
+Il **metodo di sostituzione in coordinate cartesiane** consiste nel trovare, partendo dalla $F$, la $y$ espressa in funzione della $x$ (o viceversa) e sostituire la variabile trovata nella $f$ sotto analisi in modo da trasformare il tutto in uno studio di funzione 1-dimensionale: dopo aver trovato i massimi e i minimi della $f$ 1-dimensionale, si sostituiscono i valori trovati al posto della variabile in funzione della quale viene descritta la vriabile precedentemente utilizzata e così sono state trovate tutte le coordinate dei punti di massimo e minimo. Ad esempio, se dalla $F$ ricavo che $y = y(x)$, scrivo che $g(x) = f(x, y) = f(x, y(x))$ e studio i massimi e i minimi di $g$. Supponendo che $g$ risulti avere un massimo in $x_M$ e un minimo in $x_m$ allora le coordinate di massimo e minimo di $f(x, y)$ saranno $(x_M, y(x_M))$ e $(x_m, y(x_m))$.
+
+Nel caso in cui l'insieme $Z = \{(x, y) : f(x, y) = 0\}$ sia una circonferenza, è possibile utilizzare il **metodo di sostituzione in coordinate cartesiane** che consiste nell'applicare la sostituzione
+
+$$
+\begin{cases}
+    x = r_0 \cos \theta \\
+    y = r_0 \sin \theta
+\end{cases}
+$$
+
+ottenendo $g(\theta) = f(r_0 \cos \theta, r_0 \sin \theta)$ e nel studiare la funzione così ottenuta per $\theta \in [0, 2 \pi)$.
+
+Il **metodo dei moltiplicatori di Lagrange** è l'equivalente del teorema di Fermat ma per i punti di estremo sul vincolo di uguaglianza.
+
+Siano $D \sube \mathbb{R}^2$ aperto, $f,F \in \mathcal{C}^1{\mathbb{D}}$. Se $\underline x_0$ è punto di estremo vincolato a $Z$ per $f$ con $Z = \{(x, y) \in D : F(x, y) = 0\}$ e inoltre $\nabla F(x, y) \ne 0$ (leggasi "la curva è regolare") allora esiste un $\lambda_0 \in \mathbb{R}$ detto **moltiplicatore di Lagrange** tale che $\lambda f(\underline x_0) = \lambda_0 \nabla F(\underline x_0)$.
+
+In pratica, si deve risolvere il seguente sistema nonlineare a tre incognite $(x_0, y_0, \lambda_0)$
+
+$$
+\begin{cases}
+    \frac{\partial f}{\partial x} (\underline x_0) = \lambda_0 \frac{\partial F}{\partial x} (\underline x_0) \\
+    \frac{\partial f}{\partial y} (\underline x_0) = \lambda_0 \frac{\partial F}{\partial y} (\underline x_0) \\
+    F(\underline x_0) = 0
+\end{cases}
+$$
 
 # Varie ed eventuali
 
@@ -1406,3 +1437,14 @@ Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di fu
 | $E \sube J$ | Semplice/puntuale | Insieme di punti nel quale la serie di funzioni converge                                                                    |
 | $I \sube J$ | Totale            | Intervallo nel quale ogni termine della serie di funzioni può essere maggiorata in modulo da una serie numerica convergente |
 |             |                   |                                                                                                                             |
+<!--
+    continuità limite incompleto
+    prodotto scalare diff e piano tangù
+    oiano
+    h non underline
+    X in derivate parziali
+    \rang in formula del gradiente
+    dopo dim formula gradinte c'è un "differeziabile"
+    dopo "la derivata direzionale di f in x0 nella direzione v è" manca (x0) dopo la derivata parziale
+    manca cvd nella diff => cont
+-->
