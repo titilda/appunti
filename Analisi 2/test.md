@@ -1417,6 +1417,183 @@ $$
 \end{cases}
 $$
 
+e poi classificare le varie combinazioni soluzioni ottenute (ignorando le $\lambda$) per capire di che tipo di punti si tratta.
+
+Siano $A \sube \mathbb{R}^2$ aperto, $f,F \in \mathcal{C}^1(A)$. Si definisce **Lagrangiana** la funzione di tre variabili $\mathscr{L}(x, y, \lambda) = f(x, y) - \lambda F(x, y)$ il cui gradiente posto uguale a zero risolve il sistema dei moltiplicatori di Lagrange.
+
+# Integrali doppi
+
+$D \sube \mathbb{R}^2$ è detta **regione y-semplice** se è della forma 
+
+$$
+D = \{(x, y) \in \mathbb{R}^2 : x \in [a, b], g_1(x) \le y \le g_2(x)\}
+$$
+
+con $[a, b]$ limitato, $g_1 \le g_2$ e $g_1, g_2$ continue in $[a, b]$.
+
+$D \sube \mathbb{R}^2$ è detta **regione x_semplice** se è della forma
+
+$$
+D = \{(x, y) \in \mathbb{R}^2 : y \in [c, d], h_1(y) \le x \le h_2(y)\}
+$$
+
+con $[c, d]$ limitato, $h_1 \le h_2$ e $h_1, h_2$ continue in $[c, d]$.
+
+Se $D \sube R^2$ è regione semplice e $f : D \to \mathbb{R}$ è continua su $D$ allora $f$ è **integrabile** su $D$.
+
+Se $D$ è unione di regioni semplici, si può integrare separatamente su ciascuna regione e poi sommare i risultati.
+
+Se $D$ è y-semplice allora
+
+$$
+\int \int_D f(x, y) dxdy = \int_a^b \left( \int_{g_1(x)}^{g_2(x)} f(x, y) dy \right) dx
+$$
+
+Se $D$ è x-semplice allora
+
+$$
+{\int\int}_D f(x, y) dxdy = \int_c^d \left( \int_{h_1(y)}^{h_2(y)} f(x, y) dx \right) dy
+$$
+
+Se $f(x, y) = f_1(x) \cdot f_2(y)$ e le due funzioni $g_1, g_2$ o $h_1, h_2$ sono costanti, il conto si può semplificare rendendolo prodotto di integrali:
+
+$$
+{\int\int}_D f(x, y) dxdy = \int_a^b \left( \int_{g_1(x)}^{g_2(x)} f(x, y) dy \right) dx = \int_c^d f_2(y) dy \cdot \int_a^b f_1(x) dx
+$$
+
+## Cambio di variabili (coordinate polari)
+
+Se applico alla $f$ da integrare una mappa del tipo $\varphi(x, y) = \begin{pmatrix} r \cos \theta \\ r \sin \theta \end{pmatrix}$ allora ottengo che $f(\varphi(x, y)) = f(r, \theta)$ e che $f' = f'(\varphi(x, y)) \cdot \varphi'(x, y)$. Necessito di trovare $\varphi'$, per farlo utilizzo la **matrice jacobiana**:
+
+$$
+J_\varphi(r, \theta) = \begin{bmatrix}
+    \left[ \nabla \varphi_1(r, \theta) \right]^T \\
+    \left[ \nabla \varphi_2(r, \theta) \right]^T
+\end{bmatrix} = \begin{bmatrix}
+    \frac{\partial \varphi_1}{\partial r} & \frac{\partial \varphi_1}{\partial \theta} \\
+    \frac{\partial \varphi_2}{\partial r} & \frac{\partial \varphi_2}{\partial \theta}
+\end{bmatrix} = \begin{bmatrix}
+    cos \theta & -r \sin \theta \\
+    \sin \theta & r \cos \theta
+\end{bmatrix} \\
+
+|\det J_\varphi(r \theta)| = r
+$$
+
+Dunque $\varphi'(r, \theta) = r$.
+
+Per effettuare un cambio di variabili con una mappa generica, $\varphi$ deve essere di classe $\mathcal{C}^1$, biunivoca e $\det J_\varphi(u, v) \ne 0$ e limitato $\forall u,v$.
+
+# Integrali tripli
+
+$E \sube \mathbb{R}^3$ è detta **regione z-semplice se è della forma**
+
+$$
+E = \{ (x, y, z) \in \mathbb{R}^3 : (x, y) \in D, h_1(x, y) \le z \le h_2(x, y) \}
+$$
+
+con $D$ regione semplice, $h_1 \le h_2$ e $h_1,h_2$ continue in $D$.
+
+## Integrazione per fili
+
+Sia $E$ regione z-semplice, $f : E \to R$ continua in $E$, allora $f$ è **integrabile** su $E$ e vale la formula di integrazione per fili.
+
+L'integrazione per fili consiste nell'integrare su di un filo (integrale singolo) e poi integrare il risultato su di un'area (integrale doppio):
+
+$$
+{\int\int\int}_E f(x, y, z) dxdydz = {\int\int}_D \left( \int_{h_1(x, y)}^{h_2(x, y)} f(x, y, z) dz \right) dxdy
+$$
+
+Se fosse richiesto di integrare su una regione x-semplice o y-semplice allora si sotituisce la z con, rispettivamente, x e y.
+
+## Integrazione per strati.
+
+Sia $E$ regione z-semplice, $f : E \to R$ continua in $E$, allora $f$ è **integrabile** su $E$ e vale la formula di integrazione per strati.
+
+L'integrazione per strati consiste nell'integrare su di uno strato (integrale doppio) e poi integrare il risultato su un filo generico (integrale singolo):
+
+$$
+{\int\int\int}_E f(x, y, z) dxdydz = \int_a^b \left( {\int\int}_D f(x, y, z) dxdy \right) dz
+$$
+
+dove i parametri $a$ e $b$ sono i limiti entro i quali è compresa $z$.
+
+Per scegliere tra integrazione per fili o per strati, è necessario capire "di che forma" è il dominio e vedere se è più facile trgliarlo a fette (integrale per strati) o in fili. Tendenzialmente, se i limiti entro i quali è compresa $z$ sono costanti, è preferibile l'integrazione per strati.
+
+## Cambio di variabili (coordinate sferiche)
+
+Il ragionamento è identico a quello del [cambiamento di coordinate in coordinate polari](#cambio-di-variabili-coordinate-polari) ma cambia il determinante jacobiano.
+
+La mappa che descrive il cambiamento di coordinate è
+
+$$
+\begin{cases}
+    T_1(r, \varphi, \theta) = r \sin \varphi \cos \theta \\
+    T_2(r, \varphi, \theta) = r \sin \varphi \sin \theta \\
+    T_3(r, \varphi, \theta) = r \cos \varphi
+\end{cases}
+$$
+
+Dunque, per calcolare il determinante jacobiano si procede come segue:
+
+$$
+J_T(r, \varphi, \theta) = \begin{bmatrix}
+    \left[ \nabla T_1(r, \varphi, \theta) \right]^T \\
+    \left[ \nabla T_2(r, \varphi, \theta) \right]^T \\
+    \left[ \nabla T_3(r, \varphi, \theta) \right]^T \\
+\end{bmatrix} = \begin{bmatrix}
+    \frac{\partial T_1}{\partial r} & \frac{\partial T_1}{\partial \varphi} & \frac{\partial T_1}{\partial \theta} \\
+    \frac{\partial T_2}{\partial r} & \frac{\partial T_2}{\partial \varphi} & \frac{\partial T_2}{\partial \theta} \\
+    \frac{\partial T_3}{\partial r} & \frac{\partial T_3}{\partial \varphi} & \frac{\partial T_3}{\partial \theta} \\
+\end{bmatrix} = \begin{bmatrix} 
+    \sin \varphi \cos \theta & r \cos \varphi \cos \theta & -r \sin \varphi \sin \theta \\
+    \sin \varphi \sin \theta & r \cos \varphi \sin \theta & r \sin \varphi \cos \theta \\
+    \cos \varphi & -r \sin \varphi & 0
+\end{bmatrix} \\
+\begin{align*}
+    \det J_T(r, \varphi, \theta) &= \cos \varphi \det \begin{bmatrix} 
+        r \cos \varphi \cos \theta & -r \sin \varphi \sin \theta \\
+        r \cos \varphi \sin \theta & r \sin \varphi \cos \theta \\
+    \end{bmatrix} + r \sin \varphi \det \begin{bmatrix} 
+        \sin \varphi \cos \theta & -r \sin \varphi \sin \theta \\
+        \sin \varphi \sin \theta & r \sin \varphi \cos \theta \\
+    \end{bmatrix} \\
+    &= cos \varphi (r^2 \sin \varphi \cos \varphi \cos^2 \theta + r^2 \sin \varphi \cos \varphi \sin^2 \theta) + r \sin \varphi (r \sin^2 \varphi \cos^2 \theta + r \sin^2 \varphi \sin ^2 \theta) \\
+    &= r^2 \sin \varphi \cos^2 \varphi \cos^2 \theta + r^2 \sin \varphi \cos^2 \varphi \sin^2 \theta + r^2 \sin^3 \varphi \cos^2 \theta + r^2 \sin^3 \varphi \sin^2 \theta \\
+    &= r^2 \sin \varphi \cos^2 \varphi (\cos^2 \theta + \sin^2 \theta) + r^2 \sin^3 \varphi (\cos^2 \theta + \sin^2 \theta) \\
+    &= r^2 \sin \varphi \cos^2 \varphi + r^2 \sin^3 \varphi \\
+    &= r^2 \sin \varphi (\cos^2 \varphi + \sin^2 \varphi) \\
+    &= r^2 \sin \varphi
+\end{align*}
+$$
+
+## Massa e baricentro
+
+Sia $E \sube \mathbb{R}^3$ regione semplice che rappresenta un corpo rigido e $\rho(x, y, z) : E \to \mathbb{R}^+$ la funzione che rappresenta la densità di massa nel punto $(x, y, z)$, allora 
+
+$$
+\text{Massa}(E) = {\int\int\int}_E \rho(x, y, z) dxdydz
+$$
+
+Il **baricentro** è il punto che può essere considerato come punto di applicazione delle forze agenti sul campo. Il baricentro $(\overline x_B, \overline y_B, \overline z_B)$ si calcola nel seguente modo:
+
+$$
+\overline x_B = {\int\int\int}_E x \cdot \rho(x, y, z) dxdydz \\
+\overline y_B = {\int\int\int}_E y \cdot \rho(x, y, z) dxdydz \\
+\overline z_B = {\int\int\int}_E z \cdot \rho(x, y, z) dxdydz \\
+$$
+
+## Cambio di variabili (coordinate cilindriche)
+
+Il passaggio a coordinate cilindriche si applica quando $E$ è z-semplice della forma $E = \{(x, y, z) \in \mathbb{R}^3 : (x, y) \in D, h_1(x, y) \le x \le h_2(x, y)\}$ e $D$ è a simmetria radiale.
+
+In tal caso, si procede prima integrando per fili e poi procedendo al cambio di variabili in coordinate polari:
+
+$$
+j(x, y) = \int_{h_1(x, y)}^{h_2(x, y)} f(x, y, z) dz \\
+{\int\int\int}_E f(x, y, z) dxdydz = {\int\int}_D j(x, y) dxdy = \int\int j(r \cos \theta, r \sin \theta) r drd\theta
+$$
+
 # Varie ed eventuali
 
 Di seguito lista delle dimostrazioni da conoscere per l'esame:
@@ -1430,6 +1607,7 @@ Di seguito lista delle dimostrazioni da conoscere per l'esame:
 7.  [Formula del gradiente](#teorema-della-formula-del-gradiente)
 8.  [Ortogonalità del gradiente alle curve di livello](#teorema-di-ortogonalità-del-gradiente-alle-curve-di-livello)
 9.  [Criterio della matrice hessiana](#teorema-del-criterio-della-matrice-hessiana)
+10. [Cambio di variabili in coordinate sferiche](#cambio-di-variabili-coordinate-sferiche)
 
 Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di funzioni
 
