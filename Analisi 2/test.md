@@ -1578,9 +1578,9 @@ $$
 Il **baricentro** è il punto che può essere considerato come punto di applicazione delle forze agenti sul campo. Il baricentro $(\overline x_B, \overline y_B, \overline z_B)$ si calcola nel seguente modo:
 
 $$
-\overline x_B = {\int\int\int}_E x \cdot \rho(x, y, z) dxdydz \\
-\overline y_B = {\int\int\int}_E y \cdot \rho(x, y, z) dxdydz \\
-\overline z_B = {\int\int\int}_E z \cdot \rho(x, y, z) dxdydz \\
+\overline x_B = \frac{1}{\text{Massa}}(E) \cdot {\int\int\int}_E x \cdot \rho(x, y, z) dxdydz \\
+\overline y_B = \frac{1}{\text{Massa}}(E) \cdot {\int\int\int}_E y \cdot \rho(x, y, z) dxdydz \\
+\overline z_B = \frac{1}{\text{Massa}}(E) \cdot {\int\int\int}_E z \cdot \rho(x, y, z) dxdydz \\
 $$
 
 ## Cambio di variabili (coordinate cilindriche)
@@ -1593,6 +1593,95 @@ $$
 j(x, y) = \int_{h_1(x, y)}^{h_2(x, y)} f(x, y, z) dz \\
 {\int\int\int}_E f(x, y, z) dxdydz = {\int\int}_D j(x, y) dxdy = \int\int j(r \cos \theta, r \sin \theta) r drd\theta
 $$
+
+# Studio qualitativo EDO
+
+Sia $A \sube \mathbb{R}^2$, $f : A \to \mathbb{R}$ continua in $A$. Se in un intorno del punto $(t_0, y_0) \in A$, $\frac{\partial f}{\partial y}(t, y)$ esiste ed è continua allora il problema di Cauchy 
+
+$$
+\begin{cases}
+    y'(t) = f(t, y(t)) \\
+    y(t_0) = y_0
+\end{cases}
+$$
+
+ammette un'unica soluzione localmente in un intorno del punto $(t_0, y_0)$.
+
+In pratica, se $f : A \sube \mathbb{R}^2 \to \mathbb{R}$ non contiene termini del tipo $(y - \overline y)^\alpha$ con $\alpha \in (0, 1)$ o $|y - \overline y|^\alpha$ con $\alpha \in (0, 1]$ allora $\frac{\partial f}{\partial y}$ esiste ed è continua in tutto $A$ e quindi tutti i problemi di Cauchy con $(t_0, y_0) \in A$ ammettono soluzione unica e quindi i grafici di soluzioni distinte non si intersecano.
+
+Se invece $f$ contiene termini del tipo $(y - \overline y)^\alpha$ con $\alpha \in (0, 1)$ o $|y - \overline y|^\alpha$ con $\alpha \in (0, 1]$ allora $\frac{\partial f}{\partial y}$ potrebbe non esistere o non essere continua nella retta $y = \overline y$. Fuori dalla retta continua a valere l'unicità locale.
+
+Nel caso in cui esistano due soluzioni allo stesso problema di Cauchy, queste si intersecano sempre (almeno nel punto in cui si impine il passaggio della funzione).
+
+Nel caso in cui valga il teorema di esistenza e unicità locale in tutti i punti del dominio di $f$ e $t \in [a, b]$ è un intervallo fissato indipendente da $y$ (quindi è una striscia verticale), se $A = [a, b] \times \mathbb{R}$ è limitato, $f : A \to \mathbb{R}$ è continua e $\frac{\partial f}{\partial y}$, allora
+
+1. se esistono due costanti $M,N \lt 0$ tali che $\forall (t, y) \in A$ vale che $|f(t, y)| \le M|y| + N$ oppure $\left| \frac{\partial f}{\partial y} (t, y) \right| \le M$ allora $\forall (t_0, y_0) \in A$ il problema di Cauchy $y(t_0) = y_0$ ha un'unica soluzione definita $\forall t \in [a, b]$
+2. se per una soluzione particolare $\overline y$ esiste $k \gt 0$ tale che $\overline y(t) \le k \quad \forall t$ nel dominio di definizione di $\overline y$ allora $\overline y$ è definita $\forall t \in [a, b]$.
+
+## Studio qualitativo di EDO del primo ordine
+
+Lo studio qualitativo di una EDO consiste nel tracciare un gragfco approssimativo della sua soluzione anche senza saperla risolvere.
+
+Una EDO è detta **autonoma** se la sua $f$ non dipende da $t$, quindi se è della forma $y'(t) = f(y(t))$.
+
+Le EDO autonome sono un sottoinsieme delle edo a variabili separabili e possono essere risolte come tali
+
+$$
+y'(t) = f(y(t)) \iff \int_{t_0}^t \frac{y'(t_0)}{f(y(t))} dt = \int_{y(t_0)}^{y(t)} \frac{dy}{f(y)} = \int_{t_0}^t 1 dt
+$$
+
+Se però $\frac{1}{f(y)}$ non è facilmente integrabile, è comunque possibile tracciare un grafico approssimato delle sue soluzioni attraverso lo studio qualitativo.
+
+Se $y(t)$ è soluzione, allora anche $z(t) = y(t + c)$ lo è, infatti se $y$ è soluzione, allora $y'(t) = f(y(t))$ e quindi $z'(t) = y'(t + c) = f(y(t + c)) = f(z)$. Questa proprietà di cide che qualsiasi sia la soluzione trovata, una soluzione con la stessa forma ma translata orizzontalmente è comunque soluzione dell'equazione sotto esame.
+
+Dato che si tratta di EDO lineari, vale il teorema di esistenza e unicità globale per il problema di Cauchy quindi in ogni punto passa una e una sola soluzione e in tutti i punti passa una e una sola soluzione, quindi le soluzioni non si intersecano.
+
+Per disegnare una soluzione approssimativa, bisogna ricavare la **linea delle fasi**:
+
+1. si disegna $f(y)$ sul piano con $y$ sull'asse delle ascisse e $f(y)$ sull'asse delle ordinate;
+2. si posiziona un'asse monodimensionale (la linea delle fasi) sotto il grafico del punto 1;
+3. si segna un punto sulla linea delle fasi (**punto di equilibrio**) in corrispondenza degli zeri della $f(y)$, ottenendo così degli intervalli;
+4. si segna un afreccia verso sinistra (negativa) dove la $f(y)$ è negativa e una verso destra (positiva) dove la $f(y)$ è positiva;
+5. si ruota la linea delle fasi di 90° in senso antiorario, in modo da avere le y positive in alto;
+6. si disegna un piano con $t$ sull'asse delle ascisse e $y(t)$ sull'asse delle ordinate e lo si posiziona di fianco alla linea delle fasi appena ruotata;
+7. sul nuovo grafico, si disegna una soluzione costante in corrispondenza di ciascun punto d'equilibrio;
+8. per ogni freccia positiva sulla linea delle fasi, si disegna una funzione più o meno simile ad un sigmoide che per $t \to -\infty$ è asintotica alla soluzione costante che delimita inferiormente l'intervallo in cui ci si trova e per $t \to +\infty$ è asintotica alla soluzione costante che delimita superiormente l'intervallo in cui ci si trova;
+9. per ogni freccia negativa, il ragionamento è analogo a quello per le freccie positive ma con le soluzioni costanti opposte.
+
+Se un intervallo non è delimitato da un punto di equilibrio, allora la soluzione approssimativa tenderà a $\pm \infty$ compatibilmente con la posizione della soluzione all'interno della linea delle fasi.
+
+E' importante ricordare ancora una volta che, per il teorema di esistenza e unicità, nessuna soluzione si interseca con altre soluzioni, dunque le soluzioni non costanti, pur avvicinandosi sempre più a quelle costanti, non le toccheranno mai.
+
+Se viene richiesto di disegnare una soluzione approssimativa che passa in un punto particolare, si transla orisoontalmente la soluzione approssimativa trovata nell'intervallo che contiene il punto finchè la soluzione non passa per tale punto.
+
+## Sistemi differenziali autonomi nel piano
+
+Un **sistma differenziale autonomo** è un sistema differenziale della forma
+
+$$
+\underline y'(t) = \underline f(\underline y(t))\begin{cases} f_1(y_1(t), y_2(t)) \\ f_2(y_1(t), y_2(t)) \end{cases}
+$$
+
+con $f : A \sube \mathbb{R}^3$ continua che non dipende esplicitamente da $t$.
+
+Se per le equazioni si ha la linea delle fasi, per i sistemi 2-dimensionali si ha il **piano delle fasi**.
+
+Sono detti **punti di equilibrio** i punti nei quali $f(y_1, y_2) = \underline 0$ e corrispondono con le soluzioni costanti dell'equazone.
+
+Una **traiettoria/orbita** è invece, una curva che rappresenta una famiglia di soluzioni della forma $\underline y(t + c)$ (i punti di equilibrio sono inclusi in questa definizione).
+
+Per disegnare le soluzioni approssimative, si deve disegnare il piano delle fasi:
+
+1. si ricava la matrice $A$ del sistema, così come gli autovalori e gli autovettori;
+2. per ciascun autovettore, si sisegna una retta passante per l'origine e diretta come l'autovettore;
+3. per ciascuna retta, se l'autovalore associato all'autovettore da cui è originata è positivo, allora si disegnano due freccie (una da un alto dell'origine e l'altra dall'altro) in direzione uscente, se l'autovettore è negativo allora la direzione è entrante;
+4. si combinano le informazioni come in foto
+
+![In nero il piano delle fasi, in arancio e in verde le due rette e in rosso le famiglie di soluzioni](assets/pianodellefasi.jpg)
+
+In caso di autovalori diversi con lo stesso segno, le famiglie di soluzioni sono tangenti alla retta con autovalore più piccolo in modulo.
+
+Sia nell'asse che nel piano delle fasi, se una soluzione costante ha soltanto frecce entranti, è detta punto di equilibrio stabile, se infece ha anche una sola freccia uscente, è detta di equilibrio instabile.
 
 # Varie ed eventuali
 
@@ -1619,4 +1708,7 @@ Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di fu
 |             |                   |                                                                                                                             |
 <!--
     manca cvd nella diff => cont
+    Differenziabilità e piano tangente: manca \underline in h
+    alloa
+    Differenziabilità e piano tangente: parentesi sbagliata nel gradiente
 -->
