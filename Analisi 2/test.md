@@ -119,7 +119,7 @@ Se $\alpha \lt 0$ non ha senso $y = 0$.
 
 Per risolvere un'equazione di Bernoulli, c'è un procedimento da seguire.
 
-Inizio crcando le soluzioni costanti:
+Inizio cercando le soluzioni costanti:
 
 -   $y(t) = 0$ è sempre soluzione.
 -   Se sia $h$ che $k$ sono costanti, posso raccogliere $y(t)$e trovare un'altra soluzione costante:
@@ -228,7 +228,7 @@ Per verificare che le due soluzioni sono linearmente indipendenti, suppongo, per
 
 Per $t = t_0$ si ha che $y_{o1} = k \cdot y_{o2} \iff 1 = k \cdot 0$ che è impossibile, pertanto le due soluzioni sono linearmente indipendenti.
 
-Ora dimostro che qualunque soluzione è compbinazione lineare delle due precedenti.
+Ora dimostro che qualunque soluzione è combinazione lineare delle due precedenti.
 
 Sia $y_o$ una soluzione qualunque dell'equazione omogenea:
 
@@ -317,7 +317,7 @@ $$
 W = \underline y_{o1}(t), \dots, \underline y_{on}(t)
 $$
 
-Con questa notazione, l'integrale generale del sistema omogeneo diventa $\underline y_o(t) = W(t) \cdot \underline C$ con $\underline C \in \mathbb{R}$ e la soluzione del problema di Cauchy si ottiene scegliendo $\underline C = W(t_0)^{-1} \cdot \underline y_o$ quindi $\underline y(t) = W(t) \cdot (t_0)^{-1} \cdot \underline y_o$.
+Con questa notazione, l'integrale generale del sistema omogeneo diventa $\underline y_o(t) = W(t) \cdot \underline C$ con $\underline C \in \mathbb{R}$ e la soluzione del problema di Cauchy si ottiene scegliendo $\underline C = W(t_0)^{-1} \cdot \underline y_o$ quindi $\underline y(t) = W(t) \cdot [W(t_0)]^{-1} \cdot \underline y_o$.
 
 ## Risoluzione esplicita di sistemi con $A$ diagonalizzabile reale
 
@@ -353,7 +353,7 @@ Se $A$ è diagonalizzabile reale allora $e^{At}$ è una matrice wronskiana relat
 
 La matrice esponenziale è comoda per risolvere il problema di Cauchy: dato che $(e^{At_0})^{-1} = e^{-At_0}$, la soluzione del problema di Cauchy è $\underline y(t) = e^{A(t - t_0)}\underline y_0$.
 
-## Risoluzione esplicita di sistemi con $A$ $2 \times 2$ con autovalori complessi coniugati
+## Risoluzione esplicita di sistemi con $A \in \mathcal{M}_\mathbb{R}(2 )$ con autovalori complessi coniugati
 
 Sia $A \in \mathcal{M}_{\mathbb{R}}(2)$ con autovalori $\lambda$ e $\overline \lambda$ complessi coniugati, $\Im \lambda = 0$ e $\underline v \in \mathbb{C}^2$ autovalore associato a $\lambda$.
 Un sistema fondamentale di soluzioni di un sistema omogeneo è dato da
@@ -440,7 +440,7 @@ _La convergenza totale in $I \sube J$ implica la convergenza assoluta e puntuale
 
 ### Teorema di continuità della somma
 
-Siano $f_n$ funzioni definite almeno in un intervallo $I \sube R$. Se le funzioni sono continue in $I$ è la serie generale converge totalmente in $I$ allora la funzione somma è continua in $I$
+Siano $f_n$ funzioni definite almeno in un intervallo $I \sube R$. Se le funzioni sono continue in $I$ è la serie generale converge totalmente in $I$ allora la funzione somma è continua in $I$.
 
 ### Teorema di integrabilità termine a termine
 
@@ -466,7 +466,7 @@ $$
 
 dove $a_n \in \mathbb{R}$ vengono detti coefficienti della serie e $x_0 \in \mathbb{R}$ è il centro della serie.
 
-_Nella seguente sezione, si considera $(x_0 - x_0)^0 = 1$_
+_Nella seguente sezione, si considera $(x_0 - x_0)^0 = 1$_.
 
 Per $x = x_0$ si ha che
 
@@ -504,7 +504,7 @@ La convergenza di $\sum a_n$ e quella di $\sum a_n(x - x_0)^n$ non sono correlat
 
 #### Dimostrazione
 
-La serie di potenze $\sum a_n(x - x_0)^n$ converge assolutamente in $\overline x$ se la serie numerica $\sum |a_n| |\overline x - x_0| = \sum b_n$ converge.
+La serie di potenze $\sum a_n(x - x_0)^n$ converge assolutamente in $\overline x$ se la serie numerica $\sum |a_n| |\overline x - x_0|^n = \sum b_n$ converge.
 
 Questa è una serie numerica a termini positivi per cui posso scegliere se applicare il criterio del rapporto o quello della radice.
 
@@ -519,7 +519,7 @@ $$
 \end{align*}
 $$
 
-Se il criterio della radice è applicabile, la serie converge, se
+Se il criterio della radice è applicabile, la serie converge se
 
 $$
 \begin{align*}
@@ -788,7 +788,7 @@ $$
 
 Ovviamente, se $f$ è periodica e regolare a tratti su un dato intervallo allora è regolare a tratti ed è integrabile in qualunque intervallo limitato.
 
-Sia $f : \mathbb{R} \to \mathbb{R}$ $2-\pi$ periodica e regolare a tratti in $[-\pi, +\pi]$ allora la serie di Fourier di $f$ converge puntualmente $\forall x \in \mathbb{R}$ e inoltre
+Sia $f : \mathbb{R} \to \mathbb{R}$ $2\pi$-periodica e regolare a tratti in $[-\pi, +\pi]$ allora la serie di Fourier di $f$ converge puntualmente $\forall x \in \mathbb{R}$ e inoltre
 
 $$
 \lim_{m \to \infty} F_m(x) = \frac{1}{2} \left( \lim_{S \to x^+} f(S) + \lim_{S \to x^-} f(S) \right)
@@ -1229,7 +1229,7 @@ Sia $A \sube \mathbb{R}^2$ aperto, $f : A \to R$ differenziabile in $A$ e l'insi
 
 #### Dimostrazione
 
-Per ipotesi, $I_k$ coincide con il sostegno della curva regolare $\underline r(t)$ cioè $I_k = \{ r(t) : t \in J\}$. In particolare $f(\underline r(t)) = k \forall t \in J$.
+Per ipotesi, $I_k$ coincide con il sostegno della curva regolare $\underline r(t)$ cioè $I_k = \{ r(t) : t \in J\}$. In particolare $f(\underline r(t)) = k \quad \forall t \in J$.
 
 Chiamo $F(t) = f(\underline r(t)) = (f \cdot \underline r)(t)$ con $F : J \to \mathbb{R}$.
 
@@ -1263,7 +1263,7 @@ H_f(\underline x_0) = \begin{bmatrix}
 \end{bmatrix}
 $$
 
-Per il **teorema si Schwarz**, se $A \sube \mathbb{R}^2$ e $f \in \mathcal{C}^2(A)$ allora $\frac{\partial^2 f}{\partial y \partial x} = \frac{\partial^2 f}{\partial x \partial y}$ cioè la matrice hessiana è simmetrica e questo può semplificare i calcoli.
+Per il **teorema di Schwarz**, se $A \sube \mathbb{R}^2$ e $f \in \mathcal{C}^2(A)$ allora $\frac{\partial^2 f}{\partial y \partial x} = \frac{\partial^2 f}{\partial x \partial y}$ cioè la matrice hessiana è simmetrica e questo può semplificare i calcoli.
 
 Chiamiamo **forma quadratica indotta** da $H_f(x_0, y_0)$ la funzsione $q : \mathbb{R}^2 \to R$ tale che
 
@@ -1376,7 +1376,7 @@ In tal caso, ci viene in soccorco il **teorema di Weierstrass**: sia $A \sube \m
 
 In pratica, questo teorema ci aiuta nel senso che ci dice che possiamo analizzare la curva che costituisce la frontiera dell'insieme sotto esame e aggiungere ai candidati i punti di massimo e di minimo di tale curva.
 
-Bisogna però prestare attenzione al fatto che il teorema non parla dell'esistenza dei _punti_ nei quali la funzione ammette i valori massimo e minimo, ma soltanto dei valori stessi; ne segue che una funzione potrebbe ammettere anche infiniti punti nei quali assume i valori di massimo e minimo.
+Bisogna però prestare attenzione al fatto che il teorema non parla dell'esistenza dei _punti_ nei quali la funzione ammette i valori massimo e minimo, ma soltanto dei _valori_ stessi; ne segue che una funzione potrebbe ammettere anche infiniti punti nei quali assume i valori di massimo e minimo.
 
 Quando utilizzo il suddetto teorema, devo specificare che lo sto utilizzando.
 
@@ -1472,13 +1472,13 @@ Se applico alla $f$ da integrare una mappa del tipo $\varphi(x, y) = \begin{pmat
 $$
 J_\varphi(r, \theta) = \begin{bmatrix}
     \left[ \nabla \varphi_1(r, \theta) \right]^T \\
-    \left[ \nabla \varphi_2(r, \theta) \right]^T
+    \left[ \nabla \varphi_2(r, \theta) \right]^T \\
 \end{bmatrix} = \begin{bmatrix}
     \frac{\partial \varphi_1}{\partial r} & \frac{\partial \varphi_1}{\partial \theta} \\
-    \frac{\partial \varphi_2}{\partial r} & \frac{\partial \varphi_2}{\partial \theta}
+    \frac{\partial \varphi_2}{\partial r} & \frac{\partial \varphi_2}{\partial \theta} \\
 \end{bmatrix} = \begin{bmatrix}
     cos \theta & -r \sin \theta \\
-    \sin \theta & r \cos \theta
+    \sin \theta & r \cos \theta \\
 \end{bmatrix} \\
 
 |\det J_\varphi(r \theta)| = r
@@ -1710,3 +1710,14 @@ Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di fu
 | $E \sube J$ | Semplice/puntuale | Insieme di punti nel quale la serie di funzioni converge                                                                    |
 | $I \sube J$ | Totale            | Intervallo nel quale ogni termine della serie di funzioni può essere maggiorata in modulo da una serie numerica convergente |
 |             |                   |                                                                                                                             |
+<!--
+    cambio di variabili in coord polari: latex spastico
+    baricentro: mettere (E) al denominatore
+
+    orisoontalmente
+    sistma
+    freccie -> frecce
+    infece
+    funzsione
+    ricudendo
+-->
