@@ -396,7 +396,7 @@ $$
 Si semplifica anche la risoluzione del problema di Cauchy:
 
 $$
-\underline y(t) = e^{At} \cdot \int_{t_0}^t e^{-A \tau} \cdot \underline b(\tau) d \tau + e^{A(t - t_0)} \underline y_o(t)
+\underline y(t) = e^{At} \cdot \int_{t_0}^t e^{-A \tau} \cdot \underline b(\tau) d \tau + e^{A(t - t_0)} \underline y(t_0)
 $$
 
 # Serie di funzioni
@@ -506,16 +506,16 @@ La convergenza di $\sum a_n$ e quella di $\sum a_n(x - x_0)^n$ non sono correlat
 
 La serie di potenze $\sum a_n(x - x_0)^n$ converge assolutamente in $\overline x$ se la serie numerica $\sum |a_n| |\overline x - x_0| = \sum b_n$ converge.
 
-Questa è una serie numerica a temrmini positivi per cui posso scegliere se applicare il criterio del rapporto o quello della radice.
+Questa è una serie numerica a termini positivi per cui posso scegliere se applicare il criterio del rapporto o quello della radice.
 
 Se il criterio del rapporto è applicabile, la serie converge se 
 
 $$
 \begin{align*}
-    \lim_{n \to +\infty} \frac{b_{n+1}}{b_n} \lt 1 \iff & \lim_{n \to +\infty} \frac{a_{n+1}}{a_n} \frac{|\overline x - x_0|^{n+1}}{|\overline x - x_0|^n} \lt 1 \\
-    \iff & \lim_{n \to +\infty} \frac{|a_{n+1}|}{a_n} |\overline x - x_0| \lt 1 \\
-    \iff & |\overline x - x_0| \lim_{n \to +\infty} \frac{a_{n+1}}{a_n} \lt 1 \\
-    \iff & |\overline x - x_0| \lt \frac{1}{\lim_{n \to +\infty} \frac{|a_{n+1}|}{|a_n|}} = \lim_{n \to +\infty} \frac{a_n}{a_{n+1}} = R
+    \lim_{n \to +\infty} \frac{b_{n+1}}{b_n} \lt 1 \iff & \lim_{n \to +\infty} \frac{|a_{n+1}|}{|a_n|} \frac{|\overline x - x_0|^{n+1}}{|\overline x - x_0|^n} \lt 1 \\
+    \iff & \lim_{n \to +\infty} \frac{|a_{n+1}|}{|a_n|} |\overline x - x_0| \lt 1 \\
+    \iff & |\overline x - x_0| \lim_{n \to +\infty} \frac{|a_{n+1}|}{|a_n|} \lt 1 \\
+    \iff & |\overline x - x_0| \lt \frac{1}{\lim_{n \to +\infty} \frac{|a_{n+1}|}{|a_n|}} = \lim_{n \to +\infty} \frac{|a_n|}{|a_{n+1}|} = R
 \end{align*}
 $$
 
@@ -918,6 +918,8 @@ Una curva può essere considerata come la classe di equivalenza associata che co
 
 Una curva si dice **regolare** se ammette una parametrizzazione $(r_1(t), \dots, r_n(t))$ con $t \in I$ tale per cui tutte le $r_i(t) \in \mathcal{C}^1(I)$ e $(r_1'(t), \dots, r_n'(t)) \ne \underline 0$ per ogni $t$. Se una curva è regolare allora $\|\underline r'(t)\| \ne 0$.
 
+Una curva di dice **semplice** se è iniettiva, ovvero se il suo sostegno non si interseca con se stesso: se $\exists t_1, t_2 : t_1 \ne t_2, \underline r(t_1) = \underline r(t_2)$ allora la curva non è semplice.
+
 Se $\underline r : I \to \mathbb{R}^3$, si definisce **versore tangente** il versore
 
 $$
@@ -926,7 +928,7 @@ $$
 
 Il versore tangente ha direzione della retta tangente alla curva nel punto $\underline r(t)$, norma unitaria e verso concorde al verso di percorrenza della curva.
 
-Data una funzione $f \in \mathcal{C}^1\$ qualsiasi, una curva costruita come
+Data una funzione $f \in \mathcal{C}^1$ qualsiasi, una curva costruita come
 
 $$
 \underline r(t) = \begin{pmatrix} t \\ f(t) \end{pmatrix}
@@ -1099,16 +1101,16 @@ E' necessario usare la definizione per calcolare le derivate parziali quando la 
 
 ## Differenziabilità e piano tangente
 
-Siano $A \sube \mathbb{R}^2$ aperto (aperto perchè serve poter fare i limiti), $f : A \to \mathbb{R}$, alloa diciamo che $f$ è **differenziabile** in $\underline x_0 \in A$ se $f$ è derivabile in $\underline x_0$ e se
+Siano $A \sube \mathbb{R}^2$ aperto (aperto perchè serve poter fare i limiti), $f : A \to \mathbb{R}$, allora diciamo che $f$ è **differenziabile** in $\underline x_0 \in A$ se $f$ è derivabile in $\underline x_0$ e se
 
 $$
-f(\underline x_0 + \underline h) = f(\underline x_0) + \lang \nabla f(\underline x_0, \underline h) \rang + R(\|h\|)
+f(\underline x_0 + \underline h) = f(\underline x_0) + \lang \nabla f(\underline x_0), \underline h \rang + R(\underline h)
 $$
 
 dove $R(\underline h) = \small o(\|\underline h\|)$ cioè
 
 $$
-\lim_{\underline h \to 0} \frac{R(\|\underline h\|)}{\|\underline h\|}
+\lim_{\underline h \to 0} \frac{R(\underline h)}{\|\underline h\|} = 0
 $$
 
 Per semplificare la verifica della differenziabilità di una funzione, ci si basa sul **teorema del differenziale totale** che afferma che se $f \in \mathcal{C}^1(A)$ allora $f$ è differenziabile in $A$.
@@ -1158,7 +1160,7 @@ $$
 Ne segue che $0 \le |f(\underline x) - f(\underline x_0)|$, da sui segue che
 
 $$
-\lim_{\underline x \to \underline x_0} |f(\underline x) - f(\underline x_0)|
+\lim_{\underline x \to \underline x_0} |f(\underline x) - f(\underline x_0)| = 0
 $$
 
 Come volevasi dimostrare.
@@ -1370,9 +1372,11 @@ Se $f \in \mathcal{C}^2(\mathbb{R}^2)$ è concava e $\underline x_0$ è punto cr
 
 Se cerco i punti estremanti di una funzione $f$ in un insieme $A$ non aperto, non è sufficiente applicare il teorema di Fermat nell'aperto perchè potrebbero esserci estremanti sul bordo (e che quindi non verificano il teorema di Fermat).
 
-In tal caso, ci viene in soccorco il **teorema di Weierstrass**: sia $A \in \mathbb{R}^2$ chiuso e limitato e sia $f : A \to \mathbb{R}$. Allora $f$ ammette i valori di massimo e minimo assoluto, cioè esistono $(x_m, y_m), (x_M, y_M) \in A$ tali che $f(x_m y_m) \le f(x, y) \le f(x_M, y_M)$.
+In tal caso, ci viene in soccorco il **teorema di Weierstrass**: sia $A \sube \mathbb{R}^2$ chiuso e limitato e sia $f : A \to \mathbb{R}$. Allora $f$ ammette i valori di massimo e minimo assoluto, cioè esistono $(x_m, y_m), (x_M, y_M) \in A$ tali che $f(x_m, y_m) \le f(x, y) \le f(x_M, y_M)$.
 
 In pratica, questo teorema ci aiuta nel senso che ci dice che possiamo analizzare la curva che costituisce la frontiera dell'insieme sotto esame e aggiungere ai candidati i punti di massimo e di minimo di tale curva.
+
+Bisogna però prestare attenzione al fatto che il teorema non parla dell'esistenza dei _punti_ nei quali la funzione ammette i valori massimo e minimo, ma soltanto dei valori stessi; ne segue che una funzione potrebbe ammettere anche infiniti punti nei quali assume i valori di massimo e minimo.
 
 Quando utilizzo il suddetto teorema, devo specificare che lo sto utilizzando.
 
@@ -1706,9 +1710,3 @@ Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di fu
 | $E \sube J$ | Semplice/puntuale | Insieme di punti nel quale la serie di funzioni converge                                                                    |
 | $I \sube J$ | Totale            | Intervallo nel quale ogni termine della serie di funzioni può essere maggiorata in modulo da una serie numerica convergente |
 |             |                   |                                                                                                                             |
-<!--
-    manca cvd nella diff => cont
-    Differenziabilità e piano tangente: manca \underline in h
-    alloa
-    Differenziabilità e piano tangente: parentesi sbagliata nel gradiente
--->
