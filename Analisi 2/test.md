@@ -1265,7 +1265,7 @@ $$
 
 Per il **teorema di Schwarz**, se $A \sube \mathbb{R}^2$ e $f \in \mathcal{C}^2(A)$ allora $\frac{\partial^2 f}{\partial y \partial x} = \frac{\partial^2 f}{\partial x \partial y}$ cioè la matrice hessiana è simmetrica e questo può semplificare i calcoli.
 
-Chiamiamo **forma quadratica indotta** da $H_f(x_0, y_0)$ la funzsione $q : \mathbb{R}^2 \to R$ tale che
+Chiamiamo **forma quadratica indotta** da $H_f(x_0, y_0)$ la funzione $q : \mathbb{R}^2 \to R$ tale che
 
 $$
 q(h_1, h_2) = \begin{pmatrix} h_1, h_2 \end{pmatrix} H_f(x_0, y_0) \begin{pmatrix} h_1 \\ h_2 \end{pmatrix} = \frac{\partial^2 f}{\partial x^2} h_1^2 + 2 \frac{\partial^2 f}{\partial x \partial y}h_1h_2 + \frac{\partial^2 f}{\partial y^2} h_2^2\\
@@ -1321,7 +1321,7 @@ Nel piano, una funzione può essere simmetrica in molteplici modi:
 | Pari, rispetto all'asse x     | $f(x, -y) = f(x, y)$   |
 | Dispari, rispetto all'asse x  | $f(x, -y) = -f(x, y)$  |
 
-E' possibile sfruttare queste simmetrie per semplificare la ricerca dei punti critici ricudendo di molto lo spazio di ricerca.
+E' possibile sfruttare queste simmetrie per semplificare la ricerca dei punti critici riducendo di molto lo spazio di ricerca.
 
 Per determinare (e, successivamente, classificare) i punti critici, trovo tutti i punti nei quali $\nabla f(x, y) = \underline 0$ e tutti i punti di non derivabilità: questi punti sono tutti candidati ad essere critici e quindi vanno studiati.
 
@@ -1470,6 +1470,7 @@ $$
 Se applico alla $f$ da integrare una mappa del tipo $\varphi(x, y) = \begin{pmatrix} r \cos \theta \\ r \sin \theta \end{pmatrix}$ allora ottengo che $f(\varphi(x, y)) = f(r, \theta)$ e che $f' = f'(\varphi(x, y)) \cdot \varphi'(x, y)$. Necessito di trovare $\varphi'$, per farlo utilizzo la **matrice jacobiana**:
 
 $$
+
 J_\varphi(r, \theta) = \begin{bmatrix}
     \left[ \nabla \varphi_1(r, \theta) \right]^T \\
     \left[ \nabla \varphi_2(r, \theta) \right]^T \\
@@ -1477,11 +1478,12 @@ J_\varphi(r, \theta) = \begin{bmatrix}
     \frac{\partial \varphi_1}{\partial r} & \frac{\partial \varphi_1}{\partial \theta} \\
     \frac{\partial \varphi_2}{\partial r} & \frac{\partial \varphi_2}{\partial \theta} \\
 \end{bmatrix} = \begin{bmatrix}
-    cos \theta & -r \sin \theta \\
+    \cos \theta & -r \sin \theta \\
     \sin \theta & r \cos \theta \\
 \end{bmatrix} \\
 
 |\det J_\varphi(r \theta)| = r
+
 $$
 
 Dunque $\varphi'(r, \theta) = r$.
@@ -1582,9 +1584,9 @@ $$
 Il **baricentro** è il punto che può essere considerato come punto di applicazione delle forze agenti sul campo. Il baricentro $(\overline x_B, \overline y_B, \overline z_B)$ si calcola nel seguente modo:
 
 $$
-\overline x_B = \frac{1}{\text{Massa}}(E) \cdot {\int\int\int}_E x \cdot \rho(x, y, z) dxdydz \\
-\overline y_B = \frac{1}{\text{Massa}}(E) \cdot {\int\int\int}_E y \cdot \rho(x, y, z) dxdydz \\
-\overline z_B = \frac{1}{\text{Massa}}(E) \cdot {\int\int\int}_E z \cdot \rho(x, y, z) dxdydz \\
+\overline x_B = \frac{1}{\text{Massa}(E)} \cdot {\int\int\int}_E x \cdot \rho(x, y, z) dxdydz \\
+\overline y_B = \frac{1}{\text{Massa}(E)} \cdot {\int\int\int}_E y \cdot \rho(x, y, z) dxdydz \\
+\overline z_B = \frac{1}{\text{Massa}(E)} \cdot {\int\int\int}_E z \cdot \rho(x, y, z) dxdydz \\
 $$
 
 ## Cambio di variabili (coordinate cilindriche)
@@ -1650,17 +1652,17 @@ Per disegnare una soluzione approssimativa, bisogna ricavare la **linea delle fa
 6. si disegna un piano con $t$ sull'asse delle ascisse e $y(t)$ sull'asse delle ordinate e lo si posiziona di fianco alla linea delle fasi appena ruotata;
 7. sul nuovo grafico, si disegna una soluzione costante in corrispondenza di ciascun punto d'equilibrio;
 8. per ogni freccia positiva sulla linea delle fasi, si disegna una funzione più o meno simile ad un sigmoide che per $t \to -\infty$ è asintotica alla soluzione costante che delimita inferiormente l'intervallo in cui ci si trova e per $t \to +\infty$ è asintotica alla soluzione costante che delimita superiormente l'intervallo in cui ci si trova;
-9. per ogni freccia negativa, il ragionamento è analogo a quello per le freccie positive ma con le soluzioni costanti opposte.
+9. per ogni freccia negativa, il ragionamento è analogo a quello per le frecce positive ma con le soluzioni costanti opposte.
 
 Se un intervallo non è delimitato da un punto di equilibrio, allora la soluzione approssimativa tenderà a $\pm \infty$ compatibilmente con la posizione della soluzione all'interno della linea delle fasi.
 
 E' importante ricordare ancora una volta che, per il teorema di esistenza e unicità, nessuna soluzione si interseca con altre soluzioni, dunque le soluzioni non costanti, pur avvicinandosi sempre più a quelle costanti, non le toccheranno mai.
 
-Se viene richiesto di disegnare una soluzione approssimativa che passa in un punto particolare, si transla orisoontalmente la soluzione approssimativa trovata nell'intervallo che contiene il punto finchè la soluzione non passa per tale punto.
+Se viene richiesto di disegnare una soluzione approssimativa che passa in un punto particolare, si transla orizzontalmente la soluzione approssimativa trovata nell'intervallo che contiene il punto finchè la soluzione non passa per tale punto.
 
 ## Sistemi differenziali autonomi nel piano
 
-Un **sistma differenziale autonomo** è un sistema differenziale della forma
+Un **sistema differenziale autonomo** è un sistema differenziale della forma
 
 $$
 \underline y'(t) = \underline f(\underline y(t))\begin{cases} f_1(y_1(t), y_2(t)) \\ f_2(y_1(t), y_2(t)) \end{cases}
@@ -1678,14 +1680,14 @@ Per disegnare le soluzioni approssimative, si deve disegnare il piano delle fasi
 
 1. si ricava la matrice $A$ del sistema, così come gli autovalori e gli autovettori;
 2. per ciascun autovettore, si sisegna una retta passante per l'origine e diretta come l'autovettore;
-3. per ciascuna retta, se l'autovalore associato all'autovettore da cui è originata è positivo, allora si disegnano due freccie (una da un alto dell'origine e l'altra dall'altro) in direzione uscente, se l'autovettore è negativo allora la direzione è entrante;
+3. per ciascuna retta, se l'autovalore associato all'autovettore da cui è originata è positivo, allora si disegnano due frecce (una da un alto dell'origine e l'altra dall'altro) in direzione uscente, se l'autovettore è negativo allora la direzione è entrante;
 4. si combinano le informazioni come in foto
 
 ![In nero il piano delle fasi, in arancio e in verde le due rette e in rosso le famiglie di soluzioni](assets/pianodellefasi.jpg)
 
 In caso di autovalori diversi con lo stesso segno, le famiglie di soluzioni sono tangenti alla retta con autovalore più piccolo in modulo.
 
-Sia nell'asse che nel piano delle fasi, se una soluzione costante ha soltanto frecce entranti, è detta punto di equilibrio stabile, se infece ha anche una sola freccia uscente, è detta di equilibrio instabile.
+Sia nell'asse che nel piano delle fasi, se una soluzione costante ha soltanto frecce entranti, è detta punto di equilibrio stabile, se invece ha anche una sola freccia uscente, è detta di equilibrio instabile.
 
 # Varie ed eventuali
 
@@ -1711,13 +1713,5 @@ Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di fu
 | $I \sube J$ | Totale            | Intervallo nel quale ogni termine della serie di funzioni può essere maggiorata in modulo da una serie numerica convergente |
 |             |                   |                                                                                                                             |
 <!--
-    cambio di variabili in coord polari: latex spastico
-    baricentro: mettere (E) al denominatore
-
-    orisoontalmente
-    sistma
-    freccie -> frecce
-    infece
-    funzsione
     ricudendo
 -->
