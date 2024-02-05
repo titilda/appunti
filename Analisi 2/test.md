@@ -1470,7 +1470,6 @@ $$
 Se applico alla $f$ da integrare una mappa del tipo $\varphi(x, y) = \begin{pmatrix} r \cos \theta \\ r \sin \theta \end{pmatrix}$ allora ottengo che $f(\varphi(x, y)) = f(r, \theta)$ e che $f' = f'(\varphi(x, y)) \cdot \varphi'(x, y)$. Necessito di trovare $\varphi'$, per farlo utilizzo la **matrice jacobiana**:
 
 $$
-
 J_\varphi(r, \theta) = \begin{bmatrix}
     \left[ \nabla \varphi_1(r, \theta) \right]^T \\
     \left[ \nabla \varphi_2(r, \theta) \right]^T \\
@@ -1480,10 +1479,13 @@ J_\varphi(r, \theta) = \begin{bmatrix}
 \end{bmatrix} = \begin{bmatrix}
     \cos \theta & -r \sin \theta \\
     \sin \theta & r \cos \theta \\
-\end{bmatrix} \\
+\end{bmatrix}
+$$
 
-|\det J_\varphi(r \theta)| = r
+da cui segue che
 
+$$
+|\det J_\varphi(r, \theta)| = r
 $$
 
 Dunque $\varphi'(r, \theta) = r$.
@@ -1712,6 +1714,3 @@ Di seguito tabella riassuntiva dei vari insiemi di convergenza delle serie di fu
 | $E \sube J$ | Semplice/puntuale | Insieme di punti nel quale la serie di funzioni converge                                                                    |
 | $I \sube J$ | Totale            | Intervallo nel quale ogni termine della serie di funzioni può essere maggiorata in modulo da una serie numerica convergente |
 |             |                   |                                                                                                                             |
-<!--
-    ricudendo
--->
