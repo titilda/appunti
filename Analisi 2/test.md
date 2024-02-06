@@ -485,7 +485,7 @@ Il raggio di tale intervallo è detto **raggio di convergenza**.
 Data la serie di potenze
 
 $$
-\sum_{n=0}^{+\infty} (x - x_0)^n
+\sum_{n=0}^{+\infty} a_n(x - x_0)^n
 $$
 
 esiste almeno uno dei seguenti due limiti (che può essere eventualmente nullo o infinito), allora il raggio di convergenza è esattamente pari al risultato di tale limite:
