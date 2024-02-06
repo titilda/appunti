@@ -440,7 +440,7 @@ _La convergenza totale in $I \sube J$ implica la convergenza assoluta e puntuale
 
 ### Teorema di continuità della somma
 
-Siano $f_n$ funzioni definite almeno in un intervallo $I \sube R$. Se le funzioni sono continue in $I$ è la serie generale converge totalmente in $I$ allora la funzione somma è continua in $I$.
+Siano $f_n$ funzioni definite almeno in un intervallo $I \sube R$. Se le funzioni sono continue in $I$ e la serie generale converge totalmente in $I$ allora la funzione somma è continua in $I$.
 
 ### Teorema di integrabilità termine a termine
 
