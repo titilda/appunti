@@ -63,6 +63,58 @@ $$
 P(A_i | B) = \frac{P(B \cap A_i)}{P(B)} = \frac{P(B | A_i) \cdot P(A_i)}{P(B)} = \frac{P(B | A_i) P(A_i)}{\sum_{j=1}^n P(B | A_j) \cdot P(A_j)}
 $$
 
+# Eventi indipendenti
 
+Due eventi sono **indipendenti** se e solo se $P(A \cap B) = P(A) \cdot P(B)$.
 
+Se due eventi sono indipendenti, allora è anche vero che $P(B | A) = P(B)$.
 
+## Indipendenza condizionata
+
+Siano $A$ e $B$ due eventi non necessariamente indipendenti. Tali eventi sono indipendenti condizionatamente ad un evento $C$ se e solo se $P(A \cap B | C) = P(A | C) \cdot P(B | C)$.
+
+L'indipendenza condizionata non è legata in alcun modo a quella non condizionata.
+
+## Indipendenza tra insiemi di eventi
+
+Sia $\{A_1, A_2, \dots, A_n\}$ un insieme di eventi. Tali eventi sono detti **indipendenti** se e solo se $P(A_i \cap A_j \cap \dots \cap A_q) = P(A_i) \cdot P(A_j) \cdot \dots \cdot P(A_q)$ per ogni sottoinsieme $\{A_i, A_j, \dots, A_q\} \sube \{A_1, A_2, \dots, A_n\}$.
+
+Se la condizione di cui sopra vale solo per i sottoinsiemi di arità 2 allora l'insieme $\{A_1, A_2, \dots, A_n\}$ viene detto **indipendente a coppie**.
+
+L'indipendenza totale implica l'indipendenza a coppie ma non vale il viceversa.
+
+# Principi di calcolo combinatorio
+
+Se si ha un esperimento composto da $r$ stadi, ognuno con $n_i$ scelte possibili, il numero totale di scelte è dato da
+
+$$
+\prod_{i=1}^r n_i
+$$
+
+Con le **permutazioni** si contano i possibili modi di ordinare un insieme di elementi: tale numero è dato da $n!$ dove $n$ è l'arità dell'insieme considerato.
+
+Il **Numero di sottoinsiemi di un insieme** è dato da $2^n$ dove $n$ è l'arità dell'insieme considerato.
+
+Se si vogliono solamente sottoinsiemi di $k$ elementi, si utilizza il **coefficiente binomiale**:
+
+$$
+{n \choose k} = \frac{n!}{k!(n - k)!}
+$$
+
+Sia $P(A) = p$. Per calcolare la probabilità di avere $k$ successi su $n$ si deve prima calcolare la probabilità di avere una particolare configurazione che abbia $k$ successi e poi si moltiplica per il numero di tutte le possibili configurazioni possibili che abbiano $k$ successi:
+
+$$
+P(k \text{ successi su } n) = {n \choose k} p^k (1 - p)^{n - k}
+$$
+
+Questa formula calcola le cosiddette **probabilità binomiali**.
+
+Per calcolare quali sono i modi di partizionare un insieme di arità $n$ in $r$ sottoinsiemi di arità $k_1, k_2, \dots, k_r$, si usa il **coefficiente multinomiale**:
+
+$$
+{n \choose k_1, k_2, \dots, k_r} = \frac{n!}{k_1! k_2! \dots k_r!}
+$$
+
+Lo stesso metodo funziona anche per problemi quali dover calcolare il numero di **anagrammi** di una parola: $n$ è la lunghezza della parola e i vari $k_i$ sono il numero di occorrenze di ciascuna lettera della parola all'interno della stessa.
+
+<!-- Se si vuole calcolare, similmente alle probabilità binomiali, la probabilità di avere esattamente $k$ successi -->
