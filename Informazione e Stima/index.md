@@ -101,6 +101,8 @@ $$
 {n \choose k} = \frac{n!}{k!(n - k)!}
 $$
 
+<a id="probabilita_binomiali"></a>
+
 Sia $P(A) = p$. Per calcolare la probabilità di avere $k$ successi su $n$ si deve prima calcolare la probabilità di avere una particolare configurazione che abbia $k$ successi e poi si moltiplica per il numero di tutte le possibili configurazioni possibili che abbiano $k$ successi:
 
 $$
@@ -117,4 +119,96 @@ $$
 
 Lo stesso metodo funziona anche per problemi quali dover calcolare il numero di **anagrammi** di una parola: $n$ è la lunghezza della parola e i vari $k_i$ sono il numero di occorrenze di ciascuna lettera della parola all'interno della stessa.
 
-<!-- Se si vuole calcolare, similmente alle probabilità binomiali, la probabilità di avere esattamente $k$ successi -->
+Se si vogliono contare i modi di estrarre elementi da insiemi di elementi diversi in un certo numero, si può ricorrere alle probabilità ipergeometriche:
+
+$$
+\frac{{n_1 \choose k_1} {n_2 \choose k_2} \dots {n_r \choose k_r}}{n_1 + n_2 + \dots + n_r \choose k_1 + k_2 + \dots + k_r}
+$$
+
+# Variabili aleatorie discrete
+
+Una **variabile aleatoria** è una funzione $H : \Omega \to \mathbb{R}$.
+
+Tutte le funzioni deterministiche di una variabile aleatoria sono a loro volta variabili aleatorie.
+
+Per risolvere problemi de tipo "Qual è la probabilità di ottenere il primo successo al $k$-esimo tentativo?" si usano le variabili aleatorie **geometriche**:
+
+$$
+X \sim \text{Geom}(p) \iff P_X(k) = \begin{cases}
+    p(1-p)^{k-1} & k = 1, 2, \dots \\
+    0 & \text{Altrimenti}
+\end{cases}
+$$
+
+Per descrivere le distribuzioni di probabilità binomiali viste [sopra](#probabilita_binomiali) esistono le variabili aleatorie **binomiali**:
+
+$$
+X \sim \text{Bin}(n, p) \iff P_X(k) = \begin{cases} 
+    {n \choose k} p^k (1-p)^{n-k} & k = 0, 1, 2, \dots \\
+    0 & \text{Altrimenti}
+\end{cases}
+$$
+
+# Valore atteso e varianza
+
+Il **valore atteso** rappresenta la media delle varie realizzazioni, pesate per la loro probabilità di realizzarsi:
+
+$$
+E[X] = \sum_{x \in \mathbb{R}} x \cdot p_X(x)
+$$
+
+Se $Y = g(X)$ e $g$ è una funzione deterministica, allora
+
+$$
+E[Y] = \sum_{x \in \mathbb{R}} g(x) \cdot P_X(x) = \sum_{y \in \mathbb{R}} y \cdot P_Y(y)
+$$
+
+In generale $E[g(X)] \ne g(E[X])$, tranne nel caso in cui $g(x) = \alpha x + \beta$. In tal caso, $E[\alpha X + \beta] = \alpha E[X] + \beta$ (il valore atteso è un'operazione lineare).
+
+La **varianza** descrive quanto i valori sono dispersi rispetto alla media:
+
+$$
+Var[X] = E[(X - E[X])^2] = E[X^2] - E[X]^2 = \sum_{x \in \mathbb{R}} (x - E[X])^2 P_X(x)
+$$
+
+Vale che $Var[\alpha X + \beta] = \alpha^2 Var[X]$
+
+Dato che la varianza ha un'unità di misura quadrata rispetto all'unità di misura della variabile aleatoria, è stato introdotto un altro indicatore, la **deviazione standard** o **scarto quadratico medio** che si ottiene estraendo la radice qudrata della varianza:
+
+$$
+\sigma_X = \sqrt{Var[X]}
+$$
+
+Applicando le formule date, è possibile estrarre una formula veloce per calcolare il valore atteso e la varianza di variabili aleatorie geometriche e binomiali.
+
+$$
+X \sim \text{Geom}(p) \implies \begin{cases}
+    E[X] = \frac{1}{P} \\
+    Var[X] = \frac{1 - p}{p^2}
+\end{cases} \\
+
+X \sim \text{Bin}(n, p) \implies \begin{cases}
+    E[X] = np \\
+    Var[X] = np(1 - p)
+\end{cases}
+$$
+
+## Valore atteso condizionato
+
+Il **valore atteso condizionato** è come il valore atteso ma condizionato ad un altro evento:
+
+$$
+E[X|B] = \sum_{x \in \mathbb{R}} x \cdot P_{X|B}(x)
+$$
+
+Il valore atteso condizionato gode di tutte le proprietà del valore atteso normale.
+
+Per la **legge della perdita di memoria**, che vale solo per le variabili aleatorie geometriche, $E[X - t | X > t] = E[X]$, cioè, se ho già effettuato alcuni tentativi senza successo, il numero di tentativi che ci si aspetta dover effettuare (il valore atteso, appunto) è pari al valore atteso che si avrebbe senza aver già effettuato altri tentativi.
+
+In poche parole, il numero di tentativi fallimentari già fatti non va a influenzare il valore atteso.
+
+Vale la legge dell'**aspettativa totale**: sia $\{A_1, A_2, \dots, A_n\}$ una partizione di $\Omega$ e $X \sube \Omega$, allora 
+
+$$
+E[X] = \sum_{i=1}^n P(A_i) \cdot E[X | A_i]
+$$
