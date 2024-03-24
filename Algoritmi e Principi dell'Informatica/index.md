@@ -31,6 +31,7 @@ $L_1$ = {$\varepsilon$, a, b, c, bc, ca}
 $L_2$ = {ba,bb, bc, ca, cb, cc}
 
 Bene partiamo con la carrellata di operazioni
+
 ### Unione ($L_1$ $\bigcup$ $L_2$)
 
 $L_1$ $\bigcup$ $L_2$ = {$\varepsilon$, a, b, c, ba, bb, bc, ca, cb, cc} tutti gli elementi **SENZA** ripetizioni
@@ -75,16 +76,16 @@ $L^+$ = $L \cdot L^*$
 
 {$\varepsilon$} $\not ={\varnothing}$
 
+# Automi a stati finiti
 
- # Automi a stati finiti
- ## FSA (Finite State Automaton)
+## FSA (Finite State Automaton)
 
- Un **FSA** ha un insieme finito di stati ovvero un numero limitato di configurazioni
+Un **FSA** ha un insieme finito di stati ovvero un numero limitato di configurazioni
 
- Es.
+Es.
 
- - {ON, OFF}
- - {Canali TV}
+- {ON, OFF}
+- {Canali TV}
 
 Un FSA è definito su un alfabeto (a, b, c o anche on, off, anche 1, 2, 3, insomma simboli o parole che noi definiamo come "input" anche C o Java possono essere definiti come tale)
 
@@ -383,3 +384,4 @@ Le TM sono computer con accesso sequenziale alla memoria (Modello atratto)
 Le TM possono avere nastri a n dimensioni
 
 N.B. Più dimensioni **NON** aggiungono potenza
+
