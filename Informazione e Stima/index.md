@@ -319,18 +319,64 @@ E[X] = \frac{b - a}{2} \\
 Var[X] = \frac{(b - a)^2}{12}
 $$
 
+La **funzione cumulata** è semplicemente l'integrale da $-\infty$ a $x$ della pdf:
 
+$$
+F_X(x) = \int_{-\infty}^{x} f_X(x) dx
+$$
 
+E' intuitivo come segua che 
 
+$$
+\lim_{x \to \infty} F_X(x) = 1
+$$
 
+## Variabili aleatorie gaussiane (normali)
 
+Le **variabili aleatorie gaussiane (normali)** meritano un paragrafo a parte perchè sono un concetto molto importante.
+
+Sia $X \sim \mathcal{N}(\mu, \sigma^2)$ una variabile aleatoria gaussiana. La sua pdf è data da
+
+$$
+f_X(x) = \frac{1}{\sigma \sqrt{2 \pi}}e^{-\left(\frac{x - \mu}{\sigma}\right)\frac{1}{2}}
+$$
+
+Le distribuzioni gaussiane sono onnipresenti in natura ([meme obbligatorio](https://www.reddit.com/r/funny/comments/m4aaee/how_to_explain_normal_distribution_to_a_bro_at/)) e consentono di descrivere una pdf data la media e la varianza:
+
+$$
+E[X] = \mu \\
+Var[X] = \sigma^2
+$$
+
+Esiste una particolare distribuzione gaussiana che prende il nome di $Z \sim \mathcal{N}(0, 1)$ alla qule tutte le altre distribuzioni possono essere ricondotte tramite $X = \sigma Z + \mu \implies Z = \frac{X - \mu}{\sigma}$.
+
+La cumulata di una gaussiana generica si scrive come
+
+$$
+F_X(x) = \int_{-\infty}^{x} \frac{1}{\sigma \sqrt{2 \pi}}e^{-\left(\frac{x - \mu}{\sigma}\right)\frac{1}{2}}
+$$
+
+Solo 3 valori sono costanti per questa funzione: $F_X(-\infty) = 0$, $F_X(0) = 0.5$ e $F_X(+\infty) = 1$
+
+La cumulata della gaussiana $Z$ prende il nome di $\Phi(x)$. Per calcolare $\Phi$ senza ricorrere a integrali, è possibile utilizzare specifiche tabelle (come [questa, dal sito dell'università di Chieti](http://www.biostatistica.unich.it/mat_didattica/Odont/Tavole.pdf)) che riportano una grande quantità di valori con buona precisione.
+
+Come già detto, è possibile ricondurre una qualsiasi distribuzione alla distribuzione $Z$. La cumulata di qualsiasi gaussiana è pari a $\Phi(\frac{x - \mu}{\sigma})$.
+
+Valgono le seguenti uguaglianze (che si possono dedurre dalle proprietà degli integrali ma che vengono riportate comunque):
+
+$$
+P(X \le a) = F_X(a) \\
+P(a \le X \le b) = F_X(b) - F_X(a) \\
+P(X \ge a) = 1 - F_X(a) \\
+F_X(a) = 1 - F_X(-a) \\
+$$
 
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
-| Distribuzione | Costruttore        | Valore atteso     | Varianza               |
-| ------------- | ------------------ | ----------------- | ---------------------- |
-| Geometrica    | $\text{Geom}(p)$   | $\frac{1}{p}$     | $\frac{1-p}{p^2}$      |
-| Binomiale     | $\text{Bin}(n, p)$ | $np$              | $np(1-p)$              |
-| Bernoulli     | $\text{Bern}(p)$   | $p$               | $p(1-p)$               |
-| Uniforme      | $U[a, b]$          | $\frac{b - a}{2}$ | $\frac{(b - a)^2}{12}$ |
-
+| Distribuzione | Costruttore                  | Valore atteso     | Varianza               |
+| ------------- | ---------------------------- | ----------------- | ---------------------- |
+| Geometrica    | $\text{Geom}(p)$             | $\frac{1}{p}$     | $\frac{1-p}{p^2}$      |
+| Binomiale     | $\text{Bin}(n, p)$           | $np$              | $np(1-p)$              |
+| Bernoulli     | $\text{Bern}(p)$             | $p$               | $p(1-p)$               |
+| Uniforme      | $U[a, b]$                    | $\frac{b - a}{2}$ | $\frac{(b - a)^2}{12}$ |
+| Gaussiana     | $\mathcal{N}(\mu, \sigma^2)$ | $\mu$             | $\sigma^2$             |
