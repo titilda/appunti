@@ -371,6 +371,32 @@ P(X \ge a) = 1 - F_X(a) \\
 F_X(a) = 1 - F_X(-a) \\
 $$
 
+# Densità di probabilità congiunta
+
+Una **densità di probabilità congiunta** è una pdf che mappa un $n$-upla di elementi ad un valore reale. Valgono ancora una volta se solite proprietà:
+
+$$
+f_{X,Y}(x, y) \ge 0 \qquad \forall (x, y) \in \mathbb{R}^2 \\
+{\int \int}_{\mathbb{R}^2} f_{X,Y}(x, y) dxdy = 1 \\
+E[g(X, Y)] = {\int\int}_{\mathbb{R}^2}g(x, y)F_{X,Y}(x, y) dxdy
+$$
+
+E' possibile calcolare le **distribuzioni marginali** per $X$ e per $Y$:
+
+$$
+F_X(x) = \int_{\mathbb{R}} f_{X,Y}(x, y) dy \\
+F_Y(y) = \int_{\mathbb{R}} f_{X,Y}(x, y) dx
+$$
+
+Due variabili aleatorie continue sono **indipendenti** ($X \perp Y$) se 
+
+$$
+f_{X,Y}(x, y) = f_X(x) \cdot f_Y(y) \qquad \forall (x, y) \in \mathbb{R}^2
+$$
+
+
+
+
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
 | Distribuzione | Costruttore                  | Valore atteso     | Varianza               |
