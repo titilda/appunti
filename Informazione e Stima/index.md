@@ -2,7 +2,6 @@
 title: "Riassunto estremamente sintetico di Informazione e Stima"
 author:
 - "Andrea Oggioni"
-- "Niccolò Papini"
 ---
 
 # Introduzione
@@ -60,7 +59,7 @@ $$
 Nelle ipotesi del teorema precedente, per rispondere a domande del tipo "Sapendo che $B$ è accaduto, qual è la probabilità che sia stato causato dall'evento $i$-esimo?" si usa la **regola di Bayes**:
 
 $$
-P(A_i | B) = \frac{P(B \cap A_i)}{P(B)} = \frac{P(B | A_i) \cdot P(A_i)}{P(B)} = \frac{P(B | A_i) P(A_i)}{\sum_{j=1}^n P(B | A_j) \cdot P(A_j)}
+P(A_i | B) = \frac{P(B \cap A_i)}{P(B)} = \frac{P(B | A_i) \cdot P(A_i)}{P(B)} = \frac{P(B | A_i) P(A_i)}{\sum\limits_{j=1}^n P(B | A_j) \cdot P(A_j)}
 $$
 
 # Eventi indipendenti
@@ -212,3 +211,122 @@ Vale la legge dell'**aspettativa totale**: sia $\{A_1, A_2, \dots, A_n\}$ una pa
 $$
 E[X] = \sum_{i=1}^n P(A_i) \cdot E[X | A_i]
 $$
+
+# Variabili aleatorie discrete multiple
+
+Le **variabili aleatorie discrete multiple** funzionano esattamente come quelle singole ma vanno a descrivere eventi composti da più variabili aleatorie invece che una sola.
+
+Valgono le stesse proprietà e le stesse regole:
+
+$$
+\begin{cases}
+    P_{X,Y}(x, y) \ge 0 & \forall (x, y) \in \mathbb{R} \\
+    \sum\limits_{(x, y) \in \mathbb{R}^2} P_{X,Y}(x, y) = 1
+\end{cases}
+$$
+
+Anche i condizionamenti funzionano in maniera molto simile a quanto visto [precedentemente](#probabilità-condizionate) e vale la chain-rule:
+
+$$
+P_{X|Y}(x | y) = \frac{P_{X,Y}(x, y)}{P_Y(y)} = \frac{P_{X,Y}(x, y)}{\sum\limits_{t} P_{X, Y}(t, y)} \\
+P_{X,Y}(x, y) = P_{X|Y}(x, y) \cdot P_Y(y) = P_{Y|X}(y, x) \cdot P_X(x)
+$$
+
+Due variabili aleatorie sono dette **indipendenti** ($X \perp Y$) se e solo se $P_{X,Y}(x, y) = P_X(x) \cdot P_Y(y)$. Questo ragionamento può essere esteso ad un numero arbitrario di variabili.
+
+L'**indpendenza condizionata** è come l'indipendenza normale ma si applica su un sottoinsieme dello spazio $\mathbb{R^2}$. Due variabili aleatorie possono essere indipendenti condizionatamente ad un certo evento ma non in generale.
+
+Il **valore atteso per variabili aleatorie multiple** si calcola come segue:
+
+$$
+E[g(X, Y)] = \sum_x \sum_y g(x, y) \cdot P_{X,Y}(x, y)
+$$
+
+La funzione $E[x^j y^k]$ viene detta momento congiunto di $X$ e $Y$.
+
+(Ri)valgono le seguenti proprietà:
+
+$$
+E[\alpha X + \beta Y + \gamma] = \alpha E[X] + \beta E[Y] + \gamma \\
+X \perp Y \implies E[X \cdot Y] = E[X] \cdot E[Y]
+$$
+
+Siano $X$ e $Y$ due variabili aleatorie e $Z = X + Y$, allora la varianza di $Z$ si calcola come
+
+$$
+Var[Z] = Var[X + Y] = E[(X + Y)^2] + E[X + Y]^2 = Var[X] + Var[Y] - 2(E[]X \cdot Y - E[x] \cdot E[Y])
+$$
+
+Se $X \perp Y$ allora $Var[X + Y] = Var[X] + Var[Y]$.
+
+Sia $X \sim \text{Bin}(n, p)$ e $X_i$ la variabile aleatoria che vale 1 se si è avuto un successo nella $i$-esima prova e 0 altrimenti. In questo caso, si dice che $X_i \sim \text{Bern}(p)$.
+
+Dato che le varie $X_i$ sono tutte indipendenti tra di loro e la probabilità di successo non cambia in base al numero della prova, le variabili $X_i$ sono dette **indipendenti e identicamente distribuite** (**IID**). Da questo segue che
+
+$$
+E[X_i] = E[X_{\overline i}] = p \qquad \forall i, \text{ Con $\overline i$ fissato}
+$$
+
+Da tutto ciò segue che
+
+$$
+E[X] = E \left[\sum_{i=1}^n X_i \right] = \sum_{i=1}^n E[X_i] = n \cdot E[X_1] = np
+$$
+
+La varianza invece è calcolata come
+
+$$
+Var[X] = np(1 - p)
+$$
+
+# Variabili aleatorie continue
+
+Le **variabili aleatorie continue** sono come quelle discrete ma le realizzazioni possono assumere un qualsiasi valore compreso in un un intervallo continuo. Le probabilità di ogni realizzazione sono descritte dalla funzione continua **probability density function** (**pdf**). In realtà, la frase appena scritta non è proriamente corretta: la pdf viene utilizzata per descrivere la probabilità che una realizzazione rientri entro un certo intervallo, non che assuma un certo valore:
+
+$$
+P(a \le X \le b) = \int_{a}^{b} f_X(x) dx
+$$
+
+Nella formula precedente, è utile notare come le varie occorrenze di $\le$ possano essere sostituite (completamente o in parte) da $\lt$ senza che il risultato cambi.
+
+Valgono le seguenti proprietà:
+
+$$
+f_X(x) \ge 0 \qquad \forall x \in \mathbb{R} \\
+\int_{-\infty}^{+\infty} f_X(x) dx = 1
+$$
+
+Valore atteso e varianza non cambiano ma si utilizza l'integrazione al posto della sommatoria:
+
+$$
+E[X] = \int_{-\infty}^{+\infty} x \cdot f_X(x) dx \\
+Var[X] = \int_{-\infty}^{+\infty} (x - E[X])^2 \cdot f_X(x) dx
+$$
+
+Avendo introdotto le variabili aleatorie continue, è possibile introdurre le variabili aleatorie uniformi:
+
+$$
+X \sim U[a, b] \implies f_X(x) = \begin{cases}
+    \frac{1}{b - a} & a \le x \le b \\
+    0 & \text{altrimenti}
+\end{cases} \\
+
+E[X] = \frac{b - a}{2} \\
+Var[X] = \frac{(b - a)^2}{12}
+$$
+
+
+
+
+
+
+
+# Tabella riassuntiva distribuzioni variabili aleatorie
+
+| Distribuzione | Costruttore        | Valore atteso     | Varianza               |
+| ------------- | ------------------ | ----------------- | ---------------------- |
+| Geometrica    | $\text{Geom}(p)$   | $\frac{1}{p}$     | $\frac{1-p}{p^2}$      |
+| Binomiale     | $\text{Bin}(n, p)$ | $np$              | $np(1-p)$              |
+| Bernoulli     | $\text{Bern}(p)$   | $p$               | $p(1-p)$               |
+| Uniforme      | $U[a, b]$          | $\frac{b - a}{2}$ | $\frac{(b - a)^2}{12}$ |
+
