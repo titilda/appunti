@@ -1,5 +1,5 @@
 ---
-title: "Elenco Automi e cose varie"
+title: "Algoritmi e Principi dell'informatica (API)"
 author: "Niccolò Papini"
 ---
 # Definizioni iniziali
@@ -395,3 +395,136 @@ Le TM possono avere nastri a n dimensioni.
 
 N.B. Più dimensioni **NON** aggiungono potenza.
 
+# Modelli non deterministici
+
+Di solito un algotimo ha una sequenza deterministica.
+
+Il non deterministmo (ND) è un modello di computazione, utile per algoritmi di ricerca.
+
+![Esempio di ND](assets/Automi%20Non%20Deterministici/Non%20Deterministici.jpg)
+
+### NFSA
+
+Gli NFSA sono gli FSA non deterministici e sono una tupla : $\lang Q, I, \delta, q_0, F \rang$
+
+- $\lang Q, I, q_0, F \rang$ uguali a FSA
+- $\delta \colon Q \times I \to \mathcal{P} (Q)$
+
+$$
+\delta^* (q, \varepsilon) = \{q\}
+\\
+\delta^* (q, y, i) = \bigcup \delta\{q', i\}
+$$
+
+**Condizione di accettazione**
+
+$x \in L \iff \delta^* (q_0, x) \bigcap F \not ={\emptyset}$
+
+Basta che una vada a buon fine.
+
+ND **esistenziale**
+
+$\delta^* (q_0, x) \subseteq F$
+
+#### DFA VS NFA
+
+- Stesso potere
+- Da un NFA si può sintetizzare **automaticamente** un DFA
+
+Se $A_{ND} = \lang Q, I, \delta, q_0, F \rang \implies A_{D} = \lang Q_D, I, \delta_D, q_{0D}, F_D \rang$
+
+- $Q_D = \mathcal{P}(Q)$
+- $\delta_D (q_D, i) = \bigcup \delta (q, i)$
+- $q_{0D} = \{q_0\}$
+- $F_D = \{q_D | q_D \in Q_D \land q_D \bigcap F\not ={\emptyset} \}$
+
+Perchè il ND ? (già è difficile di suo ora ci complichiamo la vita)
+
+Gli NFA hanno pari potenza di DFA, ma non sono inutili (purtroppo):
+
+- A volte gli NFA sono più semplici
+- Possono essere esponenzialmente più piccoli (NFA a 5 stati nel peggiore dei casi è un DFA a $2^5$ stati)
+
+Esempio di NFA
+
+![Esempio di NFA preso da un esercizio](assets/Automi%20Non%20Deterministici/NFSA.jpg)
+
+### TM non deterministici (NTM)
+
+Per definire una NTM occorre cambiare la funzione di transizione e la funzione di traduzione.
+
+- Elementi uguali alla DTM
+- $\delta \colon (Q-F) \times I \times \Gamma^k \to \mathcal{P}(Q \times \Gamma^k \times \{R, L, S\}^{k+1})$
+- $\eta \colon (Q-F) \times I \times \Gamma^k \to \mathcal{P}(O \times \{R, S\})$
+
+Esempio NTM
+
+![Esempio di NTM preso da un esercizio](assets/Automi%20Non%20Deterministici/NTM.jpg)
+
+**Condizione di accettazione**
+
+Una stringa è accettata se e solo se esiste unna computazione con uno stato di accettazione.
+
+Che cosa è la visita dell'albero computazionale ?
+
+Diverse modalità :
+
+- In profondità (Depth-first)
+- In ampiezza (Breadth-first)
+
+**Si può** costruire una DTM che visita un albero livello dopolivello ma è un processo molto lungo e noioso.
+
+ND **NON** aggiunge potere alle TM
+
+### PDA non deterministici (NPDA)
+L e $\varepsilon$-mosse avevano il seguente vincolo:
+
+$$
+\delta(q, \varepsilon, A) \not ={\bot}\implies\delta(q, i, A) = \bot; \forall i \in I
+$$
+
+Senza di esso i PDA sarebbero intrinsicamente ND.
+
+Un NPDA è una tupla $\lang Q, I, \Gamma, \delta, q_0, Z_0, F \rang$
+
+- $\lang Q, I, \Gamma, q_0, Z_0, F \rang$ come nel PDA
+- $\delta$ è la funzione di transazione definita come:
+$$
+\delta \colon Q \times (I \bigcup \{\varepsilon\}\times \Gamma \to \mathcal{P_F}(Q \times \Gamma^*))
+$$
+
+$\mathcal{P_F}$ indica i sottoinsiemi finiti di $Q \times \Gamma^*$
+
+Esempio di NPDA
+
+![Esempio di NPDA preso da un esercizio](assets/Automi%20Non%20Deterministici/NPDA.jpg)
+
+**Condizione di accettazione**
+
+Dato un NPDA:
+
+$\forall x \in I^* (x \in L(P) \iff \exist q \exist \gamma c_0 = \lang q_0, x, Z_0 \rang \vdash^* c_F = \lang q, \varepsilon, \gamma \rang$ e $q \in F)$
+
+Una stringa è accettata se **c'è un cammino** coerente con $x$ che va dallo stato inizio a uno di fine.
+
+ND noi PDA **aggiunge** potere, riconosce $\{ a^nb^n | n\ge 1\} \bigcup \{a^nb^{2n} | n \ge 1\}$
+
+I linguaggi riconoscibili dai PDA sono detti **context-free**.
+
+DPDA chiusi rispetto al complemento.
+
+**NON** chiusi rispetto unione, intersezione e differenza.
+
+NPDA chiusi rispetto unione.
+
+**NON** chiusi rispetto intersezione, complemento e differenza.
+
+![Schema dei poteri](assets/Poteri.jpg)
+
+| Proprietà chiusura        | FSA | DPDA | NPDA | TM |
+| ---------------- | ------------------- | ------------------- | ---------- | ---------- |
+| Unione        | SI                  | NO                  | SI         | SI         |
+| Intersezione     | SI                  | NO                  | NO         | SI         |
+| Complemento      | SI                  | SI                  | NO         | NO         |
+| Concanetazione | SI                  | NO                  | SI         | SI         |
+| Stella di Klenee     | SI                  | NO                  | SI         | SI         |
