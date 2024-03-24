@@ -13,7 +13,7 @@ La stringa **vuota** è la stringa che ha zero elementi ($|\varepsilon| = 0$).
 
 Due stringhe sono **uguali** se e solo se:
 
-- $|x|$ = $|y|$
+- $|x| = |y|$
 - $x_i = y_i \quad \forall 1 \le i \le n$
 
 ## Operazioni sui linguaggi
