@@ -3,16 +3,18 @@ title: "Elenco Automi e cose varie"
 author: "Niccolò Papini"
 ---
 # Definizioni iniziali
-## Lunghezza di una stringa
-La **lunghezza** di una stringa è il numero di simboli contenuti in una stringa (anche detta 
-cardinalità e si indica con |$x$|)
 
-La stringa **vuota** è la stringa che ha zero elementi (|$\varepsilon$|)
+## Lunghezza di una stringa
+
+La **lunghezza** di una stringa è il numero di simboli contenuti in una stringa (anche detta 
+cardinalità e si indica con $|x|$).
+
+La stringa **vuota** è la stringa che ha zero elementi ($|\varepsilon| = 0$).
 
 Due stringhe sono **uguali** se e solo se:
 
-- |$x$| = |$y$|
-- $x$i = $y$i  $\forall$ 1$\le$i$\le$n
+- $|x|$ = $|y|$
+- $x_i = y_i \quad \forall 1 \le i \le n$
 
 ## Operazioni sui linguaggi
 
@@ -26,74 +28,78 @@ Due stringhe sono **uguali** se e solo se:
 
 Prima di iniziare delle spiegazioni useremo le stringhe $L_1$ e $L_2$ così composte:
 
-$L_1$ = {$\varepsilon$, a, b, c, bc, ca}
+$$
+L_1 = \{ \varepsilon, a, b, c, bc, ca \} \\
+L_2 = \{ ba, bb, bc, ca, cb, cc \}
+$$
 
-$L_2$ = {ba,bb, bc, ca, cb, cc}
+Bene partiamo con la carrellata di operazioni.
 
-Bene partiamo con la carrellata di operazioni
+### Unione ($L_1 \bigcup L_2$)
 
-### Unione ($L_1$ $\bigcup$ $L_2$)
+$L_1 \bigcup L_2 = \{ \varepsilon, a, b, c, ba, bb, bc, ca, cb, cc\}$ tutti gli elementi **SENZA** ripetizioni.
 
-$L_1$ $\bigcup$ $L_2$ = {$\varepsilon$, a, b, c, ba, bb, bc, ca, cb, cc} tutti gli elementi **SENZA** ripetizioni
+### Intersezione ($L_1 \bigcap L_2$)
 
-### Intersezione ($L_1$ $\bigcap$ $L_2$)
+$L_1 \bigcap L_2 = \{bc, ca\}$ **SOLO** elementi comuni.
 
-$L_1$ $\bigcap$ $L_2$ = {bc, ca} **SOLO** elementi comuni
+### Differenza ($L_1 \setminus L_2$ o $L_1 - L_2$)
 
-### Differenza ($L_1$/$L_2$ o $L_1$-$L_2$)
+$L_1 \setminus L_2 = \{ba, bb, cb, cc\}$ **SOLO** elementi **NON** comuni.
 
-$L_1$/$L_2$ = {ba, bb, cb, cc} **SOLO** elementi **NON** comuni
+### Complemento ($L^c = A^* \setminus L$)
 
-### Complemento ($L^c$ = $A^*$/$L$)
-
-$A$ è l'alfabeto su cui $L$ è definito
+$A$ è l'alfabeto su cui $L$ è definito.
 
 $*$ vuol dire tutte le ripetizioni possibili di quell'insieme, $\varepsilon$ compreso.
 
-$L_1^c$ = tutte le stringhe su {a, b, c}* tranne stringhe di lunghezza 2 che iniziano con "b", "c"
+$L_1^c =$ tutte le stringhe su $\{a, b, c\}*$ tranne stringhe di lunghezza 2 che iniziano con "b", "c".
 
-### Concatenazione ($L_1$$\cdot$$L_2$ o $L_1L_2$) **NON** è commutativa
+### Concatenazione ($L_1 \cdot L_2$ o $L_1 L_2$) **NON** è commutativa
 
-$L_1$$\cdot$$L_2$ = {ba, bb, bc, ca, cb, cc, aba, abb, abc, aca, acb, acc, bba, bbb, bbc, bca, bcb, bcc, cba, cbb, cbc, cca, ccb, ccc, bcba, bcbb, bcbc, bcca, bccb, bccc, caba, cabb, cabc, caca, cacb, cacc}
+$$
+L_1 \cdot L_2 = \{ba, bb, bc, ca, cb, cc, aba, abb, abc, aca, acb, acc, bba, bbb, bbc, bca, bcb, bcc, cba, cbb, cbc, cca, ccb, ccc, bcba, bcbb, bcbc, bcca, bccb, bccc, caba, cabb, cabc, caca, cacb, cacc\}
+$$
 
-### Potenza n-esima ($L^n$) concanetamento con se stesso n volte
+### Potenza $n$-esima ($L^n$) concanetamento con se stesso $n$ volte
 
-$L^0$ = {$\varepsilon$}
+$$
+L^i = \begin{cases}
+    \varepsilon & i = 0 \\
+    L ^ {i - 1} \cdot L & i \gt 0
+\end{cases}
+$$
 
-$L^i$ = $L^{i-1}$$\cdot$$L$
-
-La potenza **È** associativa
+La potenza **È** associativa.
 
 ### Chiusura di Kleene
 
-$L^*$ = $\bigcup_{n=0}^\infty L^n$
-
-$L^+$ = $\bigcup_{n=1}^\infty L^n$
-
-$L^*$ = $L^+ \bigcup L^0$ = $L^+ \bigcup$ {$\varepsilon$}
-
-$L^+$ = $L \cdot L^*$
-
-{$\varepsilon$} $\not ={\varnothing}$
+$$
+L^* = \bigcup_{n=0}^\infty L^n \\ \ \\
+L^* = L^+ \bigcup L^0 = L^+ \bigcup \{\varepsilon\} \\ \ \\
+L^+ = \bigcup_{n=1}^\infty L^n \\ \ \\
+L^+ = L \cdot L^* \\ \ \\
+\{\varepsilon\} \not = \emptyset \\
+$$
 
 # Automi a stati finiti
 
 ## FSA (Finite State Automaton)
 
-Un **FSA** ha un insieme finito di stati ovvero un numero limitato di configurazioni
+Un **FSA** ha un insieme finito di stati ovvero un numero limitato di configurazioni.
 
 Es.
 
 - {ON, OFF}
 - {Canali TV}
 
-Un FSA è definito su un alfabeto (a, b, c o anche on, off, anche 1, 2, 3, insomma simboli o parole che noi definiamo come "input" anche C o Java possono essere definiti come tale)
+Un FSA è definito su un alfabeto (a, b, c o anche on, off, anche 1, 2, 3, insomma simboli o parole che noi definiamo come "input" anche C o Java possono essere definiti come tale).
 
-Quando si riceve un input, il sistema cambia il suo stato (**transizione**)
+Quando si riceve un input, il sistema cambia il suo stato (**transizione**).
 
 ![Immagine di transizione](assets/Transizione.jpg)
 
-Gli FSA sono rappresentati tramite una tupla <$Q, A, \delta, q_0, F$>
+Gli FSA sono rappresentati tramite una tupla $\lang Q, A, \delta, q_0, F \rang$:
 
 - $Q$ insieme finito di stati
 - $A$ alfabeto di ingresso
@@ -108,7 +114,7 @@ Per far sì  che gli FSA riconoscano un linguaggio è necessario:
 
 ![Immagine di stati finali e iniziali per dare la nostra convezione grafica](assets/Stati%20finali%20e%20iniziali.jpg)
 
-Una sequenza di mosse è di accettazione se raggiunge uno degli stati finali
+Una sequenza di mosse è di accettazione se raggiunge uno degli stati finali.
 
 Esempio di un FSA:
 
@@ -118,13 +124,13 @@ Esempio di un FSA:
 
 ### FST (Finite State Transducer)
 
-Sono FSA con 2 nastri
+Sono FSA con 2 nastri.
 
-È una tupla <$Q, I, \delta, q_0, F, O, \eta$>
+È una tupla $ \lang Q, I, \delta, q_0, F, O, \eta \rang$:
 
-- <$Q, I, \delta, q_0, F$> come gli accettori (FSA)
+- $\lang Q, I, \delta, q_0, F \rang$ come gli accettori (FSA)
 - $O$ alfabeto di uscita
-- $\eta$ : $Q \times I \longrightarrow O^*$
+- $\eta \colon Q \times I \longrightarrow O^*$
 
 Esempio FST
 
@@ -132,32 +138,32 @@ Esempio FST
 
 ### Pumping Lemma
 
-Se in un sistema a stati finiti si va da uno stato $q_1$ a $q_1$ (ovvero si attraversa un ciclo) vuol dire che lo si può fare n volte
+Se in un sistema a stati finiti si va da uno stato $q_1$ a $q_1$ (ovvero si attraversa un ciclo) vuol dire che lo si può fare n volte.
 
 Perciò se:
 
-$x \in L$ e $|x| \ge |Q| \Rightarrow q \in Q$ && $w \in I^+$
+$x \in L$ e $|x| \ge |Q| \implies q \in Q \land w \in I^+$:
 
-- $x$ = $ywz$
-- $\delta^*(q,w)$ = $q$
+- $x = ywz$
+- $\delta^*(q, w) = q$
 
 Dunque:
 
 - $\forall n \ge 0 yw^nz \in L$
 
-Conseguenze 
+Conseguenze:
 
-$L$ = $\empty$ se $\exist x \in L \longleftrightarrow \exist y \in L, |y| < |Q|$
+$L = \empty$ se $\exist x \in L \iff \exist y \in L, |y| \lt |Q|$
 
-$|L|$ = $\infty$ se $\exist x \in L  |Q| \Leftarrow |x| < 2|Q|$
+$|L| = \infty$ se $\exist x \in L |Q| \impliedby |x| \lt 2|Q|$
 
-Problemi
+Problemi:
 
-Per "contare" un numero n molto grande servirebbe memoria infinita
+- Per "contare" un numero $n$ molto grande servirebbe memoria infinita
 
 ### Operazioni su FSA
 
-N.B. se un sistema è **chiuso** rispetto a un operazione vuol dire che il risultato è sempre parte dell'insieme
+N.B. se un sistema è **chiuso** rispetto a un operazione vuol dire che il risultato è sempre parte dell'insieme.
 
 Operazioni:
 
@@ -165,18 +171,18 @@ Operazioni:
 - Unione ( $\bigcup$ )
 - Complemento ( $^c$ )
 
-Sono operazioni **CHIUSE** negli FSA 
+Sono operazioni **CHIUSE** negli FSA. 
 
 ## PDA (PushDown Automata)
 
-Sono FSA con una pila 
+Sono FSA con una pila.
 
 La stringa d'ingresso $x$ è accettata se:
 
 - il PDA la legge tutta
 - Quando finisce si trova in uno stato di accettazione
 
-Un PDA è una tupla <$Q, I, \Gamma, \delta, q_0, Z_0, F$>
+Un PDA è una tupla $\lang Q, I, \Gamma, \delta, q_0, Z_0, F \rang$:
 
 - $Q$ insieme finito di stati
 - $I$ alfabeto di ingresso
@@ -197,9 +203,9 @@ Esempio PDA:
 - Posizione della stringa d'ingresso
 - La pila
 
-È una tripla <$q, x, \gamma$>
+È una tripla $\lang q, x, \gamma \rang$
 
-- $q  \in Q$ stato corrente dispositivo
+- $q \in Q$ stato corrente dispositivo
 - $x \in I^*$ posizione **non** letta della stringa d'ingresso
 - $\gamma \in \Gamma^*$ stringa simboli di pila
 
@@ -207,71 +213,75 @@ Le transizioni tra configurazioni ($\vdash$) mostra come commutare tra un PDA e 
 
 Esempio
 
-Dato $\delta(q, i, A) = <q', \alpha>$ è definita
+Dato $\delta(q, i, A) =  \lang q', \alpha \rang$ è definita
 
-$c=<q, x, \gamma> \vdash c'=<q', x', \gamma>$
+$c = \lang q, x, \gamma \rang \vdash c'= \lang q', x', \gamma \rang$
 
-- $\gamma =A\beta$
+- $\gamma = A \beta$
 - $x = iy$
 
 allora
 
-- $\gamma' = \alpha\beta$
+- $\gamma' = \alpha \beta$
 - $x' = y$
 
 **Condizione di accettazione**
 
-$\forall x \in I^* (x \in L \Longleftrightarrow \exist q \exist \gamma c_0 = <q_0, x, Z_0> \vdash^* c_f =<q, \varepsilon, \gamma>$ e $q\in F)$
+$$
+\forall x \in I^* (x \in L \iff \exist q \exist \gamma c_0 = \lang q_0, x, Z_0 \rang \vdash^* c_f = \lang q, \varepsilon, \gamma \rang \land q \in F)
+$$
 
-La stringa viene accettata se c'è un cammino coerente che va sallo stato iniziale a uno stato finale
+La stringa viene accettata se c'è un cammino coerente che va sallo stato iniziale a uno stato finale.
 
 #### PDA VS FSA
 
-- Gli FSA **NON** riconoscono $a^nb^n$ i PDA si
+- Gli FSA **NON** riconoscono $a^n b^n$ i PDA si
 - Ogni linguaggio regolare (FSA) è riconosciuto da PDA
 - I PDA sono più potendi dei FSA
 
-I PDA non si fermano sempre dopo le mosse, ogni PDA si può trasformare in un PDA aciclico (si ferma sempre dopo le mosse)
+I PDA non si fermano sempre dopo le mosse, ogni PDA si può trasformare in un PDA aciclico (si ferma sempre dopo le mosse).
 
 ### PDT (PushDown Trasducer)
 
-I PDT sono una tupla <$Q, I, \Gamma, \delta, q_0, Z_0, F, O, \eta$>
+I PDT sono una tupla $\lang Q, I, \Gamma, \delta, q_0, Z_0, F, O, \eta \rang$:
 
-- ($Q, I, \Gamma, \delta, q_0, Z_0, F$) come nei PDA
+- $\lang Q, I, \Gamma, \delta, q_0, Z_0, F \rang$ come nei PDA
 - $O$ alfabeto d'uscita
-- $\eta$ : $Q \times (I \bigcup$ {$\varepsilon$} $)$ $\times \Gamma \longrightarrow O^*$
+- $\eta \colon Q \times (I \bigcup \{ \varepsilon\} ) \times \Gamma \to O^*$
 
-**Configurazione** <$q, x, \gamma, z$>
+**Configurazione** <$q, x, \gamma, z$>:
 
-- $<q, x, \gamma>$ come nei PDA
+- $\lang q, x, \gamma \rang$ come nei PDA
 - $z$ stringa già scritta sul nastro d'uscita
 
-**Condizione di accettazione**
+**Condizione di accettazione**:
 
-$\forall x \in I^* \forall z \in O^* (x \in L \bigwedge z = \tau(x) \Longleftrightarrow \exist q \exist \gamma c_0 = <q_0, x, Z_0, \varepsilon> \vdash^* c_f =<q, \varepsilon, \gamma, z>$ e $q \in F )$
+$$
+\forall x \in I^* \forall z \in O^* (x \in L \land z = \tau(x) \iff \exist q \exist \gamma \colon c_0 = \lang q_0, x, Z_0, \varepsilon \rang \vdash^* c_f = \lang q, \varepsilon, \gamma, z \rang \land q \in F )
+$$
 
-La traduzione è definita solo se $x$ è accettata
+La traduzione è definita se e solo se $x$ è accettata.
 
 Esempio di PDT
 
 ![Esempio di PDT preso da un esrcizio](assets/Automi%20Deterministici/PDT.jpg)
 
-I PDT **NON** sono chiusi rispetto a Unione, Intersezione e Complemento
+I PDT **NON** sono chiusi rispetto a Unione, Intersezione e Complemento.
 
 ## Turing Machine (TM)
 
-I PDA **NON** riconoscono $a^nb^nc^n$ o $a^nb^n \bigcup a^nb^{2n}$
+I PDA **NON** riconoscono $a^n b^n c^n$ o $a^n b^n \cup a^n b^{2n}$.
 
-La pila è una memoria distruttiva, letto un elemento viene eliminato
+La pila è una memoria distruttiva, letto un elemento viene eliminato.
 
-C'è bisogno di **NASTRI DI MEMORIA**
+C'è bisogno di **NASTRI DI MEMORIA**.
 
 Le TM usano i nastri come memorie:
 
 - Non distruttivi
 - Scorrevoli in entrambi i sensi
 
-I nastri sono sequenze infinite di celle con "Blank" (segnato come "$\cancel{b}$", "_" o "$-$")
+I nastri sono sequenze infinite di celle con "Blank" (segnato come "$\cancel{b}$", "_" o "$-$").
 
 ##### Mosse
 
@@ -283,9 +293,9 @@ Spostamento testine dichiarato con 3 movimenti:
 - Sposta a sinistra (L)
 - Fermo (S)
 
-Si esplicita **SEMPRE**
+Si esplicita **SEMPRE**.
 
-Le TM sono una tupla $<Q, I, \Gamma, \delta, q_0, Z_0, F>$
+Le TM sono una tupla $\lang Q, I, \Gamma, \delta, q_0, Z_0, F \rang$:
 
 - $Q$ insieme finito di stati
 - $I$ alfdabeto di ingresso
@@ -299,40 +309,40 @@ Esempio di TM
 
 ![Esempio di TM preso da un esercizio](assets/Automi%20Deterministici/TM.jpg)
 
-La **Configurazione** di una TM con k nastri è una (k+2)-tupla
+La **Configurazione** di una TM con k nastri è una (k+2)-tupla:
 
-$c=<q, x\uparrow iy, \alpha_1 \uparrow A_1 \beta_1,...,\alpha_k \uparrow A_k \beta_k>$
+$$
+c = \lang q, x \uparrow iy, \alpha_1 \uparrow A_1 \beta_1, \dots, \alpha_k \uparrow A_k \beta_k \rang
+$$
 
 - $q \in Q$
-- $x, y \in I^*; i\in I$
-- $\alpha_r, \beta_r \in \Gamma^*, A_r \in \Gamma \forall r; 1\le r \le k$
-- $\uparrow \notin I\bigcup \Gamma$
+- $x, y \in I^*$,  $i \in I$
+- $\alpha_r, \beta_r \in \Gamma^*$, $A_r \in \Gamma \forall r \quad 1 \le r \le k$
+- $\uparrow \notin I \cup \Gamma$
 
-$\uparrow$ indica la posizione della testina
+$\uparrow$ indica la posizione della testina.
 
-**Condizione di accettazione**
+**Condizione di accettazione**:
 
-$\exist q \exist x' \exist i \exist y \exist \alpha_1 \exist A_1 \exist \beta_1....\exist \alpha_k \exist A_k \exist \beta_k$
-
-$c_0 = <q_0, \uparrow x, \uparrow Z_0,...,\uparrow Z_0> \vdash_m^* c_F =<q, x'\uparrow iy, \alpha_1 \uparrow A_1 \beta_1,...,\alpha_k \uparrow A_k \beta_k>$ con $q \in F$ e $x = x'iy$
+$\exist q \exist x' \exist i \exist y \exist \alpha_1 \exist A_1 \exist \beta_1 \dots \exist \alpha_k \exist A_k \exist \beta_k \colon c_0 = \lang q_0, \uparrow x, \uparrow Z_0, \dots, \uparrow Z_0 \rang \vdash_m^* c_F = \lang q, x'\uparrow iy, \alpha_1 \uparrow A_1 \beta_1, \dots, \alpha_k \uparrow A_k \beta_k \rang$ con $q \in F$ e $x = x'iy$
 
 #### TM VS PDA
 
-- $a^nb^nc^n$ **NON** sono riconosciuti da PDA ma da TM
+- $a^n b^n c^n$ **NON** sono riconosciuti da PDA ma da TM
 - Se un linguaggio è riconosciuto da PDA allora è riconosciuto da TM
 
-I linguaggi accettati da TM sono detti **ricorsivamente enumerabili**
+I linguaggi accettati da TM sono detti **ricorsivamente enumerabili**.
 
 #### TM e Macchine di Von Neumann (VNM)
 
-La differenza sta nell'accesso alla memoria
+La differenza sta nell'accesso alla memoria:
 
 - TM : Sequenziale
 - VNM : Diretto
 
-Il tipo di accesso **NON** cambia la potenza
+Il tipo di accesso **NON** cambia la potenza.
 
-Le TM possono  simulare le VNM
+Le TM possono simulare le VNM.
 
 ##### Operazioni TM
 
@@ -348,13 +358,13 @@ Le TM sono **chiuse** rispetto a:
 - Complemento
 - Differenza
 
-Se esistessero TM acicliche sarebbero chiuse al complemento, il problema sta dove le computazioni non terminano
+Se esistessero TM acicliche sarebbero chiuse al complemento, il problema sta dove le computazioni non terminano.
 
 ### TM Trasduttrice
 
-Le TM trasuttrici a k nastri sono una tupla di 9 elementi $<Q, I, \Gamma, O, \delta, \eta, q_0, Z_0, F>$
+Le TM trasuttrici a k nastri sono una tupla di 9 elementi $\lang Q, I, \Gamma, O, \delta, \eta, q_0, Z_0, F \rang$:
 
-- $<Q, I, \Gamma, \delta, q_0, Z_0, F>$ come le TM
+- $\lang Q, I, \Gamma, \delta, q_0, Z_0, F \rang$ come le TM
 - $O$ alfabeto d'uscita
 - $\eta$ funzione d'uscita
 
@@ -369,7 +379,7 @@ Esempio di TM traduttrice
 
 **Configurazione**
 
-$c=<q, x\uparrow iy, \alpha_1 \uparrow A_1 \beta_1,...,\alpha_k \uparrow A_k \beta_k, u \uparrow o>$
+$c = \lang q, x \uparrow iy, \alpha_1 \uparrow A_1 \beta_1, \dots, \alpha_k \uparrow A_k \beta_k, u \uparrow o \rang$
 
 - $\uparrow \in I \bigcup \Gamma \bigcup o$
 
@@ -379,9 +389,9 @@ Le TM possono:
 - Tradurre linguaggi accettati
 - Calcolare funzioni
 
-Le TM sono computer con accesso sequenziale alla memoria (Modello atratto)
+Le TM sono computer con accesso sequenziale alla memoria (Modello astratto).
 
-Le TM possono avere nastri a n dimensioni
+Le TM possono avere nastri a n dimensioni.
 
-N.B. Più dimensioni **NON** aggiungono potenza
+N.B. Più dimensioni **NON** aggiungono potenza.
 
