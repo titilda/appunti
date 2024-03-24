@@ -371,7 +371,7 @@ P(X \ge a) = 1 - F_X(a) \\
 F_X(a) = 1 - F_X(-a) \\
 $$
 
-# Densità di probabilità congiunta
+# Densità di probabilità congiunta e trasformazioni di variabili aleatorie
 
 Una **densità di probabilità congiunta** è una pdf che mappa un $n$-upla di elementi ad un valore reale. Valgono ancora una volta se solite proprietà:
 
@@ -394,7 +394,39 @@ $$
 f_{X,Y}(x, y) = f_X(x) \cdot f_Y(y) \qquad \forall (x, y) \in \mathbb{R}^2
 $$
 
+Anche per i condizionamenti, valgono le formule sopra ma riadattate con l'integrale al posto della sommatoria:
 
+$$
+f_{Y|X} = \frac{f_{X,Y}(x, y)}{f_X(x)} = \frac{f_{X,Y}(x, y)}{\int_\mathbb{R} f_{X,Y}(x, y) dy}
+$$
+
+Continua a valere la regola di bayes ma con delle caratteristiche nuove:
+
+$$
+P_{X|Y}(x, y) = \frac{P_{Y|X}(y | x) \cdot P_X(x)}{P_Y(y)}
+$$
+
+$P_X$ viene detta **legge a priori**, $P_{Y|X}$ viene detta **legge di causa-effetto** (o **di verosimiglianza**) e $P_{X|Y}$ viene detta **legge a posteriori**.
+
+E' possibile combinare più variabili aleatorie in una funzione deterministica di esse: siano $f_{X,Y}(x, y)$ la pdf combinata di $X$ e $Y$ e $Z = g(X, Y)$ una funzione deterministica delle due variabili aleatorie precedenti. Vale che 
+
+$$
+E[Z] = {\int\int}_{\mathbb{R}^2} g(x, y) \cdot f_{X,Y}(x, y) dxdy
+$$
+
+Se $Y = \alpha X + \beta$ (quindi $Y$ è una trasformazione lineare di $X$) e $f_X$ è la pdf di $X$, allora 
+
+$$
+f_Y(y) = f_X\left(\frac{y - b}{a}\right)\frac{1}{|a|}
+$$
+
+Se invece $Y = g(X)$ con $g$ monotona, vale che
+
+$$
+f_Y(y) = \frac{f_X(x)}{\left| \frac{dg}{dx} (x) \right|} = \frac{f_X(g^{-1}(y))}{\left| \frac{dg}{dx} \left( g^{-1}(y) \right) \right|}
+$$
+
+Se $g$ non è monotona, si può dividerla in casi monotoni.
 
 
 # Tabella riassuntiva distribuzioni variabili aleatorie
