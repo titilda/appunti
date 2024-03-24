@@ -184,8 +184,10 @@ $$
 X \sim \text{Geom}(p) \implies \begin{cases}
     E[X] = \frac{1}{P} \\
     Var[X] = \frac{1 - p}{p^2}
-\end{cases} \\
+\end{cases}
+$$
 
+$$
 X \sim \text{Bin}(n, p) \implies \begin{cases}
     E[X] = np \\
     Var[X] = np(1 - p)
@@ -309,8 +311,10 @@ $$
 X \sim U[a, b] \implies f_X(x) = \begin{cases}
     \frac{1}{b - a} & a \le x \le b \\
     0 & \text{altrimenti}
-\end{cases} \\
+\end{cases}
+$$
 
+$$
 E[X] = \frac{b - a}{2} \\
 Var[X] = \frac{(b - a)^2}{12}
 $$
