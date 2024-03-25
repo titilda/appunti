@@ -429,6 +429,55 @@ $$
 
 Se $g$ non è monotona, si può dividerla in casi monotoni.
 
+La legge della **somma di due variabili indipendenti** è la convoluzione delle leggi di probabilità.
+
+Siano $X$ e $Y$ due variabili aleatorie indipendenti e $W = X + Y$. Si vuole calcolare la probabilità che $W = w$:
+
+$$
+P(W = w) = P(X + Y = w) = \sum_{(x, y) : x + y = w} P_{X,Y}(x, y) = \sum_{(x, y) : x + y = w} P_X(x) \cdot P_Y(y) = \underbrace{\sum_{(x, y) : x + y = w} P_X(x) \cdot P_Y(w - x)}_{\text{Somma di convoluzione}}
+$$
+
+Nel caso continuo, si sostituisce la sommatoria con l'integrale:
+
+$$
+P(W = w) = \int_{-\infty}^{\infty} P_X(x) \cdot P_Y(w - x) dx
+$$
+
+Se le due variabili $X$ e $Y$ sono gaussiane, si dimostra con la formula appena sopra che la pdf della loro somma è a sua volta gaussiana. In particolare se $X \sim \mathcal{N}(\mu_X, \sigma_X^2)$ e $Y \sim \mathcal{N}(\mu_Y, \sigma_Y^2)$ allora $X + Y \sim \mathcal{N}(\mu_X + \mu_Y, \sigma_X^2 + \sigma_Y^2)$.
+
+# Covarianza
+
+La **covarianza** descrive quanto due variabili sono correlate tra loro.
+
+$$
+Cov[X, Y] = E[(X - E[X]) \cdot (Y - E[Y])] = E[X \cdot Y] - E[X] \cdot E[Y]
+$$
+
+E' utile notare che 
+
+- $Cov[X, X] = Var[X]$
+- $E[X] = 0 \lor E[Y] = 0 \implies Cov[X, Y] = E[X \cdot Y]$
+- $X \perp Y \implies Cov[X, Y] = 0$ ma non vale il contrario
+
+## Varianza della somma di variabili aleatorie qualunque
+
+$$
+Var \left[ \sum_{i = 1}^{n} X_i \right] = \sum_{i = 1}^{n} Var[X_i] + 2 \sum_{i \lt j} Cov[X_i, X_j]
+$$
+
+## Coefficiente di correlazione lineare
+
+Il **coefficiente di correlazione lineare** funziona un po' come la varianza ma è adimensionale e normalizzato rispetto alle variabili aleatorie.
+
+$$
+\rho[X, Y] = \frac{Cov[X, Y]}{\sigma_X, \sigma_Y} = E \left[ \frac{(X - E[X])}{\sigma_X} \cdot \frac{(Y - E[Y])}{\sigma_Y} \right]
+$$
+
+Valgono alcune proprietà:
+
+- $-1 \le \rho[X, Y] \le 1$
+- $|\rho[X, Y]| = 1 \iff X - E[X] = c(Y - E[Y]), \ Y = aX + b$
+- $X \perp Y \implies \rho[X, Y] = 0$
 
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
@@ -439,4 +488,4 @@ Se $g$ non è monotona, si può dividerla in casi monotoni.
 | Bernoulli     | $\text{Bern}(p)$             | $p$                 | $p(1-p)$               |
 | Uniforme      | $U[a, b]$                    | $\frac{b - a}{2}$   | $\frac{(b - a)^2}{12}$ |
 | Gaussiana     | $\mathcal{N}(\mu, \sigma^2)$ | $\mu$               | $\sigma^2$             |
-| Esponeziale   | $\text{Exp}[\lambda]$        | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$ |
+| Esponenziale  | $\text{Exp}[\lambda]$        | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$  |
