@@ -2,6 +2,7 @@
 title: "Riassunto estremamente sintetico di Informazione e Stima"
 author:
 - "Andrea Oggioni"
+- "Niccolò Papini"
 ---
 
 # Introduzione
@@ -431,10 +432,11 @@ Se $g$ non è monotona, si può dividerla in casi monotoni.
 
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
-| Distribuzione | Costruttore                  | Valore atteso     | Varianza               |
-| ------------- | ---------------------------- | ----------------- | ---------------------- |
-| Geometrica    | $\text{Geom}(p)$             | $\frac{1}{p}$     | $\frac{1-p}{p^2}$      |
-| Binomiale     | $\text{Bin}(n, p)$           | $np$              | $np(1-p)$              |
-| Bernoulli     | $\text{Bern}(p)$             | $p$               | $p(1-p)$               |
-| Uniforme      | $U[a, b]$                    | $\frac{b - a}{2}$ | $\frac{(b - a)^2}{12}$ |
-| Gaussiana     | $\mathcal{N}(\mu, \sigma^2)$ | $\mu$             | $\sigma^2$             |
+| Distribuzione | Costruttore                  | Valore atteso       | Varianza               |
+| ------------- | ---------------------------- | ------------------- | ---------------------- |
+| Geometrica    | $\text{Geom}(p)$             | $\frac{1}{p}$       | $\frac{1-p}{p^2}$      |
+| Binomiale     | $\text{Bin}(n, p)$           | $np$                | $np(1-p)$              |
+| Bernoulli     | $\text{Bern}(p)$             | $p$                 | $p(1-p)$               |
+| Uniforme      | $U[a, b]$                    | $\frac{b - a}{2}$   | $\frac{(b - a)^2}{12}$ |
+| Gaussiana     | $\mathcal{N}(\mu, \sigma^2)$ | $\mu$               | $\sigma^2$             |
+| Esponeziale   | $\text{Exp}[\lambda]$        | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$ |
