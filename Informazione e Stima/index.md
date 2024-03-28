@@ -372,6 +372,12 @@ P(X \ge a) = 1 - F_X(a) \\
 F_X(a) = 1 - F_X(-a) \\
 $$
 
+E' possibile calcolare la **marginale** di una combinazione di variabili gaussiane andando ad imporre quanto segue:
+
+$$
+\frac{(Y - \mu_X)^2}{\sigma_X^2} - \frac{(Y - \mu_Y)^2}{\sigma_Y^2} = k
+$$
+
 # Densità di probabilità congiunta e trasformazioni di variabili aleatorie
 
 Una **densità di probabilità congiunta** è una pdf che mappa un $n$-upla di elementi ad un valore reale. Valgono ancora una volta se solite proprietà:
