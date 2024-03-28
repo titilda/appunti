@@ -1,6 +1,8 @@
 ---
 title: "Algoritmi e Principi dell'informatica (API)"
-author: "Niccolò Papini"
+author: 
+- "Niccolò Papini"
+- "Andrea Oggioni"
 ---
 # Definizioni iniziali
 
@@ -521,10 +523,235 @@ NPDA chiusi rispetto unione.
 
 ![Schema dei poteri](assets/Poteri.jpg)
 
-| Proprietà chiusura        | FSA | DPDA | NPDA | TM |
-| ---------------- | ------------------- | ------------------- | ---------- | ---------- |
-| Unione        | SI                  | NO                  | SI         | SI         |
-| Intersezione     | SI                  | NO                  | NO         | SI         |
-| Complemento      | SI                  | SI                  | NO         | NO         |
-| Concanetazione | SI                  | NO                  | SI         | SI         |
-| Stella di Klenee     | SI                  | NO                  | SI         | SI         |
+| Proprietà chiusura | FSA | DPDA | NPDA | TM  |
+| ------------------ | --- | ---- | ---- | --- |
+| Unione             | SI  | NO   | SI   | SI  |
+| Intersezione       | SI  | NO   | NO   | SI  |
+| Complemento        | SI  | SI   | NO   | NO  |
+| Concanetazione     | SI  | NO   | SI   | SI  |
+| Stella di Klenee   | SI  | NO   | SI   | SI  |
+
+
+# Grammatiche
+
+Esistono 2 tipi di modelli:
+
+- Modelli operazionali (Automi): Riconoscono/accettano, traducono e calcolano linguaggi.
+- Modelli generativi (Grammatiche): Descrivono come generare un linguaggio.
+
+I modelli generativi producono stringhe (grammatica).
+
+Una grammatica è un insieme di parole per costruire le frasi di un linguaggio $\to$ tramite **riscrittura** (insieme di metodi).
+
+## Regole linguistiche
+
+Le regole linguistiche descrivono un "oggetto principale" con una sequenza di componenti.
+
+I componenti vengono dettagliati fino ad andare alla base (vuol dire che es. da staccionata si arriva a Assi, Martello, Chiodi).
+
+Una grammatica è una tupla $\lang V_N, V_T, P, S \rang$
+
+- $V_N$ alfabeto **NON TERMINALE**
+- $V_T$ alfabeto **TERMINALE**
+- $V = V_N \bigcup V_T$
+- $P = \subseteq V_N^+ \times V^*$ insieme finito di **regole di riscrittura**
+- $S \in V_N$ è un particolare elemento di $V_N$ chiamato **assioma**
+
+Una grammatica genera un linguaggio sull'alfabeto $V_T$
+
+## Produzioni
+
+Elemento di $V_N^+ \times V^* (\lang \alpha, \beta \rang | \alpha \in V_N^+, \beta \in V^*)$
+
+Si indica con $\alpha \to \beta$
+
+- $\alpha$ sequenza si,boli **NON** terminali.
+- $\beta$ sequenza (potenzialmente vuota) di simboli (terminali o non)
+
+### Gerarchia Chomsky
+
+Esistono 4 tipi di grammatiche
+
+| Tipo | Nome                         | Produzioni                                                                                                                                                                                | Macchine                                                                 |
+| ---- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| 3    | Regolari                     | (Destre) $A \to \alpha, A \to aB (A \to \varepsilon) con A,B \in V_N, a \in V_T$                                                                                                          | FSA                                                                      |
+| 2    | Context-free                 | $A \to B, A \in V_N$                                                                                                                                                                      | NPDA                                                                     |
+| 1    | Context-sensitive e monotone | $S \to \varepsilon, \alpha A \beta \to \alpha \gamma \beta$ con $A \in V_N, \alpha, \beta, \gamma \in V^+$ (ora monotone) $\alpha \to \beta$ con $\vert \alpha \vert = \vert \beta \vert$ | Automi lineari (NTM usano uno spazio di memoria proporzionale all'input) |
+| 0    | Generali o non ristrette     | $P \subseteq V_N^+ \times V^+$                                                                                                                                                            | TM |
+
+### Reazioni di derivazione immediata
+
+$\alpha \implies \beta$ ($\beta$ è ottenuta immediatamente da $\alpha$)
+
+- $\alpha \in V_N^+$ e $\beta \in V^*$
+
+se e solo se
+
+$\alpha = \alpha_1 \alpha_2 \alpha_3, \beta = \alpha_1 \beta_2 \alpha_3$ e $\alpha_2 \to \beta_2 \in P$
+
+$\alpha_2$ riscritta come $\beta_2$ nel contesto $\lang \alpha_1, \alpha_3 \rang$
+
+Es.
+
+$$
+V_N = \{S,A, B, C, D\}\\
+V_T = \{a, b, c\}\\
+S\\
+P = \{S \to AB, BA \to cCD, CBS \to ab, A \to \varepsilon\}\\
+aaBAS \implies aacCDS \\
+bcCBSAdd \implies bcabAdd
+$$
+
+#### Linguaggio generato
+
+Data $G = \lang V_N, V_T, P, S \rang$
+
+$\forall x (x \in L(G) \iff x \in V_T^* \land S \implies(+) x)$
+
+Il linguaggio generato da $G$ è l'insieme di tutte le stringhe:
+
+- Solo simboli terminali
+- Derivante da $S$ in $n$ numeri di passi con $n \ge 1$
+
+ES.
+
+$$
+G_2 = \lang \{S\}, \{a, b\}, \{S \to a Sb | ab\}, S \rang \\
+S \to aSb |ab = S \to aSb, S \to ab
+$$
+Derivazioni
+$$
+S \implies ab \\
+S \implies aSb \implies aabbb \\
+S \implies aSb \implies aaSbb \implies aaabbb
+$$
+Generalizzo $L(G_2) = \{a^nb^n|n> 0\}$
+
+### Regular Grammar (RG) VS FSA
+
+Sia $A$ un FSA, si può costruire un RG $G$ ad esso equivalente.
+
+$G$ genera esattamente lo stesso linguaggio riconosciuto da $A$.
+
+Le RG, FSA e espressioni regolari descrivono lo stesso linguaggio in modelli diversi.
+
+Le context-free grammar (CFG) sono identiche alle Backus-Naus Form (BNF) usate per definire la sintassi dei linguaggi di programmazione.
+
+Le grammatiche regolari sono anche non contestuali
+
+I linguaggi possono essere rappresentati tramite molti modelli tra cui :
+
+- Pattern
+- Espressioni Regolari (RE)
+
+## Pattern
+
+È una tripla $\lang A, V, p \rang$
+
+- $A$ è un alfabeto
+- $V$ insieme di variabili $| A \bigcap V = \emptyset$
+- $p$ è una stringa su $A \bigcup V$ detta pattern
+
+Il pattern genera un linguaggio che ha tutte le stringhe di $A$ ottenute da $p$ sostituendo ogmi variabile in $p$ con una stringa su $A$.
+
+Es.
+$\lang \{0, 1\}, \{v_1, v_2\}, v_1v_1 \circ v_2 \rang$
+
+- Stringhe che iniziano con $0 (v_1 = \varepsilon)$
+- Stringhe che iniziano con una stringa su A ripetuta due volte, seguita da uno $0$ e da una qualunque stringa (inclusa $\varepsilon$)
+
+## RE: sintassi e semantica
+
+Definizione di un RE su un alfabeto $A \colon$
+
+- $\emptyset$ è una RE
+- $\varepsilon$ è una RE
+- ogni simbolo di $A$ è una RE
+
+Siano $r$ e $s$ due RE, allora:
+
+- $(r.s)$ è una RE
+- $r^*$ è una RE
+- Nient'altro è una RE
+
+Es.
+
+$((0.(0|1)^*)|((0|1)^*.0))$ è una RE su $\{0, 1\}$
+
+- stringhe che iniziano con $0$
+- stringhe che finiscono con $0$
+
+### RE e Pattern
+
+Le RE hanno la stessa idea dei Pattern ma diverso potere.
+
+$RE \not ={Pattern}$.
+
+$\{xx | x \in \{0, 1\}^*\}$ NO RE
+
+Pattern corrispondente $\lang \{0, 1\}, \{x\}, xx \rang$
+
+Linguaggio denotato da $0^*1^*$ **NON ESPREMIBILE** tramite Pattern.
+
+### RG e RE
+
+$RG = RE$.
+
+### RE POSIX (Linux/Unix)
+
+Caratteri meta: ( ) . [ ] ^ \ $ * + | { }
+
+N.B. "." indica qualunque carattere, **NON** concatenazione.
+
+[$\alpha$] indica un singolo carattere $\in \alpha ([abc]$ indica $\{a, b, c\})$.
+
+[^$\alpha$] negazione: qualunque carattere non in $\alpha$.
+
+^ e $ indicano $\varepsilon$ corrispettivamente all'inizio e alla fine della riga.
+
+*, +, |, (, ) uguali a sempre.
+
+\ "escape" (\ $ indica il simbolo $).
+
+$\alpha ?$ indica $\alpha$ opzionale.
+
+$\alpha \{n\}$ indica $\alpha^n$
+
+$\alpha \{n, m\}$ indica $\alpha^n \bigcup \alpha ^{n+1} \bigcup \dots \bigcup \alpha^m$
+
+# Logica
+
+Esistono vari linguaggi logici :
+
+- Logica Proposizionale
+- FOL (First-Order Logic)
+
+La logica è un formalismo "universale" e si applica in molti ambiti :
+
+- Architetture (porte logiche)
+- Ingegneria del software
+- Linguaggi di programmazione
+- Database
+- AI
+
+Gli insiemi possono essere visti come abbreviazioni di formule FOL.
+
+Es.
+
+$\{a^nb^n | n \ge 0\} \to$ abbreviata di $\forall x (x \in L \longleftrightarrow \exist n (n \ge 0 \land x = a^n.b^n))$
+
+$x^n ?$
+
+$\forall n \forall x ((n=0 \to x^n = \varepsilon) \land (n > 0 \to x^n = x^{n-1}.x))$
+
+Ora faremo un bel elenco di operazioni logiche, buon viaggio ; )
+
+$L_1 = a^*b^*$
+
+$L_1$ è il linguaggio delle stringhe su $\{a, b\}$ con tutte le "$a$" all'inizio.
+
+Più precisamente $L_1$ è:
+
+- stringa vuota.
+- composta da un prefisso "$a$" e un suffiso $y$ (sempre in $L_1$).
+- prefisso $y$ (sempre in $L_1$) e un suffisso "$b$".
