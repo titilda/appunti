@@ -371,6 +371,14 @@ P(X \ge a) = 1 - F_X(a) \\
 F_X(a) = 1 - F_X(-a) \\
 $$
 
+Per calcolare le **marginali** di una somma di gaussiane, si calcolano le curve di livello (che risulteranno essere delle ellissi o circonferenze).
+
+Devo imporre che
+
+$$
+\frac{(x - \mu_X)^2}{\sigma_X^2} - \frac{(y - \mu_Y)^2}{\sigma_Y^2} = k
+$$
+
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
 | Distribuzione | Costruttore                  | Valore atteso     | Varianza               |
