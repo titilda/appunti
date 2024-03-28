@@ -2,6 +2,7 @@
 title: "Riassunto estremamente sintetico di Informazione e Stima"
 author:
 - "Andrea Oggioni"
+- "Niccolò Papini"
 ---
 
 # Introduzione
@@ -371,20 +372,120 @@ P(X \ge a) = 1 - F_X(a) \\
 F_X(a) = 1 - F_X(-a) \\
 $$
 
-Per calcolare le **marginali** di una somma di gaussiane, si calcolano le curve di livello (che risulteranno essere delle ellissi o circonferenze).
+# Densità di probabilità congiunta e trasformazioni di variabili aleatorie
 
-Devo imporre che
+Una **densità di probabilità congiunta** è una pdf che mappa un $n$-upla di elementi ad un valore reale. Valgono ancora una volta se solite proprietà:
 
 $$
-\frac{(x - \mu_X)^2}{\sigma_X^2} - \frac{(y - \mu_Y)^2}{\sigma_Y^2} = k
+f_{X,Y}(x, y) \ge 0 \qquad \forall (x, y) \in \mathbb{R}^2 \\
+{\int \int}_{\mathbb{R}^2} f_{X,Y}(x, y) dxdy = 1 \\
+E[g(X, Y)] = {\int\int}_{\mathbb{R}^2}g(x, y)F_{X,Y}(x, y) dxdy
 $$
+
+E' possibile calcolare le **distribuzioni marginali** per $X$ e per $Y$:
+
+$$
+F_X(x) = \int_{\mathbb{R}} f_{X,Y}(x, y) dy \\
+F_Y(y) = \int_{\mathbb{R}} f_{X,Y}(x, y) dx
+$$
+
+Due variabili aleatorie continue sono **indipendenti** ($X \perp Y$) se 
+
+$$
+f_{X,Y}(x, y) = f_X(x) \cdot f_Y(y) \qquad \forall (x, y) \in \mathbb{R}^2
+$$
+
+Anche per i condizionamenti, valgono le formule sopra ma riadattate con l'integrale al posto della sommatoria:
+
+$$
+f_{Y|X} = \frac{f_{X,Y}(x, y)}{f_X(x)} = \frac{f_{X,Y}(x, y)}{\int_\mathbb{R} f_{X,Y}(x, y) dy}
+$$
+
+Continua a valere la regola di bayes ma con delle caratteristiche nuove:
+
+$$
+P_{X|Y}(x, y) = \frac{P_{Y|X}(y | x) \cdot P_X(x)}{P_Y(y)}
+$$
+
+$P_X$ viene detta **legge a priori**, $P_{Y|X}$ viene detta **legge di causa-effetto** (o **di verosimiglianza**) e $P_{X|Y}$ viene detta **legge a posteriori**.
+
+E' possibile combinare più variabili aleatorie in una funzione deterministica di esse: siano $f_{X,Y}(x, y)$ la pdf combinata di $X$ e $Y$ e $Z = g(X, Y)$ una funzione deterministica delle due variabili aleatorie precedenti. Vale che 
+
+$$
+E[Z] = {\int\int}_{\mathbb{R}^2} g(x, y) \cdot f_{X,Y}(x, y) dxdy
+$$
+
+Se $Y = \alpha X + \beta$ (quindi $Y$ è una trasformazione lineare di $X$) e $f_X$ è la pdf di $X$, allora 
+
+$$
+f_Y(y) = f_X\left(\frac{y - b}{a}\right)\frac{1}{|a|}
+$$
+
+Se invece $Y = g(X)$ con $g$ monotona, vale che
+
+$$
+f_Y(y) = \frac{f_X(x)}{\left| \frac{dg}{dx} (x) \right|} = \frac{f_X(g^{-1}(y))}{\left| \frac{dg}{dx} \left( g^{-1}(y) \right) \right|}
+$$
+
+Se $g$ non è monotona, si può dividerla in casi monotoni.
+
+La legge della **somma di due variabili indipendenti** è la convoluzione delle leggi di probabilità.
+
+Siano $X$ e $Y$ due variabili aleatorie indipendenti e $W = X + Y$. Si vuole calcolare la probabilità che $W = w$:
+
+$$
+P(W = w) = P(X + Y = w) = \sum_{(x, y) : x + y = w} P_{X,Y}(x, y) = \sum_{(x, y) : x + y = w} P_X(x) \cdot P_Y(y) = \underbrace{\sum_{(x, y) : x + y = w} P_X(x) \cdot P_Y(w - x)}_{\text{Somma di convoluzione}}
+$$
+
+Nel caso continuo, si sostituisce la sommatoria con l'integrale:
+
+$$
+P(W = w) = \int_{-\infty}^{\infty} P_X(x) \cdot P_Y(w - x) dx
+$$
+
+Se le due variabili $X$ e $Y$ sono gaussiane, si dimostra con la formula appena sopra che la pdf della loro somma è a sua volta gaussiana. In particolare se $X \sim \mathcal{N}(\mu_X, \sigma_X^2)$ e $Y \sim \mathcal{N}(\mu_Y, \sigma_Y^2)$ allora $X + Y \sim \mathcal{N}(\mu_X + \mu_Y, \sigma_X^2 + \sigma_Y^2)$.
+
+# Covarianza
+
+La **covarianza** descrive quanto due variabili sono correlate tra loro.
+
+$$
+Cov[X, Y] = E[(X - E[X]) \cdot (Y - E[Y])] = E[X \cdot Y] - E[X] \cdot E[Y]
+$$
+
+E' utile notare che 
+
+- $Cov[X, X] = Var[X]$
+- $E[X] = 0 \lor E[Y] = 0 \implies Cov[X, Y] = E[X \cdot Y]$
+- $X \perp Y \implies Cov[X, Y] = 0$ ma non vale il contrario
+
+## Varianza della somma di variabili aleatorie qualunque
+
+$$
+Var \left[ \sum_{i = 1}^{n} X_i \right] = \sum_{i = 1}^{n} Var[X_i] + 2 \sum_{i \lt j} Cov[X_i, X_j]
+$$
+
+## Coefficiente di correlazione lineare
+
+Il **coefficiente di correlazione lineare** funziona un po' come la varianza ma è adimensionale e normalizzato rispetto alle variabili aleatorie.
+
+$$
+\rho[X, Y] = \frac{Cov[X, Y]}{\sigma_X, \sigma_Y} = E \left[ \frac{(X - E[X])}{\sigma_X} \cdot \frac{(Y - E[Y])}{\sigma_Y} \right]
+$$
+
+Valgono alcune proprietà:
+
+- $-1 \le \rho[X, Y] \le 1$
+- $|\rho[X, Y]| = 1 \iff X - E[X] = c(Y - E[Y]), \ Y = aX + b$
+- $X \perp Y \implies \rho[X, Y] = 0$
 
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
-| Distribuzione | Costruttore                  | Valore atteso     | Varianza               |
-| ------------- | ---------------------------- | ----------------- | ---------------------- |
-| Geometrica    | $\text{Geom}(p)$             | $\frac{1}{p}$     | $\frac{1-p}{p^2}$      |
-| Binomiale     | $\text{Bin}(n, p)$           | $np$              | $np(1-p)$              |
-| Bernoulli     | $\text{Bern}(p)$             | $p$               | $p(1-p)$               |
-| Uniforme      | $U[a, b]$                    | $\frac{b - a}{2}$ | $\frac{(b - a)^2}{12}$ |
-| Gaussiana     | $\mathcal{N}(\mu, \sigma^2)$ | $\mu$             | $\sigma^2$             |
+| Distribuzione | Costruttore                  | Valore atteso       | Varianza               |
+| ------------- | ---------------------------- | ------------------- | ---------------------- |
+| Geometrica    | $\text{Geom}(p)$             | $\frac{1}{p}$       | $\frac{1-p}{p^2}$      |
+| Binomiale     | $\text{Bin}(n, p)$           | $np$                | $np(1-p)$              |
+| Bernoulli     | $\text{Bern}(p)$             | $p$                 | $p(1-p)$               |
+| Uniforme      | $U[a, b]$                    | $\frac{b - a}{2}$   | $\frac{(b - a)^2}{12}$ |
+| Gaussiana     | $\mathcal{N}(\mu, \sigma^2)$ | $\mu$               | $\sigma^2$             |
+| Esponenziale  | $\text{Exp}[\lambda]$        | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$  |
