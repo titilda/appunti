@@ -485,6 +485,38 @@ Valgono alcune proprietà:
 - $|\rho[X, Y]| = 1 \iff X - E[X] = c(Y - E[Y]), \ Y = aX + b$
 - $X \perp Y \implies \rho[X, Y] = 0$
 
+# Valore atteso condizionato e varianza condizionata
+
+Il **valore atteso condizionato** è identico al valore atteso ma condizionato ad una specifica realizzazione (o un insieme di esse) ma è esso stesso una variabile aleatoria in quanto funzione di altre variabili aleatorie.
+
+Si supponga di voler calcolare il valore atteso della variabile aleatoria $E[Y|X] = g(X)$:
+
+$$
+E[E[Y|X]] = E[g(X)] = \int_{-\infty}^{+\infty} g(X) \cdot f_X(x) dx = \int_{-\infty}^{+\infty} E[Y | X = x] \cdot f_X(x) dx = E[Y]
+$$
+
+Questa formula prende il nome di **legge delle aspettative iterate** e spesso la si ripercorre da destra verso sinistra: se $Y$ dipende da $X$ allora $E[Y] = E[Y | X]$.
+
+Per la varianza condizionata, si procede in modo simile:
+
+$$
+Var[X | Y = y] = E[X^2 | Y = y] + E[X | Y = y]^2 \\
+Z = Var[X | Y] = g(Y) = \begin{cases}
+    Var[X | Y = y] & \text{Con pdf $F_Y(y)$} \\
+    \not \exists & \text{Altrimenti}
+\end{cases}
+$$
+
+$Var[X | Y]$ è a tutti gli effetti una variabile aleatoria che vale $Var[X | Y = y]$ con pdf $f_Y(y)$.
+
+Per la **legge della variazione totale** vale che
+
+$$
+Var[X] = E[Var[X | Y]] + Var[E[X | Y]]
+$$
+
+In pratica, è come se il primo termine descrivesse la variabilità all'interno di ciascuna realizzazione di $Y$ mentre il secondo, la variabilità tra le diverse realizzazioni.
+
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
 | Distribuzione | Costruttore                  | Valore atteso       | Varianza               |
