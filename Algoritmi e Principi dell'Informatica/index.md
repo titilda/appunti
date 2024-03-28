@@ -744,7 +744,7 @@ $x^n ?$
 
 $\forall n \forall x ((n=0 \to x^n = \varepsilon) \land (n > 0 \to x^n = x^{n-1}.x))$
 
-Ora faremo un bel elenco di operazioni logiche, buon viaggio ; )
+Ora faremo un bell' elenco di operazioni logiche, buon viaggio ; )
 
 $L_1 = a^*b^*$
 
