@@ -517,6 +517,72 @@ $$
 
 In pratica, è come se il primo termine descrivesse la variabilità all'interno di ciascuna realizzazione di $Y$ mentre il secondo, la variabilità tra le diverse realizzazioni.
 
+# Somma di un numero casuale di variabili aleatorie
+
+Sia $N$ una variabile aleatoria discreta e $X_1, X_2, \dots, X_N$ variabili aleatorie continue e $X$ la variabile aleatoria che descrive la somma delle varie $X_i$, allora
+
+$$
+E[X] = E \left[ \sum_{i=1}^N X_i \right] = E\left[ E\left[ \sum_{i=1}^N X_i \middle| N \right] \right]
+$$
+
+dove
+
+$$
+E\left[ \sum_{i=1}^N X_i \middle | N = n \right] = E \left[ \sum_{i=1}^n X_i \middle| N = n \right] = \sum_{i=1}^n E[X_i | N = n] = \sum_{i=1}^n E[X_i] = nE[X_1]
+$$
+
+quindi
+
+$$
+E[X] = E[N \cdot E[X_1]] = E[N] \cdot E[X_1]
+$$
+
+La varianza totale si calcola tramite la legge della varianza totale:
+
+$$
+Var[X] = Var[E[X | N]] + E[Var[X | N]] = Var[N] \cdot E[X_1]^2 + E[N] \cdot Var[X_1]
+$$
+
+# Disuguaglianza di Markov e di Chebyshev
+
+La **disuguaglanza di Markov** afferma che, se $X \ge 0$ allora $E[X] \gt a \cdot P(X \ge a)\ \forall a \ge 0$.
+
+La **disuguaglianza di Chebyshef** (che è derivata da quella di Markov) afferma che $Var[X] \ge a \cdot P((X - E[X])^2 \ge a)\ \forall a \ge 0$.
+
+# Convergenza in probabilità
+
+Sia $\{A_k\}$ una successione di variabili aleatorie ed $a$ un numero. Si dice che $\{A_k\}$ **converge in probabilità** ad $a$ ($A_k \overset{P}{\to} a$) se 
+
+$$
+\lim_{k \to \infty} P(|A_k - a| \le \varepsilon) = 0 \qquad \forall \varepsilon \gt 0
+$$
+
+Questo tipo di convergenza è anche detta **convergenza debole** in quanto non dà garanzie sulla convergenza dei momenti di $A_k$.
+
+# Media campionaria e legge dei grandi numeri
+
+La media campionaria si utilizza per calcolare la media di una variabile aleatoria avendo a disposizione un numero limitato di campioni.
+
+Siano $X_1, X_2, \dots, X_n$ variabili aleatorie indipendenti e identicamente distribuite (quindi $n$ campioni). La media campionaria è a sua volta una variabile aleatoria:
+
+$$
+M_n = \frac{X_1 + X_2 + \dots + X_n}{n}
+$$
+
+E' possibile dimostrare che
+
+$$
+E[M_n] = E[X] \qquad Var[M_n] = \frac{X_1}{n} \overset{n \to \infty}{\to} 0
+$$
+
+Dato che
+
+$$
+o \le \lim_{n \to \infty}{P(|M_n - E[X]| \le \varepsilon)} \le \lim_{n \to \infty} \frac{Var[M_n]}{\varepsilon^2} = \lim_{n \to \infty} \frac{Var[X_1]}{n \varepsilon^2} = 0
+$$
+
+allora $M_n \overset{P}{\to} E[M_n] = E[X]$. Questo risultato viene detto **legge debole dei grandi numeri** (**WLLN**) e dice che la media campionaria converge in probabilità al proprio valore atteso.
+
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
 | Distribuzione | Costruttore                  | Valore atteso       | Varianza               |
