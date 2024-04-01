@@ -339,7 +339,7 @@ Le **variabili aleatorie gaussiane (normali)** meritano un paragrafo a parte per
 Sia $X \sim \mathcal{N}(\mu, \sigma^2)$ una variabile aleatoria gaussiana. La sua pdf è data da
 
 $$
-f_X(x) = \frac{1}{\sigma \sqrt{2 \pi}}e^{-\left(\frac{x - \mu}{\sigma}\right)\frac{1}{2}}
+f_X(x) = \frac{1}{\sigma \sqrt{2 \pi}}e^{-\left(\frac{x - \mu}{\sigma}\right)^2\frac{1}{2}}
 $$
 
 Le distribuzioni gaussiane sono onnipresenti in natura ([meme obbligatorio](https://www.reddit.com/r/funny/comments/m4aaee/how_to_explain_normal_distribution_to_a_bro_at/)) e consentono di descrivere una pdf data la media e la varianza:
@@ -354,7 +354,7 @@ Esiste una particolare distribuzione gaussiana che prende il nome di $Z \sim \ma
 La cumulata di una gaussiana generica si scrive come
 
 $$
-F_X(x) = \int_{-\infty}^{x} \frac{1}{\sigma \sqrt{2 \pi}}e^{-\left(\frac{x - \mu}{\sigma}\right)\frac{1}{2}}
+F_X(x) = \int_{-\infty}^{x} \frac{1}{\sigma \sqrt{2 \pi}}e^{-\left(\frac{x - \mu}{\sigma}\right)^2\frac{1}{2}}
 $$
 
 Solo 3 valori sono costanti per questa funzione: $F_X(-\infty) = 0$, $F_X(0) = 0.5$ e $F_X(+\infty) = 1$
