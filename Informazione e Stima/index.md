@@ -232,7 +232,7 @@ Anche i condizionamenti funzionano in maniera molto simile a quanto visto [prece
 
 $$
 P_{X|Y}(x | y) = \frac{P_{X,Y}(x, y)}{P_Y(y)} = \frac{P_{X,Y}(x, y)}{\sum\limits_{t} P_{X, Y}(t, y)} \\
-P_{X,Y}(x, y) = P_{X|Y}(x, y) \cdot P_Y(y) = P_{Y|X}(y, x) \cdot P_X(x)
+P_{X,Y}(x, y) = P_{X|Y}(x| y) \cdot P_Y(y) = P_{Y|X}(y| x) \cdot P_X(x)
 $$
 
 Due variabili aleatorie sono dette **indipendenti** ($X \perp Y$) se e solo se $P_{X,Y}(x, y) = P_X(x) \cdot P_Y(y)$. Questo ragionamento può essere esteso ad un numero arbitrario di variabili.
@@ -257,7 +257,7 @@ $$
 Siano $X$ e $Y$ due variabili aleatorie e $Z = X + Y$, allora la varianza di $Z$ si calcola come
 
 $$
-Var[Z] = Var[X + Y] = E[(X + Y)^2] + E[X + Y]^2 = Var[X] + Var[Y] - 2(E[]X \cdot Y - E[x] \cdot E[Y])
+Var[Z] = Var[X + Y] = E[(X + Y)^2] + E[X + Y]^2 = Var[X] + Var[Y] - 2(E[X \cdot Y] - E[X] \cdot E[Y])
 $$
 
 Se $X \perp Y$ allora $Var[X + Y] = Var[X] + Var[Y]$.
@@ -306,7 +306,7 @@ E[X] = \int_{-\infty}^{+\infty} x \cdot f_X(x) dx \\
 Var[X] = \int_{-\infty}^{+\infty} (x - E[X])^2 \cdot f_X(x) dx
 $$
 
-Avendo introdotto le variabili aleatorie continue, è possibile introdurre le variabili aleatorie uniformi:
+Avendo introdotto le variabili aleatorie continue, è possibile introdurre le **variabili aleatorie uniformi**:
 
 $$
 X \sim U[a, b] \implies f_X(x) = \begin{cases}
@@ -354,7 +354,7 @@ Esiste una particolare distribuzione gaussiana che prende il nome di $Z \sim \ma
 La cumulata di una gaussiana generica si scrive come
 
 $$
-F_X(x) = \int_{-\infty}^{x} \frac{1}{\sigma \sqrt{2 \pi}}e^{-\left(\frac{x - \mu}{\sigma}\right)^2\frac{1}{2}}
+F_X(x) = \int_{-\infty}^{x} \frac{1}{\sigma \sqrt{2 \pi}}e^{-\left(\frac{x - \mu}{\sigma}\right)^2\frac{1}{2}} dx
 $$
 
 Solo 3 valori sono costanti per questa funzione: $F_X(-\infty) = 0$, $F_X(0) = 0.5$ e $F_X(+\infty) = 1$
@@ -424,7 +424,7 @@ $$
 Se $Y = \alpha X + \beta$ (quindi $Y$ è una trasformazione lineare di $X$) e $f_X$ è la pdf di $X$, allora 
 
 $$
-f_Y(y) = f_X\left(\frac{y - b}{a}\right)\frac{1}{|a|}
+f_Y(y) = f_X\left(\frac{y - \beta}{\alpha}\right)\frac{1}{|\alpha|}
 $$
 
 Se invece $Y = g(X)$ con $g$ monotona, vale che
@@ -446,7 +446,7 @@ $$
 Nel caso continuo, si sostituisce la sommatoria con l'integrale:
 
 $$
-P(W = w) = \int_{-\infty}^{\infty} P_X(x) \cdot P_Y(w - x) dx
+P(W = w) = \int_{-\infty}^{\infty} f_X(x) \cdot f_Y(w - x) dx
 $$
 
 Se le due variabili $X$ e $Y$ sono gaussiane, si dimostra con la formula appena sopra che la pdf della loro somma è a sua volta gaussiana. In particolare se $X \sim \mathcal{N}(\mu_X, \sigma_X^2)$ e $Y \sim \mathcal{N}(\mu_Y, \sigma_Y^2)$ allora $X + Y \sim \mathcal{N}(\mu_X + \mu_Y, \sigma_X^2 + \sigma_Y^2)$.
@@ -593,3 +593,4 @@ allora $M_n \overset{P}{\to} E[M_n] = E[X]$. Questo risultato viene detto **legg
 | Uniforme      | $U[a, b]$                    | $\frac{b - a}{2}$   | $\frac{(b - a)^2}{12}$ |
 | Gaussiana     | $\mathcal{N}(\mu, \sigma^2)$ | $\mu$               | $\sigma^2$             |
 | Esponenziale  | $\text{Exp}[\lambda]$        | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$  |
+
