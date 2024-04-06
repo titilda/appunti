@@ -585,12 +585,13 @@ allora $M_n \overset{P}{\to} E[M_n] = E[X]$. Questo risultato viene detto **legg
 
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
-| Distribuzione | Costruttore                  | Valore atteso       | Varianza               |
-| ------------- | ---------------------------- | ------------------- | ---------------------- |
-| Geometrica    | $\text{Geom}(p)$             | $\frac{1}{p}$       | $\frac{1-p}{p^2}$      |
-| Binomiale     | $\text{Bin}(n, p)$           | $np$                | $np(1-p)$              |
-| Bernoulli     | $\text{Bern}(p)$             | $p$                 | $p(1-p)$               |
-| Uniforme      | $U[a, b]$                    | $\frac{b - a}{2}$   | $\frac{(b - a)^2}{12}$ |
-| Gaussiana     | $\mathcal{N}(\mu, \sigma^2)$ | $\mu$               | $\sigma^2$             |
-| Esponenziale  | $\text{Exp}[\lambda]$        | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$  |
-
+| Distribuzione | Costruttore                  | Valore atteso       | Varianza                |
+| ------------- | ---------------------------- | ------------------- | ----------------------- |
+| Geometrica    | $\text{Geom}(p)$             | $\frac{1}{p}$       | $\frac{1-p}{p^2}$       |
+| Binomiale     | $\text{Bin}(n,p)$            | $n \cdot p$         | $n \cdot p \cdot (1-p)$ |
+| Bernoulli     | $\text{Bern}(p)$             | $p$                 | $p \cdot (1-p)$         |
+| Uniforme      | $\text{U}(a,b)$              | $\frac{a+b}{2}$     | $\frac{(b-a)^2}{12}$    |
+| Gaussiana     | $\mathcal{N}(\mu, \sigma^2)$ | $\mu$               | $\sigma^2$              |
+| Esponenziale  | $\text{Exp}(\lambda)$        | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$   |
+| Poisson       | $\text{Pois}(\lambda)$       | $\lambda$           | $\lambda$               |
+| Laplace       | $\text{Laplace}(\lambda)$    | $0$                 | $\frac{2}{\lambda^2}$   |
