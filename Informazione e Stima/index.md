@@ -554,7 +554,7 @@ La **disuguaglianza di Chebyshef** (che è derivata da quella di Markov) afferma
 Sia $\{A_k\}$ una successione di variabili aleatorie ed $a$ un numero. Si dice che $\{A_k\}$ **converge in probabilità** ad $a$ ($A_k \overset{P}{\to} a$) se 
 
 $$
-\lim_{k \to \infty} P(|A_k - a| \le \varepsilon) = 0 \qquad \forall \varepsilon \gt 0
+\lim_{k \to \infty} P(|A_k - a| \ge \varepsilon) = 0 \qquad \forall \varepsilon \gt 0
 $$
 
 Questo tipo di convergenza è anche detta **convergenza debole** in quanto non dà garanzie sulla convergenza dei momenti di $A_k$.
