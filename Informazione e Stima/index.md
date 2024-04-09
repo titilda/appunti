@@ -119,7 +119,7 @@ $$
 
 Lo stesso metodo funziona anche per problemi quali dover calcolare il numero di **anagrammi** di una parola: $n$ è la lunghezza della parola e i vari $k_i$ sono il numero di occorrenze di ciascuna lettera della parola all'interno della stessa.
 
-Se si vogliono contare i modi di estrarre elementi da insiemi di elementi diversi in un certo numero, si può ricorrere alle probabilità ipergeometriche:
+Se si vogliono contare i modi di estrarre elementi da insiemi di elementi diversi in un certo numero, si può ricorrere alle **probabilità ipergeometriche**:
 
 $$
 \frac{{n_1 \choose k_1} {n_2 \choose k_2} \dots {n_r \choose k_r}}{n_1 + n_2 + \dots + n_r \choose k_1 + k_2 + \dots + k_r}
@@ -407,10 +407,10 @@ $$
 f_{Y|X} = \frac{f_{X,Y}(x, y)}{f_X(x)} = \frac{f_{X,Y}(x, y)}{\int_\mathbb{R} f_{X,Y}(x, y) dy}
 $$
 
-Continua a valere la regola di bayes ma con delle caratteristiche nuove:
+Continua a valere la regola di Bayes ma con delle caratteristiche nuove:
 
 $$
-P_{X|Y}(x, y) = \frac{P_{Y|X}(y | x) \cdot P_X(x)}{P_Y(y)}
+P_{X|Y}(x | y) = \frac{P_{Y|X}(y | x) \cdot P_X(x)}{P_Y(y)}
 $$
 
 $P_X$ viene detta **legge a priori**, $P_{Y|X}$ viene detta **legge di causa-effetto** (o **di verosimiglianza**) e $P_{X|Y}$ viene detta **legge a posteriori**.
@@ -578,7 +578,7 @@ $$
 Dato che
 
 $$
-o \le \lim_{n \to \infty}{P(|M_n - E[X]| \gt \varepsilon)} \le \lim_{n \to \infty} \frac{Var[M_n]}{\varepsilon^2} = \lim_{n \to \infty} \frac{Var[X_1]}{n \varepsilon^2} = 0
+0 \le \lim_{n \to \infty}{P(|M_n - E[X]| \gt \varepsilon)} \le \lim_{n \to \infty} \frac{Var[M_n]}{\varepsilon^2} = \lim_{n \to \infty} \frac{Var[X_1]}{n \varepsilon^2} = 0
 $$
 
 allora $M_n \overset{P}{\to} E[M_n] = E[X]$. Questo risultato viene detto **legge debole dei grandi numeri** (**WLLN**) e dice che la media campionaria converge in probabilità al proprio valore atteso.
@@ -619,8 +619,10 @@ $$
 ## Distribuzione gaussiana
 
 $$
-f_X(x) = \frac{1}{\sqrt{2 \pi} \sigma} e^{-\left(\frac{x - \mu}{\sigma}\right)^2\frac{1}{2}} \\
+f_X(x) = \frac{1}{\sqrt{2 \pi} \sigma} e^{-\left(\frac{x - \mu}{\sigma}\right)^2\frac{1}{2}}
+$$
 
+$$
 F_X(x) = \Phi \left( \frac{x - \mu}{\sigma} \right)
 $$
 
