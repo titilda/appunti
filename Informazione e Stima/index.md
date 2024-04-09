@@ -578,24 +578,13 @@ $$
 Dato che
 
 $$
-o \le \lim_{n \to \infty}{P(|M_n - E[X]| \le \varepsilon)} \le \lim_{n \to \infty} \frac{Var[M_n]}{\varepsilon^2} = \lim_{n \to \infty} \frac{Var[X_1]}{n \varepsilon^2} = 0
+o \le \lim_{n \to \infty}{P(|M_n - E[X]| \gt \varepsilon)} \le \lim_{n \to \infty} \frac{Var[M_n]}{\varepsilon^2} = \lim_{n \to \infty} \frac{Var[X_1]}{n \varepsilon^2} = 0
 $$
 
 allora $M_n \overset{P}{\to} E[M_n] = E[X]$. Questo risultato viene detto **legge debole dei grandi numeri** (**WLLN**) e dice che la media campionaria converge in probabilità al proprio valore atteso.
 
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
-<<<<<<< HEAD
-| Distribuzione | Costruttore                  | Valore atteso       | Varianza               |
-| ------------- | ---------------------------- | ------------------- | ---------------------- |
-| Geometrica    | $\text{Geom}(p)$             | $\frac{1}{p}$       | $\frac{1-p}{p^2}$      |
-| Binomiale     | $\text{Bin}(n, p)$           | $np$                | $np(1-p)$              |
-| Bernoulli     | $\text{Bern}(p)$             | $p$                 | $p(1-p)$               |
-| Uniforme      | $U[a, b]$                    | $\frac{b - a}{2}$   | $\frac{(b - a)^2}{12}$ |
-| Gaussiana     | $\mathcal{N}(\mu, \sigma^2)$ | $\mu$               | $\sigma^2$             |
-| Esponenziale  | $\text{Exp}[\lambda]$        | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$  |
-
-=======
 | Distribuzione | Costruttore                  | Valore atteso       | Varianza                |
 | ------------- | ---------------------------- | ------------------- | ----------------------- |
 | Geometrica    | $\text{Geom}(p)$             | $\frac{1}{p}$       | $\frac{1-p}{p^2}$       |
@@ -606,4 +595,51 @@ allora $M_n \overset{P}{\to} E[M_n] = E[X]$. Questo risultato viene detto **legg
 | Esponenziale  | $\text{Exp}(\lambda)$        | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$   |
 | Poisson       | $\text{Pois}(\lambda)$       | $\lambda$           | $\lambda$               |
 | Laplace       | $\text{Laplace}(\lambda)$    | $0$                 | $\frac{2}{\lambda^2}$   |
->>>>>>> 3a1800df415464c8e6bc4eb31cde544da8902b2b
+
+La pdf delle distribuzioni geometriche e binomiali sono già state [riportate qui](#valore-atteso-e-varianza).
+
+## Distribuzione bernoulliana
+
+$$
+p_X(x) = \begin{cases}
+    p & x = 1 \\
+    1 - p & x = 0
+\end{cases}
+$$
+
+## Distribuzione uniforme
+
+$$
+f_X(x) = \begin{cases}
+    \frac{1}{b - a} & a \gt x \gt b \\
+    0 & \text{Altrimenti}
+\end{cases}
+$$
+
+## Distribuzione gaussiana
+
+$$
+f_X(x) = \frac{1}{\sqrt{2 \pi} \sigma} e^{-\left(\frac{x - \mu}{\sigma}\right)^2\frac{1}{2}} \\
+
+F_X(x) = \Phi \left( \frac{x - \mu}{\sigma} \right)
+$$
+
+## Distribuzione esponenziale
+
+$$
+f_X(x) = \begin{cases}
+    \lambda e^{-\lambda x} & x \gt 0 \\
+    0 & \text{Altrimenti}
+\end{cases} \\
+F_X(x) = \begin{cases}
+    1 - e^{-\lambda x} & x \gt 0 \\
+    0 & \text{Altrimenti}
+\end{cases}
+$$
+
+## Distribuzione laplaciana
+
+$$
+f_X(x) = \frac{\lambda}{2} e^{-\lambda |x|} \\
+F_X(x) = \frac{\lambda}{2} \left( \frac{-e^{\lambda x \text{sgn}(x)}}{\lambda \text{sgn}(x)} + \frac{\text{sgn}(x)}{\lambda} \right)
+$$
