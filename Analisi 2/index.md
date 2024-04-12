@@ -333,6 +333,7 @@ Una matrice wronskiana relativa al sistema omogeneo è $W(t) = (e^{\lambda_1 t} 
 
 Eqivalentemente, l'integrale generale è $\underline y_0(t) = C_1 e^{\lambda_1 t} \underline v_1 + \dots + C_n e^{\lambda_n t} \underline v_n$ con $C_1, \dots, C_n \in \mathbb{R}$.
 
+<!-- NON cambiare il titolo: vi è una reference in fauto -->
 ## Esponenziale di una matrice
 
 Sia $A \in \mathcal{M}_\mathbb{R}(n)$, la **matrice esponenziale** $e^A$ è definita dalla serie
