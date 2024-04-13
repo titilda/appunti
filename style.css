@@ -93,6 +93,11 @@ th, td {
         font-size: 12pt;
     }
 
+    .contenuti, #TOC {
+        margin: 0 auto;
+        max-width: 100%;
+    }
+
     .contenuti p, .contenuti h2, .contenuti h3 {
         orphans: 3;
         widows: 3;
@@ -100,6 +105,10 @@ th, td {
 
     .contenuti h2, .contenuti h3, .contenuti h4 {
         page-break-after: avoid;
+    }
+
+    .noprint {
+        display: none;
     }
 }
 
