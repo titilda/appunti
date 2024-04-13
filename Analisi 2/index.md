@@ -1629,6 +1629,7 @@ Nel caso in cui valga il teorema di esistenza e unicità locale in tutti i punti
 1. se esistono due costanti $M,N \lt 0$ tali che $\forall (t, y) \in A$ vale che $|f(t, y)| \le M|y| + N$ oppure $\left| \frac{\partial f}{\partial y} (t, y) \right| \le M$ allora $\forall (t_0, y_0) \in A$ il problema di Cauchy $y(t_0) = y_0$ ha un'unica soluzione definita $\forall t \in [a, b]$
 2. se per una soluzione particolare $\overline y$ esiste $k \gt 0$ tale che $\overline y(t) \le k \quad \forall t$ nel dominio di definizione di $\overline y$ allora $\overline y$ è definita $\forall t \in [a, b]$.
 
+<!-- non cambiare titolo che vi è una reference in FAUTO -->
 ## Studio qualitativo di EDO del primo ordine
 
 Lo studio qualitativo di una EDO consiste nel tracciare un gragfco approssimativo della sua soluzione anche senza saperla risolvere.
