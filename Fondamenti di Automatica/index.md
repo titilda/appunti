@@ -236,7 +236,7 @@ Per fare ciò si deve linearizzare il sistema nell'intorno di ciascun punto di e
 
 $$
 \dot{\delta x}(t) = \underbrace{\left. \frac{\partial f}{\partial x} \right|_{\overline x, \overline u}}_{A} \delta x(t) + \underbrace{\left. \frac{\partial f}{\partial u} \right|_{\overline x, \overline u}}_{B} \delta u(t) \\
-\dot{\delta y}(t) = \underbrace{\left. \frac{\partial g}{\partial x} \right|_{\overline x, \overline u}}_{C} \delta x(t) + \underbrace{\left. \frac{\partial g}{\partial u} \right|_{\overline x, \overline u}}_{D} \delta u(t)
+\delta y(t) = \underbrace{\left. \frac{\partial g}{\partial x} \right|_{\overline x, \overline u}}_{C} \delta x(t) + \underbrace{\left. \frac{\partial g}{\partial u} \right|_{\overline x, \overline u}}_{D} \delta u(t)
 $$
 
 Una volta fatto ciò, si vanno ad analizzare gli autovalori della matrice $A$:
@@ -292,13 +292,133 @@ Per un sistema con $A$ non diagonalizzabile, i modi sono della forma $\frac{k^i}
 Nel caso di sistemi nonlineari, si linearizza in maniera identica ai sistemi lineari:
 
 $$
-\dot{\delta x}(k + 1) = \underbrace{\left. \frac{\partial f}{\partial x} \right|_{\overline x, \overline u}}_{A} \delta x(k) + \underbrace{\left. \frac{\partial f}{\partial u} \right|_{\overline x, \overline u}}_{B} \delta u(k) \\
-\dot{\delta y}(k) = \underbrace{\left. \frac{\partial g}{\partial x} \right|_{\overline x, \overline u}}_{C} \delta x(k) + \underbrace{\left. \frac{\partial g}{\partial u} \right|_{\overline x, \overline u}}_{D} \delta u(k)
+\delta x(k + 1) = \underbrace{\left. \frac{\partial f}{\partial x} \right|_{\overline x, \overline u}}_{A} \delta x(k) + \underbrace{\left. \frac{\partial f}{\partial u} \right|_{\overline x, \overline u}}_{B} \delta u(k) \\
+\delta y(k) = \underbrace{\left. \frac{\partial g}{\partial x} \right|_{\overline x, \overline u}}_{C} \delta x(k) + \underbrace{\left. \frac{\partial g}{\partial u} \right|_{\overline x, \overline u}}_{D} \delta u(k)
 $$
 
 E' possibile andare a lavorare sul polinomio caratteristico solo dopo aver applicato la trasformazione bilineare che manda $\varphi(z)$ in $\varphi(s)$: se $\varphi(z)$ è il polinomio caratteristico originale, il polinomio con la trasformazione applicata è $\varphi(\frac{1+s}{1-s})$.
 
-Se tutte le radici di $\varphi(z)$ hanno modulo inferiore ad 1 allora tutte le radici di $\varphi(s)$ hanno parte reale minore di zero. Su $\varphi(s)$ è possibile applicare il criterio di Routh
+Se tutte le radici di $\varphi(z)$ hanno modulo inferiore ad 1 allora tutte le radici di $\varphi(s)$ hanno parte reale minore di zero.
+
+Su $\varphi(s)$ è possibile applicare il criterio di Routh.
+
+# Sistemi a tempo campionato
+
+A seconda della continuità di ampiezza e tempo, ci sono 4 tipi diversi di segnali:
+
+1. **analogico** (tempo discreto, ampiezza continua)
+2. **quantizzato** (tempo discreto, ampiezza discreta)
+3. **campionato** (tempo continuo, ampiezza continua)
+4. **digitale** (tempo continuo, ampiezza discreta)
+
+La conversione tra segnali a tempo continuo e discreto avviene tramite DAC e ADC.
+
+La rappresentazione matematica di un ADC è il campionatore:
+
+$$
+\delta(t) = \begin{cases}
+    0 & t \ne 0 \\
+    \int_{-\infty}^{+\infty} \delta(t) \, dt = 1
+\end{cases} \\
+r^*(t) = \sum_{k = -\infty}^{+\infty} r(kT) \delta(t - kT)
+$$
+
+La rappresentazione matematica di un DAC è il mantienitore:
+
+$$
+u(t) = u(kT) \quad kT \le t \lt (k + 1)T
+$$
+
+Può essere necessario convertire sistemi a tempo continuo in sistemi a tempo discreto e viceversa.
+
+Dato un sistema a tempo continuo, è possibile costruire le matrici che descrivono il sistema equivalente a tempo discreto: sia $T_S$ il sampling time, allora
+
+$$
+A_D = e^{AT_S} \qquad B_D = \int_{0}^{T_S} e^{A\tau} \, d\tau \qquad C_D = D \qquad D_D = D
+$$
+
+Dato che $A_D = e^{AT_S}$ allora gli autovalori sono $\lambda_D = e^{\lambda T_S}$.
+
+$$
+\begin{cases}
+    \frac{dx}{dt}(t) = Ax(t) + Bu(t) \\
+    y(t) = Cx(t) + Du(t)
+\end{cases} \iff \begin{cases}
+    x(k+1) = A_D x(k) + B_D u(k) \\
+    y(k) = C_D x(k) + D_D u(k)
+\end{cases}
+$$
+
+# Trasformata di Laplace
+
+Dato un qualsiasi sistema LTI a tempo continuo
+
+$$
+\begin{cases}
+    \dot x(t) = Ax(t) + Bu(t) \\
+    y(t) = Cx(t) + Du(t)
+\end{cases}
+$$
+
+i movimenti dello stato e dell'uscita si calcolano come
+
+$$
+x(t) = e^{A(t - t_0)}x(t_0) + \int_{t_0}^t e^{A(t - \tau)}Bu(\tau) \, d\tau \qquad t \ge 0 \\
+y(t) = Ce^{A(t - t_0)}x(t_0) + C \int_{t_0}^t e^{A(t - \tau)} Bu(\tau) \, d\tau + Du(t) \qquad t \ge t_0
+$$
+
+Per semplificare i conti si introducono la trasformata di Laplace e alcune funzioni ausiliarie:
+
+| Funzione     | Definizione                                                                                                 |
+| ------------ | ----------------------------------------------------------------------------------------------------------- |
+| Impulso      | $\text{Imp}(t) = \begin{cases} 0 & t \ne 0 \\ \int_{-\infty}^{+\infty} \text{Imp}(t) \, dt = 1 \end{cases}$ |
+| Scalino      | $\text{Sca}(t) = \begin{cases} 0 & t \lt 0 \\ 1 & t \ge 0 \end{cases}$                                      |
+| Rampa        | $\text{Ram}(t) = \begin{cases} 0 & t \lt 0 \\ t & t \ge 0 \end{cases}$                                      |
+| Parabola     | $\text{Par}(t) = \begin{cases} 0 & t \lt 0 \\ \frac{t^2}{2} & t \ge 0 \end{cases}$                          |
+| Esponenziale | $e^{\alpha t} \text{Sca}(t)$                                                                                |
+| Sinusoide    | $\sin(\omega t) \text{Sca}(t) \\ \cos(\omega t) \text{Sca}(t)$                                              |
+
+La **trasformata di Laplace** permette di trasformare un'equazione differenziale in una algebrica:
+
+$$
+f(t) \overset{\mathcal L}{\to} F(s) = \mathcal{L} \{f(t)\} = \int_0^{+\infty} f(t) e^{-st} \, dt
+$$
+
+La trasformata esiste se esiste un valore di $s$ tale per cui l'integrale converge.
+
+Una trasformata è detta **razionale** se può essere scritta nella forma
+
+$$
+F(s) = \frac{N(s)}{D(s)} = \frac{b_0s^m + b_1s^{m-1} + \dots + b_{m-1}s + b_m}{a_0s^n + a_1s^{n-1} + \dots + a_{n-1}s + a_n}
+$$
+
+con $N(s)$ e $D(s)$ primi tra loro. Le radici di $D$ vengono dette **poli** mentre le radici di $N$ vengono dette **zeri**. Il **grado relativo** è dato da $n - m$.
+
+La trasformata di Laplace è lineare:
+
+$$
+\mathcal{L}\{\alpha x(t) + \beta y(t)\} = \alpha \mathcal{L}\{x(t)\} + \beta \mathcal{L}\{y(t)\} = \alpha X(s) + \beta Y(s)
+$$
+
+Dato che la $\mathcal{L}$ passa dal dominio del tempo a quello della frequenza, è possibile applicare delle translazioni sia in tempo che in frequenza:
+
+$$
+\mathcal{L}\{f(t - t_0)\} = F(s) e^{-st_0} \qquad \mathcal{L}\{e^{at} f(t)\} = F(s - a)
+$$
+
+<!-- Idem per le derivate:
+
+$$
+
+$$
+
+Idem anche per gli integrali
+
+Tabella con trasformate comode
+
+In appendice tabella con tutte le trasformate
+
+-->
 
 # Appendice
 
