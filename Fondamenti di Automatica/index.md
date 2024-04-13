@@ -247,6 +247,59 @@ Una volta fatto ciò, si vanno ad analizzare gli autovalori della matrice $A$:
 
 Per un sistema di ordine 1, un po' come nella [linea delle fasi](https://appunti.titilda.org/Analisi%202/index.html#studio-qualitativo-di-edo-del-primo-ordine), se $\frac{\partial f}{\partial x} \gt 0$ allora si tende ad andare a destra mentre se $\frac{\partial f}{\partial x} \lt 0$ allora si tende ad andare a sinistra. I punti in cui $\frac{\partial f}{\partial x} = 0$ sono i punti di equilibrio e sono stabili o meno a seconda della direzione in cui tendono ad andare le derivate come visto prima (il tutto è valido per un $\overline u$ fissato).
 
+# Analisi di sistemi a tempo discreto
+
+Mentre i modelli a tempo continuo utilizzano la variazione dello stato, i modelli a tempo discreto ne analizzano direttamente l'evoluzione. Continuano a valere le stesse categorizzazioni che valevano per i sistemi a tempo continuo.
+
+La condizione di equilibrio è la seguente:
+
+$$
+\overline x = f(\overline x, \overline u) \quad \overline y = g(\overline x, \overline u)
+$$
+
+Noti lo stato al tempo $k = 0$ ($x(0) = x_0$) e $u(k)$ allora 
+
+$$
+x(k) = A^k x(0) + \sum_{i=0}^{k-1} A^{k-i-1}Bu(i) \\
+y(k) = CA^kx(0) + C \sum_{i=0}^{k-1}A^{k-i-1}Bu(i) + Du(k)
+$$
+
+Come per i sistemi a tempo continuo, è possibile ottenere un sistema equivalente applicando un cambio di variabili:
+
+$$
+z(k) = Tx(k) \iff x(k) = T^{-1}z(k) \\
+\begin{cases}
+    z(k+1) = \underbrace{TAT^{-1}}_{A'} z(k) + \underbrace{TB}_{B'} u(k) \\
+    y(k) = \underbrace{CT^{-1}}_{C'} z(k) + \underbrace{D}_{D'} u(k)
+\end{cases}
+$$
+
+Logicamente, si deve scegliere la matrice $T$ per fare in modo di arrivare ad una matrice $A'$ diagonale.
+
+Per stabilire la stabilità di ciascun modo, mentre pe ri sistemi a tempo continuo si andava ad analizzare la parte reale degli autovalori, per i sistemi a tempo discreto si va ad analizzarne il modulo.
+
+Per un sistema con $A$ diagonalizzabile
+
+- se tutti gli atuovalori hanno norma inferiore ad 1 oppure pari ad uno ma senza blocchi di Jordan annessi, vi è stabilità asintotica
+- se esiste almeno un autovalore con norma maggiore di uno oppure con norma pari ad uno che genera un blocco di Jordan, vi è instabilità
+
+Per un sistema con $A$ non diagonalizzabile, i modi sono della forma $\frac{k^i}{i!}\lambda_i^k$ ed in tal caso
+
+- se tutti gli autovalori hanno norma inferiore ad 1, vi è stabilità asintotica
+- se esiste un autovalore con norma maggiore di 1, vi è instabilità
+- nulla si può dire in presenza di autovalori con norma esattamente pari ad 1
+
+Nel caso di sistemi nonlineari, si linearizza in maniera identica ai sistemi lineari:
+
+$$
+\dot{\delta x}(k + 1) = \underbrace{\left. \frac{\partial f}{\partial x} \right|_{\overline x, \overline u}}_{A} \delta x(k) + \underbrace{\left. \frac{\partial f}{\partial u} \right|_{\overline x, \overline u}}_{B} \delta u(k) \\
+\dot{\delta y}(k) = \underbrace{\left. \frac{\partial g}{\partial x} \right|_{\overline x, \overline u}}_{C} \delta x(k) + \underbrace{\left. \frac{\partial g}{\partial u} \right|_{\overline x, \overline u}}_{D} \delta u(k)
+$$
+
+E' possibile andare a lavorare sul polinomio caratteristico solo dopo aver applicato la trasformazione bilineare che manda $\varphi(z)$ in $\varphi(s)$: se $\varphi(z)$ è il polinomio caratteristico originale, il polinomio con la trasformazione applicata è $\varphi(\frac{1+s}{1-s})$.
+
+Se tutte le radici di $\varphi(z)$ hanno modulo inferiore ad 1 allora tutte le radici di $\varphi(s)$ hanno parte reale minore di zero. Su $\varphi(s)$ è possibile applicare il criterio di Routh
+
 # Appendice
 
 ## Proprietà matrice esponenziale
