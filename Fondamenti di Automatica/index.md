@@ -406,19 +406,21 @@ $$
 \mathcal{L}\{f(t - t_0)\} = F(s) e^{-st_0} \qquad \mathcal{L}\{e^{at} f(t)\} = F(s - a)
 $$
 
-<!-- Idem per le derivate:
+Si può derivare nel tempo...
 
 $$
-
+\mathcal{L} \left\{ \frac{df(t)}{dt} \right\} = sF(s) - f(0) \qquad \mathcal{L}\left\{ \frac{d^nf(t)}{dt^n} \right\} = s^nF(s) - \left. \sum_{i=1}^n s^{n-i} \frac{d^{i-1}f(t)}{dt^{i-1}}\right|_{t=0} \\
+\mathcal{L}\left\{ -tf(t) \right\} = \frac{dF(s)}{ds} \qquad \mathcal{L}\left   \{ t^nf(t) \right\} = (-1)^n \frac{d^nF(s)}{ds^n}
 $$
 
-Idem anche per gli integrali
+... e anche integrare e convolvere
 
-Tabella con trasformate comode
+$$
+\mathcal{L} \left\{ \int_0^t f(\tau) \, d\tau \right\} = \frac{1}{s}F(s) \\
+f(t) \ast f(t) = \int_0^t f(t - \tau)g(\tau) \, d\tau \implies \mathcal{L}\left\{ f(t) \ast g(t) \right\} = F(s) \cdot G(s)
+$$
 
-In appendice tabella con tutte le trasformate
-
--->
+Per una tabella con una buona dose di trasformate, vedere l'[appendice](#tabella-trasformate-di-laplace).
 
 # Appendice
 
@@ -428,3 +430,27 @@ $$
 e^a = \sum_{i=0}^{+ \infty} \frac{a^i}{i!} \implies e^{At} = \sum_{i=0}^{+ \infty} \frac{A^it^i}{i!} = \mathbb{I} + at + \frac{A^2t^2}{2} + \dots \\
 \frac{de^{At}}{dt} = Ae^{At} \quad e^{A0} = \mathbb{I} \quad e^{A(t_1 + t_2)} = e^{At_1} \cdot e^{At_2} \quad e^{-At} = \left( e^{At} \right)^{-1}
 $$
+
+$$
+E[Y] = \int_{-\infty}^{+\infty} y p_Y(y)\,dy = \int_{-\infty}^{+\infty} x^2 p_X(x) \, dx
+$$
+
+## Tabella trasformate di Laplace
+
+| $f(t)$                                     | $F(s)$                                                  |
+| ------------------------------------------ | ------------------------------------------------------- |
+| $\text{Imp}(t)$                            | $1$                                                     |
+| $\text{Sca}(t)$                            | $\frac{1}{s}$                                           |
+| $\text{Ram}(t)$                            | $\frac{1}{s^2}$                                         |
+| $\text{Par}(t)$                            | $\frac{1}{s^3}$                                         |
+| $e^{\alpha t}\text{Sca}(t)$                | $\frac{1}{s-\alpha}$                                    |
+| $te^{\alpha t}\text{Sca}(t)$               | $\frac{1}{(s-\alpha)^2}$                                |
+| $\sin(\omega t)\text{Sca}(t)$              | $\frac{\omega}{s^2+\omega^2}$                           |
+| $\cos(\omega t)\text{Sca}(t)$              | $\frac{s}{s^2+\omega^2}$                                |
+| $t\sin(\omega t)\text{Sca}(t)$             | $\frac{2\omega s}{(s^2+\omega^2)^2}$                    |
+| $t\cos(\omega t)\text{Sca}(t)$             | $\frac{s^2+\omega^2}{(s^2+\omega^2)^2}$                 |
+| $e^{\alpha t}\sin(\omega t)\text{Sca}(t)$  | $\frac{\omega}{(s-\alpha)^2+\omega^2}$                  |
+| $e^{\alpha t}\cos(\omega t)\text{Sca}(t)$  | $\frac{s-\alpha}{(s-\alpha)^2+\omega^2}$                |
+| $te^{\alpha t}\sin(\omega t)\text{Sca}(t)$ | $\frac{2\omega(s-\alpha)}{((s-\alpha^2)+\omega^2)^2}$   |
+| $te^{\alpha t}\cos(\omega t)\text{Sca}(t)$ | $\frac{(s-\alpha)^2-\omega^2}{((s-\alpha)^2+\omega^2)}$ |
+
