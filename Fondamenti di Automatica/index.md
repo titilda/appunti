@@ -422,6 +422,89 @@ $$
 
 Per una tabella con una buona dose di trasformate, vedere l'[appendice](#tabella-trasformate-di-laplace).
 
+Vale il **teorema del valore iniziale**: se $g \ge 1$ allora 
+
+$$
+\lim_{t \to 0} = \lim_{s \to +\infty} sF(s)
+$$
+
+da cui deriva, per la priprietà di derivazione, il **teorema della pendenza iniziale**:
+
+$$
+\lim_{t \to 0} \frac{df(t)}{dt} = \lim_{s \to +\infty} s(sF(s) - f(0))
+$$
+
+Vale il **teorema del valore finale**:
+
+$$
+\lim_{t \to +\infty} f(t) = \lim_{s \to 0} sF(s) \qquad \text{(Se esiste)}
+$$
+
+A scopo informativo, viene riportata la formula dell'**antitrasformata di Laplace**, che però è molto scomoda e si preferisce utilizzare la tabella sopracitata al contrario:
+
+$$
+f(t) = \mathcal{L}^{-1} \{F(s)\} = \frac{1}{2 \pi j} \int_{\sigma - j \infty}^{\sigma + j \infty} F(s) e^{st} \, ds \qquad \sigma \in \text{Regione di convergenza}
+$$
+
+Per utilizzare la tabella al contrario, si deve scomporre la $F(s)$ in una somma di frazioni.
+
+Se $F(s)$ è razionale, se il grado relativo è maggiore di 1, allora
+
+$$
+F(s) = \sum_{i=1}^n \frac{r_i}{s - p_i}
+$$
+
+se invece il grado relativo è zero
+
+$$
+F(s) = k + \frac{N'(s)}{D(s)} \qquad N' = N \% D
+$$
+
+Successivamente, per ogni addendo, si va a vedere l'antitrasformata corrispondente sulla tabella.
+
+Applicando la trasformata di Lablace alla formula che descrive l'uscita di un sistema, si ottiene la **rappresentazione esterna**:
+
+$$
+Y(s) = \underbrace{(S \mathcal{L}\{e^{At}\}B + D)}_{G(s)} \cdot U(s) \\
+G(s) = C(s \mathbb{I} - A)^{-1}B + D
+$$
+
+Si può esprimere $G$ come $G = [g_{ij}]$; in tal caso, $g_{ij}(s)$ è la funzione di trasferimento tra $U_j(s)$ e $Y_i(s)$.
+
+## Risposta all'impulso
+
+Si vuole analizzare la risposta all'impulso di un sistema LTI:
+
+Se $U(s) = \mathcal{L}\{\text{Imp}(t)\}$ allora $Y(s) = G(s) \cdot U(s) = G(s) \cdot 1 = G(s)$: un impulso non va a modificare in alcun modo l'uscita
+
+## Caratterizzazione della funzione di trasferimento
+
+La funzione di trasferimento può essere scritta in **forma poli-zeri** 
+
+$$
+G(s) = \frac{\rho \prod_i(s - z_i)\prod_i(s^2 + 2 \zeta \alpha_{ni} s + \alpha_{ni}^2)}{s^g \prod_i(s - p_i) \prod_i(s^2 + 2 \xi \omega_{ni}s+\omega_{ni}^2)}
+$$
+
+o in forma **costanti di tempo**
+
+$$
+G(s) = \frac{\mu \prod_i(1 + \pi_i s) \prod_i \left(1 + 2\frac{\zeta_i s}{\alpha_{ni}} + \frac{s^2}{\alpha_{ni}^2}\right)}{s^g \prod_i (1 + T_i s) \prod_i\left(1 + 2 \frac{\xi_i s}{\omega_{ni}} + \frac{s^2}{\omega_{ni}^2}\right)}
+$$
+
+dove
+
+| Parametro                 | Spiegazione                                                                                                             |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| $\rho$                    | Costante di trasferimento                                                                                               |
+| $g$                       | Per la forma poli-zeri è il numero di poli (o zeri) nell'origine; per la forma costanti di tempo, è il tipo del sistema |
+| $p_i$                     | Numero di poli reali                                                                                                    |
+| $z_i$                     | Numero di zeri reali                                                                                                    |
+| $\zeta_i, \xi_i$          | Costanti di smorzamento                                                                                                 |
+| $\alpha_i, \omega_i$      | Pulsazioni/frequenze naturali                                                                                           |
+| $\mu$                     | Guadagno statico                                                                                                        |
+| $\tau_i = -\frac{1}{z_i}$ | Costanti di tempo degli zeri                                                                                            |
+| $T_i = -\frac{1}{p_i}$    | Costanti di tempo dei poli                                                                                              |
+
 # Appendice
 
 ## Proprietà matrice esponenziale
