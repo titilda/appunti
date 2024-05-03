@@ -514,10 +514,6 @@ e^a = \sum_{i=0}^{+ \infty} \frac{a^i}{i!} \implies e^{At} = \sum_{i=0}^{+ \inft
 \frac{de^{At}}{dt} = Ae^{At} \quad e^{A0} = \mathbb{I} \quad e^{A(t_1 + t_2)} = e^{At_1} \cdot e^{At_2} \quad e^{-At} = \left( e^{At} \right)^{-1}
 $$
 
-$$
-E[Y] = \int_{-\infty}^{+\infty} y p_Y(y)\,dy = \int_{-\infty}^{+\infty} x^2 p_X(x) \, dx
-$$
-
 ## Tabella trasformate di Laplace
 
 | $f(t)$                                     | $F(s)$                                                  |
