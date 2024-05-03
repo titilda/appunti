@@ -154,6 +154,8 @@ $$
 
 I termini che compaiono nella matrice al centro sono detti **modi**.
 
+Se lo stato iniziale è un autovettore, il movimento libero è della forma $x(t) = v e^{\lambda t}$ dove $v$ è l'autovettore e $\lambda$ è l'autovalore corrispondente.
+
 #### Sistemi con matrice $A$ non diagonalizzabile
 
 Nel caso in cui la matrice $A$ non sia diagonalizzabile, $\exists T_J \in \mathcal{M}_\mathbb{R}(n) : A_J = T_JAT_J^{-1}$ tale che $A_J$ sia una matrice di blocchi di Jordan con gli autovalori di $A$ sulla diagonale (non ci interessa conoscere $T_J$, ci basta sapere che esiste):
