@@ -755,3 +755,287 @@ Più precisamente $L_1$ è:
 - stringa vuota.
 - composta da un prefisso "$a$" e un suffiso $y$ (sempre in $L_1$).
 - prefisso $y$ (sempre in $L_1$) e un suffisso "$b$".
+
+Esprimibile come:
+
+$\forall x (x \in L_1 \longleftrightarrow (x = \varepsilon) \lor \exist y (x=ay \land y \in L_1) \lor \exist y (x=yb \land y \in L_1))$
+
+$L_2 = a^*b^*c^*$
+
+Una stringa appartiene a $L_2$ se è:
+
+- in $L_1$
+- in $L_3 (b^*c^*)$
+- composta da un prefisso $'a'$ e da un suffisso $y$
+- composta da un prefisso $y$ e da un suffisso $'c'$
+
+In FOL:
+
+$\forall x (x \in L_2 \longleftrightarrow (x \in L_1) \lor (x \in L_3) \lor \exist y (x = ay \land (y \in L_2 \lor y \in L_3)) \lor (x=yc \land (y \in L_2) \lor y \in L_1))$
+
+Esempio
+
+$L_4 = \{x \in \{a,b\}^* |numero\ di\ 'a'\ uguale\ al\ numero\ di \ 'b'\}$
+
+
+- $\#(x,a)$ arietà 2, conta il numero di occorenze del simbolo $'a'$ nella stringa $x$
+
+In FOL: $\forall x (x \in L_4 \longleftrightarrow \# (x,a)= \# (x,b))$
+
+### MFO: Logica monadica del prim'ordine
+
+- I linguaggi esprimibili mediante MFO sono chiusi rispetto a unione, intersezione e complemento
+- In MFO non si può esprimere il linguaggio $L_p$ fatto di tutte le sole parole di lunghezza pari con $l = \{a\}$
+- MFO è strettamente meno potente degli FSA
+- MFO chiuso rispetto alla $*$
+- La formula MFO $a(0) \land a(1) \land last(1)$ definisce $L_{aa}$ fatto della sola parola $\{aa\}$ di lunghezza 2.
+- Abbiamo che $L_p = L_{aa}^*$
+- MFO definisce linguaggi star-free, definibili tramite unione, intersezione, complemento e concatenazione di linguaggi finiti.
+
+### MSO: Logica monadica del secondo ordine
+
+- Può avere lo stesso potere degli FSA basta permettere di quantificare sui predicati monadici
+- Ammettiamo formule del tipo $\exist x(\phi), x$ è una variabile il cui dominio è l'insieme dei predicati monadici
+- Assegnamento delle variabili del $II$ ordine (insieme $v_2$) è una funzione $v_2 : V_2 \to ([0..|w|-1])$
+
+    - $w, v_1, v_2 \vDash X(x) \ sse\ v_1(x) \in v_2 (x)$
+    - $w, v_1, v_2 \vDash \exist X (\phi) \ sse \ w, v_1, v_2' \vDash \phi \ per \ qualche \ v_2' con v_2'(Y); Y\not ={x}$
+- La formula descrive il linguaggio $L_p$
+
+$\exist P (\forall x (\neg P(0) \land (\neg P(x) \Longleftrightarrow P(x+1))\land a(x)\land (last(x) \implies P(x))))$
+
+**Per ogni FSA esiste un MSO equivalente**
+
+Da una MSO $\phi$ è possibile costruire un FSA (**Teorema di Büchi-Elgot-Trakhtenbrot**)
+
+I linguaggi definibili da fomrule MSO è linguaggi regolari
+
+![](assets/Mappa%20Linguaggi.jpg)
+
+Quando si programma una funzione è importante definire **COSA FA**.
+
+**Precondizione**: indica cosa deve valere **prima** che la funzione sia invocata.
+
+**Postcondizione**: indica cosa deve valere **dopo** che la funzione ha finito la propria esecuzione.
+
+Struttura generale (**notazione di Hoare**)
+
+- {Precondizione: $Pre$}
+- {Programma: $P$}
+- {Postcondizione: $Post$}
+
+$P$ deve essere tale che se $Pre$ vale prima dell'esecuzione, allora $Post$ vale dopo l'esecuzione.
+
+- $Pre$ e $Post$ possono essere definiti in diversi modi
+
+    - Linguaggio naturale
+    - Linguaggi per le asserzioni
+    - Linguaggi ad-hoc
+
+$\to$ FOL può essere usata per questo scopo.
+
+# Computabilità
+
+### Algoritmo di ricerca
+
+$Pre$: l'array è ordinato.
+
+$Post$: la variabile logica "found(un flag)" dev'essere vera sse l'elemento cercato esiste nell'array.
+
+$$
+Pre \{\forall i (1 \le i \le n-1 \to a[i] \le a[i+1])\}
+\\
+P
+\\
+Post \{found \longleftrightarrow \exist i (1 \le i \le n \land a[i] = x)\}
+$$
+
+### Ordinamento
+
+$Pre$: l'array NON contiene ripetizioni.
+
+$Post$: l'array ottenuto è ordinato.
+
+Formalmente
+
+$$
+\{\neg \exist i, j (1 \le i \le n \land 1 \le j \le n \land i \not ={j} \land a[i] = a[j])\}
+\\
+ORD
+\\
+\{\forall i (1 \le i \le n-1 \to a[i] \le a[i+1])\}
+$$
+
+### Tesi di Church (Parte 1)
+
+**Non c'è nessun formalismoper modellare il calcolo meccanico che sia più potente della TM (o formalismi equivalenti)**
+
+Algoritmo: Procedura per risolvere problemi mediante un dispositivo di calcolo automatico.
+
+### Tesi di Church (Parte 2)
+
+**Ogni algoritmo può essere codificato mediante una TM (o formalismo equivalente)**
+
+Una TM può essere vista come un computer astratto, non programmabile, predisposto per un uso speciale.
+
+Un insieme $S$ può essere enumerato algoritmicamente $(E)$ se possiamo trovare una biiezione tra $S$ e $\natnums$.
+
+- $E: S \longleftrightarrow \natnums$
+
+Esempio
+
+$\{a,b\}^*$
+
+$\varepsilon\ a\ b\ aa\ ab\ ...$
+
+$0\ 1\ 2\ 3\ 4\ ...$
+
+**Le TM possono essere enumerate algoritmicamente**
+
+Ipotesi:
+
+- TM a nastro singolo
+- Alfabeto fissato $A (esempio\ |A|=3, A=\{0, 1,\_ \})$
+
+Esempio: TM con due stati
+
+![](assets/Esempio%20TM%20a%202%20stati.jpg)
+
+$2^2=4$ stati finali possibili.
+
+Quante funzioni $f: D \to R ? \to |R|^{|D|}$
+
+Con $|Q| = 2, |A|=3, (2 * 3+3+1)^{(2*3)} = 19^6$ con 2 stati considerando i $2^2$ scelte di stati finali, abbiamo (al più) $19^6 * 2^2$ TM.
+
+Ordiniamo TM: $\{M_0,...,M_{19^6*2^2 -1} \}$
+
+Otteniamo un'enumerazione $E: \{TM\} \to \natnums$
+
+$E(M)$ è detto **numero di Gödel** di $M$ e $E$ è una **Gödelizzazione**
+
+Le TM modellano computer programmabili? Si
+
+- Consideriamo la **Macchina di Turing Universale** (UTM)
+
+UTM computa $g(y, x)=f_y(x)$
+
+funzione calcolata dalla y-esima TM sull'ingresso x.
+
+Possiamo codificare $g(y,x)$ come una $g^{(n)} = g(d^{-1}(n))$ con $n= d(y,x), (y,x) = d^{-1} (n)$
+
+Le TM computano **tutte** le funzioni da $\natnums$ a $\natnums?$
+
+No, ci sono funzioni che possono essere computate dalla UTM.
+
+Esistono $2^{\alef_0}$ funzioni $f: \natnums \to \natnums$.
+
+$\alef_0$ si legge "alef con zero"
+
+#### Il "problema dell'arresto" (halting problem)
+
+- Costruisco un programma 
+- Gli do dei dati in ingresso
+- So che in generale il programma potrebbe non terminare la propria esecuzione
+
+In termini di TM:
+
+$g(y,x) =1\  se\ f_y(x) \not ={\bot}, g(y,x)=0\ se \ f_y(x)=\bot$
+
+C'è TM che calcola $g?$ 
+
+No
+
+### Dimostrazione per diagonalizzazione
+
+Listiamo le funzioni calcolabili da $\natnums$ a $\natnums$ e i loro valori, disponendo ogni valore $f_y(x)$ in una tabella:
+
+![](assets/Tabella%20diag.jpg)
+
+Definiamo una funzione $\phi: \natnums \to \natnums$ che differisce dalla diagonale in ogni valore.
+
+Nessuna TM può decidere se, data una generica TM $M$ e un generico ingresso $x$, $M$ si arresta con l'ingresso $x$.
+
+### Lemma importante
+
+$h'(x)=$ se $f_x(x)\not ={\bot}$ allora $1$ altrimenti $0$
+
+Un problema non risolvibile può avere un caso particolare risolvibile.
+
+Se un problema è risolvibile, una generalizzazione può non essere risolvibile.
+
+#### Problemi di decisione
+
+Domanda con due possibili risposte: si e no.
+
+Semidecidibile se c'è un algoritmo che dice si se la risposta è si
+
+- può andsre in loop se la risposta è no
+
+### Insiemi Ricorsivi
+
+Concentriamoci sui problemi a risposta binaria:
+
+Problema= $x$ appartiene all'insieme $S? (S \le N)
+$
+
+$C_S(x)=\ se \ x \in S\ allora\ 1\ altrimenti\ 0$
+
+Un insieme $S$ è **ricorsivo** sse la sua funzione caratteristica è computabile.
+
+$S$ è **ricorsivamente enumerabile** sse:
+
+- $S$ è l'insieme vuoto, o
+- $S$ è l'immagine di una funzione $g_s$ totale e computabile
+
+$$
+S=l_{g_s}=\{x|x=g_s(y),y\in \natnums\}
+\\
+\implies
+\\
+S=\{g_s(0), g_s(1), g_s(2),...\}
+$$
+
+#### Teorema (1/2+1/2=1)
+
+- Se $S$ è ricorsivo, allora è RE
+- $S$ è ricorsivo sse sia $S$ sia il suo complemento $S^\wedge = N-S$ sono RE
+
+La classe di insiemi decidibili è chiusa rispetto al complemento.
+
+#### Teorema del punto fisso di Klenne
+
+Sia $t$ una funzione totale e computabile. Allora si può sempre trovare un intero $p$ tale che $f_p=f_{t_{(p)}}$
+
+- La funzione $f_p$ è detta punto fisso di $t$
+
+#### Teorema di Rice
+
+Sia $f$ un insieme di funzioni computabili l'insieme &S& degli indici delle TM che calcolano le funzioni di $F$
+
+$S=\{x|f_x \in F\}$
+
+è decidibile sse:
+
+- o $F = \emptyset$
+- o $F$ è l'insieme di tutte le funzioni computabili
+
+$\to$ in tutti i casi non banali $S$ non è decidibile!
+
+Dal teorema di RIce
+
+Implicazioni negative
+
+- C'è una lista sconfinata di problemi interessanti la cui indecidibilità segue banalmente dal teorema di Rice.
+
+Dato $F=\{g\}$, per Rice non è decidibile se una generica TM calcoli $g$ o meno.
+
+#### Riduzione di problemi
+
+Un problema $P'$ è **ridotto** a un problema $P$ se un algoritmo per risolvere $P$ viene usato per risolvere $P'$
+
+- $P$ è risolvibile
+- C'è un algoritmo che, per ogni data istanza di $P'$
+1. Determina una corrispondente istanza di $P$
+2. Costruisce algoritmicamente la soluzione dell'istanza di $P'$ dalla soluzione dell'sistanza di $P$
+
+# Complessità del calcolo
