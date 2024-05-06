@@ -1039,3 +1039,203 @@ Un problema $P'$ è **ridotto** a un problema $P$ se un algoritmo per risolvere 
 2. Costruisce algoritmicamente la soluzione dell'istanza di $P'$ dalla soluzione dell'sistanza di $P$
 
 # Complessità del calcolo
+
+Per la tesi di Curch-Turing, un problema è calcolabile o meno indipendentemente dallo strumento usato.
+
+Per la complessità del calcolo ?
+
+- Una somma unaria ha efficienza diversa da una di basa $b > 1$
+- Calcolare una traduzione $y=T(x)$ decidendo se $\exist z \in L_\tau = \{x \$ y | y=\tau (x)\}$ può essere molto meno efficiente del calcolare la traduzione in qualche caso.
+
+Data la computazione $c_0 \vdash c_1 \vdash c_2 \vdash ... \vdash c_r$ di $M$ (a k nastri) deterministica.
+
+La complessità temporale è $T_M (x)=r$ se $M$ termina in $c_r$
+
+- $\infty$ se non termina.
+
+$M$ è deterministica $\implies$ computazione unica sull'ingresso $x$
+
+Complessità spaziale
+
+$$
+S_M(x) = \Sigma _{j=1}^k max_{i \in \{0,...,r\}} (|a_{ij}|)
+$$
+
+Somma della quantità massime occupate
+$$
+\forall x: \dfrac{S_M (x)}{k} \le T_M (x)
+$$
+
+Notazione
+
+$\Omicron$-grande : limite asintotico superiore
+
+$\Omega$-grande: limite asintotico inferiore
+
+$\Theta$-grande: limite asintotico sia superiore che inferiore
+
+$\Omicron$-grande
+
+Data $g(n), \Omicron(g(n))$ è l'insieme $\Omicron(g(n))=\{f(n) | \exist c > 0, n_0 >0\ tali\ che\ \forall n>n_0, 0 \le f(n) \le c*g(n)\}$
+
+$\Omega$-grande
+
+Data $g(n), \Omega(g(n))$ è l'insieme $\Omega(g(n))=\{f(n) | \exist c > 0, n_0 >0\ tali\ che\ \forall n>n_0, 0 \le c*g(n) \le f(n) \}$
+
+$\Theta$-grande
+
+Data $g(n), \Theta(g(n))$ è l'insieme $\Theta(g(n))=\{f(n) | \exist c_1 > 0, c_2 >0, n_0 >0\ tali\ che\ \forall n>n_0, 0 \le c_1*g(n) \le f(n) \le c_2*g(n) \}$
+
+Proprità notevoli
+
+$f(n) \in \Theta(g(n)) \iff f(n) \in \Omicron(g(n)) \land f(n) \in \Omega (g(n))$
+
+Transitività
+$$
+f(n) \in \Theta(g(n)) \land g(n) \in \Theta(h(n)) \implies f(n) \in \Theta (h(n))
+\\
+f(n) \in \Omicron(g(n)) \land g(n) \in \Omicron(h(n)) \implies f(n) \in \Omicron(h(n))
+\\
+f(n) \in \Omega(g(n)) \land g(n) \in \Omega(h(n)) \implies f(n) \in \Omega(h(n))
+$$
+
+Riflessività
+$$
+f(n) \in \Theta(f(n))
+\\
+f(n) \in \Omicron(f(n))
+\\
+f(n) \in \Omega(f(n))
+$$
+
+Simmetria: $f(n) \in \Theta(g(n)) \iff g(n) \in \Theta(f(n))$
+
+Simmetria trasposta: $f(n) \in \Omicron(g(n)) \iff g(n) \in \Omega(f(n))$
+
+$\Theta$ è una relazione di equivalenza.
+
+Teorema
+
+Se $L$ è accettato da una TM $M$ a $k$ nastri in $S_M (n), \forall c \in \reals^+$ posso costruire una TM $M'$ a $k$ nastri che accetta $L$ con $S_{M'} < c*S_M(n)$
+
+Teorema
+
+Se $L$ è accettato da una TM $M$ a $k$ nastri in $S_M(n)$, posso costruire una TM $M'$ a 1 nastro (non nastro singolo) che accetta $L$ con $S_{M'}(n) = S_M(n)$
+
+Teorema
+
+Se $L$ è accettato da una TM $M$ a $k$ nastri in $S_M(n), \forall c \in \reals^+$ posso costruire una TM $M'$ a 1 nastro accetta $L$ con $S_{M'}(n)< c*S_M(n)$
+
+Teorema
+
+Se $L$ è accettato da una TM $M$ a $k$ nastri in $T_M(n), \forall c \in \reals^+$ posso costruire una TM $M'$ a $k+1$ nastri accetta $L$ con $T_{M'}(n) = max (n+1, c*T_M(n))$
+
+## Macchina RAM
+
+La macchina RAM è dotata di un nastro di lettura 
+$In$ e uno di scrittura $Out$ come la TM.
+
+È dotata di una memoria con accesso a indirizzamento diretto $N[n], n \in \natnums$ al posto dei nastri di memoria: l'accesso non necessita di scorrimento delle celle.
+
+Le istruzioni di un programma usano normalmente come sorgente il primo operando e come destinazione $N[0]$
+
+Riconoscere $L=\{wcw^R\}$
+$$
+T_{RAM}(n) = \Theta (n)
+\\
+S_{RAM}(n) = \Theta (n)
+$$
+
+### Ricerca Binaria
+
+Input: una sequenza ordinata di interi ed un numero da cercare in essa.
+
+Output: 1 se l'elemento cercato esiste nella sequenza, 0 altrimenti.
+
+Consideriamo il caso del calcolo di $2^{2n}$ con una RAM
+$$
+read (n);
+\\
+x=2;
+\\
+for (int i=0; i<n; i++)\ x=x*x;
+\\
+write(x);
+$$
+
+Complessità temporale: $T_{RAM} (n)= k_1+k_2+nk_3+k_4= \Theta (n)$
+
+Servono $2^n$ bit per scrivere il risultato !!!
+
+Complessità a costo logaritmico: $T_{RAM} (n)= \Omicron(log(n)+n(2^{n-1}+2^{2n-2}+2^n+3log(n))+2^n)=\Omicron(n2^{2n-2})$
+
+(Tesi) di correlazione polinomiale
+
+Sotto "ragionevoli" ipotesi di criterio di costo, se un problema è risolvibile mediante il modello $M_1$ con complessità $c_1(n)$, allora è risolvibile da un qualsiasi altro modello (turing equivalente) $M_2$ con complessità $c_2(n) \le \pi (c_1(n))$, dove $\pi(*)$ è un opportuno polinomio.
+
+# Algoritmi
+
+Si usa **pseudocodice**
+
+Esempio: Ordinamento
+$$
+INSERTION-SORT(A)
+\\
+for\ j :=2\ to \ A.length
+\\
+key:=A[j]
+\\
+//inserisce\ A[j]\ nella\ sequenza\ ordinata\ A[1...j-1]
+\\
+i:=j-1
+\\
+while\ i>0\ and\ A[i]>key
+\\
+A[i+1]:=A[i]
+\\
+i:=i-1
+\\
+A[i+1]:=key
+$$
+
+Visto che questa lezione si basa su scrivere codici e analizzarne solo certe parti io mi limiterò a scrivere le parti più importanti.
+
+- Dati composti sono organizzati in oggetti
+- Gli oggetti hanno degli attributi (il valore dell'attributo (attr.) di un oggetto x, scriviamo x.attr)
+- Una variabile che corrisponde ad un oggetto è un puntatore all'oggetto.
+
+I paramentri sono passati per valore.
+
+Quando un oggetto viene passato come paramentro, ciò che viene passato è il **puntatore** all'oggetto.
+
+La macchina RAM esegue gli algoritmi in pseudocodice.
+
+Si adotta il criterio di costo costante (tempo costante $c_i$) ci concentriamo solo sulla complessità temporale.
+
+Algoritmo ordinamento complessità temporale
+
+$T(n)=c_1n+c_2(n-1)+c_4(n-1)+c_5\Sigma_{j=2}^n t_j+c_7\Sigma_{j=2}^n(t_j-1)+c_8(n-1)$
+
+Se l'array è già ordinato $T(n)=an+b \implies T(n) = \Theta (n)$
+
+Se ordinato ma in ordine decrescente $T(n)=an^2+bn+c \implies T(n)=\Theta(n^2)$
+
+### Merg-Sort (del tipo "divide et impera")
+
+Si ordina dividendo l'array in 2 sotto-array, si ordinano e si fondono.
+
+**Complessità di un algoritmo divide et impera**
+
+Equazione di ricorrenza
+$$
+\begin{cases}
+    \Theta (1)\ se\  n<c
+    \\
+    D(n) + aT(n/b)+ C(n)
+\end{cases}
+$$
+
+$a$ si divide in sottoinsiemi di dimensione $1/b$ ognuno.
+
+$D(n)$ costo di dividere il problema, $C(n)$ costo di ricombinare i sottoproblemi e $T(n)$ è il costo per risolvere il problema totale.
+
