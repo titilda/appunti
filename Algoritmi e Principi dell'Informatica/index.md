@@ -1239,3 +1239,114 @@ $a$ si divide in sottoinsiemi di dimensione $1/b$ ognuno.
 
 $D(n)$ costo di dividere il problema, $C(n)$ costo di ricombinare i sottoproblemi e $T(n)$ è il costo per risolvere il problema totale.
 
+**Ricorrenza per Merge-Sort**
+$$
+T(n)= \begin{cases}
+    \Theta (1)\ se\  n<2
+    \\
+    2T(n/2)+\Theta(n)\ altrimenti
+\end{cases}
+\\
+a=b=c=2, D(n)= \Theta(1), C(n)=\Theta(n)
+$$
+
+**Teorema dell'esperto (master theorem) $\implies$ NON COPRE TUTTI I CASI**
+$$
+(a \ge 1, b \ge 1 \ e \ n/b\ è\ o\ \lfloor n/b \rfloor\ o\ \lceil n/b \rceil)
+$$
+
+1. Se $f(n) = \Omicron (n^{log_ba-\varepsilon}) \varepsilon >0,\ allora\ T(n) = \Theta(n^{log_ba})$
+2. Se $f(n) = \Theta (n^{log_ba}),\ allora\ T(n) = \Theta(n^{log_ba}log(n))$
+3. Se $f(n) = \Omega (n^{log_ba+\varepsilon}) \varepsilon >0,\ e\ af(n/b) \le cf(n)$ per qualche $c<1$ e per tutti gli $n$ grandi a sufficienza, allora $T(n) = \Theta (f(n))$
+
+- $af(n/b) \le cf(n)$ è detta regolarità
+
+**Teorema dell'esperto MERGE-SORT**
+
+$T(n) = 2 T(n/2) + \Theta (n)$
+$$
+a=b=2
+\\
+f(n)=n
+\\
+n^{log_ba}=n'=n
+$$
+
+Secondo caso
+
+$T_{MERGE-SORT}(n)= \Theta (nlog(n))$
+
+Caso particolare
+
+Se $f(n)$ è una funzione $\Theta (n^k)$ per qualche $k$:
+
+- se $k < log_ba$, allora $T(n)= \Theta (n^{log_ba})$
+- se $k=log_ba$, allora $T(n)=\Theta (n^k log (n))$
+- se $k>log_ba$, allora $T(n)=\Theta (n^k)$
+
+nel $3°$ caso la regolarità è verificata automaticamente.
+
+Condizione di regolarità
+
+Sia $T(n) = T(n/2)+n(2-cos(n)), a=1\ b=2$
+
+$f(n)=n(2-cos(n))=\Omega (n)>n^{log_ba}=\Theta (1)$
+
+### HEAPSORT
+
+È un algoritmo di ordinamento efficace (ordina in tempo $\Theta (n log(n))$) ma ordina sul posto.
+
+Un **heap binario** è un albero quasi completo
+
+Un **max heap** è  un heap tale che $\forall$ nodo $x$ dell'albero, il valore contenuto nel padre di $x$ è $\ge$ del contenuto di $x$.
+
+**Complessità di MAX-HEAPIFY**
+
+$T_{MAX-HEAPIFY} = \Omicron (n)$, $n$ altezza albero $= \Omicron(log(n))$ poichè l'albero è quasi completo $\implies T_{MAX-HEAPIFY}=\Omicron(log(n))$
+
+### QUICKSORT (tipo "divide et impera")
+
+- Ordina sul posto.
+- Caso pessimo complessità $\Theta(n^2)$
+- In media $\Theta (n log(n))$
+
+### Albero di decisione (binario)
+
+![](assets/Albero%20di%20decisione.jpg)
+
+Ogni albero binario di altezza $n$ ha un numero di foglie al più $2^n$
+
+**TEOREMA**
+
+Ogni albero di decisione di ordinamento di $n$ elementi ha altezza $\Omega (nlog(n))$
+
+**Ricorrenze di ordine costante**
+
+$a_i$ intero $\ge 0$
+$$
+T(n)= \begin{cases}
+    \Theta (1)\ se\  n \le m \le h
+    \\
+    \Sigma_{1\le i\le n} a_i T(n-i)+cn^k\ se\ n>m
+\end{cases}
+\\
+a=\Sigma_{1\le i\le n} a_i
+$$
+
+se $a=1$, allora $T(n)= \Omicron(n^{k+1})$
+
+se $a \ge 2$, allora $T(n) = \Omicron(a^n n^k)$
+
+Esempio $T(n)=T(n-1)+\Theta(n)$ ottengo $T(n) = \Omicron(n^2)$
+
+Versione ricorsiva di INSERTION-SORT
+
+### Conting-Sort
+
+Ordinamento per conteggio, **NON** per confronto.
+
+Ipotesi: numeri naturali da $0$ a $k$.
+
+![](assets/Counting-Sort.jpg)
+
+# Strutture Dati
