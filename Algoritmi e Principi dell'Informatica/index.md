@@ -1350,3 +1350,282 @@ Ipotesi: numeri naturali da $0$ a $k$.
 ![](assets/Counting-Sort.jpg)
 
 # Strutture Dati
+
+Le strutture dati sono usate per contenere oggetti.
+
+Rappresentano collezioni di oggetti.
+
+Spesso, ma non sempre, gli oggetti di una struttura dati hanno:
+
+- Una chiave, per indirizzare l'oggetto
+- Dati satelliti associati
+
+Due tipi di operazioni sulle strutture dati:
+
+- Operazioni che modificano la collezione
+- Operazioni che interrogano la collezione
+
+**ELENCO OPERAZIONI**
+
+- $SEARCH(S,k)$
+- $INSERT(S,x)$
+- $DELETE(S,x)$
+- $MINIMUM(S)$
+- $MAXIMUM(S)$
+- $SUCCESSOR (S,x)$
+- $PREDECESSOR(S,x)$
+
+### Pila (Stack)
+
+Collezione di oggetti sulla quale fare le seguenti operazioni:
+
+- Controllare se è vuota
+- Inserire elementi (PUSH)
+- Togliere elementi (POP)
+
+Si gestisce con la politica LIFO (Last In First Out).
+
+Si può implementare come un array.
+
+### Coda (Queue)
+
+Simile alla pila a FIFO (First In First Out)
+
+Stesse operazioni:
+
+- Controllare se è vuota
+- Inserire elementi (ENQUEUE)
+- Togliere elementi (DEQUEUE)
+
+N.B. DEQUEUE restituisce l'elemento tolto
+
+Anche la coda può essere implementata tramite array.
+
+### Liste (doppiamente) concatenate
+
+È simile a una lista dinamica in cui ogni oggetto ha 3 attributi:
+
+- key, contenuto dell'oggetto
+- next, puntatore oggetto seguente
+- prev, puntatore oggetto precedente
+- $x.next = NIL$, $x$ non ha successore
+- $x.prev = NIL$, $x$ non ha predecessore
+
+Altri tipi di lista:
+
+- Concatenate in modo singolo
+  - NO puntatore prev
+- Ordinate
+  - l'ordinamento avviene tramite chiavi, dalla minore alla maggiore
+- NON Ordinate
+- Circolari
+  - .prev della testa punta alla coda, e .next della coda punta alla testa.
+
+Dizionario: insieme dinamico che supporta solo le operazioni di $INSERT,\ DELETE,\ SEARCH.$
+
+Si accede agli oggetti tramite le chiavi.
+
+Si assume che le chiavi siano numeri naturali.
+
+![Indirizzamento Diretto](assets/Indirizzamento%20Diretto.jpg)
+
+## Tabelle Hash
+
+Una tabella hash usa una memoria proporzionale al numero di chiavi effettivamente memorizzate nel dizionario.
+
+**Idea fondamentale:** oggetto di chiave $k$ è memorizzato in una cella di indice $h(k)$, dove $h$ è una **funzione hash.**
+
+### Collisioni
+
+Problema: ho $|U|$ possibili chiavi ed una funzione che le deve mappare su un numero $m < |U|$ di slot o bucket della tabella
+
+- Avrò delle chiavi diverse (molte) $k_1, k_2$ tali che $h(k_1)=h(k_2)$
+- Ho **collisioni**
+
+Una possibile soluzione è il concatenamento (**chaining**)
+
+![Chaining](assets/Chaining.jpg)
+
+Operazioni:
+
+- $INSERT$
+- $SEARCH$
+- $DELETE$
+
+**Analisi complessità**
+
+Nel caso pessimo, tutti gli $n$ elementi vengono memorizzati nello stesso slot quindi la complessità è quella di cercare in una lista di $n$ elementi, cioè $\Omicron(n)$
+
+- In media non accade
+
+Siano:
+
+- $m$ la dimensione della tabella
+- $\alpha$ il fattore di carico, $\alpha= n/m$
+
+siccome $0 \le n \le |U|$ avremo $0 \le \alpha \le |U|/m$
+
+### Ipotesi dell'hashing uniforme semplice
+
+Ogni chiave ha $1/m$ probabilità di finire in qualsiasi delle $m$ celle di $T$, la lunghezza media di una lista è:
+$$
+E[n_j]=\frac{1}{m} \Sigma_{i=1}^m n_i = \frac{n}{m} = \alpha
+$$
+
+Il tempo medio per cercare una chiave $k$ NON presente è $\Theta (1+\alpha)$ ($\Omicron (1)$ tempo per calcolare $h(k)$)
+
+$\Theta (1+\alpha)$ è il tempo anche per trovare una chiave $k$ presente.
+
+$\Omicron (1)$ per le operazioni ($INSERT$, etc.)
+
+## Funzioni Hash
+
+Come si sceglie bene una funzione $h$ ?
+
+Ne dovrei prendere una che soddisfa l'ipotesi di hashing uniforme semplice, per farlo devo sapere la distribuzione di probabilità (NON ANCHE QUIIIIIIII :( ) delle chiavi da inserire.
+
+**Assunzione:** la chiave $k$ è un intero non-negativo.
+
+### Metodo di divisione
+
+$h(k) = k\ mod\ m$
+
+Facile da realizzare e veloce
+
+Evitare valori di $m$ come:
+- potenze di 2
+
+di solito ad $m$ si assegna un numero primo lontano da una potenza di 2.
+
+Esempio
+$$
+h(k) = k\ mod\ m
+\\
+m=5
+\\
+Inseriamo:\ 38,12,18
+\\
+\frac{5}{38}*5=3,...\ hash(38)= 3
+\\
+si\ ha\ h(38)=3, h(12)=2, h(18)=3
+\\
+T=[NIL,NIL,lista(12),lista(18,38),NIL]
+$$
+
+### Metodo di moltiplicazione
+
+Moltiplichiamo $k$ per una costante $A$ reale tale che $0 < A < 1$, quindi prendiamo solo la parte ffrazionaria di $kA$, lo moltiplichiamo per $m$ e prendiamo la parte intera.
+
+cioè $h(k)=\lfloor m(kA\ mod\ 1)\rfloor$ di cui $x\ mod\ 1 = x - \lfloor x \rfloor$ è la parte frazionaria di $x$.
+
+$m$ può essere valore di $A$
+
+È meglio prendere $u valore di $A$ che sia della forma $s/2^w$ con $w$ dimensione della parola di memoria del calcolatore.
+
+Un valore di $A$ proposto (da Knuth) è:
+$$
+A=(\sqrt{5}-1)/2
+$$
+
+Inveso sezione aurea
+
+Esempio
+$$
+h(k)=\lfloor m(kA\ mod\ 1)\rfloor
+\\
+A=(\sqrt{5}-1)/2
+\\
+m=5
+\\
+38,18,12
+\\
+\lfloor 38*A \rfloor =0,484
+\\
+\lfloor m*(38*A) \rfloor=2
+\\
+h(38)=2,h(12)=2,h(18)=0
+\\
+T=[lista(18),NIL,lista(12,38),NIL,NIL]
+$$
+### Indirizzamento aperto
+
+Altro metodo per evitare collisioni
+
+La tabella contiene tutte le chiavi, senza memoria aggiuntiva.
+
+L'idea è quella di calcolare lo slot in cui va memorizzato l'oggetto.
+
+h ora diventa:
+
+$h:U \times \{0,1,...,m-1\} \to \{0,1,...,m-1\}$
+
+la sequenza di ispezione deve essere una permutazione $\lang 0,...,m-1 \rang$
+
+**Analisi di complessità indirizzamento aperto**
+
+Ricordiamo che è necessario fare una permutazione $m!$ per ogni $\lang 0,...,m-1 \rang$.
+
+L'analisi viene fatta con fattore $\alpha = n/m,n\le m,0 \le \alpha \le 1$
+
+Il numero medio di ispezioni necessarie per effettuare l'inserimento del nuovo oggetto nella tabella è $m$ se $\alpha=1$, e non più di $\frac{1}{(1-\alpha)}$ se $\alpha < 1$
+
+Numero medio ispezioni per trovare un elemento presente è $(m+1)/2$ se $\alpha =1$, non più di $\frac{1}{\alpha} *log(1/(1-\alpha))$ se $\alpha<1$
+
+Tre tecniche di ispezione
+- ispezione lineare
+- ispezione quadratica
+- doppia hashing
+
+Queste tre tecniche fanno uso di una **funzione hash ausiliara**
+$$
+h':U \to \{0,1,...,m-1\}
+$$
+
+### Ispezione lineare
+
+$h(k,i)=(h'(k)+i)\ mod\ m$
+
+si parte da $h'(k)$ e poi $h'(k)+1$, fino a $m-1$
+
+genera solo $m$ sequenze di ispezioni distinte.
+
+Soffre del fenomeno dell'**addensamento**(clustering) **primario**
+  -   lunghe celle occupate consecutivamente che aumentano il tempo medio di ricerca
+
+Esempio
+$$
+h(k,i)=(h'(k)+i)\ mod\ m
+\\
+m=5
+\\
+h'(k)=k\ mod\ m
+\\
+38,12,18
+\\
+h(38,0)=3, h(12,0)=2, h(18,0)=3\ occupato!!
+\\
+allora\ h(18,1)=4
+\\
+T=[NIL, NIL, 12, 38, 18]
+\\
+Cancelliamo\ 38 : T=[NIL,NIL,12,DEL,18]
+\\
+Inseriamo\ 43\ h(43,0)=3 \to T=[NIL,NIL,12,43,18]
+$$
+
+### Ispezione quadratica
+
+$h(k,i)=(h'(k)+c_1i+c_2i^2)\ mod\ m$
+
+- $c_1$ e $c_2$ costanti ausiliarie $(c_2 \not ={0})$
+- $c_1$ e $c_2$ scelti in modo che si percorra tutta la tabella
+- come prima $m$ sequenze di ispezione distinte
+- Soffre dell'**addensamento secondario**
+  - chiavi con stessa posizione iniziale danno luogo alla stessa sequenza di ispezione
+
+### Hashing doppio
+
+$h(k,i)=(h_1(k)+ih_2(k))\ mod\ m$
+
+- $h_1$ e $h_2$ sono funzioni hash ausiliarie
+- numero di sequenza generate ora è $\Theta (n^2)$ in quanto ogni coppia $(h_1(k), h_2(k))$ produce una sequenza di ispezione distinta.
