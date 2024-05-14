@@ -1627,5 +1627,9 @@ $h(k,i)=(h'(k)+c_1i+c_2i^2)\ mod\ m$
 
 $h(k,i)=(h_1(k)+ih_2(k))\ mod\ m$
 
-- $h_1$ e $h_2$ sono funzioni hash ausiliarie
+- $h_1$ e $h_2$ sono funzioni hash ausiliarie $\to h_2$ deve essere primo rispetto a $m$
 - numero di sequenza generate ora è $\Theta (n^2)$ in quanto ogni coppia $(h_1(k), h_2(k))$ produce una sequenza di ispezione distinta.
+
+# Alberi e grafi
+
+## Alberi Binari
