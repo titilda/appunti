@@ -547,7 +547,7 @@ $$
 
 La **disuguaglanza di Markov** afferma che, se $X \ge 0$ allora $E[X] \gt a \cdot P(X \ge a)\ \forall a \ge 0$.
 
-La **disuguaglianza di Chebyshef** (che è derivata da quella di Markov) afferma che $Var[X] \ge a \cdot P((X - E[X])^2 \ge a)\ \forall a \ge 0$.
+La **disuguaglianza di Chebyshev** (che è derivata da quella di Markov) afferma che $Var[X] \ge a \cdot P((X - E[X])^2 \ge a)\ \forall a \ge 0$.
 
 # Convergenza in probabilità
 
