@@ -1882,3 +1882,10 @@ Ci sono 2 tipi di grafi: orientati e non orientati.
 - liste di adiacenza
 - matrice di adiacenza
 
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
