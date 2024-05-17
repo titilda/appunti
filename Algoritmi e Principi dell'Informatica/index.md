@@ -1633,3 +1633,252 @@ $h(k,i)=(h_1(k)+ih_2(k))\ mod\ m$
 # Alberi e grafi
 
 ## Alberi Binari
+
+Gli alberi binari si rappresentano mediante strutture dati concatenate, ogni noda ha:
+- key, chiave del nodo.
+- p, puntatore al nodo padre.
+- left, puntatore al sottoalbero sinistro.
+- right, puntatore al sottoalbero destro.
+
+Ogni albero $T$ ha un attributo, $T.root$, che è il puntatore alla radice dell'albero.
+
+$x.p=NIL$ sse è la radice.
+
+$s.left=NIL$ se sottoalbero sinistro del nodo è vuoto.
+
+$s.right=NIL$ se è quello destro.
+
+![Nodo ed albero](assets/Alberi%20Binari/Nodo.jpg)
+
+Ogni padre ha al massimo 2 figli.
+
+
+### Binary Search Tree
+
+È un albero che soddisfa la seguente proprietà:
+
+**per tutti i nodi $x$ del BST, se $l$ è un nodo nel sottoalbero sinistro, allora $l.key \le x.key$, se $r$ è un nodo del sottoalbero destro, allora $x.key \le r.key$**
+
+![Proprietà degli alberi binari di ricerca](assets/Alberi%20Binari/Proprietà%20Alberi%20binari.jpg)
+
+![Esempio BST](assets/Alberi%20Binari/Albero%20Ricerca%20Binaria.jpg)
+
+Operazione tipica: attraversamento(walk through)
+
+Scopo: produrre gli elementi dell'albero.
+
+Attraversamento simmetrico (**inorder tree walk**):
+- prima sinistro e si retsituisce
+- poi radice e si restituisce
+- poi destro e si restituisce
+
+**Algoritmo ricorsivo**
+
+Altre stratege di attraversamento
+
+- Anticipato (**preorder tree walk**), prima radice e poi sottoalberi come prima
+- Posticipato (**postorder tree walk**), prima sottoalberi come prima e per ultima la radice.
+
+#### Operazioni sui BST
+
+**Ricerca (algoritmo intuitivo)**
+
+Tempo di esecuzione $\Omicron(h)$, $h$ altezza albero.
+
+**Massimo e minimo**
+
+Anche qui è intuitivo soprattutto se si ricorda la priprietà del BST.
+
+Tempo $\Omicron(h)$
+
+**Successore e Predecessore**
+
+Il successore (predecessore) di un oggetto $x$ in un BST è l'elemento $y$ del BST tale che $y.key$ è la più piccola (grande) tra le chiavi che sono più grandi (piccole) di $x.key$.
+
+Tempo $\Omicron(h)$
+
+![Esempio di successore e predecessore](assets/Alberi%20Binari/Successore%20e%20Predecessore.jpg)
+
+**Inserimento**
+
+Idea banale con confronto si trova il posto dell'elemento e si inserisce.
+
+**Cancellazione**
+
+Idea banale ma con 3 casistiche ovvero l'elemneto $z$ da cancellare:
+
+- non ha sottoalberi
+- ha 1 sottoalbero
+- ha 2 sottoalberi
+
+Primo caso semplice si mette a $NIL$ il puntatore del padre.
+
+![Primo caso cancellazione](assets/Alberi%20Binari/Primo%20caso%20eliminazione.jpg)
+
+Secondo caso si sposta **tutto** il sottoalbero all'insù di un livello.
+
+![Secondo caso cancellazione](assets/Alberi%20Binari/Secondo%20caso%20eliminazione.jpg)
+
+Terzo caso si trova il successore dell'elemento da cancellare e si sostituisce con l'elemento cancellato spostando il sottoalbero.
+
+![Terzo caso cancellazione](assets/Alberi%20Binari/Terzo%20caso%20eliminazione.jpg)
+
+Tempo $\Omicron(h)$
+
+Tutte le operazioni sui BST hanno tempo $\Omicron (h)$
+
+**Altezza BST**
+
+Per un albero completo $h=\Theta (log(n))$
+
+Caso pessimo (in linea), $h=\Theta(n)$
+
+![Caso pessimo](assets/Alberi%20Binari/Albero%20binario%20brutto.jpg)
+
+#### Alberi bilanciati
+
+$\Theta (log(n))$ anche nel caso di alberi bilanciati.
+
+Un albero è bilanciato sse non ci sono 2 foglie nell'albero tali che una è "molto più lontana" dalla radice, banalmente devono essere alla stessa altezza o al massimo avere una differenza di altezza di 1.
+
+Diverse tecniche per mantenere un albero bilanciato:
+
+- alberi rosso-neri (red-black)
+- alberi AVL (Adelson-Velskii e Landis)
+- Altri
+ 
+L'altezza attesa di un albero costruito inserendo le chiavi in ordine casuale con distribuzione uniforme è $\Omicron(log(n))$
+
+### Alberi R-B
+
+Altezza $\Omicron (log(n))$
+
+Operazioni più importanti in tempo $\Omicron(log(n))$
+
+È un albero bilanciato.
+
+Idea:
+
+- Ogni nodo ha un colore, rosso o nero.
+- Colori distribuiti in modo che non si superi una differenza di altezza pari a 2.
+
+Ogni nodo ha 5 attributi:
+- key
+- left
+- right
+- p
+- color
+
+Un BST è un RB se soddisfa queste 5 proprietà:
+
+1. Ogni nodo è o nero o rosso.
+2. La radice è nera.
+3. Le foglie $(NIL)$ sono tutte nere
+4. I figli di un nodo rosso sono entrambi neri.
+5. Per ogni nodo $x$ tutti i cammini da $x$ alle foglie sue discendenti contengono lo stesso numero $bh(x)$ di nodi neri.
+   - $bh$ (black height)
+   - il nodo $x$ non è contato
+
+![Esempio albero RB](assets/Alberi%20Binari/Albero%20RB.jpg)
+
+Un albero RB con $n$ nodi interni ha altezza $h \le 2log_2(n+1)$.
+
+Il numero di nodi interni di un sottoalbero con radice $x$ è $\ge 2^{bh(x)}-1$.
+
+Per la 4$^a$ priprietà almeno metà dei nodi dalla radice $x$ ad una foglia sono neri, quindi $bh(x) \ge h/2$, e $n \ge 2^{h/2}-1$, da cui si discende $h \le 2log_2(n+1)$
+
+Come conseguenza le operazioni richiedono tempo $\Omicron(log(n))$
+
+$INSERT$ e $DELETE$ funzionano come prima ma con una modifica per mantenere la 5$^a$ proprietà, ovvero una rotazione a destra ($RIGHT-ROTATE$) o sinistra ($LEFT-ROTATE$)
+
+![ROtazioni](assets/Alberi%20Binari/Rotazione%20alberi%20binari%20RB.jpg)
+
+**Inserimento**
+
+Uguale a BST ma ruotando per ristabilire le proprietà se necessario, si chiama $INSERT-FIXUP$.
+
+$RB-INSERT-FIXUP$ sempre su un nodo $z$ tale che $z.color=RED$.
+
+L'inserimento può dare vita ha 3 casistiche:
+
+Primo caso: $y$ rosso
+
+![Primo caso inserimento RB](assets/Alberi%20Binari/Primo%20caso%20inserimento%20RB.jpg)
+
+Secondo caso: $y$ nero e $z$ figlio destro di $x$
+
+![Secondo caso inserimento RB](assets/Alberi%20Binari/Secondo%20caso%20inserimento%20RB.jpg)
+
+Terzo caso: $y$ nero e $z$ figlio sinistro di $x$
+
+![Terzo caso inserimento RB](assets/Alberi%20Binari/Terzo%20caso%20inserimento%20RB.jpg)
+
+Può essere invocato $\Omicron(h)$ volte, cioè $\Omicron(log(n))$
+
+**Funzionamento di $RB-DELETE$**
+
+Uguale al $DELETE$ ma con $T.nil$ al posto di $NIL$.
+
+Se viene cancellato un nodo rosso non c'è problema.
+
+Per com'è fatto viene eliminato un nodo $(y)$ con al più un figlio diverso da $T.nil$, e se $y.color=RED$ il nodo $x$ che prende il posto di $y$ è perforza nero.
+
+Se invece $y$ è nero si può aver violato delle proprietà:
+
+- 1(radice rossa, se $y$ è  la radice e $x$ è rosso)
+- 3(due rossi consecutivi se $y.p$ e $x$ sono rossi)
+- 5 (i cammini con $y$ hanno un nero in meno)
+
+5 casistiche:
+
+Caso 0: $x$ è un nodo rosso, oppure è la radice (ricordo che viene eliminato $y$)
+
+![Caso zero](assets/Alberi%20Binari/Caso%20zero%20eliminazione%20RB.jpg)
+
+Caso 1: $x$ è un nodo nero, il suo fratello destro $w$ è rosso, e di conseguenza il padre $x.p$ è nero.
+
+![Caso primo](assets/Alberi%20Binari/Primo%20caso%20eliminazione%20RB.jpg)
+
+Caso 2: $x$ è nero, suo fraltello destro è nero con figli entrambi neri.
+
+![Caso secondo](assets/Alberi%20Binari/Secondo%20caso%20eliminazione%20RB.jpg)
+
+Caso 3: $x$ è nero, suo fratello destro $w$ è nero con figlio sinistro rosso e figlio destro nero.
+
+![Caso terzo](assets/Alberi%20Binari/Terzo%20caso%20eliminazione%20RB.jpg)
+
+Caso 4: $x$ è nero, suo fratello destro $w$ è nero con figlio destro rosso.
+
+![Caso quarto](assets/Alberi%20Binari/Quarto%20Caso%20eliminazione%20RB.jpg)
+
+## Grafi
+
+### Richiamo ai grafi
+
+Un grafo è una coppia $G=(V,E)$ in cui:
+
+- $V$ è un insieme di nodi (detti vertici)
+- $E$ è un insieme di archi (detti anche lati, o edges)
+
+Un arco è una connessione tra 2 vertici
+
+- 2 vertici connessi da un arco sono detti adiacenti
+- se un arco e connette 2 vertici $u$ e $v$, può essere rappresentato dalla coppia $(u,v)$ di vertici che connette, quindi $E \sube V^2$
+- $|V|$ è il numero di vertici del grafo, mentre $|E|$ è il numero di archi, $0 \le |E| \le |V|^2$
+
+Ci sono 2 tipi di grafi: orientati e non orientati.
+
+- In un grafo non orientato, un arco $(u,v)$ è lo stesso di $(v,u)$ (non c'è direzione)
+- In un grafo orientato $(u,v)$ "va dal" nodo $u$ "al" nodo $v$, ed è diverso da $(v,u)$.
+
+![Grafo NON orientato](assets/Grafi/Grafo%20NON%20Orientato.jpg)
+
+![Grafo orientato](assets/Grafi/Grafo%20Orientato.jpg)
+
+**Rappresentazione di grafi in memoria**
+
+2 tecniche principali:
+
+- liste di adiacenza
+- matrice di adiacenza
+
