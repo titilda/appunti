@@ -594,6 +594,7 @@ allora $M_n \overset{P}{\to} E[M_n] = E[X]$. Questo risultato viene detto **legg
 | Gaussiana     | $\mathcal{N}(\mu, \sigma^2)$ | $\mu$               | $\sigma^2$              |
 | Esponenziale  | $\text{Exp}(\lambda)$        | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$   |
 | Poisson       | $\text{Pois}(\lambda)$       | $\lambda$           | $\lambda$               |
+| Erlang-$k$    | $\text{Erlang-}k(\lambda)$   | $\frac{k}{\lambda}$ | $\frac{k}{\lambda^2}$   |
 | Laplace       | $\text{Laplace}(\lambda)$    | $0$                 | $\frac{2}{\lambda^2}$   |
 
 La pdf delle distribuzioni geometriche e binomiali sono già state [riportate qui](#valore-atteso-e-varianza).
