@@ -1493,6 +1493,7 @@ $h(k) = k\ mod\ m$
 Facile da realizzare e veloce
 
 Evitare valori di $m$ come:
+
 - potenze di 2
 
 di solito ad $m$ si assegna un numero primo lontano da una potenza di 2.
@@ -1572,6 +1573,7 @@ Il numero medio di ispezioni necessarie per effettuare l'inserimento del nuovo o
 Numero medio ispezioni per trovare un elemento presente è $(m+1)/2$ se $\alpha =1$, non più di $\frac{1}{\alpha} *log(1/(1-\alpha))$ se $\alpha<1$
 
 Tre tecniche di ispezione
+
 - ispezione lineare
 - ispezione quadratica
 - doppia hashing
@@ -1635,6 +1637,7 @@ $h(k,i)=(h_1(k)+ih_2(k))\ mod\ m$
 ## Alberi Binari
 
 Gli alberi binari si rappresentano mediante strutture dati concatenate, ogni noda ha:
+
 - key, chiave del nodo.
 - p, puntatore al nodo padre.
 - left, puntatore al sottoalbero sinistro.
@@ -1668,6 +1671,7 @@ Operazione tipica: attraversamento(walk through)
 Scopo: produrre gli elementi dell'albero.
 
 Attraversamento simmetrico (**inorder tree walk**):
+
 - prima sinistro e si retsituisce
 - poi radice e si restituisce
 - poi destro e si restituisce
@@ -1763,6 +1767,7 @@ Idea:
 - Colori distribuiti in modo che non si superi una differenza di altezza pari a 2.
 
 Ogni nodo ha 5 attributi:
+
 - key
 - left
 - right
@@ -1897,6 +1902,7 @@ graph TD;
 #### DIiensione delle rappresentazioni dei grafi
 
 Nel caso di liste di adiacenza abbaimo un array di liste:
+
 - una lista per ogni nodo del grafo
 - per ogni vertice $v$, la lista corrispondente contiene i vertici adiacenti a $v$.
 
@@ -1905,11 +1911,13 @@ Nella matrice di adiacenza $M$, l'elemento $m_{ij}$ è 1 se c'è un arco dal nod
 In entrambi i casi, dato un nodo $u$ in un grafo $G$, l'attributo $u.Adj$ rappresenta l'insieme di vertici adiacenti a $u$.
 
 Liste di Adiacenza:
+
 - Numero totale di elementi nelle liste è $|E|$.
 - Numeri di elementi nell'array è $|V|$.
 - Complessità spaziale $\Theta (|V|+|E|)$
 
 Matrice di Adiacenza:
+
 - La dimensione della matrice è $|V|^2$, complessità $\Theta (|V|^2)$
 
 Liste migliori quando $|E| \not ={\Theta (|V|^2)}$, cioè grafo sparso, si ricorda $|E| \le |V|^2$ cioè $|E|=\Omicron (|V|^2)$.
@@ -1929,6 +1937,7 @@ Matrice di adiacenza simmetrica, quindi basta guardare la diagonale superiore pr
 ### Visita in Ampiezza (Breadth-First Search)
 
 Problema:
+
 - input: un grafo $G$, e un nodo $s$ (sorgente) di $G$.
 - output: visitare tutti i nodi di $G$ che sono raggiungibili da $s$.
 
@@ -1939,6 +1948,7 @@ Idea: prima visitiamo i nodi che distano 1 da $s$, poi 2, poi 3, etc.
 Qunado si visita un nodo, si tiene traccia della distanza da $s$ in un attributo $u.dist$.
 
 Mentre si visitano i nodi si colorano:
+
 - bianco, NON visitato
 - grigio, visitato ma dobbiamo ancora visitare i nodi adiacenti
 - nero, visitato e concluso
@@ -1954,6 +1964,7 @@ DFS invece LIFO
 Idea: ogni volta che mettiamo un nodo in cima allo stack, si comincia subito a visitare i nodi adiacenti.
 
 Problema risolto dall'algoritmo DFS
+
 - input: un grafo $G$
 - output: visitare tutti i nodi di $G$, con BFS si raggiungono solo i nodi raggiungibili da $s$
 
