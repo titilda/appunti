@@ -1884,8 +1884,79 @@ Ci sono 2 tipi di grafi: orientati e non orientati.
 
 ```mermaid
 graph TD;
+    A-->D;
     A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
+    D-->A;
+    B-->E;
+    C-->E;
+    E-->D;
+    E-->E;
 ```
+![Matrice di adiacenza e Lista di adiacenza per l garfo orientato qui sopra](assets/Grafi/Matrice%20e%20Lista%20Orientato.jpg)
+
+#### DIiensione delle rappresentazioni dei grafi
+
+Nel caso di liste di adiacenza abbaimo un array di liste:
+- una lista per ogni nodo del grafo
+- per ogni vertice $v$, la lista corrispondente contiene i vertici adiacenti a $v$.
+
+Nella matrice di adiacenza $M$, l'elemento $m_{ij}$ è 1 se c'è un arco dal nodo $i$ al $j$, 0 altrimenti.
+
+In entrambi i casi, dato un nodo $u$ in un grafo $G$, l'attributo $u.Adj$ rappresenta l'insieme di vertici adiacenti a $u$.
+
+Liste di Adiacenza:
+- Numero totale di elementi nelle liste è $|E|$.
+- Numeri di elementi nell'array è $|V|$.
+- Complessità spaziale $\Theta (|V|+|E|)$
+
+Matrice di Adiacenza:
+- La dimensione della matrice è $|V|^2$, complessità $\Theta (|V|^2)$
+
+Liste migliori quando $|E| \not ={\Theta (|V|^2)}$, cioè grafo sparso, si ricorda $|E| \le |V|^2$ cioè $|E|=\Omicron (|V|^2)$.
+
+Se grafo completo (o quasi), tanto vale usare la matrice.
+
+Un grafo è completo quando per ogni coppia di nodi $u$ e $v$, sia l'arco $(u,v)$ che l'arco $(v,u)$ sono in $E$.
+
+#### Rappresentazione di grafi non orientati
+
+L'arco $(u,v)$ non orientato come 2 archi orientati uno da $u$ a $v$ e uno da $v$ a $u$.
+
+![Matrice e Lista di adiacenza di un grafo NON orientato](assets/Grafi/Matrice%20e%20Lista%20non%20Orientato.jpg)
+
+Matrice di adiacenza simmetrica, quindi basta guardare la diagonale superiore principale.
+
+### Visita in Ampiezza (Breadth-First Search)
+
+Problema:
+- input: un grafo $G$, e un nodo $s$ (sorgente) di $G$.
+- output: visitare tutti i nodi di $G$ che sono raggiungibili da $s$.
+
+**Algoritmo Breadth-First Search**
+
+Idea: prima visitiamo i nodi che distano 1 da $s$, poi 2, poi 3, etc.
+
+Qunado si visita un nodo, si tiene traccia della distanza da $s$ in un attributo $u.dist$.
+
+Mentre si visitano i nodi si colorano:
+- bianco, NON visitato
+- grigio, visitato ma dobbiamo ancora visitare i nodi adiacenti
+- nero, visitato e concluso
+
+Complessità di BFS $\Omicron (|V| + |E|)$
+
+### Ricerca in Profondità (Depth-First Search)
+
+BFS politica FIFO
+
+DFS invece LIFO
+
+Idea: ogni volta che mettiamo un nodo in cima allo stack, si comincia subito a visitare i nodi adiacenti.
+
+Problema risolto dall'algoritmo DFS
+- input: un grafo $G$
+- output: visitare tutti i nodi di $G$, con BFS si raggiungono solo i nodi raggiungibili da $s$
+
+DFS usato spesso come sottoalgoritmo, stessa colorazione di BFS.
+
+Complessità di DFS è $\Theta (|V| + |E|)$.
