@@ -1971,3 +1971,44 @@ Problema risolto dall'algoritmo DFS
 DFS usato spesso come sottoalgoritmo, stessa colorazione di BFS.
 
 Complessità di DFS è $\Theta (|V| + |E|)$.
+
+### Grafo Orientato Aciclico
+
+Supponiamodi avere un grafo orientato aciclico (directed acyclic grafh, DAG) che rappresenta le precedenze tra gli eventi.
+
+Esempio
+
+```mermaid
+graph TD;
+   Orologio;
+   Mutande-->Pantaloni;
+   Mutande-->Scarpe;
+   Calze-->Scarpe;
+   Pantaloni-->Scarpe;
+   Pantaloni-->Cintura;
+   Cintura-->Giacca;
+   Camicia-->Cintura;
+   Camicia-->Cravatta;
+   Cravatta-->Giacca;
+```
+
+### Ordinamento Topologico
+
+Un ordinamento topologico di un DAG è un ordinamento lineare dei nodi del grafo tale che, se nel DAG c'è un arco $(u,v)$, allora nodo $u$ precede $v$.
+
+Esempio con il grafo sopra:
+
+![Ordinamento Topologico](assets/Grafi/Ordinamento%20Topologico.jpg)
+
+- Ordinamento topologico fornisce ordinamento che rispetta le precedenze degli eventi.
+- Problema del DAG:
+  - input: un DAG $G$
+  - output: ordinamentto topologico di $G$
+
+Idea:
+
+- Visito DAG con algoritmo DFS.
+- Quando un nodo $u$ di $G$ viene colorato di nero, inseriamo il nodo $u$ in testa alla lista.
+- Restituisco la lista.
+
+Tempo: $\Theta (|V|+|E|)$.
