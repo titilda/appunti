@@ -626,7 +626,21 @@ $$
 \frac{S_n - E[S_n]}{\sqrt{Var[S_n]}} = \frac{S_n - np}{\sqrt{np(1-p)}} \overset{n \to \infty}{\to} Z
 $$
 
-Con quanto appena visto si possono facilmente calcolare probabilità della forma $P(S_n \lesseqgtr s)$. Per l'uguaglianza si considera $P(s - 0.5 \le S_n \le s + 0.5)$
+Con quanto appena visto si possono facilmente calcolare probabilità della forma $P(S_n \lesseqgtr s)$. Per l'uguaglianza si considera $P(s - 0.5 \le S_n \le s + 0.5)$.
+
+# Processi di Bernoulli
+
+Un processo di Bernoulli $BP(p)$ può essere considerato come una serie di slot ordinati, nei quali un evento ha sempre la stessa probabilità $p$ di accadere.
+
+Il numero $S$ di successi in $n$ slot è distribuito come una $\text{Bin}(n, p)$.
+
+I tempi di interarrivo $T_i$ sono distribuiti come una $\text{Geom}(p)$.
+
+Il tempo $Y_k$ al $k$-esimo arrivo è distribuito come una $\text{Pascal-}k(p)$.
+
+Si abbia un $BP(p)$; se ad ogni successo, con una probabilità $q$, accade un'altro evento, l'accadere di questo secondo evento è descritto da un $BP(pq)$.
+
+Si abbiano due processi di Bernoulli $BP(p)$ e $BP(q)$; l'accadere di un evento, indipendentemente da quale processo l'ha causato, è a sua volta un $BP(p + q - pq)$.
 
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
@@ -691,3 +705,5 @@ $$
 f_X(x) = \frac{\lambda}{2} e^{-\lambda |x|} \\
 F_X(x) = \frac{\lambda}{2} \left( \frac{-e^{\lambda x \text{sgn}(x)}}{\lambda \text{sgn}(x)} + \frac{\text{sgn}(x)}{\lambda} \right)
 $$
+
+<!-- todo: aggiungere tutte le distribuzioni mancanti, oltre a pascal-ke erlang-k; aggiornare la tabella di medie e varianze; aggiungere tabella schematica di confronto tra BP e PP? -->
