@@ -638,9 +638,31 @@ I tempi di interarrivo $T_i$ sono distribuiti come una $\text{Geom}(p)$.
 
 Il tempo $Y_k$ al $k$-esimo arrivo è distribuito come una $\text{Pascal-}k(p)$.
 
+<!--
 Si abbia un $BP(p)$; se ad ogni successo, con una probabilità $q$, accade un'altro evento, l'accadere di questo secondo evento è descritto da un $BP(pq)$.
 
 Si abbiano due processi di Bernoulli $BP(p)$ e $BP(q)$; l'accadere di un evento, indipendentemente da quale processo l'ha causato, è a sua volta un $BP(p + q - pq)$.
+-->
+
+Lo splitting di un $BP(p)$ che avviene con probabilità $q$ genera un $BP(pq)$.
+
+Il merging di $BP(p)$ con $BP(q)$ genera un $BP(p + q - pq)$.
+
+# Processi di Poisson
+
+I processi di Poisson sono l'equivalente tempo-continuo dei processi di Bernoulli: gli eventi possono accadere in un qualsiasi istante. Un processo di Poisson non è descritto dalla probabilità che un evento accada ma da quanti eventi accasono in media per unità di tempo.
+
+I processi di Poisson si indicano con $PP(\lambda)$.
+
+Il numero di eventi $N_{[a, b]}$ in un intervallo di tempo di durata $\tau = b - a$ è distribuito come $\text{Poisson}(\lambda \tau)$. Logicamente, l'intervallo di tempo deve essere espresso nella stessa unità di misura utilizzata nel denominatore di $\lambda$.
+
+I tempi di interarrivo $T_i$ sono distribuiti come $\text{Exp}(\lambda)$.
+
+Il tempo $Y_k$ al $k$-esimo arrivo è distribuito come $\text{Erlang-}k(\lambda)$.
+
+Lo splitting di un $PP(\lambda)$ che avviene con probabilità $\delta$ genera un $PP(\lambda \delta)$.
+
+Il mergind di $PP(\lambda)$ con $PP(\delta)$ genera un $PP(\lambda + \delta)$.
 
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
