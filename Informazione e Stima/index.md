@@ -583,6 +583,51 @@ $$
 
 allora $M_n \overset{P}{\to} E[M_n] = E[X]$. Questo risultato viene detto **legge debole dei grandi numeri** (**WLLN**) e dice che la media campionaria converge in probabilità al proprio valore atteso.
 
+# Problema del sondaggista
+
+Si ha una popolazione nella quale ogni persona può soddisfare o meno un evento $A$. Si vuole stimare la frazione $f$ delle persone che soddisfano l'evento senza intervistare l'intera popolazione.
+
+Sia $X_i$ la variabile aleatoria che, per ogni persona $i$-esima, rappresenta con $1$ il fatto che si è verificato l'evento e con $0$ il fatto opposto, allora si può stimare $f$ attraverso la media campionaria:
+
+$$
+P_{X_i}(1) = f \quad X_i \sim \text{Bern}(f) \quad E[X_i] = f \quad Var[X_i] = f(1-f) \\\
+\hat f = M_n = \frac{X_1 + X_2 + \dots + X_n}{n}
+$$
+
+L'obiettivo è quello di cadere in un buon intervallo di accuratezza $l_a$ con un buon livello di fiducia $l_f$ (cioè avere un'alta probabilità di cadere in un intorno "piccolo" di $f$).
+
+$$
+P(|M_n - f| \le l_a) \ge l_f
+$$
+
+Dati $l_a$ e $l_f$, è necessario trovare un modo di avere $n$ più piccolo possibile. Per trovare $n$ si usa la [disuguaglianza di Chebyshev](#disuguaglianza-di-markov-e-di-chebyshev).
+
+$$
+P(|M_n - f| \le l_a) \ge l_f \iff P(|M_n - f| \ge l_a) \le \frac{Var[M_n]}{l_a^2} \le \frac{1}{4nl_a^2} \le 1 - l_f
+$$
+
+dunque basta imporre $\frac{1}{4nl_a^2} \le 1 - l_f$ per trovare il minimo $n$ tale per cui si raggiungono i livelli di accuratezza e fiducia desiderati.
+
+Per diminuire $n$ è possibile abbassare l'accuratezza (ottenendo un vantaggio quadratico) o il livello fiduciario, oppure è possibile utilizzare approssimazioni migliori rispetto a quella derivata dalla disuguaglianza di Chebyshev.
+
+# CLT - Teorema fondamentale del limite
+
+Se $Z_n$ è la media campionaria $n$ variabili aleatorie $X_i$ indipendenti e identicamente distribuite con varianza finita, allora $F_{Z_n}(c) \overset{n \to \infty}{\to} \Phi(c)$. Questo teorema vale per qualsiasi distribuzione di probabilità delle $X_i$.
+
+E' possibile applicare il CLT al problema del songaggista, ottenendo che la condizione da imporre per ottenere $n$ è 
+
+$$
+2 \left( 1 - \Phi\left(l_a \sqrt{4n}\right) \right) \le 1 - l_f
+$$
+
+E' anche possibile utilizzare questo teorema per approssimare il valore di una binomiale i cui fattoriali sono troppo grandi per essere calcolati utilizzando metodi classici: sia $S_n \sim \text{Bin}(n, p)$ allora
+
+$$
+\frac{S_n - E[S_n]}{\sqrt{Var[S_n]}} = \frac{S_n - np}{\sqrt{np(1-p)}} \overset{n \to \infty}{\to} Z
+$$
+
+Con quanto appena visto si possono facilmente calcolare probabilità della forma $P(S_n \lesseqgtr s)$. Per l'uguaglianza si considera $P(s - 0.5 \le S_n \le s + 0.5)$
+
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
 | Distribuzione | Costruttore                  | Valore atteso       | Varianza                |
