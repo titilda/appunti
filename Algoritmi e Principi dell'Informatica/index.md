@@ -2012,3 +2012,138 @@ Idea:
 - Restituisco la lista.
 
 Tempo: $\Theta (|V|+|E|)$.
+
+# Argomenti Avanzati (NON presenti nell'esame)
+
+### Cammini Minimi
+
+Si vuole avere il cammino minimo tra due nodi.
+
+Ingresso: $G=(V,E)$ orientato, funzione di peso $W:E\to R$
+
+Peso cammino
+$$
+p= \lang v_0, v_1,...,v_k\rang 
+\\
+W(p)=\Sigma_{i=1}^k w(v_{i-1},v_i)
+$$
+
+Peso cammino minimo tra $u$ e $v$:
+$$
+\delta (u,v)=\begin{cases}
+    min\{w(p):u \to^p v\}\ se\ esiste\ cammino\ p\ da\ u\ a\ v
+    \\
+    \infty\ altrimenti
+\end{cases}
+$$
+
+Non sono ammessi cicli negativi.
+
+Calcoliamo i cammini minimi da nodo fissato $s$.
+
+Uscita:$\forall v \in V: d[v]=\delta (s,v)$
+
+- inizio $d[v]=\infty$
+- Progressivamente ridotto, ma $d[v] \ge \delta (s,v)$ sempre.
+- $d[v]$ stima di cammino minimo.
+- $Pi[v]=$ predecessore di $v$ nel cammino min da $s$.
+
+### Programmazione dinamica
+
+Come divide-et-impera, si scompone il problema, si risolvono i sotto-problemi e si ricompone.
+
+Spesso usata per l'ottimizzazione.
+
+**Problema:Taglio delle aste**
+
+- Prezzo asta dipende dalla lunghezza
+- Problema: date delle aste di lunghezza $n$ che posso tagliare in pezzi più corti, trovare il modo ottimale di tagliare le aste per massimizzare il ricavo che posso derivare dalla vendita delle aste.
+- Potrei vendere l'asta intera.
+
+Esempio tabella
+
+![](assets/Argomenti%20Avanzati/Aste.png)
+
+Se asta lunga 4 posso vederlo: $[4](9);[1,3](9);[2,2](10);[3,1](9);[1,1,2](7);[1,2,1](7);[2,1,1](7);[1,1,1](4)$ 
+
+taglio ottimale:$[2,2]$
+
+Data lunghezza $n$, ci sono $2^{n-1}$ modi di taglio.
+
+$r_n$ ricavo massimo.
+
+$r_4=10,r_{10}=30$(venduta intera).
+
+$r_n$ è della forma $r_i+r_{n-1}$
+
+In altre parole:
+
+$r_n=max(p_n,r_1+r_{n-1},...,r_{n-1}+r_1) \implies r_n = max_{1\le i\le n}(p_i+r_{n-i})$.
+
+Procedura ricorsiva di questa espressione ha costo temporale: $T(n)=c+\Sigma_{j=0}^{n-1} T(j)$
+
+### Algoritmi golosi
+
+A volte non serve  provare tutte le soluzioni basta dimostrare che sia una quella ottimale, ciò è chiamato algoritmo goloso (greedy).
+
+In generale gli algoritmi golosi si muovono per ottimi locali (soluzioni).
+
+Spesso in problemi difficili però l'ottimo locale rappresenta una buona approsimazione dell'ottimo globale.
+
+$n$ attivita $a_1,a_2,...,a_n$ usano stessa risorsa.
+
+Ogni $a_i$ ha un tempo di inizio $s_i$ ed un tempo di fine $f_i$ con $s_i <f_i$.
+
+$a_i$ occupa la risorsa nell'intervallo temporale $[s_i,f_i)$.
+
+$a_i$ e $a_j$ compatibili se $[s_i,f_i)$ e $[s_j,f_j)$ disgiunti.
+
+Esempio
+
+![](assets/Argomenti%20Avanzati/Esempio.png)
+
+Insieme di attività computabili : $\{a_3, a_9, a_{11}\}$.
+
+Max numero attività computabili: 4
+
+Esempio: $\{a_2, a_4, a_9, a_{11}\}$.
+
+Definiamo $s_{ij}$ l'insieme delle attività che iniziano dopo la fine di $a_i$ e terminano prima dell'inizio di $a_j$.
+
+$A_{ij}$ insieme massimo attività computabili in $S_{ij}$.
+
+Mettiamo in una tabella $c$, $c[i,j]=|A_{ij}|$
+
+$\implies c[i,j]=c[i,k]+c[k,j]+1$.
+
+Per risolvere il problema di ottimizzazione basta ogni volta scegliere l'attività che finisce prima, quindi ripetere l'operazione sulle attività che iniziano dopo quella scelta.
+
+Complessità $\Theta(n)$.
+
+### Complessità e non determinismo
+
+Data funzione $T(n)$, indichiamo con $DTIME(T)$ l'insieme dei problemi tali che esiste un algorirmo che li risolve in tempo $T(n)$.
+
+$DTIME(T)$ classe dei linguaggi riconducibili in tempo $T$ mediante macchine di Turing deterministiche a $k$ nastri di memoria, idem $DSPACE(T)$.
+
+$NTIME(T)$ e $NSPACE(T)$ uguali ma macchine Turing non deterministiche.
+
+Fondamentale classe di problemi:
+
+$P=U_{i\ge 1} DTIME(O(n^i))$, chiamati trattabili.
+
+$NP=U_{i \ge 1} NTIME(O(n^i))$
+
+$P=NP?$ Probabilmente no, ma non si è ancora dimostrato.
+
+$\mathcal{L}$ classe di linguaggi, diciamo che un linguaggio L è $\mathcal{L}$-difficile rispetto alle riduzioni in tempo polinomiale sse, $\forall L' \in \mathcal{L}$, è riducibile in tempo polinomiale a L.
+
+L è $\mathcal{L}$-completo se è $\mathcal{L}$-difficile ed è in $\mathcal{L}$.
+
+### Computer quantistici
+
+Qubit può non solo trovarsi a $0$ e $1$, ma anche in sovrapposizione tra i due stati.
+
+**Supremazia quantistica:** risolve problemi difficili molto più efficiente che con i computer classici.
+
+I computer quantistici possono risolvere efficientemente i problemi $NP-$difficili? No.
