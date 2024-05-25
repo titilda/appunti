@@ -85,7 +85,7 @@ Ora, pre assurdo, supponiamo che $sqrt(2)$ sia un numero razionale, quindi
 $$\sqrt{2} = \frac{n}{m} \qquad \text{(con n e m primi tra loro)}$$
 ma allora
 $$2 = \frac{n^2}{m^2} \implies m^2=2n^2$$
-e quindi quol direche m è pari e, siccome m ed n sono primi tra loro, ciò vuol dire che n è dispari. Ma allora, riscrivendo m in funzione di k abbiamo che
+e quindi vuol dire che m è pari e, siccome m ed n sono primi tra loro, ciò vuol dire che n è dispari. Ma allora, riscrivendo m in funzione di k abbiamo che
 $$m = 2k$$
 e, di conseguenza,
 $$\begin{align*} m^2 &= 2n^2 \\ (2k)^2 &= 2n^2 \\ 4k^2 &= 2n^2 \\ 2k^2 &= n^2 \end{align*}$$
@@ -463,6 +463,7 @@ Di conseguenza $l_1$ e $l_2$ sono uguali.
 ### Teorema di permaneza del segno
 
 Data una successione $a_n \to l$: allora
+
 - $l > 0 \implies def. \, a_n > 0$
 - $l < 0 \implies def. \, a_n < 0$
 - Idem con $\ge$ e $\le$
@@ -800,7 +801,7 @@ Una funzione defe essere definita per ciascun elemento del dominio.
 
 ### Iniettività e suriettività
 
-Una funzione è iniettiva se a diversie elementi del codominio corrispondono diversi elementi del dominio:
+Una funzione è iniettiva se a diversi elementi del codominio corrispondono diversi elementi del dominio:
 
 $$
 f: D \to C \\
@@ -837,20 +838,43 @@ Di seguito esempio di inversione della funzione $\sh$:
 
 $$
 \sh x = \frac{e^x - e^{-x}}{2} \\
-
+$$
+$$
 \begin{align*}
   y = \frac{e^x - e^{-x}}{2} &\implies x = \frac{e^y - e^{-y}}{2} \\
+  \end{align*} \\
+$$
+$$
+\begin{align*}  
   &\implies 2x = \frac{e^{2y}-1}{e^y} \\
+  \end{align*} \\
+$$
+$$
+\begin{align*}
   &\implies 2xe^y = e^{2y}-1 \\
+  \end{align*} \\
+$$
+$$
+\begin{align*}
   &\implies (e^y)^2 - 2x \times e^y - 1 = 0 \\
 \end{align*} \\
-
+$$
+$$
 \begin{align*}
   e^y = \frac{-2x \pm \sqrt{4x^2 + 4}}{2} &\implies e^y = \frac{-2x \pm 2\sqrt{x^2 + 1}}{2} \\
+  \end{align*} \\
+$$
+$$
+\begin{align*}
   &\implies e^y = -x \pm \sqrt{x^2 + 1} \\
+\end{align*} \\
+$$
+$$
+\begin{align*}
   &\implies y  = \ln \left( -x + \sqrt{x^2 + 1} \right)
 \end{align*} \\
-
+$$
+$$
 \text{Il $-$ non lo si può utilizzare perchè $e^x$ è sempre positiva ma col $-$ si arriverebbe ad un risultato negativo} \\
 $$
 
