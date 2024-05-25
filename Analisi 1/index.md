@@ -675,14 +675,14 @@ Di seguito una lista di infiniti e infinitesimi campioni:
 Da notare che tra infinitesimo campione e infinito campione, sono uno il reciproco dell'altro.
 Gli infinitesimi campione tendono a 0 mentre gli infiniti campione tendono a infinito.
 
-$f(x)$ è un infinito di ordine $\alpha$ se $\exist \alpha : \lim_{x \to x^*} \frac{f(x)}{\left[ C(x) \right] ^ \alpha} = l \ne 0 $ dove $C(x)$ è un infinito campione.
+$f(x)$ è un infinito di ordine $\alpha$ se $\exist \alpha : \lim_{x \to x^*} \frac{f(x)}{\left[ C(x) \right] ^ \alpha} = l \ne 0$ dove $C(x)$ è un infinito campione.
 
-Questo èequivalente a dire che
-$$ f(x) \sim \left[ C(x) \right] ^ \alpha $$
+Questo èequivalente a dire che $f(x) \sim \left[ C(x) \right] ^ \alpha$
 
 #### Asintotici notevoli
 
 Sia $\varepsilon_n$ una successione, allora
+
 $$
 \begin{align*}
   \lim_{\varepsilon_n \to 0} \frac{\sin \varepsilon_n}{\varepsilon_n} = 1 &\implies \sin \varepsilon_n \sim \varepsilon_n \\
@@ -696,6 +696,7 @@ $$
   \lim_{\varepsilon_n \to 0} \frac{\ch \varepsilon_n - 1}{\varepsilon_n^2} = 1 &\implies \ch \varepsilon_n - 1 \sim \frac{\varepsilon_n ^ 2}{2} \\
 \end{align*}
 $$
+
 $$
 \lim_{n \to \infty} \left( 1 + \frac{\alpha}{n} \right)^n = e^\alpha \\
 n \to \infty \implies n! \sim n^n \times e^{-n} \times \sqrt{2 \pi n} \\
@@ -704,12 +705,18 @@ $$
 ## Serie numeriche
 
 Una serie numerica è una sommatoria dei termini di una successione:
-$$ S = \sum_{n=1}^\infty a_n $$
+
+$$
+S = \sum_{n=1}^\infty a_n
+$$
+
 Il metodo più comune per trovarne un valore è quello di calcolare il limite di una sommatoria parziale:
+
 $$
 S_k = \sum_{n=1}^k a_n \\
 S = \lim_{k \to \infty} S_k
 $$
+
 Le serie numeriche possono convergere (il loro valore è un numero finito), divergere (il loro valore è un numero infinito) è essere irregolari (Il loro valore oscilla).
 Questa loro caratteristica viene detta "carattere della serie".
 La convergenza/divergenza di una serie può essere assoluta o semplice.
@@ -723,28 +730,33 @@ Ci sono alcune serie più famose e comuni di altre.
 
 ### Serie geometriche
 
-Una serie geometrica è una serie della forma
-$$ S = \sum_{n = k}^\infty q^n $$
-e il loro valore di convergenza/divergenza si calcola con la seguente formula:
+Una serie geometrica è una serie della forma $S = \sum_{n = k}^\infty q^n$ e il loro valore di convergenza/divergenza si calcola con la seguente formula:
+
 $$ S = \begin{cases}
   \frac{q^k}{1 - q} & \text{se } |q| < 1 & \text{(converge)} \\
   + \infty & \text{se } q \ge 1 & \text{(diverge)} \\
   \nexists & \text{se } q \le 1 & \text{(irregolare)} \\
 \end{cases}
 $$
+
 $q$ si dice "ragione" della serie geometrica.
 
 #### Dimostrazione del caso in cui converge
 
 Nel caso in cui $|q| < 1$, si può dimostrare che la serie converge con la seguente formula:
+
 $$
 \sum_{n = M}^\infty q^n = q^M + q^{M+1} + q^{M+2} + \dots = q^M \times \left( 1 + q^1 + q^2 + \dots \right) = q^M \times \sum_{n = 0}^{\infty} q^n = q^M \times \frac{1}{1 - q} = \frac{q^M}{1 - q}
 $$
+
 L'equivalenza 
+
 $$
 \sum_{n = 0}^\infty q^n = \frac{q}{1 - q}
 $$
+
 si può dimostrare nel seguente modo (e anche verificare per induzione):
+
 $$
 \begin{align*}
   \sum_{k = 0}^n q^k = 1 + q + q^2 + q^3 + \dots + q^n &= \frac{\left( 1 + q + q^2 + q^3 + \dots + q^n \\ \right) \times \left( 1 - q \right)}{\left( 1 - q \right)} \\
@@ -752,7 +764,9 @@ $$
   &= \frac{1 - q^{n+1}}{1 - q}
 \end{align*}
 $$
+
 e, impostando $n = \infty$,
+
 $$
 \sum_{k = 0}^\infty q^k = \frac{1 - q^{\infty + 1}}{1 - q} = \frac{1}{1 - q}
 $$
@@ -766,6 +780,7 @@ $$
 $$
 
 La serie converge a 1, infatti:
+
 $$
 S_k = \sum_{n = 1}^k \frac{1}{n(n+1)} = \sum_{n = 1}^k \left( \frac{1}{n} - \frac{1}{n+1} \right) = \left(1 - \frac{1}{2} \right) + \left(\frac{1}{2} - \frac{1}{3}\right) + \left(\frac{1}{3} - \frac{1}{4}\right) + \dots + \left(\frac{1}{k} - \frac{1}{k+1}\right) = 1 - \frac{1}{k+1} \\
 S = \lim_{k \to \infty} S_k = 1 - \frac{1}{\infty} = 1 - 0 = 1
@@ -774,6 +789,7 @@ $$
 ### Serie armonica
 
 Le serie armoniche sono le serie nella forma
+
 $$
 S = \sum_{n = 1}^\infty \frac{1}{n^\alpha} = 
 \begin{cases} 
@@ -794,10 +810,13 @@ Se $\sum a_n$ converge allora $a_n \to 0$
 
 Supponiamo esista finito il $\lim S_k = S$ (quindi che la serie converga ad $S$).
 Allora 
+
 $$
 S_{k+1} - S_k = \sum_{n = 0}^{k + 1} a_n - \sum_{n = 0}^k a_n = a_{k+1} \\
 $$
+
 quindi
+
 $$
 \lim_{k \to \infty} a_{k+1} = \lim_{k \to \infty} \left( S_{k+1} - S_k \right) = S - S = 0
 $$
@@ -813,8 +832,12 @@ Ci sono vari criteri a cui affidarsi per capire se una serie converge o diverge.
 #### Criterio del confronto asintotico
 
 Data una serie $\sum a_n$, se si riesce a ricondurre $a_n$ alla forma
-$$ a_n \sim d\frac{k}{n^\alpha \times [\ln n]^\beta} $$
+$$
+a_n \sim d\frac{k}{n^\alpha \times [\ln n]^\beta}
+$$
+
 allora
+
 $$
 \begin{cases}
   \text{converge} & \text{se } \alpha > 1 \\
@@ -832,6 +855,7 @@ Data una serie $\sum b_n$, e altre due serie $a_n$ e $c_n$ tali che $a_n < b_n <
 #### Criterio del rapporto
 
 Data una serie $\sum a_n$ allora si calcola
+
 $$
 \lim_{n \to \infty} \sqrt[n]{a_n} = 
 \begin{cases}
@@ -844,6 +868,7 @@ $$
 ##### Dimostrazione
 
 Se $\sqrt[n]{a_n} \to l < 1$ allora
+
 $$
 \left( a_n \right) ^ {\frac{1}{n}} \to l < 1 \\
 a_n \to l^n \\
@@ -854,6 +879,7 @@ $$
 #### Criterio del rapporto
 
 Data una serie $\sum a_n$ allora si calcola
+
 $$
 \lim_{n \to \infty} \frac{a_{n+1}{a_n}} = 
 \begin{cases}
@@ -867,19 +893,25 @@ $$
 
 Ricapitolando, se \frac{a_{n+1}}{a_n} \to l < 1$ allora la serie diverge, altrimenti se $\frac{a_{n+1}}{a_n} \to l < 1$ converge.
 In questo secondo caso,
+
 $$
 \exists \bar n : \forall n > \bar n \quad a_{n+1} < (l - \varepsilon) \\
 \text{Chiamo } k = (l - \varepsilon) < 1 \text{ quindi} \\
 a_{\bar n + 1} < ka_{\bar n} \text{ e } a_{\bar n + 2} < k^2a_{\bar n} \text{ e così via} \dots \\
 $$
+
 Di conseguenza posso riscrivere la sommatoria:
+
 $$
 \sum a_n = \sum_{n = 0}^{\bar n - 1} a_n + \sum_{n = \bar n}^{\infty} a_n
 $$
+
 Notare che la prima sommatoria è finita, pertanto è trascurabile, abbiamo quindi che
+
 $$
 \sum a_n = \sum_{n = \bar n}{\infty} a_n = \sum_{m = 0}^{\infty} k^ma_{\bar n} = a_{\bar n} \times \sum_{m = 0}^{\infty} k^m
 $$
+
 Siccome $m > 1$, la serie converge per il criterio del confronto.
 
 ## Funzioni
@@ -904,7 +936,7 @@ $$
 
 ### simmetria
 
-Uan funzione è pari se $f(x) = f(-x)$.
+Una funzione è pari se $f(x) = f(-x)$.
 Una funzione è dispari se $f(x) = -f(-x)$.
 Requisito necessario perchè una funzione sia pai o dispari è che il dominio debba essere simmetrico.
 Ciascuna funzione polinomio può essere scritto come somma di una funzione pari e di una dispari.
@@ -1062,13 +1094,17 @@ $$
 #### Definizione topologica
 
 Dati $x^* \in \overline \R$ e $L \in \overline \R$, se $f(x)$ è definita in $\char"1D4B0 (x^*)$ salvo al più in $x^*$ allora
+
 $$
 \lim_{x \to x^*} f(x) = L
 $$
+
 se
 $$
 \forall \char"1D4B0 (L) \quad \exists \char"1D4B0(x^*) : x \in \char"1D4B0(x^*) \implies f(x) \in \char"1D4B0(L)
+
 $$
+
 In italiano, il limite a $x^*$ di una funzione è $L$ se per ogni $x$ intorno ad $x^*$, $f(x)$ è intorno a $L$.
 
 #### Definizione successionale
@@ -1076,8 +1112,11 @@ In italiano, il limite a $x^*$ di una funzione è $L$ se per ogni $x$ intorno ad
 $$
 \lim_{x \to x^*} = L \text{ se } \forall \left\{ x_n \right\}, x_n \to x^* \text{ e } x_n \ne x^* \, \forall n
 $$
+
 quindi se ho $\left\{ f(x_n) \right\}$ allora $f(x_n) \to L$.
+
 Inoltre
+
 $$
 \begin{align*}
   \lim f(x) = l^+ & \implies f(x) \to l \text{ e } f(x) \ge l \\
@@ -1098,15 +1137,19 @@ $$
   \text{Se } L < 0 \implies \exists \char"1D4B0(x^*) \text{ dove } f(x) < 0
 \end{cases}
 $$
+
 Valido anche per $\ge$ e $\le$
 
 ##### Teorema del confronto
 
 Se
+
 $$
 \exists \char"1D4B0(x^*) : f(x) \le g(x) \le h(x) e \lim_{x \to x^*} f(x) = \lim_{x \to x^*} h(x) = L
 $$
+
 allora
+
 $$
 \lim_{x \to x^*} g(x) = L
 $$
@@ -1120,10 +1163,13 @@ Dato $h(x) \to 0$ con $x \to x^*$ allora
 ### Continuità di funzioni
 
 Dato un intervallo $(a, b)$ con $x_0 \in (a, b)$ allora
+
 $$
 f : (a, b) \to \R \quad \text{ è continua in $x_0$ se } \lim_{x \to x_0} f(x) = f(x_0)
 $$
+
 Se $f \in \mathcal{C}(D)$ si dice che $f$ appartiene all'insieme delle funzioni continue in ogni punto del dominio $D$.
+
 Tutte le funzioni elementari, trigonometriche e iperboliche sono continue nel loro dominio (anche $\sqrt{x}$ e $\frac{1}{x}$ infatti non sono definite per tutto $\R$ ma dove lo sono, sono continue).
 
 #### Teorema
@@ -1141,12 +1187,15 @@ Se $f$ è continua in $x_0$ e $f(x_0) > 0$ allora $\exists \char"1D4B0(x_0) : f 
 #### Teorema
 
 Se
+
 $$
 \lim_{x \to x_0} f(x) = t_0 \in \overline \R \\
 \lim_{t \to t_0} g(t) = l \in \overline \R \\
 f(x) \ne t_0 \quad \forall x \in \char"1D4B0(x_0) \\
 $$
+
 allora
+
 $$
 \lim_{x \to x_0} g(f(x)) = l
 $$
@@ -1156,25 +1205,32 @@ In altre parole, se $t_n = f(x_n)$ e $\forall t_n, \, g(t_n) \to l$ allora $\for
 #### Teorema
 
 Se
+
 $$
 \lim_{x \to x_0} f(x) = f(x_0) \\
 \lim_{x \to t_0} g(t) = g(t_0) \\
 t_0 = f(x_0)
 $$
+
 allora
+
 $$
 \lim_{x \to x_0} g(f(x)) = g(f(x_0))
 $$
+
 quindi $g \cdot f$ è continua in $x_0$.
 
 #### Teorema degli zeri (importante)
 
 Se
+
 $$
 f \in \mathcal{C}[a, b] \\
 f(a) \times f(b) < 0
 $$
+
 allora
+
 $$
 \exists x^* \in [a, b] : f(x^*) = 0
 $$
@@ -1216,21 +1272,26 @@ I massimi e i minimi esistono anche se il dominio ($\R$) non è ne chiuso ne lim
 #### Teorema di Darboux (teorema dei valori intermedi)
 
 Se $f \in \mathcal{C}[a, b]$ e $\exist m = \underset{[a, b]}{\min}(f), \, M = \underset{[a, b]}{\max}(f)$ (quindi se il teorema di Weierstrass è verificato) allora
+
 $$
 \forall \lambda \in (m, M) \exist x^* \in [a, b] : f(x^*) = \lambda
 $$
+
 In italiano, se una funzione è continua in un dato intervallo, allora assumerà tutti i possibili valori compresi tra il suo massimo e minimo in quell'intervallo.
 
 ##### Dimostrazione
 
 Se $x_1, x_2$ sono i punti in cui la funzione $f$ assume i valori di minimo e massimo (per il contrario, la dimostrazione è analoga) allora poniamo
+
 $$
 g(x) = f(x) - \lambda \\
 m = f(x_1) \\
 M = f(x_2) \\
 I = [x_1, x_2] \subseteq [a, b]
 $$
+
 da cui concludiamo che:
+
 1.  $g \in \mathcal{C}[a, b] \implies g \in \mathcal{C}(I)$
 2.  $g(x_1) \times g(x_2) < 0$ infatti, se $f(x_1) > \lambda$ allora $f(x_2) < \lambda$ e viceversa, per cui $g(x_1)$ e $g(x_2)$ sono di segni opposti.
     In questo caso, $f(x_1) = m < \lambda \implies m - \lambda < 0 \implies g(x_1) < 0$ e quindi $g(x_2) > 0$
@@ -1262,27 +1323,33 @@ Funzionano esattamente come con le successioni
 
 #### Asintoto verticale
 Se
+
 $$
 \lim_{x \to x_0} f(x) = \pm \infty \text{ oppure } \lim_{x \to x_0^\pm} f(x) = \pm \infty
 $$
+
 allora ad $x = x_0$ c'è un asintoto verticale.
 
 #### Asintoto orizzontale
 
 Se
+
 $$
 \lim_{x \to \pm \infty} f(x) = l
 $$
+
 allora ad $y = l$ c'è un asintoto orizzontale
 
 #### Asintoto obliquo
 
 Se
+
 $$
 \lim_{x \to \pm \infty} f(x) = \pm \infty \\
 \lim_{x \to \pm \infty} \frac{f(x)}{x} = l \ne 0, \ne \pm \infty \\
 \lim_{x \to \pm \infty} f(x) - mx = q \ne \pm \infty
 $$
+
 allora l'asintoto obliquo esiste ed è $y = mx + q$.
 Con $x \to \infty$, $f(x) \sim mx$
 
@@ -1290,9 +1357,11 @@ Con $x \to \infty$, $f(x) \sim mx$
 $o(\square) =$ qualcosa di trascurabile rispetto a $\square$.
 Per $x \to x^*$, $f(x) \sim g(x) \iff f(x) = g(x) + o(g(x))$
 Per $x \to 0$ se $f(x) = o(x^\alpha)$ allora
+
 $$
 \lim_{x \to 0} \frac{f(x)}{x^\alpha} = 0
 $$
+
 Se $f(x)$ è un infinito allora $f(x) = o(f(x^2))$
 Se $f(x)$ è un infinitesimo allora $f(x^2) = o(f(x))$
 
@@ -1306,6 +1375,7 @@ x^\beta \times o(x^\alpha) = o(x^\alpha) \times o(x^\beta) = o(x^{\alpha + \beta
 $$
 
 Se $\beta > \alpha$ allora
+
 $$
 o(x^\alpha) \pm o(x^\beta) = o(x^\alpha) \\
 o(x^\alpha) \pm ax^\beta = o(x^\alpha) \\
@@ -1318,14 +1388,19 @@ La parte principale di un infinito/esimo si calcola al limite indicato ed è nel
 #### Come calcolarla
 
 Data una $f(x)$ e $x \to x_0$, calcolo
+
 $$
 \lim_{x \to x_0} \frac{f(x)}{(x - x_0)^\alpha} = \lim_{x \to x_0} \frac{k(x - x_0)^n}{(x - x_0)^\alpha} = k(x - x_0)^{n - \alpha}
 $$
+
 Pongo $\alpha = n$ (e ho trovato $\alpha$) poi sostituisco
+
 $$
 k(x - x_0)^{n - \alpha} = k(x - x_0)^0 = k
 $$
+
 e ho trovato anche $k$.
+
 Ora scrivo il tutto nella forma $K(x - x_0)^\alpha$ e ho finito
 
 #### Esercizio d'esempio
@@ -1344,6 +1419,7 @@ $$
 ## Glossario formule trigonometriche
 
 ### Seno, coseno, tangente
+
 $$
 \sin x = -\sin -x \\
 \cos x = \cos -x \\
@@ -1352,6 +1428,7 @@ $$
 $$
 
 ### Funzioni iperboliche
+
 $$
 \sh x = \frac{e^x - e^{-x}}{2} \\
 \ch x = \frac{e^x + e^{-x}}{2} \\
@@ -1360,6 +1437,7 @@ $$
 ### Seno e coseno di x mezzi
 
 Il segno va deciso in base al quadrante di partenza e di arrivo.
+
 $$
 \cos \frac{x}{2} = \pm \sqrt{\frac{1 + \cos x}{2}} \\
 \sin \frac{x}{2} = \pm \sqrt{\frac{1 - \cos x}{2}} \\
@@ -1368,6 +1446,7 @@ $$
 ### Seno e coseno di somme di angoli
 
 Conoscendo la prima di ogni coppia di formule, ci si può ricavare la seconda.
+
 $$
 \sin (a + b) = \sin a \cos b + \cos a \sin b \\
 \sin (a - b) = \sin a \cos b - \cos a \sin b \\
@@ -1400,6 +1479,7 @@ $$
 ### Definizione di derivata
 
 Data $f : (a, b) \to \mathbb{R}$ e $x_0 \in (a, b)$, $f$ si dice derivabile in $x_0$ se
+
 $$
  \exists \text{ finito } f'(x_0) = \lim_{h \to 0} {\frac{f(x_0+h) - f(x_0)}{h}}
 $$
@@ -1413,6 +1493,7 @@ $\frac{f(x_0 + h) - f(x_0)}{h}$ è detto **rapporto incrementale**
 Ci sono 3 tipi di punti di non derivabilità: il **Punto angoloso**, il **Flesso a tangente verticale** e la **Cuspide**.
 
 Per trovarli, è necessario calcolare i seguenti rapporti incrementali:
+
 $$
 f'_+(x_0) = \lim_{x \to 0^+} {\frac{f(x_0 + h) - f(x_0)}{h}} \\
 f'_-(x_0) = \lim_{x \to 0_-} {\frac{f(x_0 + h) - f(x_0)}{h}}
