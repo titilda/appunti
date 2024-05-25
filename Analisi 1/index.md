@@ -839,41 +839,49 @@ Di seguito esempio di inversione della funzione $\sh$:
 $$
 \sh x = \frac{e^x - e^{-x}}{2} \\
 $$
+
 $$
 \begin{align*}
   y = \frac{e^x - e^{-x}}{2} &\implies x = \frac{e^y - e^{-y}}{2} \\
   \end{align*} \\
 $$
+
 $$
 \begin{align*}  
   &\implies 2x = \frac{e^{2y}-1}{e^y} \\
   \end{align*} \\
 $$
+
 $$
 \begin{align*}
   &\implies 2xe^y = e^{2y}-1 \\
   \end{align*} \\
 $$
+
 $$
 \begin{align*}
   &\implies (e^y)^2 - 2x \times e^y - 1 = 0 \\
 \end{align*} \\
 $$
+
 $$
 \begin{align*}
   e^y = \frac{-2x \pm \sqrt{4x^2 + 4}}{2} &\implies e^y = \frac{-2x \pm 2\sqrt{x^2 + 1}}{2} \\
   \end{align*} \\
 $$
+
 $$
 \begin{align*}
   &\implies e^y = -x \pm \sqrt{x^2 + 1} \\
 \end{align*} \\
 $$
+
 $$
 \begin{align*}
   &\implies y  = \ln \left( -x + \sqrt{x^2 + 1} \right)
 \end{align*} \\
 $$
+
 $$
 \text{Il $-$ non lo si può utilizzare perchè $e^x$ è sempre positiva ma col $-$ si arriverebbe ad un risultato negativo} \\
 $$
