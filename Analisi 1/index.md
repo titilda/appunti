@@ -48,8 +48,18 @@ Serve per dimostrare proposizioni _per induzione_ e si attua in due step [data u
 2. Supponendo che P(n) sia vera, dimostro che P(n+1) è vera
 
 Per esempio, voglio dimostrare che: $\sum_{k=0}^n k = \frac{n(n+1)}{2}$
-Prima dimostro che la preposizione è vera con n = 0: $P(0): \sum_{k=0}^0 k = \frac{0(0+1)}{2} = 0$
-Poi, supponendo che sia vera per n, la dimostro per n+1: $P(n+1): \sum_{k=0}^{n+1} k = \sum_{k=0}^n k + (n+1) = \frac{n(n+1)}{2} + (n+1) = \frac{n(n+1) + 2(n+1)}{2} = \frac{(n+1)(n+2)}{2} = \frac{(n+1)((n+1)+1)}{2}$
+
+Prima dimostro che la preposizione è vera con n = 0: 
+
+$$
+P(0): \sum_{k=0}^0 k = \frac{0(0+1)}{2} = 0
+$$
+
+Poi, supponendo che sia vera per n, la dimostro per n+1: 
+
+$$
+P(n+1): \sum_{k=0}^{n+1} k = \sum_{k=0}^n k + (n+1) = \frac{n(n+1)}{2} + (n+1) = \frac{n(n+1) + 2(n+1)}{2} = \frac{(n+1)(n+2)}{2} = \frac{(n+1)((n+1)+1)}{2}
+$$
 
 ### Insieme Z
 
@@ -80,32 +90,58 @@ Poi, supponendo che sia vera per n, la dimostro per n+1: $P(n+1): \sum_{k=0}^{n+
 ### Irrazionalità della radice di 2
 
 Per dimostrare che $sqrt(2)$ è irrazionale, bisogna procedere per assurdo, ma prima serve conoscere una definizione di numeri pari e dispari:
-$$n \text{ è pari} \iff n = 2k \\ n \text{ è dispari} \iff n = 2k + 1$$
+
+$$
+n \text{ è pari} \iff n = 2k \\ n \text{ è dispari} \iff n = 2k + 1
+$$
+
 Ora, pre assurdo, supponiamo che $sqrt(2)$ sia un numero razionale, quindi
-$$\sqrt{2} = \frac{n}{m} \qquad \text{(con n e m primi tra loro)}$$
+
+$$
+\sqrt{2} = \frac{n}{m} \qquad \text{(con n e m primi tra loro)}
+$$
+
 ma allora
-$$2 = \frac{n^2}{m^2} \implies m^2=2n^2$$
-e quindi vuol dire che m è pari e, siccome m ed n sono primi tra loro, ciò vuol dire che n è dispari. Ma allora, riscrivendo m in funzione di k abbiamo che
-$$m = 2k$$
-e, di conseguenza,
-$$\begin{align*} m^2 &= 2n^2 \\ (2k)^2 &= 2n^2 \\ 4k^2 &= 2n^2 \\ 2k^2 &= n^2 \end{align*}$$
+
+$$
+2 = \frac{n^2}{m^2} \implies m^2=2n^2
+$$
+
+e quindi vuol dire che m è pari e, siccome m ed n sono primi tra loro, ciò vuol dire che n è dispari. Ma allora, riscrivendo m in funzione di k abbiamo che $m = 2k$ e, di conseguenza,
+
+$$
+\begin{align*} m^2 &= 2n^2 \\ (2k)^2 &= 2n^2 \\ 4k^2 &= 2n^2 \\ 2k^2 &= n^2 \end{align*}
+$$
+
 il che significherebbe che n è pari, ma questo va contro l'ipotesi, per cui la radice di 2 è irrazionale.
 
 ### Insieme R
 
 Un numero reale è un qualsiasi numero razionale o meno
-$$R = \left \{ \frac{n}{m} : n \in \Z, m \in \N^+ \} \cup \{ \sqrt{2}, \pi, e, \dots \right \}$$
+
+$$
+R = \left \{ \frac{n}{m} : n \in \Z, m \in \N^+ \} \cup \{ \sqrt{2}, \pi, e, \dots \right \}
+$$
+
 Le operazioni, le loro proprietà e le varie relazioni sono le stesse di Q e Z.
-Dato un insieme A tale che
-$$ A \subset R $$
-allora A ammette una serie di numeri interessanti:
-$$ a^* \in A \text{ si dice massimo di A se } a^* \ge a \,\forall a\in A $$
-$$ a^* \in A \text{ si dice minimo di A se } a^* \le a \,\forall a\in A $$
+
+Dato un insieme A tale che $A \subset R$ allora A ammette una serie di numeri interessanti:
+
+$$
+a^* \in A \text{ si dice massimo di A se } a^* \ge a \,\forall a\in A
+$$
+
+$$
+a^* \in A \text{ si dice minimo di A se } a^* \le a \,\forall a\in A
+$$
+
 Se A è superiormente limitato, si dice **Estremo superiore di A** il minimo dei suoi maggioranti, e, se A è inferiormente limitato, si dice **Estremo inferiore di A** il massimo dei suoi minoranti (a patto che A abbia maggioranti/minoranti).
+
 $$
 \text{Se A è superiormente limitato, un maggiorante di A è ogni numero } k \in \R : k \ge a \forall a \in A \\
 \text{Se A è inferiorimente limitato, un minorante di A è ogni numero } k \in \R : k \le a \forall a \in A
 $$
+
 **Teorema di completezza di R**: in R, l'estremo superiore di un insieme superiormente limitato esiste sempre. Idem per l'estremo inferiore.
 
 ### Topologia in R
@@ -138,43 +174,52 @@ L'insieme A si dice aperto se ogni punto è interno (non ha punti di frontiera),
 - Si chiama **parte interna di A** $\bar A = \left \{\text{l'insieme dei punti interni di A} \right \}$
 
 Di seguito alcuni esempi per chiarire:
+
 $$
 A = (a, b) \\
 A \cup \partial A = [a, b] \\
 \overline {A \cup \partial A} = (a, b)
 $$
+
 $$
 A = (0, 1) \cup (1, 3) \\
 A \cup \partial A = [0, 3] \\
 \overline {A \cup \partial A} = (0, 3)
 $$
+
 $$
 A = [0, 2] \cup {3} \\
 \bar A = (0, 2) \\
 \bar A\cup \partial \bar A = [0, 2]
 $$
-Se chiudo e riapro un insieme, potre non arrivare all'insieme di partenza (è più grande)
-Se Apro e richiudo un insieme, potre non arrivare all'insieme di partenza (è più piccolo, perde i punti isolati)
-| Insieme       | Apertura/chiusura |
-| ------------- | ----------------- |
-|               |                   |
-| (3, +&infin;) | aperto            |
-| [3, +&infin;) | chiuso            |
+
+Se chiudo e riapro un insieme, potre non arrivare all'insieme di partenza (è più grande).
+
+Se Apro e richiudo un insieme, potre non arrivare all'insieme di partenza (è più piccolo, perde i punti isolati).
+
+| Insieme        | Apertura/chiusura |
+| -------------- | ----------------- |
+| $(3, +\infty)$ | aperto            |
+| $[3, +\infty)$ | chiuso            |
+
 Definiamo "intorno di un punto" come ogni intervallo aperto a cui appartiene il punto stesso.
-$$\char"1D4B0 (x_0) = \big \{ \text{Ogni intervallo aperto che contiene } x_0 \big \}$$
-Ad esempio
-$$\char"1D4B0 (27) = \R, (26.8, 27.1), (-1, 31)$$
-Definiamo **chiusura di R** come
-$$ \R \cup \partial \R = \R \cup \{\infin, -\infin\} $$
-Si dice **intorno di &infin;** qualsiasi intervallo del tipo
-$$ \char"1D4B0 (\infin) = (a, 0) \qquad \forall a \in \R $$
-**Punto di accumulazione**:
-$$x_0 \text{ è un punto di accumulazione per A se in ogni } \char"1D4B0 (x_0) \text{ cadono infiniti punti di A}$$
-Ad esempio, se
-$$ A = (0, 1] $$
-i punti di accumulazione possono essere
-$$ 0, 1, \frac{1}{3}, \frac{1}{2}, \dots $$
+
+$$
+\char"1D4B0 (x_0) = \big \{ \text{Ogni intervallo aperto che contiene } x_0 \big \}
+$$
+
+Ad esempio $\char"1D4B0 (27) = \R, (26.8, 27.1), (-1, 31)$.
+
+Definiamo **chiusura di R** come $\R \cup \partial \R = \R \cup \{\infin, -\infin\}$.
+
+Si dice **intorno di $+\infty$** qualsiasi intervallo del tipo $\char"1D4B0 (\infin) = (a, 0) \qquad \forall a \in \R$
+
+**Punto di accumulazione**: $x_0$ è un punto di accumulazione per $A$ se in ogni $\char"1D4B0 (x_0)$ cadono infiniti punti di $A$.
+
+Ad esempio, se $A = (0, 1]$ i punti di accumulazione possono essere $0, 1, \frac{1}{3}, \frac{1}{2}, \dots$.
+
 Esempio finale:
+
 $$ A = \bigg\{\frac{1}{n} : n \in \N, n \gt 0 \bigg \} \subset \R $$
 
 - A non ha punti interni
@@ -200,41 +245,50 @@ In questo modo, per ogni elemento di Q, posso associare un numero naturale.
 
 Dimostriamo prima che in R ci sono tanti elementi quanti ce ne sono in (0, 1) e successivamente che (0, 1) non è numerabile (di conseguenza, visto che contengono lo stesso numero di elementi, R non è numerabile).
 Troviamo una funzione biiettiva che associa ad ogni elemento di R un solo numero di (0, 1).
-$$
-f : R \to (0, 1) \\
-\text{La funzione ritorna la coordinata X del punto di intersezione tra una semicorconferenza di raggio } \frac{1}{2} \text{ e di centro } \bigg (\frac{1}{2}, \frac{1}{2} \bigg) \text{ con un segmento che parte dallo stesso punto e ha come punto finale il punto di coordinate } (r, 0) \text{ con r parametro della funzione}
-$$
-[Qui esempio pratico](https://www.geogebra.org/calculator/uj7fgxqm)
+
+Sia $f : R \to (0, 1)$ la funzione che ritorna la coordinata X del punto di intersezione tra una semicorconferenza di raggio $\frac{1}{2}$ e di centro $(\frac{1}{2}, \frac{1}{2})$ con un segmento che parte dallo stesso punto e ha come punto finale il punto di coordinate $(r, 0)$ con $r$ parametro della funzione.
+
+[Qui visualizzazione pratica della dimostrazione](https://www.geogebra.org/calculator/uj7fgxqm)
+
 Ora dimostriamo che (0, 1) non è numerabile.
 La dimostrazione avviene per assurdo: supponiamo che sia possibile numerare tutti gli elementi di (0, 1) e iniziamo a scriverne qualcuno:
+
 $$
 0.1324 \dots \\
 0.5000 \dots \\
 0.1298 \dots \\
 0.3328 \dots \\
 $$
+
 Ignorando lo zero prima del punto decimale, del primo numero prendiamo la prima cifra, del secondo la seconda e così via, poi vi sommiamo uno (se il risultato fosse 10, allora consideriamo solo lo 0)
+
 $$
 0.1324 \dots \to 1+1 = 2\\
 0.5000 \dots \to 0+1 = 1\\
 0.1298 \dots \to 9+1 = 0\\
 0.3328 \dots \to 8+1 = 9\\
 $$
+
 Ora alla lista aggiungiamo un nuovo numero composto da zero virgola tutte le nuove cifre che abbiamo trovato $(0,2109)$ e notiamo che non è presente nella lista (infatti è impossibile che sia presente nella lista, c'è sempre almeno una cifra differente da tutti i numeri già presenti).
+
 Se ripetiamo il processo infinite volte, non finiremo mai, quindi $(0, 1)$ non è numerabile.
 Siccome $(0, 1)$ non è numerabile ed è possibile associare ad ogni elemento di $(0, 1)$ un elemento di R e civecersa, allora anche R non è numerabile.
 
 ### Numeri complessi
+
 I numeri complessi numeri basati sull'esistenza del numero $i$ chiamato anche **Unità Immaginaria**.
+
 $$ 
 i^2 = -1 \\
 i = sqrt(-1) \\
 $$
+
 $$
 Z \in \char"2102 \iff Z = a + ib \qquad \text{ con } a, b \in \R \\
 Re(Z) = a \\
 Im(Z) = b \\
 $$
+
 Esistono varie forme di numeri complessi:
 
 - Forma esponenziale: $Z = r e^{i \theta}$
@@ -244,13 +298,15 @@ Esistono varie forme di numeri complessi:
 - Forma algebrica: $Z = a + ib$
 
 Ogni numro ha anche un coniugato, che è il numero complesso ottenuto invertendo il segno della parte immaginaria:
+
 $$
-\text{Se } Z = a + ib \implies \overline{Z} = a - ib \\
+Z = a + ib \implies \overline{Z} = a - ib \\
 $$
 
 Si può trasformare un numero in ciascuna delle forme di cui sopra in ogni altra forma:
 
 1. Da algebrica a trigonometrica:
+
 $$
 r = sqrt(a^2 + b^2) \\
 \theta = \begin{cases}
@@ -261,18 +317,22 @@ r = sqrt(a^2 + b^2) \\
   \text{Indeterminato} & x = 0, y = 0 & \text{Origine} \\
 \end{cases}
 $$
+
   - Nota: si può fare ad'occhio , senza memorizzare tutte le condizioni di $\theta$: se sta tra il III e IV quadrante, basta callcolare $arctan(\frac{b}{a})$ e aggiungere $\pi$. Per i casi particolari (assi e origine) è ovvio.
 2. Da trigonometrica/esponenziale a algebrica:
   - Basta calcolare $cos(\theta)$ e $sin(\theta)$ e moltiplicare per $r$.
 3. Da algebrica/trigonometrica a esponenziale:
   - Basta calcolare $r$ e $\theta$ come nella forma trigonometrica e scriverli nella forma $r \times e^{i\theta}$
+
 Le varie forme servono per gestire meglio i calcoli. Di seguito formule per le varie operazioni con le varie forme (e, dove utile, anche la descrizione di cosa succede al grafico)
+
 $$
 \text{Forma algebrica (Comoda per addizioni, sottrazioni, moltiplicazioni e divisioni)} \\
 (a + ib) + (c + id) = (a + c) + i(b + d) \\
 (a + ib) \times (c + id) = (ac - bd) + i(ad + bc) \\
 \frac{a + ib}{c + id} = \frac{(a + ib)(c - id)}{(c + id)(c - id)} = \frac{(ac + bd) + i(bc - ad)}{c^2 + d^2} \qquad \text{Notare che la divisione è impossibile se $c = d = 0$} \\
 $$
+
 $$
 \text{Forma trigonometrica (Comoda per moltiplicazioni, divisioni, radici e potenze)} \\
 \rho(\cos \theta + i \sin \theta) \times r(\cos \alpha + i \sin \alpha) = \rho r (\cos (\theta + \alpha) + i \sin (\theta + \alpha)) \\
@@ -282,11 +342,14 @@ $$
 #### Dimostrazione del prodotto di due numeri complessi
 
 Dati due numeri complessi
+
 $$
 Z = \rho(\cos \theta + i \sin \theta) \\
 W = r(\cos \alpha + i \sin \alpha) \\
 $$
+
 allora
+
 $$
 \begin{align*}
   Z \times W = \rho(\cos \theta + i \sin \theta) \times r(\cos \alpha + i \sin \alpha) &= \rho r \times (\cos \theta + i \sin \theta) \times (\cos \alpha + i \sin \alpha) \\
@@ -298,9 +361,9 @@ $$
 
 #### Radici di un numero complesso
 
-Dato un numero complesso $Z = \rho(\cos \theta + i \sin \theta)$ e $W = r(\cos \alpha + i \sin \alpha)$ allora se $W^n = Z$ allora
-$$r^n(\cos n \alpha + i \sin n \alpha) = \rho(\cos \theta + i \sin \theta) $$
+Dato un numero complesso $Z = \rho(\cos \theta + i \sin \theta)$ e $W = r(\cos \alpha + i \sin \alpha)$ allora se $W^n = Z$ allora $r^n(\cos n \alpha + i \sin n \alpha) = \rho(\cos \theta + i \sin \theta)$
 e quindi
+
 $$
 \begin{cases}
 r^n &= \rho \\
@@ -311,17 +374,21 @@ r &= \sqrt[n]{\rho} \\
 \alpha &= \frac{\theta}{n} + \frac{2k \pi}{n} \qquad \text{con } 0 \le k \le n-1, k \in \mathbb{N} \\
 \end{cases}
 $$
+
 Per esempio
+
 $$
 \begin{align*}
-  W = \sqrt[4]{-4} &= \sqrt[4]{4(\cos \pi + i \sin \pi)} \\
+W = \sqrt[4]{-4} &= \sqrt[4]{4(\cos \pi + i \sin \pi)} \\
   &= \begin{cases}
     r &= \sqrt[4]{4} = \sqrt{2}\\
     \alpha &= \frac{\pi}{4} + \frac{2k \pi}{4} \qquad \text{con } k = 0, \dots, 3 \\
   \end{cases}
 \end{align*}
 $$
+
 Dopo aver calcolato i vari $r$ (ce ne possono essere più di uno) e i vari $\theta$, prendo tutte le combinazioni valide dei vari $r$ e $\theta$ e le scrivo:
+
 $$
 \begin{align*}
   k = 0, \quad & \alpha = \frac{\pi}{4} & \implies W_0 &= \sqrt{2}(\cos \frac{\pi}{4} + i \sin \frac{\pi}{4}) \\
@@ -330,6 +397,7 @@ $$
   k = 3, \quad & \alpha = \frac{7 \pi}{4} & \implies W_3 &= \sqrt{2}(\cos \frac{7 \pi}{4} + i \sin \frac{7 \pi}{4}) \\
 \end{align*}
 $$
+
 Di seguito il disegno delle radici di $-4$: [Geogebra](https://www.geogebra.org/calculator/uxmcb4dr)
 
 Note:
@@ -339,30 +407,39 @@ Note:
 #### Elevazione ad un numero complesso
 
 Se $x \in \R$ allora
+
 $$
 e^x = \lim_{n \to \infty} \left( 1 + \frac{x}{n} \right)^n
 $$
+
 Il teorema di monotonia assicura che il limite esiste infatti la funzione è limitata e ammette limite superiore.
 Cosa succede se $x \in \mathbb{C}$? [Nel seguente procedimento, al posto di $x$ verrà utilizzato $Z$ per evitare confusione]
+
 $$
 Z = x + iy \in \mathbb{C}\\
 e^Z = \lim_{n \to \infty} \left( 1 + \frac{Z}{n} \right)^n = \lim_{n \to \infty} \left( 1 + \frac{x + iy}{n} \right) \\
 \text{Chiamo } W_n = \frac{x + iy}{n} = \left( 1 + \frac{x}{n} \right) + i \left( \frac{y}{n} \right) \\
 |w_n|^2 = \left( 1 + \frac{x}{n} \right)^2 + \left( \frac{y}{n} \right)^2 = 1 + \frac{2x}{n} + \frac{x^2}{n^2} + \frac{y^2}{n^2} \\
 \implies |W_n| = \sqrt{1 + \frac{2x}{n} + \frac{x^2 + y^2}{n^2}} \\
+
 $$
 Con $n \to \infty$ allora $W \to 1$
+
 $$
 \arg{W_n} = \arctan{\frac{\frac{y}{n}}{1 + \frac{x}{n}}} = \arctan{\frac{y}{n + x}} \\
 $$
+
 Ora riscrivo il tutto in forma trigonometrica
+
 $$
 W_n^n = \left( \sqrt{1 + \frac{2x}{n} + \frac{x^2 + y^2}{n^2}} \right)^n \left( \cos \left( n \arctan{\frac{y}{n + x}} \right) + i \sin \left( n \arctan{\frac{y}{n + x}} \right) \right) \\
 $$
+
 Quindi 
+
 $$
 \begin{align*}
-  e^Z = \lim_{n \to \infty} W_n^n &= \lim_{n \to \infty} \left[ \left( \sqrt{1 + \frac{2x}{n} + \frac{x^2 + y^2}{n^2}} \right)^n \left( \cos \left( n \arctan{\frac{y}{n + x}} \right) + i \sin \left( n \arctan{\frac{y}{n + x}} \right) \right) \right] \\
+e^Z = \lim_{n \to \infty} W_n^n &= \lim_{n \to \infty} \left[ \left( \sqrt{1 + \frac{2x}{n} + \frac{x^2 + y^2}{n^2}} \right)^n \left( \cos \left( n \arctan{\frac{y}{n + x}} \right) + i \sin \left( n \arctan{\frac{y}{n + x}} \right) \right) \right] \\
   &\sim \lim_{n \to \infty} \left[ \left( 1 + \frac{2x}{n} + \frac{x^2 + y^2}{n^2} \right) ^ \frac{n}{2} \left( \cos y + i \sin y \right) \right] \\
   &\sim \lim_{n \to \infty} \left[ e^{\frac{n}{2} \ln \left( 1 + \frac{2x}{n} + \frac{x^2 + y^2}{n^2} \right) } \left( \cos y + i \sin y \right) \right] \\
   &\sim \lim_{n \to \infty} \left[ e ^ {\frac{n}{2} \times \frac{2x}{n}} \left( \cos y + i \sin y \right) \right] \\
@@ -383,12 +460,14 @@ In $\mathbb{C}$, ogni equazione algebrica di grado $n$ ha esattamente $n$ soluzi
 ## Successioni
 
 Una successione è una funzione definita in $\N$ con valori in $\R$.
+
 $$
 \begin{align*}
 f: \N &\to \R \\
 n &\mapsto f(n) = a_n
 \end{align*}
 $$
+
 La scrittura precisa e pignola è la seguente: $\left\{ a_n \right\}_0^{+\infty}$
 Esempi:
 - $a_n = \frac{1}{n} \implies 1, \frac{1}{2}, \frac{1}{3}, \dots$
@@ -409,17 +488,21 @@ Legati alle successioni ci sono alcuni numeri notevoli:
 - $\min \left\{ a_n \right\}$: il minimo della successione
 
 Si dice che $a_n$ tende al limite $l$ (quindo $\lim_{n \to \infty} a_n = l$) se
+
 $$
 \forall \varepsilon > 0 \exists n_\varepsilon : n \geq n_\varepsilon, \left| a_n - l \right| < \varepsilon
 $$
+
 In italiano: esite un numero arbitrariamente piccolo ($\varepsilon$) tale per cui, dopo un certo numero di elementi della successione, la differenza tra il limite e gli elementi della successione è minore di quel numero.
 
 ### Definizione topologica di successione
 
 Oltre alla definizione metrica (quella espressa qui sopra) esiste anche una definizione topologica equivalente:
+
 $$
 \lim_{n \to \infty} a_n = L, \quad L \in \R  \iff \forall \char"1D4B0 \left( L \right) \text{ definitivamente } a_n \in \char"1D4B0 \left( L \right)
 $$
+
 In italiano: esite un intorno di $L$  che contiene infiniti valori di $a_n$.
 
 ### Regolarità di una successione
@@ -436,6 +519,7 @@ Se $a_n$ è una successione monotona decrescente e inferiormente limitata allora
 #### Dimostrazione del primo punto (la dimostrazione del secondo è analoga)
 
 Sia $a_n$ una successione monotona crescente e superiormente limitata.
+
 $$
 S = Sup \left \{ a_n \right \} \\
 \forall \varepsilon > 0, \, a_{n^*} \in \left( S - \varepsilon, S \right] \\ \text{(Per ogni valore $\varepsilon$ arbitrariamente piccolo, ci sarà un certo $a_{n^*}$ che appartiene all'insieme che va da $S - \varepsilon$ a $S$)} \\
@@ -449,15 +533,19 @@ Se $a_n$ è una successione regolare allora ammette un solo limite.
 #### Dimostrazione
 
 Sia $a_n$ una successione regolare.
+
 $$
 a_n \to l_1 \quad \text{e} \quad a_n \to l_2 \\
 \forall \varepsilon > 0, \, def. \left| a_n - l_1 \right| < \varepsilon \quad \text{e} \quad def. \left| a_n - l_2 \right| < \varepsilon \\
 $$
+
 Allora
+
 $$
 \left| l_2 - l_1 \right| > 0 \\
 \left| l_1 - a_n + a_n - l_2 \right| \le \left| l_1 - a_n \right| + \left| a_n - l_2 | \right| < 2 \varepsilon \\
 $$
+
 Di conseguenza $l_1$ e $l_2$ sono uguali.
 
 ### Teorema di permaneza del segno
@@ -487,6 +575,7 @@ $$
 & l - \varepsilon < c_n < l + \varepsilon \\
 \end{align*}
 $$
+
 Siccome $a_n < b_n < c_n$ allora anche $l - \varepsilon < b_n < l + \varepsilon$.
 
 ### Corollario
@@ -525,6 +614,7 @@ $$
 A seconda della forma d'indecisione trovata, si può procedere in vari modi (il più adeguato dei quali varia da esercizio ad esercizio)
 Le forme d'indecisione sono: $\infty - \infty$, $0 \times \infty$ $\frac{0}{0}$, $\frac{\infty}{\infty}$, $\infty^0$, $\infty^{\infty}$, $1^\infty$.
 Nel caso di queste ultime trè e sempre comoda la formula:
+
 $$
 a^b = e ^ {\ln {a^b}} = e ^ {b \ln a}
 $$
@@ -585,9 +675,7 @@ Di seguito una lista di infiniti e infinitesimi campioni:
 Da notare che tra infinitesimo campione e infinito campione, sono uno il reciproco dell'altro.
 Gli infinitesimi campione tendono a 0 mentre gli infiniti campione tendono a infinito.
 
-$f(x)$ è un infinito di ordine $\alpha$ se 
-$$ \exist \alpha : \lim_{x \to x^*} \frac{f(x)}{\left[ C(x) \right] ^ \alpha} = l \ne 0 $$
-dove $C(x)$ è un infinito campione.
+$f(x)$ è un infinito di ordine $\alpha$ se $\exist \alpha : \lim_{x \to x^*} \frac{f(x)}{\left[ C(x) \right] ^ \alpha} = l \ne 0 $ dove $C(x)$ è un infinito campione.
 
 Questo èequivalente a dire che
 $$ f(x) \sim \left[ C(x) \right] ^ \alpha $$
