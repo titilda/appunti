@@ -630,7 +630,7 @@ Con quanto appena visto si possono facilmente calcolare probabilità della forma
 
 # Processi di Bernoulli
 
-Un processo di Bernoulli $BP(p)$ può essere considerato come una serie di slot ordinati, nei quali un evento ha sempre la stessa probabilità $p$ di accadere.
+Un **processo di Bernoulli** $BP(p)$ può essere considerato come una serie di slot ordinati, nei quali un evento ha sempre la stessa probabilità $p$ di accadere.
 
 Il numero $S$ di successi in $n$ slot è distribuito come una $\text{Bin}(n, p)$.
 
@@ -650,7 +650,7 @@ Il merging di $BP(p)$ con $BP(q)$ genera un $BP(p + q - pq)$.
 
 # Processi di Poisson
 
-I processi di Poisson sono l'equivalente tempo-continuo dei processi di Bernoulli: gli eventi possono accadere in un qualsiasi istante. Un processo di Poisson non è descritto dalla probabilità che un evento accada ma da quanti eventi accasono in media per unità di tempo.
+I **processi di Poisson** sono l'equivalente tempo-continuo dei processi di Bernoulli: gli eventi possono accadere in un qualsiasi istante. Un processo di Poisson non è descritto dalla probabilità che un evento accada ma da quanti eventi accasono in media per unità di tempo.
 
 I processi di Poisson si indicano con $PP(\lambda)$.
 
@@ -663,6 +663,128 @@ Il tempo $Y_k$ al $k$-esimo arrivo è distribuito come $\text{Erlang-}k(\lambda)
 Lo splitting di un $PP(\lambda)$ che avviene con probabilità $\delta$ genera un $PP(\lambda \delta)$.
 
 Il mergind di $PP(\lambda)$ con $PP(\delta)$ genera un $PP(\lambda + \delta)$.
+
+# Stimatori
+
+Si ha una variabile aleatoria $\theta$, misurata con uno strumento di misura impreciso, che legge il valore $X$.
+
+Come stimare il valore reale di $\theta$ conoscendo il valore di $X$? Per la formula di Bayes vale che (ed è analogo per le variabili aleatorie discrete)
+
+$$
+f_{\theta|X}(\theta, x) = \frac{f_{X|\theta}(x|\theta) f_\theta(\theta)}{f_X(x)}
+$$
+
+## Stimatore MAP
+
+Lo **stimatore MAP** consiste nel selezionare il $\theta$ con maggior probabilità:
+
+$$
+\hat \theta_{\text{MAP}}(x) = \underset{\theta}{\argmax} (f_{\theta|X}(\theta|x))
+$$
+
+Lo stimatore MAP massimizza la probabilità a posteriori, cioè prende la $\theta$ con maggior probabilità di essere quella vera dopo aver effettuato la lettura.
+
+## Stimatore LMS
+
+Lo **stimatore LMS** tende a minimizzare l'errore quadratico medio.
+
+Siano $c = \hat \theta_{\text{MAP}}(X)$ e $h(c) = E[(\theta - c)^2]$. L'obiettivo è minimizzare l'errore quadratico medio $h(c)$, trovando il valore di $c$ tale per cui
+
+$$
+\frac{d}{dc} h(c) = 0
+$$
+
+ovvero
+
+$$
+\hat \theta_{\text{LMS}}(X) = c = E[\theta]
+$$
+
+L'errore quadratico medio corrispondente è $Var[\theta]$. Questo stimatore è quello che ha il minimo errore quadratico medio.
+
+Sia $\tilde \theta = \hat \theta_{\text{LMS}} - \theta$, $E[\tilde \theta | X = x] = 0 \implies [\tilde \theta] = 0 \implies E[\hat \theta_{\text(LMS)}] = E[\theta]$, $E[\tilde \theta \cdot h(X)] = 0$, $Cov[\tilde \theta, \hat \theta_{\text{LMS}}] = 0$.
+
+## Stimatore LIN
+
+Lo **stimatore LIN** consente di trovare una correlazione lineare tra il valore stimato di $\theta$ ed $X$:
+
+$$
+\hat \theta_{\text{LIN}}(X) = E[\theta] + \frac{Cov[X, \theta]}{Var[X]}(X - E[X])
+$$
+
+da cui deriva che la standardizzazione di $\hat \theta_{\text{LIN}}$ è proporzionale alla standardizzazione di $x$
+
+$$
+\frac{\hat \theta_\text{LIN}(X) - E[\theta]}{\sigma_\theta} = \rho[X, \theta] \frac{X - E[X]}{\sigma_X}
+$$
+
+In questo caso, l'errore quadratico medio associato è pari a $E\left[(\theta - \hat \theta_\text{LIN}(X))^2\right] = (1 - \rho[X, \theta]^2) Var[\theta]$ da cui segue che se $\rho[X, \theta] = 0$ allora l'errore è pari a $Var[\theta]$ mentre se $\rho[X, \theta] = \pm 1$ allora l'errore quadratico medio è pari a $0$.
+
+## Errore di stima
+
+In generale, per controllare la bontà di una stima, esistono alcune metodologie:
+
+- Si controlla qual è la probabilità di cadere in un intervallo fiduciario, similmente a quanto visto per il [problema del sondaggista](#problema-del-sondaggista)
+- Si calcolano l'errore quadratico medio e l'errore relativo di stima e lo si impone minore dell'errore target:
+  $$
+  MSE_n = E\left[ (M_n - E[M_n])^2 \right] = \frac{E[M_n](1 - E[M_n])}{n} \\
+  \sqrt{\frac{MSE_n}{E[M_n]^2}} = \sqrt{\frac{1 - E[M_n]}{E[M_n]}\frac{1}{n}} \lt \varepsilon
+  $$
+
+# Generatori di Variabili aleatorie
+
+## Generatori di variabili aleatorie uniformi
+
+E' possibile generare numeri $X \sim \text{U}[0, 1]$ generando una sequenza di bit e interpretandoli come parte a destra della virgola in un numero in base 2.
+
+Per distribuzioni $\text{U}[a, b]$, si generano bit come visto appena sopra e si calcola $a + X(b - a)$.
+
+Se non si ha a disposizione un generatore discreto per generare i bit (o per qualsiasi altro scopo che richieda un generatore discreto), è possibile utilizzare un generatore continuo e dividere i possibili valori in classi, in modo che ogni classe abbia la stessa probabilità di essere estratta ed assegnare ad ogni classe un valore discreto.
+
+E' possibile generalizzare la generazione di campioni di qualsiasi funzione deterministica di una variabile aleatoria uniforme tramite il **metodo della cumulata inversa**: sia $U \sim \text{U}[0, 1]$ e $X = g(U)$, allora
+
+$$
+F_X(x) = g^{-1}(x) \implies g(u) = F_X^{-1}(u)
+$$
+
+L'efficienza dell'algoritmo è del 100% ma vi è difficoltà nel trattare variabili aleatorie congiunte.
+
+## Metodo acceptance-rejection
+
+Sia $f_X$ la pdf della distribuzione da generare e $m$ un valore tale per cui $m \ge \underset{x}{\max} f_X(x)$.
+Si generino dei punti distribuiti uniformemente nel rettangolo $[a, b] \times [0, m]$ dove $[a, b]$ è l'intervallo dove la $f_X$ è non-nulla. Per ciascuno di questi punti generati, si tengono solo quelli che cadono sotto la $f_X$. Le ascisse dei punti mantenuti, sono distribuite come $f_X$.
+
+Per avere un efficienza massima, si vuole avere $m$ minimo possibile.
+
+## Generazione distribuzioni gaussiane a partire da un'uniforme e da una esponenziale
+
+Per generare una gaussiana semplicemente, è possibile scomporla in segno e modulo, per poi generare ciascuna parte indipendentemente: $Z = S \cdot |Z|$.
+
+Per generare $S$:
+
+1. Genero $U \sim [0, 1]$.
+2. Se $U \lt \frac{1}{2}$ pongo $S = -1$, altrimenti $S = +1$ altrimenti torno al punto 1.
+
+Per generare $|Z|$:
+
+1. Genero $Y \sim \text{Exp}(1)$ e $U' \sim \text{U}[0, 1]$ con $Y \perp U$.
+2. Se $U' \cdot m \cdot f_Y(Y) \le f_{|Z|}(Y)$ (cioè se $U' \le \frac{f_{|Z|}(Y)}{mf_{Y}(Y)} = \exp\left(-\frac{(Y-1)^2}{2}\right)$) allora accetto e pongo $|Z| = Y$, altrimenti torno al punto 1.
+
+L'efficienza di questo metodo è sempre pari a $\left(\sqrt{\frac{2e}{\pi}}\right)^{-1} \simeq 76\%$
+
+## Generazione di un vettore di gaussiane
+
+Sia $\underline X = (\underline X_1, \underline X_2, \dots, \underline X_n)$ un vettore di variabili aleatorie gaussiane a con media $\underline \mu = E[X]$.
+
+Si indica con $\Sigma$ la matrice delle covarianze:
+
+$$
+\Sigma = \left[Cov[X_i, X_j]\right]_{i, j} = E[(\underline X - \underline \mu)(\underline X - \underline \mu)^T]
+$$
+
+Per generare un $X$, si comincia generando un vettore $\underline Z = (\underline Z_1, \underline Z_2 \dots, \underline Z_n)$ con $Z_i \sim \mathcal{N}(0, 1)$. E' evidente che $\underline X = A \cdot \underline Z + \underline b$.
+
+Per imporre il $\underline \mu$ desiderato, si pone $\underline b = \underline \mu$, mentre per imporre la covarianza tra elementi desiderata, si pone $Cov[\underline X, \underline X] = A \cdot A^T = \Sigma$ da cui $A = \text{Cholesky}(\Sigma)$.
 
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
