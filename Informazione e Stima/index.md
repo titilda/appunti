@@ -786,6 +786,111 @@ Per generare un $X$, si comincia generando un vettore $\underline Z = (\underlin
 
 Per imporre il $\underline \mu$ desiderato, si pone $\underline b = \underline \mu$, mentre per imporre la covarianza tra elementi desiderata, si pone $Cov[\underline X, \underline X] = A \cdot A^T = \Sigma$ da cui $A = \text{Cholesky}(\Sigma)$.
 
+# Simulazione Montecarlo
+
+Il metodo Montecarlo serve per stimare il valore atteso di una funzione $g(X)$ di una variabile aleatoria $X$.
+
+Prima di tutto si generano $X_i$ con $i = 1, 2, \dots, n$ in maniera indipendente, poi si calcola
+
+$$
+\hat G_n = \frac{1}{n} \sum_{i = 1}^n g(X_i)
+$$
+
+Risulta che $\hat G_n$ è il valore stimato di $E[g(X)]$.
+
+La varianza dell'errore di stima si calcola in maniera identica ai precedenti (anche qui $E[\hat G_n] = E[X]$):
+
+$$
+E \left[ \left( \frac{1}{n} \sum_{i = 1}^n X_i - E[X] \right)^2 \right] = Var\left[\hat G_n\right] = Var \left[ \frac{1}{n} \sum_{i = 1}^n X_i \right] \\
+\frac{\sqrt{Var \left[ \frac{1}{n} \sum\limits_{i = 1}^n X_i \right]}}{E[X]} = \frac{1}{\sqrt{n}} \sqrt{\frac{1 - E[X]}{E[X]}}
+$$
+
+# Importance sampling
+
+Utile quando si vuole campionare un evento $A$ raro: in pratica si va a trovare un esperimento equivalente nel quale $A$ è molto più probabile che accada e poi si riscala adegauatamente la probabilità stimata.
+
+$$
+P(A) = E\left[\mathbf{1}(X \in A) \right] = \int_{-\infty}^{+\infty} \mathbf{1}(x \in A) f_X(x) \, dx = \int_{-\infty}^{+\infty} \mathbf{1}(x \in A) \frac{f_X(x)}{f_Y(x)} f_Y(x) \, dx = E \left[ \mathbf{1}(Y \in A) \underbrace{\frac{f_X(Y)}{f_Y(Y)}}_{\text{Importance weight}} \right]
+$$
+
+La descrizione dell'algoritmo è la seguente: prima di tutto si generano $Y_i$ iid, poi si calcola
+
+$$
+\hat P_X(A) = \frac{1}{n} \sum_{n = 1}^n \mathbf{1}(Y_i \in A) \frac{f_X(Y_i)}{f_X(Y_i)}
+$$
+
+Logicamente, si deve scegliere $f_Y$ in modo tale da avere $P_Y(A) \gg P_X(A)$.
+
+La varianza dell'errore di stima è 
+
+$$
+\frac{1}{n} \left\{ E \left[ \mathbf{1}(X \in A) \frac{f_X(X)}{f_Y(X)} \right] - P_X(A)^2 \right\}
+$$
+
+che diventa $0$ se scelgo
+
+$$
+f_Y(x) = \frac{\mathbf{1}(x \in A) f_X(x)}{P_X(A)}
+$$
+
+Dunque, per avere una stima precisa, devo scegliere un $f_Y$ il più vicino possibile a quello appena visto.
+
+# Calcolo di integrali
+
+Si vuole calcolare il seguente integrale:
+
+$$
+I = \int_a^b f(x) dx
+$$
+
+L'algoritmo è il seguente:
+
+1. Si estraggono $X_1, X_2, \dots, X_n \sim \text{U}[a, b]$ iid.
+2. Si calcola $\hat I_n = \frac{1}{n} \sum\limits_{i=1}^n f(X_i)$
+
+# Entropia e information theory
+
+L'autoinformazione di un evento $A$ è la funzione $i(A) = \log \frac{1}{P(A)}$. A seconda della base del logaritmo, cambia l'unità di misura:
+
+| Base | Unità           |
+| ---- | --------------- |
+| $e$  | \[nat\] natural |
+| $2$  | \[bit\]         |
+| $10$ | \[hartley\]     |
+
+Sia $X$ una variabile aleatoria, allora
+
+$$
+i(X = x) = i(x) = \log_2 \frac{1}{P_X(x)}
+$$
+
+ed è definita la funzione entropia:
+
+$$
+H(X) = E[i(X)] = \sum_{j=1}^n \left[P_X(X_j) \cdot \log_2 \frac{1}{P_X(X_j)}\right]
+$$
+
+L'entropia è il numero medio di bit di informazione che ci si può aspettare da una singola esecuzione dell'esperimento aleatorio.
+
+Per convenzione $0 \cdot \log_2 \frac{1}{0} = 0$. Non esistono variabili aleatorie con entropia negativa.
+
+# Disuguaglianza di Jensen
+
+La disuguaglianza di Jensen afferma che: siano $\lambda_1, \lambda_2, \dots, \lambda_n$ tali per cui $\sum \lambda_i = 1$ e $\lambda_i \ge 0$ $\forall i$, allora
+
+$$
+\sum_{i = 1}^n \lambda_i \log x_i \le \log \left[ \sum_{i=1}^n \lambda_i x_i \right]
+$$
+
+da cui segue che 
+
+$$
+\begin{cases}
+    E[f(Y)] \le f(E[Y]) & \forall f \text{ concava} \\
+    E[f(Y)] \ge f(E[Y]) & \forall f \text{ convessa}
+\end{cases}
+$$
+
 # Tabella riassuntiva distribuzioni variabili aleatorie
 
 | Distribuzione | Costruttore                  | Valore atteso       | Varianza                |
