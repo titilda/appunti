@@ -416,13 +416,13 @@ Il teorema di monotonia assicura che il limite esiste infatti la funzione è lim
 Cosa succede se $x \in \mathbb{C}$? [Nel seguente procedimento, al posto di $x$ verrà utilizzato $Z$ per evitare confusione]
 
 $$
-Z = x + iy \in \mathbb{C}\\
+Z = x + iy \in \mathbb{C} \\
 e^Z = \lim_{n \to \infty} \left( 1 + \frac{Z}{n} \right)^n = \lim_{n \to \infty} \left( 1 + \frac{x + iy}{n} \right) \\
 \text{Chiamo } W_n = \frac{x + iy}{n} = \left( 1 + \frac{x}{n} \right) + i \left( \frac{y}{n} \right) \\
 |w_n|^2 = \left( 1 + \frac{x}{n} \right)^2 + \left( \frac{y}{n} \right)^2 = 1 + \frac{2x}{n} + \frac{x^2}{n^2} + \frac{y^2}{n^2} \\
-\implies |W_n| = \sqrt{1 + \frac{2x}{n} + \frac{x^2 + y^2}{n^2}} \\
-
+\implies |W_n| = \sqrt{1 + \frac{2x}{n} + \frac{x^2 + y^2}{n^2}}
 $$
+
 Con $n \to \infty$ allora $W \to 1$
 
 $$
@@ -1036,49 +1036,51 @@ Una funzione $f$ è periodica con periodo $t$ se $f(x) = f(x + t)$ per ogni $x$.
 ### Operazioni sul grafico di funzioni
 
 $$
-\begin{align*}
-  y = f(x) + k
-  & \qquad \begin{cases}
-    k = 0 & \qquad \text{Non succede niente} \\
-    k > 0 & \qquad \text{Il grafico si sposta verso l'alto} \\
-    k < 0 & \qquad \text{Il grafico si sposta verso il basso}
-  \end{cases} \\
+y = f(x) + k \qquad \begin{cases}
+  k = 0 & \qquad \text{Non succede niente} \\
+  k > 0 & \qquad \text{Il grafico si sposta verso l'alto} \\
+  k < 0 & \qquad \text{Il grafico si sposta verso il basso}
+\end{cases}
+$$
 
-  y = f(x + k)
-  & \qquad \begin{cases}
-    k = 0 & \qquad \text{Non succede niente} \\
-    k > 0 & \qquad \text{Il grafico si sposta verso destra} \\
-    k < 0 & \qquad \text{Il grafico si sposta verso sinistra} \\
-  \end{cases} \\
+$$
+y = f(x + k) \qquad \begin{cases}
+  k = 0 & \qquad \text{Non succede niente} \\
+  k > 0 & \qquad \text{Il grafico si sposta verso destra} \\
+  k < 0 & \qquad \text{Il grafico si sposta verso sinistra} \\
+\end{cases}
+$$
 
-  y = \alpha f(x)
-  & \qquad \begin{cases}
-    \alpha = 0 & \qquad \text {Il grafico diventa $y=0$} \\
-    \alpha = 1 & \qquad \text {Non succede niente} \\
-    \alpha = -1 & \qquad \text{Il grafico si ribalta rispetto all'asse x} \\
-    \alpha > 1 & \qquad \text{Il grafico si dilata verticalmente} \\
-    0 < \alpha < 1 & \qquad \text{Il grafico si stringe verticalmente} \\
-    -1 < \alpha < 0 & \qquad \text{Il grafico si stringe verticalmente e si ribalta rispetto all'asse x} \\
-    \alpha < -1 & \qquad \text{Il grafico si dilata verticalmente e si ribalta rispetto all'asse x} \\
-  \end{cases} \\
+$$
+y = \alpha f(x) \qquad \begin{cases}
+  \alpha = 0 & \qquad \text {Il grafico diventa $y=0$} \\
+  \alpha = 1 & \qquad \text {Non succede niente} \\
+  \alpha = -1 & \qquad \text{Il grafico si ribalta rispetto all'asse x} \\
+  \alpha > 1 & \qquad \text{Il grafico si dilata verticalmente} \\
+  0 < \alpha < 1 & \qquad \text{Il grafico si stringe verticalmente} \\
+  -1 < \alpha < 0 & \qquad \text{Il grafico si stringe verticalmente e si ribalta rispetto all'asse x} \\
+  \alpha < -1 & \qquad \text{Il grafico si dilata verticalmente e si ribalta rispetto all'asse x} \\
+\end{cases}
+$$
 
-  y = f(\beta x)
-  & \qquad \begin{cases}
-    \beta = 0 & \qquad \text {Il grafico diventa $y = f(0)$} \\
-    \beta = 1 & \qquad \text {Non succede niente} \\
-    \beta = -1 & \qquad \text{Il grafico si ribalta rispetto all'asse y} \\
-    \beta > 1 & \qquad \text{Il grafico si restringe orizzontalmente} \\
-    0 < \beta < 1 & \qquad \text{Il grafico si dilata orizzontalmente} \\
-    -1 < \beta < 0 & \qquad \text{Il grafico si dilata orizzontalmente e si ribalta rispetto all'asse y} \\
-    \beta < -1 & \qquad \text{Il grafico si restringe orizzontalmente e si ribalta rispetto all'asse y} \\
-  \end{cases} \\
+$$
+y = f(\beta x) \qquad \begin{cases}
+  \beta = 0 & \qquad \text {Il grafico diventa $y = f(0)$} \\
+  \beta = 1 & \qquad \text {Non succede niente} \\
+  \beta = -1 & \qquad \text{Il grafico si ribalta rispetto all'asse y} \\
+  \beta > 1 & \qquad \text{Il grafico si restringe orizzontalmente} \\
+  0 < \beta < 1 & \qquad \text{Il grafico si dilata orizzontalmente} \\
+  -1 < \beta < 0 & \qquad \text{Il grafico si dilata orizzontalmente e si ribalta rispetto all'asse y} \\
+  \beta < -1 & \qquad \text{Il grafico si restringe orizzontalmente e si ribalta rispetto all'asse y} \\
+\end{cases}
+$$
 
-  y = \left| f(x) \right|
-  & \qquad \text{Il grafico nel III° e IV° quadrante viene ribaltato e sorvapposto a quanto presente nel II° e I° quadrante; III° e IV° sono vuoti} \\
+$$
+y = \left| f(x) \right| \qquad \text{Il grafico nel III° e IV° quadrante viene ribaltato e sorvapposto a quanto presente nel II° e I° quadrante; III° e IV° sono vuoti}
+$$
 
-  y = f\left( \left| x \right| \right)
-  & \qquad \text{Il grafico di I° e IV° viene riflesso e sostituisce quanto presente nel II° e III° quadrante; la funzione diventa pari}
-\end{align*}
+$$
+y = f\left( \left| x \right| \right) \qquad \text{Il grafico di I° e IV° viene riflesso e sostituisce quanto presente nel II° e III° quadrante; la funzione diventa pari}
 $$
 
 ### Limiti di funzioni
@@ -1100,9 +1102,9 @@ $$
 $$
 
 se
+
 $$
 \forall \char"1D4B0 (L) \quad \exists \char"1D4B0(x^*) : x \in \char"1D4B0(x^*) \implies f(x) \in \char"1D4B0(L)
-
 $$
 
 In italiano, il limite a $x^*$ di una funzione è $L$ se per ogni $x$ intorno ad $x^*$, $f(x)$ è intorno a $L$.
@@ -2088,8 +2090,10 @@ _Ricordo che $y = f(x) \implies dy = f'(x) \, dx$_
 #### Dimostrazione
 
 $$
-\int_\alpha^\beta f(\tau) \, d\tau = [F(\tau)]_\alpha^\beta = F(\beta) - F(\alpha) \\
+\int_\alpha^\beta f(\tau) \, d\tau = [F(\tau)]_\alpha^\beta = F(\beta) - F(\alpha)
+$$
 
+$$
 \int_a^b f(\varphi(t))\varphi'(t) \, dt = [F(\varphi(t))]_a^b = F(\varphi(b)) - F(\varphi(a)) = F(\beta) - F(\alpha)
 $$
 
