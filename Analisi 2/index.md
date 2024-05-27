@@ -399,7 +399,7 @@ $$
 Si semplifica anche la risoluzione del problema di Cauchy:
 
 $$
-\underline y(t) = e^{At} \cdot \int_{t_0}^t e^{-A \tau} \cdot \underline b(\tau) d \tau + e^{A(t - t_0)} \underline y(t_0)
+\underline y(t) = e^{A(t - t_0)} \cdot \int_{t_0}^t e^{-A \tau} \cdot \underline b(\tau) d \tau + e^{A(t - t_0)} \underline y(t_0)
 $$
 
 # Serie di funzioni
