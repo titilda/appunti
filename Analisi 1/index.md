@@ -1819,7 +1819,7 @@ _In altre parole, $f$ è differenziabile in $x_0$ se esiste una retta che l'appr
 
 Notare che se $f$ non è differenziabile allora non è neanche derivabile.
 
-Dalla definizione si può vedere come $f$ differenziabile in $x_0$ $\iff$ $f$ è derivabile in $x_0$ con $m = f'(x_0).
+Dalla definizione si può vedere come $f$ differenziabile in $x_0$ $\iff$ $f$ è derivabile in $x_0$ con $m = f'(x_0)$.
 
 Ciò è vero solo per le funzioni a una variabile, nelle funzioni a 2+ variabili si guarda solo la differenziabilità perchè ci sono funzioni non continue ma comunque derivabili
 
