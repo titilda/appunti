@@ -266,7 +266,7 @@ La traduzione è definita se e solo se $x$ è accettata.
 
 Esempio di PDT
 
-![Esempio di PDT preso da un esrcizio](assets/Automi%20Deterministici/PDT.jpg)
+![Esempio di PDT preso da un esercizio](assets/Automi%20Deterministici/PDT.jpg)
 
 I PDT **NON** sono chiusi rispetto a Unione, Intersezione e Complemento.
 
