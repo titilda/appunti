@@ -904,6 +904,7 @@ $$
 | Poisson       | $\text{Pois}(\lambda)$       | $\lambda$           | $\lambda$               |
 | Erlang-$k$    | $\text{Erlang-}k(\lambda)$   | $\frac{k}{\lambda}$ | $\frac{k}{\lambda^2}$   |
 | Laplace       | $\text{Laplace}(\lambda)$    | $0$                 | $\frac{2}{\lambda^2}$   |
+| Pascal-$k$    | $\text{Pascal-}k(\p)$        | $k\frac{1-p}{p}$    | $n\frac{1-p}{p^2}$      |
 
 La pdf delle distribuzioni geometriche e binomiali sono già state [riportate qui](#valore-atteso-e-varianza).
 
@@ -955,4 +956,8 @@ f_X(x) = \frac{\lambda}{2} e^{-\lambda |x|} \\
 F_X(x) = \frac{\lambda}{2} \left( \frac{-e^{\lambda x \text{sgn}(x)}}{\lambda \text{sgn}(x)} + \frac{\text{sgn}(x)}{\lambda} \right)
 $$
 
-<!-- todo: aggiungere tutte le distribuzioni mancanti, oltre a pascal-ke erlang-k; aggiornare la tabella di medie e varianze; aggiungere tabella schematica di confronto tra BP e PP? -->
+## Distribuzione di Poisson
+
+$$
+f_X(x) = \frac{\lambda^n}{n!} e^{-\lambda}
+$$
