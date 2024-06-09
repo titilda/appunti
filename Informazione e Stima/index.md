@@ -688,7 +688,7 @@ Lo stimatore MAP massimizza la probabilità a posteriori, cioè prende la $\thet
 
 Lo **stimatore LMS** tende a minimizzare l'errore quadratico medio.
 
-Siano $c = \hat \theta_{\text{MAP}}(X)$ e $h(c) = E[(\theta - c)^2]$. L'obiettivo è minimizzare l'errore quadratico medio $h(c)$, trovando il valore di $c$ tale per cui
+Siano $c = \hat \theta_{\text{LMS}}(X)$ e $h(c) = E[(\theta - c)^2]$. L'obiettivo è minimizzare l'errore quadratico medio $h(c)$, trovando il valore di $c$ tale per cui
 
 $$
 \frac{d}{dc} h(c) = 0
