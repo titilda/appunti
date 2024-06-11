@@ -2191,3 +2191,21 @@ Qubit può non solo trovarsi a $0$ e $1$, ma anche in sovrapposizione tra i due 
 **Supremazia quantistica:** risolve problemi difficili molto più efficiente che con i computer classici.
 
 I computer quantistici possono risolvere efficientemente i problemi $NP-$difficili? No.
+
+
+
+# Algoritmi
+
+Qui sono presenti tutti gli algoritmi presentati in pseudo-codice
+
+![Insertion-Sort](assets/Algoritmi/Inserention-sort.png)
+
+![Merge Sort](assets/Algoritmi/Merge-sort.png)
+
+![Merge](assets/Algoritmi/Merge.png)
+
+![Counting-sort](assets/Algoritmi/Counting-sort.png)
+
+![Heap Family](assets/Algoritmi/Heap%20Family.png)
+
+![Quick Family](assets/Algoritmi/Quick%20Family.png)
