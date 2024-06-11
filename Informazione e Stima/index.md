@@ -3,6 +3,7 @@ title: "Riassunto estremamente sintetico di Informazione e Stima"
 author:
 - "Andrea Oggioni"
 - "Niccolò Papini"
+- "Emanuel Mihali"
 ---
 
 # Introduzione
@@ -960,4 +961,17 @@ $$
 
 $$
 f_X(x) = \frac{\lambda^n}{n!} e^{-\lambda}
+$$
+
+## Distribuzione di Erlang-k
+
+$$
+f_X(x) = \begin{cases}
+    \frac{(\lambda t)^{k-1}}{(k-1)!} e^{-\lambda t} \lambda & t\ge 0,k>1\\
+    0 & \text{Altrimenti}
+\end{cases}\\
+F_X(x) = \begin{cases}
+    1-\sum\limits_{n=0}^{k-1}{\frac{1}{n!} e^{-\lambda x} (\lambda x)^n} & t\ge 0,k>1\\
+    0 & \text{Altrimenti}
+\end{cases}\\
 $$
