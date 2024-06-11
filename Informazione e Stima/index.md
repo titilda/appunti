@@ -960,7 +960,8 @@ $$
 ## Distribuzione di Poisson
 
 $$
-f_X(x) = \frac{\lambda^n}{n!} e^{-\lambda}
+f_X(x) = \frac{\lambda^n}{n!} e^{-\lambda}\\
+F_X(x) = e^{-\lambda} \sum\limits_{j=0}^{\lfloor k \rfloor}{\frac{\lambda^j}{j!}}\\
 $$
 
 ## Distribuzione di Erlang-k
