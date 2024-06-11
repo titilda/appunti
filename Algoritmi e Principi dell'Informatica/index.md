@@ -834,6 +834,26 @@ $P$ deve essere tale che se $Pre$ vale prima dell'esecuzione, allora $Post$ vale
 
 $\to$ FOL può essere usata per questo scopo.
 
+### Abbreviazioni logiche
+
+- $y=x+1 \ \ \ x<y \land \neg \exist z (x<z \land z<y)$ N.B. è vero se $x$ è l'ultima posizione
+
+- $y=x+2 \ \ \ \exist z(z=x+1 \land y=z+1) $
+
+$\forall k \in \mathbb{N}, k \ge 1$ ($k$ fissato NON si può quantificare !!!)
+
+- $y=x+k : \ \ \exist z (z=x+(k-1) \land y= z+1)$
+
+- $First(x,P) = P(x) \land \forall y (y<x \implies \neg P(y))$
+
+- $Last (x,P) = P(x) \land \forall y (x<y \implies \neg P(y))$
+
+- $Next (x,y,P) = P(x) \land P(y) \land \forall z ((x<z \land z<y)\implies P(z))$
+
+- $Odd(Q,P) = \forall x (Q(x) \iff (First (x,y) \land \exist y \exist z (Next (z,x,P) \land Next (y,z,P) \land Q(y))))$
+
+Vero sse $Q \subseteq P \ Q$ contiene la $I, II, V$ posizione di $P$.
+
 # Computabilità
 
 ### Algoritmo di ricerca
@@ -1028,6 +1048,30 @@ Implicazioni negative
 - C'è una lista sconfinata di problemi interessanti la cui indecidibilità segue banalmente dal teorema di Rice.
 
 Dato $F=\{g\}$, per Rice non è decidibile se una generica TM calcoli $g$ o meno.
+
+#### Teorema di Rice (variante)
+
+Sia $S \subseteq \mathbb{N}$ tale che 
+
+1. $S \not = \empty$
+2. $S \not = \mathbb{N}$
+3. se $s \in S$ e la TM n-esima è equivalente alla TM m-esima allora $m \in S$
+($S$ è l'insieme di tutte e sole le codifiche di certe  TM/prog/funz. computabili)
+
+Allora $S$ non è decidibile.
+
+Esempio di utilizzo
+
+Esistano TM M e M' tali che M è equivalente a M'
+
+$H = \{ n \in \mathbb{N} | M=\lang n \rang \ e\ M(\varepsilon) \downarrow \}$
+è decidibile ?
+
+1. $H \not = \empty$: ci sono TM che terminano su $\varepsilon$
+2. $H \not = \mathbb{N}$: ci sono TM che NON terminano su $\varepsilon$
+3. se $M=M'$ e $\lang M \rang = n$ e $\lang M' \rang = n$ e $n \in H$ allora $H (\varepsilon) \downarrow$ e poichè $M=M'$ anche $M'(\varepsilon) \downarrow$ e dunque $n' \in H$
+
+Quindi Rice è soddisfatto e $H$ **NON** è decidibile.
 
 #### Riduzione di problemi
 
