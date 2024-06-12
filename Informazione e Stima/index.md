@@ -961,14 +961,14 @@ $$
 
 $$
 f_X(x) = \frac{\lambda^n}{n!} e^{-\lambda}\\
-F_X(x) = e^{-\lambda} \sum\limits_{j=0}^{\lfloor k \rfloor}{\frac{\lambda^j}{j!}}\\
+F_X(x) = e^{-\lambda} \sum\limits_{j=0}^{\lfloor n \rfloor}{\frac{\lambda^j}{j!}}\\
 $$
 
 ## Distribuzione di Erlang-k
 
 $$
 f_X(x) = \begin{cases}
-    \frac{(\lambda t)^{k-1}}{(k-1)!} e^{-\lambda t} \lambda & t\ge 0,k>1\\
+    \frac{(\lambda x)^{k-1}}{(k-1)!} e^{-\lambda x} \lambda & x\ge 0,k>1\\
     0 & \text{Altrimenti}
 \end{cases}\\
 F_X(x) = \begin{cases}
