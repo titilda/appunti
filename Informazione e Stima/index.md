@@ -875,6 +875,14 @@ L'entropia è il numero medio di bit di informazione che ci si può aspettare da
 
 Per convenzione $0 \cdot \log_2 \frac{1}{0} = 0$. Non esistono variabili aleatorie con entropia negativa.
 
+Un codice è detto **prefix-free** se ogni codeword non è prefisso di un'altra codeword. Per la disuguaglianza di Kraft-McMillain, esiste un codebook prefix-free formato da codeword di lunghezza $l_j$ se e solo se $\sum\limits_{j = 1}^{m} 2^{-l_j} \le 1$.
+
+Sia $L$ la lunghezza di una codeword, allora vale che
+
+$$
+E[L] = \sum_{j=1}^{m} l_j P_X(x_j) \ge H(X)
+$$
+
 # Disuguaglianza di Jensen
 
 La disuguaglianza di Jensen afferma che: siano $\lambda_1, \lambda_2, \dots, \lambda_n$ tali per cui $\sum \lambda_i = 1$ e $\lambda_i \ge 0$ $\forall i$, allora
@@ -905,7 +913,7 @@ $$
 | Poisson       | $\text{Pois}(\lambda)$       | $\lambda$           | $\lambda$               |
 | Erlang-$k$    | $\text{Erlang-}k(\lambda)$   | $\frac{k}{\lambda}$ | $\frac{k}{\lambda^2}$   |
 | Laplace       | $\text{Laplace}(\lambda)$    | $0$                 | $\frac{2}{\lambda^2}$   |
-| Pascal-$k$    | $\text{Pascal-}k(p)$        | $k\frac{1-p}{p}$    | $n\frac{1-p}{p^2}$      |
+| Pascal-$k$    | $\text{Pascal-}k(p)$         | $k\frac{1-p}{p}$    | $n\frac{1-p}{p^2}$      |
 
 La pdf delle distribuzioni geometriche e binomiali sono già state [riportate qui](#valore-atteso-e-varianza).
 
