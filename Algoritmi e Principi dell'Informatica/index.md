@@ -565,7 +565,7 @@ Elemento di $V_N^+ \times V^* (\lang \alpha, \beta \rang | \alpha \in V_N^+, \be
 
 Si indica con $\alpha \to \beta$
 
-- $\alpha$ sequenza si,boli **NON** terminali.
+- $\alpha$ sequenza simboli **NON** terminali.
 - $\beta$ sequenza (potenzialmente vuota) di simboli (terminali o non)
 
 ### Gerarchia Chomsky
