@@ -817,7 +817,7 @@ $$
 La descrizione dell'algoritmo è la seguente: prima di tutto si generano $Y_i$ iid, poi si calcola
 
 $$
-\hat P_X(A) = \frac{1}{n} \sum_{i = 1}^n \mathbf{1}(Y_i \in A) \frac{f_X(Y_i)}{f_X(Y_i)}
+\hat P_X(A) = \frac{1}{n} \sum_{i = 1}^n \mathbf{1}(Y_i \in A) \frac{f_X(Y_i)}{f_Y(Y_i)}
 $$
 
 Logicamente, si deve scegliere $f_Y$ in modo tale da avere $P_Y(A) \gg P_X(A)$.
