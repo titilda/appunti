@@ -764,7 +764,7 @@ Per generare una gaussiana semplicemente, è possibile scomporla in segno e modu
 Per generare $S$:
 
 1. Genero $U \sim [0, 1]$.
-2. Se $U \lt \frac{1}{2}$ pongo $S = -1$, altrimenti $S = +1$ altrimenti torno al punto 1.
+2. Se $U \lt \frac{1}{2}$ pongo $S = -1$, altrimenti $S = +1$.
 
 Per generare $|Z|$:
 
