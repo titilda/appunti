@@ -622,7 +622,7 @@ $$
 Derivazioni
 $$
 S \implies ab \\
-S \implies aSb \implies aabbb \\
+S \implies aSb \implies aabb \\
 S \implies aSb \implies aaSbb \implies aaabbb
 $$
 Generalizzo $L(G_2) = \{a^nb^n|n> 0\}$
@@ -799,7 +799,7 @@ In FOL: $\forall x (x \in L_4 \longleftrightarrow \# (x,a)= \# (x,b))$
 - Assegnamento delle variabili del $II$ ordine (insieme $v_2$) è una funzione $v_2 : V_2 \to ([0..|w|-1])$
 
     - $w, v_1, v_2 \vDash X(x) \ sse\ v_1(x) \in v_2 (x)$
-    - $w, v_1, v_2 \vDash \exist X (\phi) \ sse \ w, v_1, v_2' \vDash \phi \ per \ qualche \ v_2' con v_2'(Y); Y\not ={x}$
+    - $w, v_1, v_2 \vDash \exist X (\phi) \ sse \ w, v_1, v_2' \vDash \phi \ per \ qualche \ v_2' \ con \ v_2'(Y); Y\not ={x}$
 - La formula descrive il linguaggio $L_p$
 
 $\exist P (\forall x (\neg P(0) \land (\neg P(x) \Longleftrightarrow P(x+1))\land a(x)\land (last(x) \implies P(x))))$
@@ -808,7 +808,7 @@ $\exist P (\forall x (\neg P(0) \land (\neg P(x) \Longleftrightarrow P(x+1))\lan
 
 Da una MSO $\phi$ è possibile costruire un FSA (**Teorema di Büchi-Elgot-Trakhtenbrot**)
 
-I linguaggi definibili da fomrule MSO è linguaggi regolari
+I linguaggi definibili da formule MSO sono linguaggi regolari
 
 ![](assets/Mappa%20Linguaggi.jpg)
 
@@ -838,7 +838,7 @@ $\to$ FOL può essere usata per questo scopo.
 
 - $y=x+1 \ \ \ x<y \land \neg \exist z (x<z \land z<y)$ N.B. è vero se $x$ è l'ultima posizione
 
-- $y=x+2 \ \ \ \exist z(z=x+1 \land y=z+1) $
+- $y=x+2 \ \ \ \exist z(z=x+1 \land y=z+1)$
 
 $\forall k \in \mathbb{N}, k \ge 1$ ($k$ fissato NON si può quantificare !!!)
 
