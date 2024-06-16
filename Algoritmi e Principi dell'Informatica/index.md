@@ -1534,6 +1534,8 @@ Ne dovrei prendere una che soddisfa l'ipotesi di hashing uniforme semplice, per 
 
 $h(k) = k\ mod\ m$
 
+Ovvero prendo solo il resto della divisione.
+
 Facile da realizzare e veloce
 
 Evitare valori di $m$ come:
@@ -1550,7 +1552,7 @@ m=5
 \\
 Inseriamo:\ 38,12,18
 \\
-\frac{5}{38}*5=3,...\ hash(38)= 3
+\frac{38}{5}=3\ hash(38)= 3
 \\
 si\ ha\ h(38)=3, h(12)=2, h(18)=3
 \\
@@ -1592,6 +1594,7 @@ h(38)=2,h(12)=2,h(18)=0
 \\
 T=[lista(18),NIL,lista(12,38),NIL,NIL]
 $$
+
 ### Indirizzamento aperto
 
 Altro metodo per evitare collisioni
