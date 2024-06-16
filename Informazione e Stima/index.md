@@ -52,6 +52,7 @@ Siano $A$ e $B$ due eventi. Vale che $P(B) = P(\{B \cap A\} \cup \{B \cap A^C \}
 
 Vale la regola detta **chain-rule**: $P(A_1 \cap A_2 \cap \dots \cap A_n) = P(A_1) \cdot P(A_2 | A_1) \cdot P(A_3 | A_1 \cap A_2) + \dots + P(A_n | A_1 \cap A_2 \cap \dots \cap A_{n-1})$.
 
+<a id="probabilita_totali"></a>
 Vale il **teorema delle probabilità totali**: sia $\{A_1, A_2, \dots, A_n\} \sube \Omega$ una partizione di $\Omega$ e $B \sube \Omega$, allora
 
 $$
@@ -984,3 +985,71 @@ F_X(x) = \begin{cases}
     0 & \text{Altrimenti}
 \end{cases}\\
 $$
+
+## Qualcosa di interessante
+
+Sappiamo come comportarci con i processi di Poisson , se dobbiamo calcolare la probabilità che <b>K</b> arrivi avvengano in un intervallo <b>[0,T]</b> facciamo riferimento alla ddp e siamo apposto.
+
+Ma cosa succederebbe se la T fosse una variabile aleatoria?
+La legge degli arrivi smetterebbe di essere di tipo Poisson, a quale legge dobbiamo fare riferimento quindi? E soprattutto come la ricaviamo?
+
+L'esercizio 7 dell'esercitazioni dello Scazzoli ( l'ultima ) propone un metodo utile per gestire intervalli di tipo esponenziale tramite discretizzazione.
+
+Qui vi farò vedere un metodo più generale , universale diciamo.
+
+<b>La situazione è la seguente:</b>
+$$P \sim Poisson( \lambda)$$
+$$T \sim Exp(v)$$
+
+Devo trovare la ddp degli arrivi nell'intervallo <b>[0,T]</b>
+Dal [teorema delle probabilità totali](#probabilita_totali) applicato a v.a. continue sappiamo che:
+
+$$ f_X(y)=\int_{-\infty}^\infty f_{X|Y}(x|y) f_Y(y) dy$$
+
+Quindi per trovare la legge dei k arrivi in t tempo scriveremo:
+
+$$ f_P(p)=\int_{0}^\infty \frac{(\lambda t)^k}{k!} e^{-\lambda t}  *ve^{-vt}dt$$
+
+Facile no? Provate a risolverlo.
+
+Se pensate di non riuscire a risolverlo , tranquilli, significa semplicemente che siete ancora sani di mente.
+
+**NESSUN QUANTITATIVO DI APPLICAZIONI DEL METODO DI INTEGRAZIONE PER PARTI O SOSTITUZIONE VI PERMETTERÁ DI RISOLVERE QUESTO INTEGRALE**
+
+Riscriviamo meglio questo integrale : **tiriamo fuori le costanti:**
+
+$$ f_P(p)=C *\int_{0}^\infty t^k e^{-(\lambda+v) t} dt$$
+
+La situzione non sembra essere molto migliorata , ma la struttura di questo integrale ci permette di ricondurci ad una funzione molto particolare:
+
+## Introduciamo la funzione $ \Gamma(K) $ 
+La funzione $\Gamma(K)$ è particolarmente utile :
+* è una funzione ricorsiva: $ K* \Gamma(K) =\Gamma(K+1)$.
+* la sua applicazione è immediata una volta individuata.
+
+La sua struttura è la seguente:
+
+$$\Gamma(K)=\int_{0}^\infty t^{K-1}*e^{-t} dt $$
+
+**OK, AND?** A cosa ci serve questa informazione? Abbiamo semplicemente dato un nome al nostro problema , l'equivalente di dare un nome al proprio mal di pancia.
+
+Se non fosse che la funzione $\Gamma(K)$ è spesso nota con un altra struttura, questa:
+$$\Gamma(K)=(K-1)!$$
+
+con un po di ritocco tramite sostituzione di $(\lambda+v)t=u $  il nostro integrale diventa:
+
+$$ f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*\int_{0}^\infty u^k e^{-u} du$$
+
+che è quindi:
+
+$$ f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*\Gamma(k+1)$$
+$$ f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*k!$$
+
+Sostituiamo la $C$ con il suo valore originale:
+$$ f_P(p)= \frac{(\lambda )^k}{k!}*v*\frac{1}{(\lambda+v)^{k+1}}*k!$$
+Semplifichiamo il tutto:
+$$ f_P(p)= \left( \frac{v}{\lambda+v}\right) \left( \frac{\lambda}{\lambda+v}\right)^k$$
+
+Questa è la legge degli arrivi che stavamo cercando.
+Non abbiamo discretizzato né fatto nessun ragionamento sui processi , ma risolto un "**semplice**" integrale.
+
