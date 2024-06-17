@@ -1082,6 +1082,18 @@ Un problema $P'$ è **ridotto** a un problema $P$ se un algoritmo per risolvere 
 1. Determina una corrispondente istanza di $P$
 2. Costruisce algoritmicamente la soluzione dell'istanza di $P'$ dalla soluzione dell'sistanza di $P$
 
+#### Riduzione (Variante)
+
+Siano $A,B \subseteq \mathbb{N}$ e $f: \mathbb{N} \to \mathbb{N}$, $f$ è una riduzione da $A$ a $B$.
+
+1. $f$ è **TOTALE** e **COMPUTABILE**
+2. se $n \in A$ allora $f(a) \in B$
+3. se $n \not \in A$ allora $f(a) \not \in B$
+
+##### Teorema 
+
+Se $A$ **non** è ricorsivo allora $B$ **non** è ricorsivo.
+
 # Complessità del calcolo
 
 Per la tesi di Curch-Turing, un problema è calcolabile o meno indipendentemente dallo strumento usato.
@@ -1089,7 +1101,7 @@ Per la tesi di Curch-Turing, un problema è calcolabile o meno indipendentemente
 Per la complessità del calcolo ?
 
 - Una somma unaria ha efficienza diversa da una di basa $b > 1$
-- Calcolare una traduzione $y=T(x)$ decidendo se $\exist z \in L_\tau = \{x \$ y | y=\tau (x)\}$ può essere molto meno efficiente del calcolare la traduzione in qualche caso.
+- Calcolare una traduzione $y=T(x)$ decidendo se $\exist z \in L_\tau = \{x \ y | y=\tau (x)\}$ può essere molto meno efficiente del calcolare la traduzione in qualche caso.
 
 Data la computazione $c_0 \vdash c_1 \vdash c_2 \vdash ... \vdash c_r$ di $M$ (a k nastri) deterministica.
 
