@@ -1097,6 +1097,7 @@ Se $A$ **non** è ricorsivo allora $B$ **non** è ricorsivo.
 #### Caratteristiche di alcuni linguaggi
 
 Regolari $\implies$ Ricorsivi
+
 Context-free $\implies$ Ricorsivo
 
 Context-Sensitive $\implies$ Ricorsivo
