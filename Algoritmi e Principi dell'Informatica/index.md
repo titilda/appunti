@@ -1094,6 +1094,17 @@ Siano $A,B \subseteq \mathbb{N}$ e $f: \mathbb{N} \to \mathbb{N}$, $f$ è una ri
 
 Se $A$ **non** è ricorsivo allora $B$ **non** è ricorsivo.
 
+#### Caratteristiche di alcuni linguaggi
+
+Regolari $\implies$ Ricorsivi
+Context-free $\implies$ Ricorsivo
+
+Context-Sensitive $\implies$ Ricorsivo
+
+Ricorsivo $\implies$ Ricorsivamente enumerabile
+
+Ciò implica che sicuramente un linguaggio ricorsivo è R.E. ma non vuol dire che lo sia **sempre** anche il contrario
+
 # Complessità del calcolo
 
 Per la tesi di Curch-Turing, un problema è calcolabile o meno indipendentemente dallo strumento usato.
