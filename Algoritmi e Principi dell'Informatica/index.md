@@ -128,7 +128,7 @@ Esempio di un FSA:
 
 Sono FSA con 2 nastri.
 
-È una tupla $ \lang Q, I, \delta, q_0, F, O, \eta \rang$:
+È una tupla $\lang Q, I, \delta, q_0, F, O, \eta \rang$:
 
 - $\lang Q, I, \delta, q_0, F \rang$ come gli accettori (FSA)
 - $O$ alfabeto di uscita
@@ -705,9 +705,9 @@ N.B. "." indica qualunque carattere, **NON** concatenazione.
 
 [$\alpha$] indica un singolo carattere $\in \alpha ([abc]$ indica $\{a, b, c\})$.
 
-[^$\alpha$] negazione: qualunque carattere non in $\alpha$.
+$[\^\ \alpha]$ negazione: qualunque carattere non in $\alpha$.
 
-^ e $ indicano $\varepsilon$ corrispettivamente all'inizio e alla fine della riga.
+^ e \$ indicano $\varepsilon$ corrispettivamente all'inizio e alla fine della riga.
 
 *, +, |, (, ) uguali a sempre.
 
@@ -995,8 +995,7 @@ Semidecidibile se c'è un algoritmo che dice si se la risposta è si
 
 Concentriamoci sui problemi a risposta binaria:
 
-Problema= $x$ appartiene all'insieme $S? (S \le N)
-$
+Problema= $x$ appartiene all'insieme $S? (S \le N)$
 
 $C_S(x)=\ se \ x \in S\ allora\ 1\ altrimenti\ 0$
 
@@ -1591,7 +1590,7 @@ cioè $h(k)=\lfloor m(kA\ mod\ 1)\rfloor$ di cui $x\ mod\ 1 = x - \lfloor x \rfl
 
 $m$ può essere valore di $A$
 
-È meglio prendere $u valore di $A$ che sia della forma $s/2^w$ con $w$ dimensione della parola di memoria del calcolatore.
+È meglio prendere un valore di $A$ che sia della forma $s/2^w$ con $w$ dimensione della parola di memoria del calcolatore.
 
 Un valore di $A$ proposto (da Knuth) è:
 $$
