@@ -3,6 +3,7 @@ title: "Riassunto estremamente sintetico di Informazione e Stima"
 author:
 - "Andrea Oggioni"
 - "Niccolò Papini"
+- "Alessandro Modica"
 - "Emanuel Mihali"
 ---
 
@@ -14,7 +15,7 @@ Siano $A$ e $B$ due eventi, allora valgono i seguenti assiomi:
 
 1. Assioma di **non-negatività**: $P(A) \ge 0$
 2. Assioma di **normalizzazione**: $P(\Omega) = 1$
-3. Assioma di **additività**: se $A \cap B = \emptyset$ allora $P(A \cup B) = P(a) + P(B)$
+3. Assioma di **additività**: se $A \cap B = \emptyset$ allora $P(A \cup B) = P(A) + P(B)$
 
 Dal terzo assioma segue il **teorema delle probabilità totali**: siano $A_1, A_2, \dots, A_n$ $n$ eventi disgiunti, allora
 
@@ -50,7 +51,7 @@ Le probabilità condizionate seguono gli assiomi esattamente come le probabilit�
 
 Siano $A$ e $B$ due eventi. Vale che $P(B) = P(\{B \cap A\} \cup \{B \cap A^C \})$.
 
-Vale la regola detta **chain-rule**: $P(A_1 \cap A_2 \cap \dots \cap A_n) = P(A_1) \cdot P(A_2 | A_1) \cdot P(A_3 | A_1 \cap A_2) + \dots + P(A_n | A_1 \cap A_2 \cap \dots \cap A_{n-1})$.
+Vale la regola detta **chain-rule**: $P(A_1 \cap A_2 \cap \dots \cap A_n) = P(A_1) \cdot P(A_2 | A_1) \cdot P(A_3 | A_1 \cap A_2) \cdot \dots \cdot P(A_n | A_1 \cap A_2 \cap \dots \cap A_{n-1})$.
 
 <a id="probabilita_totali"></a>
 Vale il **teorema delle probabilità totali**: sia $\{A_1, A_2, \dots, A_n\} \sube \Omega$ una partizione di $\Omega$ e $B \sube \Omega$, allora
