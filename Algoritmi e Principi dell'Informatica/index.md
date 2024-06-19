@@ -47,7 +47,7 @@ $L_1 \bigcap L_2 = \{bc, ca\}$ **SOLO** elementi comuni.
 
 ### Differenza ($L_1 \setminus L_2$ o $L_1 - L_2$)
 
-$L_1 \setminus L_2 = \{ba, bb, cb, cc\}$ **SOLO** elementi **NON** comuni.
+$L_1 \setminus L_2 = \{\varepsilon, a, b, c \}$ **SOLO** elementi **NON** comuni.
 
 ### Complemento ($L^c = A^* \setminus L$)
 
