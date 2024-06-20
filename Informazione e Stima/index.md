@@ -665,7 +665,7 @@ Il tempo $Y_k$ al $k$-esimo arrivo è distribuito come $\text{Erlang-}k(\lambda)
 
 Lo splitting di un $PP(\lambda)$ che avviene con probabilità $\delta$ genera un $PP(\lambda \delta)$.
 
-Il mergind di $PP(\lambda)$ con $PP(\delta)$ genera un $PP(\lambda + \delta)$.
+Il merging di $PP(\lambda)$ con $PP(\delta)$ genera un $PP(\lambda + \delta)$.
 
 # Stimatori
 
@@ -987,95 +987,95 @@ F_X(x) = \begin{cases}
 \end{cases}\\
 $$
 
-## Qualcosa di interessante
+## Qualcosa che può servire
 
-Sappiamo come comportarci con i processi di Poisson, se dobbiamo calcolare la probabilità che $K$ arrivi avvengano in un intervallo $[0, T]$ facciamo riferimento alla ddp e siamo apposto.
+Sappiamo come comportarci con i processi di Poisson , se dobbiamo calcolare la probabilità che <b>K</b> arrivi avvengano in un intervallo <b>[0,T]</b> facciamo riferimento alla ddp e siamo apposto.
 
-Ma cosa succederebbe se la $T$ fosse una variabile aleatoria?
-La legge degli arrivi smetterebbe di essere di tipo Poisson, a quale legge dobbiamo fare riferimento quindi? E, soprattutto, come la ricaviamo?
+Ma cosa succederebbe se la T fosse una variabile aleatoria?
+La legge degli arrivi smetterebbe di essere di tipo Poisson, a quale legge dobbiamo fare riferimento quindi? E soprattutto come la ricaviamo?
 
-Qui vi farò vedere un metodo generale, universale diciamo.
+**METODO CLASSICO**: 
+Questo procedimento fa uso della possibilità di discretizzare un processo di Poisson per poter ricavare informazioni utili sull'ordine e la probabilità di determinate combinazioni di "<b>*arrivi*</b>".
 
-**La situazione è la seguente:**
+<b>La situazione è la seguente:</b>
+$$P \sim Poisson( \lambda)$$
+$$T \sim Exp(v)$$
 
-$$
-P \sim Poisson( \lambda) \\
-T \sim Exp(v)
-$$
+In questo caso la varibile aleatoria esponenziale è un caso *conveniente* che può essere interpretato come il tempo ad un singolo arrivo di un altro processo di Poisson con parametro $v$.
+Procediamo quindi ad effettuare un [Merge](#processi-di-poisson) dei due processi da ciò otteniamo il processo:
+$$M \sim Poisson(v+\lambda)$$
+Una volta fatto ciò procediamo a discretizzare la situazione corrente:
 
-Devo trovare la ddp degli arrivi nell'intervallo $[0, T]$
+Sappiamo che in un certo intervallo  $t \sim Exp(v)$ avverrà un evento del processo 1 ( quello di parametro $v$) mentre avverranno un certo quantitativo di eventi del processo 2 (quello di parametro $\lambda$) , sappiamo che quando dobbiamo dicretizzare un processo di Poisson che abbiamo creato attraverso un merge, dobbiamo considerare la probabilità che l'evento sia un arrivo di tipo 1 o di tipo 2 come il parametro del processo in questione sul parametro del processo Merge:
+
+$$P(Evento_1)=\left( \frac{v}{v+ \lambda} \right)$$
+$$P(Evento_2)=\left( \frac{\lambda}{v+ \lambda}\right)$$
+
+A questo punto ci possiamo calcolare la probabilità che L-esimo arrivo sia di tipo 1 , usando la [distribuzione geometrica](#variabili-aleatorie-discrete):
+
+$$P(L=l)=\left( \frac{v}{v+ \lambda} \right) *\left( \frac{\lambda}{v+ \lambda}\right)^{l-1}$$
+
+Noi siamo però interessati alla probabilità che l'ultimo evento sia di tipo 1 ma agli L-1 (che chiameremo k )arrivi precendenti, quindi possiamo riformulare il problema in questo modo:
+
+$$P(K=k)=P(L-1=K)=P(L=k+1)=\left( \frac{v}{v+ \lambda} \right) *\left( \frac{\lambda}{v+ \lambda}\right)^{k}$$
+
+Questa è la soluzione che cercavamo, potete notare però come questo metodo funzioni soltanto perché la v.a. che controllava l'intervallo di tempo era esponenziale e perciò era possibile simulare un processo di Poisson usando essa come distribuzione del tempo di un arrivo di tale processo, ma se la variabile aleatoria non fosse stata esponenziale? E se fosse stata per esempio **Gaussiana**? A quel punto questo metodo vi verrà poco in aiuto se non conoscete i processi **Gaussiani** che non sono però argomento di questa materia.
+
+**Qui vi farò vedere un metodo più generale , universale diciamo.**
+
+<b>La situazione è la stessa di prima:</b>
+$$P \sim Poisson( \lambda)$$
+$$T \sim Exp(v)$$
+
+Devo trovare la ddp degli arrivi nell'intervallo <b>[0,T]</b>
 Dal [teorema delle probabilità totali](#probabilita_totali) applicato a v.a. continue sappiamo che:
 
-$$
-f_X(y)=\int_{-\infty}^\infty f_{X|Y}(x|y) f_Y(y) dy
-$$
+$$ f_X(y)=\int_{-\infty}^\infty f_{X|Y}(x|y) f_Y(y) dy$$
 
-Quindi per trovare la legge dei $k$ arrivi in $t$ tempo scriveremo:
+Quindi per trovare la legge dei k arrivi in t tempo scriveremo:
 
-$$
-f_P(p)=\int_{0}^\infty \frac{(\lambda t)^k}{k!} e^{-\lambda t} *ve^{-vt}dt
-$$
+$$ f_P(p)=\int_{0}^\infty \frac{(\lambda t)^k}{k!} e^{-\lambda t}  *ve^{-vt}dt$$
 
 Facile no? Provate a risolverlo.
 
-Se pensate di non riuscire a risolverlo, tranquilli, significa semplicemente che siete ancora sani di mente.
+Se pensate di non riuscire a risolverlo , tranquilli, significa semplicemente che siete ancora sani di mente.
 
 **NESSUN QUANTITATIVO DI APPLICAZIONI DEL METODO DI INTEGRAZIONE PER PARTI O SOSTITUZIONE VI PERMETTERÁ DI RISOLVERE QUESTO INTEGRALE**
 
-Riscriviamo meglio questo integrale: **tiriamo fuori le costanti:**
+Riscriviamo meglio questo orrore : **tiriamo fuori le costanti:**
 
-$$
-f_P(p)=C *\int_{0}^\infty t^k e^{-(\lambda+v) t} dt
-$$
+$$ f_P(p)=C *\int_{0}^\infty t^k e^{-(\lambda+v) t} dt$$
 
-La situzione non sembra essere molto migliorata, ma la struttura di questo integrale ci permette di ricondurci ad una funzione molto particolare:
+La situzione non sembra essere molto migliorata , ma la struttura di questo integrale ci permette di ricondurci ad una funzione molto particolare:
 
-## Introduciamo la funzione $\Gamma(K)$
-
-La funzione $\Gamma(K)$ è particolarmente utile:
-
-- è una funzione ricorsiva: $K* \Gamma(K) =\Gamma(K+1)$.
-- la sua applicazione è immediata una volta individuata.
+## Introduciamo la funzione $ \Gamma(K) $ 
+La funzione $\Gamma(K)$ è particolarmente utile :
+* è una funzione ricorsiva: $ K* \Gamma(K) =\Gamma(K+1)$.
+* la sua applicazione è immediata una volta individuata.
 
 La sua struttura è la seguente:
 
-$$
-\Gamma(K)=\int_{0}^\infty t^{K-1}*e^{-t} dt
-$$
+$$\Gamma(K)=\int_{0}^\infty t^{K-1}*e^{-t} dt $$
 
-**OK, AND?** A cosa ci serve questa informazione? Abbiamo semplicemente dato un nome al nostro problema, l'equivalente di dare un nome al proprio mal di pancia.
+**OK, AND?** A cosa ci serve questa informazione? Abbiamo semplicemente dato un nome al nostro problema , l'equivalente di dare un nome al proprio mal di pancia.
 
 Se non fosse che la funzione $\Gamma(K)$ è spesso nota con un altra struttura, questa:
+$$\Gamma(K)=(K-1)!$$
 
-$$
-\Gamma(K)=(K-1)!
-$$
+con un pò di ritocco tramite sostituzione di $(\lambda+v)t=u $  il nostro integrale diventa:
 
-con un po' di ritocco tramite sostituzione di $(\lambda+v)t=u$ il nostro integrale diventa:
-
-$$
-f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*\int_{0}^\infty u^k e^{-u} du
-$$
+$$ f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*\int_{0}^\infty u^k e^{-u} du$$
 
 che è quindi:
 
-$$
-f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*\Gamma(k+1) \\
-f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*k!
-$$
+$$ f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*\Gamma(k+1)$$
+$$ f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*k!$$
 
 Sostituiamo la $C$ con il suo valore originale:
-
-$$
-f_P(p)= \frac{(\lambda )^k}{k!}*v*\frac{1}{(\lambda+v)^{k+1}}*k!
-$$
-
+$$ f_P(p)= \frac{(\lambda )^k}{k!}*v*\frac{1}{(\lambda+v)^{k+1}}*k!$$
 Semplifichiamo il tutto:
-
-$$
-f_P(p)= \left( \frac{v}{\lambda+v}\right) \left( \frac{\lambda}{\lambda+v}\right)^k
-$$
+$$ f_P(p)= \left( \frac{v}{\lambda+v}\right) \left( \frac{\lambda}{\lambda+v}\right)^k$$
 
 Questa è la legge degli arrivi che stavamo cercando.
-Non abbiamo discretizzato né fatto nessun ragionamento sui processi, ma risolto un "**semplice**" integrale.
+Non abbiamo discretizzato né fatto nessun ragionamento sui processi , ma risolto un "**semplice**" integrale.
 
