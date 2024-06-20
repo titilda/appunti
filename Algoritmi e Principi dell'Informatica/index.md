@@ -481,9 +481,7 @@ ND **NON** aggiunge potere alle TM
 ### PDA non deterministici (NPDA)
 L e $\varepsilon$-mosse avevano il seguente vincolo:
 
-$$
-\delta(q, \varepsilon, A) \not ={\bot}\implies\delta(q, i, A) = \bot; \forall i \in I
-$$
+$\delta(q, \varepsilon, A) \not ={\bot}\implies\delta(q, i, A) = \bot; \forall i \in$ I
 
 Senza di esso i PDA sarebbero intrinsicamente ND.
 
@@ -591,16 +589,14 @@ $\alpha = \alpha_1 \alpha_2 \alpha_3, \beta = \alpha_1 \beta_2 \alpha_3$ e $\alp
 
 $\alpha_2$ riscritta come $\beta_2$ nel contesto $\lang \alpha_1, \alpha_3 \rang$
 
-Es.
+Es. (Context-Sensitive)
 
-$$
-V_N = \{S,A, B, C, D\}\\
+$V_N = \{S,A, B, C, D\}\\
 V_T = \{a, b, c\}\\
 S\\
 P = \{S \to AB, BA \to cCD, CBS \to ab, A \to \varepsilon\}\\
 aaBAS \implies aacCDS \\
-bcCBSAdd \implies bcabAdd
-$$
+bcCBSAdd \implies bcabAdd$
 
 #### Linguaggio generato
 
@@ -613,18 +609,21 @@ Il linguaggio generato da $G$ è l'insieme di tutte le stringhe:
 - Solo simboli terminali
 - Derivante da $S$ in $n$ numeri di passi con $n \ge 1$
 
-ES.
+ES. (Context-Free)
 
-$$
-G_2 = \lang \{S\}, \{a, b\}, \{S \to a Sb | ab\}, S \rang \\
-S \to aSb |ab = S \to aSb, S \to ab
-$$
+
+$G_2 = \lang \{S\}, \{a, b\}, \{S \to a Sb | ab\}, S \rang \\
+S \to aSb |ab = S \to aSb, S \to ab$
+
 Derivazioni
-$$
-S \implies ab \\
-S \implies aSb \implies aabb \\
-S \implies aSb \implies aaSbb \implies aaabbb
-$$
+
+$S \implies ab$
+
+$S \implies aSb \implies aabb $
+
+$S \implies aSb \implies aaSbb \implies aaabbb$
+
+
 Generalizzo $L(G_2) = \{a^nb^n|n> 0\}$
 
 ### Regular Grammar (RG) VS FSA
@@ -851,6 +850,8 @@ $\forall k \in \mathbb{N}, k \ge 1$ ($k$ fissato NON si può quantificare !!!)
 - $Next (x,y,P) = P(x) \land P(y) \land \forall z ((x<z \land z<y)\implies P(z))$
 
 - $Odd(Q,P) = \forall x (Q(x) \iff (First (x,y) \land \exist y \exist z (Next (z,x,P) \land Next (y,z,P) \land Q(y))))$
+
+- $OddCard(P)= \exists Q(Odd(Q,P) \land \forall x (Last(x,P) \implies Q(x)) \land \exist x P(x))$ dice se $|P|$ è dispari.
 
 Vero sse $Q \subseteq P \ Q$ contiene la $I, II, V$ posizione di $P$.
 
@@ -1124,14 +1125,14 @@ $M$ è deterministica $\implies$ computazione unica sull'ingresso $x$
 
 Complessità spaziale
 
-$$
-S_M(x) = \Sigma _{j=1}^k max_{i \in \{0,...,r\}} (|a_{ij}|)
-$$
+
+$S_M(x) = \Sigma _{j=1}^k max_{i \in \{0,...,r\}} (|a_{ij}|)$
+
 
 Somma della quantità massime occupate
-$$
-\forall x: \dfrac{S_M (x)}{k} \le T_M (x)
-$$
+
+$\forall x: \dfrac{S_M (x)}{k} \le T_M (x)$
+
 
 Notazione
 
@@ -1158,22 +1159,22 @@ Proprità notevoli
 $f(n) \in \Theta(g(n)) \iff f(n) \in \Omicron(g(n)) \land f(n) \in \Omega (g(n))$
 
 Transitività
-$$
-f(n) \in \Theta(g(n)) \land g(n) \in \Theta(h(n)) \implies f(n) \in \Theta (h(n))
-\\
-f(n) \in \Omicron(g(n)) \land g(n) \in \Omicron(h(n)) \implies f(n) \in \Omicron(h(n))
-\\
-f(n) \in \Omega(g(n)) \land g(n) \in \Omega(h(n)) \implies f(n) \in \Omega(h(n))
-$$
+
+$f(n) \in \Theta(g(n)) \land g(n) \in \Theta(h(n)) \implies f(n) \in \Theta (h(n))$
+
+$f(n) \in \Omicron(g(n)) \land g(n) \in \Omicron(h(n)) \implies f(n) \in \Omicron(h(n))$
+
+$f(n) \in \Omega(g(n)) \land g(n) \in \Omega(h(n)) \implies f(n) \in \Omega(h(n))$
+
 
 Riflessività
-$$
-f(n) \in \Theta(f(n))
-\\
-f(n) \in \Omicron(f(n))
-\\
-f(n) \in \Omega(f(n))
-$$
+
+$f(n) \in \Theta(f(n))$
+
+$f(n) \in \Omicron(f(n))$
+
+$f(n) \in \Omega(f(n))$
+
 
 Simmetria: $f(n) \in \Theta(g(n)) \iff g(n) \in \Theta(f(n))$
 
@@ -1207,28 +1208,29 @@ $In$ e uno di scrittura $Out$ come la TM.
 Le istruzioni di un programma usano normalmente come sorgente il primo operando e come destinazione $N[0]$
 
 Riconoscere $L=\{wcw^R\}$
-$$
-T_{RAM}(n) = \Theta (n)
-\\
-S_{RAM}(n) = \Theta (n)
-$$
 
-### Ricerca Binaria
+$T_{RAM}(n) = \Theta (n)$
+
+$S_{RAM}(n) = \Theta (n)$
+
+**Ricerca Binaria** $T_{RAM}(n)=\Theta(log(n))$
+
+### Ricerca di $2^{2n}$
 
 Input: una sequenza ordinata di interi ed un numero da cercare in essa.
 
 Output: 1 se l'elemento cercato esiste nella sequenza, 0 altrimenti.
 
 Consideriamo il caso del calcolo di $2^{2n}$ con una RAM
-$$
-read (n);
-\\
-x=2;
-\\
-for (int i=0; i<n; i++)\ x=x*x;
-\\
-write(x);
-$$
+
+$read (n);$
+
+$x=2;$
+
+$for (int i=0; i<n; i++)\ x=x*x;$
+
+$write(x);$
+
 
 Complessità temporale: $T_{RAM} (n)= k_1+k_2+nk_3+k_4= \Theta (n)$
 
@@ -1245,6 +1247,7 @@ Sotto "ragionevoli" ipotesi di criterio di costo, se un problema è risolvibile 
 Si usa **pseudocodice**
 
 Esempio: Ordinamento
+
 $$
 INSERTION-SORT(A)
 \\
@@ -1294,33 +1297,32 @@ Si ordina dividendo l'array in 2 sotto-array, si ordinano e si fondono.
 **Complessità di un algoritmo divide et impera**
 
 Equazione di ricorrenza
-$$
-\begin{cases}
+
+$\begin{cases}
     \Theta (1)\ se\  n<c
     \\
     D(n) + aT(n/b)+ C(n)
-\end{cases}
-$$
+\end{cases}$
+
 
 $a$ si divide in sottoinsiemi di dimensione $1/b$ ognuno.
 
 $D(n)$ costo di dividere il problema, $C(n)$ costo di ricombinare i sottoproblemi e $T(n)$ è il costo per risolvere il problema totale.
 
 **Ricorrenza per Merge-Sort**
-$$
-T(n)= \begin{cases}
+
+$T(n)= \begin{cases}
     \Theta (1)\ se\  n<2
     \\
     2T(n/2)+\Theta(n)\ altrimenti
 \end{cases}
 \\
-a=b=c=2, D(n)= \Theta(1), C(n)=\Theta(n)
-$$
+a=b=c=2, D(n)= \Theta(1), C(n)=\Theta(n)$
+
 
 **Teorema dell'esperto (master theorem) $\implies$ NON COPRE TUTTI I CASI**
-$$
-(a \ge 1, b \ge 1 \ e \ n/b\ è\ o\ \lfloor n/b \rfloor\ o\ \lceil n/b \rceil)
-$$
+
+$(a \ge 1, b \ge 1 \ e \ n/b\ è\ o\ \lfloor n/b \rfloor\ o\ \lceil n/b \rceil)$
 
 1. Se $f(n) = \Omicron (n^{log_ba-\varepsilon}) \varepsilon >0,\ allora\ T(n) = \Theta(n^{log_ba})$
 2. Se $f(n) = \Theta (n^{log_ba}),\ allora\ T(n) = \Theta(n^{log_ba}log(n))$
@@ -1331,13 +1333,12 @@ $$
 **Teorema dell'esperto MERGE-SORT**
 
 $T(n) = 2 T(n/2) + \Theta (n)$
-$$
-a=b=2
+
+$a=b=2
 \\
 f(n)=n
 \\
-n^{log_ba}=n'=n
-$$
+n^{log_ba}=n'=n$
 
 Secondo caso
 
@@ -1390,15 +1391,14 @@ Ogni albero di decisione di ordinamento di $n$ elementi ha altezza $\Omega (nlog
 **Ricorrenze di ordine costante**
 
 $a_i$ intero $\ge 0$
-$$
-T(n)= \begin{cases}
+
+$T(n)= \begin{cases}
     \Theta (1)\ se\  n \le m \le h
     \\
     \Sigma_{1\le i\le n} a_i T(n-i)+cn^k\ se\ n>m
 \end{cases}
 \\
-a=\Sigma_{1\le i\le n} a_i
-$$
+a=\Sigma_{1\le i\le n} a_i$
 
 se $a=1$, allora $T(n)= \Omicron(n^{k+1})$
 
@@ -1409,6 +1409,8 @@ Esempio $T(n)=T(n-1)+\Theta(n)$ ottengo $T(n) = \Omicron(n^2)$
 Versione ricorsiva di INSERTION-SORT
 
 ### Conting-Sort
+
+$T= \Theta (n) \ S=\Theta (n)$
 
 Ordinamento per conteggio, **NON** per confronto.
 
@@ -1535,9 +1537,8 @@ siccome $0 \le n \le |U|$ avremo $0 \le \alpha \le |U|/m$
 ### Ipotesi dell'hashing uniforme semplice
 
 Ogni chiave ha $1/m$ probabilità di finire in qualsiasi delle $m$ celle di $T$, la lunghezza media di una lista è:
-$$
-E[n_j]=\frac{1}{m} \Sigma_{i=1}^m n_i = \frac{n}{m} = \alpha
-$$
+
+$E[n_j]=\frac{1}{m} \Sigma_{i=1}^m n_i = \frac{n}{m} = \alpha$
 
 Il tempo medio per cercare una chiave $k$ NON presente è $\Theta (1+\alpha)$ ($\Omicron (1)$ tempo per calcolare $h(k)$)
 
@@ -1568,6 +1569,7 @@ Evitare valori di $m$ come:
 di solito ad $m$ si assegna un numero primo lontano da una potenza di 2.
 
 Esempio
+
 $$
 h(k) = k\ mod\ m
 \\
@@ -1593,15 +1595,14 @@ $m$ può essere valore di $A$
 È meglio prendere un valore di $A$ che sia della forma $s/2^w$ con $w$ dimensione della parola di memoria del calcolatore.
 
 Un valore di $A$ proposto (da Knuth) è:
-$$
-A=(\sqrt{5}-1)/2
-$$
+
+$A=(\sqrt{5}-1)/2$
 
 Inveso sezione aurea
 
 Esempio
-$$
-h(k)=\lfloor m(kA\ mod\ 1)\rfloor
+
+$h(k)=\lfloor m(kA\ mod\ 1)\rfloor
 \\
 A=(\sqrt{5}-1)/2
 \\
@@ -1615,8 +1616,7 @@ m=5
 \\
 h(38)=2,h(12)=2,h(18)=0
 \\
-T=[lista(18),NIL,lista(12,38),NIL,NIL]
-$$
+T=[lista(18),NIL,lista(12,38),NIL,NIL]$
 
 ### Indirizzamento aperto
 
@@ -1649,9 +1649,8 @@ Tre tecniche di ispezione
 - doppia hashing
 
 Queste tre tecniche fanno uso di una **funzione hash ausiliara**
-$$
-h':U \to \{0,1,...,m-1\}
-$$
+
+$h':U \to \{0,1,...,m-1\}$
 
 ### Ispezione lineare
 
@@ -2092,13 +2091,13 @@ Si vuole avere il cammino minimo tra due nodi.
 Ingresso: $G=(V,E)$ orientato, funzione di peso $W:E\to R$
 
 Peso cammino
-$$
-p= \lang v_0, v_1,...,v_k\rang 
+
+$p= \lang v_0, v_1,...,v_k\rang 
 \\
-W(p)=\Sigma_{i=1}^k w(v_{i-1},v_i)
-$$
+W(p)=\Sigma_{i=1}^k w(v_{i-1},v_i)$
 
 Peso cammino minimo tra $u$ e $v$:
+
 $$
 \delta (u,v)=\begin{cases}
     min\{w(p):u \to^p v\}\ se\ esiste\ cammino\ p\ da\ u\ a\ v
