@@ -1010,7 +1010,7 @@ $$
 f_X(y)=\int_{-\infty}^\infty f_{X|Y}(x|y) f_Y(y) dy
 $$
 
-Quindi per trovare la legge dei k arrivi in t tempo scriveremo:
+Quindi per trovare la legge dei $k$ arrivi in $t$ tempo scriveremo:
 
 $$
 f_P(p)=\int_{0}^\infty \frac{(\lambda t)^k}{k!} e^{-\lambda t} *ve^{-vt}dt
@@ -1033,6 +1033,7 @@ La situzione non sembra essere molto migliorata, ma la struttura di questo integ
 ## Introduciamo la funzione $\Gamma(K)$
 
 La funzione $\Gamma(K)$ è particolarmente utile:
+
 - è una funzione ricorsiva: $K* \Gamma(K) =\Gamma(K+1)$.
 - la sua applicazione è immediata una volta individuata.
 
