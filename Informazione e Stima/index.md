@@ -1050,7 +1050,7 @@ $$
 \Gamma(K)=(K-1)!
 $$
 
-con un pò di ritocco tramite sostituzione di $(\lambda+v)t=u$ il nostro integrale diventa:
+con un po' di ritocco tramite sostituzione di $(\lambda+v)t=u$ il nostro integrale diventa:
 
 $$
 f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*\int_{0}^\infty u^k e^{-u} du
