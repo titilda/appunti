@@ -492,7 +492,7 @@ $$
 o in forma **costanti di tempo**
 
 $$
-G(s) = \frac{\mu \prod_i(1 + \pi_i s) \prod_i \left(1 + 2\frac{\zeta_i s}{\alpha_{ni}} + \frac{s^2}{\alpha_{ni}^2}\right)}{s^g \prod_i (1 + \tau_i s) \prod_i\left(1 + 2 \frac{\xi_i s}{\omega_{ni}} + \frac{s^2}{\omega_{ni}^2}\right)}
+G(s) = \frac{\mu \prod_i(1 + T_i s) \prod_i \left(1 + 2\frac{\zeta_i s}{\alpha_{ni}} + \frac{s^2}{\alpha_{ni}^2}\right)}{s^g \prod_i (1 + \tau_i s) \prod_i\left(1 + 2 \frac{\xi_i s}{\omega_{ni}} + \frac{s^2}{\omega_{ni}^2}\right)}
 $$
 
 dove
@@ -506,8 +506,8 @@ dove
 | $\zeta_i, \xi_i$          | Costanti di smorzamento                                                                                                 |
 | $\alpha_i, \omega_i$      | Pulsazioni/frequenze naturali                                                                                           |
 | $\mu$                     | Guadagno statico                                                                                                        |
-| $\pi_i = -\frac{1}{z_i}$ | Costanti di tempo degli zeri                                                                                            |
-| $\tau_i = -\frac{1}{p_i}$    | Costanti di tempo dei poli                                                                                              |
+| $T_i = -\frac{1}{z_i}$    | Costanti di tempo degli zeri                                                                                            |
+| $\tau_i = -\frac{1}{p_i}$ | Costanti di tempo dei poli                                                                                              |
 
 Se $g = 0$ allora si può calcolare il guadagno del sistema come segue
 
@@ -653,7 +653,7 @@ $$
 In questo caso
 
 $$
-y(t) = \mathcal{L}^{-1} \left\{ \frac{r_1 s + r_2}{s^2 + 2 \xi \omega_n s + \omega_n^2} + \frac{r_3}{s} \right\} = \mu e^{-\xi \omega_n t} \sin(\omega_d t + \theta) \qquad \theta = \arccos(\xi)
+y(t) = \mathcal{L}^{-1} \left\{ \frac{r_1 s + r_2}{s^2 + 2 \xi \omega_n s + \omega_n^2} + \frac{r_3}{s} \right\} = \mu \left( e^{-\xi \omega_n t} \sin(\omega_d t + \theta) + 1 \right) \text{Sca}(t) \qquad \theta = \arccos(\xi)
 $$
 
 La solita tabella dei vari parametri è la seguente:
@@ -667,7 +667,65 @@ La solita tabella dei vari parametri è la seguente:
 | $T_P$              | $\frac{2\pi}{\omega_d}$                        | Periodo dell'oscillazione                               |
 | $T_{a\varepsilon}$ | $-\frac{1}{\xi \omega_n}\ln(0.01 \varepsilon)$ | Tempo di assestamento all'$\varepsilon\%$               |
 
-<!-- $y(t)$ è limitata superiormente da -->
+Vi è correlazione inversa tra $\xi$ e la sovraelongazione.
+
+### Risposta allo scalino per un sistema di ordine superiore al secondo
+
+In caso di sistemi di ordine superiore al secondo, è possibile effettuare un'**approssimazione a poli dominanti**: in caso di poli reali, il rapporto tra parte reale dei poli dominanti deve essere più piccola di un quinto degli altri poli mentre nel caso di poli complessi coniugati, il rapporto si riduce ad un decimo.
+
+### Effetti degli zeri per un sistema del primo ordine con uno zero
+
+Un sistema del primo ordine con uno zero è della forma
+
+$$
+G(s) = \mu \frac{Ts + 1}{\tau s + 1}
+$$
+
+e gli effetti dello zero si vedono dal fatto che
+
+$$
+Y(s) = \frac{\mu(Ts + 1)}{(\tau s + 1) s} \\
+y(t) = \mathcal{L}^{-1} \left\{ \frac{\mu}{(\tau s + 1)s} + \frac{\mu T}{\tau s + 1} \right\}
+$$
+
+Dalla prima delle due formule si deduce che calbia il valore di $y(0)$ che ora è pari a
+
+$$
+y(0) = \frac{\mu T}{\tau}
+$$
+
+Da questo fatto si deduce che:
+
+- Se lo zero è negativo ($T \gt 0$) allora $y(0)$ si sposta in alto:
+  - Se $-\frac{1}{T} \lt -\frac{1}{\tau}$ allora $y(0) = \mu \frac{T}{\tau}$ si troverà tra l'origine e $\mu = y_\infty$;
+  - Se $-\frac{1}{T} \gt -\frac{1}{\tau}$ allora $y(0) = \mu \frac{T}{\tau}$ si troverà sopra $\mu = y_\infty$.
+- Se lo zero è positivo ($T \lt 0$) allora $y(0)$ si sposta sotto l'origine.
+
+### Effetti degli zeri per un sistema del secondo ordine con uno zero
+
+Un sistema del secondo ordine con uno zero è della forma
+
+$$
+G(s) = \frac{\mu \omega_n^2(Ts + 1)}{s^2 + 2 \xi \omega_n s + \omega_n^2}
+$$
+
+da cui 
+
+$$
+y(t) = \mathcal{L}^{-1} \left\{ \frac{\mu \omega_n^2}{s^2 + 2 \xi \omega_n s + \omega_n^2} \cdot \frac{1}{s} + \frac{\mu \omega_n^2 T}{s^2 + 2 \xi \omega_n s + \omega_n^2} \right\}
+$$
+
+Se lo zero è reale negativo ($T \gt 0$), la risposta allo scalino è velocizzata: il tempo di salita è minore e la sovraelongazione è maggiore.
+
+Se lo zero è positivo, la derivata iniziale è negativa: per un periodo, la risposta è inversa, inoltre il tempo di salita è maggiore e la sovraelongazione diminuisce.
+
+# Schemi a blocchi
+
+Con gli **schemi a blocchi** si possono rappresentare sistemi complessi composti da molteplici sistemi più semplici collegati tra loro. Per fare ciò è necessario ipotizzare che il modo in cui i collegamenti sono effettuati non vada ad influenzare le dinamiche.
+
+![**Lo schema a blocchi più semplice di tutti** l'ingresso $U(s)$ viene fatto passare per il sistema $G(s)$ ottenendo in uscita $Y(s) = U(s)\cdot G(s)$. L'ordine delle moltiplicazioni non è commutativo.](assets/schemi_a_blocchi/semplice.png)
+
+
 
 # Appendice
 
@@ -697,3 +755,4 @@ $$
 | $te^{\alpha t}\sin(\omega t)\text{Sca}(t)$ | $\frac{2\omega(s-\alpha)}{((s-\alpha^2)+\omega^2)^2}$   |
 | $te^{\alpha t}\cos(\omega t)\text{Sca}(t)$ | $\frac{(s-\alpha)^2-\omega^2}{((s-\alpha)^2+\omega^2)}$ |
 
+<!-- TODO: mettere le immagini dei vari grafici e dei vari collegamenti -->
