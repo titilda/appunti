@@ -424,6 +424,8 @@ $$
 
 Per una tabella con una buona dose di trasformate, vedere l'[appendice](#tabella-trasformate-di-laplace).
 
+<a id="teoremi"></a>
+
 Vale il **teorema del valore iniziale**: se $g \ge 1$ allora 
 
 $$
@@ -490,7 +492,7 @@ $$
 o in forma **costanti di tempo**
 
 $$
-G(s) = \frac{\mu \prod_i(1 + \pi_i s) \prod_i \left(1 + 2\frac{\zeta_i s}{\alpha_{ni}} + \frac{s^2}{\alpha_{ni}^2}\right)}{s^g \prod_i (1 + T_i s) \prod_i\left(1 + 2 \frac{\xi_i s}{\omega_{ni}} + \frac{s^2}{\omega_{ni}^2}\right)}
+G(s) = \frac{\mu \prod_i(1 + \pi_i s) \prod_i \left(1 + 2\frac{\zeta_i s}{\alpha_{ni}} + \frac{s^2}{\alpha_{ni}^2}\right)}{s^g \prod_i (1 + \tau_i s) \prod_i\left(1 + 2 \frac{\xi_i s}{\omega_{ni}} + \frac{s^2}{\omega_{ni}^2}\right)}
 $$
 
 dove
@@ -504,8 +506,168 @@ dove
 | $\zeta_i, \xi_i$          | Costanti di smorzamento                                                                                                 |
 | $\alpha_i, \omega_i$      | Pulsazioni/frequenze naturali                                                                                           |
 | $\mu$                     | Guadagno statico                                                                                                        |
-| $\tau_i = -\frac{1}{z_i}$ | Costanti di tempo degli zeri                                                                                            |
-| $T_i = -\frac{1}{p_i}$    | Costanti di tempo dei poli                                                                                              |
+| $\pi_i = -\frac{1}{z_i}$ | Costanti di tempo degli zeri                                                                                            |
+| $\tau_i = -\frac{1}{p_i}$    | Costanti di tempo dei poli                                                                                              |
+
+Se $g = 0$ allora si può calcolare il guadagno del sistema come segue
+
+$$
+\mu = \lim_{s \to 0} G(s)
+$$
+
+invece, se $g \gt 0$, si usa calcolare il **guadagno generalizzato**, cioè il guadagno ma ignorando tutti gli integratori:
+
+$$
+\mu_g = \lim_{s \to 0} s^g G(s)
+$$
+
+Uno zero nell'origine è detto **derivatore**, un polo nell'origine è detto **integratore**.
+
+Un sistema del primo ordine è tale se può essere scritto come
+
+$$
+G(s) = \frac{\rho}{s - p} = \frac{\mu}{ts + 1}
+$$
+
+quindi ha un guadagno $\mu$, un polo in $p$ è una costante di tempo $-\frac{1}{p}$.
+
+## Risposta allo scalino
+
+In caso di $u(t) = \text{Sca}(t)$, quindi $U(s) = \frac{1}{s}$, si ha che
+
+$$
+Y(s) = \frac{G(s)}{s}
+$$
+
+E' possibile calcolare valore iniziale, valore finale e derivata iniziale tramite i corrispondenti teoremi visti [precedentemente](#teoremi):
+
+$$
+y_\infty = \mu = \lim_{s \to 0} s Y(s) = \lim_{s \to 0} G(s)
+$$
+
+$$
+y_0 = lim_{t \to 0} y(t) = \lim_{s \to \infty} s \cdot Y(s) = \lim_{s \to \infty} G(s)
+$$
+
+Se $G(s)$ è razionale e $m = n$ allora $y(0) = b_0$ e $y(t)$ è discontinua in $t = 0$, altrimenti, se $m \lt n$ allora $y_0 = 0$.
+
+$$
+y'(0) = \lim_{s \to \infty} s \cdot (s \cdot Y(s) - y_0) = \lim_{s \to \infty} s \cdot G(s) - s\cdot y_0
+$$
+
+Se $m \lt n - 1$ allora $y'(0) = 0$, se invece $m = n - 1$ allora $y'(0) = b_0$.
+
+### Risposta allo scalino per un sistema del primo ordine
+
+Per un generico sistema del primo ordine, la risposta allo scalino è della forma
+
+$$
+y(t) = \mathcal{L}^{-1} \left\{ \frac{\mu}{(\tau s + 1)s} \right\} = \mathcal{L}^{-1} \left\{ \frac{-\mu}{s + p} + \frac{\mu}{s} \right\} = \mu(1 - e^{-\frac{t}{\tau}}) \text{Sca}(t)
+$$
+
+I parametri della riposta sono i seguenti:
+
+| Parametro  | Valore                   | Significato                                         |
+| ---------- | ------------------------ | --------------------------------------------------- |
+| $y_\infty$ | $\mu$                    | Valore finale                                       |
+| $T_S$      | $2.2 \tau$               | Tempo di salita: dal $10\%$ al $90\%$ di $y_\infty$ |
+| $T_r$      | $0.7 \tau$               | Tempo di risposta: da $0$ al $50\%$   di $y_\infty$ |
+| $T_{5\%}$  | $3 \tau$                 | Tempo di assestamento al $5\%$                      |
+| $T_{1\%}$  | $4.6 \tau \simeq 5 \tau$ | Tempo di assestamento all'$1\%$                     |
+
+### Risposta allo scalino per un sistema del secondo ordine senza zeri
+
+Un generico sistema del secondo ordine senza zeri è della forma
+
+$$
+G(s) = \frac{\rho}{s^2 + \alpha_1 s + \alpha_0}
+$$
+
+Un sistema del secondo ordine può avere sue poli reali oppure due poli complessi coniugati. A seconda del caso in cui ci si trova, cambia l'analisi.
+
+#### Sistemi con due poli reali
+
+Un sistema del secondo ordine con due poli reali è della forma
+
+$$
+G(s) = \frac{\mu}{(\tau_1 s + 1)(\tau_2 s + 1)}
+$$
+
+L'antitrasformata di un sistema di tale tipo è
+
+$$
+y(t) = \mathcal{L}^{-1} \left\{ \frac{r_1}{s - p_1} + \frac{r_2}{s - p_2} + \frac{r_3}{s} \right\} \qquad \begin{cases}
+    r_1 = -\frac{\tau_1}{\tau_1 - \tau_2} \\
+    r_2 = \frac{\tau_2}{\tau_1 - \tau_2} \\
+    r_3 = \mu
+\end{cases}
+$$
+
+Per due poli distinti, non esistono formule chiuse per calcolare tutti i parametri necessari, però si sa che i due cambi di segno della derivata seconda avvengono in $T = 5 \tau_1$ e in $5 \tau_2$ e che $T_A \gt \max\{5 \tau_1, 5 \tau_2\}$.
+
+Se i poli sono coincidenti allora la forma del sistema è
+
+$$
+G(s) = \frac{\mu}{(\tau s + 1)^2}
+$$
+
+e la matrice $A$ del sistema in forma di stato ha un blocco di Jordan
+
+$$
+A = \begin{bmatrix}
+    -\frac{1}{\tau} & 1 \\
+    0 & -\frac{1}{\tau}
+\end{bmatrix}
+$$
+
+e vale che
+
+| Parametro  | Valore      | Significato                                         |
+| ---------- | ----------- | --------------------------------------------------- |
+| $y_\infty$ | $\mu$       | Valore finale                                       |
+| $T_S$      | $3.36 \tau$ | Tempo di salita: dal $10\%$ al $90\%$ di $y_\infty$ |
+| $T_r$      | $1.68 \tau$ | Tempo di risposta: da $0$ al $50\%$   di $y_\infty$ |
+| $T_{5\%}$  | $4.74 \tau$ | Tempo di assestamento al $5\%$                      |
+| $T_{1\%}$  | $6.64 \tau$ | Tempo di assestamento all'$1\%$                     |
+
+In questo caso, l'antitrasformata è pari a 
+
+$$
+y(t) = \mathcal{L}^{-1} \left\{ \frac{r_1}{s} + \frac{r_2}{s - p} + \frac{r_3}{(s - p)^2} \right\} = \text{Sca}(t) + e^{-\frac{t}{\tau}} + te^{-\frac{t}{\tau}}
+$$
+
+#### sistema con due poli complessi coniugati
+
+Un sistema del secondo ordine con due poli complessi coniugati è della forma
+
+$$
+G(s) = \frac{\mu \omega_n^2}{s^2 + e \xi \omega_n s + \omega_n^2} \qquad 0 \lt \xi \lt 1
+$$
+
+con i poli posizionati in 
+
+$$
+p_{1,2} = - \xi \omega_n \pm j \omega_n \sqrt{1 - \xi^2} = -\sigma \pm j \omega_d
+$$
+
+In questo caso
+
+$$
+y(t) = \mathcal{L}^{-1} \left\{ \frac{r_1 s + r_2}{s^2 + 2 \xi \omega_n s + \omega_n^2} + \frac{r_3}{s} \right\} = \mu e^{-\xi \omega_n t} \sin(\omega_d t + \theta) \qquad \theta = \arccos(\xi)
+$$
+
+La solita tabella dei vari parametri è la seguente:
+
+| Parametro          | Valore                                         | significato                                             |
+| ------------------ | ---------------------------------------------- | ------------------------------------------------------- |
+| $y_\infty$         | $\mu$                                          | Valore finale                                           |
+| $S_\%$             | $100 e^{\frac{-\xi \pi}{\sqrt{1 - \xi^2}}}$    | Sovraelongazione percentuale                            |
+| $y_{max}$          | $(1 + \frac{S_{\%}}{100})y_{\infty}$           | Valore massimo                                          |
+| $T_M$              | $\frac{\pi}{\omega_d}$                         | Istante nel quale raggiunge la massima sovraelongazione |
+| $T_P$              | $\frac{2\pi}{\omega_d}$                        | Periodo dell'oscillazione                               |
+| $T_{a\varepsilon}$ | $-\frac{1}{\xi \omega_n}\ln(0.01 \varepsilon)$ | Tempo di assestamento all'$\varepsilon\%$               |
+
+<!-- $y(t)$ è limitata superiormente da -->
 
 # Appendice
 
