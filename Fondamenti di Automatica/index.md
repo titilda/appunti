@@ -779,6 +779,36 @@ Si immagini di voler calcolare la funzione di trasferimento $H(s)$ tra l'uscita 
 
 Vale la sovrapposizione degli effetti: siano $H_1(s)$ la funzione di trasferimento tra $Y(s)$ e $U_1(s)$ e $H_2(s)$ la funzione di trasferimento tra $Y(s)$ e $U_2(s)$. Se il sistema non ha altri ingressi allora $Y(s) = H_1(s) \cdot U_1(s) + H_2(s) \cdot U_2(s)$. questo ragionamento vale con un numero arbitrario di ingressi.
 
+## Risposta alla sinusoide
+
+Un ingresso sinusoidale è della forma $U(s) = \frac{A \omega}{s^2 + \omega^2}$, dunque
+
+$$
+Y(s) = \frac{N(s)}{D(s)} \frac{A \omega}{s^2 \omega^2} = \sum_{i=1}^{n} \frac{r_i}{s - p_i} + \frac{Q}{s - j \omega} - \frac{\overline Q}{s + j \omega}
+$$
+
+L'uscita prende la forma di
+
+$$
+y(t) = \underbrace{y_1(t)}_{\text{transitorio}} + A|G(j \omega)|\sin(\omega t + \varphi) \text{Sca}(t)
+$$
+
+In caso di ingresso sinusoidale, si definisce **risposta in frequenza** la funzione $G(j \omega)$ definita $\forall \omega \gt 0$.
+
+In caso di sistemi asintoticamente stabili, per $t \to \infty$ il transitorio si annulla, altrimenti no e $G(j \omega)$ è ben definita $\forall \omega \ge 0$ se il sistema non ha poli in $s = \pm j \omega$.
+
+### Risposta alla sinusoide per un sistema ritardo puro
+
+Dato che la funzione di trasferimento di un sistema ritardo puro è $G(s) = e^{-\tau s}$ quindi $|G(j \omega)| = 1$ e $\phase{G(j \omega)} = -j\omega$.
+
+### Diagrammi di Bode
+
+Per rappresentare la risposta in frequenza, si usano i diagrammi di Bode.
+
+<!-- Lezione 15 -->
+
+
+
 # Appendice
 
 ## Proprietà matrice esponenziale
