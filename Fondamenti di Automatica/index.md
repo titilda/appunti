@@ -793,7 +793,7 @@ $$
 y(t) = \underbrace{y_1(t)}_{\text{transitorio}} + A|G(j \omega)|\sin(\omega t + \varphi) \text{Sca}(t)
 $$
 
-In caso di ingresso sinusoidale, si definisce **risposta in frequenza** la funzione $G(j \omega)$ definita $\forall \omega \gt 0$.
+In caso di ingresso sinusoidale, si definisce **risposta in frequenza** la funzione $G(j \omega)$ definita $\forall \omega \ge 0$.
 
 In caso di sistemi asintoticamente stabili, per $t \to \infty$ il transitorio si annulla, altrimenti no e $G(j \omega)$ è ben definita $\forall \omega \ge 0$ se il sistema non ha poli in $s = \pm j \omega$.
 
@@ -803,11 +803,27 @@ Dato che la funzione di trasferimento di un sistema ritardo puro è $G(s) = e^{-
 
 ### Diagrammi di Bode
 
-Per rappresentare la risposta in frequenza, si usano i diagrammi di Bode.
+Per rappresentare la risposta in frequenza, si usano i **diagrammi di Bode** (uno per la fase ed uno per il modulo).
 
-<!-- Lezione 15 -->
+Un diagramma di Bode si traccia su carta semilogaritmica.
 
+Per il diagramma di Bode del modulo, si procede nel seguente modo:
 
+- Si porta la funzione di trasferimento nella forma a costanti di tempo;
+- Si calcola la pendenza iniziale:
+  - Per ogni integratore (polo nell'origine), la pendenza iniziale cala di $20 dB/decade$;
+  - Per ogni derivatore (zero nell'origine), la pendenza iniziale aumenta di $20 dB/decade$;
+  - In pratica, la pendenza iniziale è pari a $-g \cdot 20dB/decade$.
+- Si risolvono per $s$ (e ingorando il segno) tutti i poli e gli zeri della funzione di trasferimento ottenendo le corrispondenti pulsazioni: in corrispondenza di tali valori, avverrà un cambio di pendenza;
+- Si calcola il guadagno iniziale come $\mu_{db} = 20 \log_{10} |\mu|$ e lo si segna in corrispondenza di $\omega = 1$;
+- Procedendo da sinistra (prima della pulsazione del primo polo/zero) a destra (dopo la pulsazione dell'ultimo polo/zero) ci si segna la pendenza della retta da disegnare nelle varie "sezioni" del grafico (una sezione è confinata una coppia di pulsazioni tra quelle calcolate sopra; la sezione deve essere tale per cui, datine gli estremi, non vi è alcuna pulsazione calcolata precedentemente che vi cade in mezzo);
+  - Un polo diminuisce la pendenza di $20 dB/decade$;
+  - Uno zero aumenta la pendenza di $20 dB/decade$;
+  - In caso di molteplici poli/zeri sovrapposti, il loro effetto si somma;
+  - In caso di poli/zeri complessi coniugati della forma $s^2 + 2 \xi \omega s + \omega_s^2$, si utilizza la $\omega$ presente nella formula; dato che sono _una coppia_ di poli/zeri, si conta il loro contributo singolarmente.
+- Si può finalmente procedere a tracciare il modulo della risposta in frequenza tenendo conto delle pendenze nelle varie sezione e sapendo che la linea deve passare per il guadagno iniziale in $\omega = 1$.
+
+<!-- bode fase -->
 
 # Appendice
 
