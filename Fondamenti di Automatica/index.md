@@ -823,7 +823,61 @@ Per il diagramma di Bode del modulo, si procede nel seguente modo:
   - In caso di poli/zeri complessi coniugati della forma $s^2 + 2 \xi \omega s + \omega_s^2$, si utilizza la $\omega$ presente nella formula; dato che sono _una coppia_ di poli/zeri, si conta il loro contributo singolarmente.
 - Si può finalmente procedere a tracciare il modulo della risposta in frequenza tenendo conto delle pendenze nelle varie sezione e sapendo che la linea deve passare per il guadagno iniziale in $\omega = 1$.
 
-<!-- bode fase -->
+Dopo aver tracciato il grafico approssimativo seguendo le istruzioni sopra, è necessario arrotondare un po' la curva, in modo da rendere il frafico più realistico.
+
+In caso di poli/zeri complessi coniugati, per $0 \le xi \le 0.7$ vi è un picco di risonanza/antirisonanza.
+
+Per il diagramma di Bode della fase il procedimento è simile ma con meno complicazioni.
+
+- La fase iniziale è pari a $\pm 180\degree$ se $\mu \lt 0$, $0\degree$ altrimenti, al quale viene sommato $-g \cdot 90\degree$;
+- Dopo diviso in sezioni come per il diagramma di Bode del modulo, in corrispondenza di ogni polo/zero, cambia la fase:
+  - In caso di poli nel semipiano destro o zeri nel semipiano sinistro, la fase aumenta di $90\degree$;
+  - In caso di poli nel semipiano sinistro o zeri nel semipiano destro, la fase diminuisce di $90\degree$;
+  - Per poli/zeri complessi coniugati, si va a guardare la parte reale e, in quanto _coppia_, il loro contributo va contato singolarmente.
+
+Anche qui, per tenere rendere il grafico più realistico, si deve tenere conto dello smorzamento $\xi$: più si avvicina a $0$ più il cambiamento è squadrato.
+
+Il diagramma della fase di un sistema ritardo puro è 
+
+### diagrammi a fase minima
+
+Se si considera solamente l'insieme delle funzioni di trasferimento di sistemi asintoticamente stabili, con guadagno positivo, senza zeri nel semipiano destro e senza ritardi puri, allora è possibile associare biunivocamente a ciascun grafico della fase, un grafico del modulo e viceversa.
+
+Questi sistemi sono detti **a fase minima** e sono quei sistemi in cui la fase ha valore massimo possibile per ogni pulsazione.
+
+Fase e modulo sono legati dal fatto che la pendenza del secondo è data dal prodotto della prima per $\frac{20dB}{90\degree decade}$.
+
+### Diagrammi polari
+
+I diagrammi polari servono per rappresentare modulo e fase di una funzione di trasferimento in un unico grafico: il risultato è una curva sul piano complesso del modulo (rappresentato dalla distanza dall'origine) e della fase (rappresentato dall'angolo).
+
+# Sistemi LTI come filtri
+
+Dato che ogni segnale può essere scomposto in infinite sinusoidi di frequenze diverse (trasformata di Fourier) e che ciascuna di queste sinusoidi subisce un guadagno diverso se passata dentro un sistema, è possibile utilizzare i sistemi LTI per filtrare segnali e far passare solamente le frequenze desiderate.
+
+# Sensitività
+
+La sensitività di $\delta$ rispetto a $G$ indica, sostanzialmente, quanto il variare di $G$ influisce su $\delta$:
+
+$$
+\left. S_\delta^G\right|_{G = G_0, \delta = \delta_0} = \frac{\Delta G / G_0}{\Delta \delta / \delta_0} = \frac{\delta_0}{G_0} \cdot \frac{\Delta G}{\Delta \delta} \underset{\Delta \delta \to 0}{\to} \left. \frac{\delta_0}{G_0} \cdot \frac{\partial G}{\partial \delta} \right|_{\delta = \delta_0, G = G_0}
+$$
+
+$G$ e $\delta$ possono essere, come si vedrà applicato nei paragrafi successivi, un sistema eqivalente e una componente di tale sistema: in tal caso il calcolo della sensibilità serve per vedere come una variazione della singola componente può influire sul funzionamento complessivo del sistema.
+
+## Sensitività di controllori in serie
+
+Un rudimentale sistema di controllo può essere costruito nel seguente modo:
+
+![$C$ è il controllore e $G$ l'attuatore](assets/sensitività/serie.png)
+
+Si immagini di voler studiare come un ipotetico guasto all'attuatore possa influenzare il sistema nella sua interezza ($G_E(s) = C(s)\cdot G(s)$):
+
+$$
+S_G^{G_E} = \frac{G_0}{G_E} \cdot \frac{\delta G_E}{\delta G_0} = \frac{G_0}{C_0 \cdot G_0} \cdot C_0 = 1
+$$
+
+Questo risultato dice che, in un sistema composto da una serie di un controllore ed un attuatore, tutte le variazioni dell'attuatore si sentiranno al $100\%$ sull'uscita.
 
 # Appendice
 
