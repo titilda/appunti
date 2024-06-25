@@ -583,7 +583,7 @@ $$
 G(s) = \frac{\rho}{s^2 + \alpha_1 s + \alpha_0}
 $$
 
-Un sistema del secondo ordine può avere sue poli reali oppure due poli complessi coniugati. A seconda del caso in cui ci si trova, cambia l'analisi.
+Un sistema del secondo ordine può avere due poli reali oppure due poli complessi coniugati. A seconda del caso in cui ci si trova, cambia l'analisi.
 
 #### Sistemi con due poli reali
 
@@ -717,15 +717,67 @@ $$
 
 Se lo zero è reale negativo ($T \gt 0$), la risposta allo scalino è velocizzata: il tempo di salita è minore e la sovraelongazione è maggiore.
 
-Se lo zero è positivo, la derivata iniziale è negativa: per un periodo, la risposta è inversa, inoltre il tempo di salita è maggiore e la sovraelongazione diminuisce.
+Se lo zero è positivo, la derivata iniziale è negativa: per un periodo, la risposta è inversa (**sottoelongazione**), inoltre il tempo di salita è maggiore e la sovraelongazione diminuisce.
 
 # Schemi a blocchi
 
-Con gli **schemi a blocchi** si possono rappresentare sistemi complessi composti da molteplici sistemi più semplici collegati tra loro. Per fare ciò è necessario ipotizzare che il modo in cui i collegamenti sono effettuati non vada ad influenzare le dinamiche.
+Con gli **schemi a blocchi** si possono rappresentare sistemi LTI complessi composti da molteplici sistemi più semplici collegati tra loro. Per fare ciò è necessario ipotizzare che il modo in cui i collegamenti sono effettuati non vada ad influenzare le dinamiche.
+
+Questo genere di rappresenta zione è molto seplice ed intuitivo: le frecce rappresentano i segnali mentre i blocchi rappresentano i sistemi.
 
 ![**Lo schema a blocchi più semplice di tutti** l'ingresso $U(s)$ viene fatto passare per il sistema $G(s)$ ottenendo in uscita $Y(s) = U(s)\cdot G(s)$. L'ordine delle moltiplicazioni non è commutativo.](assets/schemi_a_blocchi/semplice.png)
 
+Più segnali possono essere sommati (o sottratti) tra di loro tramite il **nodo somma**:
 
+![I segnali che entrano nel nodo somma possono essere sommati o sottratti a seconda del segno di fianco alla freccia.](assets/schemi_a_blocchi/nodo_somma.png)
+
+Se uno stesso segnale deve essere dato in pasto a più sistemi diversi, si usano le **diramazioni**:
+
+![](assets/schemi_a_blocchi/diramazione.png)
+
+Vari sistemi possono essere collegati in **serie**, in **parallelo** o in antiparallelo.
+
+Quando due blocchi sono collegati in serie, il blocco equivalente è $G_E(s) = G_A(s) \cdot G_B(s)$.
+
+![Blocchi collegati in serie.](assets/schemi_a_blocchi/serie.png)
+
+In caso di collegamento in serie, gli zeri del sistema equivalente sono l'unione degli zeri dei due sistemi, idem per i poli.
+
+Per far si che il sistema equivalente sia stabile, tutti i sistemi che lo compongono devono essere stabili, se anche uno solo è instabile, allora lo sarà anche il sistema equivalente.
+
+Quando due blocchi sono collegati in parallelo, il blocco equivalente è $G_E(s) = \pm G_A(s) \pm G_B(s)$, coi segni che variano in base ai segni sul nodo somma.
+
+![Blocchi collegati in parallelo.](assets/schemi_a_blocchi/parallelo.png)
+
+In caso di collegamento in parallelo, i poli del sistema sono ancora una volta l'unioe dei poli dei due sistemi.
+
+Siano $G_A(s) = \frac{N_A(s)}{D_A(s)}$ e $G_B(s) = \frac{N_B(s)}{D_B(s)}$, allora $G_E(s) = \frac{\pm N_A(s) \cdot D_B(s) \pm N_B(s) \cdot D_A(s)}{D_A(s) \cdot D_B(s)}$; ne segue che gli zeri sono le radici di $\pm N_A(s) \cdot D_B(s) \pm N_B(s) \cdot D_A(s) = 0$.
+
+Per far si che il sistema equivalente sia stabile, tutti i sistemi che lo compongono devono essere stabili, se anche uno solo è instabile, allora lo sarà anche il sistema equivalente.
+
+Sistemi collegati in antiparallelo sono anche detti **retroazionati** e costituiscono un blocco fondamentale della teoria del controllo in quanto costituiscono un modo di rendere stabili anche sistemi instabili.
+
+![Sistemi in antiparallelo. Se $G(s)$ non fosse presente, si consideri $G(s) = 1$.](assets/schemi_a_blocchi/antiparallelo.png)
+
+E' importante notare che il segno del nodo somma e il segno nel denominatore sono opposti: se ne può facilmente verificare la correttezza partendo dall'equazione $Y(s) = L(s) \cdot (G(s) \cdot Y(s) + U(s))$.
+
+Siano $L(s) = \frac{N_L(s)}{D_L(s)}$ e $G(s) = \frac{N_G(s)}{D_G(s)}$, allora
+
+$$
+Y(s) = \frac{\frac{N_L(s)}{D_L(s)}}{1 \mp \frac{N_L(s)}{D_L(s)} \cdot \frac{N_G(s)}{D_G(s)}} = \frac{N_L(s) \cdot D_G(s)}{D_L(s) \cdot D_G(s) \mp N_L(s) \cdot N_G(s)}
+$$
+
+da cui segue che gli zeri del sistema equivalente sono l'unione degli zeri di $L(s)$ coi poli di $G(s)$ mentre i poli sono le radici di $D_L(s) \cdot D_G(s) \mp N_L(s) \cdot N_G(s)$.
+
+Nei casi di sistemi in serie, parallelo o antiparallelo, è possibile che alcuni poli si semplifichino con alcuni zeri; in tal caso è importante fare attenzione: se si semplificano solo poli stabili non v'è alcun problema, se invece i poli candidati ad essere semplificati sono instabili, non si possono semplificare.
+
+## Funzione di trasferimento
+
+Una **funzione di trasferimento** è una funzione che lega un'uscita ad un ingresso.
+
+Si immagini di voler calcolare la funzione di trasferimento $H(s)$ tra l'uscita $Y(s)$ è l'ingresso $U(s)$: come prima cosa si pongono a zero tutti gli ingressi diversi da $U(s)$, poi si calcola $H(s) = \frac{Y(s)}{U(s)}$.
+
+Vale la sovrapposizione degli effetti: siano $H_1(s)$ la funzione di trasferimento tra $Y(s)$ e $U_1(s)$ e $H_2(s)$ la funzione di trasferimento tra $Y(s)$ e $U_2(s)$. Se il sistema non ha altri ingressi allora $Y(s) = H_1(s) \cdot U_1(s) + H_2(s) \cdot U_2(s)$. questo ragionamento vale con un numero arbitrario di ingressi.
 
 # Appendice
 
