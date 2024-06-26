@@ -865,19 +865,94 @@ $$
 
 $G$ e $\delta$ possono essere, come si vedrà applicato nei paragrafi successivi, un sistema eqivalente e una componente di tale sistema: in tal caso il calcolo della sensibilità serve per vedere come una variazione della singola componente può influire sul funzionamento complessivo del sistema.
 
+In generale, è desiderabile un sistema che è molto sensibile all'input e poco sensibile a disturbi o variazioni dei parametri del sistema.
+
 ## Sensitività di controllori in serie
 
 Un rudimentale sistema di controllo può essere costruito nel seguente modo:
 
-![$C$ è il controllore e $G$ l'attuatore](assets/sensitività/serie.png)
+![$C$ è il controllore e $G$ il processo](assets/sensitività/serie.png)
 
-Si immagini di voler studiare come un ipotetico guasto all'attuatore possa influenzare il sistema nella sua interezza ($G_E(s) = C(s)\cdot G(s)$):
+Si immagini di voler studiare come una modifica nel processo possa influenzare il sistema nella sua interezza ($G_E(s) = C(s)\cdot G(s)$):
 
 $$
-S_G^{G_E} = \frac{G_0}{G_E} \cdot \frac{\delta G_E}{\delta G_0} = \frac{G_0}{C_0 \cdot G_0} \cdot C_0 = 1
+S_G^{G_E} = \frac{G}{G_E} \cdot \frac{\delta G_E}{\delta G} = \frac{G}{C \cdot G} \cdot C = 1
 $$
 
 Questo risultato dice che, in un sistema composto da una serie di un controllore ed un attuatore, tutte le variazioni dell'attuatore si sentiranno al $100\%$ sull'uscita.
+
+## Sensitività di controllori in retroazione
+
+Un sistema di controllo meno rudimentale del precedente (ma che rimane comunque rudimentale) può essere costruito nel seguente modo:
+
+![$C$ è il controllore, $G$ è il processo e $H$ è il sensore](assets/sensitività/retroazione.png)
+
+Si immagini di voler studiare come una modifica nel processo o un guasto al sensore possano influenzare il sistema nella sua interezza.
+
+Sappiamo che il sistema equivalente è
+
+$$
+G_E(s) = \frac{C(s) \cdot G(s)}{1 + C(s)G(s)H(s)}
+$$
+
+dunque
+
+$$
+S_G^{G_E} = \frac{G}{G_E} \cdot \frac{\partial G_E}{\partial G} = \frac{G}{\frac{CG}{1 + CGH}} \cdot \frac{C(1 + CGH) - CG(CH)}{(1 + CGH)^2} = \frac{1}{1 + CGH}
+$$
+
+$$
+S_H^{G_E} = \frac{H}{G_E} \cdot \frac{\partial G_E}{\partial H} = \frac{H}{\frac{CG}{1 + CGH}} \cdot \left( -\frac{CG(CG)}{(1 + CGH)^2} \right) = -\frac{CGH}{1 + CGH}
+$$
+
+Da ciò segue che, se $|GHC| \gg 1$ allora il sistema è poco sensibile ai cambiamenti di processo ma molto ai guasti del sensore.
+
+# Elementi di un sistema di controllo
+
+Un sistema di controllo _completo_ può essere rappresentato come segue
+
+![In verde i nomi dei vari segnali, in blu i nomi dei vari sistemi che compongono il sistem di controllo. Per le descrizioni, vedere la tabella sottostante.](assets/sistemi_di_controllo/completo.png)
+
+| Nome       | Descrizione                              |
+| ---------- | ---------------------------------------- |
+| $w$        | Segnale di riferimento                   |
+| $c\degree$ | Segnale di riferimento filtrato          |
+| $\eta$     | Errore misurato                          |
+| $\mu$      | Variabile di controllo                   |
+| $m$        | Variabile manipolata                     |
+| $y$        | Variabile controllata                    |
+| $c$        | Segnale di feedback                      |
+| $d_A$      | Disturbo di attuazione                   |
+| $d_P$      | Disturbo di processo                     |
+| $d_T$      | Disturbo di trasduzione/errore di misura |
+| $T\degree$ | Prefiltro                                |
+| $\tilde R$ | Controllore/regolatore                   |
+| $A$        | Attuatore                                |
+| $H_A$      | Filtro del disturbo di attuazione        |
+| $\tilde G$ | Processo                                 |
+| $H_P$      | Filtro del disturbo di processo          |
+| $T$        | Trasduttore                              |
+| $H_T$      | Filtro del disturbo di trasduzione       |
+
+In realtà, è possibile studiare i sistemi di controllo utilizzando una rappresenta zione semplificata.
+
+![Il significato dei colori è lo stesso dell'immagine precedente.](assets/sistemi_di_controllo/semplificato.png)
+
+In questo schema, tutti i disturbi sono stati accorpati e considerati già filtrati, l'input è considerato già filtrato e l'attuatore è diventato parte del processo.
+
+Nella tabella seguente, sono espresse le funzioni di trasferimento tra i vari ingressi e i vari segnali presenti all'interno del sistema:
+
+![](assets/sistemi_di_controllo/tabella.png)
+
+I requisiti di un sistema di controllo fatto bene sono i seguenti:
+
+- Stabilità nominale (asintotica stabilità)
+- Stabilità in condizioni perturbate (stabilità robusta)
+- Prestazioni statiche
+- Prestazioni dinamiche
+- Prestazioni robuste (come le p. statiche/dinamiche ma di fronte a variazioni del modello, non trattate in questo documento)
+
+
 
 # Appendice
 
