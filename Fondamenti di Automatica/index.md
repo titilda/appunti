@@ -757,7 +757,7 @@ Per far si che il sistema equivalente sia stabile, tutti i sistemi che lo compon
 
 Sistemi collegati in antiparallelo sono anche detti **retroazionati** e costituiscono un blocco fondamentale della teoria del controllo in quanto costituiscono un modo di rendere stabili anche sistemi instabili.
 
-![Sistemi in antiparallelo. Se $G(s)$ non fosse presente, si consideri $G(s) = 1$.](assets/schemi_a_blocchi/antiparallelo.png)
+![Sistemi in antiparallelo. Nel caso in cui $G(s)$ non sia presente, si consideri $G(s) = 1$.](assets/schemi_a_blocchi/antiparallelo.png)
 
 E' importante notare che il segno del nodo somma e il segno nel denominatore sono opposti: se ne può facilmente verificare la correttezza partendo dall'equazione $Y(s) = L(s) \cdot (G(s) \cdot Y(s) + U(s))$.
 
@@ -825,7 +825,7 @@ Per il diagramma di Bode del modulo, si procede nel seguente modo:
 
 Dopo aver tracciato il grafico approssimativo seguendo le istruzioni sopra, è necessario arrotondare un po' la curva, in modo da rendere il frafico più realistico.
 
-In caso di poli/zeri complessi coniugati, per $0 \le xi \le 0.7$ vi è un picco di risonanza/antirisonanza.
+In caso di poli/zeri complessi coniugati, per $0 \le \xi \le 0.7$ vi è un picco di risonanza/antirisonanza.
 
 Per il diagramma di Bode della fase il procedimento è simile ma con meno complicazioni.
 
@@ -942,9 +942,9 @@ In questo schema, tutti i disturbi sono stati accorpati e considerati già filtr
 
 Nella tabella seguente, sono espresse le funzioni di trasferimento tra i vari ingressi e i vari segnali presenti all'interno del sistema:
 
-![](assets/sistemi_di_controllo/tabella.png)
+![In blu la sensitività $S$, in giallo la sensitività complementare $T$ e in verde la sensitività del controllo $Q$](assets/sistemi_di_controllo/tabella.png)
 
-I requisiti di un sistema di controllo fatto bene sono i seguenti:
+Per un sistema di controllo ben progettato, bisogna definire le seguenti caratteristiche:
 
 - Stabilità nominale (asintotica stabilità)
 - Stabilità in condizioni perturbate (stabilità robusta)
@@ -952,7 +952,57 @@ I requisiti di un sistema di controllo fatto bene sono i seguenti:
 - Prestazioni dinamiche
 - Prestazioni robuste (come le p. statiche/dinamiche ma di fronte a variazioni del modello, non trattate in questo documento)
 
+## Stabilità nominale
 
+Si prenda il sistema semplificato e lo si semplifichi ancora di più rimuovendo i disturbi e accorpando $L(s) = R(s) \cdot G(s)$ ($L$ è detta **funzione di anello aperto**):
+
+![](assets/sistemi_di_controllo/l.png)
+
+Per avere stabilità nominale, tale sistema deve essere asintoticamente stabile.
+
+Per quanto visto nella sezione degli [schemi a blocchi](#schemi-a-blocchi), per avere asintoticà stabilità, i poli del sistema retroazionato (ovvero le radici di $1 + L = 0$) devono essere tutti a parte reale negativa, inoltre nell'effettuare il calcolo di $L = RG$ non devono essere effettuate cancellazioni di poli instabili.
+
+E' anche possibile applicare il **criterio di Routh** (che, pur avendo ricevuto il nome della stessa persona del criterio sopra, è un altro criterio): se $L$ ha un polo e nessuno zero, allora
+
+$$
+1 + L(s) = 1 + \frac{k}{\tau s + 1} = 0
+$$
+
+ed è garantito che il sistema è asintoticamente stabile se $k \gt -1$.
+
+Il **criterio di Nyquist** permette di determinare la stabilità del sistema retroazionato analizzando solamente la risposta in frequenza della funzione in anello aperto.
+
+Per il criterio, un sistema negativamente retroazionato è asintoticamente stabile se e solo se il numero di giri del diagramma di Nyquist attorno a $-1$  è uguale al numero di poli instabili di $L$ (poli con parte reale positiva).
+
+Per tracciare il diagramma di Nyquist, come prima cosa si traccia su un piano complesso il **percorso di Nyquist**. Tale percorso comincia dall'origine, procede verso l'alto sull'asse immaginario fino a $j \infty$, compie un semicerchio di raggio infinito sul primo e quarto quadrante, fino ad arrivare a $-j \infty$ e poi procede di nuovo verso l'alto fino ad arrivare di nuovo all'origine.
+
+Il diagramma di Nyquist è composto da tutti i punti del piano complesso che si ottengono valutando $L(s)$ (la funzione di anello aperto, non il sistema retroazionato) su tutti i punti del percorso omonimo (il criterio è applicabile solo se il numero di giri attorno $-1$ è ben definino; il numero di giri attorno a $-1$ è ben definito se e solo se il diagramma di Nyquist non passa in $-1$).
+
+In generale, è possibile considerare $-\frac{1}{k}$ al posto di $-1$: per ogni $k$, se il numero di giri attorno a $-\frac{1}{k}$ è ben definito e uguale al numero di poli instabili di $L(s)$ allora il sistema $kL(s)$ è asintoticamente stabile. Per effettuare questo calcolo, è utile conoscere il valore di $|L(j \omega_pi)|$ dove $\omega_pi$ è tale per cui $\phase{L(j \omega_pi)} = -180 \degree$.
+
+Il criterio di Nyquist è valido anche per sistemi con ritardo di tempo (ma il percorso viene modificato aggirando lo zero con un semicerchio di raggio infinitesimo sul primo e quarto quadrante).
+
+Vale il **criterio del piccolo guadagno**: se $L(s)$ è asintoticamente stabile, una condizione sufficiente per ottenere il sistema retroazionato asintoticamente stabile è $|L(j\omega)| \lt 1 \forall \omega \in [0, +\infty)$.
+
+Sul diagramma di Bode, si nota se la condizione è verificata se $|L(j\omega)|_{dB} \lt 0 \forall \omega$.
+
+Vale il **criterio della piccola fase**: se $L(s)$ è asintoticamente stabile, una condizione sufficiente per ottenere il sistema retroazionato asintoticamente stabile è $|\phase{L(j\omega)}| \lt 180 \degree \forall \omega$.
+
+Sul diagramma di Bode, si nota se la condizione è verificata se la fase non esce dall'intervallo $(-180\degree, +180\degree)$.
+
+## Stabilità robusta
+
+Un sistema è stabile in condizioni perturbate se rimane asintoticamente stabile anche a fronte di variazioni limitate dei modellidi $R$ e $G$. Concretamente, ciò significa che anche aggiungendo un altro sistema $\Delta$ (che rappresenta la variazione) tra $G$ ed il nodo somma, il sistema equivalente rimane comunque stabile.
+
+## Prestazioni statiche
+
+Le prestazioni statiche consistono nella risposta ad ingressi costanti o periodici. Per segnali di tipo rampa o scalino, l'errore a regime è dato dalla differenza tra il segnale di riferimento $w(t)$ e l'uscita $y(t)$ mentre per segnali di tipo sonusoidale, l'errore è dato dalla differenza tra l'altezza dei picchi di $w(t)$ e l'alteza dei picchi di $y(t)$.
+
+E' desiderabile che l'errore a regime $e_\infty$ tenda a zero e che lo sforzo $u_\infty$ non vada oltre il suo limite fisico (se questo limite fosse superato, $y(t)$ non potrebbe raggiungere il segnale di riferimento).
+
+## Prestazioni dinamiche
+
+Le prestazioni dinamiche consistono nell'andamento nel transitorio delle tre uscite del sistema ($y$, $e$, $u$).
 
 # Appendice
 
