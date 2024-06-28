@@ -986,7 +986,7 @@ Vale il **criterio del piccolo guadagno**: se $L(s)$ è asintoticamente stabile,
 
 Sul diagramma di Bode, si nota se la condizione è verificata se $|L(j\omega)|_{dB} \lt 0 \forall \omega$.
 
-Vale il **criterio della piccola fase**: se $L(s)$ è asintoticamente stabile, una condizione sufficiente per ottenere il sistema retroazionato asintoticamente stabile è $|\phase{L(j\omega)}| \lt 180 \degree \forall \omega$.
+Vale il **criterio della piccola fase**: se $L(s)$ è asintoticamente stabile, una condizione sufficiente per ottenere il sistema retroazionato asintoticamente stabile è $\left|\phase{L(j\omega)}\right| \lt 180 \degree \forall \omega$.
 
 Sul diagramma di Bode, si nota se la condizione è verificata se la fase non esce dall'intervallo $(-180\degree, +180\degree)$.
 
@@ -994,15 +994,104 @@ Sul diagramma di Bode, si nota se la condizione è verificata se la fase non esc
 
 Un sistema è stabile in condizioni perturbate se rimane asintoticamente stabile anche a fronte di variazioni limitate dei modellidi $R$ e $G$. Concretamente, ciò significa che anche aggiungendo un altro sistema $\Delta$ (che rappresenta la variazione) tra $G$ ed il nodo somma, il sistema equivalente rimane comunque stabile.
 
+Per misurare la stabilità di un sistema, si utilizza il **margine di stabilità**. Tale margine è il reciproco della minima distanza tra $-1$ e la curva del diagramma di Nyquist (ovviamente questo ragionamento vale se il sistema è asintoticamente stabile).
+
+Dato che calcolare il margine di stabilità (che tiene già condo di modulo e fase) è complesso, è possibile considerare i margini di fase e di guadagno separatamente.
+
+Il **margine di fase** indica quanto può peggiorare la fase mantenendo il sistema asintoticamente stabile a parità di guadagno. La definizione del **margine di guadagno** è analoga.
+
+Il margine di guadagno si calcola come segue:
+
+$$
+\Delta \mu = k_m = \frac{1}{|x_\pi|} \qquad x_\pi = |L(j \omega_\pi)| \qquad \phase{L(j\omega_\pi)} = -180\degree
+$$
+
+Se la fase non passa mai a $-180\degree$ allora si considera $k_m = +\infty$.
+
+Per il margine di fase, vige una formula simile:
+
+$$
+\varphi_m = 180 \degree - \left|\phase{L(j\omega_c)}\right| \qquad |L(j\omega_c)| = 1
+$$
+
+Vale il **criterio di Bode**: per sistemi $L(s)$ senza poli instabili, se il diagramma di Bode di $|L(j\omega)|$ attraversa una sola volta l'asse $0dB$ allora il sistema retroazionato negativamente è asintoticamente stabile se e solo se $\varphi_m \gt 0 \degree$.
+
 ## Prestazioni statiche
 
 Le prestazioni statiche consistono nella risposta ad ingressi costanti o periodici. Per segnali di tipo rampa o scalino, l'errore a regime è dato dalla differenza tra il segnale di riferimento $w(t)$ e l'uscita $y(t)$ mentre per segnali di tipo sonusoidale, l'errore è dato dalla differenza tra l'altezza dei picchi di $w(t)$ e l'alteza dei picchi di $y(t)$.
 
 E' desiderabile che l'errore a regime $e_\infty$ tenda a zero e che lo sforzo $u_\infty$ non vada oltre il suo limite fisico (se questo limite fosse superato, $y(t)$ non potrebbe raggiungere il segnale di riferimento).
 
+Definire le prestazioni statiche significa scegliere il grado del sistema in base al comportamento dell'uscita e dell'errore desitarati.
+
+E' possibile calcolare 
+
+| Grado   | $i = 1$ (Scalino)   | $i = 2$ (Rampa) | $i = 3$ (Parabola) |
+| ------- | ------------------- | --------------- | ------------------ |
+| $g = 0$ | $\frac{A}{1 + \mu}$ | $\infty$        | $\infty$           |
+| $g = 1$ | $0$                 | $\frac{A}{\mu}$ | $\infty$           |
+| $g = 2$ | $0$                 | $0$             | $\frac{A}{\mu}$    |
+| $g = 3$ | $0$                 | $0$             | $0$                |
+
+_Il pattern che si vede continua a rimanere valido per $g$ e $i$ arbitrari._
+
+Nello stesso schema riportato sopra (per comodità riportato anche qui sotto), la formula dell'uscita è data da
+
+$$
+Y(s) = T(s)(W(s) - N(s)) + S(s)D(s) \qquad L(s) = R(s)G(s) \qquad S(s) = \frac{1}{1 + L(s)} \qquad T(s) = \frac{L(s)}{D(s)}
+$$
+
+Dato che l'obiettivo è avere $Y(s) \simeq W(s)$, allora
+
+- nelle frequenze dove $D(s)$ ha energia, si vuole $|S(j \omega)| \to 0$
+- nelle frequenze dove $N(s)$ ha energia, si vuole $|T(j \omega)| \to 0$
+- nelle frequenze fove $W(s)$ ha energia, si vuole $|T(j \omega)| \to 1$
+
+![](assets/sistemi_di_controllo/semplificato.png)
+
+Siano $w(t) = A \sin(\omega t), d(t) = B \sin(\omega t), n(t) = C \sin(\omega t)$, allora
+
+$$
+\begin{align*}
+    y_\infty(t) &= A|T(j \omega)|\sin(\omega t + \varphi_T(\omega)) \\
+    &+ B|S(j \omega)|\sin(\omega t + \varphi_S(w)) \\
+    &- C|T(j \omega)|\sin(\omega t + \varphi_T(w))
+\end{align*}
+$$
+
+Dunque, nel caso peggiore, si ha
+
+$$
+\max_t |y_\infty(t)| = A|T(j \omega)| + B|S(j \omega)| + C|T(j \omega)| \\
+\max_t |u_\infty(t)| = A|Q(j \omega)| + B|Q(j \omega)| + C|Q(j \omega)|
+$$
+
 ## Prestazioni dinamiche
 
 Le prestazioni dinamiche consistono nell'andamento nel transitorio delle tre uscite del sistema ($y$, $e$, $u$).
+
+Per comprendere l'andamento delle uscite nel transtorio, esiste una regola empirica che permette di dedurne il comportamento: se $\varphi_m \gt 70\degree$ allora $T(s)$ si comporta come un sistema con un polo dominante reale e la risposta allo scalino è simile a $\tilde F_1(s) = \frac{\mu_F}{1 + \tau s}$ dove $\tau = \frac{1}{\omega_c}$ e
+
+$$
+\mu_F = \begin{cases}
+    \frac{\mu_L}{1 + \mu_L} & g = 0 \\
+    1 & g \gt 0
+\end{cases}
+$$
+
+Se invece $\varphi_m \lt 75 \degree$ allora $F(s)$ si comporta come un sistema con una coppia di poli complessi coniugati come poli dominanti e $\xi = \sin\left(\frac{\varphi_m}{2}\right) \simeq \frac{\varphi_m^\degree}{100} \simeq \frac{\varphi_m^{rad}}{2}$.
+
+# Sintesi dei regolatori
+
+Per progettare un regolatore, bisogna trovare una $R(s)$ adatta. Tale funzione di trasferimento deve essere tale per cui vi sia:
+
+- Stailità nominale: tutti i poli di anello chiuso devono avere parte reale negativa in modo da poter applicare i criteri di Nyquist e di Bode; se $L(s)$ è stabile allora $\varphi_m \gt 0$ e $k_m \gt 0$.
+- Precisione statica: l'errore deve essere inferiore ad un massimo predeterminato, si consulta la tabella e si verfica che l'errore sia limitato/nullo, in caso contrario si aumenta il numero di integratori.
+- Risposta allo scalino voluta: si verifica che la sovraelongazione massima si ainferiore al massimo predeterminato e da questa si calcola il margine di fase poi si verifica che il tempo di assestamento sia inferiore al massimo predeterminato.
+- Attenuazione dei disturbi: si verifica che $|S(j \omega)| \lt S_{max}$ per $\omega \in [0, \omega_d]$ (che è la banda di frequenze dove solitamente ci sono disturbi); dato che $|S| \simeq \frac{1}{|L|}$ allora $|S| \lt S_{max} \implies |L| \gt \frac{1}{S_{max}}$.
+- Attenuazione del rumore: come l'attenuazione dei disturbi ma ad alta frequenza; $|T| \lt |T_{max}| \ \forall \omega \in [\omega_r, +\infty)$; $|F| \simeq |L| \implies |L| \gt F_{max}$.
+
+Tutti questi requisiti possono essere rappresentati come "zone proibite" su un diagramma di Bode delle risposte in frequenza per capire dove mettere i poli/zeri per fare in modo che la risposta non tocchi tali zone proibite.
 
 # Appendice
 
