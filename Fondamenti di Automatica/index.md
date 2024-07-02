@@ -216,7 +216,7 @@ Se $\varphi_0 \gt 0$ allora $\Re(\lambda_i) \lt 0 \ \forall i \implies \forall i
 
 Una condizione necessaria per avere stabilità asintotica è che tutti i coefficienti $\varphi_i$ abbiano tutti lo stesso segno.
 
-Per sistemi di alto ordine, è possibile applicare un procedimento meccanico che consente, con un numero limitato di passaggi, di distinguere tra sistemi asintoticamente stabili ed instabili: il criterio do Routh.
+Per sistemi di alto ordine, è possibile applicare un procedimento meccanico che consente, con un numero limitato di passaggi, di distinguere tra sistemi asintoticamente stabili ed instabili: il criterio di Routh.
 
 Dato un polinomio caratteristico per un sistema di ordine $n$, si inizia mettendo, in una tabella, sulla prima riga tutti i coefficienti di indice pari e sulla seconda tutti i coefficienti di ordine dispari. Entrambe le righe sono seguite da infiniti zeri. Successivamente si prenda la matrice ottenuta affiancando la prima e la seconda colonna, se ne calcoli il determinante e lo si divida per il numero in basso a sinistra della matrice appena ottenuta. Si faccia lo stesso con la prima e la terza riga, poi con la prima e la quarta e cos' via fino ad arrivare agli infiniti zeri. Con i numeri ottenuti, si componga una riga poi aggiunta alla tabella. Si ignori la prima riga e si ripeta il procedimento fino ad ottenere un solo numero seguito da infiniti zeri.
 
@@ -790,7 +790,7 @@ $$
 L'uscita prende la forma di
 
 $$
-y(t) = \underbrace{y_1(t)}_{\text{transitorio}} + A|G(j \omega)|\sin(\omega t + \varphi) \text{Sca}(t)
+y(t) = \underbrace{y_1(t)}_{\text{transitorio}} + A|G(j \omega)|\sin(\omega t + \varphi + \phase{G(j\omega)}) \text{Sca}(t)
 $$
 
 In caso di ingresso sinusoidale, si definisce **risposta in frequenza** la funzione $G(j \omega)$ definita $\forall \omega \ge 0$.
@@ -839,7 +839,7 @@ Anche qui, per tenere rendere il grafico più realistico, si deve tenere conto d
 
 Il diagramma della fase di un sistema ritardo puro è 
 
-### diagrammi a fase minima
+### Diagrammi a fase minima
 
 Se si considera solamente l'insieme delle funzioni di trasferimento di sistemi asintoticamente stabili, con guadagno positivo, senza zeri nel semipiano destro e senza ritardi puri, allora è possibile associare biunivocamente a ciascun grafico della fase, un grafico del modulo e viceversa.
 
@@ -1085,13 +1085,99 @@ Se invece $\varphi_m \lt 75 \degree$ allora $F(s)$ si comporta come un sistema c
 
 Per progettare un regolatore, bisogna trovare una $R(s)$ adatta. Tale funzione di trasferimento deve essere tale per cui vi sia:
 
-- Stailità nominale: tutti i poli di anello chiuso devono avere parte reale negativa in modo da poter applicare i criteri di Nyquist e di Bode; se $L(s)$ è stabile allora $\varphi_m \gt 0$ e $k_m \gt 0$.
+- Stailità nominale: tutti gli autovalori di anello chiuso devono avere parte reale negativa in modo da poter applicare i criteri di Nyquist e di Bode; se $L(s)$ è stabile allora $\varphi_m \gt 0$ e $k_m \gt 0$.
 - Precisione statica: l'errore deve essere inferiore ad un massimo predeterminato, si consulta la tabella e si verfica che l'errore sia limitato/nullo, in caso contrario si aumenta il numero di integratori.
 - Risposta allo scalino voluta: si verifica che la sovraelongazione massima si ainferiore al massimo predeterminato e da questa si calcola il margine di fase poi si verifica che il tempo di assestamento sia inferiore al massimo predeterminato.
 - Attenuazione dei disturbi: si verifica che $|S(j \omega)| \lt S_{max}$ per $\omega \in [0, \omega_d]$ (che è la banda di frequenze dove solitamente ci sono disturbi); dato che $|S| \simeq \frac{1}{|L|}$ allora $|S| \lt S_{max} \implies |L| \gt \frac{1}{S_{max}}$.
 - Attenuazione del rumore: come l'attenuazione dei disturbi ma ad alta frequenza; $|T| \lt |T_{max}| \ \forall \omega \in [\omega_r, +\infty)$; $|F| \simeq |L| \implies |L| \gt F_{max}$.
 
 Tutti questi requisiti possono essere rappresentati come "zone proibite" su un diagramma di Bode delle risposte in frequenza per capire dove mettere i poli/zeri per fare in modo che la risposta non tocchi tali zone proibite.
+
+Gli step per la sintesi di un regolatore sono i seguenti:
+
+1. Si traducono i requisiti del sistema in vincoli sulla $L(s)$ da progettare.
+2. Si progetta un regolatore $R_1(s)$ della forma $R_1(s) = \frac{\mu_R}{s^r}$ che soddisfa le specifiche statiche.
+3. Si progetta $R_s(s)$ con guadagno statico unitario, aggiungendo poli e zeri a parte reale negativa, facendo in modo che $L(s) = R_1(s) \cdot R_2(s) \cdot G(s)$ non tocchi le zone proibite nel diagramma di Bode.
+
+In realtà, $R(s) = R_1(s) \cdot R_2(s)$ può essere una qualunque funzione di trasferimento tale per cui
+
+- $R(s)$ è asintoticamente stabile
+- $L(s)$ è il tipo di sistema desiderato
+- $L(s)$ ha la risposta in frequenza desiderata
+- $R(s)$ è robusto, economico e producibile in grandi volumi
+- L'esistenza di $R(s)$ è fisicamente possibile (ovvero il grado relativo deve essere maggiore di zero)
+
+## Controllore PID
+
+Per sintetizzare il controllore desiderato, si può usare il controllore **PID** (o una sua parte).
+
+Il controllore PID è composto da 3 blocchi in parallelo: un blocco con risposta direttamente **p**roporzionale all'input, un blocco con risposta proporzionale alla **d**erivata dell'input e un blocco con risposta proporzionale all'**i**ntegrale dell'input.
+
+![Nell'immagine si vedono i collegamenti tra i tre blocchi](assets/PID/PID.png)
+
+Le combinazioni più utilizzate sono P, PI, PD e PID.
+
+### Controllore P
+
+La funzione di trasferimento del controllore P è della forma
+
+$$
+R_P(s) = k_P
+$$
+
+- Non modifica il tipo del sistema
+- Non modifica $\phase{L(j \omega)}$
+- Modifica l'errore statico, la velocita e, di conseguenza, la stabilità
+
+### Controllore PI
+
+Dal fatto che 
+
+$$
+u_{PI}(t) = k_P e(t) + k_I \int_0^t e(\tau) d\tau \\
+U(s) = k_P E(s) + k_I \frac{E(s)}{s}
+$$
+
+segue che la funzione di trasferimento del controllore PI è della forma
+
+$$
+R_{PI}(s) = \frac{sk_P + k_I}{s}
+$$
+
+Esiste anche un'altra rappresentazione del controllore PI, la forma normalizzata ISA:
+
+$$
+R_{PI}(s) = k_{PI} \left( 1 + \frac{1}{\tau_Is} \right) = k_{PI} \left( \frac{\tau_I s + 1}{\tau_I s} \right)
+$$
+
+- Aumenta il tipo del sistema
+- Polo in zero
+- Zero in $-\frac{1}{\tau_I}$
+- Varia il guadagno
+
+### Controllore PD
+
+Dal fatto che
+
+$$
+u_{PD}(t) = k_Pe(t) + k_D\frac{de(t)}{dt} \\
+U_{PD}(s) = (k_P + k_Ds)E(s)
+$$
+
+segue che la funzione di trasferimento del controllore PD è della forma
+
+$$
+R_{PD}(s) = (k_P + k_Ds)
+$$
+
+Anche qui esiste la forma normalizzata ISA:
+
+$$
+R_{PD}(s) = k_{PD} \left( 1 + \frac{\tau_D s}{n \tau_Ds + 1} \right) \qquad 10 \le n \le 100
+$$
+
+- Zero in $-\frac{1}{\tau_D}$
+- Polo in $-\frac{1}{n \tau_D}$
 
 # Appendice
 
@@ -1120,5 +1206,3 @@ $$
 | $e^{\alpha t}\cos(\omega t)\text{Sca}(t)$  | $\frac{s-\alpha}{(s-\alpha)^2+\omega^2}$                |
 | $te^{\alpha t}\sin(\omega t)\text{Sca}(t)$ | $\frac{2\omega(s-\alpha)}{((s-\alpha^2)+\omega^2)^2}$   |
 | $te^{\alpha t}\cos(\omega t)\text{Sca}(t)$ | $\frac{(s-\alpha)^2-\omega^2}{((s-\alpha)^2+\omega^2)}$ |
-
-<!-- TODO: mettere le immagini dei vari grafici e dei vari collegamenti -->
