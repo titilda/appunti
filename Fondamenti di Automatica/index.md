@@ -1179,6 +1179,31 @@ $$
 - Zero in $-\frac{1}{\tau_D}$
 - Polo in $-\frac{1}{n \tau_D}$
 
+### Controllore PID
+
+Dal fatto che
+
+$$
+u_{PID}(t) = k_Pe(t) + k_I \int_0^t e(\tau) d\tau + k_D \frac{de(t)}{dt}
+$$
+
+segue che la funzione di trasferimento del controllore PID è della forma
+
+$$
+R_{PID}(s) = U_{PID}(s) = \frac{k_I + k_Ps + k_Ds^2}{s}
+$$
+
+Anche qui esiste la forma normalizzata ISA:
+
+$$
+R_{PID}(s) = k_{PID} \left( 1 + \frac{1}{\tau_I^2} + \frac{\tau_D s}{1 + n \tau_Ds} \right) = k_{PID}\left( 1 + \frac{1}{\tau_I s} \right)\left( 1 + \frac{\tau_Ds}{1 + n \tau_Ds} \right) = k_{PID} \left( \frac{\tau_I \tau_D \left( 1 + \frac{1}{n} \right)s^2 + \left( \tau_I + \frac{\tau_D}{n} \right)s + 1}{\tau_I s \left( 1 + \frac{\tau_D}{n}s \right)} \right)
+$$
+
+- Polo in zero
+- Polo in $\frac{N}{\tau_D}$
+- Zeri come soluzione di $\tau_I \cdot \tau_D \cdot s^2 + \tau_I \cdot s + 1 = 0$
+
+
 # Appendice
 
 ## Proprietà matrice esponenziale
