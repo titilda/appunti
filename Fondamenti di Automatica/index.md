@@ -1203,6 +1203,23 @@ $$
 - Polo in $\frac{N}{\tau_D}$
 - Zeri come soluzione di $\tau_I \cdot \tau_D \cdot s^2 + \tau_I \cdot s + 1 = 0$
 
+### Limitazioni all'azione dei controllori
+
+In caso di componente derivativa e ingresso a scalino, per un istante verrà dato un impolso infinito (se $e = \text{Sca}(t - \overline t)$ allora $\frac{de}{dt}(\overline t) = +\infty$).
+
+In tal caso, per evitare i picchi, la struttura del regolatore viene trasformata come segue
+
+![](assets/PID/lim_der.png)
+
+In questo modo, il controllore non utilizzarà la derivata dell'errore ma la derivata dell'uscita.
+
+L'applicazione di questa modifica non è utile solamente nel caso di ingresso di tipologia scalino ma anche in caso di rumori ad alta frequenza: spostando il contributo derivativo, le interferenze vengono filtrate.
+
+Anche l'azione integrale presenta problemi dovuti alla saturazione: non è possibile continuare ad integrare un segnale indiscriminatamente, ad un certo punto si arriverà al limite fisico dei componenti del sistema.
+
+In questo caso, dato che continuando ad integrare si accumulerebbe errore, si fa in modo che l'integratore si fermi fino a quando la situazione non ritorna gestibile, aggiungendo un blocco di saturazione:
+
+![Il **blocco di saturazione indica ll massimo e minimo valore dell'uscita**](assets/PID/lim_int.png)
 
 # Appendice
 
