@@ -1221,6 +1221,55 @@ In questo caso, dato che continuando ad integrare si accumulerebbe errore, si fa
 
 ![Il **blocco di saturazione indica ll massimo e minimo valore dell'uscita**](assets/PID/lim_int.png)
 
+# Controllori digitali
+
+Fino ad alcuni anni fa, i controllori venivano costruiti utilizzando elettronica analogica, oggi invece vengono utilizzati controllori digitali che sono più economici, veloci e versatili.
+
+Questa evoluzione ha dato vita a nuovi problemi: primo fra tutti la gestione di un segnale a tempo continuo con il controllore a tempo discreto.
+
+Per rappresentare i controllori digitali negli schemi a blocchi, un componente fondamentale è il campionatore: ogni $T$ secondi, registra il valore in ingresso e lo mantiene in uscita fino al campionamento successivo.
+
+La funzione che rappresenta il segnale $r(t)$ campionato ogni $T_S$ secondi e la sua trasformata sono
+
+$$
+r^*(t) = \sum_{k = -\infty}^{+\infty} r(kT_S)\delta(t - kT_S) \\
+R^*(s) = \sum_{k = 0}^{+\infty} r(kT_S)e^{-skT_s}
+$$
+
+Il segnale campionato soffre del fenomeno di aliasing. Per evitare questo problema va campionato almeno al doppio della frequenza del segnale. Nel caso ciò non fosse possibile, si può ricorrere a filtri anti aliasing.
+
+Per lavorare sui segnali campionati, viene utilizzata la **trasformata $Z$**:
+
+$$
+F(z) = \mathcal{Z}(f(k)) = \sum_{k=0}^{+\infty} f(k)z^{-k}
+$$
+
+Questa trasformata gode, tra le altre, di un'importante proprietà: quella del ritardo unitario
+
+$$
+\mathcal{Z}(f(k-1)) = z^{-1} F(z)
+$$
+
+Attraverso questa proprietà, possibile esprimere un controllore a tempo discreto $R^*(z)$ che trasforma il segnale in ingresso $e^*$ nel segnale $u^*$ come segue: sia $m$ il numero di zeri e $n$ il numero di poli, allora
+
+$$
+R(z) = \frac{U(z)}{E(z)} = \frac{\beta_mz^m + \dots + \beta_0}{z^n + \alpha_{n-1}z^{n-1} + \dots + \alpha_0}
+$$
+
+Un altro blocco importante per i sistemi a tempo discreto è il **Zero Order Holder (ZOH)** che, essenzialmente, è un DAC.
+
+Il ZOH mantiene in uscita il valore dell'input. Tale valore viene aggiornato ogni $T_S$ secondi.
+
+La funzione di trasferimento di un ZOH è
+
+$$
+G_{ZOH}(s) = \frac{1 - e^{-sT_S}}{s}
+$$
+
+Un sistma di controllo digitale può essere schematizzato come segue:
+
+![$F$ rappresenta il filtro anti aliasing](assets/scd/schema.png)
+
 # Appendice
 
 ## Proprietà matrice esponenziale
@@ -1243,7 +1292,7 @@ $$
 | $\sin(\omega t)\text{Sca}(t)$              | $\frac{\omega}{s^2+\omega^2}$                           |
 | $\cos(\omega t)\text{Sca}(t)$              | $\frac{s}{s^2+\omega^2}$                                |
 | $t\sin(\omega t)\text{Sca}(t)$             | $\frac{2\omega s}{(s^2+\omega^2)^2}$                    |
-| $t\cos(\omega t)\text{Sca}(t)$             | $\frac{s^2+\omega^2}{(s^2+\omega^2)^2}$                 |
+| $t\cos(\omega t)\text{Sca}(t)$             | $\frac{s^2-\omega^2}{(s^2+\omega^2)^2}$                 |
 | $e^{\alpha t}\sin(\omega t)\text{Sca}(t)$  | $\frac{\omega}{(s-\alpha)^2+\omega^2}$                  |
 | $e^{\alpha t}\cos(\omega t)\text{Sca}(t)$  | $\frac{s-\alpha}{(s-\alpha)^2+\omega^2}$                |
 | $te^{\alpha t}\sin(\omega t)\text{Sca}(t)$ | $\frac{2\omega(s-\alpha)}{((s-\alpha^2)+\omega^2)^2}$   |
