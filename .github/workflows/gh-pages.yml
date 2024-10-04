@@ -65,8 +65,9 @@ jobs:
         run: |
           find . -type l -delete
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages-{{ github.sha }}
           path: ./
     
   # Deploy job
@@ -92,7 +93,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: github-pages
+          patterns: "github-pages-*"
+          overwrite: true
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2 # or the latest "vX.X.X" version tag for this action
