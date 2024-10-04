@@ -79,6 +79,7 @@ jobs:
     permissions:
       pages: write      # to deploy to Pages
       id-token: write   # to verify the deployment originates from an appropriate source
+      #actions: write    # to download the artifact
 
     # Deploy to the github-pages environment
     environment:
@@ -101,5 +102,5 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          name: github-pages-${{ github.sha }}
+          artifact_name: github-pages-${{ github.sha }}
 
