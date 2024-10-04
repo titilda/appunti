@@ -92,7 +92,7 @@ jobs:
         uses: actions/configure-pages@v5
       - name: List artifacts
         id: list
-        uses: ./
+        uses: yakubique/list-artifacts@v1
         with:
           name: test-*
       - name: Download artifact
