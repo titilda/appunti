@@ -105,6 +105,8 @@ Problem Solving by Search $\implies$ we can find the solution in many way.
 
 ### Eight Puzzle
 
+![8-Puzzle](assets/8-Puzzle.jpg)
+
 This is a puzzle game where I have matrix 3x3 complose by 8 numbers and I have to put in order from 1 to 8.
 
 I can rapresent the 8-puzzle in an array:
