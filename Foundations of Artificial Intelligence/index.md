@@ -128,10 +128,14 @@ action = $(x,y)$
 - A goal test that given a state $s$ return true if the state is the goal state.
 - A step cost $c(s,a,s')$ of an action $a$ from $s$ to $s'$.
 
+![State Space](assets/Space%20state.jpg)
+
 ### State Space
 
 - The state space is a directed graph with nodes rappresenting state, arcs rappresenting actions.
 - The solution to a search problem is a path in the state space from the initial state to the goal state.
+
+![State Space as a graph](assets/State%20space%202.jpg)
 
 **Optimal Solution**: solution with the lowest cost.
 
@@ -147,11 +151,15 @@ If I generate 100 millions states per second, I would requite 0.036 second to ge
 
 In this game I have to put 8 queens in a chess camp without any queens stay on the territory of the other.
 
+![8-Queens Puzzle](assets/8%20Queens-Puzzle.jpg)
+
 ### Path planning
 
 I have multiple path.
 
-(put the photo)
+![Path Planning](assets/Path%20planning.jpg)
+
+I have to reach the black point on the left from the red at the right.
 
 So for find a solution I don't create a graph but a tree.
 
@@ -170,3 +178,35 @@ For some problem I have an infinite tree (for loop or none solution) so I must f
 The best algoritm for the tree search is the **Best-First Search**.
 
 ## Chapter Five: Uninformed Search Startegies
+
+**Uninformed Search Startegies**: They use only the information conteined in the problem formulation.
+
+**The Five Elements of U.S.S.**
+
+- The set of states (and initial state).
+- Function actions().
+- Function result().
+- Goal test.
+- Step cost.
+
+Evaluation of Search Strategies
+
+- Completeness: Is the S.S. guarateed to find a solution when exist ?
+- Optimality: Does the S.S. optimal ?
+- Complexity: How much time require ?
+- Parameters
+
+    - $b$,  the branching factor of search tree.
+    - $d$, the depth of shallowest goal node.
+
+Bigger is the $b$ factor, harder is the problem.
+
+Bigger is the $d$ factor, more exploretion require the closest solution.
+
+### Breadth-First Search
+
+The Algorithm is the same we do in "API" but here we generate a tree step by step, so we don't color the node and the loop don't rappresent a problem for us.
+
+![BFS, 7 is the goal state](assets/BFS.jpg)
+
+we start with the first node: $1$ and expand the branch so $[2, 3]$ we expand the first node we see: $2 \implies [3, 4, 5]$, 
