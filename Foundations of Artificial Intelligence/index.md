@@ -7,21 +7,21 @@ author:
 
 Hello reader this is a short summary of our notes about the course "FAI". If you find an error or you think that one point isn't clear please tell me and I fix it (sorry for my bad english). -NP
 
-## First Charpter: Type of AI and Turing Test
+## First Charpter: Types of AI and Turing Test
 
-We can established four categories that definy different type of  AI:
+We can established four categories that definy different types of  AI:
 
 - Thinking Humanly
 - Thinking Rationally
 - Acting Humanly
 - Acting Rationally
 
-**The Turing Test**: This test provide us a satisfactory operetional definition of Intelligence. A person interrogate a computer and if to the end the person cannot understand if he wrote with a computer or another person the AI complete the test with a success.
+**The Turing Test**: This test provides us a satisfactory operational definition of Intelligence. A person interrogates a computer and if, in the end, the person cannot understand if he wrote with a computer or another person the AI completes the test with a success.
 
 This test give us 6 skill about the intelligence tested:
 
 - **Natural language processing**: correct comunication in English.
-- **Knoledge rappresentation**: store what it know or hear.
+- **Knoledge representation**: store what it know or hear.
 - **Aumated reasoring**: can use the stored info to arrive at new conclusion.
 - **Machine learning**: can adapth to a new circumstance.
 - **Computer vision**: perceive object.
@@ -29,7 +29,7 @@ This test give us 6 skill about the intelligence tested:
 
 ## Chapter Two: Agent
 
-**Agent**: Anything can be viewed as perceiving enviroment and acting upon that environment.
+**Agent**: Anything that can perceive an enviroment and act upon it.
 
 **Rational Agent**: This type of agent chooses the actions that maximizes the expected value of his **performance measure**.
 
