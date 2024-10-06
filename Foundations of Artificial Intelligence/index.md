@@ -175,7 +175,7 @@ Dear reader, before continuing, try to answer this question, why i prefer build 
 
 For some problem I have an infinite tree (for loop or none solution) so I must find I new method.
 
-The best algoritm for the tree search is the **Best-First Search**.
+The best algorithm for the tree search is the **Best-First Search**.
 
 ## Chapter Five: Uninformed Search Startegies
 
@@ -209,4 +209,23 @@ The Algorithm is the same we do in "API" but here we generate a tree step by ste
 
 ![BFS, 7 is the goal state](assets/BFS.jpg)
 
-we start with the first node: $1$ and expand the branch so $[2, 3]$ we expand the first node we see: $2 \implies [3, 4, 5]$, 
+we start with the first node: $1$ and expand the branch so $[2, 3]$ we expand the first node we see: $2 \implies [3, 4, 5]$, we continue with thise idea $[4, 5, 6, 7] \to [5, 6, 7, 2] \to [6, 7, 2] \to [7, 2]$ now we have first 7 that is the goal state and interrupt the search, so we don't see the loop.
+
+**Complexity**: temporal and spatial (worse-case) $\Omicron(b^{d+1})$
+
+### Deapth-First Search
+
+The same we saw in "API" but we generate a tree step by step and here we can have a loop.
+
+![Depht-Fisrt Search, 7 is the goal state](assets/DFS.jpg)
+
+$[1] \to [2, 3] \to [4, 5, 3] \to [2, 5, 3] \to [4, 5, 5, 3]$ so in this case we have a loop, now we delete it.
+
+$[1] \to [2, 3] \to [4, 5 , 3] \to [5, 3] \to [3] \to [6, 7] \to [7] \ 7$ is the goal state.
+
+**Complexity**: Given the maximum depth of the search tree $m$:
+
+- The spatial (worse-case) $\Omicron (bm)$.
+- Temporal $\Omicron(b^m), \ m$ could be infinite.
+
+It is cleae that the DFS Algorithm isn't a good Tree Search Algorithm.
