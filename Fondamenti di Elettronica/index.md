@@ -89,4 +89,105 @@ $P_D=V_F(\frac{1}{T} \int_{t \in T_F} i_D(t)dt) + V_{BD}(\frac{1}{T} \int_{t \in
 
 # Capitolo Due: Circuiti con diodo
 
-Allora cerchiamo di capire perchè il
+Allora cerchiamo di capire perchè il modello linerare è comodo per "cookare" (prof la amo) i circuiti con i diodi.
+
+## 2.1 Metodo analitico
+
+![Circuito in esame](assets/Capitolo_Analisi_Circuitale/Analisi_Circuitale.jpg)
+
+$KCL, KVL 
+\begin{cases}
+    I_R=I_D\\
+    V_G=V_R+V_D
+\end{cases}$
+
+Legge di Ohm 
+$\begin{cases}
+    V_R=RI_R\\
+    I_D=I_S(e^{\frac{V_D}{V_{TH}}}-1)
+\end{cases}$
+
+Semplificando 
+$\begin{cases}
+    V_D=V_G-RI_D\\
+    I_D=I_S(e^{\frac{V_G-RI_D}{V_{TH}}}-1)
+\end{cases}$
+
+Conti brutti da gestire.
+
+## 2.2 Metodo Grafico
+
+![Grafico](assets/Capitolo_Analisi_Circuitale/Metodo_Grafico.jpg)
+
+Molto bello ma molto poco pratico (guarda quanti bei colori (3)).
+
+## 2.3 Modello Lineare (questo "cooka" bene)
+
+Se $I_D > 0\\
+V_D=0,7 V\\
+I_D= \frac{V_G-0,7V}{R}\\ 
+\iff V_G>0,7V$
+
+Se $V_D<0,7V\\
+I_D=0A\\
+V_D=V_G-0V \iff V_G=V_D$
+
+![Grafico Modello Lineare](assets/Capitolo_Analisi_Circuitale/Modello_Lineare.jpg)
+
+![Grafico Corrente-Tensione](assets/Capitolo_Analisi_Circuitale/Grafico_Corrente_Tensione.jpg)
+
+## 2.4 Work in progress
+
+# Capitolo Tre: MOSFET
+
+## 3.1 Struttura
+
+Dopo i diodi introduciamo un nuovo componente elettronico **FONDAMENTALE**, il **MOSFET** (che qualuno non riesce a pronunciare, ciao Andre ti voglio bene $:)$ ).
+
+Allora cerchiamo di capire cos'è e come funziona.
+
+![MOSFET Struttura](assets/Capitolo_MOSFET/Struttura_MOSFET.jpg)
+
+Allora questo è un MOSFET (bello vero?), partiamo dalla composizione: è un panino di metallo (parte superiore) metallo-ossido (parte inferiore) e silicio. L'ossido è il mio dielettrico $(SiO_2)$.
+
+È un condensatore-semiconduttore, il suo scopo è quello di creare carica libera.
+
+È formato da tre terminali $\textcolor{red}{source}$, $\textcolor{pink}{drain}$, $\textcolor{green}{gate}$, e la corrente che scorre tra drain e gate dipende dalla tensione che viene applicata tra source e gate.
+
+MOSFET sta per:
+
+M.O.S. $\to$ Metal Oxide Semiconductor, per la struttura.
+
+F.E.T. $\to$ Field Effect Transistor, per il funzionamento.
+
+Ma come funziona ?
+
+## 3.2 Funzionamento
+
+Il funzionamento è quello di applicare una tensione agli elettrodi e induco una carica $Q=CV_1$, ora applico una tensione $V_2$ al semiconduttore.
+
+$>$ carica indotta, $>$ è la corrente.
+
+A seconda della carica indotta ho 2 tipi di MOS:
+
+- NMOS (elettroni)
+- PMOS (lacune)
+
+![NMOS](assets/Capitolo_MOSFET/NMOS.jpg)
+
+![PMOS](assets/Capitolo_MOSFET/PMOS.jpg)
+
+Per i ragazzi che come me si trovano disorientati quando vi è un cambio di rappresentazione ecco una breve spiegazione sul NMOS (idem al PMOS).
+
+![Spiegazione NMOS](assets/Capitolo_MOSFET/NMOS_2.jpg)
+
+Dunque sul gate troviamo il metallo, poi ossido (spessore $t_{ox}=1-10 nm$) e il semiconduttore che nel PMOS è N come di vede che ha il compito di modulare la carica nel canale (sopra semiconduttore e sotto ossido).
+
+Se si è capito il funzionamento del diodo, adorerai MOSFET Live, ehm... dicevo, se si è capito il diodo capire il FET sarà più semplice. Se applichiamo una tensione positiva creiamo cariche negative libere che diventano fisse (quindi NO corrente) il MOS è in **interdizione**, se aumento la tensione creo **elettroni di conduzione**, la tensione che crea elettroni di conduzione è settata ed è detta **di soglia** (threshold voltage, $V_T$) e questa condizione viene chiamata **inversione del canale** ($V_T=0,5V - 2V$).
+
+In parole povere più tensione applico più induco corrente (nella realtà prima o poi qualcosa fa "boom").
+
+Introduciamo ora le due regioni nel quale si può trovare un MOSFET: **Ohmica** e **di Saturazione**.
+
+## 3.3 Regione Ohmica
+
