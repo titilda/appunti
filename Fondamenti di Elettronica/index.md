@@ -234,3 +234,76 @@ $R_{CH}(V_{DS}) = \frac{\partial V_{DS}}{\partial I_{DS}} = \frac{L^2}{\mu_n C_{
 ![Grafico NMOS regioni](assets/Capitolo_MOSFET/Grafico_Corrente_Tensione_MOSFET.jpg)
 
 ## 3.4 Regione di Staurazione
+
+Quando $V_{DS}$ raggiunge la tensione Overdrive l'aumento di tensione non apporta alcuna modifica questo stato si chiama **Regione di Saturazione**, il MOS si comporta come un generatore di corrente.
+
+$I_{DS}^{SAT}=I_{DS}V_{DS} \implies I_{DS}^{SAT}= \frac{1}{2} \mu_n C_{ox} (V_{GS}-V_T)^2$
+
+Nella realtà l'aumento di tensione aumenta la corrente di un fattore $\lambda$, non più generatore ideale:
+
+$I_{DS}^{SAT}= \frac{1}{2} \mu_n C_{ox} (V_{GS}-V_T)^2 (1+ \lambda V_{DS})$
+
+![Grafico regioni e livelli](assets/Capitolo_MOSFET/Grafico_Corrente_Tensione_MOSFET_2.jpg)
+
+## 3.5 Formule
+
+- NMOS
+
+![NMOS](assets/Capitolo_MOSFET/Circuito_NMOS.jpg)
+
+  -   SATURAZIONE
+
+        $V_{GS}>V_T>0$
+        
+        $V_{DS}>V_{ov}$
+
+        $I_{DS}^{SAT}= \frac{1}{2} \mu_n C_{ox} (V_{GS}-V_T)^2>0$
+  
+  -   OHMICA
+        
+        $V_{GS} > V_T$
+
+        $V_{DS} < V_{ov}$
+
+        $I_{DS} = \mu_n C_{ox} (V_{GS} - V_T - \frac{V_{DS}}{2}) V_{DS} > 0$
+  
+  -    INTERDIZIONE
+
+        $V_{GS} < V_T$
+
+        $I_{DS} = 0$
+
+- PMOS
+
+![NMOS](assets/Capitolo_MOSFET/Circuito_PMOS.jpg)
+
+
+  - SATURAZIONE
+
+    $V_{GS} < V_T < 0$
+
+    $V_{DS} < V_{ov}$
+
+    $I_{DS}^{SAT}= - \frac{1}{2} \mu_p C_{ox} (V_{GS} - V_T)^2 < 0$
+
+  - OHMICA 
+
+    $V_{GS}<V_T$
+
+    $V_{DS} > V_{ov}$
+
+    $I_{DS} = - \mu_p C_{ox} (V_{GS} - V_T - \frac{V_{DS}}{2}) V_{DS} < 0$
+
+  - INTERDIZIONE
+
+    $V_{GS} < V_T$
+
+    $I_{DS} = 0$
+
+## 3.6 Curiosità finali
+
+I MOS sono ottimi interrutori visto che si comportano da circuiti aperti quando $V_{GS} < V_T$ $( V_{GS} < |V_T|$ per PMOS $)$ e da resistenza quando $V_{GS} > V_T ( V_{GS} > |V_T|$ per PMOS $)$.
+
+Se ho MOS in serie la $K_{eq} = \frac{1}{K_{eq}}= \Sigma_1^n \frac{1}{K_i}$, in parallelo $K_{eq}= \Sigma_1^n K_i$.
+
+# Capitolo Quattro: Logica CMOS (work in progess)
