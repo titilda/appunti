@@ -306,4 +306,92 @@ I MOS sono ottimi interrutori visto che si comportano da circuiti aperti quando 
 
 Se ho MOS in serie la $K_{eq} = \frac{1}{K_{eq}}= \Sigma_1^n \frac{1}{K_i}$, in parallelo $K_{eq}= \Sigma_1^n K_i$.
 
-# Capitolo Quattro: Logica CMOS (work in progess)
+# Capitolo Quattro: Analisi Circuitale pt.2
+
+## 4.1 Caratteristiche circuitali logiche
+
+D'ora in avanti ci troveremo davanti svariate parole che indicano determinate caratteristiche dei circuiti logici, qui potevo decidere di spiegarli la prima volta che si usavano ma ho deciso che è meglio avere un elenco dove ci sono tutte, ecco cosa vogliono dire;
+
+- **Caratteristica (statica) Ingresso/Uscita:** Uscita in funzione degli ingressi.
+- **Soglia logica:** Tensione che divide $0$ e $1$ logico.
+- **Livelli logici:** Livelli di tensione che determinano $0$ e $1$ logico.
+- **Noise Margin:** Massima fluttuazione tollerabile sul livello logico.
+- **Tempo di propagazione:** Tempo che ci mettono i segnali ad arrivare nelle varie parti del circuito.
+- **Potenza dissipata:**
+
+  - **Statica:** Devo davvero spiegarlo ?
+  - **Dinamica:** Idem con patate.
+
+- **Area:** Spazio occupato.
+- **Fan-Out:** Numero massimo di device pilotabili senza perdita di informazioni.
+
+## 4.2 Work in progress
+
+# Capitolo Cinque: Logica CMOS
+
+Come abbiamo detto nel capitolo tre i MOS sono ottimi interruttori che hanno due funzioniamenti distinti: pull-up (PU) e pull-down (PD) con PD forziamo un livello "low" (L) in uscita mentre con PU un livello "high" (H) in uscita.
+
+I PMOS sono ottimi interruttori con PU mentre gli NMOS sono ottimi interruttori con PD.
+
+## 5.1 PDN e PUN
+
+Cambio formule:
+
+Per $K_n$ si intende $K_n = \frac{1}{2} \mu_n C_{ox}$ mentre con $K_p = \frac{1}{2} \mu_p C_{ox}$
+
+Per i PMOS in Ohmica si usa anche  $I_{SD} = 2 K_p (V_{SG} - |V_T| - \frac{V_{SD}}{2})V_{SD}$ e la satuta $I_{SD}^{SAT} = K_p (V_{SG} - |V_T|)^2$.
+
+Cambio rappresentazione:
+
+![""](assets/Capitolo_CMOS/Rappresentazione_PMOS_e_NMOS.jpg)
+
+- NMOS PDN
+
+  - Portano corrente tra $D$ ed $S$
+
+!["Porta PDN"](assets/Capitolo_CMOS/Porta_NMOS.jpg)
+
+Per digitalizzarlo bisogna pilotare l'NMOS:
+
+- $G$ dell'NMOS a $V_{DD}$.
+- Tengo i $S$ più vicini a $GROUND$.
+
+Una rete di NMOS con PD si chiama PDN (Pull-down Network).
+
+- PMOS PUN
+
+  - Spingono una corrente da $S$ a $D$
+
+![""](assets/Capitolo_CMOS/Porta_PMOS.jpg)
+
+Per digitalizzarlo bisogna pilotare il PMOS:
+
+- $G$ a $0$.
+- $S$ vicino a $V_{DD}$
+
+Una rete di PMOS con PU si parla di PUN (Pull-up Network).
+
+## 5.2 F-CMOS
+
+La logica fully complementary MOS (F-CMOS) serve per realizzare parte con PUN e PDN che lavorano in mutua esclusione.
+
+Proprietà:
+
+- Potenza statica nulla.
+- $V_{OH} = V_{DD}$ e $V_{OL} = GND$
+- Fronte di salita $(t_R)$ e discesa $(t_F)$ dei segnali d'ingresso, creando cross-conduzione $(P_{CROSS} \propto t_{R/F})$.
+
+## 5.3 Porte logiche
+
+In questo paragrafo parleremo di due porte logiche $NAND-2$ e $NOR-2$ analizzandone in/out e caratteristiche elettroniche.
+
+- NAND-2
+
+$Y=\neg(AB)$
+
+|A|B|Y|
+|-|-|-|
+|0|0|1|
+|0|1|1|
+|1|0|1|
+|1|1|0|
