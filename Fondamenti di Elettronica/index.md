@@ -385,13 +385,231 @@ Proprietà:
 
 In questo paragrafo parleremo di due porte logiche $NAND-2$ e $NOR-2$ analizzandone in/out e caratteristiche elettroniche.
 
-- NAND-2
+### NAND-2
 
 $Y=\neg(AB)$
 
-|A|B|Y|
-|-|-|-|
+|$A$|$B$|$Y$|
+|---|---|---|
 |0|0|1|
 |0|1|1|
 |1|0|1|
 |1|1|0|
+
+!["Porta NAND-2"](assets/Capitolo_CMOS/Porta_NAND.jpg)
+
+Abbiamo 3 effetti IN/OUT dipende da come commutano $A$ e $B$, con 3 inverter si ha:
+
+- $AB(00) \to AB(11)$
+- $AB(10) \to AB(11)$
+- $AB(01) \to AB(11)$
+
+Ogni "caratteristica" avrà punti caratteristici diversi, ma sempre $V_{OH} = V_{DD}$ e $V_{OL} = GND$.
+
+In tutti i casi useremo il seguente circuito:
+
+![""](assets/Capitolo_CMOS/Porta_NAND2.jpg)
+
+- $AB(00) \to AB(11)$
+
+$AB(00): \\M_3$ ed $M_4$ ON.
+
+$M_1, M_2$ OFF.
+
+$AB(11) : \\ M_3, M_4$ OFF.
+
+$M_1, M_2$ ON.
+
+$K_{M_p} = K_3 + K_4$
+
+$K_{M_n} = \frac{K_1 K_2}{K_1 + K_2}$
+
+Tempi di propagazione:
+
+$t_{p,LH}^{11,00} = C \frac{V_M - V_{OL}}{K_{M_n}(V_{DD} - V_T)^2} = C \frac{V_M}{(K_3 + K_4)(V_{DD} - V_T)^2}$
+
+$t_{p,HL}^{00,11} = C \frac{V_{OH} - V_M}{ K_{M_p}(V_{DD} - V_T)^2} = C \frac{V_{DD} - V_M}{\frac{K_1 K_2}{K_1+ K_2} (V_{DD} - V_T)^2}$
+
+- $AB(01) \to AB(11)$
+
+$AB(01): \\M_3$ ON ed $M_4$ OFF.
+
+$M_1$ OFF $M_2$ ON.
+
+$AB(11) : \\ M_3, M_4$ OFF.
+
+$M_1, M_2$ ON.
+
+$K_{M_p} = K_3$
+
+$K_{M_n} = \frac{K_1 K_2}{K_1 + K_2}$
+
+Tempi di propagazione:
+
+$t_{p,LH}^{11,01} = C \frac{V_M - V_{OL}}{K_{M_n}(V_{DD} - V_T)^2} = C \frac{V_M}{K_3(V_{DD} - V_T)^2}$
+
+$t_{p,HL}^{01,11} = C \frac{V_{OH} - V_M}{ K_{M_p}(V_{DD} - V_T)^2} = C \frac{V_{DD} - V_M}{\frac{K_1 K_2}{K_1+ K_2} (V_{DD} - V_T)^2}$
+
+- $AB(10) \to AB(11)$
+
+$AB(10): \\M_3$ OFF ed $M_4$ ON.
+
+$M_1$ ON $M_2$ OFF.
+
+$AB(11) : \\ M_3, M_4$ OFF.
+
+$M_1, M_2$ ON.
+
+$K_{M_p} = K_4$
+
+$K_{M_n} = \frac{K_1 K_2}{K_1 + K_2}$
+
+Tempi di propagazione:
+
+$t_{p,LH}^{11,10} = C \frac{V_M}{K_4(V_{DD} - V_T)^2}$
+
+$t_{p,HL}^{10,11} = C \frac{V_{DD} - V_M}{\frac{K_1 K_2}{K_1+ K_2} (V_{DD} - V_T)^2}$
+
+### NOR-2
+
+$Y = \neg (A+B)$
+
+|$A$|$B$|$Y$|
+|---|---|---|
+|0|0|1|
+|0|1|0|
+|1|0|0|
+|1|1|0|
+
+!["Porta NOR-2"](assets/Capitolo_CMOS/Porta_NOR.jpg)
+
+3 Caratteristiche IN/OUT:
+
+- $AB(00) \to AB(11)$
+- $AB(00) \to AB(01)$
+- $AB(00) \to AB(10)$
+
+con sempre $V_{OH} = V_{DD}$ e $V_{OL} = GND$.
+
+Useremo come prima il seguente circuito:
+
+![""](assets/Capitolo_CMOS/Porta_NOR2.jpg)
+
+- $AB(00) \to AB(11)$
+
+$AB(00): \\M_3$ ed $M_4$ ON.
+
+$M_1$ ed $M_2$ OFF.
+
+$AB(11) : \\ M_3, M_4$ OFF.
+
+$M_1, M_2$ ON.
+
+$K_{M_p} = \frac{K_3 K_4}{K_3 + K_4}$
+
+$K_{M_n} = K_1 + K_2$
+
+Tempi di propagazione:
+
+$t_{p,LH}^{11,00} = C \frac{V_M}{\frac{K_3 K_4}{K_3 + K_4}(V_{DD} - V_T)^2}$
+
+$t_{p,HL}^{00,11} = C \frac{V_{DD} - V_M}{(K_1 + K_2)(V_{DD} - V_T)^2}$
+
+- $AB(00) \to AB(01)$
+
+$AB(00): \\M_3$ ed $M_4$ ON.
+
+$M_1$ ed $M_2$ OFF.
+
+$AB(01) : \\ M_3$ ON M_4$ OFF.
+
+$M_1$ OFF M_2$ ON.
+
+$K_{M_p} = \frac{K_3 K_4}{K_3 + K_4}$
+
+$K_{M_n} = K_2$
+
+Tempi di propagazione:
+
+$t_{p,LH}^{01,00} = C \frac{V_M}{\frac{K_3 K_4}{K_3 + K_4}(V_{DD} - V_T)^2}$
+
+$t_{p,HL}^{00,01} = C \frac{V_{DD} - V_M}{K_2(V_{DD} - V_T)^2}$
+
+- $AB(00) \to AB(10)$
+
+$AB(00): \\M_3$ ed $M_4$ ON.
+
+$M_1$ ed $M_2$ OFF.
+
+$AB(10) : \\ M_3$ OFF M_4$ ON.
+
+$M_1$ ON M_2$ OFF.
+
+$K_{M_p} = \frac{K_3 K_4}{K_3 + K_4}$
+
+$K_{M_n} = K_1$
+
+Tempi di propagazione:
+
+$t_{p,LH}^{00,10} = C \frac{V_M}{\frac{K_3 K_4}{K_3 + K_4}(V_{DD} - V_T)^2}$
+
+$t_{p,HL}^{10,00} = C \frac{V_{DD} - V_M}{K_1(V_{DD} - V_T)^2}$
+
+Caratteristiche Elettroniche sinstesi (Reti logiche ma a FdE, anche loro presenti su appunti).
+
+CMOS offre:
+
+!["Tabelle di efficienza di alcune porte logiche"](assets/Capitolo_CMOS/Tabella_Carina.jpg)
+
+Il resto sono tecniche di espansione delle formule logiche, consigliamo la visione di "Reti Logiche" presente su appunti.
+
+## 5.4 Porte NMOS e PMOS
+
+Problematiche CMOS:
+
+- Perdita di capacità di corrente dovuta ai MOS in serie.
+- Aumento Area per bilanciare questo.
+- Aumento di MOS = aumento capacità di carica $C_{ox}' (= \frac{\varepsilon_{ox}}{t_{ox}})$ ed area totale della porta.
+- Un grande $C_L$ = aumento potenza dinamica.
+- Grandi capacità parassite riducono frontesalita e discesa aumento di cross-conduzione.
+
+### Porte NMOS
+
+Sostituisco (con dei costi che vedremo) le PUN con resistori o PMOS accesi.
+
+!["Porta NMOS e Pseudo-CMOS(NMOS)"](assets/Capitolo_CMOS/Pseudo_CMOS_NMOS.jpg)
+
+Costi:
+
+- Potenza dissipata statica non nulla.
+- $V_{OH} = V_{DD}$ ma $V_{OL} > GND$
+- $t_{p, HL}^{INs}$ dipende dal $K$ dell'NMOS eq., se trascuriamo $R$ e PMOS.
+- $t_{p,LH}^{INs}$ dipende solo dal $K$ del PMOS o dal $RC$.
+
+### Porte PMOS
+
+!["Porta PMOS e Pseudo-CMOS"](assets/Capitolo_CMOS/Pseudo_CMOS_PMOS.jpg)
+
+Costi:
+
+- Potenza dissipata non nulla.
+- $V_{OL} = GND$ ma $V_{OH} < V_{DD}$.
+- $t_{p,HL}^{INs}$ dipendono solo da $K$ del NMOS o $RC$.
+- $t_{p,LH}^{INs}$ dipendono da $K_{eq}$ PUN, se trascuriamo $R$ e NMOS.
+
+## 5.5 Porte (C)MOSTri-State
+
+In questo tipo di porte oltre a $1$ e $0$ abbiamo l'alta impedenza (HZ), in questo stato i dispositivi incaricati del PU e PD vengono spenti (o sconnessi) lasciando l'uscita flottante.
+
+L'ingresso se acceso fa tutto normalmente altrimenti lascia l'output a HZ.
+
+!["CMOS Tri-State"](assets/Capitolo_CMOS/Porta_Tristate.jpg)
+
+Svantaggi:
+
+- Aumento Area.
+- Poichè bisogna raddoppiare la dimensione dei MOS per stesso $t_p$.
+- MOS $E_n$ grossi almeno quanto $K_{eq}$ PUN e PDN.
+- $\neg E_n$ si genera con $NOT$ su $E_n$.
+- Più parassiti = meno $t_p$ e più potenza dinamica.
+- Viene usata solo raramente.
