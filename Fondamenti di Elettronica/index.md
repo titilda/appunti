@@ -613,3 +613,5 @@ Svantaggi:
 - $\neg E_n$ si genera con $NOT$ su $E_n$.
 - Più parassiti = meno $t_p$ e più potenza dinamica.
 - Viene usata solo raramente.
+
+# Capitolo Sei: 
