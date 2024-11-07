@@ -275,7 +275,7 @@ $I_{DS}^{SAT}= \frac{1}{2} \mu_n C_{ox} (V_{GS}-V_T)^2 (1+ \lambda V_{DS})$
 
 - PMOS
 
-![NMOS](assets/Capitolo_MOSFET/Circuito_PMOS.jpg)
+![PMOS](assets/Capitolo_MOSFET/Circuito_PMOS.jpg)
 
 
   - SATURAZIONE
