@@ -615,3 +615,265 @@ Svantaggi:
 - Viene usata solo raramente.
 
 # Capitolo Sei: 
+
+# Capitolo Sette: Circuiti sequenziali e memorie
+
+Un circuito con memoria è un circuito che ha **MEMORIA** dello stato logico precedente, questi circuiti sono chiamati "bistabili".
+
+Esistono 2 tipi di bistabili:
+
+- **LATCH**
+- **FLIP-FLOP**
+
+## 7.1 Bistabile
+
+Il bistabile si può avere retroazionando i circuiti logici
+
+!["Bistabile con tabella di IN/OUT"](assets/Capitolo_Memoria/Bistabile.jpg)
+
+Se ora provassimo a disegnare su un grafico le caratteristiche della $\color{orange}{NOT1}$ e $\color{purple}{NOT2}$ notiamo che si hanno 3 punti di equilibrio, consideriamo inoltre la $NOT2$ come "curva di carico" della $NOT1$.
+
+!["Grafico bistabile"](assets/Capitolo_Memoria/Grafico%20Bistabile.jpg)
+
+- $A,1$ logico, punto di equilibrio stabile, zona rigenerativa.
+- $B, 0$ logico, punto di equilibrio stabile, zona rigenerativa.
+- $C,$ punto di equilibrio instabile, in zona lineare.
+
+Ma come forziamo lo stato ?
+
+Un esempio è trasformare le $NOT$ in $NOR$ con la $GRN (R e S)$
+
+!["Bistabile, SR"](assets/Capitolo_Memoria/BIstabile%20NOR.jpg)
+
+Se pilotiamo le $GND$ possiamo forzare $IN$ e $OUT$ a $0/1$
+
+- $S=1 \to Q=1, \neg Q=0$
+- $R=0 \to Q=0, \neg Q=1$
+
+Questi bistabili vengono chiamati "bistebile, SR" (Set Reset).
+
+![""](assets/Capitolo_Memoria/Bistabile%20SR.jpg)
+
+Mi rifiuto categoricamente di fare la tabella di verità della $NOR$ perchè si conosce. Vediamo però quella del bistabile.
+
+|$SR$|$Q_n$|$\neg Q_n$|
+|----|-----|----------|
+|$00$|$Q_{n-1}$|$\neg Q_{n-1}$|
+| $01$ | $0$ | $1$ |
+| $10$ | $1$ | $0$ |
+| $11$ | $0$ | $0$ |
+
+N.B. lo stato "$11$" non viene usato.
+
+Vediamo ora un "bistabile, $\neg (SR)$" con $NAND$ al posto di $NOR$.
+
+!["Bistabile, $\neg(SR)$"](assets/Capitolo_Memoria/Bistabile%20notSR.jpg)
+
+|$\neg(SR)$|$Q_n$|$\neg Q_n$|
+|----------|-----|----------|
+| $00$ | $1$ | $1$ |
+| $01$ | $1$ | $0$ |
+| $10$ | $0$ | $1$ |
+| $11$ | $Q_{n-1}$ | $\neg Q_{n-1}$ |
+
+Ora vediamo un "Latch, SR" che è un bistabile con **Enable**.
+
+!["Latch, SR"](assets/Capitolo_Memoria/Latch%20SR.jpg)
+
+Si può sviluppare un bistabile che usa solo le configurazioni sensate.
+
+![""](assets/Capitolo_Memoria/Latch%20SR%202.jpg)
+
+## 7.2 Flip-Flop
+
+È semplicemente un bistabile con $CLK$ (clock).
+
+!["Flip-Flop"](assets/Capitolo_Memoria/Flip-Flop.jpg)
+
+Vediamo il grrafico di cambio di livello logico di questo circuito.
+
+![""](assets/Capitolo_Memoria/Grafico%20Flip-Flop.jpg)
+
+Qui torniamo ad AXO, anche questo presente su appunti ;), con il "Master-Slave".
+
+### Edge Triggering
+
+Possiamo essere sensibili in tanti modi:
+
+- Campionare ingressi e scriverli sul medesimo fronte.
+
+    - Fronte di salita (rising edge).
+    - Fronte di discesa (falling edge).
+
+- Campionare gli ingressi su un fronte (master) e scriverli sull'altro.
+
+    - Master Slave rise/fall.
+    - Master Slave fall/rise.
+
+Insomma ci sono tanti richiami ad AXO, quindi andiamo a qualcosa di nuovo.
+
+Vediamo una CMOS bistabile a $NOT$.
+
+![](assets/Capitolo_Memoria/Master-Slave.jpg)
+
+### Timing
+
+I tempi di carica/scarica dei MOS sulle capacità parassita creano vincoli di timing su latch e flip-flop.
+
+- Tempo di Set-Up, tempo con cui un segnale d'ingresso deve rimanere stabile prima di passare in fase **MEMO**.
+- Tempo di Hold, tempo per cui un segnale deve rimanere stabile anche dopo essere passati nella fase **MEMO**.
+- Tempo di propagazione, **MI RIFIUTO DI SPIEGARLO**.
+- Questi vincoli determinano la frequenza massima di funzionamento di un sistema digitale!
+
+## 7.3 Pipeline
+
+Le tecniche di pipeline servono per disaccopiare la relazione tra "Throughput" $(T)$ e "Rate" $(R)$.
+
+Se consideriamo una logica combinatoria, il massimo rate è dato dall'inverso del massimo tempo di propagazione $(D)$.
+
+$R= \frac{1}{D}$
+
+Se vogliamo memorizzare a ogni $R$ lavoreremo a un $T_{MAX}=R$.
+
+Se spezzassimo la logica in $N$ blocchi con ritardo di propagazione massimo $= d_i$, possiamo registrare ogni uscita con un flip-flop.
+
+Ogni blocco se considerato indipendente può sopportare un rate $r$.
+
+$r_i = \frac{1}{d_i}$
+
+Per evitare accavallamenti e trascurando i timing di flip-flop, clockiamo il sistema e:
+
+![](assets/Capitolo_Memoria/Pipeline.jpg)
+
+Otteniamo quindi:
+
+- $R = f_{CLK} = min\{\frac{1}{d_i}\}$.
+- $T = \frac{1}{D}$.
+- Deduciamo che abbiamo vantaggi se bilancimo $d_i$, il best sarebbe $\frac{D}{N} \to R = \frac{N}{D}$.
+
+## 7.4 Memorie
+
+Ad oggi le memorie sono matrici 2D, possono essere:
+
+- Volatili (RAM), se tolgo corrente perdo tutto.
+
+    - SRAM
+    - DRAM
+
+- Non volatili, se tolgo corrente non perdo nulla.
+
+    - ROM
+    - FLASH
+
+### SRAM
+
+RAM Statica
+
+- Ogni cella ha un bistabile (4 MOS) più 2 MOS di selettori.
+- Cella più veloce e facile.
+- Dobbiamo dimensionare i MOS per leggere e scrivere.
+- I tempi di propagazione determinano i tempi di accesso.
+
+!["SRAM"](assets/Capitolo_Memoria/SRAM.jpg)
+
+### DRAM
+
+- Ogni cella è composta da un condensatore (MOS parassita) e 1 MOS di selezione.
+- Gestione complicata.
+- La capacità si scarica in un lasso di tempo di qualche ms.
+- I $t_p$ determinano i tempi di accesso.
+- In media più lenta di una SRAM.
+
+!["DRAM"](assets/Capitolo_Memoria/DRAM.jpg)
+
+### Scrittura DRAM
+
+Uguale al PTL.
+
+Scrivi **ZERO** $(0V)$
+
+$t_p=C \frac{\varDelta V}{I_{DS}^{SAT}}$
+
+!["Scrivi zero"](assets/Capitolo_Memoria/Scrittura%201%20DRAM.jpg)
+
+Scrivi **UNO** $(V_{DD} - V_T)$
+
+$t_{p,LH} = C \frac{\frac{V_{DD}}{2}}{K_n(\frac{V_{DD}}{2} - V_T)(V_{DD} - V_T)}$
+
+!["Scrivi uno"](assets/Capitolo_Memoria/Scrittura%201%20DRAM.jpg)
+
+### Lettura DRAM
+
+In lettura consideriamo che la $BL$ abbia una $C_{BL}$ **NON** trascurabile.
+
+!["Lettura DRAM"](assets/Capitolo_Memoria/Lettura%20DRAM.jpg)
+
+In questi casi possiamo avere il "charge sharing" tra le capacità che cambiano i livelli di tensione.
+
+**Esempio**
+
+!["Lettura 0"](assets/Capitolo_Memoria/Esempio%200%20DRAM.jpg)
+
+!["Lettura 1"](assets/Capitolo_Memoria/Esempio%201%20DRAM.jpg)
+
+Se eguagliamo le cariche $Q_{TOT}^1 = Q_{TOT}^0$ otteniamo:
+
+$V_R = \frac{C V_{MEM}^0 + C_{BL}V_{BL}^0}{(C+C_{BL})}$
+
+- $V_{BL}^0 =$ Tensione residua prima di effettuare la lettura, di solito la BL viene pre-caricata ad un $V$ costante.
+- $V_{MEM}^0 =$ Tensione presente nella memoria a un valore compreso tra $0V$ e $V_{DD}-V_T$.
+- $V_R =$ Valore letto.
+
+Dunque dobbiamo ripristinare i valori con un "buffer" che presenti una soglia adeguata ai livelli $V_R$.
+
+Questo tipo di circuito si chiama "Sense Amplifier".
+
+!["Sense Amplifier"](assets/Capitolo_Memoria/Sense%20Amplifier.jpg)
+
+### ROM
+
+Le ROM vengono realizzate connettendo Hard le celle a $0$ o $V_{DD}$.
+
+Esistono ROM programmabili (PROM) o One-Time-Programmable (OTP) dove la connesione a $1$ o $0$ viene effettuata rompendo dei fusibili.
+
+### FLASH
+
+Le FLASH hanno una organizzazione simile alle DRAM.
+
+- Il MOS parassita viene sostituito da un MOS floating-gate.
+- Il MOS floating-gate, in funzione della differenza di potenziale tra WL e BL acquista una carica $Q_F$ sul gate flottante.
+- Si ha una $V_T$ differente della solita.
+
+!["Floating-Gate"](assets/Capitolo_Memoria/FLASH.jpg)
+
+$V_T = V_{T0} - \frac{Q_F}{C_{ox}}$
+
+Inoltre le FLASH sono 100-1000 volte più lente delle DRAM, questo perchè il floating-gate ha $t_p$ molto grandi.
+
+### Memorie 3D
+
+Si sta puntando a sviluppare memorie 3D.
+
+## 7.5 Formule
+
+### Pipeline
+
+Rate $= R$
+
+$t_p^{MAX} = D$
+
+$R = \frac{1}{D}$
+
+### Memorie
+
+Capacità parassita MOS $= C = C_{ox}WL$
+
+Scrittura DRAM $(0) = t_{p,HL} = C \frac{\varDelta V}{I_{DS}^{SAT}}$
+
+Scrittura DRAM $(1) = t_{p,LH} = C \frac{\frac{V_{DD}}{2}}{K_n(\frac{V_{DD}}{2}- V_T)(V_{DD}-V_T)}$
+
+Lettura DRAM $= V_R = \frac{C V_{MEM}^0 + C_{BL}V_{BL}^0}{(C+C_{BL})}$
+
+### FLASH
+
+Nuova Soglia $= V_T = V_{T0}- \frac{Q_F}{C_{ox}}$
