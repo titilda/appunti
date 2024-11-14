@@ -132,7 +132,7 @@ Le tecnologie si possono dividere in tre livelli:
 
 ### Livello Applicativo
 
-A livello applicativo le tecnologie supportano i processi operazionali e informazionali. 
+A livello applicativo le tecnologie supportano i processi operazionali e informazionali.
 L'insieme delle tecnologie a livello applicativo viene detto *portafoglio applicativo* ed è costituito da:
 
 - **Data Warehouse** (DW): archivio che contiene i dati di un'organizzazione in un modello multidimensionale.
@@ -142,6 +142,55 @@ L'insieme delle tecnologie a livello applicativo viene detto *portafoglio applic
 - **Enterprise Resource Planning** (ERP): suite di software formata da diversi moduli per supportare le attività aziendali.
 - **Advanced Planning and Scheduling** (APS): Applicazioni usate in ambito manifatturiero per gestire le materie prime e la capacità produttive.
 - **Manufacturing Execution System** (MES): Sistemi usati in ambito manifatturiero per tracciare e documentare il processo produttivo.
+
+Le applicazioni sono strutturate in livelli logici detti *layer*:
+
+- **Presentazione** (P): gestisce la logica legata alle interfacce grafiche e all'interazione con l'utente (front-end).
+- **Applicativo** (A): gestisce le funzionalità dell'applicazione (back-end).
+- **Accesso ai Dati** (D): gestisce le informazioni, tramite db o sistemi legacy.
+
+Data la complessità della realizzazione (*make*) di applicazioni si predilige l'acquisto (*buy*), soprattutto di applicazioni come ERP e CMS.
+
+#### ERP
+
+Gli ERP sono software che offrono moduli a supporto del sistema operazionale.
+Le proprietà che contraddistinguono gli ERP sono:
+
+- **Unicità dell'Informazione**: presenza di un'unica base di dati per tutti i moduli per evitare ridondanza e incongruenza di dati.
+- **Modularità**: i moduli sono autonomi ed auto-sufficienti, permettendone l'acquisto separato, aumentando la flessibilità e la scalabilità dell'applicazione.
+- **Prescrittività**: i moduli incorporano la logica di "funzionamento" dell'impresa, permettendo di normare i processi.
+
+I moduli possono essere poi divisi in tre categorie:
+
+- **Sistemi Istituzionali**: moduli orizzontali (*intersettoriali*).
+- **Moduli Settoriali**: moduli verticali specifici per un contesto aziendale.
+- **Moduli Direzionali**: moduli orizzontali che elaborano i dati per dare una visione di insieme delle attività.
+
+#### CRM
+
+I CRM sono una suite di software che supportano le organizzazioni nelle interazione con i clienti. Questi software aiutano a capire i bisogni e i comportamenti degli utenti, migliorandone l'interazione.
+Questi sistemi sono utili in contesti con una forte relazione con la clientela.
+
+Il CRM ha tre componenti principali:
+
+- **CRM Operativo**: è un modulo che si occupa dell'interazione dei clienti con l'azienda ed è formato da alcuni moduli:
+  - **Marketing**: la strategia aziendale si baso soprattutto sulla fidelizzazione dei clienti attuali, questo è realizzabile tramite una buona campagna dedicata delle campagne marketing e sui dati a disposizione. Alcuni sistemi per fare ciò sono:
+    - *Generazione Liste Clienti*: liste di clienti adatti a ricevere alcune comunicazioni di marketing.
+    - *Gestione Campagne*: moduli progettati per l'automatizzazione delle attività e i processi di marketing
+    - *Cross-Selling* e *Up-selling*: queste strategie si basano sull'aumento dei prodotti acquistati dall'utente e dall'aumento del del valore della singola vendita.
+  - **Automazione Vendite**: sono moduli che permettono:
+    - *Gestione Vendite*: modulo che si occupa della selezione dei contatti, supportare l'agente nella stesura dell'offerta
+    - *Gestione Contatti*: gestisce i dati dei clienti permettendo di salvare anche informazioni aggiuntive che possono migliorare il rapporto con il cliente.
+    - *Gestione Opportunità*: modulo che si occupa di trovare nuovi clienti o organizzazioni per vendite future.
+  - **Servizi ai Clienti**: sono servizi che si occupano di curare la relazione post-vendita per migliorarne i rapporti. Alcuni sotto-moduli sono:
+    - *Contact Center*: gestiscono le chiamate *inbound* (clienti chiamano azienda) e *outbound* (azienda chiama i clienti). Il CRM registra tutte le interazioni e fornisce funzionalità per la gestione della chiamata.
+    - *Web Based Self Service*: permette ai clienti di usare il web per trovare le soluzioni ai problemi e contattare l'azienda.
+    - *Call Scripting*: una base di dati messa a disposizione degli operatori con le soluzioni ai problemi dei clienti.
+- **CRM Analitico**: usa i dati provenienti dal CRM Operativo per analizzare le preferenze, i comportamenti dei clienti ed estrarre pattern significativi a supporto del processo decisionale tramite il CRM Operativo. Le sue finalità principali sono:
+  - *Reporting*: capire chi sono i clienti, le loro caratteristiche e preferenze.
+  - *Analysis*: segmenta i clienti in categorie.
+  - *Predicting*: predice le azioni e i desideri dei clienti.
+- **CRM Collaborativo**: si occupa di calcolare alcuni indici rilevanti per l'intera azienda e condividere tali informazioni.
 
 ### Livello di Piattaforma
 
