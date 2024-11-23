@@ -696,6 +696,96 @@ t_{p,HL} = t_{p,HL}^{SAT} + t_{p,HL}^{OHM}
 t_{p,HL} \cong \frac{C \varDelta Y}{K_n V_{ov}^2}
 $
 
+#### Carica $L \to H$
+
+!["Carica $L \to H$"](assets/Capitolo_PT_TG/Carica%20L-H%20NMOS.jpg)
+
+Source e Drain si comportano come vogliono, a seconda di come scorre la corrente cambiano posizione.
+
+$V_{GS} = V_{DD} - Y(t)$ si riduce fino a $V_{GS} = V_{Th}$, NMOS si spegne e smette di caricarsi, sempre satura la carica.
+
+$i_c(t) = I_{DS}^{SAT} (t)
+\\
+C \frac{dY(t)}{dt} = K_n (V_{GS} (t) - V_{Tn})^2
+\\
+C \frac{dY(t)}{dt} = K_n (V_{DD} - Y(t) - V_{Tn})^2
+\\
+\frac{K_n}{C}dt = \frac {d Y(t)}{(V_{DD} - Y(t) - V_{Tn})^2}
+\\
+\int_{0}^{t_{p,LH}}dt = \frac{C}{K_n} \int_{Y_L}^{Y_H} \frac{dY}{(V_{DD} - V_{Tn} - Y)^2} = \frac{C}{K_n}[\frac{1}{V_{DD} - V_{Tn} - Y}]_{Y_L}^{Y_H}
+$
+
+Con tecnologia F-CMOS
+
+$Y_H - Y_L = \frac{V_{DD}}{2} - 0
+\\
+t_{p,LH} = \frac{C}{K_n}(\frac{1}{\frac{V_{DD}}{2} - V_T} - \frac{1}{V_{DD} - V_{Tn}}) = \frac{C}{K_n} \frac{\frac{V_{DD}}{2}}{K_n(\frac{V_{DD}}{2} - V_{Tn})(V_{DD} - V_{Tn})} > \frac{C}{K_n} \frac{\frac{V_{DD}}{2}}{(V_{DD} - V{Tn})^2}
+$
+
+### PMOS
+
+#### Carica $L \to H$
+
+!["Carica $L \to H$"](assets/Capitolo_PT_TG/Carica%20L-H%20PMOS.jpg)
+
+Fino a $T = V_{DD} - |V_{ov}|$ siamo in satura, sa lì fino a $V_{DD}$ in Ohmica, che noi trascuriamo.
+
+$I_{SD} (t) = -i_c(t)
+\\
+I_{SD}(t) = -\frac{dY(t)}{dt}
+\\
+t_{p,LH} = t_{p,LH}^{SAT} + t_{p,LH}^{OHM}
+\\
+t_{p,LH} \cong \frac{C \varDelta Y}{K_p(V_{DD} - |V_{Tp}|)^2}
+$
+
+#### Scarica $H \to L$
+
+!["Scarica $H \to L$"](assets/Capitolo_PT_TG/Scarica%20H-L%20PMOS.jpg)
+
+$V_{SG} = Y(t) - 0$ si riduce fino a $V_{SG} = |V_{Tp}|$, PMOS si spegne non si scarica più $\implies$ PMOS sempre saturo.
+
+$I_{SD}^{SAT} (t) = - i_c (t)
+\\
+K_p(V_{SG}(t) - |V_{Tp}|)^2 = - C \frac{dY(t)}{dt}
+\\
+K_p(Y(t) - |V_{Tp}|)^2 = - C \frac{dY(t)}{dt}
+\\
+-\frac{K_p}{C}dt = \frac{dY(t)}{(Y(t) - |V_{Tp}|)^2}
+\\
+\int_{0}^{t_{p,HL}}dt = - \frac{C}{K_p} \int_{Y_H}^{Y_L} \frac{dY}{(Y(t) - |V_{Tp}|)^2}
+\\
+t_{p,HL} = \frac{C}{K_p}[\frac{1}{Y(t) - |V_{Tp}|}]_{Y_H}^{Y_L}
+$
+
+Da F-CMOS
+
+$Y_H - Y_L = V_{DD} - \frac{V_{DD}}{2}
+\\
+= \frac{C}{K_p}\frac{\frac{V_{DD}}{2}}{(\frac{V_{DD}}{2} - V_{Tp})(V_{DD} - V_{Tp})} > \frac{C}{K_p}\frac{\frac{V_{DD}}{2}}{(V_{DD} - V_{Tp})^2}
+$
+
+## 6.4 Transmission Gate Logic (TGL)
+
+Mettiamo in parallelo NMOS e PMOS $\implies$ aumento capacità corrente:
+
+- Più area usata.
+- Per pilotarlo abbiamo bisogno del segnale negato.
+
+![](assets/Capitolo_PT_TG/TGS.jpg)
+
+- Può essere un interrutore analogico.
+
+### Complementary PTL
+
+Lo colleghiamo a un F-CMOS così che F-CMOS si occupi:
+
+- Rigenerare i livelli se necessario (PTL).
+- Definire una soglia.
+- Fa da driver do corrente, prende corrente dall'alimentatore.
+
+!["C-PTL/TGL"](assets/Capitolo_PT_TG/TGL.jpg)
+
 # Capitolo Sette: Circuiti sequenziali e memorie
 
 Un circuito con memoria è un circuito che ha **MEMORIA** dello stato logico precedente, questi circuiti sono chiamati "bistabili".
@@ -957,3 +1047,5 @@ Lettura DRAM $= V_R = \frac{C V_{MEM}^0 + C_{BL}V_{BL}^0}{(C+C_{BL})}$
 ### FLASH
 
 Nuova Soglia $= V_T = V_{T0}- \frac{Q_F}{C_{ox}}$
+
+# Capitolo Otto: Amplificatore Operazionale
