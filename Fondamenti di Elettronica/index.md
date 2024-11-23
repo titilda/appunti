@@ -614,7 +614,87 @@ Svantaggi:
 - Più parassiti = meno $t_p$ e più potenza dinamica.
 - Viene usata solo raramente.
 
-# Capitolo Sei: 
+# Capitolo Sei: Logiche PT e TG
+
+**Lookup Table (LUT)**, tipo di memoria ROM, banale MUX.
+
+### LUT n-to-m
+
+!["LUT"](assets/Capitolo_PT_TG/LUT.jpg)
+
+Come costruiamo un MUX ?
+
+- Porte CMOS (poco efficiente).
+- Logica Pass Transistor (PT) o Transfer Gate (TG), questo metodo è più efficiente.
+
+## 6.1 Pass Transistor Logic (PTL)
+
+La PTL usa i MOS come interrutori sul percorso digitale per realizzare dei MUX.
+
+N.B. Nei PTL si utilizza un solo tipo di MOS ed è preferibile che sia un NMOS.
+
+![](assets/Capitolo_PT_TG/PTL.jpg)
+
+### MUX 2-to-1
+
+!["MUX 2-to-1"](assets/Capitolo_PT_TG/MUX%202-to-1.jpg)
+
+Per un generico $2^n$ MUX:
+
+- $Y = X(n)$.
+- Si compone come un albero di MUX 2-to-1.
+- Per ogni $S_i$ bisogna avere un inverter $\neg S_i$.
+
+## 6.2 Porte logiche e parassitismi
+
+### AND-2
+
+!["AND-2"](assets/Capitolo_PT_TG/AND-2.jpg)
+
+#### Riduzione
+
+Ci rediamo conto che quando $A=0 \to Y=0$ mentre $A=1 \to Y=B$.
+
+Quindi:
+
+!["AND-2 Ridotta"](assets/Capitolo_PT_TG/AND-2_Ridotta.jpg)
+
+### OR-2
+
+!["OR-2"](assets/Capitolo_PT_TG/OR-2.jpg)
+
+#### Riduzione
+
+Notiamo che se $A=1 \to Y=1$ se $A=0 \to Y=B$ quindi:
+
+!["OR-2 Ridotto"](assets/Capitolo_PT_TG/OR-2_Ridotta.jpg)
+
+### Parassitismo
+
+A causa del condensatore MOS, possono nascere anche nei PTL capacità parassite.
+
+N.B. Noi **NON** siamo in grado di calcolare le capacità parassite da solo $\implies$ sono date dal testo.
+
+!["Capacità parassite"](assets/Capitolo_PT_TG/Capacità_parassite.jpg)
+
+## 6.3 Cariche e Scariche MOS
+
+### NMOS
+
+#### Scarica $H \to L$
+
+!["Scarica $H \to L$"](assets/Capitolo_PT_TG/Scarica%20H-L%20NMOS.jpg)
+
+Fino a $Y=V_{ov}$ scarica in saturazione, dopo in ohmica fino a $GND$.
+
+$I_{ds}(t) = -i_c (t)
+\\
+I_{DS} (t) = -\frac{dY(t)}{dt}
+\\
+t_{p,HL} = t_{p,HL}^{SAT} + t_{p,HL}^{OHM}
+\\
+t_{p,HL} \cong \frac{C \varDelta Y}{K_n V_{ov}^2}
+$
 
 # Capitolo Sette: Circuiti sequenziali e memorie
 
