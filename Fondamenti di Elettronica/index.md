@@ -1049,3 +1049,31 @@ Lettura DRAM $= V_R = \frac{C V_{MEM}^0 + C_{BL}V_{BL}^0}{(C+C_{BL})}$
 Nuova Soglia $= V_T = V_{T0}- \frac{Q_F}{C_{ox}}$
 
 # Capitolo Otto: Amplificatore Operazionale
+
+Prima di iniziare un piccolo ricordo di cosa sono gli Amplificatori operazionali (o OpAmp).
+
+Un amplificatori operazionale è un componente elettronico così ideato:
+
+!["Amplificatore operazionale"](assets/Capitolo_OpAmp/OpAmp.jpg)
+
+Quindi ingressi a corrente nulla e guadagno infinito questi amplificatori vengono definiti "ideali".
+
+## 8.1 Amplificatore operazionale Reale (l'inizio della fine)
+
+Esistono 3 tipi di OpAmp reali o "Non Ideali":
+
+- Valutati in DC o polarizzazione.
+- Valutati in AC o su segnale variabile.
+- Valutati sia in AC che in DC.
+
+N.B. Un generico segnale $x(t)$, può essere visto come una costante $x_{DC}(t)$ ed una variabile $x_{AC}(t)$:
+
+$x(t) = x_{DC}(t) + x_{AC}(t)$
+
+Grazie ad F.D.A. lo studio di questo segnale ci tornerà più semplice.
+
+## 8.2 Non idealità DC
+
+### Tensione di Offset
+
+L'OpAmp a riposo mostra un uscita **NON** nulla.
