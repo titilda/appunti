@@ -8,7 +8,7 @@ author:
 
 ## Dati
 
-I dati sono sempre più importati all'interno del sistema informativo aziendale.
+I dati sono sempre più importanti all'interno del sistema informativo aziendale.
 Secondo la **Piramide DIKW** è possibile dividere i dati e le informazioni in
 
 - **Data**: Il *dato* rappresenta la base della piramide. Esso rappresenta un elemento che descrive la realtà. Associato al dato c'è un tipo (numerico, stringa, etc) o un'unità di misura. Singolarmente il dato è poco utile (es. ci sono 32 gradi).
