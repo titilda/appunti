@@ -1077,3 +1077,58 @@ Grazie ad F.D.A. lo studio di questo segnale ci tornerà più semplice.
 ### Tensione di Offset
 
 L'OpAmp a riposo mostra un uscita **NON** nulla.
+
+!["Tensione di Offset"](assets/Capitolo_OpAmp/Tensione_Offset.jpg)
+
+$V_{out} = V_{in} + V_{OS}, if V_{in} = 0\implies V_{out} = V_{OS}$
+
+Ovvero anche se spenta $V_{in}$, l'OpAmp presenta una tensione $V_{OS}$, questo nel caso ideale **NON** accade, infatti nell'idealità $V_{out} = V_{in}$.
+
+Si può usare il seguente modello ideale:
+
+!["Offset con modello ideale"](assets/Capitolo_OpAmp/Tensione_Offset_Ideale.jpg)
+
+### Corrente di Bias
+
+Nel caso ideale la corrente entrante nell'OpAmp è zero, nel caso reale invece una corrente entrante è presente e viene chiamata "**corrente di bias**".
+
+![](assets/Capitolo_OpAmp/Corrente_di_Bias.jpg)
+
+Per usare il modello ideale quindi:
+
+![](assets/Capitolo_OpAmp/Corrente_di_Bias_Ideale.jpg)
+
+## 8.3 Non Idealità AC
+
+### Resistenza d'Ingresso
+
+I fenomeni che generano la corrente di bias, si vedono come una resistenza all'ingresso:
+
+![](assets/Capitolo_OpAmp/Resistenza%20d'Ingresso.jpg)
+
+Quindi usando il modello ideale:
+
+![](assets/Capitolo_OpAmp/Resistenza_d'ingresso_Ideale.jpg)
+
+### Resistenza d'Uscita
+
+L'OpAmp presenta una resistenza all'uscita per cui invece che registrare $V_{in} = V_{out}$ registra $|V_{out}| < |V_{in}|$.
+
+![](assets/Capitolo_OpAmp/Resistenza_d'uscita.jpg)
+
+Per usare il modello ideale quindi:
+
+![](assets/Capitolo_OpAmp/Resistenza_d'uscita_Ideale.jpg)
+
+### Slew Rate
+
+Questo effetto è maggiormente visibile in via grafica, si ha la pendenza massima all'uscita.
+
+![](assets/Capitolo_OpAmp/Slew_Rate.jpg)
+
+Esiste anche un quarto effetto che si chiama "Banda Limitata" che centra con le funzioni di trasferimento, quindi la guardiamo alla fine.
+
+## 8.4 Non Idealità DC + AC
+
+### Massima tensione d'uscita
+
