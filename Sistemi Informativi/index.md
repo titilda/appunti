@@ -85,15 +85,45 @@ I dati sono classificabili in base al livello (operativo/controllo/strategico).
 I dati *operativi* sono ben strutturati, e in alti volume e provenienti dall'interno.
 Andando verso il livello *strategico* i dati diventano sempre più aggregati, il formato potrebbe essere meno strutturato e potrebbero provenire anche da fonti esterne.
 
-### Sistemi OLTP e OLAP
+### Base di Dati
 
 I sistemi informativi sono applicazioni che interagiscono con basi di dati.
 Le interazioni solitamente avvengono con le *transazioni*.
 
-A seconda delle operazioni i sistemi si identificano come:
+A seconda delle operazioni i sistemi si identificano come OLTP e OLAP.
 
-- **OLTP** (OnLine Transaction Processing): sono sistemi che trattano operazioni basate su un numero elevato di transazioni brevi e online. Questi sistemi sono molto rapidi e sono idonei alla gestione di processi di livello operativo e di controllo.
-- **OLAP** (OnLine Analytical Processing): sono sistemi che trattano grandi quantità di dati storici che si basano su poche transazioni complesse che aggregano diversi dati e hanno bisogno di molto tempo per essere processate. Questi sistemi sono utilizzati per l'elaborazioni di dati a livello di pianificazione e strategico.
+#### OLTP
+
+I sistemi **OLTP** (OnLine Transaction Processing) sono sistemi che trattano operazioni basate su un numero elevato di transazioni brevi e online. Questi sistemi sono molto rapidi e sono idonei alla gestione di processi di livello operativo e di controllo.
+
+#### OLAP
+
+I sistemi **OLAP** (OnLine Analytical Processing) sono sistemi che trattano grandi quantità di dati storici che si basano su poche transazioni complesse che aggregano diversi dati e hanno bisogno di molto tempo per essere processate.
+Questi sistemi sono utilizzati per l'elaborazioni di dati a livello di pianificazione e strategico.
+
+Un modello OLAP è rappresentato da un *Modello Multidimensionale* e le informazioni sono rappresentata da un *ipercubo*, formato da n *dimensioni* dove ogni dimensione permette di fare un'analisi.
+Gli elementi di una base di dati multidimensionali sono:
+
+- **Fatto**: elemento dell'ipercubo ottenuto specificando il valore per ogni dimensione
+- **Dimensione**: coordinate degli elementi in corrispondenza ad una dimensione di analisi
+- **Misura**: valore quantitativo del fatto elementare
+
+Le dimensioni possono essere numerose e organizzate in maniera gerarchica, basate su dipendenze funzionali.
+
+I sistemi OLAP godono delle proprietà FASMI:
+
+- **Fast**: risponde in tempo ridotto
+- **Analytics**: effettua analisi complesse
+- **Shared**: permette ad utenti con permessi diversi di accedere ai dati
+- **Multidimensional**: visione multidimensionali dai dati
+- **Informational**: contiene le informazioni di interesse
+
+Altre caratteristiche del DW sono:
+
+- **Orientato alle entità**
+- **Integrato**: i dati vengono prelevate sia da fonti interne che esterne all'azienda
+- **Variabile nel Tempo**: i dati sono associati a un'etichetta temporale
+- **Persistente**: i dati sono archiviati in sola lettura
 
 ### Organizzazione e IT
 
@@ -208,3 +238,80 @@ L'implementazione delle applicazioni richiede l'utilizzo di componenti di suppor
 ### Livello di Architettura Fisica
 
 Questo livello indica l'architettura fisica che hosta l'applicazione.
+
+## Analisi dei Dati
+
+I dati sono essenziali per supportare i processi decisionali all'interno dell'azienda. Bisogna quindi essere in grado di aggregare e interrogare i dati per analizzare ed estrarre eventuali correlazioni.
+Alcuni strumenti di supporto alle decisioni sono:
+
+- Report: mostrano dati analitici statici, con i quali non è possibile interagire e offrono una visione limitata
+- Fogli di Calcolo: le analisi sono definite dall'utente, ma possono richiedere procedimenti complessi per estrarre i dati.
+
+I dati a supporto delle attività strategiche e decisionali si caratterizzano per:
+
+- *Obiettivo*: servono per prendere decisioni
+- *Utenti*: sono utilizzati solo dai manager di alto livello
+- *Orizzonte temporale*: sono utilizzati soprattutto dati storici relazionati a quelli presenti
+- *Livello di Dettaglio*: sono dati aggregati a presi dai dati operazionali o da fonti esterne
+- *Accesso*: l'accesso è in sola lettura
+
+### Data Warehouse
+
+il Data Warehouse è una base di dati di tipo [OLAP](#olap) che si distingue dai tradizionali DBMS che sono sistemi di tipo [OLTP](#oltp), i quali sono caratterizzati da un gran numero di operazioni brevi.
+
+All'interno del data warehouse è possibile individuare diversi basi di dati organizzati in maniera gerarchica.
+
+Al primo livello si trovano le **sorgenti**, ovvero le fonti che popolano il DW, come il la base di dati operazionale e basi di dati esterne.
+Queste sorgenti vengono sottoposte an operazioni dette ETL (Extraction, Transformation e Loading) che trasformano i dati dalle sorgenti in base alla struttura multidimensionali dell'OLAP.
+
+A livello intermedio può esistere una base di dati intermedia detta **Staging Area**
+
+In fine si trovano i **Data Mart** ovvero dei piccoli data warehouse tematici che contengono un estratto/vista delle informazioni del data warehouse. Questa divisione dei dati viene svolta in quanto il data warehouse può essere molto grande e i data contenuti non interessano a tutti gli utenti
+
+Durante il processo **ETL** di *estrazione*, vengono definiti quali e come (aggregare, copiare, etc) devono essere estratti i dati. L'estrazione può essere *statica* se vengono considerati tutti i dati dei sorgenti; *Incrementale* se vengono presi in considerazione solo i dati creati a partire dall'ultimo aggiornamento.
+I dati possono subire alcune trasformazioni come:
+
+- **Data Cleaning**: i dati possono contenere errori che devono essere corretti. Questa fase risolve i problemi relativi alla qualità dei dati
+- **Riconciliazione**: mettere in relazione i dati relativi alle stesse entità
+- **Standardizzazione dei Formati**: i dati proveniente da sorgenti eterogenee devono essere standardizzati. Alcune operazioni sono:
+  - Congiungere e spezzare i campi
+  - Standardizzare dei codici
+  - Standardizzazione dei formati
+- **Ricerca ed Eliminazione dei Duplicati**: assicurarsi che non siano presenti gli stessi dati da sorgenti diverse
+
+Le operazioni ETL sono documentate da **Metadati** che raccolgono:
+
+- **Struttura del Data Warehouse**: dati come schemi, viste, dimensioni, gerarchie, etc
+- **Metadati Operazionali**: storia, l'origine e le trasformazioni dei dati
+- **Metadati per Mappare dati Operazionali ai dati del DW**
+- **Statistiche**: descrivere come e quando viene utilizzato il dw
+
+#### Modello Concettuale
+
+I Data Warehouse vengono rappresentati tramite il **Dimensional Fact Model** (DFM) dove:
+
+- Il *fatto* è rappresentato da un rettangolo che contiene le misure
+- Le *dimensioni* sono rappresentate da cerchi etichettati e collegati ai fatti. Possono essere semplici attributi o gerarchie.
+
+#### Modello Logico
+
+Definito il modello concettuale esso deve essere memorizzato in un DBMS. Alcuni esempi sono:
+
+- **Modello MOLAP** (Multidimensional OLAP): traduce il modello concettuale in una base multidimensionale. La traduzione avviene in maniera esatta e rende le interrogazioni efficienti e veloci. Queste basi di dati sono meno diffuse delle basi relazionali classiche e i linguaggi sono spesso proprietari
+- **Modelli ROLAP** (Relational OLAP): traduce il modello concettuale in un modello relazionale che memorizza i dati tramite tabelle. Le interrogazioni avvengono con linguaggi come SQL. Questo modello ha lo svantaggio di essere più lento e spesso è difficile rappresentare perfettamente il modello multidimensionale.
+- **Modelli HOLAP** (Hybrid OLAP): traduce il modello multidimensionale in un ibrido, solitamente usando una base di dati relazionale. la base multidimensionale sono usare per data mart tematici
+
+Per mappare la base multidimensionale è necessario definire le tabelle.
+Per fare ciò esistono due approcci:
+
+- **Schema a Stella**: viene utilizzata una *tabella dei fatti* per memorizzare gli attributi corrispondenti alle misure del fatto ed ad ogni riga corrisponde un fatto; viene utilizzata la *tabella delle dimensioni*, per ogni dimensione, associa al fatto gli attributi relativi alla gerarchia.
+- **Schema a Fiocco di Neve**: ad ogni dimensione vengono associate più tabelle che permettono di conservare le dipendenze funzionali.
+
+#### Operazioni
+
+I Data Warehouse comprende un'insieme di tecniche per analizzare i dati:
+
+- **Drill-Down**: permette di ottenere dati dettagliati scendendo lungo la gerarchia di una dimensione, passando da un livello di aggregazione alto ad uno basso.
+- **Roll-Up**: permette di passare da un livello dettagliato ad uno più ad alto livello.
+- **Slice**: permette di focalizzare l'analisi su una porzione di dati fissando il valore di una delle dimensioni di analisi.
+- **Dice**: permette di identificare un insieme di coordinate che riduce l'ipercubo
