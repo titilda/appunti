@@ -1132,3 +1132,74 @@ Esiste anche un quarto effetto che si chiama "Banda Limitata" che centra con le 
 
 ### Massima tensione d'uscita
 
+La tensione massima viene limitata a un $V_{out}^{MAX}$, anche se idealmente ci aspettiamo $V_{out} = V_{in}$.
+
+![](assets/Capitolo_OpAmp/Massima_tensione_d'uscita.jpg)
+
+Di solito $V_{out}^{MAX} \le V_{DD}$, se uguale si chiama "op-amp rail-to-rail".
+
+!["Grafico: Massima tensione d'uscita"](assets/Capitolo_OpAmp/Massima_tensione_d'uscita_grafico.jpg)
+
+### Massima corrente d'uscita
+
+Stessa cosa ma con la corrente.
+
+![](assets/Capitolo_OpAmp/Massima_corrente_d'uscita.jpg)
+
+Solitamente $I_f<<I_L$, quindi $I_{out} \cong I_L \implies V_{out} = I_{out}^{MAX} R_L$.
+
+### Guadagno differenziale (open loop) finito
+
+![](assets/Capitolo_OpAmp/Guadagno_differenziale_finito.jpg)
+
+N.B. Se ripetessimo i calcoli con resistenza d'ingresso e d'uscita, notiamo un contributo non nullo a causa di $v_\varepsilon \not ={0}$
+
+### Guadagno di modo comune (open loop) non nullo
+
+Idealmente se abbiamo $v_\varepsilon = 0$ con $v^+ = v^- \not ={0}$ ovvero $v_{CM} \not ={0}$ e $V_{out} = 0$, in realtà abbiamo $V_{out} \not ={0}$.
+
+![](assets/Capitolo_OpAmp/Guadagno_di_modo_comune_non_nullo.jpg)
+
+$CMRR_{OL} = \frac{A_{d,OL}}{A_{CM,OL}}
+\\
+CMRR_{OL}^{dB} = 10 log_{10} \frac{A^2_{d,OL}}{A^2_{CM,OL}}
+\\
+= 20 log_{10}CMRR_{OL}
+$
+
+N.B. OP= Open-Loop, solitamente viene omesso dal circuito.
+
+### Power Supply Rejection Ratio (PSRR)
+
+Idealmente se si ha $\varDelta V_{supply} (t) \not ={0}$ ci aspettiamo $V_{out} = 0$ se ingresso nullo, in realtà $V_{out} \not ={0}$ e cresce con $\varDelta V_{supply}$.
+
+![](assets/Capitolo_OpAmp/PSRR.jpg)
+
+Per usare il modello ideale quindi:
+
+![](assets/Capitolo_OpAmp/PSRR_Ideale.jpg)
+
+N.B. Ognuno definisce il guadagno differenziale tirando un d20 e/o pescando a caso, quindi chiedere il manuale per scoprire la definizione del giorno.
+
+Od ora parliamo di "Banda Limitata".
+
+### Banda Limitata (AC)
+
+Tutti i guadagni differenziali di modo comune e parassiti sono funzioni di $s$ (FdA).
+
+Quindi ogni frequenza risponde in modo diverso.
+
+Ma nel 90% dei casi:
+
+![](assets/Capitolo_OpAmp/Banda_limitata.jpg)
+
+### Guida di sopravvivenza per il guadagno differenziale:
+
+- Trascuriamo i contributi di modo comune.
+- Le altre NON idealità si valutano sugli OpAmp ideali.
+- Il guadagno differenziale finito e la relativa banda si tratta con la teoria della retroazione.
+
+# Capitolo Nove: Reatroazione (FdA is back)
+
+Ricordo rapido rapido di FdA (guardate su appunti per approfondire).
+
