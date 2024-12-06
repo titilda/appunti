@@ -120,11 +120,59 @@ Nell'implementazione della classe `Square` è presente un costruttore che inizia
 
 Una classe può contenere al suo interno variabili, metodi e definizioni di altre classi ed enumerazioni. Ciascuna di queste può assumere quattro gradi diversi di visibilità:
 
-| Visibilità          | Spiegazione                                                                                                                      |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Visibilità          | Spiegazione                                                                                                                       |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `private`           | L'attributo è accessibile solo dall'interno della classe stessa.                                                                  |
 | `protected`         | L'attributo è accessibile solo dall'interno della classe stessa e dai suoi eredi.                                                 |
 | `<non specificato>` | L'attributo è accessibile ovunque ma solo all'interno dello stesso package (che è un modo di organizzare varie parti del codice). |
-| `public`            | L'attributo è visibile ovunque. |
+| `public`            | L'attributo è visibile ovunque.                                                                                                   |
+
+Per questioni di sicurezza e ordine nel codice, è fortemente consigliato utilizzare la visibilità più ristretta possibile.
+
+### Variabili statiche
+
+Una variabile è dichiarata `static` se è relativa alla classe (e quindi condivisa tra tutte le istanze) e non alla singola istanza.
+
+```java
+public class Program {
+    public static void main(String[] args) {
+        ContaIstanze a, b, c;
+
+        a = new ContaIstanze();
+        System.out.println(a.getNumeroIstanza()) // 0
+        b = new ContaIstanze();
+        System.out.println(b.getNumeroIstanza() + " " + b.getProssimoNumeroIstanza()) // 1 2
+        c = new ContaIstanze();
+        System.out.println(a.getNumeroIstanza() + " " + b.getNumeroIstanza() + " " + c.getNumeroIstanza()) // 0 1 2
+        system.out.println(a.getProssimoNumeroIstanza() + " " + b.getProssimoNumeroIstanza() + " " + c.getProssimoNumeroIstanza()) // 3 3 3
+    }
+}
+
+class ContaIstanze {
+    private static int numero_seriale = 0;
+    private int numero_istanza
+
+    public ContaIstanze() {
+        this.numero_istanza = numero_seriale;
+        numero_seriale++;
+    }
+
+    public int getNumeroIstanza() {
+        return this.numero_istanza;
+    }
+
+    public static int getProssimoNumeroIstanza() {
+        return numero_seriale;
+    }
+}
+```
+
+Logicamente, non è possibile accedere a variabili non statiche da contesti statici.
+
+### Aliasing
+
+### Ereditarietà
+
+### Interfacce
 
 <!-- Una volta inserita la sezione sul testing, aggiungere il link nel paragrafo introduttivo -->
