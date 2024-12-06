@@ -311,25 +311,65 @@ Per ulteriori informazioni è possibile consultare la [documentazione](https://d
 
 Ciascuna classe eredita sempre e solo da un'altra classe (eventualmente `Object`).
 
-<!--
+Se si vuole fare in modo che non sia possibile estendere ulteriormente una classe è possibile dichiararla come `final`.
+
 ### Classi astratte
 
-```java
-class FiguraGeometrica {
-    protected 
+Una **classe astratta** descrive una classe non istanziabile ma estendibile.
 
-    public int getArea();
-    public int getPerimetro();
+Una classe astratta può contenere **metodi astratti**, ovvero metodi senza corpo che devono essere obblicagoriamente sovrascritti da eventuali sottoclassi non astratte.
+
+Nell'esempio seguente, viene dichiarata una classe astratta atta a descrivere una figura geometrica colorata generica. Tale classe verrà poi estesa, ottenendo una classe che descrive un rettangolo.
+
+```java
+abstract class FiguraGeometrica {
+    private final Color colore;
+
+    protected FiguraGeometrica(Color colore) {
+        this.colore = colore;
+    }
+
+    public abstract double getArea();
+    public abstract double getPerimetro();
+}
+
+class Rettangolo extends FiguraGeometrica {
+    private double larghezza;
+    private double altezza;
+
+    public Rettangolo(Color colore, double larghezza, double altezza) {
+        super(colore);
+        this.larghezza = larghezza;
+        this.altezza = altezza;
+    }
+
+    @Override
+    public double getArea() {
+        return this.larghezza * this.altezza;
+    }
+
+    @Override
+    public double getPerimetro() {
+        return 2 * (this.larghezza + this.altezza);
+    }
 }
 ```
--->
+
+<!--
 ### Interfacce
+
+-- la differenza è che nelle classi astratte si possono avere corpi e variabili, qui no.
+-- Serve anche per avere un'ereditarietà pseudo-multipla
 
 ### Overloading
 
 ### Casting e binding dinamico
 
 ### Generics
+
+### Eccezioni
+
+### String e toString()
 -->
 
 
