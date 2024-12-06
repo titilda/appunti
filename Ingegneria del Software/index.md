@@ -47,6 +47,8 @@ E' stato dimostrato sperimentalmente che chi utilizza il modello a cascata ha un
 
 # Java
 
+_Nota: per procedere è fortemente consigliata almeno un'infarinatura sui concetti base di programmazione quali "funzione", "variabile" e simili._
+
 [Java](https://www.java.com/it/) è un linguaggio di programmazione ad oggetti onnipresente da decenni nei posti più disparati.
 
 ![3 miliardi di dispositivi eseguono Java <br> La schermata che compare durante l'installazione di Java è la stessa da almeno 15 anni.](assets/three_billion.png)
@@ -87,6 +89,7 @@ class Square {
     // Questo è il costruttore delle istanze di Square
     public Square(double side) {
         // this è una reference all'istanza sul quale è chiamato il metodo
+        // Si usa il punto ('.') per accedere a variabili e metodi di un oggetto
         // In caso di omonimia tra variabili, si prende la variabile più "interna"
         this.side = side;
     }
@@ -108,7 +111,8 @@ class Square {
 }
 ```
 
-Tranne casi speciali, in Java, la funzione `main` deve essere contenuta in una `public class` con lo stesso nome del file in cui è contenuta.
+Tranne casi speciali, in Java, il metodo `main` deve essere contenuta in una `public class` con lo stesso nome del file in cui è contenuta.
+Il metodo `main` prende come parametro un array di stringhe (denotato come `String[]`) che contiene tutti i parametri passati da linea di comando.
 
 Il vantaggio dell'utilizzo di una classe per memorizzare quadrati è dato dal fatto che se, per qualche motivo, fosse necessario cambiarne l'implementazione, fintanto che `getSide()` continua a restituire il lato e `getArea()` continua a restituire l'area, non è necessario andare a modificare tutte le chiamate a tali metodi.
 
@@ -120,14 +124,19 @@ Nell'implementazione della classe `Square` è presente un costruttore che inizia
 
 Una classe può contenere al suo interno variabili, metodi e definizioni di altre classi ed enumerazioni. Ciascuna di queste può assumere quattro gradi diversi di visibilità:
 
-| Visibilità          | Spiegazione                                                                                                                       |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `private`           | L'attributo è accessibile solo dall'interno della classe stessa.                                                                  |
-| `protected`         | L'attributo è accessibile solo dall'interno della classe stessa e dai suoi eredi.                                                 |
-| `<non specificato>` | L'attributo è accessibile ovunque ma solo all'interno dello stesso package (che è un modo di organizzare varie parti del codice). |
-| `public`            | L'attributo è visibile ovunque.                                                                                                   |
+| Visibilità          | Spiegazione                                                                                                                                                       |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `private`           | L'attributo è accessibile solo dall'interno della classe stessa.                                                                                                  |
+| `protected`         | L'attributo è accessibile solo dall'interno della classe stessa e dai suoi eredi.                                                                                 |
+| `<non specificato>` | L'attributo è accessibile ovunque ma solo all'interno dello stesso package (che è un modo di organizzare varie parti del codice, si pensi ai `namespace` in c++). |
+| `public`            | L'attributo è visibile ovunque.                                                                                                                                   |
 
 Per questioni di sicurezza e ordine nel codice, è fortemente consigliato utilizzare la visibilità più ristretta possibile.
+
+Se un costruttore è `private` allora l'oggetto non può essere istanziato dall'esterno con quel costruttore (si vedrà in seguito che un oggetto può avere più costruttori): in questo caso altri costruttori della stessa classe, se necessario, potranno utilizzare il costruttore privato per l'inizializzazione dell'oggetto.
+Se un costruttore è `protected` allora può essere chiamato solo da classi _figlie_ (si vedranno in seguito).
+
+Su [StackOverflow](https://stackoverflow.com/a/2816139/9173871) è possibile trovare un'ottima spiegazione che spiega gli utilizzi 
 
 ### Variabili statiche
 
@@ -171,8 +180,157 @@ Logicamente, non è possibile accedere a variabili non statiche da contesti stat
 
 ### Aliasing
 
+Quando si memorizza un'istanza di oggetto in Java, non si sta memorizzando l'oggetto in se per se ma un riferimento ad esso.
+Da ciò segue che nel seguente codice
+
+```java
+Object o1 = new Object();
+Object o2 = o1;
+
+System.out.println(o1 == 02); // true
+```
+
+le variabili `o1` e `o2` non sono due copie dello stesso oggetto ma sono proprio lo stesso oggetto: si può scegliere di usare arbitrariamente una delle due variabili.
+
 ### Ereditarietà
 
+Una classe `B` **eredita** (oppure **estende**) un'altra classe `A` se viene dichiarata come
+
+```java
+class B extends A {...}
+```
+
+Questo vuol dire che qualunque istanza di `B` è anche istanza di `A` (ma non viceversa), dunque ha accesso a tutti i metodi e attributi non privati di `A`.
+Di conseguenza lo stato di `B` è composto dallo stato di `A` ed, eventualmente, anche da altre variabili.
+
+Nelle classi _figlie_ si usa `super` per riferirsi alla classe _padre_.
+
+Una classe può essere estesa da molteplici classi.
+
+Il seguente codice definisce le classi `Cane` e `Gatto` estendendo `AnimaleDomestico`.
+Tale classe è responsabile del conteggio dei pasti delle bestiole.
+Si vedrà come non è necessario scrivere due volte la logica che gestisce il conteggio dei pasti in quando sia `Cane` che `Gatto` la erediteranno da `AnimaleDomestico`.
+
+```java
+public class Program {
+    public static void main(String[] args) {
+        // La seguente istruzione sarebbe errata in quanto il costruttore di AnimaleDomestico non è accessibile da qui
+        // AnimaleDomestico ad = new AnimaleDomestico("Gino");
+
+        Gatto pino = new Gatto("Pino");
+
+        pino.mangia();
+        pino.mangia();
+        System.out.println(pino.getNumeroPasti())
+    }
+}
+
+class AnimaleDomestico {
+    private String nome;
+    private int numero_pasti;
+
+    // Costruttore protected in modo da non poter istanziare un animale domestico generico
+    protected AnimaleDomestico(String nome) {
+        this.nome = nome;
+        this.numero_pasti = 0;
+    }
+
+    protected void mangia() {
+        this.numero_pasti++:
+    }
+
+    // Questi metidi sono dichiarati final per vietare la sovrascrittura da parte di classi figlie
+    public final String getNome() {
+        return nome;
+    }
+
+    public final int getNumeroPasti() {
+        return this.numero_pasti;
+    }
+}
+
+class Cane extends AnimaleDomestico {
+    public Cane(String nome) {
+        super(nome); // Inizializza il cane col costruttore di AnimaleDomestico
+        // Dopo aver inizializzato la parte 'AnimaleDomestico' del cane, è possibile compiere altre azioni
+    }
+
+    // Sovrascriviamo il comportamento di mangia() per la classe Cane
+    @Override
+    public void mangia() {
+        super.mangia(); // Chiama la logica di mangia() definita nel padre
+        System.out.println("Woff Woff");
+    }
+}
+
+// La classe gatto si comporta esattamente come Cane
+class Gatto extends AnimaleDomestico {
+    public Gatto(String nome) {
+        super(nome);
+    }
+
+    @Override
+    public void mangia() {
+        super.mangia();
+        System.out.println("Miao Miao");
+    }
+}
+```
+
+Il vantaggio di poter estendere classi a piacimento è che è possibile creare uno scheletro generico che poi può essere specializzato secondo necessità.
+
+Si supponga di aggiungere all'esempio precedente la seguente classe:
+
+```java
+class Veterinario {
+    public void visita(AnimaleDomestico animale) {
+        // Il seguente blocco condizionale è un anti-pattern, ovvero implementa una logica che può essere implementata in maniera più estendibile, leggibile e/o efficente in altro modo (si vedrà più avanti) ed è quindi per puro scopo dimostrativo
+        if(animale instanceof Cane) {
+            System.out.println("Visito il cane...");
+        } else if(animale instanceof Gatto) {
+            System.out.println("Visito il gatto...");
+        }
+    }
+}
+```
+
+Dato che sia `Cane` che `Gatto` estendono `AnimaleDomestico` allora qualsiasi metodo che accetta come paramero un `AnimaleDomestico` accetterà anche una qualsiasi istanza di `Cane` o `Gatto`:
+
+```java
+Cane c = new Cane("Mino");
+Gatto g = new Gatto("Rino");
+
+Veterinario vet = new Veterinario();
+
+vet.visita(c); // Visito il cane...
+vet.visita(g); // "Visito il gatto..."
+```
+
+In Java, tutte le classi che non estendono nessuna classe, in realtà, estendono implicitamente una classe generica denominata `Object` che contiene tutti i metodi presenti di default all'interno di ogni classe.
+Per ulteriori informazioni è possibile consultare la [documentazione](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html) di `Object`.
+
+Ciascuna classe eredita sempre e solo da un'altra classe (eventualmente `Object`).
+
+<!--
+### Classi astratte
+
+```java
+class FiguraGeometrica {
+    protected 
+
+    public int getArea();
+    public int getPerimetro();
+}
+```
+-->
 ### Interfacce
+
+### Overloading
+
+### Casting e binding dinamico
+
+### Generics
+-->
+
 
 <!-- Una volta inserita la sezione sul testing, aggiungere il link nel paragrafo introduttivo -->
