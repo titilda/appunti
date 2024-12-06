@@ -322,7 +322,7 @@ class FiguraGeometrica {
     public int getPerimetro();
 }
 ```
--->
+<!--
 ### Interfacce
 
 ### Overloading
