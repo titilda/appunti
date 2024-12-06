@@ -61,4 +61,70 @@ Un programma in Java non viene compilato direttamente nel linguaggio macchina na
 
 Questo rende possibile l'esecuzione di programmi scritti in java su qualsiasi architettura, a patto che su tale architettura sia stato eseguito il _porting_ della JVM (i più coraggiosi possono trovare ulteriori informazioni [qui](https://zserge.com/posts/jvm/) e [qui](https://docs.oracle.com/javase/specs/jvms/se8/html/)).
 
+## Programmazione ad oggetti
+
+La programmazione ad oggetti si basa, appunto, su oggetti. Un oggetto è descritto dallo stato e dai suoi metodi, ciascuno stato può modificare lo stato dell'oggetto od estrarne informazioni.
+
+Un oggetto (o classe) può essere istanziato molteplici volte, ottenendo molteplici istanze dello stesso oggetto, ciascuna con il proprio stato.
+
+Nell'esempio successivo viene mostrato come definire una classe e come crearne un'istanza.
+
+```java
+public class Program {
+    public static void main(String[] args) {
+        Square s = new Square(3.0);
+
+        System.out.println(s.getSide()) // 3.0
+        s.setSide(4.0);
+        System.out.println(s.getArea()) // 16.0
+    }
+}
+
+class Square {
+    // Lo stato del quadrato è composto da una sola variabile di tipo double
+    private double side;
+
+    // Questo è il costruttore delle istanze di Square
+    public Square(double side) {
+        // this è una reference all'istanza sul quale è chiamato il metodo
+        // In caso di omonimia tra variabili, si prende la variabile più "interna"
+        this.side = side;
+    }
+
+    // Questo metodo va a modificare lo stato del quadrato
+    public void setSide(double side) {
+        this.side = side;
+    }
+
+    // Questo metodo è detto "observer" in quanto estrare delle informazioni dallo stato del quadrato (in questo caso, il lato) e le restituisce al chiamante
+    public double getSide() {
+        return this.side;
+    }
+
+    // questo è anche un observer ma non restituisce lo stato in sè per se, bensì un'informazione derivata
+    public double getArea() {
+        return this.side * this.side;
+    }
+}
+```
+
+Tranne casi speciali, in Java, la funzione `main` deve essere contenuta in una `public class` con lo stesso nome del file in cui è contenuta.
+
+Il vantaggio dell'utilizzo di una classe per memorizzare quadrati è dato dal fatto che se, per qualche motivo, fosse necessario cambiarne l'implementazione, fintanto che `getSide()` continua a restituire il lato e `getArea()` continua a restituire l'area, non è necessario andare a modificare tutte le chiamate a tali metodi.
+
+Tutti i metodi di una classe accessibili dall'esterno sono detti **interfaccia** della classe (da non confondersi con le interfacce proprie di Java): l'interfaccia serve per astrarre l'utilizzo di un oggetto dalla sua implementazione.
+
+Nell'implementazione della classe `Square` è presente un costruttore che inizializza l'istanza (in questo caso inizializza il valore di `side`): se non è presente un costruttore, viene aggiunto automaticamente un costruttore di default che non prende alcun parametro e che inizializza tutti i campi dello stato coi propri valori di default.
+
+### Visibilità
+
+Una classe può contenere al suo interno variabili, metodi e definizioni di altre classi ed enumerazioni. Ciascuna di queste può assumere quattro gradi diversi di visibilità:
+
+| Visibilità          | Spiegazione                                                                                                                      |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `private`           | L'attributo è accessibile solo dall'interno della classe stessa.                                                                  |
+| `protected`         | L'attributo è accessibile solo dall'interno della classe stessa e dai suoi eredi.                                                 |
+| `<non specificato>` | L'attributo è accessibile ovunque ma solo all'interno dello stesso package (che è un modo di organizzare varie parti del codice). |
+| `public`            | L'attributo è visibile ovunque. |
+
 <!-- Una volta inserita la sezione sul testing, aggiungere il link nel paragrafo introduttivo -->
