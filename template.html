@@ -5,6 +5,7 @@
 	<meta charset="utf-8" />
 	<meta name="generator" content="pandoc" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+	<link rel="icon" href="logo.svg" sizes="any" type="image/svg+xml">
 	$for(author-meta)$
 	<meta name="author" content="$author-meta$" />
 	$endfor$
@@ -55,6 +56,7 @@
 				img.classList.add("rounded");
 				img.classList.add("mx-auto");
 				img.classList.add("d-block");
+				img.classList.add("img-fluid");
 			});
 			
 			// Figures
@@ -65,7 +67,6 @@
 
 				figure.querySelectorAll("img").forEach((img) => {
 					img.classList.add("figure-img");
-					img.classList.add("img-fluid");
 				});
 				figure.querySelectorAll("figcaption").forEach((figcaption) => {
 					figcaption.classList.add("figure-caption");
@@ -80,7 +81,7 @@
 	<div class="container">
 		<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
 			<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-				<svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+				<img src="logo.svg" width="20">
 				<span class="fs-4">
 					$if(title)$$title$ - $endif$Appunti TiTilda
 				</span>
