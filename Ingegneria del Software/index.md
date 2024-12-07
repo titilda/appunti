@@ -131,7 +131,7 @@ Una classe può contenere al suo interno variabili, metodi e definizioni di altr
 | `<non specificato>` | L'attributo è accessibile ovunque ma solo all'interno dello stesso package (che è un modo di organizzare varie parti del codice, si pensi ai `namespace` in c++). |
 | `public`            | L'attributo è visibile ovunque.                                                                                                                                   |
 
-Per questioni di sicurezza e ordine nel codice, è fortemente consigliato utilizzare la visibilità più ristretta possibile.
+Per questioni di sicurezza e ordine nel codice, è fortemente consigliato utilizzare la visibilità più ristretta possibile (_information hiding_).
 
 Se un costruttore è `private` allora l'oggetto non può essere istanziato dall'esterno con quel costruttore (si vedrà [in seguito](#overloading) che un oggetto può avere più costruttori): in questo caso altri costruttori della stessa classe, se necessario, potranno utilizzare il costruttore privato per l'inizializzazione dell'oggetto.
 Se un costruttore è `protected` allora può essere chiamato solo da classi _figlie_ (si vedranno [in seguito](#ereditarietà)).
@@ -491,10 +491,131 @@ Di default, un'enumerazione eredita dalla classe `Enum` ([documentazione](https:
 <!--
 ### Casting e binding dinamico
 
+- instanceof
+- casting
+- autocasting
+
 ### Generics
+-->
 
 ### Eccezioni
 
+La gestione degli errori in Java avviene attraverso le eccezioni. Un'eccezione è lanciata quando vi è un errore di qualche genere (ad esempio, quando si tenta di aprire un file che non esiste).
+
+![La gestione degli errori in vari linguaggi di programmazione <br> (`raise` - `throw` - `panic!()`)](assets/error.png)
+
+Si supponga di avere un metodo che potrebbe lanciare un eccezione:
+
+```java
+int intFromString(String s) {
+    return Integer.parseInt(s);
+}
+```
+
+Il metodo `parseInt` lancia un'eccezione di tipo `NumberFormatException` se la stringa in ingresso non rappresenta un intero valido e dunque Java obbliga lo sviluppatore a gestire tale eventualità:
+
+```java
+int intFromString(String s) {
+    try {
+        return Integer.parseInt(s);
+    } catch(NumberFormatException e) {
+        System.err.println("Errore: " + e);
+        return -1;
+    }
+}
+```
+
+Pur avendo una soluzione che gestisce correttamente l'eccezione, il chiamante non ha modo di capire se il valore restituito è `-1` a causa di un errore oppure se è perchè ha chiamato il metodo con proprio `"-1"`.
+
+La cosa migliore è delegare la gestione dell'errore al chiamante dichiarando il metodo come `throws NumberFormatException`:
+
+```java
+int intFromString(String s) throws NumberFormatException {
+    return Integer.parseInt(s);
+}
+```
+
+In questo modo il chiamante è obbligato a gestire a sua volta l'eccezione (scegliendo se utilizzare un blocco `try-catch` oppure se delegare a sua volta).
+
+E' possibile concatenare molteplici `catch`: quando si verifica un'eccezione, il blocco più in alto che corrisponde a tale eccezione sarà quello scelto per gestirla (pertanto è consigliato gestire le eccezioni dalla più specifica alla più generica).
+
+```java
+try {...}
+catch(ExceptionType1 e) {...}
+catch(ExceptionType2 e) {...}
+catch(ExceptionType3 e) {...}
+```
+
+Alla fine di una serie di `catch` è possibile inserire un blocco `finally` che verrà eseguito indipendentemente dal fatto che vi siano state eccezioni o meno.
+Questo blocco è utile per liberare eventuali risorse aperte in blocchi `try` che sono stati interrotti da un'eccezione:
+
+```java
+Socket s;
+try {
+    s = new Socket("127.0.0.1", 3000);
+    s.getOutputStream().write(42);
+} catch(IOException e) {
+    System.err.println(e);
+} catch(Exception e) {
+    System.err.println(e);
+} finally {
+    s.close();
+}
+```
+
+Se ci si dimentica di chiudere la socket dopo l'errore, è possibile che rimanga allocata in memoria indefinitamente causando un memory leak di conseguenza è stato inventato il `try-with-resources`:
+
+```java
+try(Socket s = new Socket("127.0.0.1", 3000)) {
+    s.getOutputStream().write(42);
+} catch(IOException e) {
+    System.err.println(e);
+} catch(Exception e) {
+    System.err.println(e);
+}
+```
+
+Così facendo, se gli oggetti istanziati implementano l'interfaccia `AutoCloseable` possono essere istanziati in un `try-with-resources` e verranno automaticamente chiusi alla fine.
+
+E' possibile concatenare molteplici istruzioni che istanziano risorse separandole con un punto e virgola (';').
+
+Per lanciare eccezioni a mano si usa `raise new ExceptionType(...)`.
+
+In Java, tutte le eccezioni ereditano da `Error`, `Exception` o `RuntimeException`:
+
+```mermaid
+classDiagram
+    class Throwable
+    class Error
+    class Exception
+    class RuntimeException
+    
+    Throwable <|-- Error
+    Throwable <|-- Exception
+    Exception <|-- RuntimeException
+```
+
+_Questo è un diagramma UML e serve a schematizzare le specifiche e le interazioni tra le varie classi di un programma Java, verrà spiegato in seguito._
+
+_Nel diagramma precedente sono state riportate le sole classi di interesse senza le proprie variabili e metodi,_
+
+Tutte le eccezioni che ereditano direttamente da `Exception` devono essere obbligatoriamente gestite o delegate mentre quelle che ereditano direttamente da `RuntimeException` no (ma è fortemente consigliato gestirle/delegarle in ogni caso per ulteriore sicurezza).
+
+La tipologia `Error` viene utilizzata per errori quali stack overflow o memoria esaurita e deve obbligatoriamente causare la terminazione del programma. Il suo utilizzo è sconsigliato.
+
+Qualora le eccezioni esistenti non siano adatte per essere utilizzate, è possibile creare delle eccezioni personalizzate estendendo una delle classi di cui sopra:
+
+```java
+class NuovaEccezione extends Exception {
+    public NuovaEccezione() {
+        super()
+    }
+}
+```
+
+Se viene lanciata un'eccezione vuol dire che qualcosa è andato storto e quel qualcosa deve essere in qualche modo sistemato pertanto è fortemente sconsigliato creare blocchi `try-catch` nei quali il blocco `catch` non fa nulla.
+
+<!--
 ### String e toString()
 
 ### Classi, interfaccie e metodi utili
