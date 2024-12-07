@@ -477,7 +477,7 @@ public class Program {
         PuntoCardinale dir = PuntoCardinale.NE;
 
         System.out.println(dir.getNomeCompleto()) // Nord-est
-        System.out.println(PuntoCardinale.S == PuntoCardinale.S) // true - dai ambo i lati del `==` compare la stessa istanza di `PuntoCardinale`
+        System.out.println(PuntoCardinale.S == PuntoCardinale.S) // true - da ambo i lati del `==` compare la stessa istanza di `PuntoCardinale`
     }
 }
 ```
