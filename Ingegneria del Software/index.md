@@ -597,7 +597,7 @@ classDiagram
 
 _Questo è un diagramma UML e serve a schematizzare le specifiche e le interazioni tra le varie classi di un programma Java, verrà spiegato in seguito._
 
-_Nel diagramma precedente sono state riportate le sole classi di interesse senza le proprie variabili e metodi,_
+_Nel diagramma precedente sono state riportate le sole classi di interesse senza le proprie variabili e metodi._
 
 Tutte le eccezioni che ereditano direttamente da `Exception` devono essere obbligatoriamente gestite o delegate mentre quelle che ereditano direttamente da `RuntimeException` no (ma è fortemente consigliato gestirle/delegarle in ogni caso per ulteriore sicurezza).
 
