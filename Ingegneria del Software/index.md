@@ -608,7 +608,7 @@ Qualora le eccezioni esistenti non siano adatte per essere utilizzate, è possib
 ```java
 class NuovaEccezione extends Exception {
     public NuovaEccezione() {
-        super()
+        super();
     }
 }
 ```
