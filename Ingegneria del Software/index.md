@@ -355,13 +355,62 @@ class Rettangolo extends FiguraGeometrica {
 }
 ```
 
-<!--
 ### Interfacce
 
--- la differenza è che nelle classi astratte si possono avere corpi e variabili, qui no.
--- Serve anche per avere un'ereditarietà pseudo-multipla
+Le interfaccie sono molto simili alle classi astratte, tranne che contiene solo metodi senza corpo e astratti di default.
+
+Le interfacce si dichiarano con `interface` e si utilizzano tramite `implements`. Una classe non astratta che implementa un interfaccia deve per forza implementarne tutti i metodi.
+
+```java
+class Veicolo {...}
+
+interface Volante {
+    void vola();
+}
+
+class Aereo extends Veicolo implements Volante {
+    @Override
+    public void vola() {...}
+}
+
+class Elicottero extends Veicolo implements Volante {
+    @Override
+    public void vola() {...}
+}
+
+class Animale {...}
+
+class Anatra extends Animale implements Volante {
+    @Override
+    public void vola() {...}
+}
+```
+
+Un qualunque metodo che richiede un qualcosa in grado di volare (che quindi `implements Volante`) potrà accettare qualsiasi istanza di `Aereo`, `Elicottero` o `Anatra`.
 
 ### Overloading
+
+In java è possibile dichiarare molteplici metodi con lo stesso nome nello stesso scopo purchè essi siano distinguibili da numero e/o tipo dei parametri.
+Questo è molto utile per definire comportamenti diversi a seconda del tipo dei parametri mantenendo il codice leggibile e pulito.
+
+```java
+class Pacco {...}
+
+class UfficioPostale {
+    public invia(Pacco pacco) {...}
+
+    public invia(Pacco[] pacchi) {
+        for(Pacco p: pacchi) {
+            invia(p);
+        }
+    }
+}
+```
+
+L'`UfficioPostale` nell'esempio dispone di due metodi chiamati `invia`: il primo prende come parametro un singolo `Pacco` mentre il secondo ne prende un'array e sfrutta il primo metodo per inviare tutti i pacchi in esso contenuti.
+
+<!--
+### Enumerazioni
 
 ### Casting e binding dinamico
 
@@ -370,6 +419,26 @@ class Rettangolo extends FiguraGeometrica {
 ### Eccezioni
 
 ### String e toString()
+
+### Classi, interfaccie e metodi utili
+
+#### Clone
+
+#### Iterabilità
+
+### Multithreading
+
+### Programmazione funzionale
+
+### Socket (si spera)
+
+### GUI (si spera)
+
+## JML
+
+## Collaudo
+
+## Design pattern
 -->
 
 
