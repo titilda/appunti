@@ -50,7 +50,6 @@ jobs:
               output_html+=".html"
               cp ./style.css "${output_dir}"
               lm_date=$(LC_ALL=it_IT.utf8 git log -1 --format=%ad --date=format:'%d %B %Y' -- "${doc}")
-              # pandoc --template "template.html"  -F mermaid-filter --toc -c "style.css" --katex="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/" -o "${output_html}" "${doc}" --metadata "toc-title=Indice" --metadata "lang=it" --metadata "date=${lm_date}"
               pandoc --template "template.html"  -F mermaid-filter --toc --katex="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/" -o "${output_html}" "${doc}" --metadata "toc-title=Indice" --metadata "lang=it" --metadata "date=${lm_date}"
             done
       - name: Create index.html
