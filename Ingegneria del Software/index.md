@@ -86,7 +86,7 @@ class Square {
     // Lo stato del quadrato è composto da una sola variabile di tipo double
     private double side;
 
-    // Questo è il costruttore delle istanze di Square
+    // Questo è il costruttore delle istanze di `Square`
     public Square(double side) {
         // this è una reference all'istanza sul quale è chiamato il metodo
         // Si usa il punto ('.') per accedere a variabili e metodi di un oggetto
@@ -116,7 +116,7 @@ Il metodo `main` prende come parametro un array di stringhe (denotato come `Stri
 
 Il vantaggio dell'utilizzo di una classe per memorizzare quadrati è dato dal fatto che se, per qualche motivo, fosse necessario cambiarne l'implementazione, fintanto che `getSide()` continua a restituire il lato e `getArea()` continua a restituire l'area, non è necessario andare a modificare tutte le chiamate a tali metodi.
 
-Tutti i metodi di una classe accessibili dall'esterno sono detti **interfaccia** della classe (da non confondersi con le interfacce proprie di Java): l'interfaccia serve per astrarre l'utilizzo di un oggetto dalla sua implementazione.
+Tutti i metodi di una classe accessibili dall'esterno sono detti **interfaccia** della classe (da non confondersi con le `interface` di Java): l'interfaccia serve per astrarre l'utilizzo di un oggetto dalla sua implementazione.
 
 Nell'implementazione della classe `Square` è presente un costruttore che inizializza l'istanza (in questo caso inizializza il valore di `side`): se non è presente un costruttore, viene aggiunto automaticamente un costruttore di default che non prende alcun parametro e che inizializza tutti i campi dello stato coi propri valori di default.
 
@@ -133,10 +133,10 @@ Una classe può contenere al suo interno variabili, metodi e definizioni di altr
 
 Per questioni di sicurezza e ordine nel codice, è fortemente consigliato utilizzare la visibilità più ristretta possibile.
 
-Se un costruttore è `private` allora l'oggetto non può essere istanziato dall'esterno con quel costruttore (si vedrà in seguito che un oggetto può avere più costruttori): in questo caso altri costruttori della stessa classe, se necessario, potranno utilizzare il costruttore privato per l'inizializzazione dell'oggetto.
-Se un costruttore è `protected` allora può essere chiamato solo da classi _figlie_ (si vedranno in seguito).
+Se un costruttore è `private` allora l'oggetto non può essere istanziato dall'esterno con quel costruttore (si vedrà [in seguito](#overloading) che un oggetto può avere più costruttori): in questo caso altri costruttori della stessa classe, se necessario, potranno utilizzare il costruttore privato per l'inizializzazione dell'oggetto.
+Se un costruttore è `protected` allora può essere chiamato solo da classi _figlie_ (si vedranno [in seguito](#ereditarietà)).
 
-Su [StackOverflow](https://stackoverflow.com/a/2816139/9173871) è possibile trovare un'ottima spiegazione che spiega gli utilizzi 
+Su [StackOverflow](https://stackoverflow.com/a/2816139/9173871) è possibile trovare un'ottima spiegazione riguardo gli utilizzi dei costruttori privati.
 
 ### Variabili statiche
 
@@ -214,7 +214,7 @@ Si vedrà come non è necessario scrivere due volte la logica che gestisce il co
 ```java
 public class Program {
     public static void main(String[] args) {
-        // La seguente istruzione sarebbe errata in quanto il costruttore di AnimaleDomestico non è accessibile da qui
+        // La seguente istruzione sarebbe errata in quanto il costruttore di `AnimaleDomestico` non è accessibile da qui
         // AnimaleDomestico ad = new AnimaleDomestico("Gino");
 
         Gatto pino = new Gatto("Pino");
@@ -251,19 +251,19 @@ class AnimaleDomestico {
 
 class Cane extends AnimaleDomestico {
     public Cane(String nome) {
-        super(nome); // Inizializza il cane col costruttore di AnimaleDomestico
+        super(nome); // Inizializza il cane col costruttore di `AnimaleDomestico`
         // Dopo aver inizializzato la parte 'AnimaleDomestico' del cane, è possibile compiere altre azioni
     }
 
-    // Sovrascriviamo il comportamento di mangia() per la classe Cane
+    // Sovrascriviamo il comportamento di `mangia()` per la classe `Cane`
     @Override
     public void mangia() {
-        super.mangia(); // Chiama la logica di mangia() definita nel padre
+        super.mangia(); // Chiama la logica di `mangia()` definita nel padre
         System.out.println("Woff Woff");
     }
 }
 
-// La classe gatto si comporta esattamente come Cane
+// La classe `Gatto` si comporta esattamente come `Cane`
 class Gatto extends AnimaleDomestico {
     public Gatto(String nome) {
         super(nome);
@@ -408,6 +408,29 @@ class UfficioPostale {
 ```
 
 L'`UfficioPostale` nell'esempio dispone di due metodi chiamati `invia`: il primo prende come parametro un singolo `Pacco` mentre il secondo ne prende un'array e sfrutta il primo metodo per inviare tutti i pacchi in esso contenuti.
+
+In una classe è anche possibile avere molteplici costruttori:
+
+```java
+class InteroVersatile {
+    private int valore;
+
+    // E' possibile istanziare la classe passando direttamente un intero...
+    public InteroVersatile(int valore) {
+        this.valore = valore;
+    }
+
+    // ... oppure una stringa che verrà convertita ad intero
+    // Il construttore è segnato come `throws NumberFormatEception` in caso si passi una stringa che non rappresenta un numero
+    public InteroVersatile(String valore) throws NumberFormatException {
+        super(Integer.parseInt(valore));
+    }
+
+    public int getValore() {
+        return this.valore;
+    }
+}
+```
 
 <!--
 ### Enumerazioni
