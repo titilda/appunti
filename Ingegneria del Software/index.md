@@ -432,9 +432,63 @@ class InteroVersatile {
 }
 ```
 
-<!--
 ### Enumerazioni
 
+Un'enumerazione è equivalente ad una classe normale tranne che ha un numero finito di istanze create all'inizio dell'esecuzione.
+
+```java
+enum PuntoCardinale {
+    // Le istanze esistenti sono dichiarate separate da una virgola (',')
+    N, NE, E, SE, S, SO, O, NO;
+}
+```
+
+Essendo le enumerazioni equivalenti a classi qualunque, esse possono disporre di costruttori e metodi:
+
+```java
+enum PuntoCardinale {
+    // Nell'esempio precedente, veniva chiamato il costruttore di default
+    N("Nord"),
+    NE("Nord-est"),
+    E("Est"),
+    SE("Sud-est"),
+    S("Sud"),
+    SO("Sud-ovest"),
+    O("Ovest"),
+    NO("Nord-ovest");
+
+    private String nome_completo;
+
+    public PuntoCardinale(String nome_completo) {
+        this.nome_completo = nome_completo;
+    }
+
+    public String getNomeCompleto() {
+        return this.nome_completo;
+    }
+}
+```
+
+Le enumerazioni vengono utilizzate nel seguente modo:
+
+```java
+public class Program {
+    public static void main(String[] args) {
+        PuntoCardinale dir = PuntoCardinale.NE;
+
+        System.out.println(dir.getNomeCompleto()) // Nord-est
+        System.out.println(PuntoCardinale.S == PuntoCardinale.S) // true - dai ambo i lati del `==` compare la stessa istanza di `PuntoCardinale`
+    }
+}
+```
+
+Di default, un'enumerazione eredita dalla classe `Enum` ([documentazione](https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html)) dunque dispone, tra gli altri, dei seguenti metodi che può risultare utile conoscere:
+
+- `valueOf(String name)`: restituisce l'istanza dell'enumerazione corrispondente al parametro;
+- `name()`: restituisce il nome dell'istanza sul quale il metodo è chiamato (equivalente a `toString`());
+- `values()`: restituisce un array di tutte le istanze della data enumerazione.
+
+<!--
 ### Casting e binding dinamico
 
 ### Generics
