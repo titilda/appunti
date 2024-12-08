@@ -41,7 +41,7 @@
   	<![endif]-->
 
 	<script>
-		// As we cannot tell pandoc to add spesicif classes to elements, to make bootstrap work we need to add classes manually
+		// As we cannot tell pandoc to add specific classes to elements, to make bootstrap work we need to add classes manually
 		document.addEventListener("DOMContentLoaded", () => {
 			// Tables
 			document.querySelectorAll("table").forEach((table) => {
@@ -71,6 +71,13 @@
 				figure.querySelectorAll("figcaption").forEach((figcaption) => {
 					figcaption.classList.add("figure-caption");
 					figcaption.classList.add("fst-italic");
+				});
+			});
+
+			// Also add anchor next to headers
+			["h1", "h2", "h3", "h4", "h5", "h6"].forEach((name) => {
+				document.querySelectorAll("#main-body " + name).forEach((header) => {
+					header.innerHTML = "<a href=\"#" + header.id + "\"><i class=\"bi bi-link-45deg\"></i></a> - " + header.innerHTML;
 				});
 			});
 		});
