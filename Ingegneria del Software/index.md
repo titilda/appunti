@@ -90,7 +90,7 @@ class Square {
 
     // Questo è il costruttore delle istanze di `Square`
     public Square(double side) {
-        // this è una reference all'istanza sul quale è chiamato il metodo
+        // `this` è una reference all'istanza sul quale è chiamato il metodo
         // Si usa il punto ('.') per accedere a variabili e metodi di un oggetto
         // In caso di omonimia tra variabili, si prende la variabile più "interna"
         this.side = side;
@@ -706,7 +706,7 @@ class Libro {
 
     @Override
     boolean equals(Object other) {
-        // Se other non è un'istanza di `libro` allora è per forza diverso
+        // Se `other` non è un'istanza di `libro` allora è per forza diverso
         if(!(other instanceof Libro)) {
             return false;
         }
