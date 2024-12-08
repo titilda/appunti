@@ -6,7 +6,7 @@ author:
 
 # Ciclo di vita del Software
 
-Sviluppare un software è un processo molto complesso: per semplicità lo si divide in fasi distinte, ciascuna che prende il risultato della fase precedente, lo elabora e produce un deliverable che fiene passato alla fase successiva.
+Lo sviluppo di un software è un processo molto complesso: per semplicità lo si divide in fasi distinte; ciascuna fase prende il risultato della fase precedente, lo elabora e produce un **deliverable** che viene passato alla fase successiva.
 
 Nello schema seguente viene mostrato il funzionamento del **modello a cascata**.
 
@@ -49,11 +49,11 @@ E' stato dimostrato sperimentalmente che chi utilizza il modello a cascata ha un
 
 _Nota: per procedere è fortemente consigliata almeno un'infarinatura sui concetti base di programmazione quali "funzione", "variabile" e simili._
 
-[Java](https://www.java.com/it/) è un linguaggio di programmazione ad oggetti onnipresente da decenni nei posti più disparati.
+[Java](https://www.java.com/it/) è un linguaggio di programmazione ad oggetti, onnipresente da decenni nei posti più disparati.
 
 ![3 miliardi di dispositivi eseguono Java <br> La schermata che compare durante l'installazione di Java è la stessa da almeno 15 anni.](assets/three_billion.png)
 
-Nel mondo videoludico, l'esempio probabilmente più famoso di gioco scritto in Java è [Minecraft](https://www.minecraft.net/it-it) ma anche molti dei giochini per i vecchi telefonini sono stati scritti in Java. La piattaforma Android, pur non utilizzando la JVM (maggiori dettagli in seguito), viene programmata utilizzando prevalentemente linguaggio Java o derivati. La stragrande maggioranza delle smart card (tra cui anche bancomat e sim) implementa Java Card e, a partire da circa il 2008, la maggioranza dei lettori Blue Ray supporta _BlueRay Disk Java_ per offrire contenuti interattivi all'utente.
+Nel mondo videoludico, l'esempio probabilmente più famoso di gioco scritto in Java è [Minecraft](https://www.minecraft.net/it-it) ma anche molti dei giochi per i vecchi telefoni precedenti agli smartphone (il nome [Gameloft](https://en.wikipedia.org/wiki/Gameloft) non suona familiare?) sono stati scritti in Java. La piattaforma Android, pur non utilizzando la JVM (maggiori dettagli in seguito), viene programmata utilizzando prevalentemente linguaggio Java o derivati. La stragrande maggioranza delle smart card (tra cui anche bancomat e sim) implementa Java Card e, a partire da circa il 2008, la maggioranza dei lettori Blue Ray supporta _BlueRay Disk Java_ per offrire contenuti interattivi all'utente.
 
 ![Low effort meme](assets/wait_all_java.png)
 
@@ -67,7 +67,7 @@ Questo rende possibile l'esecuzione di programmi scritti in java su qualsiasi ar
 
 ## Programmazione ad oggetti
 
-La programmazione ad oggetti si basa, appunto, su oggetti. Un oggetto è descritto dallo stato e dai suoi metodi, ciascuno stato può modificare lo stato dell'oggetto od estrarne informazioni.
+La programmazione ad oggetti si basa, appunto, su oggetti. Un oggetto è descritto dal suo stato e dai suoi metodi, ciascun metodo può modificare lo stato dell'oggetto od estrarre da esso informazioni.
 
 Un oggetto (o classe) può essere istanziato molteplici volte, ottenendo molteplici istanze dello stesso oggetto, ciascuna con il proprio stato.
 
@@ -114,11 +114,11 @@ class Square {
 ```
 
 Tranne casi speciali, in Java, il metodo `main` deve essere contenuta in una `public class` con lo stesso nome del file in cui è contenuta.
-Il metodo `main` prende come parametro un array di stringhe (denotato come `String[]`) che contiene tutti i parametri passati da linea di comando.
+Il metodo `main` prende come parametro un array di stringhe (denotato come `String[]` e, solitamente, chiamato `args`) che contiene tutti i parametri passati da linea di comando.
 
 Il vantaggio dell'utilizzo di una classe per memorizzare quadrati è dato dal fatto che se, per qualche motivo, fosse necessario cambiarne l'implementazione, fintanto che `getSide()` continua a restituire il lato e `getArea()` continua a restituire l'area, non è necessario andare a modificare tutte le chiamate a tali metodi.
 
-Tutti i metodi di una classe accessibili dall'esterno sono detti **interfaccia** della classe (da non confondersi con le `interface` di Java): l'interfaccia serve per astrarre l'utilizzo di un oggetto dalla sua implementazione.
+Tutti i metodi di una classe accessibili dall'esterno sono detti **interfaccia** della classe (da non confondersi con le `interface` di Java che sono spiegate [in questo paragrafo](#interfacce)): l'interfaccia serve per astrarre l'utilizzo di un oggetto dalla sua implementazione.
 
 Nell'implementazione della classe `Square` è presente un costruttore che inizializza l'istanza (in questo caso inizializza il valore di `side`): se non è presente un costruttore, viene aggiunto automaticamente un costruttore di default che non prende alcun parametro e che inizializza tutti i campi dello stato coi propri valori di default.
 
@@ -134,6 +134,8 @@ Una classe può contenere al suo interno variabili, metodi e definizioni di altr
 | `public`            | L'attributo è visibile ovunque.                                                                                                                                   |
 
 Per questioni di sicurezza e ordine nel codice, è fortemente consigliato utilizzare la visibilità più ristretta possibile (_information hiding_).
+
+`private` e `protected` si riferiscono alla classe, non alla singola istanza, ne consegue che un'istanza di un oggetto può accedere agli attributi privati e protetti delle altre istanze di quello stesso oggetto.
 
 Se un costruttore è `private` allora l'oggetto non può essere istanziato dall'esterno con quel costruttore (si vedrà [in seguito](#overloading) che un oggetto può avere più costruttori): in questo caso altri costruttori della stessa classe, se necessario, potranno utilizzare il costruttore privato per l'inizializzazione dell'oggetto.
 Se un costruttore è `protected` allora può essere chiamato solo da classi _figlie_ (si vedranno [in seguito](#ereditarietà)).
@@ -189,14 +191,14 @@ Da ciò segue che nel seguente codice
 Object o1 = new Object();
 Object o2 = o1;
 
-System.out.println(o1 == 02); // true
+System.out.println(o1 == o2); // true
 ```
 
 le variabili `o1` e `o2` non sono due copie dello stesso oggetto ma sono proprio lo stesso oggetto: si può scegliere di usare arbitrariamente una delle due variabili.
 
 ### Ereditarietà
 
-Una classe `B` **eredita** (oppure **estende**) un'altra classe `A` se viene dichiarata come
+Una classe `B` **eredita** da (oppure **estende**) un'altra classe `A` se viene dichiarata come
 
 ```java
 class B extends A {...}
@@ -305,7 +307,7 @@ Gatto g = new Gatto("Rino");
 Veterinario vet = new Veterinario();
 
 vet.visita(c); // Visito il cane...
-vet.visita(g); // "Visito il gatto..."
+vet.visita(g); // Visito il gatto...
 ```
 
 In Java, tutte le classi che non estendono nessuna classe, in realtà, estendono implicitamente una classe generica denominata `Object` che contiene tutti i metodi presenti di default all'interno di ogni classe.
@@ -389,6 +391,8 @@ class Anatra extends Animale implements Volante {
 ```
 
 Un qualunque metodo che richiede un qualcosa in grado di volare (che quindi `implements Volante`) potrà accettare qualsiasi istanza di `Aereo`, `Elicottero` o `Anatra`.
+
+Interfacce che è bene conoscere presenti in Java sono [`Comparable`](#equals-e-compareto), [`Cloneable`](#clone), `Iterable` e `Runnable`.
 
 ### Overloading
 
@@ -479,7 +483,7 @@ public class Program {
         PuntoCardinale dir = PuntoCardinale.NE;
 
         System.out.println(dir.getNomeCompleto()) // Nord-est
-        System.out.println(PuntoCardinale.S == PuntoCardinale.S) // true - da ambo i lati del `==` compare la stessa istanza di `PuntoCardinale`
+        System.out.println(PuntoCardinale.S == PuntoCardinale.S) // true - da ambo i lati del `==` compare la stessa istanza di `PuntoCardinale`, vedere il paragrafo sull `equals` per ulteriori dettagli
     }
 }
 ```
@@ -487,7 +491,7 @@ public class Program {
 Di default, un'enumerazione eredita dalla classe `Enum` ([documentazione](https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html)) dunque dispone, tra gli altri, dei seguenti metodi che può risultare utile conoscere:
 
 - `valueOf(String name)`: restituisce l'istanza dell'enumerazione corrispondente al parametro;
-- `name()`: restituisce il nome dell'istanza sul quale il metodo è chiamato (equivalente a `toString`());
+- `name()`: restituisce il nome dell'istanza sul quale il metodo è chiamato (equivalente a `toString()`);
 - `values()`: restituisce un array di tutte le istanze della data enumerazione.
 
 <!--
@@ -496,8 +500,6 @@ Di default, un'enumerazione eredita dalla classe `Enum` ([documentazione](https:
 - instanceof
 - casting
 - autocasting
-
-### Generics
 -->
 
 ### Eccezioni
@@ -838,7 +840,7 @@ public ArrayList<Libro> getLibri() {
 }
 ```
 
-Peccato che in tal modo è ancora possibile fare qualcosa come
+Peccato che in tal modo sia ancora possibile fare qualcosa come
 
 ```java
 sistema_bibliotecario.getLibri().get(42).setStatoPrestito(StatoPrestito.PRESTATO)
