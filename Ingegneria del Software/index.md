@@ -866,7 +866,6 @@ Nella deep-`clone`, non è più necessario proseguire con la clonazione ricorsiv
 
 Per indicare che in un oggetto è disponibile il metodo clone (e, dunque, poterlo utilizzare come parametro dentro metodi che richiedono che un oggetto sia clonabile) si marca la dichiarazione della classe di tale oggetto come `implements Cloneable`.
 
-
 <!--
 ### Iterabilità
 
