@@ -757,12 +757,65 @@ s1 == s3;       // false
 ```
 
 <!--
-
 ### Classi, interfaccie e metodi utili
+-->
 
-#### Clone
+### Clone
 
-#### Iterabilità
+Si supponga di dover gestire un sistema bibliotecario memorizzando la lista di libri disponibili. Tale lista, per l'esterno, deve essere di sola lettura:
+
+```java
+enum StatoPrestito {DISPONIBILE, PRESTATO};
+
+class Libro {
+    private String titolo;
+    private StatoPrestito stato_prestito;
+
+    public Libro(String titolo) {
+        this.titolo = titolo;
+        this.stato_prestito = StatoPrestito.DISPONIBILE;
+    }
+
+    public String getTitolo() {
+        return this.titolo;
+    }
+
+    public StatoPrestito getStatoPrestito() {
+        return this.stato_prestito;
+    }
+
+    public void setStatoPrestito(StatoPrestito nuovo_stato) {
+        this.stato_prestito = nuovo_stato;
+    }
+}
+
+class SistemaBibliotecario {
+    private ArrayList<Libro> libri;
+
+    public SistemaBibliotecario() {
+        this.libri = new ArrayList<>();
+    }
+
+    public addLibro(Libro l) {
+        this.libri.add(l);
+    }
+
+    public ArrayList<Libro> getLibri() {
+        return this.libri;
+    }
+}
+
+```
+<!--
+Aggiungendo lo stesso libro a più bibliotece caos
+
+Con le stringhe questo problema non si applica (immutabili)
+
+Cloneable
+-->
+
+<!--
+### Iterabilità
 
 ### Multithreading
 
