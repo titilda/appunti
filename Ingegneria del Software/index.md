@@ -615,8 +615,148 @@ class NuovaEccezione extends Exception {
 
 Se viene lanciata un'eccezione vuol dire che qualcosa è andato storto e quel qualcosa deve essere in qualche modo sistemato pertanto è fortemente sconsigliato creare blocchi `try-catch` nei quali il blocco `catch` non fa nulla.
 
-<!--
+### Equals e compareTo
+
+Per confrontare due elementi, in Java, si usa l'operatore `==` che, come in qualsiasi altro linguaggio di programmazione sensato, restituisce `true` se i due elementi sono uguali e `false` altrimenti.
+
+Se `==` è applicato a due istanze di oggetti, dei due oggetti non vengono confrontati gli stati bensì l'indirizzo di riferimento. Ne segue che il confronto tra oggetti risulta `true` se entrambi si riferiscono alla stessa istanza di una classe e `false` altrimenti.
+
+Per permettere il confronto tra due oggetti, è possibile sovrascrivere il metodo `equals` che ogni classe eredita da `Object`:
+
+```java
+class Libro {
+    private String titolo;
+    private String edizione;
+
+    public Libro(String titolo, String edizione) {
+        this.titolo = titolo;
+        this.edizione = edizione;
+    }
+
+    @Override
+    boolean equals(Object other) {
+        // Se other non è un'istanza di `libro` allora è per forza diverso
+        if(!(other instanceof Libro)) {
+            return false;
+        }
+
+        // Indipendentemente dal tipo dell'oggetto, se i due riferimenti coincidono allora sono per forza lo stesso oggetto
+        if(this == other) {
+            return true;
+        }
+
+        // Una volta esclusi i due casi di cui sopra, è possibile procedere al confronto
+        // Nell'esempio attuale si considerano due libri equivalenti se hanno lo stesso titolo, indipendentemente dall'edizione
+        // Notare che viene utilizzato il metodo `equals` della classe `String` che ritorna `true` se le due stringhe hanno lo stesso contenuto
+        return this.titolo.equals(((Libro)other).titolo);
+    }
+}
+```
+
+Nel caso sia necessario implementare una relazione d'ordine tra oggetti (non necessariamente due istanze della stessa classe) bisogna dichiarare tale classe come `implements Comparable<T>` (si vedrà il significato di `<T>` nel paragrafo sui generics): così facendo, si verrà obbligati ad implementare un metodo `int compareTo(T o)` che, per specifica, deve ritornare (a) un numero negativo se `this` viene prima di `o` oppure (b) il numero zero se `this` è equivalente ad `o` oppure (c) un numero positivo se `this` viene dopo di `o`.
+
+Come sempre, un esempio pratico potrà schiarire le idee: si supponga di dover memorizzare una lista di persone e di doverla ordinare per, ad esempio, altezza decrescente.
+
+```java
+public class Program {
+    public static void main(String[] args) {
+        ArrayList<Persona> persone = new ArrayList<>();
+
+        persone.add(new Persona("Gino", 1.70));
+        persone.add(new Persona("Pino", 1.60));
+        persone.add(new Persona("Mino", 1.80));
+
+        // Questo si può fare perchè `persone` è una lista di oggetti che implementano `Comparable` con loro stessi
+        Collections.sort(persone);
+
+        for(Persona p: persone) {
+            System.out.println(p.getNome() + ": " + p.getAltezza());    // Mino: 1.80
+                                                                        // Gino: 1.70
+                                                                        // Pino: 1.60
+        }
+    }
+}
+
+class Persona implements Comparable<Persona> {
+    private String nome;
+    private float altezza;
+
+    public Persona(String nome, float altezza) {
+        this.nome = nome;
+        this.altezza = altezza;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public float getAltezza() {
+        return this.altezza;
+    }
+
+    @Override
+    public int compareTo(Persona o) {        
+        if(this.altezza < o.altezza) {
+            return 1;
+        } else if(this.altezza == o.altezza) {
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+}
+```
+
+Il vantaggio di avere `Comparable` genericizzato è che è possibile poter disporre di metodi separati per il confronto tra diverte tipologie di oggetti.
+
 ### String e toString()
+
+Le stringhe in java sono immutabili.
+
+Qualsiasi oggetto in Java può essere rappresentto in forma testuale grazie al fatto che `Object` dispone di un metodo `toString`.
+
+Di default, la rappresentazione testuale di un oggetto è della forma `NomeClasse@HashCode`, per cambiare ciò basta sovrascrivere il metodo `toString`:
+
+```java
+public class Program {
+    public static void main(String[] args) {
+        Persona marco = new Persona("Marco", 26);
+
+        // La variante di `println` che prende un `Object` come parametro stampa l'output di `toString`
+        System.out.println(marco);
+    }
+}
+
+class Persona {
+    private String nome;
+    private int eta; // Salvare l'età di una persona invece che la data di nascita dovrebbe essere inserito nella lista di crimini contro l'umanità
+
+    public Persona(String nome, int eta) {
+        this.nome = nome;
+        this.eta = eta;
+    }
+
+    @Override
+    public String toString() {
+        return "Mi chiamo " + this.nome + " e ho " + this.eta + " anni";
+    }
+}
+```
+
+Le stringhe presenti al compile time in un programma Java sono tutte salvate in un area diversa da dove vengono salvate le stringhe generate a runtime. Questo porta a dei comportamenti apparentementi erronei da parte del programma:
+
+```java
+String s1 = "Pippo";                // Presente a compile time
+String s2 = "Pippo";                // Per non includere due volte la stessa stringa, `s2` punterà alla stessa istanza di stringa di `s1`
+String s3 = new String("Pippo");    // La `"Pippo"` è la stessa delle righe precedenti ma non viene assegnata direttamente a `s3` ma clonata a runtime, pertanto, pur essendo partiti dalla stessa istanza, `s3` sarà un'istanza separata dalle altre due
+
+s1.equals(s2);  // true
+s1.equals(s3);  // true
+s1 == s2;       // true
+s1 == s3;       // false
+```
+
+<!--
 
 ### Classi, interfaccie e metodi utili
 
