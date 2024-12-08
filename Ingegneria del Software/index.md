@@ -502,6 +502,73 @@ Di default, un'enumerazione eredita dalla classe `Enum` ([documentazione](https:
 - autocasting
 -->
 
+### Generics
+
+Si immagini di voler modellare un nuovo tipo di struttura dati non presente di default in Java. Idealmente, si vorrebbe fare in modo che tale struttura possa ospitare gati di qualunque tipo, senza doverla reimplementare ogni volta: i generics vengono incontro proprio a questo bisogno.
+
+_Nota: i generics funzionano solo con tipi di dato complessi, pertanto bisognerà utilizzare `Integer` al posto di `int` eccetera._
+
+Uno scheletro molto grezzo della classe che rappresenta la struttura dati di cui prima è il seguente
+
+```java
+class StrutturaDati<T> {...}
+```
+
+All'interno della definizione di `StrutturaDati` si potrà utilizzare il tipo generico `T` ovunque si debba fare riferimento alla tipologia di oggetti immagazzinati dalla struttura dati (è possibile specificare un numero arbitrario di tipi generici separandoli con delle virgole).
+
+```java
+class StrutturaDati<T> {
+    private T qualcosa;
+    
+    public void add(T el) {
+        // Codice specifico della struttura dati per aggiungere l'elemento nella struttura dati
+    }
+
+    public T getElementoPiuSimpatico() {
+        // Codice specifico della struttura dati per trovare e restituire l'elemento più simpatico
+    }
+}
+```
+
+Si supponga che, per esigenze della struttura dati, sia necessario poter avere accesso al metodo `compareTo` (ulteriori dettagli [in seguito](#equals-e-compareto)): ciò significa che la struttura dati può ospitare solamente istanze di oggetti che sono confrontabili con loro stessi.
+
+```java
+class StrutturaDati<T extends Comparable<T>> {...}
+```
+
+In questo modo si ha obbligato la struttura dati a poter accogliere solamente oggetti che implementano `Comparable<T>` dove `T` è il tipo ospitato dalla struttura dati.
+
+Di seguito una carrellata di definizioni che illustrano le potenzialità dei tipi generici
+
+| Tipo Generico              | Significato                                                                                                                                                    |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<T>`                      | Qualsiasi oggetto di tipo `T` o che eredita da ``T`                                                                                                            |
+| `<T extends U>`            | Qualsiasi oggetto che eredita da o estende `T`                                                                                                                 |
+| `<T extends U & V>`        | Qualsiasi oggetto che eredita da o estende contemporaneamente sia `U` che `V` (se una tra `U` e `V` è una classe, allora deve comparire in prima posizione)    |
+| `<T super U>`              | Qualsiasi oggetto di un tipo da cui `U` eredita                                                                                                                |
+| `<?>`                      | Qualsiasi oggetto                                                                                                                                              |
+| `<? extends Object>`       | Equivalente a `<?>`                                                                                                                                            |
+| `<? extends U>`            | Oggetto di tipo qualsiasi, a patto che erediti da o implementi `U`                                                                                             |
+| `<? super U>`              | Oggetto di tipo qualsiasi, a patto che sia di un tipo da cui `U` eredita                                                                                       |
+| `<T extends I<T>>`         | Oggetto di tipo `T` che eredita da o estende `I` che prende come tipo generico `T` stesso                                                                      |
+| `<T extends I<? super T>>` | Oggetto di tipo `T` che eredita da o estende `I` che prende come tipo generico un oggetto di tipo qualsiasi, a patto che sia un tipo da cui `T` stesso eredita |
+
+Si usa `?` quando il tipo utilizzato nella definizione non ha importanza e non deve essere utilizzato nell'implementazione.
+
+Non c'è limite al numero di tipi generici utilizzati e alla complessità delle loro definizioni: cose come `<T estends U, S super V>` sono ammesse.
+
+Si può trovare un esempio dell'utilizzo del generico riportato nell'ultima riga della tabella precedente nella [documentazione di `List.sort`](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#sort-java.util.List-).
+
+Se non è necessario genericizzare l'intera classe, è possibile genericizzare qualsiasi metodo o variabile indipendentemente:
+
+```java
+class StrutturaDati<T> {
+    public <R extends T, S super V> R metodo(S param) {...}
+}
+```
+
+Potrebbe venir da pensare che tipi di oggetti quali `List<String>` estendano, oltre che a `Object` anche `List<Object>`: questo non è assolutemente vero.
+
 ### Eccezioni
 
 La gestione degli errori in Java avviene attraverso le eccezioni. Un'eccezione è lanciata quando vi è un errore di qualche genere (ad esempio, quando si tenta di aprire un file che non esiste).
