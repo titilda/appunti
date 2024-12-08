@@ -804,15 +804,36 @@ class SistemaBibliotecario {
         return this.libri;
     }
 }
-
 ```
-<!--
+
+Questo codice presenta due criticità gravi.
+
+In primo luogo è possibile che due istanze diverse di `SistemaBibliotecario` abbiano in memoria la stessa istanza di `Libro`, ottenendo che un libro prestato da uno dei due sistemi compaia come non diponibile anche nell'altro sistema. Questo problema è facilmente risolvibile memorizzando, invece che l'istanza originale del libro, una sua copia: il metodo `addLibro` dovrà dunque essere modificato adeguatamente.
+
+```java
+public void addLibro(Libro l) {
+    this.libri.add(l.clone());
+}
+```
+
+dove il metodo `clone` di `Libro` è implementato come segue
+
+```java
+public Libro clone() {
+    return new Libro(this.titolo);
+}
+```
+
+In questo modo, ciascun `SistemaBibliotecario` avrà la propria istanza di `Libro` che non potrà interferire con l'operato altrui.
+
+La seconda criticità, forse ancora più grave, è che la lista di libri presente in un `SistemaBibliotecario` 
+
 Aggiungendo lo stesso libro a più bibliotece caos
 
 Con le stringhe questo problema non si applica (immutabili)
 
 Cloneable
--->
+
 
 <!--
 ### Iterabilità
