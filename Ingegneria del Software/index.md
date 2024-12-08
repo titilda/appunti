@@ -57,6 +57,8 @@ Nel mondo videoludico, l'esempio probabilmente più famoso di gioco scritto in J
 
 ![Low effort meme](assets/wait_all_java.png)
 
+Se ancora la motivazione ad imparare Java non fosse sufficiente, si prenda atto del fatto che, alla fine di questa sezione, sarà possibile comprendere quasi completamente [questo magnifico capolavoro](https://www.youtube.com/watch?v=yup8gIXxWDU).
+
 E' stato accennato al fatto che Java è un linguaggio ad oggetti: ciò significa che la logica del programma è costruita attorno alla manipolazione dello stato degli oggetti. Gli esempi chiariranno questa definizione.
 
 Un programma in Java non viene compilato direttamente nel linguaggio macchina nativo della macchina su cui gira il compilatore ma in java bytecode (un linguaggio intermedio indipendente dall'architettura della macchina host) che poi viene interpretato dalla JVM (Java Virtual Machine).
@@ -826,13 +828,43 @@ public Libro clone() {
 
 In questo modo, ciascun `SistemaBibliotecario` avrà la propria istanza di `Libro` che non potrà interferire con l'operato altrui.
 
-La seconda criticità, forse ancora più grave, è che la lista di libri presente in un `SistemaBibliotecario` 
+La seconda criticità, forse ancora più grave, è che la lista di libri presente in un `SistemaBibliotecario` non è di sola lettura, pertanto non vi è nulla che impedisca di fare qualcosa come `sistema_bibliotecario.getLibri().clear()` se si vuole generare un po' di caos tra i bibliotecari.
 
-Aggiungendo lo stesso libro a più bibliotece caos
+Si potrebbe pensare di restituire allora un [clone](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html#clone--) della lista
 
-Con le stringhe questo problema non si applica (immutabili)
+```java
+public ArrayList<Libro> getLibri() {
+    return this.libri.clone();
+}
+```
 
-Cloneable
+Peccato che in tal modo è ancora possibile fare qualcosa come
+
+```java
+sistema_bibliotecario.getLibri().get(42).setStatoPrestito(StatoPrestito.PRESTATO)
+```
+
+per far risultare un libro come prestato quando invece non lo è (questo è dato dal fatto che, mentre la lista viene clonata, i riferimenti alle varie istanze di `Libro` al suo interno, invece, sono sempre le stesse).
+
+Questa seconda criticità è più subdola e può essere risolta con una deep-`clone` ovvero una clonazione ricorsiva prima della lista, poi degli oggetti contenuti nella lista, poi degli oggetti referenziati da questi ultimi e così via.
+
+Il metodo corretto è dunque
+
+```java
+public ArrayList<Libro> getLibri() {
+    ArrayList<Libro> lista = new ArrayList<>();
+
+    for(Libro l: this.libri) {
+        lista.add(l.clone());
+    }
+
+    return lista;
+}
+```
+
+Nella deep-`clone`, non è più necessario proseguire con la clonazione ricorsiva quando si vuole clonare un'oggetto che contiene solamente variabili che non sono reference oppure se le reference che ci sono, sono tutte verso oggetti immutabili (come le stringhe).
+
+Per indicare che in un oggetto è disponibile il metodo clone (e, dunque, poterlo utilizzare come parametro dentro metodi che richiedono che un oggetto sia clonabile) si marca la dichiarazione della classe di tale oggetto come `implements Cloneable`.
 
 
 <!--
