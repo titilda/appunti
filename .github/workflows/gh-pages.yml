@@ -24,7 +24,7 @@ jobs:
   # Build job
   build:
     if: '!contains(github.event.head_commit.message, ''skip ci'')'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container:
       image: ghcr.io/${{ github.repository }}-build-tools:latest
       volumes:
@@ -37,6 +37,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Build docs
+        shell: bash
         run: |
           cd /workspace
           git config --global --add safe.directory /workspace
