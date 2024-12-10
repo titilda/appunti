@@ -31,6 +31,7 @@ jobs:
       env:
         LC_ALL: it_IT.utf8
         LANG: it_IT.utf8
+        HOME: /root # why this is needed is beyond me
       volumes:
         - ${{ github.workspace }}:/workspace
 
@@ -42,7 +43,6 @@ jobs:
           fetch-depth: 0
       - name: Add safe directory
         run: |
-          echo Home directory: $HOME
           git config --global --add safe.directory /workspace
       - uses: chetan/git-restore-mtime-action@v2
         with:
