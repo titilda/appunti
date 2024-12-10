@@ -315,3 +315,56 @@ I Data Warehouse comprende un'insieme di tecniche per analizzare i dati:
 - **Roll-Up**: permette di passare da un livello dettagliato ad uno più ad alto livello.
 - **Slice**: permette di focalizzare l'analisi su una porzione di dati fissando il valore di una delle dimensioni di analisi.
 - **Dice**: permette di identificare un insieme di coordinate che riduce l'ipercubo
+
+### Data Mining
+
+Il *Data Mining* è una tecnica che permette di riconoscere ed estrarre in modo automatico informazioni utili dai dati.
+
+Il Data Mining si basa sulle seguenti fasi:
+
+- **Selezione dei Dati**: vengono selezionati i dati rilevanti per l'analisi
+- **Cleaning**: i dati vengono puliti per eliminare errori e ridondanze
+- **Trasformazione**: i dati vengono trasformati in un formato adatto all'analisi, soprattutto quando i dati provengono da fonti diverse
+- **Data Mining**: analisi dei dati per estrarre informazioni utili
+- **Valutazione**: valutazione dei risultati ottenuti
+- **Presentazione**: presentazione dei risultati
+
+Le funzioni di Data Mining possono essere di diverse categorie:
+
+- **Machine Learning**: istruire gli algoritmi con esempi ideali tramite tecniche di apprendimento supervisionato o non supervisionato
+- **Tecniche descrittive**: analizzano i dati e li categorizzano, filtrano e aggregano per trovare pattern con funzioni matematiche
+- **Tecniche predittive**: analizzano i dati per fare previsioni sul futuro
+
+L'estrazione di informazioni dai dati può avvenire tramite:
+
+- **Generalizzazione**: riduzione del numero di dati escludendo quelli non significativi e ad alta variabilità
+- **Caratterizzazione**: capire la distribuzione dei dati, le tendenze (massimo, minimo, media, etc) e la variazione
+- **Associazione**: le regole associative mettono in relazione due o più attributi che si verificano spesso contemporaneamente.
+  Queste associazioni sono espresse dalla regola `X ⇒ Y` dove `X` è l'antecedente e `Y` il conseguente.
+  La validità di una regola è data da:
+  - **Supporto**: frequenza con cui si verifica la regola P(X ∩ Y)
+  - **Confidenza**: probabilità che la regola sia valida P(Y|X)
+- **Classificazione**: assegnare un oggetto ad una classe predefinita in base alle sue caratteristiche.
+  Questa tecnica si basa su un modello addestrato tramite apprendimento supervisionato. I modelli possono essere caratterizzati in base all'accuratezza, la velocità, la scalabilità, la robustezza e la interpretabilità.
+  L'accuratezza è data dal numero di classificazioni corrette (veri positivi (TP) e veri negativi (TN)) rispetto al numero di classificazioni errate (falsi positivi (FP) e falsi negativi (FN)): `Accuratezza = (TP) / (TP + FP)`
+- **Clustering**: raggruppare gli oggetti in base alle loro caratteristiche. Questa tecnica si basa su un modello addestrato tramite apprendimento non supervisionato, privi di classi d'appartenenza predefinite. L'appartenenza ad un cluster è data dalla somiglianza massima con gli altri oggetti del cluster e la somiglianza minima con gli oggetti degli altri cluster.
+  Gli algoritmi possono essere classificati in base all'assegnazione degli elementi in un cluster:
+  - **Esclusivi**: ogni elemento appartiene ad un solo cluster
+  - **Sovrapposti**: un elemento può appartenere a più cluster
+  - **Fuzzy**: un elemento può appartenere a più cluster in base ad un peso
+  - **Complete**: ogni elemento appartiene ad un cluster
+  - **Parziali**: un elemento può non appartenere a nessun cluster
+
+### Process Discovery
+
+Il *Process Discovery* è una tecnica che permette di estrarre i processi da un insieme di dati, solitamente da un log di eventi.
+
+Le relazioni che possono esistere tra gli eventi sono:
+
+- **Successione**: un evento segue direttamente l'altro (x > y)
+- **Causale**: un evento causa l'altro (x → y)
+- **Parallelo**: due eventi avvengono contemporaneamente (x || y se x > y e y > x)
+- **Scelta**: due eventi non vengono mai eseguiti in sequenza (x # y se ~ (x > y) e ~ (y > x))
+
+Questa analisi permette di analizzare la frequenza delle attività, durata delle attività, la sequenza delle attività e la relazione tra le attività.
+Queste informazioni possono essere utilizzate per migliorare i processi, identificare i problemi e le opportunità.
