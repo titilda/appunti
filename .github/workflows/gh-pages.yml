@@ -29,7 +29,8 @@ jobs:
       image: ghcr.io/${{ github.repository }}-build-tools:latest
       options: --user root
       env:
-        HOME: "/root"
+        LC_ALL: it_IT.utf8
+        LANG: it_IT.utf8
       volumes:
         - ${{ github.workspace }}:/workspace
 
@@ -39,14 +40,16 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Add safe directory
+        run: |
+          git config --global --add safe.directory /workspace
+      - uses: chetan/git-restore-mtime-action@v2
+        with:
+          working-directory: '/workspace'
       - name: Build docs
         shell: bash
         run: |
-          export HOME=/root
-          whoami
           cd /workspace
-          git config --global --add safe.directory /workspace
-          git restore-mtime
           find . -type f -name "*.md" -mindepth 2 -print0 | while read -d $'\0' doc
             do
               output_dir=$(dirname "${doc}")
@@ -109,4 +112,3 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-${{ github.sha }}
-
