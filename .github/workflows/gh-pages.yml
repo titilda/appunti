@@ -31,7 +31,6 @@ jobs:
       env:
         LC_ALL: it_IT.utf8
         LANG: it_IT.utf8
-        HOME: /root # why this is needed is beyond me
       volumes:
         - ${{ github.workspace }}:/workspace
 
@@ -50,10 +49,13 @@ jobs:
       - name: Build docs
         shell: bash
         run: |
-          echo User is `whoami`
-          echo UID `id -u`
-          echo GID `id -g`
-          echo HOME $HOME
+          export HOME=/root
+          echo User: `whoami`
+          echo UID:  `id -u`
+          echo GID:  `id -g`
+          echo HOME: $HOME
+          echo CWD:  `pwd`
+          echo -----------------
           cd /workspace
           find . -type f -name "*.md" -mindepth 2 -print0 | while read -d $'\0' doc
             do
