@@ -1033,6 +1033,8 @@ class ClasseConSincronizzazioni {
 }
 ```
 
+Per motivi legati alla cache coherence, anche i blocchi nella quale una variabile _condivisa_ è utilizzata in sola lettura vanno sincronizzati.
+
 La keyword `synchronized` applicata ad un metodo non viene passata alle sottoclassi per ereditarietà pertanto si dovrà specificarla ogni volta ove necessario.
 
 Se non si presta sufficiente attenzione, è possibile causare dei deadlock:
@@ -1058,6 +1060,47 @@ class Deadlocked {
 
 Si supponga di avere due thread che, sulla stessa istanza di `Deadlocked` chiamano uno `metodo1` e l'altro `metodo2`.
 In questa situazione è probabile che si verifichi un cosiddetto **deadlock** in quanto, se entrambi i thread riscono a prendere il lock, rispettivamente, su `lock1` e `lock2`, allora nessuno dei due potrà procedere ulteriormente e rilsciare il lock finchè l'altro non termina.
+
+#### Wait e notify
+
+Si consideri il classico caso di produttore/consumatore dove un thread si occupa di produrre un dato mentre un'altro si occupa di utilizzarlo:
+
+```java
+class ProduttoreConsumatore<T> {
+    private T dato = null;
+
+    public synchronized void deposita(T dato) {
+        while(this.dato != null) {
+            wait();
+        }
+
+        this.dato = dato;
+
+        notifyAll();
+    }
+
+    public synchronized T preleva() {
+        T dato;
+
+        while(this.dato == null) {
+            wait();
+        }
+
+        dato  = this.dato;
+
+        notifyAll();
+
+        return dato;
+    }
+}
+```
+
+I metodi protagonisti di questo paragrafo sono 3:
+- `wait`: rilascia eventuali lock, mette il thread in attesa di una `notify` sull'oggetto sul quale la `wait` è stata chiamata e poi prosegue; se un lock è stato rilasciato, prima di proseguire attende di poterlo riprendere;
+- `notify`: risveglia un thread a caso tra quelli mandati in wait dall'oggetto sul quale il metodo è stata chiamato;
+- `notifyAll`: risveglia tutti i thread mandati in wait dall'oggetto sul quale il metodo è stato chiamato.
+
+Dato che `notify` non è deterministica (e quindi potrebbe risvegliare il thread sbagliato), si preferisce utilizzare `notifyAll` per risvegliare tutti i thread e racchiudere la `wait` dentro un `while` per fare in modo che solo il thread giusto possa andare avanti. Per ulteriori informazioni sul meccanismo `wait`/`notify`, consultare la [documentazione](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#wait--).
 
 <!--
 
