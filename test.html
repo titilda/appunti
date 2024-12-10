@@ -1,0 +1,2587 @@
+<h1 id="definizioni-iniziali">Definizioni iniziali</h1>
+<h2 id="lunghezza-di-una-stringa">Lunghezza di una stringa</h2>
+<p>La <strong>lunghezza</strong> di una stringa è il numero di simboli
+contenuti in una stringa (anche detta cardinalità e si indica con <span
+class="math inline">|x|</span>).</p>
+<p>La stringa <strong>vuota</strong> è la stringa che ha zero elementi
+(<span class="math inline">|\varepsilon| = 0</span>).</p>
+<p>Due stringhe sono <strong>uguali</strong> se e solo se:</p>
+<ul>
+<li><span class="math inline">|x| = |y|</span></li>
+<li><span class="math inline">x_i = y_i \quad \forall 1 \le i \le
+n</span></li>
+</ul>
+<h2 id="operazioni-sui-linguaggi">Operazioni sui linguaggi</h2>
+<ul>
+<li>Unione</li>
+<li>Intersezione</li>
+<li>Complemento</li>
+<li>Differenza</li>
+<li>Concatenazione</li>
+<li>Potenze n-esime</li>
+<li>Chiusura di Kleene</li>
+</ul>
+<p>Prima di iniziare delle spiegazioni useremo le stringhe <span
+class="math inline">L_1</span> e <span class="math inline">L_2</span>
+così composte:</p>
+<p><span class="math display">
+L_1 = \{ \varepsilon, a, b, c, bc, ca \} \\
+L_2 = \{ ba, bb, bc, ca, cb, cc \}
+</span></p>
+<p>Bene partiamo con la carrellata di operazioni.</p>
+<h3 id="unione-l_1-bigcup-l_2">Unione (<span class="math inline">L_1
+\bigcup L_2</span>)</h3>
+<p><span class="math inline">L_1 \bigcup L_2 = \{ \varepsilon, a, b, c,
+ba, bb, bc, ca, cb, cc\}</span> tutti gli elementi
+<strong>SENZA</strong> ripetizioni.</p>
+<h3 id="intersezione-l_1-bigcap-l_2">Intersezione (<span
+class="math inline">L_1 \bigcap L_2</span>)</h3>
+<p><span class="math inline">L_1 \bigcap L_2 = \{bc, ca\}</span>
+<strong>SOLO</strong> elementi comuni.</p>
+<h3 id="differenza-l_1-setminus-l_2-o-l_1---l_2">Differenza (<span
+class="math inline">L_1 \setminus L_2</span> o <span
+class="math inline">L_1 - L_2</span>)</h3>
+<p><span class="math inline">L_1 \setminus L_2 = \{\varepsilon, a, b, c
+\}</span> <strong>SOLO</strong> elementi <strong>NON</strong>
+comuni.</p>
+<h3 id="complemento-lc-a-setminus-l">Complemento (<span
+class="math inline">L^c = A^* \setminus L</span>)</h3>
+<p><span class="math inline">A</span> è l’alfabeto su cui <span
+class="math inline">L</span> è definito.</p>
+<p><span class="math inline">*</span> vuol dire tutte le ripetizioni
+possibili di quell’insieme, <span class="math inline">\varepsilon</span>
+compreso.</p>
+<p><span class="math inline">L_1^c =</span> tutte le stringhe su <span
+class="math inline">\{a, b, c\}*</span> tranne stringhe di lunghezza 2
+che iniziano con “b”, “c”.</p>
+<h3
+id="concatenazione-l_1-cdot-l_2-o-l_1-l_2-non-è-commutativa">Concatenazione
+(<span class="math inline">L_1 \cdot L_2</span> o <span
+class="math inline">L_1 L_2</span>) <strong>NON</strong> è
+commutativa</h3>
+<p><span class="math display">
+L_1 \cdot L_2 = \{ba, bb, bc, ca, cb, cc, aba, abb, abc, aca, acb, acc,
+bba, bbb, bbc, bca, bcb, bcc, cba, cbb, cbc, cca, ccb, ccc, bcba, bcbb,
+bcbc, bcca, bccb, bccc, caba, cabb, cabc, caca, cacb, cacc\}
+</span></p>
+<h3 id="potenza-n-esima-ln-concanetamento-con-se-stesso-n-volte">Potenza
+<span class="math inline">n</span>-esima (<span
+class="math inline">L^n</span>) concanetamento con se stesso <span
+class="math inline">n</span> volte</h3>
+<p><span class="math display">
+L^i = \begin{cases}
+    \varepsilon &amp; i = 0 \\
+    L ^ {i - 1} \cdot L &amp; i \gt 0
+\end{cases}
+</span></p>
+<p>La potenza <strong>È</strong> associativa.</p>
+<h3 id="chiusura-di-kleene">Chiusura di Kleene</h3>
+<p><span class="math display">
+L^* = \bigcup_{n=0}^\infty L^n \\ \ \\
+L^* = L^+ \bigcup L^0 = L^+ \bigcup \{\varepsilon\} \\ \ \\
+L^+ = \bigcup_{n=1}^\infty L^n \\ \ \\
+L^+ = L \cdot L^* \\ \ \\
+\{\varepsilon\} \not = \emptyset \\
+</span></p>
+<h1 id="automi-a-stati-finiti">Automi a stati finiti</h1>
+<h2 id="fsa-finite-state-automaton">FSA (Finite State Automaton)</h2>
+<p>Un <strong>FSA</strong> ha un insieme finito di stati ovvero un
+numero limitato di configurazioni.</p>
+<p>Es.</p>
+<ul>
+<li>{ON, OFF}</li>
+<li>{Canali TV}</li>
+</ul>
+<p>Un FSA è definito su un alfabeto (a, b, c o anche on, off, anche 1,
+2, 3, insomma simboli o parole che noi definiamo come “input” anche C o
+Java possono essere definiti come tale).</p>
+<p>Quando si riceve un input, il sistema cambia il suo stato
+(<strong>transizione</strong>).</p>
+<figure>
+<img src="assets/Transizione.jpg" alt="Immagine di transizione" />
+<figcaption aria-hidden="true">Immagine di transizione</figcaption>
+</figure>
+<p>Gli FSA sono rappresentati tramite una tupla <span
+class="math inline">\lang Q, A, \delta, q_0, F \rang</span>:</p>
+<ul>
+<li><span class="math inline">Q</span> insieme finito di stati</li>
+<li><span class="math inline">A</span> alfabeto di ingresso</li>
+<li><span class="math inline">\delta</span> funzione di transizione</li>
+<li><span class="math inline">q_0 \in Q</span> <strong>stato
+iniziale</strong></li>
+<li><span class="math inline">F \subseteq Q</span> insieme <strong>stati
+finali</strong></li>
+</ul>
+<p>Per far sì che gli FSA riconoscano un linguaggio è necessario:</p>
+<ul>
+<li>Sapere le condizioni iniziali del sistema</li>
+<li>Sapere gli stati finali ammisibili</li>
+</ul>
+<figure>
+<img src="assets/Stati%20finali%20e%20iniziali.jpg"
+alt="Immagine di stati finali e iniziali per dare la nostra convezione grafica" />
+<figcaption aria-hidden="true">Immagine di stati finali e iniziali per
+dare la nostra convezione grafica</figcaption>
+</figure>
+<p>Una sequenza di mosse è di accettazione se raggiunge uno degli stati
+finali.</p>
+<p>Esempio di un FSA:</p>
+<figure>
+<img src="assets/Automi%20Deterministici/FSA.jpg"
+alt="Esempio di FSA preso da un esercizio" />
+<figcaption aria-hidden="true">Esempio di FSA preso da un
+esercizio</figcaption>
+</figure>
+<h2 id="trasduttori-a-stati-finiti">Trasduttori a stati finiti</h2>
+<h3 id="fst-finite-state-transducer">FST (Finite State Transducer)</h3>
+<p>Sono FSA con 2 nastri.</p>
+<p>È una tupla <span class="math inline">\lang Q, I, \delta, q_0, F, O,
+\eta \rang</span>:</p>
+<ul>
+<li><span class="math inline">\lang Q, I, \delta, q_0, F \rang</span>
+come gli accettori (FSA)</li>
+<li><span class="math inline">O</span> alfabeto di uscita</li>
+<li><span class="math inline">\eta \colon Q \times I \longrightarrow
+O^*</span></li>
+</ul>
+<p>Esempio FST</p>
+<figure>
+<img src="assets/Automi%20Deterministici/FST.jpg"
+alt="Esempio di FST preso da un esercizio" />
+<figcaption aria-hidden="true">Esempio di FST preso da un
+esercizio</figcaption>
+</figure>
+<h3 id="pumping-lemma">Pumping Lemma</h3>
+<p>Se in un sistema a stati finiti si va da uno stato <span
+class="math inline">q_1</span> a <span class="math inline">q_1</span>
+(ovvero si attraversa un ciclo) vuol dire che lo si può fare n
+volte.</p>
+<p>Perciò se:</p>
+<p><span class="math inline">x \in L</span> e <span
+class="math inline">|x| \ge |Q| \implies q \in Q \land w \in
+I^+</span>:</p>
+<ul>
+<li><span class="math inline">x = ywz</span></li>
+<li><span class="math inline">\delta^*(q, w) = q</span></li>
+</ul>
+<p>Dunque:</p>
+<ul>
+<li><span class="math inline">\forall n \ge 0 yw^nz \in L</span></li>
+</ul>
+<p>Conseguenze:</p>
+<p><span class="math inline">L = \empty</span> se <span
+class="math inline">\exist x \in L \iff \exist y \in L, |y| \lt
+|Q|</span></p>
+<p><span class="math inline">|L| = \infty</span> se <span
+class="math inline">\exist x \in L |Q| \impliedby |x| \lt
+2|Q|</span></p>
+<p>Problemi:</p>
+<ul>
+<li>Per “contare” un numero <span class="math inline">n</span> molto
+grande servirebbe memoria infinita</li>
+</ul>
+<h3 id="operazioni-su-fsa">Operazioni su FSA</h3>
+<p>N.B. se un sistema è <strong>chiuso</strong> rispetto a un operazione
+vuol dire che il risultato è sempre parte dell’insieme.</p>
+<p>Operazioni:</p>
+<ul>
+<li>Intersezione ( <span class="math inline">\bigcap</span> )</li>
+<li>Unione ( <span class="math inline">\bigcup</span> )</li>
+<li>Complemento ( <span class="math inline">^c</span> )</li>
+</ul>
+<p>Sono operazioni <strong>CHIUSE</strong> negli FSA.</p>
+<h2 id="pda-pushdown-automata">PDA (PushDown Automata)</h2>
+<p>Sono FSA con una pila.</p>
+<p>La stringa d’ingresso <span class="math inline">x</span> è accettata
+se:</p>
+<ul>
+<li>il PDA la legge tutta</li>
+<li>Quando finisce si trova in uno stato di accettazione</li>
+</ul>
+<p>Un PDA è una tupla <span class="math inline">\lang Q, I, \Gamma,
+\delta, q_0, Z_0, F \rang</span>:</p>
+<ul>
+<li><span class="math inline">Q</span> insieme finito di stati</li>
+<li><span class="math inline">I</span> alfabeto di ingresso</li>
+<li><span class="math inline">\Gamma</span> alfabeto di pila</li>
+<li><span class="math inline">\delta</span> funzione di transizione</li>
+<li><span class="math inline">q_o \in Q</span> è lo stato iniziale</li>
+<li><span class="math inline">Z_0 \in \Gamma</span> simbolo iniziale di
+pila</li>
+<li><span class="math inline">F \subseteq Q</span> insieme stati
+finiti</li>
+</ul>
+<p>Esempio PDA:</p>
+<figure>
+<img src="assets/Automi%20Deterministici/PDA.jpg"
+alt="Esempio di PDA preso da un esercizio" />
+<figcaption aria-hidden="true">Esempio di PDA preso da un
+esercizio</figcaption>
+</figure>
+<h4 id="configurazione">Configurazione</h4>
+<ul>
+<li>Mostra lo stato corrente del dispositivo di controllo</li>
+<li>Posizione della stringa d’ingresso</li>
+<li>La pila</li>
+</ul>
+<p>È una tripla <span class="math inline">\lang q, x, \gamma
+\rang</span></p>
+<ul>
+<li><span class="math inline">q \in Q</span> stato corrente
+dispositivo</li>
+<li><span class="math inline">x \in I^*</span> posizione
+<strong>non</strong> letta della stringa d’ingresso</li>
+<li><span class="math inline">\gamma \in \Gamma^*</span> stringa simboli
+di pila</li>
+</ul>
+<p>Le transizioni tra configurazioni (<span
+class="math inline">\vdash</span>) mostra come commutare tra un PDA e un
+altro</p>
+<p>Esempio</p>
+<p>Dato <span class="math inline">\delta(q, i, A) =  \lang q&#39;,
+\alpha \rang</span> è definita</p>
+<p><span class="math inline">c = \lang q, x, \gamma \rang \vdash c&#39;=
+\lang q&#39;, x&#39;, \gamma \rang</span></p>
+<ul>
+<li><span class="math inline">\gamma = A \beta</span></li>
+<li><span class="math inline">x = iy</span></li>
+</ul>
+<p>allora</p>
+<ul>
+<li><span class="math inline">\gamma&#39; = \alpha \beta</span></li>
+<li><span class="math inline">x&#39; = y</span></li>
+</ul>
+<p><strong>Condizione di accettazione</strong></p>
+<p><span class="math display">
+\forall x \in I^* (x \in L \iff \exist q \exist \gamma c_0 = \lang q_0,
+x, Z_0 \rang \vdash^* c_f = \lang q, \varepsilon, \gamma \rang \land q
+\in F)
+</span></p>
+<p>La stringa viene accettata se c’è un cammino coerente che va sallo
+stato iniziale a uno stato finale.</p>
+<h4 id="pda-vs-fsa">PDA VS FSA</h4>
+<ul>
+<li>Gli FSA <strong>NON</strong> riconoscono <span
+class="math inline">a^n b^n</span> i PDA si</li>
+<li>Ogni linguaggio regolare (FSA) è riconosciuto da PDA</li>
+<li>I PDA sono più potendi dei FSA</li>
+</ul>
+<p>I PDA non si fermano sempre dopo le mosse, ogni PDA si può
+trasformare in un PDA aciclico (si ferma sempre dopo le mosse).</p>
+<h3 id="pdt-pushdown-trasducer">PDT (PushDown Trasducer)</h3>
+<p>I PDT sono una tupla <span class="math inline">\lang Q, I, \Gamma,
+\delta, q_0, Z_0, F, O, \eta \rang</span>:</p>
+<ul>
+<li><span class="math inline">\lang Q, I, \Gamma, \delta, q_0, Z_0, F
+\rang</span> come nei PDA</li>
+<li><span class="math inline">O</span> alfabeto d’uscita</li>
+<li><span class="math inline">\eta \colon Q \times (I \bigcup \{
+\varepsilon\} ) \times \Gamma \to O^*</span></li>
+</ul>
+<p><strong>Configurazione</strong> &lt;<span class="math inline">q, x,
+\gamma, z</span>&gt;:</p>
+<ul>
+<li><span class="math inline">\lang q, x, \gamma \rang</span> come nei
+PDA</li>
+<li><span class="math inline">z</span> stringa già scritta sul nastro
+d’uscita</li>
+</ul>
+<p><strong>Condizione di accettazione</strong>:</p>
+<p><span class="math display">
+\forall x \in I^* \forall z \in O^* (x \in L \land z = \tau(x) \iff
+\exist q \exist \gamma \colon c_0 = \lang q_0, x, Z_0, \varepsilon \rang
+\vdash^* c_f = \lang q, \varepsilon, \gamma, z \rang \land q \in F )
+</span></p>
+<p>La traduzione è definita se e solo se <span
+class="math inline">x</span> è accettata.</p>
+<p>Esempio di PDT</p>
+<figure>
+<img src="assets/Automi%20Deterministici/PDT.jpg"
+alt="Esempio di PDT preso da un esercizio" />
+<figcaption aria-hidden="true">Esempio di PDT preso da un
+esercizio</figcaption>
+</figure>
+<p>I PDT <strong>NON</strong> sono chiusi rispetto a Unione,
+Intersezione e Complemento.</p>
+<h2 id="turing-machine-tm">Turing Machine (TM)</h2>
+<p>I PDA <strong>NON</strong> riconoscono <span class="math inline">a^n
+b^n c^n</span> o <span class="math inline">a^n b^n \cup a^n
+b^{2n}</span>.</p>
+<p>La pila è una memoria distruttiva, letto un elemento viene
+eliminato.</p>
+<p>C’è bisogno di <strong>NASTRI DI MEMORIA</strong>.</p>
+<p>Le TM usano i nastri come memorie:</p>
+<ul>
+<li>Non distruttivi</li>
+<li>Scorrevoli in entrambi i sensi</li>
+</ul>
+<p>I nastri sono sequenze infinite di celle con “Blank” (segnato come
+“<span class="math inline">\cancel{b}</span>”, “_” o “<span
+class="math inline">-</span>”).</p>
+<h5 id="mosse">Mosse</h5>
+<p>Uguali a prima con aggiunta di:</p>
+<p>Spostamento testine dichiarato con 3 movimenti:</p>
+<ul>
+<li>Sposta a destra (R)</li>
+<li>Sposta a sinistra (L)</li>
+<li>Fermo (S)</li>
+</ul>
+<p>Si esplicita <strong>SEMPRE</strong>.</p>
+<p>Le TM sono una tupla <span class="math inline">\lang Q, I, \Gamma,
+\delta, q_0, Z_0, F \rang</span>:</p>
+<ul>
+<li><span class="math inline">Q</span> insieme finito di stati</li>
+<li><span class="math inline">I</span> alfdabeto di ingresso</li>
+<li><span class="math inline">\Gamma</span> alfabeto di memoria</li>
+<li><span class="math inline">\delta</span> funzione di transizione</li>
+<li><span class="math inline">q_0 \in Q</span> stato iniziale</li>
+<li><span class="math inline">Z_0 \in \Gamma</span> simbolo iniziale di
+memoria</li>
+<li><span class="math inline">F \subseteq Q</span> insieme stati
+finali</li>
+</ul>
+<p>Esempio di TM</p>
+<figure>
+<img src="assets/Automi%20Deterministici/TM.jpg"
+alt="Esempio di TM preso da un esercizio" />
+<figcaption aria-hidden="true">Esempio di TM preso da un
+esercizio</figcaption>
+</figure>
+<p>La <strong>Configurazione</strong> di una TM con k nastri è una
+(k+2)-tupla:</p>
+<p><span class="math display">
+c = \lang q, x \uparrow iy, \alpha_1 \uparrow A_1 \beta_1, \dots,
+\alpha_k \uparrow A_k \beta_k \rang
+</span></p>
+<ul>
+<li><span class="math inline">q \in Q</span></li>
+<li><span class="math inline">x, y \in I^*</span>, <span
+class="math inline">i \in I</span></li>
+<li><span class="math inline">\alpha_r, \beta_r \in \Gamma^*</span>,
+<span class="math inline">A_r \in \Gamma \forall r \quad 1 \le r \le
+k</span></li>
+<li><span class="math inline">\uparrow \notin I \cup \Gamma</span></li>
+</ul>
+<p><span class="math inline">\uparrow</span> indica la posizione della
+testina.</p>
+<p><strong>Condizione di accettazione</strong>:</p>
+<p><span class="math inline">\exist q \exist x&#39; \exist i \exist y
+\exist \alpha_1 \exist A_1 \exist \beta_1 \dots \exist \alpha_k \exist
+A_k \exist \beta_k \colon c_0 = \lang q_0, \uparrow x, \uparrow Z_0,
+\dots, \uparrow Z_0 \rang \vdash_m^* c_F = \lang q, x&#39;\uparrow iy,
+\alpha_1 \uparrow A_1 \beta_1, \dots, \alpha_k \uparrow A_k \beta_k
+\rang</span> con <span class="math inline">q \in F</span> e <span
+class="math inline">x = x&#39;iy</span></p>
+<h4 id="tm-vs-pda">TM VS PDA</h4>
+<ul>
+<li><span class="math inline">a^n b^n c^n</span> <strong>NON</strong>
+sono riconosciuti da PDA ma da TM</li>
+<li>Se un linguaggio è riconosciuto da PDA allora è riconosciuto da
+TM</li>
+</ul>
+<p>I linguaggi accettati da TM sono detti <strong>ricorsivamente
+enumerabili</strong>.</p>
+<h4 id="tm-e-macchine-di-von-neumann-vnm">TM e Macchine di Von Neumann
+(VNM)</h4>
+<p>La differenza sta nell’accesso alla memoria:</p>
+<ul>
+<li>TM : Sequenziale</li>
+<li>VNM : Diretto</li>
+</ul>
+<p>Il tipo di accesso <strong>NON</strong> cambia la potenza.</p>
+<p>Le TM possono simulare le VNM.</p>
+<h5 id="operazioni-tm">Operazioni TM</h5>
+<p>Le TM sono <strong>chiuse</strong> rispetto a:</p>
+<ul>
+<li>Intersezione <span class="math inline">(\bigcap)</span></li>
+<li>Unione <span class="math inline">(\bigcup)</span></li>
+<li>Concatenazione</li>
+<li>Stella di Kleene</li>
+</ul>
+<p><strong>NON</strong> sono chiuse rispetto a:</p>
+<ul>
+<li>Complemento</li>
+<li>Differenza</li>
+</ul>
+<p>Se esistessero TM acicliche sarebbero chiuse al complemento, il
+problema sta dove le computazioni non terminano.</p>
+<h3 id="tm-trasduttrice">TM Trasduttrice</h3>
+<p>Le TM trasuttrici a k nastri sono una tupla di 9 elementi <span
+class="math inline">\lang Q, I, \Gamma, O, \delta, \eta, q_0, Z_0, F
+\rang</span>:</p>
+<ul>
+<li><span class="math inline">\lang Q, I, \Gamma, \delta, q_0, Z_0, F
+\rang</span> come le TM</li>
+<li><span class="math inline">O</span> alfabeto d’uscita</li>
+<li><span class="math inline">\eta</span> funzione d’uscita</li>
+</ul>
+<p>N.B. Le testine di uscita si muovono in 2 direzioni:</p>
+<ul>
+<li>Destra (R)</li>
+<li>Ferme (S)</li>
+</ul>
+<p>Esempio di TM traduttrice</p>
+<figure>
+<img src="assets/Automi%20Deterministici/TM%20Trasduttrice.jpg"
+alt="Esempio TM traduttrice preso da un esercizio" />
+<figcaption aria-hidden="true">Esempio TM traduttrice preso da un
+esercizio</figcaption>
+</figure>
+<p><strong>Configurazione</strong></p>
+<p><span class="math inline">c = \lang q, x \uparrow iy, \alpha_1
+\uparrow A_1 \beta_1, \dots, \alpha_k \uparrow A_k \beta_k, u \uparrow o
+\rang</span></p>
+<ul>
+<li><span class="math inline">\uparrow \in I \bigcup \Gamma \bigcup
+o</span></li>
+</ul>
+<p>Le TM possono:</p>
+<ul>
+<li>Riconoscere linguaggi</li>
+<li>Tradurre linguaggi accettati</li>
+<li>Calcolare funzioni</li>
+</ul>
+<p>Le TM sono computer con accesso sequenziale alla memoria (Modello
+astratto).</p>
+<p>Le TM possono avere nastri a n dimensioni.</p>
+<p>N.B. Più dimensioni <strong>NON</strong> aggiungono potenza.</p>
+<h1 id="modelli-non-deterministici">Modelli non deterministici</h1>
+<p>Di solito un algotimo ha una sequenza deterministica.</p>
+<p>Il non deterministmo (ND) è un modello di computazione, utile per
+algoritmi di ricerca.</p>
+<figure>
+<img src="assets/Automi%20Non%20Deterministici/Non%20Deterministici.jpg"
+alt="Esempio di ND" />
+<figcaption aria-hidden="true">Esempio di ND</figcaption>
+</figure>
+<h3 id="nfsa">NFSA</h3>
+<p>Gli NFSA sono gli FSA non deterministici e sono una tupla : <span
+class="math inline">\lang Q, I, \delta, q_0, F \rang</span></p>
+<ul>
+<li><span class="math inline">\lang Q, I, q_0, F \rang</span> uguali a
+FSA</li>
+<li><span class="math inline">\delta \colon Q \times I \to \mathcal{P}
+(Q)</span></li>
+</ul>
+<p><span class="math display">
+\delta^* (q, \varepsilon) = \{q\}
+\\
+\delta^* (q, y, i) = \bigcup \delta\{q&#39;, i\}
+</span></p>
+<p><strong>Condizione di accettazione</strong></p>
+<p><span class="math inline">x \in L \iff \delta^* (q_0, x) \bigcap F
+\not ={\emptyset}</span></p>
+<p>Basta che una vada a buon fine.</p>
+<p>ND <strong>esistenziale</strong></p>
+<p><span class="math inline">\delta^* (q_0, x) \subseteq F</span></p>
+<h4 id="dfa-vs-nfa">DFA VS NFA</h4>
+<ul>
+<li>Stesso potere</li>
+<li>Da un NFA si può sintetizzare <strong>automaticamente</strong> un
+DFA</li>
+</ul>
+<p>Se <span class="math inline">A_{ND} = \lang Q, I, \delta, q_0, F
+\rang \implies A_{D} = \lang Q_D, I, \delta_D, q_{0D}, F_D
+\rang</span></p>
+<ul>
+<li><span class="math inline">Q_D = \mathcal{P}(Q)</span></li>
+<li><span class="math inline">\delta_D (q_D, i) = \bigcup \delta (q,
+i)</span></li>
+<li><span class="math inline">q_{0D} = \{q_0\}</span></li>
+<li><span class="math inline">F_D = \{q_D | q_D \in Q_D \land q_D
+\bigcap F\not ={\emptyset} \}</span></li>
+</ul>
+<p>Perchè il ND ? (già è difficile di suo ora ci complichiamo la
+vita)</p>
+<p>Gli NFA hanno pari potenza di DFA, ma non sono inutili
+(purtroppo):</p>
+<ul>
+<li>A volte gli NFA sono più semplici</li>
+<li>Possono essere esponenzialmente più piccoli (NFA a 5 stati nel
+peggiore dei casi è un DFA a <span class="math inline">2^5</span>
+stati)</li>
+</ul>
+<p>Esempio di NFA</p>
+<figure>
+<img src="assets/Automi%20Non%20Deterministici/NFSA.jpg"
+alt="Esempio di NFA preso da un esercizio" />
+<figcaption aria-hidden="true">Esempio di NFA preso da un
+esercizio</figcaption>
+</figure>
+<h3 id="tm-non-deterministici-ntm">TM non deterministici (NTM)</h3>
+<p>Per definire una NTM occorre cambiare la funzione di transizione e la
+funzione di traduzione.</p>
+<ul>
+<li>Elementi uguali alla DTM</li>
+<li><span class="math inline">\delta \colon (Q-F) \times I \times
+\Gamma^k \to \mathcal{P}(Q \times \Gamma^k \times \{R, L,
+S\}^{k+1})</span></li>
+<li><span class="math inline">\eta \colon (Q-F) \times I \times \Gamma^k
+\to \mathcal{P}(O \times \{R, S\})</span></li>
+</ul>
+<p>Esempio NTM</p>
+<figure>
+<img src="assets/Automi%20Non%20Deterministici/NTM.jpg"
+alt="Esempio di NTM preso da un esercizio" />
+<figcaption aria-hidden="true">Esempio di NTM preso da un
+esercizio</figcaption>
+</figure>
+<p><strong>Condizione di accettazione</strong></p>
+<p>Una stringa è accettata se e solo se esiste unna computazione con uno
+stato di accettazione.</p>
+<p>Che cosa è la visita dell’albero computazionale ?</p>
+<p>Diverse modalità :</p>
+<ul>
+<li>In profondità (Depth-first)</li>
+<li>In ampiezza (Breadth-first)</li>
+</ul>
+<p><strong>Si può</strong> costruire una DTM che visita un albero
+livello dopolivello ma è un processo molto lungo e noioso.</p>
+<p>ND <strong>NON</strong> aggiunge potere alle TM</p>
+<h3 id="pda-non-deterministici-npda">PDA non deterministici (NPDA)</h3>
+<p>L e <span class="math inline">\varepsilon</span>-mosse avevano il
+seguente vincolo:</p>
+<p><span class="math inline">\delta(q, \varepsilon, A) \not
+={\bot}\implies\delta(q, i, A) = \bot; \forall i \in</span> I</p>
+<p>Senza di esso i PDA sarebbero intrinsicamente ND.</p>
+<p>Un NPDA è una tupla <span class="math inline">\lang Q, I, \Gamma,
+\delta, q_0, Z_0, F \rang</span></p>
+<ul>
+<li><span class="math inline">\lang Q, I, \Gamma, q_0, Z_0, F
+\rang</span> come nel PDA</li>
+<li><span class="math inline">\delta</span> è la funzione di transazione
+definita come: <span class="math display">
+\delta \colon Q \times (I \bigcup \{\varepsilon\}\times \Gamma \to
+\mathcal{P_F}(Q \times \Gamma^*))
+</span></li>
+</ul>
+<p><span class="math inline">\mathcal{P_F}</span> indica i sottoinsiemi
+finiti di <span class="math inline">Q \times \Gamma^*</span></p>
+<p>Esempio di NPDA</p>
+<figure>
+<img src="assets/Automi%20Non%20Deterministici/NPDA.jpg"
+alt="Esempio di NPDA preso da un esercizio" />
+<figcaption aria-hidden="true">Esempio di NPDA preso da un
+esercizio</figcaption>
+</figure>
+<p><strong>Condizione di accettazione</strong></p>
+<p>Dato un NPDA:</p>
+<p><span class="math inline">\forall x \in I^* (x \in L(P) \iff \exist q
+\exist \gamma c_0 = \lang q_0, x, Z_0 \rang \vdash^* c_F = \lang q,
+\varepsilon, \gamma \rang</span> e <span class="math inline">q \in
+F)</span></p>
+<p>Una stringa è accettata se <strong>c’è un cammino</strong> coerente
+con <span class="math inline">x</span> che va dallo stato inizio a uno
+di fine.</p>
+<p>ND noi PDA <strong>aggiunge</strong> potere, riconosce <span
+class="math inline">\{ a^nb^n | n\ge 1\} \bigcup \{a^nb^{2n} | n \ge
+1\}</span></p>
+<p>I linguaggi riconoscibili dai PDA sono detti
+<strong>context-free</strong>.</p>
+<p>DPDA chiusi rispetto al complemento.</p>
+<p><strong>NON</strong> chiusi rispetto unione, intersezione e
+differenza.</p>
+<p>NPDA chiusi rispetto unione.</p>
+<p><strong>NON</strong> chiusi rispetto intersezione, complemento e
+differenza.</p>
+<figure>
+<img src="assets/Poteri.jpg" alt="Schema dei poteri" />
+<figcaption aria-hidden="true">Schema dei poteri</figcaption>
+</figure>
+<table>
+<thead>
+<tr>
+<th>Proprietà chiusura</th>
+<th>FSA</th>
+<th>DPDA</th>
+<th>NPDA</th>
+<th>TM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unione</td>
+<td>SI</td>
+<td>NO</td>
+<td>SI</td>
+<td>SI</td>
+</tr>
+<tr>
+<td>Intersezione</td>
+<td>SI</td>
+<td>NO</td>
+<td>NO</td>
+<td>SI</td>
+</tr>
+<tr>
+<td>Complemento</td>
+<td>SI</td>
+<td>SI</td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>Concanetazione</td>
+<td>SI</td>
+<td>NO</td>
+<td>SI</td>
+<td>SI</td>
+</tr>
+<tr>
+<td>Stella di Klenee</td>
+<td>SI</td>
+<td>NO</td>
+<td>SI</td>
+<td>SI</td>
+</tr>
+</tbody>
+</table>
+<h1 id="grammatiche">Grammatiche</h1>
+<p>Esistono 2 tipi di modelli:</p>
+<ul>
+<li>Modelli operazionali (Automi): Riconoscono/accettano, traducono e
+calcolano linguaggi.</li>
+<li>Modelli generativi (Grammatiche): Descrivono come generare un
+linguaggio.</li>
+</ul>
+<p>I modelli generativi producono stringhe (grammatica).</p>
+<p>Una grammatica è un insieme di parole per costruire le frasi di un
+linguaggio <span class="math inline">\to</span> tramite
+<strong>riscrittura</strong> (insieme di metodi).</p>
+<h2 id="regole-linguistiche">Regole linguistiche</h2>
+<p>Le regole linguistiche descrivono un “oggetto principale” con una
+sequenza di componenti.</p>
+<p>I componenti vengono dettagliati fino ad andare alla base (vuol dire
+che es. da staccionata si arriva a Assi, Martello, Chiodi).</p>
+<p>Una grammatica è una tupla <span class="math inline">\lang V_N, V_T,
+P, S \rang</span></p>
+<ul>
+<li><span class="math inline">V_N</span> alfabeto <strong>NON
+TERMINALE</strong></li>
+<li><span class="math inline">V_T</span> alfabeto
+<strong>TERMINALE</strong></li>
+<li><span class="math inline">V = V_N \bigcup V_T</span></li>
+<li><span class="math inline">P = \subseteq V_N^+ \times V^*</span>
+insieme finito di <strong>regole di riscrittura</strong></li>
+<li><span class="math inline">S \in V_N</span> è un particolare elemento
+di <span class="math inline">V_N</span> chiamato
+<strong>assioma</strong></li>
+</ul>
+<p>Una grammatica genera un linguaggio sull’alfabeto <span
+class="math inline">V_T</span></p>
+<h2 id="produzioni">Produzioni</h2>
+<p>Elemento di <span class="math inline">V_N^+ \times V^* (\lang \alpha,
+\beta \rang | \alpha \in V_N^+, \beta \in V^*)</span></p>
+<p>Si indica con <span class="math inline">\alpha \to \beta</span></p>
+<ul>
+<li><span class="math inline">\alpha</span> sequenza simboli
+<strong>NON</strong> terminali.</li>
+<li><span class="math inline">\beta</span> sequenza (potenzialmente
+vuota) di simboli (terminali o non)</li>
+</ul>
+<h3 id="gerarchia-chomsky">Gerarchia Chomsky</h3>
+<p>Esistono 4 tipi di grammatiche</p>
+<table>
+<colgroup>
+<col style="width: 1%" />
+<col style="width: 9%" />
+<col style="width: 64%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Nome</th>
+<th>Produzioni</th>
+<th>Macchine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>Regolari</td>
+<td>(Destre) <span class="math inline">A \to \alpha, A \to aB (A \to
+\varepsilon) con A,B \in V_N, a \in V_T</span></td>
+<td>FSA</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Context-free</td>
+<td><span class="math inline">A \to B, A \in V_N</span></td>
+<td>NPDA</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Context-sensitive e monotone</td>
+<td><span class="math inline">S \to \varepsilon, \alpha A \beta \to
+\alpha \gamma \beta</span> con <span class="math inline">A \in V_N,
+\alpha, \beta, \gamma \in V^+</span> (ora monotone) <span
+class="math inline">\alpha \to \beta</span> con <span
+class="math inline">\vert \alpha \vert = \vert \beta \vert</span></td>
+<td>Automi lineari (NTM usano uno spazio di memoria proporzionale
+all’input)</td>
+</tr>
+<tr>
+<td>0</td>
+<td>Generali o non ristrette</td>
+<td><span class="math inline">P \subseteq V_N^+ \times V^+</span></td>
+<td>TM</td>
+</tr>
+</tbody>
+</table>
+<h3 id="reazioni-di-derivazione-immediata">Reazioni di derivazione
+immediata</h3>
+<p><span class="math inline">\alpha \implies \beta</span> (<span
+class="math inline">\beta</span> è ottenuta immediatamente da <span
+class="math inline">\alpha</span>)</p>
+<ul>
+<li><span class="math inline">\alpha \in V_N^+</span> e <span
+class="math inline">\beta \in V^*</span></li>
+</ul>
+<p>se e solo se</p>
+<p><span class="math inline">\alpha = \alpha_1 \alpha_2 \alpha_3, \beta
+= \alpha_1 \beta_2 \alpha_3</span> e <span class="math inline">\alpha_2
+\to \beta_2 \in P</span></p>
+<p><span class="math inline">\alpha_2</span> riscritta come <span
+class="math inline">\beta_2</span> nel contesto <span
+class="math inline">\lang \alpha_1, \alpha_3 \rang</span></p>
+<p>Es. (Context-Sensitive)</p>
+<p><span class="math inline">V_N = \{S,A, B, C, D\}\\
+V_T = \{a, b, c\}\\
+S\\
+P = \{S \to AB, BA \to cCD, CBS \to ab, A \to \varepsilon\}\\
+aaBAS \implies aacCDS \\
+bcCBSAdd \implies bcabAdd</span></p>
+<h4 id="linguaggio-generato">Linguaggio generato</h4>
+<p>Data <span class="math inline">G = \lang V_N, V_T, P, S
+\rang</span></p>
+<p><span class="math inline">\forall x (x \in L(G) \iff x \in V_T^*
+\land S \implies(+) x)</span></p>
+<p>Il linguaggio generato da <span class="math inline">G</span> è
+l’insieme di tutte le stringhe:</p>
+<ul>
+<li>Solo simboli terminali</li>
+<li>Derivante da <span class="math inline">S</span> in <span
+class="math inline">n</span> numeri di passi con <span
+class="math inline">n \ge 1</span></li>
+</ul>
+<p>ES. (Context-Free)</p>
+<p><span class="math inline">G_2 = \lang \{S\}, \{a, b\}, \{S \to a Sb |
+ab\}, S \rang \\
+S \to aSb |ab = S \to aSb, S \to ab</span></p>
+<p>Derivazioni</p>
+<p><span class="math inline">S \implies ab</span></p>
+<p>$S aSb aabb $</p>
+<p><span class="math inline">S \implies aSb \implies aaSbb \implies
+aaabbb</span></p>
+<p>Generalizzo <span class="math inline">L(G_2) = \{a^nb^n|n&gt;
+0\}</span></p>
+<h3 id="regular-grammar-rg-vs-fsa">Regular Grammar (RG) VS FSA</h3>
+<p>Sia <span class="math inline">A</span> un FSA, si può costruire un RG
+<span class="math inline">G</span> ad esso equivalente.</p>
+<p><span class="math inline">G</span> genera esattamente lo stesso
+linguaggio riconosciuto da <span class="math inline">A</span>.</p>
+<p>Le RG, FSA e espressioni regolari descrivono lo stesso linguaggio in
+modelli diversi.</p>
+<p>Le context-free grammar (CFG) sono identiche alle Backus-Naus Form
+(BNF) usate per definire la sintassi dei linguaggi di
+programmazione.</p>
+<p>Le grammatiche regolari sono anche non contestuali</p>
+<p>I linguaggi possono essere rappresentati tramite molti modelli tra
+cui :</p>
+<ul>
+<li>Pattern</li>
+<li>Espressioni Regolari (RE)</li>
+</ul>
+<h2 id="pattern">Pattern</h2>
+<p>È una tripla <span class="math inline">\lang A, V, p \rang</span></p>
+<ul>
+<li><span class="math inline">A</span> è un alfabeto</li>
+<li><span class="math inline">V</span> insieme di variabili <span
+class="math inline">| A \bigcap V = \emptyset</span></li>
+<li><span class="math inline">p</span> è una stringa su <span
+class="math inline">A \bigcup V</span> detta pattern</li>
+</ul>
+<p>Il pattern genera un linguaggio che ha tutte le stringhe di <span
+class="math inline">A</span> ottenute da <span
+class="math inline">p</span> sostituendo ogmi variabile in <span
+class="math inline">p</span> con una stringa su <span
+class="math inline">A</span>.</p>
+<p>Es. <span class="math inline">\lang \{0, 1\}, \{v_1, v_2\}, v_1v_1
+\circ v_2 \rang</span></p>
+<ul>
+<li>Stringhe che iniziano con <span class="math inline">0 (v_1 =
+\varepsilon)</span></li>
+<li>Stringhe che iniziano con una stringa su A ripetuta due volte,
+seguita da uno <span class="math inline">0</span> e da una qualunque
+stringa (inclusa <span class="math inline">\varepsilon</span>)</li>
+</ul>
+<h2 id="re-sintassi-e-semantica">RE: sintassi e semantica</h2>
+<p>Definizione di un RE su un alfabeto <span class="math inline">A
+\colon</span></p>
+<ul>
+<li><span class="math inline">\emptyset</span> è una RE</li>
+<li><span class="math inline">\varepsilon</span> è una RE</li>
+<li>ogni simbolo di <span class="math inline">A</span> è una RE</li>
+</ul>
+<p>Siano <span class="math inline">r</span> e <span
+class="math inline">s</span> due RE, allora:</p>
+<ul>
+<li><span class="math inline">(r.s)</span> è una RE</li>
+<li><span class="math inline">r^*</span> è una RE</li>
+<li>Nient’altro è una RE</li>
+</ul>
+<p>Es.</p>
+<p><span class="math inline">((0.(0|1)^*)|((0|1)^*.0))</span> è una RE
+su <span class="math inline">\{0, 1\}</span></p>
+<ul>
+<li>stringhe che iniziano con <span class="math inline">0</span></li>
+<li>stringhe che finiscono con <span class="math inline">0</span></li>
+</ul>
+<h3 id="re-e-pattern">RE e Pattern</h3>
+<p>Le RE hanno la stessa idea dei Pattern ma diverso potere.</p>
+<p><span class="math inline">RE \not ={Pattern}</span>.</p>
+<p><span class="math inline">\{xx | x \in \{0, 1\}^*\}</span> NO RE</p>
+<p>Pattern corrispondente <span class="math inline">\lang \{0, 1\},
+\{x\}, xx \rang</span></p>
+<p>Linguaggio denotato da <span class="math inline">0^*1^*</span>
+<strong>NON ESPREMIBILE</strong> tramite Pattern.</p>
+<h3 id="rg-e-re">RG e RE</h3>
+<p><span class="math inline">RG = RE</span>.</p>
+<h3 id="re-posix-linuxunix">RE POSIX (Linux/Unix)</h3>
+<p>Caratteri meta: ( ) . [ ] ^  $ * + | { }</p>
+<p>N.B. “.” indica qualunque carattere, <strong>NON</strong>
+concatenazione.</p>
+<p>[<span class="math inline">\alpha</span>] indica un singolo carattere
+<span class="math inline">\in \alpha ([abc]</span> indica <span
+class="math inline">\{a, b, c\})</span>.</p>
+<p><span class="math inline">[\^\ \alpha]</span> negazione: qualunque
+carattere non in <span class="math inline">\alpha</span>.</p>
+<p>^ e $ indicano <span class="math inline">\varepsilon</span>
+corrispettivamente all’inizio e alla fine della riga.</p>
+<p>*, +, |, (, ) uguali a sempre.</p>
+<p> “escape” ( $ indica il simbolo $).</p>
+<p><span class="math inline">\alpha ?</span> indica <span
+class="math inline">\alpha</span> opzionale.</p>
+<p><span class="math inline">\alpha \{n\}</span> indica <span
+class="math inline">\alpha^n</span></p>
+<p><span class="math inline">\alpha \{n, m\}</span> indica <span
+class="math inline">\alpha^n \bigcup \alpha ^{n+1} \bigcup \dots \bigcup
+\alpha^m</span></p>
+<h1 id="logica">Logica</h1>
+<p>Esistono vari linguaggi logici :</p>
+<ul>
+<li>Logica Proposizionale</li>
+<li>FOL (First-Order Logic)</li>
+</ul>
+<p>La logica è un formalismo “universale” e si applica in molti ambiti
+:</p>
+<ul>
+<li>Architetture (porte logiche)</li>
+<li>Ingegneria del software</li>
+<li>Linguaggi di programmazione</li>
+<li>Database</li>
+<li>AI</li>
+</ul>
+<p>Gli insiemi possono essere visti come abbreviazioni di formule
+FOL.</p>
+<p>Es.</p>
+<p><span class="math inline">\{a^nb^n | n \ge 0\} \to</span> abbreviata
+di <span class="math inline">\forall x (x \in L \longleftrightarrow
+\exist n (n \ge 0 \land x = a^n.b^n))</span></p>
+<p><span class="math inline">x^n ?</span></p>
+<p><span class="math inline">\forall n \forall x ((n=0 \to x^n =
+\varepsilon) \land (n &gt; 0 \to x^n = x^{n-1}.x))</span></p>
+<p>Ora faremo un bell’ elenco di operazioni logiche, buon viaggio ;
+)</p>
+<p><span class="math inline">L_1 = a^*b^*</span></p>
+<p><span class="math inline">L_1</span> è il linguaggio delle stringhe
+su <span class="math inline">\{a, b\}</span> con tutte le “<span
+class="math inline">a</span>” all’inizio.</p>
+<p>Più precisamente <span class="math inline">L_1</span> è:</p>
+<ul>
+<li>stringa vuota.</li>
+<li>composta da un prefisso “<span class="math inline">a</span>” e un
+suffiso <span class="math inline">y</span> (sempre in <span
+class="math inline">L_1</span>).</li>
+<li>prefisso <span class="math inline">y</span> (sempre in <span
+class="math inline">L_1</span>) e un suffisso “<span
+class="math inline">b</span>”.</li>
+</ul>
+<p>Esprimibile come:</p>
+<p><span class="math inline">\forall x (x \in L_1 \longleftrightarrow (x
+= \varepsilon) \lor \exist y (x=ay \land y \in L_1) \lor \exist y (x=yb
+\land y \in L_1))</span></p>
+<p><span class="math inline">L_2 = a^*b^*c^*</span></p>
+<p>Una stringa appartiene a <span class="math inline">L_2</span> se
+è:</p>
+<ul>
+<li>in <span class="math inline">L_1</span></li>
+<li>in <span class="math inline">L_3 (b^*c^*)</span></li>
+<li>composta da un prefisso <span class="math inline">&#39;a&#39;</span>
+e da un suffisso <span class="math inline">y</span></li>
+<li>composta da un prefisso <span class="math inline">y</span> e da un
+suffisso <span class="math inline">&#39;c&#39;</span></li>
+</ul>
+<p>In FOL:</p>
+<p><span class="math inline">\forall x (x \in L_2 \longleftrightarrow (x
+\in L_1) \lor (x \in L_3) \lor \exist y (x = ay \land (y \in L_2 \lor y
+\in L_3)) \lor (x=yc \land (y \in L_2) \lor y \in L_1))</span></p>
+<p>Esempio</p>
+<p><span class="math inline">L_4 = \{x \in \{a,b\}^* |numero\ di\
+&#39;a&#39;\ uguale\ al\ numero\ di \ &#39;b&#39;\}</span></p>
+<ul>
+<li><span class="math inline">\#(x,a)</span> arietà 2, conta il numero
+di occorenze del simbolo <span class="math inline">&#39;a&#39;</span>
+nella stringa <span class="math inline">x</span></li>
+</ul>
+<p>In FOL: <span class="math inline">\forall x (x \in L_4
+\longleftrightarrow \# (x,a)= \# (x,b))</span></p>
+<h3 id="mfo-logica-monadica-del-primordine">MFO: Logica monadica del
+prim’ordine</h3>
+<ul>
+<li>I linguaggi esprimibili mediante MFO sono chiusi rispetto a unione,
+intersezione e complemento</li>
+<li>In MFO non si può esprimere il linguaggio <span
+class="math inline">L_p</span> fatto di tutte le sole parole di
+lunghezza pari con <span class="math inline">l = \{a\}</span></li>
+<li>MFO è strettamente meno potente degli FSA</li>
+<li>MFO chiuso rispetto alla <span class="math inline">*</span></li>
+<li>La formula MFO <span class="math inline">a(0) \land a(1) \land
+last(1)</span> definisce <span class="math inline">L_{aa}</span> fatto
+della sola parola <span class="math inline">\{aa\}</span> di lunghezza
+2.</li>
+<li>Abbiamo che <span class="math inline">L_p = L_{aa}^*</span></li>
+<li>MFO definisce linguaggi star-free, definibili tramite unione,
+intersezione, complemento e concatenazione di linguaggi finiti.</li>
+</ul>
+<h3 id="mso-logica-monadica-del-secondo-ordine">MSO: Logica monadica del
+secondo ordine</h3>
+<ul>
+<li><p>Può avere lo stesso potere degli FSA basta permettere di
+quantificare sui predicati monadici</p></li>
+<li><p>Ammettiamo formule del tipo <span class="math inline">\exist
+x(\phi), x</span> è una variabile il cui dominio è l’insieme dei
+predicati monadici</p></li>
+<li><p>Assegnamento delle variabili del <span
+class="math inline">II</span> ordine (insieme <span
+class="math inline">v_2</span>) è una funzione <span
+class="math inline">v_2 : V_2 \to ([0..|w|-1])</span></p>
+<ul>
+<li><span class="math inline">w, v_1, v_2 \vDash X(x) \ sse\ v_1(x) \in
+v_2 (x)</span></li>
+<li><span class="math inline">w, v_1, v_2 \vDash \exist X (\phi) \ sse \
+w, v_1, v_2&#39; \vDash \phi \ per \ qualche \ v_2&#39; \ con \
+v_2&#39;(Y); Y\not ={x}</span></li>
+</ul></li>
+<li><p>La formula descrive il linguaggio <span
+class="math inline">L_p</span></p></li>
+</ul>
+<p><span class="math inline">\exist P (\forall x (\neg P(0) \land (\neg
+P(x) \Longleftrightarrow P(x+1))\land a(x)\land (last(x) \implies
+P(x))))</span></p>
+<p><strong>Per ogni FSA esiste un MSO equivalente</strong></p>
+<p>Da una MSO <span class="math inline">\phi</span> è possibile
+costruire un FSA (<strong>Teorema di
+Büchi-Elgot-Trakhtenbrot</strong>)</p>
+<p>I linguaggi definibili da formule MSO sono linguaggi regolari</p>
+<p><img src="assets/Mappa%20Linguaggi.jpg" /></p>
+<p>Quando si programma una funzione è importante definire <strong>COSA
+FA</strong>.</p>
+<p><strong>Precondizione</strong>: indica cosa deve valere
+<strong>prima</strong> che la funzione sia invocata.</p>
+<p><strong>Postcondizione</strong>: indica cosa deve valere
+<strong>dopo</strong> che la funzione ha finito la propria
+esecuzione.</p>
+<p>Struttura generale (<strong>notazione di Hoare</strong>)</p>
+<ul>
+<li>{Precondizione: <span class="math inline">Pre</span>}</li>
+<li>{Programma: <span class="math inline">P</span>}</li>
+<li>{Postcondizione: <span class="math inline">Post</span>}</li>
+</ul>
+<p><span class="math inline">P</span> deve essere tale che se <span
+class="math inline">Pre</span> vale prima dell’esecuzione, allora <span
+class="math inline">Post</span> vale dopo l’esecuzione.</p>
+<ul>
+<li><p><span class="math inline">Pre</span> e <span
+class="math inline">Post</span> possono essere definiti in diversi
+modi</p>
+<ul>
+<li>Linguaggio naturale</li>
+<li>Linguaggi per le asserzioni</li>
+<li>Linguaggi ad-hoc</li>
+</ul></li>
+</ul>
+<p><span class="math inline">\to</span> FOL può essere usata per questo
+scopo.</p>
+<h3 id="abbreviazioni-logiche">Abbreviazioni logiche</h3>
+<ul>
+<li><p><span class="math inline">y=x+1 \ \ \ x&lt;y \land \neg \exist z
+(x&lt;z \land z&lt;y)</span> N.B. è vero se <span
+class="math inline">x</span> è l’ultima posizione</p></li>
+<li><p><span class="math inline">y=x+2 \ \ \ \exist z(z=x+1 \land
+y=z+1)</span></p></li>
+</ul>
+<p><span class="math inline">\forall k \in \mathbb{N}, k \ge 1</span>
+(<span class="math inline">k</span> fissato NON si può quantificare
+!!!)</p>
+<ul>
+<li><p><span class="math inline">y=x+k : \ \ \exist z (z=x+(k-1) \land
+y= z+1)</span></p></li>
+<li><p><span class="math inline">First(x,P) = P(x) \land \forall y
+(y&lt;x \implies \neg P(y))</span></p></li>
+<li><p><span class="math inline">Last (x,P) = P(x) \land \forall y
+(x&lt;y \implies \neg P(y))</span></p></li>
+<li><p><span class="math inline">Next (x,y,P) = P(x) \land P(y) \land
+\forall z ((x&lt;z \land z&lt;y)\implies P(z))</span></p></li>
+<li><p><span class="math inline">Odd(Q,P) = \forall x (Q(x) \iff (First
+(x,y) \land \exist y \exist z (Next (z,x,P) \land Next (y,z,P) \land
+Q(y))))</span></p></li>
+<li><p><span class="math inline">OddCard(P)= \exists Q(Odd(Q,P) \land
+\forall x (Last(x,P) \implies Q(x)) \land \exist x P(x))</span> dice se
+<span class="math inline">|P|</span> è dispari.</p></li>
+</ul>
+<p>Vero sse <span class="math inline">Q \subseteq P \ Q</span> contiene
+la <span class="math inline">I, II, V</span> posizione di <span
+class="math inline">P</span>.</p>
+<h1 id="computabilità">Computabilità</h1>
+<h3 id="algoritmo-di-ricerca">Algoritmo di ricerca</h3>
+<p><span class="math inline">Pre</span>: l’array è ordinato.</p>
+<p><span class="math inline">Post</span>: la variabile logica “found(un
+flag)” dev’essere vera sse l’elemento cercato esiste nell’array.</p>
+<p><span class="math display">
+Pre \{\forall i (1 \le i \le n-1 \to a[i] \le a[i+1])\}
+\\
+P
+\\
+Post \{found \longleftrightarrow \exist i (1 \le i \le n \land a[i] =
+x)\}
+</span></p>
+<h3 id="ordinamento">Ordinamento</h3>
+<p><span class="math inline">Pre</span>: l’array NON contiene
+ripetizioni.</p>
+<p><span class="math inline">Post</span>: l’array ottenuto è
+ordinato.</p>
+<p>Formalmente</p>
+<p><span class="math display">
+\{\neg \exist i, j (1 \le i \le n \land 1 \le j \le n \land i \not ={j}
+\land a[i] = a[j])\}
+\\
+ORD
+\\
+\{\forall i (1 \le i \le n-1 \to a[i] \le a[i+1])\}
+</span></p>
+<h3 id="tesi-di-church-parte-1">Tesi di Church (Parte 1)</h3>
+<p><strong>Non c’è nessun formalismoper modellare il calcolo meccanico
+che sia più potente della TM (o formalismi equivalenti)</strong></p>
+<p>Algoritmo: Procedura per risolvere problemi mediante un dispositivo
+di calcolo automatico.</p>
+<h3 id="tesi-di-church-parte-2">Tesi di Church (Parte 2)</h3>
+<p><strong>Ogni algoritmo può essere codificato mediante una TM (o
+formalismo equivalente)</strong></p>
+<p>Una TM può essere vista come un computer astratto, non programmabile,
+predisposto per un uso speciale.</p>
+<p>Un insieme <span class="math inline">S</span> può essere enumerato
+algoritmicamente <span class="math inline">(E)</span> se possiamo
+trovare una biiezione tra <span class="math inline">S</span> e <span
+class="math inline">\natnums</span>.</p>
+<ul>
+<li><span class="math inline">E: S \longleftrightarrow
+\natnums</span></li>
+</ul>
+<p>Esempio</p>
+<p><span class="math inline">\{a,b\}^*</span></p>
+<p><span class="math inline">\varepsilon\ a\ b\ aa\ ab\ ...</span></p>
+<p><span class="math inline">0\ 1\ 2\ 3\ 4\ ...</span></p>
+<p><strong>Le TM possono essere enumerate algoritmicamente</strong></p>
+<p>Ipotesi:</p>
+<ul>
+<li>TM a nastro singolo</li>
+<li>Alfabeto fissato <span class="math inline">A (esempio\ |A|=3, A=\{0,
+1,\_ \})</span></li>
+</ul>
+<p>Esempio: TM con due stati</p>
+<p><img src="assets/Esempio%20TM%20a%202%20stati.jpg" /></p>
+<p><span class="math inline">2^2=4</span> stati finali possibili.</p>
+<p>Quante funzioni <span class="math inline">f: D \to R ? \to
+|R|^{|D|}</span></p>
+<p>Con <span class="math inline">|Q| = 2, |A|=3, (2 * 3+3+1)^{(2*3)} =
+19^6</span> con 2 stati considerando i <span
+class="math inline">2^2</span> scelte di stati finali, abbiamo (al più)
+<span class="math inline">19^6 * 2^2</span> TM.</p>
+<p>Ordiniamo TM: <span class="math inline">\{M_0,...,M_{19^6*2^2 -1}
+\}</span></p>
+<p>Otteniamo un’enumerazione <span class="math inline">E: \{TM\} \to
+\natnums</span></p>
+<p><span class="math inline">E(M)</span> è detto <strong>numero di
+Gödel</strong> di <span class="math inline">M</span> e <span
+class="math inline">E</span> è una <strong>Gödelizzazione</strong></p>
+<p>Le TM modellano computer programmabili? Si</p>
+<ul>
+<li>Consideriamo la <strong>Macchina di Turing Universale</strong>
+(UTM)</li>
+</ul>
+<p>UTM computa <span class="math inline">g(y, x)=f_y(x)</span></p>
+<p>funzione calcolata dalla y-esima TM sull’ingresso x.</p>
+<p>Possiamo codificare <span class="math inline">g(y,x)</span> come una
+<span class="math inline">g^{(n)} = g(d^{-1}(n))</span> con <span
+class="math inline">n= d(y,x), (y,x) = d^{-1} (n)</span></p>
+<p>Le TM computano <strong>tutte</strong> le funzioni da <span
+class="math inline">\natnums</span> a <span
+class="math inline">\natnums?</span></p>
+<p>No, ci sono funzioni che possono essere computate dalla UTM.</p>
+<p>Esistono <span class="math inline">2^{\alef_0}</span> funzioni <span
+class="math inline">f: \natnums \to \natnums</span>.</p>
+<p><span class="math inline">\alef_0</span> si legge “alef con zero”</p>
+<h4 id="il-problema-dellarresto-halting-problem">Il “problema
+dell’arresto” (halting problem)</h4>
+<ul>
+<li>Costruisco un programma</li>
+<li>Gli do dei dati in ingresso</li>
+<li>So che in generale il programma potrebbe non terminare la propria
+esecuzione</li>
+</ul>
+<p>In termini di TM:</p>
+<p><span class="math inline">g(y,x) =1\  se\ f_y(x) \not ={\bot},
+g(y,x)=0\ se \ f_y(x)=\bot</span></p>
+<p>C’è TM che calcola <span class="math inline">g?</span></p>
+<p>No</p>
+<h3 id="dimostrazione-per-diagonalizzazione">Dimostrazione per
+diagonalizzazione</h3>
+<p>Listiamo le funzioni calcolabili da <span
+class="math inline">\natnums</span> a <span
+class="math inline">\natnums</span> e i loro valori, disponendo ogni
+valore <span class="math inline">f_y(x)</span> in una tabella:</p>
+<p><img src="assets/Tabella%20diag.jpg" /></p>
+<p>Definiamo una funzione <span class="math inline">\phi: \natnums \to
+\natnums</span> che differisce dalla diagonale in ogni valore.</p>
+<p>Nessuna TM può decidere se, data una generica TM <span
+class="math inline">M</span> e un generico ingresso <span
+class="math inline">x</span>, <span class="math inline">M</span> si
+arresta con l’ingresso <span class="math inline">x</span>.</p>
+<h3 id="lemma-importante">Lemma importante</h3>
+<p><span class="math inline">h&#39;(x)=</span> se <span
+class="math inline">f_x(x)\not ={\bot}</span> allora <span
+class="math inline">1</span> altrimenti <span
+class="math inline">0</span></p>
+<p>Un problema non risolvibile può avere un caso particolare
+risolvibile.</p>
+<p>Se un problema è risolvibile, una generalizzazione può non essere
+risolvibile.</p>
+<h4 id="problemi-di-decisione">Problemi di decisione</h4>
+<p>Domanda con due possibili risposte: si e no.</p>
+<p>Semidecidibile se c’è un algoritmo che dice si se la risposta è
+si</p>
+<ul>
+<li>può andsre in loop se la risposta è no</li>
+</ul>
+<h3 id="insiemi-ricorsivi">Insiemi Ricorsivi</h3>
+<p>Concentriamoci sui problemi a risposta binaria:</p>
+<p>Problema= <span class="math inline">x</span> appartiene all’insieme
+<span class="math inline">S? (S \le N)</span></p>
+<p><span class="math inline">C_S(x)=\ se \ x \in S\ allora\ 1\
+altrimenti\ 0</span></p>
+<p>Un insieme <span class="math inline">S</span> è
+<strong>ricorsivo</strong> sse la sua funzione caratteristica è
+computabile.</p>
+<p><span class="math inline">S</span> è <strong>ricorsivamente
+enumerabile</strong> sse:</p>
+<ul>
+<li><span class="math inline">S</span> è l’insieme vuoto, o</li>
+<li><span class="math inline">S</span> è l’immagine di una funzione
+<span class="math inline">g_s</span> totale e computabile</li>
+</ul>
+<p><span class="math display">
+S=l_{g_s}=\{x|x=g_s(y),y\in \natnums\}
+\\
+\implies
+\\
+S=\{g_s(0), g_s(1), g_s(2),...\}
+</span></p>
+<h4 id="teorema-12121">Teorema (1/2+1/2=1)</h4>
+<ul>
+<li>Se <span class="math inline">S</span> è ricorsivo, allora è RE</li>
+<li><span class="math inline">S</span> è ricorsivo sse sia <span
+class="math inline">S</span> sia il suo complemento <span
+class="math inline">S^\wedge = N-S</span> sono RE</li>
+</ul>
+<p>La classe di insiemi decidibili è chiusa rispetto al complemento.</p>
+<h4 id="teorema-del-punto-fisso-di-klenne">Teorema del punto fisso di
+Klenne</h4>
+<p>Sia <span class="math inline">t</span> una funzione totale e
+computabile. Allora si può sempre trovare un intero <span
+class="math inline">p</span> tale che <span
+class="math inline">f_p=f_{t_{(p)}}</span></p>
+<ul>
+<li>La funzione <span class="math inline">f_p</span> è detta punto fisso
+di <span class="math inline">t</span></li>
+</ul>
+<h4 id="teorema-di-rice">Teorema di Rice</h4>
+<p>Sia <span class="math inline">f</span> un insieme di funzioni
+computabili l’insieme &amp;S&amp; degli indici delle TM che calcolano le
+funzioni di <span class="math inline">F</span></p>
+<p><span class="math inline">S=\{x|f_x \in F\}</span></p>
+<p>è decidibile sse:</p>
+<ul>
+<li>o <span class="math inline">F = \emptyset</span></li>
+<li>o <span class="math inline">F</span> è l’insieme di tutte le
+funzioni computabili</li>
+</ul>
+<p><span class="math inline">\to</span> in tutti i casi non banali <span
+class="math inline">S</span> non è decidibile!</p>
+<p>Dal teorema di RIce</p>
+<p>Implicazioni negative</p>
+<ul>
+<li>C’è una lista sconfinata di problemi interessanti la cui
+indecidibilità segue banalmente dal teorema di Rice.</li>
+</ul>
+<p>Dato <span class="math inline">F=\{g\}</span>, per Rice non è
+decidibile se una generica TM calcoli <span class="math inline">g</span>
+o meno.</p>
+<h4 id="teorema-di-rice-variante">Teorema di Rice (variante)</h4>
+<p>Sia <span class="math inline">S \subseteq \mathbb{N}</span> tale
+che</p>
+<ol type="1">
+<li><span class="math inline">S \not = \empty</span></li>
+<li><span class="math inline">S \not = \mathbb{N}</span></li>
+<li>se <span class="math inline">s \in S</span> e la TM n-esima è
+equivalente alla TM m-esima allora <span class="math inline">m \in
+S</span> (<span class="math inline">S</span> è l’insieme di tutte e sole
+le codifiche di certe TM/prog/funz. computabili)</li>
+</ol>
+<p>Allora <span class="math inline">S</span> non è decidibile.</p>
+<p>Esempio di utilizzo</p>
+<p>Esistano TM M e M’ tali che M è equivalente a M’</p>
+<p><span class="math inline">H = \{ n \in \mathbb{N} | M=\lang n \rang \
+e\ M(\varepsilon) \downarrow \}</span> è decidibile ?</p>
+<ol type="1">
+<li><span class="math inline">H \not = \empty</span>: ci sono TM che
+terminano su <span class="math inline">\varepsilon</span></li>
+<li><span class="math inline">H \not = \mathbb{N}</span>: ci sono TM che
+NON terminano su <span class="math inline">\varepsilon</span></li>
+<li>se <span class="math inline">M=M&#39;</span> e <span
+class="math inline">\lang M \rang = n</span> e <span
+class="math inline">\lang M&#39; \rang = n</span> e <span
+class="math inline">n \in H</span> allora <span class="math inline">H
+(\varepsilon) \downarrow</span> e poichè <span
+class="math inline">M=M&#39;</span> anche <span
+class="math inline">M&#39;(\varepsilon) \downarrow</span> e dunque <span
+class="math inline">n&#39; \in H</span></li>
+</ol>
+<p>Quindi Rice è soddisfatto e <span class="math inline">H</span>
+<strong>NON</strong> è decidibile.</p>
+<h4 id="riduzione-di-problemi">Riduzione di problemi</h4>
+<p>Un problema <span class="math inline">P&#39;</span> è
+<strong>ridotto</strong> a un problema <span
+class="math inline">P</span> se un algoritmo per risolvere <span
+class="math inline">P</span> viene usato per risolvere <span
+class="math inline">P&#39;</span></p>
+<ul>
+<li><span class="math inline">P</span> è risolvibile</li>
+<li>C’è un algoritmo che, per ogni data istanza di <span
+class="math inline">P&#39;</span></li>
+</ul>
+<ol type="1">
+<li>Determina una corrispondente istanza di <span
+class="math inline">P</span></li>
+<li>Costruisce algoritmicamente la soluzione dell’istanza di <span
+class="math inline">P&#39;</span> dalla soluzione dell’sistanza di <span
+class="math inline">P</span></li>
+</ol>
+<h4 id="riduzione-variante">Riduzione (Variante)</h4>
+<p>Siano <span class="math inline">A,B \subseteq \mathbb{N}</span> e
+<span class="math inline">f: \mathbb{N} \to \mathbb{N}</span>, <span
+class="math inline">f</span> è una riduzione da <span
+class="math inline">A</span> a <span class="math inline">B</span>.</p>
+<ol type="1">
+<li><span class="math inline">f</span> è <strong>TOTALE</strong> e
+<strong>COMPUTABILE</strong></li>
+<li>se <span class="math inline">n \in A</span> allora <span
+class="math inline">f(a) \in B</span></li>
+<li>se <span class="math inline">n \not \in A</span> allora <span
+class="math inline">f(a) \not \in B</span></li>
+</ol>
+<h5 id="teorema">Teorema</h5>
+<p>Se <span class="math inline">A</span> <strong>non</strong> è
+ricorsivo allora <span class="math inline">B</span> <strong>non</strong>
+è ricorsivo.</p>
+<h4 id="caratteristiche-di-alcuni-linguaggi">Caratteristiche di alcuni
+linguaggi</h4>
+<p>Regolari <span class="math inline">\implies</span> Ricorsivi</p>
+<p>Context-free <span class="math inline">\implies</span> Ricorsivo</p>
+<p>Context-Sensitive <span class="math inline">\implies</span>
+Ricorsivo</p>
+<p>Ricorsivo <span class="math inline">\implies</span> Ricorsivamente
+enumerabile</p>
+<p>Ciò implica che sicuramente un linguaggio ricorsivo è R.E. ma non
+vuol dire che lo sia <strong>sempre</strong> anche il contrario</p>
+<h1 id="complessità-del-calcolo">Complessità del calcolo</h1>
+<p>Per la tesi di Curch-Turing, un problema è calcolabile o meno
+indipendentemente dallo strumento usato.</p>
+<p>Per la complessità del calcolo ?</p>
+<ul>
+<li>Una somma unaria ha efficienza diversa da una di basa <span
+class="math inline">b &gt; 1</span></li>
+<li>Calcolare una traduzione <span class="math inline">y=T(x)</span>
+decidendo se <span class="math inline">\exist z \in L_\tau = \{x \ y |
+y=\tau (x)\}</span> può essere molto meno efficiente del calcolare la
+traduzione in qualche caso.</li>
+</ul>
+<p>Data la computazione <span class="math inline">c_0 \vdash c_1 \vdash
+c_2 \vdash ... \vdash c_r</span> di <span class="math inline">M</span>
+(a k nastri) deterministica.</p>
+<p>La complessità temporale è <span class="math inline">T_M (x)=r</span>
+se <span class="math inline">M</span> termina in <span
+class="math inline">c_r</span></p>
+<ul>
+<li><span class="math inline">\infty</span> se non termina.</li>
+</ul>
+<p><span class="math inline">M</span> è deterministica <span
+class="math inline">\implies</span> computazione unica sull’ingresso
+<span class="math inline">x</span></p>
+<p>Complessità spaziale</p>
+<p><span class="math inline">S_M(x) = \Sigma _{j=1}^k max_{i \in
+\{0,...,r\}} (|a_{ij}|)</span></p>
+<p>Somma della quantità massime occupate</p>
+<p><span class="math inline">\forall x: \dfrac{S_M (x)}{k} \le T_M
+(x)</span></p>
+<p>Notazione</p>
+<p><span class="math inline">\Omicron</span>-grande : limite asintotico
+superiore</p>
+<p><span class="math inline">\Omega</span>-grande: limite asintotico
+inferiore</p>
+<p><span class="math inline">\Theta</span>-grande: limite asintotico sia
+superiore che inferiore</p>
+<p><span class="math inline">\Omicron</span>-grande</p>
+<p>Data <span class="math inline">g(n), \Omicron(g(n))</span> è
+l’insieme <span class="math inline">\Omicron(g(n))=\{f(n) | \exist c
+&gt; 0, n_0 &gt;0\ tali\ che\ \forall n&gt;n_0, 0 \le f(n) \le
+c*g(n)\}</span></p>
+<p><span class="math inline">\Omega</span>-grande</p>
+<p>Data <span class="math inline">g(n), \Omega(g(n))</span> è l’insieme
+<span class="math inline">\Omega(g(n))=\{f(n) | \exist c &gt; 0, n_0
+&gt;0\ tali\ che\ \forall n&gt;n_0, 0 \le c*g(n) \le f(n) \}</span></p>
+<p><span class="math inline">\Theta</span>-grande</p>
+<p>Data <span class="math inline">g(n), \Theta(g(n))</span> è l’insieme
+<span class="math inline">\Theta(g(n))=\{f(n) | \exist c_1 &gt; 0, c_2
+&gt;0, n_0 &gt;0\ tali\ che\ \forall n&gt;n_0, 0 \le c_1*g(n) \le f(n)
+\le c_2*g(n) \}</span></p>
+<p>Proprità notevoli</p>
+<p><span class="math inline">f(n) \in \Theta(g(n)) \iff f(n) \in
+\Omicron(g(n)) \land f(n) \in \Omega (g(n))</span></p>
+<p>Transitività</p>
+<p><span class="math inline">f(n) \in \Theta(g(n)) \land g(n) \in
+\Theta(h(n)) \implies f(n) \in \Theta (h(n))</span></p>
+<p><span class="math inline">f(n) \in \Omicron(g(n)) \land g(n) \in
+\Omicron(h(n)) \implies f(n) \in \Omicron(h(n))</span></p>
+<p><span class="math inline">f(n) \in \Omega(g(n)) \land g(n) \in
+\Omega(h(n)) \implies f(n) \in \Omega(h(n))</span></p>
+<p>Riflessività</p>
+<p><span class="math inline">f(n) \in \Theta(f(n))</span></p>
+<p><span class="math inline">f(n) \in \Omicron(f(n))</span></p>
+<p><span class="math inline">f(n) \in \Omega(f(n))</span></p>
+<p>Simmetria: <span class="math inline">f(n) \in \Theta(g(n)) \iff g(n)
+\in \Theta(f(n))</span></p>
+<p>Simmetria trasposta: <span class="math inline">f(n) \in
+\Omicron(g(n)) \iff g(n) \in \Omega(f(n))</span></p>
+<p><span class="math inline">\Theta</span> è una relazione di
+equivalenza.</p>
+<p>Teorema</p>
+<p>Se <span class="math inline">L</span> è accettato da una TM <span
+class="math inline">M</span> a <span class="math inline">k</span> nastri
+in <span class="math inline">S_M (n), \forall c \in \reals^+</span>
+posso costruire una TM <span class="math inline">M&#39;</span> a <span
+class="math inline">k</span> nastri che accetta <span
+class="math inline">L</span> con <span class="math inline">S_{M&#39;}
+&lt; c*S_M(n)</span></p>
+<p>Teorema</p>
+<p>Se <span class="math inline">L</span> è accettato da una TM <span
+class="math inline">M</span> a <span class="math inline">k</span> nastri
+in <span class="math inline">S_M(n)</span>, posso costruire una TM <span
+class="math inline">M&#39;</span> a 1 nastro (non nastro singolo) che
+accetta <span class="math inline">L</span> con <span
+class="math inline">S_{M&#39;}(n) = S_M(n)</span></p>
+<p>Teorema</p>
+<p>Se <span class="math inline">L</span> è accettato da una TM <span
+class="math inline">M</span> a <span class="math inline">k</span> nastri
+in <span class="math inline">S_M(n), \forall c \in \reals^+</span> posso
+costruire una TM <span class="math inline">M&#39;</span> a 1 nastro
+accetta <span class="math inline">L</span> con <span
+class="math inline">S_{M&#39;}(n)&lt; c*S_M(n)</span></p>
+<p>Teorema</p>
+<p>Se <span class="math inline">L</span> è accettato da una TM <span
+class="math inline">M</span> a <span class="math inline">k</span> nastri
+in <span class="math inline">T_M(n), \forall c \in \reals^+</span> posso
+costruire una TM <span class="math inline">M&#39;</span> a <span
+class="math inline">k+1</span> nastri accetta <span
+class="math inline">L</span> con <span class="math inline">T_{M&#39;}(n)
+= max (n+1, c*T_M(n))</span></p>
+<h2 id="macchina-ram">Macchina RAM</h2>
+<p>La macchina RAM è dotata di un nastro di lettura <span
+class="math inline">In</span> e uno di scrittura <span
+class="math inline">Out</span> come la TM.</p>
+<p>È dotata di una memoria con accesso a indirizzamento diretto <span
+class="math inline">N[n], n \in \natnums</span> al posto dei nastri di
+memoria: l’accesso non necessita di scorrimento delle celle.</p>
+<p>Le istruzioni di un programma usano normalmente come sorgente il
+primo operando e come destinazione <span
+class="math inline">N[0]</span></p>
+<p>Riconoscere <span class="math inline">L=\{wcw^R\}</span></p>
+<p><span class="math inline">T_{RAM}(n) = \Theta (n)</span></p>
+<p><span class="math inline">S_{RAM}(n) = \Theta (n)</span></p>
+<p><strong>Ricerca Binaria</strong> <span
+class="math inline">T_{RAM}(n)=\Theta(log(n))</span></p>
+<h3 id="ricerca-di-22n">Ricerca di <span
+class="math inline">2^{2n}</span></h3>
+<p>Input: una sequenza ordinata di interi ed un numero da cercare in
+essa.</p>
+<p>Output: 1 se l’elemento cercato esiste nella sequenza, 0
+altrimenti.</p>
+<p>Consideriamo il caso del calcolo di <span
+class="math inline">2^{2n}</span> con una RAM</p>
+<p><span class="math inline">read (n);</span></p>
+<p><span class="math inline">x=2;</span></p>
+<p><span class="math inline">for (int i=0; i&lt;n; i++)\
+x=x*x;</span></p>
+<p><span class="math inline">write(x);</span></p>
+<p>Complessità temporale: <span class="math inline">T_{RAM} (n)=
+k_1+k_2+nk_3+k_4= \Theta (n)</span></p>
+<p>Servono <span class="math inline">2^n</span> bit per scrivere il
+risultato !!!</p>
+<p>Complessità a costo logaritmico: <span class="math inline">T_{RAM}
+(n)=
+\Omicron(log(n)+n(2^{n-1}+2^{2n-2}+2^n+3log(n))+2^n)=\Omicron(n2^{2n-2})</span></p>
+<p>(Tesi) di correlazione polinomiale</p>
+<p>Sotto “ragionevoli” ipotesi di criterio di costo, se un problema è
+risolvibile mediante il modello <span class="math inline">M_1</span> con
+complessità <span class="math inline">c_1(n)</span>, allora è
+risolvibile da un qualsiasi altro modello (turing equivalente) <span
+class="math inline">M_2</span> con complessità <span
+class="math inline">c_2(n) \le \pi (c_1(n))</span>, dove <span
+class="math inline">\pi(*)</span> è un opportuno polinomio.</p>
+<h1 id="algoritmi">Algoritmi</h1>
+<p>Si usa <strong>pseudocodice</strong></p>
+<p>Esempio: Ordinamento</p>
+<p><span class="math display">
+INSERTION-SORT(A)
+\\
+for\ j :=2\ to \ A.length
+\\
+key:=A[j]
+\\
+//inserisce\ A[j]\ nella\ sequenza\ ordinata\ A[1...j-1]
+\\
+i:=j-1
+\\
+while\ i&gt;0\ and\ A[i]&gt;key
+\\
+A[i+1]:=A[i]
+\\
+i:=i-1
+\\
+A[i+1]:=key
+</span></p>
+<p>Visto che questa lezione si basa su scrivere codici e analizzarne
+solo certe parti io mi limiterò a scrivere le parti più importanti.</p>
+<ul>
+<li>Dati composti sono organizzati in oggetti</li>
+<li>Gli oggetti hanno degli attributi (il valore dell’attributo (attr.)
+di un oggetto x, scriviamo x.attr)</li>
+<li>Una variabile che corrisponde ad un oggetto è un puntatore
+all’oggetto.</li>
+</ul>
+<p>I paramentri sono passati per valore.</p>
+<p>Quando un oggetto viene passato come paramentro, ciò che viene
+passato è il <strong>puntatore</strong> all’oggetto.</p>
+<p>La macchina RAM esegue gli algoritmi in pseudocodice.</p>
+<p>Si adotta il criterio di costo costante (tempo costante <span
+class="math inline">c_i</span>) ci concentriamo solo sulla complessità
+temporale.</p>
+<p>Algoritmo ordinamento complessità temporale</p>
+<p><span
+class="math inline">T(n)=c_1n+c_2(n-1)+c_4(n-1)+c_5\Sigma_{j=2}^n
+t_j+c_7\Sigma_{j=2}^n(t_j-1)+c_8(n-1)</span></p>
+<p>Se l’array è già ordinato <span class="math inline">T(n)=an+b
+\implies T(n) = \Theta (n)</span></p>
+<p>Se ordinato ma in ordine decrescente <span
+class="math inline">T(n)=an^2+bn+c \implies T(n)=\Theta(n^2)</span></p>
+<h3 id="merg-sort-del-tipo-divide-et-impera">Merg-Sort (del tipo “divide
+et impera”)</h3>
+<p>Si ordina dividendo l’array in 2 sotto-array, si ordinano e si
+fondono.</p>
+<p><strong>Complessità di un algoritmo divide et impera</strong></p>
+<p>Equazione di ricorrenza</p>
+<p><span class="math inline">\begin{cases}
+    \Theta (1)\ se\  n&lt;c
+    \\
+    D(n) + aT(n/b)+ C(n)
+\end{cases}</span></p>
+<p><span class="math inline">a</span> si divide in sottoinsiemi di
+dimensione <span class="math inline">1/b</span> ognuno.</p>
+<p><span class="math inline">D(n)</span> costo di dividere il problema,
+<span class="math inline">C(n)</span> costo di ricombinare i
+sottoproblemi e <span class="math inline">T(n)</span> è il costo per
+risolvere il problema totale.</p>
+<p><strong>Ricorrenza per Merge-Sort</strong></p>
+<p><span class="math inline">T(n)= \begin{cases}
+    \Theta (1)\ se\  n&lt;2
+    \\
+    2T(n/2)+\Theta(n)\ altrimenti
+\end{cases}
+\\
+a=b=c=2, D(n)= \Theta(1), C(n)=\Theta(n)</span></p>
+<p><strong>Teorema dell’esperto (master theorem) <span
+class="math inline">\implies</span> NON COPRE TUTTI I CASI</strong></p>
+<p><span class="math inline">(a \ge 1, b \ge 1 \ e \ n/b\ è\ o\ \lfloor
+n/b \rfloor\ o\ \lceil n/b \rceil)</span></p>
+<ol type="1">
+<li>Se <span class="math inline">f(n) = \Omicron
+(n^{log_ba-\varepsilon}) \varepsilon &gt;0,\ allora\ T(n) =
+\Theta(n^{log_ba})</span></li>
+<li>Se <span class="math inline">f(n) = \Theta (n^{log_ba}),\ allora\
+T(n) = \Theta(n^{log_ba}log(n))</span></li>
+<li>Se <span class="math inline">f(n) = \Omega (n^{log_ba+\varepsilon})
+\varepsilon &gt;0,\ e\ af(n/b) \le cf(n)</span> per qualche <span
+class="math inline">c&lt;1</span> e per tutti gli <span
+class="math inline">n</span> grandi a sufficienza, allora <span
+class="math inline">T(n) = \Theta (f(n))</span></li>
+</ol>
+<ul>
+<li><span class="math inline">af(n/b) \le cf(n)</span> è detta
+regolarità</li>
+</ul>
+<p><strong>Teorema dell’esperto MERGE-SORT</strong></p>
+<p><span class="math inline">T(n) = 2 T(n/2) + \Theta (n)</span></p>
+<p><span class="math inline">a=b=2
+\\
+f(n)=n
+\\
+n^{log_ba}=n&#39;=n</span></p>
+<p>Secondo caso</p>
+<p><span class="math inline">T_{MERGE-SORT}(n)= \Theta
+(nlog(n))</span></p>
+<p>Caso particolare</p>
+<p>Se <span class="math inline">f(n)</span> è una funzione <span
+class="math inline">\Theta (n^k)</span> per qualche <span
+class="math inline">k</span>:</p>
+<ul>
+<li>se <span class="math inline">k &lt; log_ba</span>, allora <span
+class="math inline">T(n)= \Theta (n^{log_ba})</span></li>
+<li>se <span class="math inline">k=log_ba</span>, allora <span
+class="math inline">T(n)=\Theta (n^k log (n))</span></li>
+<li>se <span class="math inline">k&gt;log_ba</span>, allora <span
+class="math inline">T(n)=\Theta (n^k)</span></li>
+</ul>
+<p>nel <span class="math inline">3°</span> caso la regolarità è
+verificata automaticamente.</p>
+<p>Condizione di regolarità</p>
+<p>Sia <span class="math inline">T(n) = T(n/2)+n(2-cos(n)), a=1\
+b=2</span></p>
+<p><span class="math inline">f(n)=n(2-cos(n))=\Omega
+(n)&gt;n^{log_ba}=\Theta (1)</span></p>
+<h3 id="heapsort">HEAPSORT</h3>
+<p>È un algoritmo di ordinamento efficace (ordina in tempo <span
+class="math inline">\Theta (n log(n))</span>) ma ordina sul posto.</p>
+<p>Un <strong>heap binario</strong> è un albero quasi completo</p>
+<p>Un <strong>max heap</strong> è un heap tale che <span
+class="math inline">\forall</span> nodo <span
+class="math inline">x</span> dell’albero, il valore contenuto nel padre
+di <span class="math inline">x</span> è <span
+class="math inline">\ge</span> del contenuto di <span
+class="math inline">x</span>.</p>
+<p><strong>Complessità di MAX-HEAPIFY</strong></p>
+<p><span class="math inline">T_{MAX-HEAPIFY} = \Omicron (n)</span>,
+<span class="math inline">n</span> altezza albero <span
+class="math inline">= \Omicron(log(n))</span> poichè l’albero è quasi
+completo <span class="math inline">\implies
+T_{MAX-HEAPIFY}=\Omicron(log(n))</span></p>
+<h3 id="quicksort-tipo-divide-et-impera">QUICKSORT (tipo “divide et
+impera”)</h3>
+<ul>
+<li>Ordina sul posto.</li>
+<li>Caso pessimo complessità <span
+class="math inline">\Theta(n^2)</span></li>
+<li>In media <span class="math inline">\Theta (n log(n))</span></li>
+</ul>
+<h3 id="albero-di-decisione-binario">Albero di decisione (binario)</h3>
+<p><img src="assets/Albero%20di%20decisione.jpg" /></p>
+<p>Ogni albero binario di altezza <span class="math inline">n</span> ha
+un numero di foglie al più <span class="math inline">2^n</span></p>
+<p><strong>TEOREMA</strong></p>
+<p>Ogni albero di decisione di ordinamento di <span
+class="math inline">n</span> elementi ha altezza <span
+class="math inline">\Omega (nlog(n))</span></p>
+<p><strong>Ricorrenze di ordine costante</strong></p>
+<p><span class="math inline">a_i</span> intero <span
+class="math inline">\ge 0</span></p>
+<p><span class="math inline">T(n)= \begin{cases}
+    \Theta (1)\ se\  n \le m \le h
+    \\
+    \Sigma_{1\le i\le n} a_i T(n-i)+cn^k\ se\ n&gt;m
+\end{cases}
+\\
+a=\Sigma_{1\le i\le n} a_i</span></p>
+<p>se <span class="math inline">a=1</span>, allora <span
+class="math inline">T(n)= \Omicron(n^{k+1})</span></p>
+<p>se <span class="math inline">a \ge 2</span>, allora <span
+class="math inline">T(n) = \Omicron(a^n n^k)</span></p>
+<p>Esempio <span class="math inline">T(n)=T(n-1)+\Theta(n)</span>
+ottengo <span class="math inline">T(n) = \Omicron(n^2)</span></p>
+<p>Versione ricorsiva di INSERTION-SORT</p>
+<h3 id="conting-sort">Conting-Sort</h3>
+<p><span class="math inline">T= \Theta (n) \ S=\Theta (n)</span></p>
+<p>Ordinamento per conteggio, <strong>NON</strong> per confronto.</p>
+<p>Ipotesi: numeri naturali da <span class="math inline">0</span> a
+<span class="math inline">k</span>.</p>
+<p><img src="assets/Counting-Sort.jpg" /></p>
+<h1 id="strutture-dati">Strutture Dati</h1>
+<p>Le strutture dati sono usate per contenere oggetti.</p>
+<p>Rappresentano collezioni di oggetti.</p>
+<p>Spesso, ma non sempre, gli oggetti di una struttura dati hanno:</p>
+<ul>
+<li>Una chiave, per indirizzare l’oggetto</li>
+<li>Dati satelliti associati</li>
+</ul>
+<p>Due tipi di operazioni sulle strutture dati:</p>
+<ul>
+<li>Operazioni che modificano la collezione</li>
+<li>Operazioni che interrogano la collezione</li>
+</ul>
+<p><strong>ELENCO OPERAZIONI</strong></p>
+<ul>
+<li><span class="math inline">SEARCH(S,k)</span></li>
+<li><span class="math inline">INSERT(S,x)</span></li>
+<li><span class="math inline">DELETE(S,x)</span></li>
+<li><span class="math inline">MINIMUM(S)</span></li>
+<li><span class="math inline">MAXIMUM(S)</span></li>
+<li><span class="math inline">SUCCESSOR (S,x)</span></li>
+<li><span class="math inline">PREDECESSOR(S,x)</span></li>
+</ul>
+<h3 id="pila-stack">Pila (Stack)</h3>
+<p>Collezione di oggetti sulla quale fare le seguenti operazioni:</p>
+<ul>
+<li>Controllare se è vuota</li>
+<li>Inserire elementi (PUSH)</li>
+<li>Togliere elementi (POP)</li>
+</ul>
+<p>Si gestisce con la politica LIFO (Last In First Out).</p>
+<p>Si può implementare come un array.</p>
+<h3 id="coda-queue">Coda (Queue)</h3>
+<p>Simile alla pila a FIFO (First In First Out)</p>
+<p>Stesse operazioni:</p>
+<ul>
+<li>Controllare se è vuota</li>
+<li>Inserire elementi (ENQUEUE)</li>
+<li>Togliere elementi (DEQUEUE)</li>
+</ul>
+<p>N.B. DEQUEUE restituisce l’elemento tolto</p>
+<p>Anche la coda può essere implementata tramite array.</p>
+<h3 id="liste-doppiamente-concatenate">Liste (doppiamente)
+concatenate</h3>
+<p>È simile a una lista dinamica in cui ogni oggetto ha 3 attributi:</p>
+<ul>
+<li>key, contenuto dell’oggetto</li>
+<li>next, puntatore oggetto seguente</li>
+<li>prev, puntatore oggetto precedente</li>
+<li><span class="math inline">x.next = NIL</span>, <span
+class="math inline">x</span> non ha successore</li>
+<li><span class="math inline">x.prev = NIL</span>, <span
+class="math inline">x</span> non ha predecessore</li>
+</ul>
+<p>Altri tipi di lista:</p>
+<ul>
+<li>Concatenate in modo singolo
+<ul>
+<li>NO puntatore prev</li>
+</ul></li>
+<li>Ordinate
+<ul>
+<li>l’ordinamento avviene tramite chiavi, dalla minore alla
+maggiore</li>
+</ul></li>
+<li>NON Ordinate</li>
+<li>Circolari
+<ul>
+<li>.prev della testa punta alla coda, e .next della coda punta alla
+testa.</li>
+</ul></li>
+</ul>
+<p>Dizionario: insieme dinamico che supporta solo le operazioni di <span
+class="math inline">INSERT,\ DELETE,\ SEARCH.</span></p>
+<p>Si accede agli oggetti tramite le chiavi.</p>
+<p>Si assume che le chiavi siano numeri naturali.</p>
+<figure>
+<img src="assets/Indirizzamento%20Diretto.jpg"
+alt="Indirizzamento Diretto" />
+<figcaption aria-hidden="true">Indirizzamento Diretto</figcaption>
+</figure>
+<h2 id="tabelle-hash">Tabelle Hash</h2>
+<p>Una tabella hash usa una memoria proporzionale al numero di chiavi
+effettivamente memorizzate nel dizionario.</p>
+<p><strong>Idea fondamentale:</strong> oggetto di chiave <span
+class="math inline">k</span> è memorizzato in una cella di indice <span
+class="math inline">h(k)</span>, dove <span class="math inline">h</span>
+è una <strong>funzione hash.</strong></p>
+<h3 id="collisioni">Collisioni</h3>
+<p>Problema: ho <span class="math inline">|U|</span> possibili chiavi ed
+una funzione che le deve mappare su un numero <span
+class="math inline">m &lt; |U|</span> di slot o bucket della tabella</p>
+<ul>
+<li>Avrò delle chiavi diverse (molte) <span class="math inline">k_1,
+k_2</span> tali che <span class="math inline">h(k_1)=h(k_2)</span></li>
+<li>Ho <strong>collisioni</strong></li>
+</ul>
+<p>Una possibile soluzione è il concatenamento
+(<strong>chaining</strong>)</p>
+<figure>
+<img src="assets/Chaining.jpg" alt="Chaining" />
+<figcaption aria-hidden="true">Chaining</figcaption>
+</figure>
+<p>Operazioni:</p>
+<ul>
+<li><span class="math inline">INSERT</span></li>
+<li><span class="math inline">SEARCH</span></li>
+<li><span class="math inline">DELETE</span></li>
+</ul>
+<p><strong>Analisi complessità</strong></p>
+<p>Nel caso pessimo, tutti gli <span class="math inline">n</span>
+elementi vengono memorizzati nello stesso slot quindi la complessità è
+quella di cercare in una lista di <span class="math inline">n</span>
+elementi, cioè <span class="math inline">\Omicron(n)</span></p>
+<ul>
+<li>In media non accade</li>
+</ul>
+<p>Siano:</p>
+<ul>
+<li><span class="math inline">m</span> la dimensione della tabella</li>
+<li><span class="math inline">\alpha</span> il fattore di carico, <span
+class="math inline">\alpha= n/m</span></li>
+</ul>
+<p>siccome <span class="math inline">0 \le n \le |U|</span> avremo <span
+class="math inline">0 \le \alpha \le |U|/m</span></p>
+<h3 id="ipotesi-dellhashing-uniforme-semplice">Ipotesi dell’hashing
+uniforme semplice</h3>
+<p>Ogni chiave ha <span class="math inline">1/m</span> probabilità di
+finire in qualsiasi delle <span class="math inline">m</span> celle di
+<span class="math inline">T</span>, la lunghezza media di una lista
+è:</p>
+<p><span class="math inline">E[n_j]=\frac{1}{m} \Sigma_{i=1}^m n_i =
+\frac{n}{m} = \alpha</span></p>
+<p>Il tempo medio per cercare una chiave <span
+class="math inline">k</span> NON presente è <span
+class="math inline">\Theta (1+\alpha)</span> (<span
+class="math inline">\Omicron (1)</span> tempo per calcolare <span
+class="math inline">h(k)</span>)</p>
+<p><span class="math inline">\Theta (1+\alpha)</span> è il tempo anche
+per trovare una chiave <span class="math inline">k</span> presente.</p>
+<p><span class="math inline">\Omicron (1)</span> per le operazioni
+(<span class="math inline">INSERT</span>, etc.)</p>
+<h2 id="funzioni-hash">Funzioni Hash</h2>
+<p>Come si sceglie bene una funzione <span class="math inline">h</span>
+?</p>
+<p>Ne dovrei prendere una che soddisfa l’ipotesi di hashing uniforme
+semplice, per farlo devo sapere la distribuzione di probabilità (NON
+ANCHE QUIIIIIIII :( ) delle chiavi da inserire.</p>
+<p><strong>Assunzione:</strong> la chiave <span
+class="math inline">k</span> è un intero non-negativo.</p>
+<h3 id="metodo-di-divisione">Metodo di divisione</h3>
+<p><span class="math inline">h(k) = k\ mod\ m</span></p>
+<p>Ovvero prendo solo il resto della divisione.</p>
+<p>Facile da realizzare e veloce</p>
+<p>Evitare valori di <span class="math inline">m</span> come:</p>
+<ul>
+<li>potenze di 2</li>
+</ul>
+<p>di solito ad <span class="math inline">m</span> si assegna un numero
+primo lontano da una potenza di 2.</p>
+<p>Esempio</p>
+<p><span class="math display">
+h(k) = k\ mod\ m
+\\
+m=5
+\\
+Inseriamo:\ 38,12,18
+\\
+\frac{38}{5}=3\ hash(38)= 3
+\\
+si\ ha\ h(38)=3, h(12)=2, h(18)=3
+\\
+T=[NIL,NIL,lista(12),lista(18,38),NIL]
+</span></p>
+<h3 id="metodo-di-moltiplicazione">Metodo di moltiplicazione</h3>
+<p>Moltiplichiamo <span class="math inline">k</span> per una costante
+<span class="math inline">A</span> reale tale che <span
+class="math inline">0 &lt; A &lt; 1</span>, quindi prendiamo solo la
+parte ffrazionaria di <span class="math inline">kA</span>, lo
+moltiplichiamo per <span class="math inline">m</span> e prendiamo la
+parte intera.</p>
+<p>cioè <span class="math inline">h(k)=\lfloor m(kA\ mod\
+1)\rfloor</span> di cui <span class="math inline">x\ mod\ 1 = x -
+\lfloor x \rfloor</span> è la parte frazionaria di <span
+class="math inline">x</span>.</p>
+<p><span class="math inline">m</span> può essere valore di <span
+class="math inline">A</span></p>
+<p>È meglio prendere un valore di <span class="math inline">A</span> che
+sia della forma <span class="math inline">s/2^w</span> con <span
+class="math inline">w</span> dimensione della parola di memoria del
+calcolatore.</p>
+<p>Un valore di <span class="math inline">A</span> proposto (da Knuth)
+è:</p>
+<p><span class="math inline">A=(\sqrt{5}-1)/2</span></p>
+<p>Inveso sezione aurea</p>
+<p>Esempio</p>
+<p><span class="math inline">h(k)=\lfloor m(kA\ mod\ 1)\rfloor
+\\
+A=(\sqrt{5}-1)/2
+\\
+m=5
+\\
+38,18,12
+\\
+\lfloor 38*A \rfloor =0,484
+\\
+\lfloor m*(38*A) \rfloor=2
+\\
+h(38)=2,h(12)=2,h(18)=0
+\\
+T=[lista(18),NIL,lista(12,38),NIL,NIL]</span></p>
+<h3 id="indirizzamento-aperto">Indirizzamento aperto</h3>
+<p>Altro metodo per evitare collisioni</p>
+<p>La tabella contiene tutte le chiavi, senza memoria aggiuntiva.</p>
+<p>L’idea è quella di calcolare lo slot in cui va memorizzato
+l’oggetto.</p>
+<p>h ora diventa:</p>
+<p><span class="math inline">h:U \times \{0,1,...,m-1\} \to
+\{0,1,...,m-1\}</span></p>
+<p>la sequenza di ispezione deve essere una permutazione <span
+class="math inline">\lang 0,...,m-1 \rang</span></p>
+<p><strong>Analisi di complessità indirizzamento aperto</strong></p>
+<p>Ricordiamo che è necessario fare una permutazione <span
+class="math inline">m!</span> per ogni <span class="math inline">\lang
+0,...,m-1 \rang</span>.</p>
+<p>L’analisi viene fatta con fattore <span class="math inline">\alpha =
+n/m,n\le m,0 \le \alpha \le 1</span></p>
+<p>Il numero medio di ispezioni necessarie per effettuare l’inserimento
+del nuovo oggetto nella tabella è <span class="math inline">m</span> se
+<span class="math inline">\alpha=1</span>, e non più di <span
+class="math inline">\frac{1}{(1-\alpha)}</span> se <span
+class="math inline">\alpha &lt; 1</span></p>
+<p>Numero medio ispezioni per trovare un elemento presente è <span
+class="math inline">(m+1)/2</span> se <span class="math inline">\alpha
+=1</span>, non più di <span class="math inline">\frac{1}{\alpha}
+*log(1/(1-\alpha))</span> se <span
+class="math inline">\alpha&lt;1</span></p>
+<p>Tre tecniche di ispezione</p>
+<ul>
+<li>ispezione lineare</li>
+<li>ispezione quadratica</li>
+<li>doppia hashing</li>
+</ul>
+<p>Queste tre tecniche fanno uso di una <strong>funzione hash
+ausiliara</strong></p>
+<p><span class="math inline">h&#39;:U \to \{0,1,...,m-1\}</span></p>
+<h3 id="ispezione-lineare">Ispezione lineare</h3>
+<p><span class="math inline">h(k,i)=(h&#39;(k)+i)\ mod\ m</span></p>
+<p>si parte da <span class="math inline">h&#39;(k)</span> e poi <span
+class="math inline">h&#39;(k)+1</span>, fino a <span
+class="math inline">m-1</span></p>
+<p>genera solo <span class="math inline">m</span> sequenze di ispezioni
+distinte.</p>
+<p>Soffre del fenomeno dell’<strong>addensamento</strong>(clustering)
+<strong>primario</strong> - lunghe celle occupate consecutivamente che
+aumentano il tempo medio di ricerca</p>
+<p>Esempio <span class="math display">
+h(k,i)=(h&#39;(k)+i)\ mod\ m
+\\
+m=5
+\\
+h&#39;(k)=k\ mod\ m
+\\
+38,12,18
+\\
+h(38,0)=3, h(12,0)=2, h(18,0)=3\ occupato!!
+\\
+allora\ h(18,1)=4
+\\
+T=[NIL, NIL, 12, 38, 18]
+\\
+Cancelliamo\ 38 : T=[NIL,NIL,12,DEL,18]
+\\
+Inseriamo\ 43\ h(43,0)=3 \to T=[NIL,NIL,12,43,18]
+</span></p>
+<h3 id="ispezione-quadratica">Ispezione quadratica</h3>
+<p><span class="math inline">h(k,i)=(h&#39;(k)+c_1i+c_2i^2)\ mod\
+m</span></p>
+<ul>
+<li><span class="math inline">c_1</span> e <span
+class="math inline">c_2</span> costanti ausiliarie <span
+class="math inline">(c_2 \not ={0})</span></li>
+<li><span class="math inline">c_1</span> e <span
+class="math inline">c_2</span> scelti in modo che si percorra tutta la
+tabella</li>
+<li>come prima <span class="math inline">m</span> sequenze di ispezione
+distinte</li>
+<li>Soffre dell’<strong>addensamento secondario</strong>
+<ul>
+<li>chiavi con stessa posizione iniziale danno luogo alla stessa
+sequenza di ispezione</li>
+</ul></li>
+</ul>
+<h3 id="hashing-doppio">Hashing doppio</h3>
+<p><span class="math inline">h(k,i)=(h_1(k)+ih_2(k))\ mod\ m</span></p>
+<ul>
+<li><span class="math inline">h_1</span> e <span
+class="math inline">h_2</span> sono funzioni hash ausiliarie <span
+class="math inline">\to h_2</span> deve essere primo rispetto a <span
+class="math inline">m</span></li>
+<li>numero di sequenza generate ora è <span class="math inline">\Theta
+(n^2)</span> in quanto ogni coppia <span class="math inline">(h_1(k),
+h_2(k))</span> produce una sequenza di ispezione distinta.</li>
+</ul>
+<h1 id="alberi-e-grafi">Alberi e grafi</h1>
+<h2 id="alberi-binari">Alberi Binari</h2>
+<p>Gli alberi binari si rappresentano mediante strutture dati
+concatenate, ogni noda ha:</p>
+<ul>
+<li>key, chiave del nodo.</li>
+<li>p, puntatore al nodo padre.</li>
+<li>left, puntatore al sottoalbero sinistro.</li>
+<li>right, puntatore al sottoalbero destro.</li>
+</ul>
+<p>Ogni albero <span class="math inline">T</span> ha un attributo, <span
+class="math inline">T.root</span>, che è il puntatore alla radice
+dell’albero.</p>
+<p><span class="math inline">x.p=NIL</span> sse è la radice.</p>
+<p><span class="math inline">s.left=NIL</span> se sottoalbero sinistro
+del nodo è vuoto.</p>
+<p><span class="math inline">s.right=NIL</span> se è quello destro.</p>
+<figure>
+<img src="assets/Alberi%20Binari/Nodo.jpg" alt="Nodo ed albero" />
+<figcaption aria-hidden="true">Nodo ed albero</figcaption>
+</figure>
+<p>Ogni padre ha al massimo 2 figli.</p>
+<h3 id="binary-search-tree">Binary Search Tree</h3>
+<p>È un albero che soddisfa la seguente proprietà:</p>
+<p><strong>per tutti i nodi <span class="math inline">x</span> del BST,
+se <span class="math inline">l</span> è un nodo nel sottoalbero
+sinistro, allora <span class="math inline">l.key \le x.key</span>, se
+<span class="math inline">r</span> è un nodo del sottoalbero destro,
+allora <span class="math inline">x.key \le r.key</span></strong></p>
+<figure>
+<img src="assets/Alberi%20Binari/Proprietà%20Alberi%20binari.jpg"
+alt="Proprietà degli alberi binari di ricerca" />
+<figcaption aria-hidden="true">Proprietà degli alberi binari di
+ricerca</figcaption>
+</figure>
+<figure>
+<img src="assets/Alberi%20Binari/Albero%20Ricerca%20Binaria.jpg"
+alt="Esempio BST" />
+<figcaption aria-hidden="true">Esempio BST</figcaption>
+</figure>
+<p>Operazione tipica: attraversamento(walk through)</p>
+<p>Scopo: produrre gli elementi dell’albero.</p>
+<p>Attraversamento simmetrico (<strong>inorder tree walk</strong>):</p>
+<ul>
+<li>prima sinistro e si retsituisce</li>
+<li>poi radice e si restituisce</li>
+<li>poi destro e si restituisce</li>
+</ul>
+<p><strong>Algoritmo ricorsivo</strong></p>
+<p>Altre stratege di attraversamento</p>
+<ul>
+<li>Anticipato (<strong>preorder tree walk</strong>), prima radice e poi
+sottoalberi come prima</li>
+<li>Posticipato (<strong>postorder tree walk</strong>), prima
+sottoalberi come prima e per ultima la radice.</li>
+</ul>
+<h4 id="operazioni-sui-bst">Operazioni sui BST</h4>
+<p><strong>Ricerca (algoritmo intuitivo)</strong></p>
+<p>Tempo di esecuzione <span class="math inline">\Omicron(h)</span>,
+<span class="math inline">h</span> altezza albero.</p>
+<p><strong>Massimo e minimo</strong></p>
+<p>Anche qui è intuitivo soprattutto se si ricorda la priprietà del
+BST.</p>
+<p>Tempo <span class="math inline">\Omicron(h)</span></p>
+<p><strong>Successore e Predecessore</strong></p>
+<p>Il successore (predecessore) di un oggetto <span
+class="math inline">x</span> in un BST è l’elemento <span
+class="math inline">y</span> del BST tale che <span
+class="math inline">y.key</span> è la più piccola (grande) tra le chiavi
+che sono più grandi (piccole) di <span
+class="math inline">x.key</span>.</p>
+<p>Tempo <span class="math inline">\Omicron(h)</span></p>
+<figure>
+<img src="assets/Alberi%20Binari/Successore%20e%20Predecessore.jpg"
+alt="Esempio di successore e predecessore" />
+<figcaption aria-hidden="true">Esempio di successore e
+predecessore</figcaption>
+</figure>
+<p><strong>Inserimento</strong></p>
+<p>Idea banale con confronto si trova il posto dell’elemento e si
+inserisce.</p>
+<p><strong>Cancellazione</strong></p>
+<p>Idea banale ma con 3 casistiche ovvero l’elemneto <span
+class="math inline">z</span> da cancellare:</p>
+<ul>
+<li>non ha sottoalberi</li>
+<li>ha 1 sottoalbero</li>
+<li>ha 2 sottoalberi</li>
+</ul>
+<p>Primo caso semplice si mette a <span class="math inline">NIL</span>
+il puntatore del padre.</p>
+<figure>
+<img src="assets/Alberi%20Binari/Primo%20caso%20eliminazione.jpg"
+alt="Primo caso cancellazione" />
+<figcaption aria-hidden="true">Primo caso cancellazione</figcaption>
+</figure>
+<p>Secondo caso si sposta <strong>tutto</strong> il sottoalbero all’insù
+di un livello.</p>
+<figure>
+<img src="assets/Alberi%20Binari/Secondo%20caso%20eliminazione.jpg"
+alt="Secondo caso cancellazione" />
+<figcaption aria-hidden="true">Secondo caso cancellazione</figcaption>
+</figure>
+<p>Terzo caso si trova il successore dell’elemento da cancellare e si
+sostituisce con l’elemento cancellato spostando il sottoalbero.</p>
+<figure>
+<img src="assets/Alberi%20Binari/Terzo%20caso%20eliminazione.jpg"
+alt="Terzo caso cancellazione" />
+<figcaption aria-hidden="true">Terzo caso cancellazione</figcaption>
+</figure>
+<p>Tempo <span class="math inline">\Omicron(h)</span></p>
+<p>Tutte le operazioni sui BST hanno tempo <span
+class="math inline">\Omicron (h)</span></p>
+<p><strong>Altezza BST</strong></p>
+<p>Per un albero completo <span class="math inline">h=\Theta
+(log(n))</span></p>
+<p>Caso pessimo (in linea), <span
+class="math inline">h=\Theta(n)</span></p>
+<figure>
+<img src="assets/Alberi%20Binari/Albero%20binario%20brutto.jpg"
+alt="Caso pessimo" />
+<figcaption aria-hidden="true">Caso pessimo</figcaption>
+</figure>
+<h4 id="alberi-bilanciati">Alberi bilanciati</h4>
+<p><span class="math inline">\Theta (log(n))</span> anche nel caso di
+alberi bilanciati.</p>
+<p>Un albero è bilanciato sse non ci sono 2 foglie nell’albero tali che
+una è “molto più lontana” dalla radice, banalmente devono essere alla
+stessa altezza o al massimo avere una differenza di altezza di 1.</p>
+<p>Diverse tecniche per mantenere un albero bilanciato:</p>
+<ul>
+<li>alberi rosso-neri (red-black)</li>
+<li>alberi AVL (Adelson-Velskii e Landis)</li>
+<li>Altri</li>
+</ul>
+<p>L’altezza attesa di un albero costruito inserendo le chiavi in ordine
+casuale con distribuzione uniforme è <span
+class="math inline">\Omicron(log(n))</span></p>
+<h3 id="alberi-r-b">Alberi R-B</h3>
+<p>Altezza <span class="math inline">\Omicron (log(n))</span></p>
+<p>Operazioni più importanti in tempo <span
+class="math inline">\Omicron(log(n))</span></p>
+<p>È un albero bilanciato.</p>
+<p>Idea:</p>
+<ul>
+<li>Ogni nodo ha un colore, rosso o nero.</li>
+<li>Colori distribuiti in modo che non si superi una differenza di
+altezza pari a 2.</li>
+</ul>
+<p>Ogni nodo ha 5 attributi:</p>
+<ul>
+<li>key</li>
+<li>left</li>
+<li>right</li>
+<li>p</li>
+<li>color</li>
+</ul>
+<p>Un BST è un RB se soddisfa queste 5 proprietà:</p>
+<ol type="1">
+<li>Ogni nodo è o nero o rosso.</li>
+<li>La radice è nera.</li>
+<li>Le foglie <span class="math inline">(NIL)</span> sono tutte
+nere</li>
+<li>I figli di un nodo rosso sono entrambi neri.</li>
+<li>Per ogni nodo <span class="math inline">x</span> tutti i cammini da
+<span class="math inline">x</span> alle foglie sue discendenti
+contengono lo stesso numero <span class="math inline">bh(x)</span> di
+nodi neri.
+<ul>
+<li><span class="math inline">bh</span> (black height)</li>
+<li>il nodo <span class="math inline">x</span> non è contato</li>
+</ul></li>
+</ol>
+<figure>
+<img src="assets/Alberi%20Binari/Albero%20RB.jpg"
+alt="Esempio albero RB" />
+<figcaption aria-hidden="true">Esempio albero RB</figcaption>
+</figure>
+<p>Un albero RB con <span class="math inline">n</span> nodi interni ha
+altezza <span class="math inline">h \le 2log_2(n+1)</span>.</p>
+<p>Il numero di nodi interni di un sottoalbero con radice <span
+class="math inline">x</span> è <span class="math inline">\ge
+2^{bh(x)}-1</span>.</p>
+<p>Per la 4<span class="math inline">^a</span> priprietà almeno metà dei
+nodi dalla radice <span class="math inline">x</span> ad una foglia sono
+neri, quindi <span class="math inline">bh(x) \ge h/2</span>, e <span
+class="math inline">n \ge 2^{h/2}-1</span>, da cui si discende <span
+class="math inline">h \le 2log_2(n+1)</span></p>
+<p>Come conseguenza le operazioni richiedono tempo <span
+class="math inline">\Omicron(log(n))</span></p>
+<p><span class="math inline">INSERT</span> e <span
+class="math inline">DELETE</span> funzionano come prima ma con una
+modifica per mantenere la 5<span class="math inline">^a</span>
+proprietà, ovvero una rotazione a destra (<span
+class="math inline">RIGHT-ROTATE</span>) o sinistra (<span
+class="math inline">LEFT-ROTATE</span>)</p>
+<figure>
+<img src="assets/Alberi%20Binari/Rotazione%20alberi%20binari%20RB.jpg"
+alt="ROtazioni" />
+<figcaption aria-hidden="true">ROtazioni</figcaption>
+</figure>
+<p><strong>Inserimento</strong></p>
+<p>Uguale a BST ma ruotando per ristabilire le proprietà se necessario,
+si chiama <span class="math inline">INSERT-FIXUP</span>.</p>
+<p><span class="math inline">RB-INSERT-FIXUP</span> sempre su un nodo
+<span class="math inline">z</span> tale che <span
+class="math inline">z.color=RED</span>.</p>
+<p>L’inserimento può dare vita ha 3 casistiche:</p>
+<p>Primo caso: <span class="math inline">y</span> rosso</p>
+<figure>
+<img src="assets/Alberi%20Binari/Primo%20caso%20inserimento%20RB.jpg"
+alt="Primo caso inserimento RB" />
+<figcaption aria-hidden="true">Primo caso inserimento RB</figcaption>
+</figure>
+<p>Secondo caso: <span class="math inline">y</span> nero e <span
+class="math inline">z</span> figlio destro di <span
+class="math inline">x</span></p>
+<figure>
+<img src="assets/Alberi%20Binari/Secondo%20caso%20inserimento%20RB.jpg"
+alt="Secondo caso inserimento RB" />
+<figcaption aria-hidden="true">Secondo caso inserimento RB</figcaption>
+</figure>
+<p>Terzo caso: <span class="math inline">y</span> nero e <span
+class="math inline">z</span> figlio sinistro di <span
+class="math inline">x</span></p>
+<figure>
+<img src="assets/Alberi%20Binari/Terzo%20caso%20inserimento%20RB.jpg"
+alt="Terzo caso inserimento RB" />
+<figcaption aria-hidden="true">Terzo caso inserimento RB</figcaption>
+</figure>
+<p>Può essere invocato <span class="math inline">\Omicron(h)</span>
+volte, cioè <span class="math inline">\Omicron(log(n))</span></p>
+<p><strong>Funzionamento di <span
+class="math inline">RB-DELETE</span></strong></p>
+<p>Uguale al <span class="math inline">DELETE</span> ma con <span
+class="math inline">T.nil</span> al posto di <span
+class="math inline">NIL</span>.</p>
+<p>Se viene cancellato un nodo rosso non c’è problema.</p>
+<p>Per com’è fatto viene eliminato un nodo <span
+class="math inline">(y)</span> con al più un figlio diverso da <span
+class="math inline">T.nil</span>, e se <span
+class="math inline">y.color=RED</span> il nodo <span
+class="math inline">x</span> che prende il posto di <span
+class="math inline">y</span> è perforza nero.</p>
+<p>Se invece <span class="math inline">y</span> è nero si può aver
+violato delle proprietà:</p>
+<ul>
+<li>1(radice rossa, se <span class="math inline">y</span> è la radice e
+<span class="math inline">x</span> è rosso)</li>
+<li>3(due rossi consecutivi se <span class="math inline">y.p</span> e
+<span class="math inline">x</span> sono rossi)</li>
+<li>5 (i cammini con <span class="math inline">y</span> hanno un nero in
+meno)</li>
+</ul>
+<p>5 casistiche:</p>
+<p>Caso 0: <span class="math inline">x</span> è un nodo rosso, oppure è
+la radice (ricordo che viene eliminato <span
+class="math inline">y</span>)</p>
+<figure>
+<img src="assets/Alberi%20Binari/Caso%20zero%20eliminazione%20RB.jpg"
+alt="Caso zero" />
+<figcaption aria-hidden="true">Caso zero</figcaption>
+</figure>
+<p>Caso 1: <span class="math inline">x</span> è un nodo nero, il suo
+fratello destro <span class="math inline">w</span> è rosso, e di
+conseguenza il padre <span class="math inline">x.p</span> è nero.</p>
+<figure>
+<img src="assets/Alberi%20Binari/Primo%20caso%20eliminazione%20RB.jpg"
+alt="Caso primo" />
+<figcaption aria-hidden="true">Caso primo</figcaption>
+</figure>
+<p>Caso 2: <span class="math inline">x</span> è nero, suo fraltello
+destro è nero con figli entrambi neri.</p>
+<figure>
+<img src="assets/Alberi%20Binari/Secondo%20caso%20eliminazione%20RB.jpg"
+alt="Caso secondo" />
+<figcaption aria-hidden="true">Caso secondo</figcaption>
+</figure>
+<p>Caso 3: <span class="math inline">x</span> è nero, suo fratello
+destro <span class="math inline">w</span> è nero con figlio sinistro
+rosso e figlio destro nero.</p>
+<figure>
+<img src="assets/Alberi%20Binari/Terzo%20caso%20eliminazione%20RB.jpg"
+alt="Caso terzo" />
+<figcaption aria-hidden="true">Caso terzo</figcaption>
+</figure>
+<p>Caso 4: <span class="math inline">x</span> è nero, suo fratello
+destro <span class="math inline">w</span> è nero con figlio destro
+rosso.</p>
+<figure>
+<img src="assets/Alberi%20Binari/Quarto%20Caso%20eliminazione%20RB.jpg"
+alt="Caso quarto" />
+<figcaption aria-hidden="true">Caso quarto</figcaption>
+</figure>
+<h2 id="grafi">Grafi</h2>
+<h3 id="richiamo-ai-grafi">Richiamo ai grafi</h3>
+<p>Un grafo è una coppia <span class="math inline">G=(V,E)</span> in
+cui:</p>
+<ul>
+<li><span class="math inline">V</span> è un insieme di nodi (detti
+vertici)</li>
+<li><span class="math inline">E</span> è un insieme di archi (detti
+anche lati, o edges)</li>
+</ul>
+<p>Un arco è una connessione tra 2 vertici</p>
+<ul>
+<li>2 vertici connessi da un arco sono detti adiacenti</li>
+<li>se un arco e connette 2 vertici <span class="math inline">u</span> e
+<span class="math inline">v</span>, può essere rappresentato dalla
+coppia <span class="math inline">(u,v)</span> di vertici che connette,
+quindi <span class="math inline">E \sube V^2</span></li>
+<li><span class="math inline">|V|</span> è il numero di vertici del
+grafo, mentre <span class="math inline">|E|</span> è il numero di archi,
+<span class="math inline">0 \le |E| \le |V|^2</span></li>
+</ul>
+<p>Ci sono 2 tipi di grafi: orientati e non orientati.</p>
+<ul>
+<li>In un grafo non orientato, un arco <span
+class="math inline">(u,v)</span> è lo stesso di <span
+class="math inline">(v,u)</span> (non c’è direzione)</li>
+<li>In un grafo orientato <span class="math inline">(u,v)</span> “va
+dal” nodo <span class="math inline">u</span> “al” nodo <span
+class="math inline">v</span>, ed è diverso da <span
+class="math inline">(v,u)</span>.</li>
+</ul>
+<figure>
+<img src="assets/Grafi/Grafo%20NON%20Orientato.jpg"
+alt="Grafo NON orientato" />
+<figcaption aria-hidden="true">Grafo NON orientato</figcaption>
+</figure>
+<figure>
+<img src="assets/Grafi/Grafo%20Orientato.jpg" alt="Grafo orientato" />
+<figcaption aria-hidden="true">Grafo orientato</figcaption>
+</figure>
+<p><strong>Rappresentazione di grafi in memoria</strong></p>
+<p>2 tecniche principali:</p>
+<ul>
+<li>liste di adiacenza</li>
+<li>matrice di adiacenza</li>
+</ul>
+<p><img
+src="data:image/png;base64,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"
+alt="" /></p>
+<figure>
+<img src="assets/Grafi/Matrice%20e%20Lista%20Orientato.jpg"
+alt="Matrice di adiacenza e Lista di adiacenza per l garfo orientato qui sopra" />
+<figcaption aria-hidden="true">Matrice di adiacenza e Lista di adiacenza
+per l garfo orientato qui sopra</figcaption>
+</figure>
+<h4 id="diiensione-delle-rappresentazioni-dei-grafi">DIiensione delle
+rappresentazioni dei grafi</h4>
+<p>Nel caso di liste di adiacenza abbaimo un array di liste:</p>
+<ul>
+<li>una lista per ogni nodo del grafo</li>
+<li>per ogni vertice <span class="math inline">v</span>, la lista
+corrispondente contiene i vertici adiacenti a <span
+class="math inline">v</span>.</li>
+</ul>
+<p>Nella matrice di adiacenza <span class="math inline">M</span>,
+l’elemento <span class="math inline">m_{ij}</span> è 1 se c’è un arco
+dal nodo <span class="math inline">i</span> al <span
+class="math inline">j</span>, 0 altrimenti.</p>
+<p>In entrambi i casi, dato un nodo <span class="math inline">u</span>
+in un grafo <span class="math inline">G</span>, l’attributo <span
+class="math inline">u.Adj</span> rappresenta l’insieme di vertici
+adiacenti a <span class="math inline">u</span>.</p>
+<p>Liste di Adiacenza:</p>
+<ul>
+<li>Numero totale di elementi nelle liste è <span
+class="math inline">|E|</span>.</li>
+<li>Numeri di elementi nell’array è <span
+class="math inline">|V|</span>.</li>
+<li>Complessità spaziale <span class="math inline">\Theta
+(|V|+|E|)</span></li>
+</ul>
+<p>Matrice di Adiacenza:</p>
+<ul>
+<li>La dimensione della matrice è <span
+class="math inline">|V|^2</span>, complessità <span
+class="math inline">\Theta (|V|^2)</span></li>
+</ul>
+<p>Liste migliori quando <span class="math inline">|E| \not ={\Theta
+(|V|^2)}</span>, cioè grafo sparso, si ricorda <span
+class="math inline">|E| \le |V|^2</span> cioè <span
+class="math inline">|E|=\Omicron (|V|^2)</span>.</p>
+<p>Se grafo completo (o quasi), tanto vale usare la matrice.</p>
+<p>Un grafo è completo quando per ogni coppia di nodi <span
+class="math inline">u</span> e <span class="math inline">v</span>, sia
+l’arco <span class="math inline">(u,v)</span> che l’arco <span
+class="math inline">(v,u)</span> sono in <span
+class="math inline">E</span>.</p>
+<h4 id="rappresentazione-di-grafi-non-orientati">Rappresentazione di
+grafi non orientati</h4>
+<p>L’arco <span class="math inline">(u,v)</span> non orientato come 2
+archi orientati uno da <span class="math inline">u</span> a <span
+class="math inline">v</span> e uno da <span class="math inline">v</span>
+a <span class="math inline">u</span>.</p>
+<figure>
+<img src="assets/Grafi/Matrice%20e%20Lista%20non%20Orientato.jpg"
+alt="Matrice e Lista di adiacenza di un grafo NON orientato" />
+<figcaption aria-hidden="true">Matrice e Lista di adiacenza di un grafo
+NON orientato</figcaption>
+</figure>
+<p>Matrice di adiacenza simmetrica, quindi basta guardare la diagonale
+superiore principale.</p>
+<h3 id="visita-in-ampiezza-breadth-first-search">Visita in Ampiezza
+(Breadth-First Search)</h3>
+<p>Problema:</p>
+<ul>
+<li>input: un grafo <span class="math inline">G</span>, e un nodo <span
+class="math inline">s</span> (sorgente) di <span
+class="math inline">G</span>.</li>
+<li>output: visitare tutti i nodi di <span class="math inline">G</span>
+che sono raggiungibili da <span class="math inline">s</span>.</li>
+</ul>
+<p><strong>Algoritmo Breadth-First Search</strong></p>
+<p>Idea: prima visitiamo i nodi che distano 1 da <span
+class="math inline">s</span>, poi 2, poi 3, etc.</p>
+<p>Qunado si visita un nodo, si tiene traccia della distanza da <span
+class="math inline">s</span> in un attributo <span
+class="math inline">u.dist</span>.</p>
+<p>Mentre si visitano i nodi si colorano:</p>
+<ul>
+<li>bianco, NON visitato</li>
+<li>grigio, visitato ma dobbiamo ancora visitare i nodi adiacenti</li>
+<li>nero, visitato e concluso</li>
+</ul>
+<p>Complessità di BFS <span class="math inline">\Omicron (|V| +
+|E|)</span></p>
+<h3 id="ricerca-in-profondità-depth-first-search">Ricerca in Profondità
+(Depth-First Search)</h3>
+<p>BFS politica FIFO</p>
+<p>DFS invece LIFO</p>
+<p>Idea: ogni volta che mettiamo un nodo in cima allo stack, si comincia
+subito a visitare i nodi adiacenti.</p>
+<p>Problema risolto dall’algoritmo DFS</p>
+<ul>
+<li>input: un grafo <span class="math inline">G</span></li>
+<li>output: visitare tutti i nodi di <span class="math inline">G</span>,
+con BFS si raggiungono solo i nodi raggiungibili da <span
+class="math inline">s</span></li>
+</ul>
+<p>DFS usato spesso come sottoalgoritmo, stessa colorazione di BFS.</p>
+<p>Complessità di DFS è <span class="math inline">\Theta (|V| +
+|E|)</span>.</p>
+<h3 id="grafo-orientato-aciclico">Grafo Orientato Aciclico</h3>
+<p>Supponiamodi avere un grafo orientato aciclico (directed acyclic
+grafh, DAG) che rappresenta le precedenze tra gli eventi.</p>
+<p>Esempio</p>
+<p><img
+src="data:image/png;base64,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"
+alt="" /></p>
+<h3 id="ordinamento-topologico">Ordinamento Topologico</h3>
+<p>Un ordinamento topologico di un DAG è un ordinamento lineare dei nodi
+del grafo tale che, se nel DAG c’è un arco <span
+class="math inline">(u,v)</span>, allora nodo <span
+class="math inline">u</span> precede <span
+class="math inline">v</span>.</p>
+<p>Esempio con il grafo sopra:</p>
+<figure>
+<img src="assets/Grafi/Ordinamento%20Topologico.jpg"
+alt="Ordinamento Topologico" />
+<figcaption aria-hidden="true">Ordinamento Topologico</figcaption>
+</figure>
+<ul>
+<li>Ordinamento topologico fornisce ordinamento che rispetta le
+precedenze degli eventi.</li>
+<li>Problema del DAG:
+<ul>
+<li>input: un DAG <span class="math inline">G</span></li>
+<li>output: ordinamentto topologico di <span
+class="math inline">G</span></li>
+</ul></li>
+</ul>
+<p>Idea:</p>
+<ul>
+<li>Visito DAG con algoritmo DFS.</li>
+<li>Quando un nodo <span class="math inline">u</span> di <span
+class="math inline">G</span> viene colorato di nero, inseriamo il nodo
+<span class="math inline">u</span> in testa alla lista.</li>
+<li>Restituisco la lista.</li>
+</ul>
+<p>Tempo: <span class="math inline">\Theta (|V|+|E|)</span>.</p>
+<h1 id="argomenti-avanzati-non-presenti-nellesame">Argomenti Avanzati
+(NON presenti nell’esame)</h1>
+<h3 id="cammini-minimi">Cammini Minimi</h3>
+<p>Si vuole avere il cammino minimo tra due nodi.</p>
+<p>Ingresso: <span class="math inline">G=(V,E)</span> orientato,
+funzione di peso <span class="math inline">W:E\to R</span></p>
+<p>Peso cammino</p>
+<p><span class="math inline">p= \lang v_0, v_1,...,v_k\rang
+\\
+W(p)=\Sigma_{i=1}^k w(v_{i-1},v_i)</span></p>
+<p>Peso cammino minimo tra <span class="math inline">u</span> e <span
+class="math inline">v</span>:</p>
+<p><span class="math display">
+\delta (u,v)=\begin{cases}
+    min\{w(p):u \to^p v\}\ se\ esiste\ cammino\ p\ da\ u\ a\ v
+    \\
+    \infty\ altrimenti
+\end{cases}
+</span></p>
+<p>Non sono ammessi cicli negativi.</p>
+<p>Calcoliamo i cammini minimi da nodo fissato <span
+class="math inline">s</span>.</p>
+<p>Uscita:<span class="math inline">\forall v \in V: d[v]=\delta
+(s,v)</span></p>
+<ul>
+<li>inizio <span class="math inline">d[v]=\infty</span></li>
+<li>Progressivamente ridotto, ma <span class="math inline">d[v] \ge
+\delta (s,v)</span> sempre.</li>
+<li><span class="math inline">d[v]</span> stima di cammino minimo.</li>
+<li><span class="math inline">Pi[v]=</span> predecessore di <span
+class="math inline">v</span> nel cammino min da <span
+class="math inline">s</span>.</li>
+</ul>
+<h3 id="programmazione-dinamica">Programmazione dinamica</h3>
+<p>Come divide-et-impera, si scompone il problema, si risolvono i
+sotto-problemi e si ricompone.</p>
+<p>Spesso usata per l’ottimizzazione.</p>
+<p><strong>Problema:Taglio delle aste</strong></p>
+<ul>
+<li>Prezzo asta dipende dalla lunghezza</li>
+<li>Problema: date delle aste di lunghezza <span
+class="math inline">n</span> che posso tagliare in pezzi più corti,
+trovare il modo ottimale di tagliare le aste per massimizzare il ricavo
+che posso derivare dalla vendita delle aste.</li>
+<li>Potrei vendere l’asta intera.</li>
+</ul>
+<p>Esempio tabella</p>
+<p><img src="assets/Argomenti%20Avanzati/Aste.png" /></p>
+<p>Se asta lunga 4 posso vederlo: <span
+class="math inline">[4](9);[1,3](9);[2,2](10);[3,1](9);[1,1,2](7);[1,2,1](7);[2,1,1](7);[1,1,1](4)</span></p>
+<p>taglio ottimale:<span class="math inline">[2,2]</span></p>
+<p>Data lunghezza <span class="math inline">n</span>, ci sono <span
+class="math inline">2^{n-1}</span> modi di taglio.</p>
+<p><span class="math inline">r_n</span> ricavo massimo.</p>
+<p><span class="math inline">r_4=10,r_{10}=30</span>(venduta
+intera).</p>
+<p><span class="math inline">r_n</span> è della forma <span
+class="math inline">r_i+r_{n-1}</span></p>
+<p>In altre parole:</p>
+<p><span class="math inline">r_n=max(p_n,r_1+r_{n-1},...,r_{n-1}+r_1)
+\implies r_n = max_{1\le i\le n}(p_i+r_{n-i})</span>.</p>
+<p>Procedura ricorsiva di questa espressione ha costo temporale: <span
+class="math inline">T(n)=c+\Sigma_{j=0}^{n-1} T(j)</span></p>
+<h3 id="algoritmi-golosi">Algoritmi golosi</h3>
+<p>A volte non serve provare tutte le soluzioni basta dimostrare che sia
+una quella ottimale, ciò è chiamato algoritmo goloso (greedy).</p>
+<p>In generale gli algoritmi golosi si muovono per ottimi locali
+(soluzioni).</p>
+<p>Spesso in problemi difficili però l’ottimo locale rappresenta una
+buona approsimazione dell’ottimo globale.</p>
+<p><span class="math inline">n</span> attivita <span
+class="math inline">a_1,a_2,...,a_n</span> usano stessa risorsa.</p>
+<p>Ogni <span class="math inline">a_i</span> ha un tempo di inizio <span
+class="math inline">s_i</span> ed un tempo di fine <span
+class="math inline">f_i</span> con <span class="math inline">s_i
+&lt;f_i</span>.</p>
+<p><span class="math inline">a_i</span> occupa la risorsa
+nell’intervallo temporale <span
+class="math inline">[s_i,f_i)</span>.</p>
+<p><span class="math inline">a_i</span> e <span
+class="math inline">a_j</span> compatibili se <span
+class="math inline">[s_i,f_i)</span> e <span
+class="math inline">[s_j,f_j)</span> disgiunti.</p>
+<p>Esempio</p>
+<p><img src="assets/Argomenti%20Avanzati/Esempio.png" /></p>
+<p>Insieme di attività computabili : <span class="math inline">\{a_3,
+a_9, a_{11}\}</span>.</p>
+<p>Max numero attività computabili: 4</p>
+<p>Esempio: <span class="math inline">\{a_2, a_4, a_9,
+a_{11}\}</span>.</p>
+<p>Definiamo <span class="math inline">s_{ij}</span> l’insieme delle
+attività che iniziano dopo la fine di <span
+class="math inline">a_i</span> e terminano prima dell’inizio di <span
+class="math inline">a_j</span>.</p>
+<p><span class="math inline">A_{ij}</span> insieme massimo attività
+computabili in <span class="math inline">S_{ij}</span>.</p>
+<p>Mettiamo in una tabella <span class="math inline">c</span>, <span
+class="math inline">c[i,j]=|A_{ij}|</span></p>
+<p><span class="math inline">\implies c[i,j]=c[i,k]+c[k,j]+1</span>.</p>
+<p>Per risolvere il problema di ottimizzazione basta ogni volta
+scegliere l’attività che finisce prima, quindi ripetere l’operazione
+sulle attività che iniziano dopo quella scelta.</p>
+<p>Complessità <span class="math inline">\Theta(n)</span>.</p>
+<h3 id="complessità-e-non-determinismo">Complessità e non
+determinismo</h3>
+<p>Data funzione <span class="math inline">T(n)</span>, indichiamo con
+<span class="math inline">DTIME(T)</span> l’insieme dei problemi tali
+che esiste un algorirmo che li risolve in tempo <span
+class="math inline">T(n)</span>.</p>
+<p><span class="math inline">DTIME(T)</span> classe dei linguaggi
+riconducibili in tempo <span class="math inline">T</span> mediante
+macchine di Turing deterministiche a <span class="math inline">k</span>
+nastri di memoria, idem <span class="math inline">DSPACE(T)</span>.</p>
+<p><span class="math inline">NTIME(T)</span> e <span
+class="math inline">NSPACE(T)</span> uguali ma macchine Turing non
+deterministiche.</p>
+<p>Fondamentale classe di problemi:</p>
+<p><span class="math inline">P=U_{i\ge 1} DTIME(O(n^i))</span>, chiamati
+trattabili.</p>
+<p><span class="math inline">NP=U_{i \ge 1} NTIME(O(n^i))</span></p>
+<p><span class="math inline">P=NP?</span> Probabilmente no, ma non si è
+ancora dimostrato.</p>
+<p><span class="math inline">\mathcal{L}</span> classe di linguaggi,
+diciamo che un linguaggio L è <span
+class="math inline">\mathcal{L}</span>-difficile rispetto alle riduzioni
+in tempo polinomiale sse, <span class="math inline">\forall L&#39; \in
+\mathcal{L}</span>, è riducibile in tempo polinomiale a L.</p>
+<p>L è <span class="math inline">\mathcal{L}</span>-completo se è <span
+class="math inline">\mathcal{L}</span>-difficile ed è in <span
+class="math inline">\mathcal{L}</span>.</p>
+<h3 id="computer-quantistici">Computer quantistici</h3>
+<p>Qubit può non solo trovarsi a <span class="math inline">0</span> e
+<span class="math inline">1</span>, ma anche in sovrapposizione tra i
+due stati.</p>
+<p><strong>Supremazia quantistica:</strong> risolve problemi difficili
+molto più efficiente che con i computer classici.</p>
+<p>I computer quantistici possono risolvere efficientemente i problemi
+<span class="math inline">NP-</span>difficili? No.</p>
+<h1 id="algoritmi-1">Algoritmi</h1>
+<p>Qui sono presenti tutti gli algoritmi presentati in pseudo-codice</p>
+<figure>
+<img src="assets/Algoritmi/Inserention-sort.png" alt="Insertion-Sort" />
+<figcaption aria-hidden="true">Insertion-Sort</figcaption>
+</figure>
+<figure>
+<img src="assets/Algoritmi/Merge-sort.png" alt="Merge Sort" />
+<figcaption aria-hidden="true">Merge Sort</figcaption>
+</figure>
+<figure>
+<img src="assets/Algoritmi/Merge.png" alt="Merge" />
+<figcaption aria-hidden="true">Merge</figcaption>
+</figure>
+<figure>
+<img src="assets/Algoritmi/Counting-sort.png" alt="Counting-sort" />
+<figcaption aria-hidden="true">Counting-sort</figcaption>
+</figure>
+<figure>
+<img src="assets/Algoritmi/Heap%20Family.png" alt="Heap Family" />
+<figcaption aria-hidden="true">Heap Family</figcaption>
+</figure>
+<figure>
+<img src="assets/Algoritmi/Quick%20Family.png" alt="Quick Family" />
+<figcaption aria-hidden="true">Quick Family</figcaption>
+</figure>
