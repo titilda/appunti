@@ -827,10 +827,6 @@ s1 == s2;       // true
 s1 == s3;       // false
 ```
 
-<!--
-### Classi, interfaccie e metodi utili
--->
-
 ### Clone
 
 Si supponga di dover gestire un sistema bibliotecario memorizzando la lista di libri disponibili. Tale lista, per l'esterno, deve essere di sola lettura:
@@ -938,9 +934,132 @@ Per indicare che in un oggetto è disponibile il metodo clone (e, dunque, poterl
 <!--
 ### Iterabilità
 
+### Programmazione funzionales
+-->
+
 ### Multithreading
 
-### Programmazione funzionale
+Il modo più semplice per creare e lanciare thread in parallelo consiste nell'estendere la classe `Thread`:
+
+```java
+public class Program {
+    public static void main(String[] args) {
+        Thread t = new MyThread();
+
+        t.start(); // Il metodo `start` crea un nuovo thread che esegue il codice contenuto nel metodo `run`
+    }
+}
+
+class MyThread extends Thread {
+    public MyThread() {...}
+
+    @Override
+    public void run() {
+        // Codice eseguito dal thread
+    }
+}
+```
+
+Un metodo alternativo (utile nel caso in cui la classe che dovrebbe diventare un thread debba estendere altre classi) consiste nel sostituire l'estensione a `Thread` con l'implementazione di `Runnable`:
+
+```java
+public class Program {
+    public static void main(String[] args) {
+        MyRunnable r = new MyRunnable();
+
+        Thread t = new Thread(r); // E' necessario creare il thread partendo dal runnable
+
+        t.start();
+    }
+}
+
+class MyRunnable implements Runnable {
+    public MyRunnable() {...}
+
+    @Override
+    public void run() {
+        // Codice eseguito dal thread
+    }
+}
+```
+
+Tra le altre cose, è possibile assegnare un nome a ciascun thread e cambiarne la priorità (in breve, la priorità indica quanto tempo viene dedicato a ciascun thread - più è alta la priorità e maggiore sarà la frazione del tempo totale che il thread avrà a disposizione).
+
+Quando si lavora con molteplici thread che accedono agli stessi dati, è bene prestare attenzione a creare un meccanismo di mutua esclusione robusto, altrimenti si rischia di trovare dati sfalsati.
+
+Si supponga di avere due thread che devono entrambi incrementare una stessa variabile: se il primo viene interrotto, dopo la lettura del valore ma prima della scrittura, dal secondo che, invece, riesce a terminare il suo incremento prima di venir interrotto a sua volta dal primo, il quale poi prosegue salvando il risultato incrementato, il lavoro del secondo thread verrebbe sovrascritto dalla scrittura tardiva da parte del primo (ottenendo così una variabile incrementata una singola volta invece delle due previste).
+
+```java
+public class Program {
+    private static int x = 0;
+    
+	public static void main(String[] args) {
+		new Thread(() -> {x++;}).start();
+		new Thread(() -> {x++;}).start();
+
+		System.out.println(x);
+	}
+}
+```
+
+Ci si aspetterebbe di ricevere "2" come output ma, come si potrà notare eseguendo il codice molteplici volte, alcune volte l'output sarà diverso.
+
+Di seguito verranno illustrate le principali soluzioni che java mette a disposizione per prevenire questo titpo di problemi.
+
+#### Synchronized
+
+La keyword `synchronized` si usa applicata ad interi metodi o a singole porzioni di codice che devono essere eseguite in maniera atomica e in mutua esclusione tra loro.
+
+`synchronized` funziona specificando l'oggetto sul quale si vuole sincronizzarsi (eventualmente, `this`): due thread che eseguono blocchi di codice sincronizzati su oggetti diversi non avranno problemi mentre se due thread eseguono blocchi di codice sincronizzati sullo stesso oggetto, uno solo dei due avrà il via libera e l'altro dovrà attendere che il primo abbia finito.
+
+E' possibile sincronizzare blocchi di codice solamente su oggetti e non tipi su tipi di dati elementari.
+
+```java
+class ClasseConSincronizzazioni {
+    // Le sincronizzazioni di `metodo1` e `metodo 2` sono equivalenti
+    public void metodo1() {
+        synchronized(this) {...}
+    }
+
+    public synchronized void metodo2() {...}
+
+    // Se si vuole sincronizzare su una variabile semplice, si istanzia un `Object` e si usa quello
+    
+    private int variabile_semplice;
+    private Object lock_variabile_semplice = new Object();
+    public void metodo3() {
+        synchronized(lock_variabile_semplice) {...}
+    }
+}
+```
+
+La keyword `synchronized` applicata ad un metodo non viene passata alle sottoclassi per ereditarietà pertanto si dovrà specificarla ogni volta ove necessario.
+
+Se non si presta sufficiente attenzione, è possibile causare dei deadlock:
+
+```java
+class Deadlocked {
+    private Object lock1 = new Object();
+    private Object lock2 = new Object();
+    
+    public void metodo1() {
+        synchronized(lock1) {
+            synchronized(lock2) {...}
+        }
+    }
+
+    public void metodo2() {
+        synchronized(lock2) {
+            synchronized(lock1) {...}
+        }
+    }
+}
+```
+
+Si supponga di avere due thread che, sulla stessa istanza di `Deadlocked` chiamano uno `metodo1` e l'altro `metodo2`.
+In questa situazione è probabile che si verifichi un cosiddetto **deadlock** in quanto, se entrambi i thread riscono a prendere il lock, rispettivamente, su `lock1` e `lock2`, allora nessuno dei due potrà procedere ulteriormente e rilsciare il lock finchè l'altro non termina.
+
+<!--
 
 ### Socket (si spera)
 
@@ -952,6 +1071,3 @@ Per indicare che in un oggetto è disponibile il metodo clone (e, dunque, poterl
 
 ## Design pattern
 -->
-
-
-<!-- Una volta inserita la sezione sul testing, aggiungere il link nel paragrafo introduttivo -->
