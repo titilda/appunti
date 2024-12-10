@@ -27,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/${{ github.repository }}-build-tools:latest
+      options: --user root
       volumes:
         - ${{ github.workspace }}:/workspace
 
