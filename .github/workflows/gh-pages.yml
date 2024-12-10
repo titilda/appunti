@@ -42,6 +42,7 @@ jobs:
           fetch-depth: 0
       - name: Add safe directory
         run: |
+          echo Home directory: $HOME
           git config --global --add safe.directory /workspace
       - uses: chetan/git-restore-mtime-action@v2
         with:
