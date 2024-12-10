@@ -51,6 +51,7 @@ jobs:
         run: |
           export HOME=/root
           cd /workspace
+          export PWD=/workspace
           git config --global --add safe.directory /workspace # we need to do this again because new login home who dis
 
           echo ----------------------------------
