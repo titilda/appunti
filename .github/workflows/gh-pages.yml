@@ -48,22 +48,12 @@ jobs:
           working-directory: '/workspace'
       - name: Build docs
         shell: bash
+        working-directory: /workspace
         run: |
-          export HOME=/root
-          cd /workspace
-          export PWD=/workspace
+          echo $HOME
+          pwd
           git config --global --add safe.directory /workspace # we need to do this again because new login home who dis
 
-          echo ----------------------------------
-          echo User: `whoami`
-          echo UID:  `id -u`
-          echo GID:  `id -g`
-          echo HOME: $HOME
-          echo CWD:  `pwd`
-          echo "ENV:"
-          env
-          
-          echo ----------------------------------
           find . -type f -name "*.md" -mindepth 2 -print0 | sort -z | while read -d $'\0' doc
             do
               echo "Processing ${doc}..."
