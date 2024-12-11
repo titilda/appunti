@@ -2,11 +2,14 @@ name: Build and Push Docker Image
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    
+    if: 'contains(github.event.head_commit.message, ''build(docker)'')'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
