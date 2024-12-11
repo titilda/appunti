@@ -51,6 +51,7 @@ jobs:
         working-directory: /workspace
         run: |
           echo $HOME
+          whoami
           pwd
           git config --global --add safe.directory /workspace # we need to do this again because new login home who dis
 
