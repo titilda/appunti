@@ -1,4 +1,7 @@
 #!/bin/bash
+pwd
+echo $HOME
+echo ~
 git config --global --add safe.directory /workspace
 
 find . -type f -name "*.md" -mindepth 2 -print0 | sort -z | while read -d $'\0' doc
