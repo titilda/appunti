@@ -30,6 +30,7 @@ concurrency:
 
 jobs:
   # Build job
+  # TODO: fix permissions so we don't need to do everything as root
   build:
     if: '!contains(github.event.head_commit.message, ''skip ci'') && !contains(github.event.head_commit.message, ''build(docker)'')'
     runs-on: ubuntu-latest
@@ -58,7 +59,7 @@ jobs:
         shell: bash
         working-directory: /workspace
         run: |
-          sudo /root/build_docs.sh
+          sudo /root/build_docs_v2.py
       - name: Create index.html
         run: |
           find . -type d -mindepth 1 -maxdepth 1 -print0 | sort -z | while read -d $'\0' dir
