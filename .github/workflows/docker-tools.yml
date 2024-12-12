@@ -5,11 +5,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "Dockerfile"
+      - "**.py"
+      - "**.sh"
+      - ".github/workflows/docker-tools.yml"
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    if: 'contains(github.event.head_commit.message, ''build(docker)'') || github.event_name == ''workflow_dispatch'''
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
