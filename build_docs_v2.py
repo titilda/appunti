@@ -34,7 +34,7 @@ def build_docs_and_index():
                 ]
             ).wait()
 
-        with open("/workspace/index.html", "w+") as index_file:
+        with open("/workspace/index.html", "r+") as index_file:
             original_html = index_file.read()
             index_file.write(original_html.replace("{{{PLACEHOLDER}}}", index_entries.getvalue()))
 
