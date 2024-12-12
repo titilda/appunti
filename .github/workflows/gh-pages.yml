@@ -5,6 +5,11 @@ on:
     branches: ["main"]
     paths:
       - "*/*.md"
+      - "*/*.jpg"
+      - "*/*.jpeg"
+      - "*/*.webp"
+      - "*/*.png"
+      - "*/*.gif"
       - ".github/workflows/gh-pages.yml"
   
   workflow_dispatch:
