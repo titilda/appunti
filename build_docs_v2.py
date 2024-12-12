@@ -14,7 +14,7 @@ def build_docs_and_index():
             output_filename = path.parent / f"{path.stem}.html"
             if output_filename.name == "index.html":
                 index_entries.write(
-                    f'<li><a href="/{path.parent.name}/{output_filename.name}>{path.parent.name}</a></li>\n'
+                    f'<li><a href="/{path.parent.name}/{output_filename.name}">{path.parent.name}</a></li>\n'
                 )
             jobs.append(
                 Popen(
