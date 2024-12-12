@@ -10,6 +10,9 @@ on:
       - "*/*.webp"
       - "*/*.png"
       - "*/*.gif"
+      - "*/*.html"
+      - "index.html"
+      - "template.html"
       - ".github/workflows/gh-pages.yml"
   
   workflow_dispatch:
