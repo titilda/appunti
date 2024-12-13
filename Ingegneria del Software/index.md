@@ -1102,6 +1102,94 @@ I metodi protagonisti di questo paragrafo sono 3:
 
 Dato che `notify` non è deterministica (e quindi potrebbe risvegliare il thread sbagliato), si preferisce utilizzare `notifyAll` per risvegliare tutti i thread e racchiudere la `wait` dentro un `while` per fare in modo che solo il thread giusto possa andare avanti. Per ulteriori informazioni sul meccanismo `wait`/`notify`, consultare la [documentazione](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#wait--).
 
+Un thread dispone di uno stato che può mutare a seconda delle condizioni in cui si trova e dei metodi che in esso vengono chiamati. Lo schema seguente mostra gli stati e le transizioni.
+
+```mermaid
+stateDiagram-v2
+    initial --> ready: Thread.start()
+    ready --> running: _Al thread viene assegnato uno slot temporale_
+    running --> ready: _Il thread consuma completamente il suo slot temporale_
+    running --> blocked: _Il thread attende il lock_
+    blocked --> ready: _Al thread è dato il lock richiesto_
+    running --> waiting: wait()
+    waiting --> ready: notify(), notifyAll()
+    running --> sleeping: Thread.sleep()
+    sleeping --> ready
+    running --> stopped: _Il metodo run è terminato_
+```
+
+Dato che un blocco `synchronized` non impedisce al thread di essere interrotto, è possibile che vi sia dell'inconsistenza anche quando un metodo è correttamente sincronizzato. Per risolvere tale problema si utilizzano i cosiddetti **oggetti immutabili**.
+Un oggetto immutabile è un istanza di una classe che non ammette in alcun modo modifiche allo stato (nella pratica, questo si realizza non includendo metodi in grado di modificare lo stato).
+
+### Multithreading avanzato
+
+#### La classe `ReentrantLock`
+
+Per evitare problemi di deadlock, è possibile utilizzare la classe `ReentrantLock`. Questa classe, permette di prendere e rilasciare lock in modo non bloccante in modo da poter controllare se il lock sia stato preso con successo.
+
+```java
+public class ClasseConLockCorretti {
+    private Lock lock1, lock2;
+
+    public ClasseConLockCorretti() {
+        lock1 = new ReentrantLock();
+        lock2 = new ReentrantLock();
+    }
+
+    public void metodo() {
+        // Si tenta di prendere ciascun lock in maniera non bloccante e ci si segna se l'operazione ha avuto successo
+        boolean gotFirstLock = lock1.tryLock();
+        boolean gotSecondLock = locl2.tryLock();
+
+        // Se entrambi i lock sono stati presi, allora si può procedere
+        if(gotFirstLock && gotSecondLock) {
+            try {
+                // Codice che richiede entrambi i lock
+            } finally {
+
+                // E' necessario sbloccare i lock manualmente
+                if(gotFirstLock)
+                    lock1.unlock();
+                
+                if(gotSecondLock)
+                    lock2.unlock();
+             
+                // Si usa un `finally` per garantire che, qualunque cosa succeda, i lock vengano sbloccati
+            }
+        }
+    }
+}
+```
+
+#### Esecutori
+
+Nel caso in cui si debba gestire una grande quantità di thread, l'overghead che si paga ad ogni context switch non è più trascurabile rispeto al tempo di esecuzione effettivo.
+Per risolvere questo problema, si utilizzano gli esecutori, dei quali ne esistono di svariati tipi.
+
+La factory `Executors.newSingleThreadExecutor()` si usa per creare un esecutore che esegue un numero arbitrario di `Runnable` in modo sequenziale, tutti su un singolo thread.
+
+```java
+ExecutorService e = Executors.newSingleThreadExecutor();
+
+// Si aggiungono i vari `Runnable`
+e.execute(new Runnable() {...});
+e.execute(new Runnable() {...});
+e.execute(new Runnable() {...});
+e.execute(new Runnable() {...});
+
+// L'`ExecutorService` va spento manualmente quando tutti i `Runnable` hanno terminato
+e.shutdown();
+```
+
+La factory `Executors.newFixedThreadPool()` si usa per crare un esecutore equivalente all'esecutore precedente ma è possibile specificare quanti thread si suddividono i `Runnable` (che comunque vengono presi dalla coda in ordine e vengono portati a termine).
+
+```
+// Il numero di thread gestiti dall'esecutore è specificato come parametro, in questo caso `3`
+ExecutorService e = Executors.newFixedThreadPool(3);
+```
+
+
+
 <!--
 
 ### Socket (si spera)
