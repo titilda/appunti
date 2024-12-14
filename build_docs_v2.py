@@ -63,5 +63,3 @@ def build_docs_and_index():
 
 if __name__ == "__main__":
     build_docs_and_index()
-
-print("Done building docs! :)")

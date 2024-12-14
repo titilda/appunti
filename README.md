@@ -8,7 +8,7 @@ Puoi aggiungere nuovi appunti in formato Markdown (con $\TeX$) rispettando la *f
 
 Per il commit, costruire il messaggio come [*indicato qui*](https://www.conventionalcommits.org/en/v1.0.0/).
 
-**NOTA:** se vuoi apportare modifiche al repository senza lanciare un CI workflow (i.e. senza ri-renderizzare tutto), è sufficiente iniziare il *Commit Message* con `skip ci`.
+**NOTA:** se vuoi apportare modifiche al repository senza lanciare un CI workflow (i.e. senza ri-renderizzare tutto), è sufficiente includere nel *Commit Message* il comando `[skip ci]`.
 
 ### Metadati
 
