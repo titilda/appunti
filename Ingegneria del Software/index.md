@@ -1296,12 +1296,12 @@ Ciascuna di queste classi si comporta come la rispettiva classe non atomica.
 
 Per ulteriori informazioni è possibile consultare la relativa documentazione.
 
-## JML
+<!-- ## JML
 
 **Java Modelling Language** (JML) è un linguaggio di specifica che permette di documentare il comportamento di un modulo software tramite delle opportune annotazioni scritte in un *linguaggio formale*. 
 
 Usare JML permette di definire delle specifiche senza essere a conoscenza dell'effettiva implementazioni.
-Le specifiche devono essere chiare e
+Le specifiche devono essere chiare e -->
 
 <!--
 
