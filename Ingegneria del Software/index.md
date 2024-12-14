@@ -2,6 +2,8 @@
 title: "Riassuntino di Ingegneria del software"
 author:
 - "Andrea Oggioni"
+- "Mattia Martinelli"
+- "Andrea Lunghi"
 ---
 
 # Ciclo di vita del Software
@@ -931,11 +933,96 @@ Nella deep-`clone`, non è più necessario proseguire con la clonazione ricorsiv
 
 Per indicare che in un oggetto è disponibile il metodo clone (e, dunque, poterlo utilizzare come parametro dentro metodi che richiedono che un oggetto sia clonabile) si marca la dichiarazione della classe di tale oggetto come `implements Cloneable`.
 
-<!--
+
 ### Iterabilità
 
-### Programmazione funzionales
--->
+Si supponga di voler iterare su tutti gli oggetti contenuti in una collezione: come già visto, è possibile utilizzare un **enhanced for loop**:
+
+```java
+HashSet<Elemento> elementi = new HashSet<>();
+for(Elemento el: elementi) {
+    System.out.println(el);
+}
+```
+
+Sia dato il caso in cui è necessario iterare, invece che su una collezione già presente in java, su un tipo di dato qualunque da noi definito: per rendere possibile l'utilizzo dell'enhanced for loop, è necessario che la classe della quale è istanza l'oggetto su cui si vuole iterare implementi l'interfaccia `Iterable`.
+
+Gli oggetti che implementano l'interfaccia `Iterable` dispongono di un metodo `iterator()` che restituisce un oggetto che implementa `Iterator<T>` dove `T` è il tipo di dato memorizzato nella collezione.
+
+Un `Iterator<T>` implementa i metodi `hasNext()` e `next()`.
+
+Nell'esempio seguente viene implementata una classe `PythonRange` sulle cui istanze è possibile iterare in un modo simile a come si fa in Python.
+
+```java
+public class Program {
+    public static void main(String[] args) {
+        for(Integer i: new PythonRange(10)) {
+            System.out.println(i); // Tutti i numeri [0, 10)
+        }
+
+        for(Integer i: new PythonRange(7, 12)) {
+            System.out.println(i); // Tutti i numeri [7, 12)
+        }
+    }
+}
+
+class PythonRange implements Iterable<Integer>{
+    private int begin, end;
+
+    public PythonRange(int end) {
+        this(0, end);
+    }
+
+    public PythonRange(int begin, int end) {
+        this.begin = begin;
+        this.end = end;
+    }
+
+    // Restituisce un'istanza dell'iteratore (ogni iteratore è a se)
+    @Override
+    public Iterator<Integer> iterator() {
+        return new Iterator<Integer>() {
+            private int i = begin;
+
+            // Restituisce `true` se è possibile procedere ulteriormente
+            @Override
+            public boolean hasNext() {
+                return i < end;
+            }
+
+            // Ritorna l'elemento successivo (lancia un'eccezione se non è possibile farlo)
+            @Override
+            public Integer next() {
+                if(this.hasNext())
+                    return (i++);
+                else
+                    throw new NoSuchElementException();
+            }
+
+            // Eventualmente è possibile implementare anche il metodo `remove()` (che rimuove l'elemento dalla collezione) e `forEachRemaining(Consumer<? super E> action)` che esegue un metodo su ciascun elemento sul quale ancora non si ha iterato (vedere il paragrafo sulla programmazione funzionale per ulteriori informazioni).
+        };
+    }
+}
+```
+
+### Programmazione funzionale
+
+La programmazione funzionale è un paradigma di programmazione diverso da quello ad oggetti: essa promuove l'espressione della computazione come applicazione di una o più funzioni di dati, non si tratta quindi di una sequenza di passi che modificano lo stato.
+
+Il punto di forza principale di questo paradigma è la mancanza di effetti collaterali (side-effect) delle funzioni, il che comporta una più facile verifica della correttezza e della mancanza di bug del programma e la possibilità di una maggiore ottimizzazione dello stesso.
+
+Metodi utili:
+
+- `stream()`: crea uno stream
+- `filter(Predicate<? super T> predicate)`: filtra gli elementi dello stream mantenendo solo quelli che soddisfano il predicato
+- `forEach(Consumer<? super T> action)`: esegue una funzione su ogni elemento dello stream
+- `map(Function<? super T,? extends R> mapper)`: restituisce uno stream costituito dal risultato dell'applicazione della funzione ad ogni elemento dello stream originale. Il nuovo stream sarà composto da elementi di tipo R
+- `flatMap(Function<? super T, ? extends Stream<? extends R>> mapper)`: Utilizza i principi della funzione `map` iterando sugli elementi dei uno `stream` e concatenandoli in un solo livello
+- `reduce(T identity, BinaryOperator<T> accumulator)`: esegue una riduzione degli elementi dello stream, utilizzando il valore di identità fornito e una funzione associativa di accumulazione, e restituisce un singolo elemento di tipo T
+- `collect(Collector<? super T,A,R> collector)`: esegue un'operazione di riduzione mutabile sugli elementi dello stream utilizzando Collector
+- `distinct()`: rimuove gli elementi duplicati, ritorna uno stream contenente solo elementi distinti
+- `Optional<T> findFirst()`: ritorna il primo elemento dello stream, se esiste
+- `count()`: ritorna il numero di elementi dello stream
 
 ### Multithreading
 
@@ -1183,20 +1270,44 @@ e.shutdown();
 
 La factory `Executors.newFixedThreadPool()` si usa per crare un esecutore equivalente all'esecutore precedente ma è possibile specificare quanti thread si suddividono i `Runnable` (che comunque vengono presi dalla coda in ordine e vengono portati a termine).
 
-```
+```java
 // Il numero di thread gestiti dall'esecutore è specificato come parametro, in questo caso `3`
 ExecutorService e = Executors.newFixedThreadPool(3);
 ```
 
+La factory `Executors.newVirtualThreadPerTaskExecutor()` si usa per assegnare più thread virtuali ad uno stesso thread fisico, in modo da non incappare in errori dati dalla limitatezza delle risorse della macchina su cui è in esecuzione il programma. Quando uno di questi thread virtuale viene messo in attesa da operazioni di input/output, al suo posto viene messo in esecuzione un altro thread virtuale.
 
+```java
+ExecutorService e = Executors.new VirtualThreadPerTaskExecutor();
+
+e.submit(() -> {...});
+e.submit(() -> {...});
+e.submit(() -> {...});
+
+e.shutdown();
+```
+
+#### Tipi di dato atomici
+
+In java sono presenti dei tipi di dato sul quale è possibile eseguire operazioni atomiche senza preoccuparsi di dover sincronizzare tutto correttamente.
+
+Esempi di tipi di dati atomici sono `AtomicInteger`, `BlockingQueue`, `ConcurrentMap`, `AtomicIntegerArray`.
+Ciascuna di queste classi si comporta come la rispettiva classe non atomica.
+
+Per ulteriori informazioni è possibile consultare la relativa documentazione.
+
+## JML
+
+**Java Modelling Language** (JML) è un linguaggio di specifica che permette di documentare il comportamento di un modulo software tramite delle opportune annotazioni scritte in un *linguaggio formale*. 
+
+Usare JML permette di definire delle specifiche senza essere a conoscenza dell'effettiva implementazioni.
+Le specifiche devono essere chiare e
 
 <!--
 
 ### Socket (si spera)
 
 ### GUI (si spera)
-
-## JML
 
 ## Collaudo
 
