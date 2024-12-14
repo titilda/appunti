@@ -10,7 +10,11 @@ def build_docs_and_index():
     with StringIO() as index_entries:
         for path in sorted(pathlib.Path("/workspace").rglob("*/*.md")):
             print(f"Adding {path} to the build queue")
-            last_modified = datetime.datetime.fromtimestamp(path.stat().st_mtime).strftime("%Y-%m-%d %H:%M:%S")
+            last_modified_time = datetime.datetime.fromtimestamp(path.stat().st_mtime)
+            last_modified_time.microsecond = 0
+            if last_modified_time.tzinfo is None:
+                last_modified_time = last_modified_time.replace(tzinfo=datetime.timezone.utc)
+            last_modified = last_modified_time.isoformat()
             output_filename = path.parent / f"{path.stem}.html"
             if output_filename.name == "index.html":
                 index_entries.write(

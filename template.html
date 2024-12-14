@@ -149,7 +149,12 @@ $body$
 
 	<div class="container">
 		$if(date)$
-		<em>Ultima modifica: </em> $date$
+		<em>Ultima modifica: </em>
+		<script>
+			// date is in "YYYY-MM-DD HH:MM:SSZ" format, UTC timezone
+			let date = new Date("$date$");
+			document.write(date.toLocaleString());
+		</script>
 		$endif$
 	</div>
 
