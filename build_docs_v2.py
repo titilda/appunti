@@ -11,7 +11,7 @@ def build_docs_and_index():
         for path in sorted(pathlib.Path("/workspace").rglob("*/*.md")):
             print(f"Adding {path} to the build queue")
             last_modified_time = datetime.datetime.fromtimestamp(path.stat().st_mtime)
-            last_modified_time.microsecond = 0
+            last_modified_time = last_modified_time.replace(microsecond=0)
             if last_modified_time.tzinfo is None:
                 last_modified_time = last_modified_time.replace(tzinfo=datetime.timezone.utc)
             last_modified = last_modified_time.isoformat()
