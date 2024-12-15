@@ -1007,22 +1007,80 @@ class PythonRange implements Iterable<Integer>{
 
 ### Programmazione funzionale
 
-La programmazione funzionale è un paradigma di programmazione diverso da quello ad oggetti: essa promuove l'espressione della computazione come applicazione di una o più funzioni di dati, non si tratta quindi di una sequenza di passi che modificano lo stato.
+La programmazione funzionale è un paradigma di programmazione diverso da quello ad oggetti: essa promuove l'espressione della computazione come applicazione di una o più funzioni ai dati invece che una sequenza ordinata di istruzioni.
 
-Il punto di forza principale di questo paradigma è la mancanza di effetti collaterali (side-effect) delle funzioni, il che comporta una più facile verifica della correttezza e della mancanza di bug del programma e la possibilità di una maggiore ottimizzazione dello stesso.
+Tutta la programmazione funzionale in Java si basa sulle cosiddette **interfaccie funzionali** ovvero interfaccie che possiedono un solo metodo.
+
+La programmazione funzionale in Java è **lazy**: questo significa che le varie funzioni applicate ad un dato non vengono applicate realmente finchè non è necessario l'utilizzo del risultato dell'operazione.
+
+Questo tipo di funzionamento porta a due considerazioni alle quali bisogna fare molta attenzione:
+
+- non è detto che una funzione venga applicata sempre a tutti gli elementi contenuti nella struttura dati sotto esame;
+- non è garantito l'ordine di esecuzione di una funzione sugli elementi contenuti nella struttura dati sotto esame.
+
+Da questi due punti si può anche capire perchè sia necessario applicare solamente funzioni pure (ovvero senza _side effects_) agli elementi contenuti nella struttura dati: dato che ne l'esecuzione ne l'ordine sono garantiti, diventa impossibile predire il comportamento del programma.
+
+Nonostante ciò, il punto di forza principale di questo paradigma è proprio la mancanza di side-effect delle funzioni: l'utilizzo di funzioni pure comporta una più facile verifica della correttezza e della mancanza di bug del programma e la possibilità di una maggiore ottimizzazione dello stesso in quanto, dato che le funzioni applicate non interferiscono tra di loro, è possibile parallelizzarle senza problemi.
+
+Le varie funzioni vengono applicate attraverso uno stream (che non centra nulla con gli stream tipo quelli di input/output) che si ottiene chiamando `stream()` sulle strutture dati supportate.
+
+E' importante ricordare che le varie funzioni non vengono applicare sulla struttura dati che ha fornito lo stream ma su una sua copia: la struttura dati originale rimarrà intatta. Per ottenere uno stream che parallelizza le applicazioni di funzioni, si chiama `stream().parallel()` sulla struttura dati.
 
 Metodi utili:
 
-- `stream()`: crea uno stream
-- `filter(Predicate<? super T> predicate)`: filtra gli elementi dello stream mantenendo solo quelli che soddisfano il predicato
-- `forEach(Consumer<? super T> action)`: esegue una funzione su ogni elemento dello stream
-- `map(Function<? super T,? extends R> mapper)`: restituisce uno stream costituito dal risultato dell'applicazione della funzione ad ogni elemento dello stream originale. Il nuovo stream sarà composto da elementi di tipo R
-- `flatMap(Function<? super T, ? extends Stream<? extends R>> mapper)`: Utilizza i principi della funzione `map` iterando sugli elementi dei uno `stream` e concatenandoli in un solo livello
-- `reduce(T identity, BinaryOperator<T> accumulator)`: esegue una riduzione degli elementi dello stream, utilizzando il valore di identità fornito e una funzione associativa di accumulazione, e restituisce un singolo elemento di tipo T
-- `collect(Collector<? super T,A,R> collector)`: esegue un'operazione di riduzione mutabile sugli elementi dello stream utilizzando Collector
-- `distinct()`: rimuove gli elementi duplicati, ritorna uno stream contenente solo elementi distinti
-- `Optional<T> findFirst()`: ritorna il primo elemento dello stream, se esiste
-- `count()`: ritorna il numero di elementi dello stream
+- `filter(Predicate<? super T> predicate)`: filtra gli elementi dello stream mantenendo solo quelli che soddisfano il predicato;
+- `forEach(Consumer<? super T> action)`: chiama la funzione specificata con ogni elemento dello stream come parametro (questa è l'unica funzione che garantisce l'ordine di esecuzione)
+- `map(Function<? super T, ? extends R> mapper)`: restituisce uno stream costituito dal risultato dell'applicazione della funzione ad ogni elemento dello stream originale. Il nuovo stream sarà composto da elementi di tipo `R`;
+- `flatMap(Function<? super T, ? extends Stream<? extends R>> mapper)`: utilizza i principi della funzione `map` iterando sugli elementi di uno `stream` e concatenandoli in un solo livello (ad esempio, se chiamando `map` si otterrebbe uno stream di stream, chiamando `flatMap` si otterrebbe uno stream che contiene, ordinatamente, tutti gli elementi contenuti negli stream che si sarebbero ottenuti con la `map`);
+- `reduce(T identity, BinaryOperator<T> accumulator)`: esegue una riduzione degli elementi dello stream, utilizzando il valore di identità fornito e una funzione associativa di accumulazione, e restituisce un singolo elemento di tipo T;
+- `collect(Collector<? super T, A, R> collector)`: esegue un'operazione di riduzione mutabile sugli elementi dello stream utilizzando `Collector`;
+- `distinct()`: rimuove gli elementi duplicati, ritorna uno stream contenente solo elementi distinti;
+- `Optional<T> findFirst()`: ritorna il primo elemento dello stream, se esiste;
+- `count()`: ritorna il numero di elementi dello stream.
+
+Nella [relativa documentazione](https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html) è possibile trovare tutti i tipi di interfaccia funzionale già presenti in Java. In ogni caso è possibile dichiarare un'interfaccia funzionale personalizzata decorandola con `@FunctionalInterface`.
+
+Esistono classi specializzate come la `IntStream` che fornisce operazioni specializzate su un tipo di dato specifico (in questo caso, `int`).
+
+Come sempre un esempio potrà chiarire molto i concetti presentati.
+
+```java
+// Si vuole progettare un programma che calcola l'altezza media di tutte le persone nate in un giorno dispari
+ArrayList<Persona> persone = new ArrayList<Persona>();
+
+for(int i = 10; i < 21; i++) {
+    persone.add(new Persona(i, 160 + i));
+}
+
+persone.stream().parallel()                             // Utilizziamo uno stream parallelo
+    .filter(p -> p.getGiorno_di_nascita() % 2 == 0)     // Vengono mantenute solo le persone 
+    .mapToInt(p -> p.getAltezza())                      // Di ciascuna persona si prende l'altezza e la si mette in uno stream di interi
+    .average()                                          // `IntStream` fornisce, tra le altre, la funzione `average`
+    .ifPresentOrElse(System.out::println, () -> {       // Il valore ritornato da `average` è un `Optional`, più dettagli in seguito
+        System.out.println("Nessuno è nato in un giorno pari");
+    });
+```
+
+#### Optional
+
+Il tipo `Optional<T>` si usa per descrivere una variabile che potrebbe, o meno, contenere un dato. Nell'esempio precedente, si è visto il tipo `Optional` ritornato da `average` in quanto, non è garantito che lo stream sul quale è stata chiamata `average` contenga elementi.
+
+L'utilizzo principale di `Optional` è quello di eliminare i problemi dovuti a `null`: applicando una funzione ad un `Optional` verrà restituito un altro `Optional` che conterrà il risultato della funzione applicata al valore del vecchio optional (se pieno), altrimenti un `Optional` vuoto.
+
+In termini prettamente di informatic teorica, `Optional` è una monade. Si rimanda alla relativa [pagina wikipedia](https://en.wikipedia.org/wiki/Monad_(functional_programming)) per ulteriori informazioni.
+
+![Obligatory `Monad` meme](assets/monad.jpg)
+
+Di seguito un elenco di metodi da conoscere per l'utilizzo di `Optional<T>`:
+
+- `Optional.of(T value)`: restituisce un `Optional` che contiene `value` (se è `null` lancia una `NullPointerException`);
+- `Optional.empty()`: restituisce un `Optional` vuoto;
+- `Optional.ofNullable(T value)` restituisce un `Optional` eventualmente vuoto;
+- `isPresent()` restituisce un booleano che indica se l'optional contiene qualcosa;
+- `ifPresent(Consumer<? super T>)`: se nell'`Optional` è presente un valore allora chiama la funzione passata come parametro passando come parametro il valore contenuto;
+- `flatMap(Function<? super T, ? extends Optional<? extends U>> mapper)`: ritorna un `Optional` vuoto se l'`Optional` sul quale è chiamato è vuoto, altrimenti ritorna un `Optional` che contiene il valore restituito dalla funzione passata come parametro chiamata con il valore contenuto nell'`Optional` di partenza come parametro;
+- `orElse(T val)`: se l'`Optional` non è vuoto ne ritorna il contenuto, altrimenti ritorna `val`;
+- `ifPresentOrElse(Consumer<? super T> action, Runnable emptyAction)`: se l'`Optional` non è vuoto allora chiama `action` passando come parametro il contenuto, altrimenti chiama `emptyAction`.
 
 ### Multithreading
 
