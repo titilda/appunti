@@ -1414,13 +1414,17 @@ Se la clausola `@ assignable` è omessa, non vi sono garanzie.
 E' fortemente consigliato creare dei metodi **totali** ovvero il comportamento del metodo deve essere definito per qualunque ingresso: piuttosto si lancia un'eccezione.
 
 <!--
-
 ### Socket (si spera)
 
 ### GUI (si spera)
+-->
 
 ## Metriche di qualità del software
 
+
+
+
+<!--
 ## Collaudo
 
 ## Design pattern
