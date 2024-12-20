@@ -1419,10 +1419,29 @@ E' fortemente consigliato creare dei metodi **totali** ovvero il comportamento d
 ### GUI (si spera)
 -->
 
+<!--
 ## Metriche di qualità del software
 
+Scrivere software di qualità non significa solo scrivere programmi _corretti_ e che rispettano la specifica richiesta, ma anche scrivere codice leggibile, di qualità e facilmente estensibile.
 
+Qualsiasi modulo software dovrebbe essere scritto in modo che sia facilmente estensibile senza che sia necessario modificarlo: si deve seguire il principio di sostituzione di Liskov (LSP) (presentato brevemente nel paragrafo successivo e approfondito più in là).
 
+Tale principio afferma che i metodi delle sottoclassi devono sempre rispettare i metodi che sovrascrivono: questo significa che la precondizione dei metodi della classe figlia devono essere al più stringenti tanto quanto quelli sovrascritti mentre le postcondizioni devono essere almeno tanto lascive.
+
+Quando si estende una classe aggiungendo un metodo, se tale metodo può essere realizzato sfruttando i metodi già presenti, allora la classe rispetta il LSP.
+
+E' bene non arrivare a troppi livelli di estensioni di classi: è meglio dipendere da astrazioni invece che da classi e metodi concreti.
+
+Esistono alcuni principi da rispettare:
+- _Interface Segregation Principle_: meglio spezzare le interfacce in interfacce piccole e specializzate invece che tenerne una grossa generalizzata;
+- _Reuse/Release Equivalency Principle_: solo componenti rilasciati e tracciati possono essere riutilizzati nel codice;
+- _Acyclic Dependencies Principle_: non ci possono essere cicli tra le dipendenze;
+- _Stable Dependencies Principle_: le dipendenze devono essere almeno tanto stabili quanto il modulo che le usa;
+- _Stable Abstraction Principle_: più una categoria di classi è stabile e più deve consistede di classi astratte.
+
+Esistono delle metriche per misurare numericamente la qualità del software scritto:
+
+-->
 
 <!--
 ## Collaudo
