@@ -1354,18 +1354,72 @@ Ciascuna di queste classi si comporta come la rispettiva classe non atomica.
 
 Per ulteriori informazioni è possibile consultare la relativa documentazione.
 
-<!-- ## JML
+## JML
 
 **Java Modelling Language** (JML) è un linguaggio di specifica che permette di documentare il comportamento di un modulo software tramite delle opportune annotazioni scritte in un *linguaggio formale*. 
 
-Usare JML permette di definire delle specifiche senza essere a conoscenza dell'effettiva implementazioni.
-Le specifiche devono essere chiare e -->
+Utilizzare JML consente di poter descrivere in un modo formale i **contratti** dei metodi e di verificarli con un procedimento automatizzato.
+
+Un contratto serve per descrivere le caratteristiche dei dati di input che un metodo necessita per funzionare correttamente e le caratteristiche del valore di ritorno, oltre che alle descrizioni dei cambiamenti dello stato in un oggetto, le eccezioni lanciate e molto altro.
+
+La descrizione base di un contratto di un metodo tramite JML assume la forma seguente
+
+```java
+//@ requires (* Precondizione *)
+//@ ensures (* Postcondizione normale*)
+//@ signals (Exception e) (* Postcondizione eccezionale *)
+public int metodo(...) {...}
+```
+
+Le varie condizioni in JML si esprimono in logica del prim'ordine: il commento (che viene valutato come sempre vero) si esprime con `(* commento *)`.
+
+La precondizione è una condizione che deve essere rispettata per poter chimare il metodo: tale condizione può essere espressa in funzione dei parametri passati al metodo o allo stato dell'oggetto sul quale il metodo è chiamato.
+
+La postcondizione normale è una condizione che è garantita vera al termine dell'esecuzione del metodo al quale si riferisce: tale condizione può essere espressa in funzione dei parametri passati al metodo, allo stato dell'oggetto sul quale il metodo è chiamato o al valore di ritorno del metodo.
+
+La postcondizione eccezionale, oltra d indicare il tipo di eccezione lanciata, è una condizione che è vera quando l'eccezione specificata viene lanciata: tale condizione può essere espressa in funzione dei parametri passati al metodo, dello stato dell'oggetto sul quale il metodo è stato chiamato o dell'eccezione lanciata. E' possibile specificare molteplici `//@ signals` con eccezioni e condizioni differenti.
+
+La filosofia dell'utilizzo dei contratti si può riassumere come "Se il chiamante garantisce che i requisiti (_requires_) sono soddisfatti allora il chiamato garantisce (_ensures_) che il risultato sia corretto".
+
+Le condizioni in JML devono essere pure e possono fare utilizzo solamente di metodi puri.
+
+Segue carrellata di esempi di utilizzo di JML per poterne illustrare i vari costrutti (congiunzione, disgiunzione e negazione di condizioni, così come relazioni d'ordine e di (dis)uguaglianza, operatore `[]` e chiamate a funzioni non vengono riportate in quanto si scrivono esattamente come in Java).
+
+| Costrutto                                  | Significato                                                                                                         |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `\result > 0`                              | Il valore ritornato dalla funzione                                                                                  |
+| `a ==> b`, `b <== a`                       | `a` implica `b`                                                                                                     |
+| `a <==> b`                                 | `a` se e solo se `b`                                                                                                |
+| `a <=!=> b`                                | `a` se e solo se `!b`                                                                                               |
+| `\old(a)`                                  | Il valore di `a` prima dell'invocazione del metodo                                                                  |
+| `\not_modified(a, b, ...)`                 | Il valore degli oggetti passati come parametro non cambia                                                           |
+| `\not_modified(a.*)`                       | Lo stato dell'oggetto `a` non è modificato                                                                          |
+| `(\forall variabile, dominio, condizione)` | `true` se `condizione` è vera per tutte le `variabile` nel `dominio`                                                |
+| `(\exists variabile, dominio, condizione)` | `true` se `condizione` è vera per almeno una `variabile` nel `dominio`                                              |
+| `(\num_of variabile, dominio, condizione)` | Il numero di volte che la `condizione` si è verificata per ogni `variabile` nel `dominio`                           |
+| `(\sum variabile, dominio, espressione)`   | La somma di `espressione` valutata per ogni `variabile` nel `dominio`. (esistono anche `\product`, `\max` e `\min`) |
+
+Si usa `@ assignable` per identificare quali possono essere gli effetti collaterali della chiamata di un metodo sui suoi parametri:
+
+```java
+//@ assignable lista[*]
+public static void metodo(int[] lista); // Tutti gli elementi contenuti in lista sono potenzialmente diversi prima e dopo la chiamata
+
+//@ assignable \nothing
+public static void metodo(int[] lista); // E' garantita l'assenza di effetti collaterali dovuti al metodo
+```
+
+Se la clausola `@ assignable` è omessa, non vi sono garanzie.
+
+E' fortemente consigliato creare dei metodi **totali** ovvero il comportamento del metodo deve essere definito per qualunque ingresso: piuttosto si lancia un'eccezione.
 
 <!--
 
 ### Socket (si spera)
 
 ### GUI (si spera)
+
+## Metriche di qualità del software
 
 ## Collaudo
 
