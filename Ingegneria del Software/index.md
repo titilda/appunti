@@ -1419,7 +1419,6 @@ E' fortemente consigliato creare dei metodi **totali** ovvero il comportamento d
 ### GUI (si spera)
 -->
 
-<!--
 ## Metriche di qualità del software
 
 Scrivere software di qualità non significa solo scrivere programmi _corretti_ e che rispettano la specifica richiesta, ma anche scrivere codice leggibile, di qualità e facilmente estensibile.
@@ -1439,12 +1438,45 @@ Esistono alcuni principi da rispettare:
 - _Stable Dependencies Principle_: le dipendenze devono essere almeno tanto stabili quanto il modulo che le usa;
 - _Stable Abstraction Principle_: più una categoria di classi è stabile e più deve consistede di classi astratte.
 
-Esistono delle metriche per misurare numericamente la qualità del software scritto:
+Un software di qualità è poco accoppiato (ovvero la quantità di dipendenze tra moduli software è bassa) e molto coeso (tutto ciò che riguarda uno stesso argomento è nello stesso posto).
 
--->
+Esistono delle metriche per misurare numericamente la qualità di ciascuna classe scritta:
+
+- _Weighted Methods per Class_: numero di metodi pesati per la loro complessità (più è alto, maggiore è la probabilità di difetti);
+- _max Depth of Inheritance Tree_: il numero massimo di livelli di ereditarietà (più è alto e più alta è la coesione);
+- _Number of Children_: quante volte una classe è stata estesa (più è alto e più una classe non dovrebbe essere affetta da errori);
+- _Coupling Between Classes_: misura quanto una classe è accoppiata ad altre classi (più è alto e più si riduce la modularita e si aumenta la complessità);
+- _Response For a Class_: il numero di metodi che possono essere chiamati da un istanza di una determinata classe (più è alto e più è difficile collausare la classe);
+- _Lack of Cohesion in Methods_: il numero di coppie di metodi non coesi (due metodi sono coesi se accedono alle stesse variabili) dal quale viene sottratto il numero di coppie di metodi coesi (è preferibile mantenere questo valore basso).
+
+Una serie di linee guida per mantenere un buon livello di qualità è la seguente:
+
+- mantenere il livello di vilibilità più restrittivo possibile;
+- mantenere il numero di parametri massimo presi da un metodo attorno a tre o quattro: se necessario, creare una classe che ingloba i parametri o spezzettare il metodo in metodi più piccoli;
+- evitare le _blob class_ ovvero quelle classi enormi che contengono tantissima logica;
+- evitare codice duplicato: se necessario, parametrizzarlo e metterlo dentro un metodo;
+- evitare metodi lunghi: se necessario, spezzarli in metodi più piccoli;
+- evitare di mischiare livelli diversi di astrazione all'interno dello stesso scopo;
+- evitare metodi che fanno tutto: se necessario, spezzettarli in metodi che fanno ciascuno una cosa;
+- evitare metodi che fanno uso soprattutto di dati contenuti in un altra classe: se necessario, spostare il metodo;
+- evitare di usare uno switch per distinguere tra tipologie di oggetti: se necessario, usare l'ereditarietà, il pattern State o le enumerazioni;
+- evitare di mantenere separate informazioni che spesso vengono utilizzate assieme: se necessario, creare una classe che le ingloba;
+- evitare lunghi blocchi di commenti: se necessario, rendere il codice più autoesplicativo con nomi appropriati;
+
+E' sempre utile utilizzare una convenzione condivisa per nominare le varie componenti del programma:
+
+| Cosa      | Convenzione | Nomenclatura                                                                                                                                                                             |
+| --------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Classi    | PascalCase  | Singolare                                                                                                                                                                                |
+| Variabili | camelCase   | Se `boolean` allora `isQualcosa`, altrimenti un nome (eventualmente con aggettivi) che ne suggerisca il contenuto.                                                                       |
+| Metodi    | camelCase   | Se `boolean` allora `isQualcosa()` oppure un predicato tipo `contains()`, se `void` allora un nome che indichi cosa fa il metodo, altrimenti un nome che suggerisce il valore ritornato. |
+| Costanti  | UPPERCASE   |                                                                                                                                                                                          |
+|           |             |                                                                                                                                                                                          |
 
 <!--
 ## Collaudo
+
+## UML
 
 ## Design pattern
 -->
