@@ -368,3 +368,90 @@ Le relazioni che possono esistere tra gli eventi sono:
 
 Questa analisi permette di analizzare la frequenza delle attività, durata delle attività, la sequenza delle attività e la relazione tra le attività.
 Queste informazioni possono essere utilizzate per migliorare i processi, identificare i problemi e le opportunità.
+
+## Tecnologie Livello Piattaforma
+
+Le tecnologie a livello piattaforma forniscono l'infrastruttura, gli strumenti e i servizi che consentono lo sviluppo.
+Un sistema informativo è formato da diversi moduli applicativi che realizzano delle funzionalità. Tali moduli devono essere collegati tra di loro per permettere la collaborazione.
+
+E' importante che tra i vari moduli ci sia un buon flusso informativo perché
+
+- Informazioni rilevanti per più funzioni necessiterebbero della duplicazione di tali dati, generando un problema nella gestione e incongruenze in caso di modifica
+- Si evita lo scambio di informazioni diretto tra operatori umani limitando il rischio di errore
+- Una struttura a *silos* (Siloed applications, applicazioni che non comunicano) influenza la struttura aziendale che vede una mancanza di collaborazione
+
+Spesso il sistema informativo aziendale deve comunicare con sistemi di aziende esterne. E' probabile che questi sistemi siano differenti, bisogna quindi trovare tecniche per collaborare efficacemente.
+
+### Tecniche di Integrazione
+
+Per poter coordinare attività intra-organizzative e inter-organizzative bisogna adottare tecniche di integrazione quali:
+
+#### Integrazione a Livello Dati
+
+Per garantire incongruenze tra dati è essenziale che sia presente un'unica sorgente condivisa.
+
+Una prima soluzione potrebbe essere quella di utilizzare un'unica base di dati comune dove ogni operazione è immediatamente visibile agli altri applicativi.
+Questa soluzione risulta essere radicale in quanto potrebbe essere necessario ripensare interamente il sistema attuale.
+
+Una soluzione più flessibile consiste nell'introdurre un *middleware* che garantisce la congruenza tra i dati presenti in diversi database in caso di duplicazione.
+Il *middleware* si occupa anche di uniformare il **formato** e la **semantica** dei dati provenienti da db differenti.
+
+I problemi che si originano dall'integrazione dei dati sono:
+
+- **Rappresentazione**: la stessa informazione può essere rappresentata diversamente tra i diversi moduli.
+- **Struttura**: la rappresentazione è uguale, ma i campi sono ordinati in maniera differente.
+- **Presentazione**: lo stesso dato può essere presentato in formati diversi (esempio il prezzo in base alla valuta di riferimento dell'azienda)
+
+#### Integrazione a livello di Logica Applicativa
+
+Un altro approccio consiste nel mettere in comunicazione diretta diversi applicativi.
+Questo approccio non è sempre possibile e dipende dall'apertura dell'applicativo.
+
+#### Integrazione a Livello di Presentazione
+
+Questo approccio è possibile in applicativi modulari dove il frontend è separato dal backend ed è quindi possibile modificare il client per interagire con funzioni lato server di altri applicativi.
+
+### Modelli di Integrazione delle Applicazioni
+
+L'integrazione delle tecniche di integrazione può avvenire mediante diversi modelli:
+
+#### Architettura Punto-a-Punto
+
+In questo modello ogni applicazione è connessa in maniera diretta alle altre tramite API personalizzate.
+Questa architettura porta porta i singoli sistemi a comunicare in maniera indipendente, senza un intermediario centralizzato.
+
+La logica di integrazione viene codificata internamente a ciascun sistema rendendo difficile la sostituzione di uno dei componenti.
+Questa soluzione risulta poco scalabile in quanto, per ogni applicazione, sono presenti N-1 interfacce. Questo porta a dover implementare N^2 interfacce, dove N è il numero di applicazioni coinvolte.
+
+#### Architettura Hub-and-Spoke
+
+Questo modello di basa sull'introduzione di un **hub** centrale a cui vengono collegati i vari sistemi tramite *adattatori* (**spoke**).
+In questo modo il collegamento tra i vari moduli viene gestito da un componente apposito. Questo permette di astrarre la comunicazione che non deve essere sviluppata ad-hoc per ogni componente.
+
+Questo modello permette di coordinare il flusso di informazioni, indirizzando le richieste ed effettuando eventuali trasformazioni tra i dati.
+
+Questa soluzione permette una maggiore sostituibilità dei componenti portando ad implementare solo N interfacce, una per applicazione.
+
+#### Integrazione con BPMS
+
+Nell'architettura hub-and-spoke, la realizzazione comprende la definizione di alcune regole. Qualora le applicazioni siano numerose, e sia necessario un coordinamento tra le funzionalità che possono variare nel tempo, è possibile usare un applicativo a livello di piattaforma come supporto all'automatizzazione.
+
+Un **Business process Management System** (BPMS), detto anche Workflow component, consente, tramite dei processi, di gestire lo stato dei flussi informativi e semplifica le modifiche nei moduli applicativi.
+E' possibile definire processi di integrazione tramite componenti di automazione consentendo lo scambio di messaggi in maniera integrata.
+
+#### Architettura a Servizi
+
+Questa architettura si basa sul paradigma dell'*architettura orientata ai servizi* (SOA) che prevede la realizzazione delle funzionalità in maniera modulare interrogabili tramite il protocollo HTTP.
+
+Questa architettura permette di essere invocata sia internamente che esternamente all'azienda.
+
+I vari servizi hanno un alto livello di disaccoppiamento permettendo l'indipendenza tra servizi.
+Questa architettura ha anche il vantaggio di funzionare come una scatola nera dove i consumatori necessitano di conoscere solo l'interfaccia per chiamare la funzionalità.
+
+Questo paradigma facilita l'integrazione dato che ciascun componente definisce la propria interfaccia che specifica i servizi offerti dal sistema, quali messaggi vengono scambiati in ingresso e in uscita.
+
+#### Composizione e Orchestrazione di Servizi
+
+Sevizi diversi possono essere usati in maniera congiunta da una singola applicazione. Bisogna poter quindi comporre un servizio più complesso a partire da servizi atomici.
+
+Per comporre un servizio si usa una *service orchestration* che determina una sequenza di invocazione per i servizi.
