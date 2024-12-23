@@ -1440,7 +1440,17 @@ Dato che non è possibile modificare una classe immutabile, per operarvici sopra
 
 Oltre a producer e observer, esistono anche i metodi **creator** (sono i costruttori delle classi che non sono anche producer e, solitamente, sono puri) e **modifier** (modificano lo stato dell'oggetto sul quale vengono chiamati e non sono mai puri).
 
+Un tipo si dice **adeguato** se è possibile lavorarci agevolmente con tutte le operazioni presenti. Anche nel caso di tipi già adeguati, è sempre buona norma controllare se è possibile migliorarne l'efficienza aggiungendo altre operazioni.
 
+Di un tipo di dato astratto bisogna anche conoscere le caratteristiche che devono sempre essere rispettate dallo stato: per definire queste specifiche si utilizzano i `@ public invariant`.
+
+I `@ public invariant` possono fare uso di tutti i metodi (puri) e gli attributi che hanno visibilità almeno `public`.
+
+Per implementare un ADT, si necessita di un **rep** ovvero di un insieme di tipi di dato (nativi o meno) che vengono utilizzati dall'ADT per memorizzare e organizzare le informazioni che contiene. Solitamente i rep sono mantenuti privati (non si vuole che dall'esterno siano modificabili).
+
+Per descrivere le specifiche di un rep, si usano i `@ private invariant` (che funzionano esattamente come i `@public invariant` ma possono fare uso anche di tutto ciò che è privato).
+
+Si ricorda che la specifica in JML è **completamente slegata** dall'implementazione: è compito del programmatore assicurarsi che la specifica e l'implementazione corrispondano.
 
 <!--
 ### Socket (si spera)
