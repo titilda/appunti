@@ -1533,9 +1533,40 @@ In JML, per specificare l'estensione della specifica si usa `@ also`:
 
 `@ also` mette in disgiunzione le precondizione e in congiunzione le postcondizioni.
 
-<!--
 ## Collaudo
 
+Lo scopo del collaudo è accertarsi che un sistema software rispetti le specifiche (funzionali e non) richieste.
+
+Il meccanismo è semplice: si sottopongono al software dei casi di test e si verifica che il comportamento è quello che ci si aspetta.
+
+Prima di procedere, si tenga presente che nessun tipo di analisi è al 100% affidabile: vi saranno sepre dei falsi negativi dovuti, per esempio, al fatto che l'[halting problem non sia decidibile](https://appunti.titilda.org/Algoritmi%20e%20Principi%20dell'Informatica/index.html#il-problema-dellarresto-halting-problem).
+
+L'**analisi statica** è quella compiuta direttamente sul codice sorgente del software e punta ad identificare errori comuni quali variabili utilizzate senza essere inizializzate, blocchi di codice irraggiungibili e simili. Vi sono due tipi di analisi statica: quella **rigirosa** (che segnala solamente gli errori certi) e quella **pessimistica** (che segnala anche gli errori possibili).
+
+L'analisi statica non è in grado di identificare i _difetti_ del software, ovvero non è in grado di decidere se il software scritto sia conforme o meno alle specifiche: questo è il compito del _testing_.
+
+Ci sono vari livelli di testing, a seconda dell'obiettivo e della granularità di applicazione del testing:
+
+- _unit testing_: punta a trovare i difetti nei singoli moduli software, spesso è una fase automatizzata;
+- _integration testing_: punta a trovare i difetti nelle interfacce dei vari moduli, per simulare la comunicazione tra moduli si usano (se necessario) **driver** (ovvero moduli che sollecitano l'interazione) e **stub** (ovvero moduli che vengono sollecitati), spesso è una fase automatizzata;
+- _system testing_: punta a trovare difetti nell'intero sistema con tutti i moduli presenti, si divide in **verifica** (controllo del rispetto delle specifiche (**alfa test**)) e **validazione** (controllo del rispetto delle volontà del committente oppure immissione sul mercato per una ristratta cerchia di utenti (**beta test**));
+- _regression testing_: dopo aver modificato una parte del software, in questa fase ci si assicura che tutto ciò che era precedentemente funzionante, lo sia ancora.
+
+Non tutte le tipologie di difetti sono uguali: gli **Errori (error)** sono dovuti ad un inpuit errato da parte dell'utente, i **difetti (fault)** sono dovuti a bug nel software mentre i **malfunzionamenti (failure)** sono dovuti all'hardware.
+
+Per progettare i casi di test in modo efficiente (cioè senza testare tutti i possibili input di un programma), esistono delle strategie da seguire.
+
+Il testing **black box** consiste semplicemente nel sollecitare il programma con un insieme di input predefiniti detti **casi di test** e nel compararne l'output con i risultati attesi.
+
+Il testing **strutturale** o **white box**, invece, è derivato dalla struttura stessa del codice. Per derivare i casi di test esistono tre strade perseguibili:
+
+- _criterio di copertura_: si scelgono i casi di input in modo da poter eseguire una buona percentuale (idealmente 100%) delle righe di codice scritte;
+- _criterio di edge coverage_: si scelgono i casi di input facendo in modo che ogni ramo delle varie condizioni e dei vari cicli venga testato almeno una volta per ciascuna sottoespressione che compare nelle condizioni, testando sia il caso vero che il caso falso,
+- _path coverage_: si scelgono i casi di test per fare in modo di collaudare tutte le strade che portano dall'input all'output.
+
+Non conviene eseguire i test d'intergazione solo dopo aver implementato tutti i moduli necessari: usare copiosamente driver e stub appena possibile aumenta le probabilità di trovare difetti (che, teoricamente, si sarebbero comunque ripresentati dopo) e ne facilità la risoluzione (in quanto il codice da analizzare per il _debugging_) è in quantità molto minore.
+
+<!--
 ## UML
 
 ## Design pattern
