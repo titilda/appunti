@@ -29,7 +29,7 @@ Le varie fasi sono in generale abbastanza autoesplicative, vale la pena però sp
 
 Le prime fasi servono per comprendere bene il dominio del progetto per poi produrre il documento di **specifica dei requisiti** che verrà poi tradotto, nelle fasi successive, in moduli software che fanno quanto richiesto.
 
-La parte di testing è particolarmente delicata in quanto deve verificare che il prodotto finito sia conforme _per filo e per segno_ a quanto richiesto dal committente. In futuro questo documento verrà aggiornato con ulteriori informazioni sulla fase di collaudo.
+La parte di testing è particolarmente delicata in quanto deve verificare che il prodotto finito sia conforme _per filo e per segno_ a quanto richiesto dal committente. Per ulteriori dettagli, vedere il [paragrafo sul collaudo](#collaudo).
 
 Negli anni si è scoperto che la principale criticità del modello a cascata è il fatto che se si rileva un **difetto** (sia esso un errore nelle specifiche o un cambiamento di piani), bisogna tornare indietro alle prime fasi, aggiustare quanto necessario per poi proseguire.
 
@@ -41,7 +41,7 @@ Ulteriori informazioni riguardo i principi della metodologia Agile si possono tr
 
 Chi segue la metodologia SCRUM suddivide il lavoro in **sprint lunghi** e **sprint giornalieri**: all'inizio di ogni sprint vi è una riunione tra i vari partecipanti al progetto che si confrontano sui progressi e sulle criticità rilevate e decidono le attività per lo sprint successivo.
 
-Ciascuno sprint contiene una fase di design, una fase di implementazione ed un fase di collaudo.
+Ciascuno sprint contiene una fase di design, una fase di implementazione ed un fase di [collaudo](#collaudo).
 
 La filosofia dietro Agile è quella di voler anticipare il cambiamento ed i problemi, non assumendo che tutto ciò che è stato fatto sia perfetto: dato che i vari sprint sono abbastanza brevi, se risulta necessario apportare cambiamenti a quanto già prodotto, il tempo necessario è di gran lunga inferiore rispetto al modello a cascata.
 
@@ -1564,7 +1564,7 @@ Il testing **strutturale** o **white box**, invece, è derivato dalla struttura 
 - _criterio di edge coverage_: si scelgono i casi di input facendo in modo che ogni ramo delle varie condizioni e dei vari cicli venga testato almeno una volta per ciascuna sottoespressione che compare nelle condizioni, testando sia il caso vero che il caso falso,
 - _path coverage_: si scelgono i casi di test per fare in modo di collaudare tutte le strade che portano dall'input all'output.
 
-Non conviene eseguire i test d'intergazione solo dopo aver implementato tutti i moduli necessari: usare copiosamente driver e stub appena possibile aumenta le probabilità di trovare difetti (che, teoricamente, si sarebbero comunque ripresentati dopo) e ne facilità la risoluzione (in quanto il codice da analizzare per il _debugging_) è in quantità molto minore.
+Non conviene eseguire i test d'intergazione solo dopo aver implementato tutti i moduli necessari: usare copiosamente driver e stub appena possibile aumenta le probabilità di trovare difetti (che, teoricamente, si sarebbero comunque ripresentati dopo) e ne facilità la risoluzione (in quanto il codice da analizzare per il _debugging_ è in quantità molto minore).
 
 <!--
 ## UML
