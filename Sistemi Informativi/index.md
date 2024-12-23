@@ -455,3 +455,112 @@ Questo paradigma facilita l'integrazione dato che ciascun componente definisce l
 Sevizi diversi possono essere usati in maniera congiunta da una singola applicazione. Bisogna poter quindi comporre un servizio più complesso a partire da servizi atomici.
 
 Per comporre un servizio si usa una *service orchestration* che determina una sequenza di invocazione per i servizi.
+
+## Tecnologie livello Architettura Fisica
+
+Le architetture fisiche si dividono solitamente in *centralizzate* e *distribuite*.
+
+In un'**architettura centralizzata**, tutti i componenti (dita e le applicazioni) sono localizzati in un unico nodo di elaborazione.
+
+Questa era una delle prime soluzioni e presentava solo pochi *terminali* che interagivano con il software installato sul *mainframe*.
+
+L'avvento dei personal computer, del modello client/server e delle reti di comunicazione ha portato alla nascita delle **architetture distribuite**.
+
+Un'architettura si dice distribuita quando una delle seguenti condizioni è verificata:
+
+- **Elaborazione Distribuita**: le applicazioni, fra loro cooperanti, sono distribuite su più nodi
+- **Base di Dati Distribuita**: i dati sono distribuiti su più nodi
+
+### Applicazioni Distribuite
+
+Nei sistemi distribuiti i livelli logici (*layer*) sono distribuiti su una o più macchine detti livelli (*tier*).
+A seconda di come avviene la distribuzione dei layer sui tier si possono avere diverse architetture:
+
+#### Architettura Single Tiered
+
+Questa architettura si basa su un unico nodo di elaborazione che contiene tutti i layer logici.
+
+Questa architettura risulta simile ai mainframe e presenta i seguenti vantaggi: prestazioni elevate, affidabilità, sicurezza e facilità di manutenzione.
+
+Questa architettura presenta però dei limiti in termini di scalabilità e flessibilità.
+
+#### Architettura Two-Tiered
+
+Questa architettura si basa su due nodi di elaborazione: il client e il server. In questo modo l'elaborazione è divisa tra i due nodi.
+
+In base a come avviene la distribuzione dei layer (Presentazione, Applicativa e Gestione Dati) sui due nodi si possono avere due tipi di architetture:
+
+- **Thin Client**: il client si occupa solo della presentazione, mentre il server si occupa della logica applicativa e della gestione dei dati.
+- **Thick Client**: il client si occupa della presentazione e parte (o tutta) la logica applicativa, mentre il server si occupa della gestione dei dati.
+
+#### Architettura Three-Tiered
+
+Questa architettura si basa su tre nodi di elaborazione: il client, un server intermedio (middle tier) e un server per la gestione dei dati.
+
+Un sistema a tre tier conferisce buona scalabilità e flessibilità.
+
+#### Architettura N-Tiered
+
+Per diminuire il carico sui server e migliorare le prestazioni si possono aggiungere ulteriori nodi di elaborazione dove ognuno si occupa di un compito specifico.
+
+### Scalabilità
+
+Con scalabilità si intende la capacità di un sistema di adattarsi a un aumento di carico.
+
+Esistono due tipologie di scalabilità:
+
+- **Scalabilità Verticale** (scale-up): consiste nell'aggiungere risorse (CPU, RAM, etc) ad un singolo nodo di elaborazione. Questa soluzione è abbastanza semplice da realizzare, ma ha dei limiti in termini di prestazioni a causa dei limiti fisici.
+- **Scalabilità Orizzontale** (scale-out): consiste nell'aggiungere nuovi nodi di elaborazione per distribuire il carico. Questa soluzione necessita l'introduzione di un sistema di load balancing per distribuire il carico di lavoro tra le diverse macchine.
+
+In ambito web si tende a parlare di *elasticità* del sistema piuttosto che di scalabilità. Un sistema è elastico se è in grado di adattarsi automaticamente alle variazioni di carico.
+
+#### Server Farm
+
+Una *server farm* è un insieme di server che condividono un carico di lavoro. Questa soluzione permette di distribuire il carico di lavoro tra i vari server (scale-out).
+
+Le server farm possono essere realizzate secondo due principi:
+
+- **Cloning**: i server sono identici e contengono le stesse informazioni. Questa soluzione presenta un'ottima tolleranza ai guasti. I dati vengono gestiti in due modalità:
+  - **shared-nothing**: i dati sono replicati tra i vari server. Questa soluzione risulta problematica in caso di aggiornamenti frequenti dei dati.
+  - **shared-disk**: i server condividono un server dedicato alla memorizzazione e alla gestione dei dati.
+- **Partitioning**: i server contengono informazioni e applicativi differenti.
+
+### Virtualizzazione
+
+La *virtualizzazione* è una tecnica che permette di creare una versione virtuale di un sistema operativo. Questo permette di:
+
+- Disaccoppiare le risorse fisiche dalle applicazioni
+- Frazionare una risorsa fisica in più risorse virtuali
+- Creare un ambiente di isolato
+
+Le risorse virtuali sono dette *macchine virtuali* (VM) e sono gestite da un software detto *hypervisor*.
+
+Questa tecnica permette di avere all'interno della medesima macchina fisica più macchine virtuali, ognuna con la propria applicazione.
+
+### Cloud Computing
+
+Il *Cloud Computing* è un modello che permette l'accesso a risorse informatiche tramite internet, senza la necessità di possedere fisicamente le risorse.
+
+Le risorse sono offerte da un *cloud provider* che si occupa della gestione delle risorse, e della manutenzione, che vengono fornite on-demand (solo quando servono).
+
+Il cloud computing si basa su cinque **caratteristiche**:
+
+- **On-demand self-service**: le risorse possono essere richieste e rilasciate autonomamente
+- **Accesso alla rete onnipresente**: le risorse sono accessibili tramite internet
+- **Accesso indipendente dalla locazione**: le risorse sono accessibili da qualsiasi luogo
+- **Elasticity**: le risorse possono essere scalate in base alle necessità
+- **Monitoraggio sull'utilizzo**: le risorse sono monitorate e il costo è in base all'utilizzo
+
+Il cloud computing si basa su tre modelli di **servizio**:
+
+- **IaaS** (Infrastructure as a Service): il cloud provider fornisce le risorse di base (CPU, RAM, Storage) e il cliente si occupa di installare e gestire il software su una VM gestita dall'utente.
+- **PaaS** (Platform as a Service): il cloud provider fornisce le risorse fisiche e alcune tecnologie di livello piattaforma come il DBMS.
+- **SaaS** (Software as a Service): il cloud provider fornisce un'applicazione pronta all'uso e il cliente non ha alcun controllo sul servizio, ma può solo configurare alcuni parametri.
+- **\*aaS** (Everything as a Service): il cloud provider fornisce i vari componenti a livello applicativo.
+
+Il cloud computing si basa su quattro modelli di **deployment**:
+
+- **Private Cloud**: il cloud è fornito per un'unica organizzazione. Questo modello permette di avere un maggiore controllo sulla sicurezza e sulla privacy.
+- **Community Cloud**: il cloud è fornito per un gruppo di organizzazioni che condividono gli stessi interessi.
+- **Public Cloud**: il cloud è fornito per il pubblico in generale. Questo modello è il più economico, ma presenta dei problemi di sicurezza e privacy.
+- **Hybrid Cloud**: il cloud è una combinazione di due o più cloud.
