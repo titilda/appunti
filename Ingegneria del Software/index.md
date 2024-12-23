@@ -1462,9 +1462,9 @@ Si ricorda che la specifica in JML è **completamente slegata** dall'implementaz
 
 Scrivere software di qualità non significa solo scrivere programmi _corretti_ e che rispettano la specifica richiesta, ma anche scrivere codice leggibile, di qualità e facilmente estensibile.
 
-Qualsiasi modulo software dovrebbe essere scritto in modo che sia facilmente estensibile senza che sia necessario modificarlo: si deve seguire il principio di sostituzione di Liskov (LSP) (presentato brevemente nel paragrafo successivo e approfondito più in là).
+Qualsiasi modulo software dovrebbe essere scritto in modo che sia facilmente estensibile senza che sia necessario modificarlo: si deve seguire il principio di sostituzione di Liskov (LSP) (presentato brevemente nel paragrafo successivo e approfondito [più avanti](#principio-di-sostituzione-di-liskov)).
 
-Tale principio afferma che i metodi delle sottoclassi devono sempre rispettare i metodi che sovrascrivono: questo significa che la precondizione dei metodi della classe figlia devono essere al più stringenti tanto quanto quelli sovrascritti mentre le postcondizioni devono essere almeno tanto lascive.
+Tale principio afferma che i metodi delle sottoclassi devono sempre rispettare i metodi che sovrascrivono: questo significa che la precondizione dei metodi della classe figlia devono essere al più stringenti quanto quelle dei metodi sovrascritti mentre le postcondizioni devono essere al più tanto lascive.
 
 Quando si estende una classe aggiungendo un metodo, se tale metodo può essere realizzato sfruttando i metodi già presenti, allora la classe rispetta il LSP.
 
@@ -1510,6 +1510,28 @@ E' sempre utile utilizzare una convenzione condivisa per nominare le varie compo
 | Variabili | camelCase   | Se `boolean` allora `isQualcosa`, altrimenti un nome (eventualmente con aggettivi) che ne suggerisca il contenuto.                                                                       |
 | Metodi    | camelCase   | Se `boolean` allora `isQualcosa()` oppure un predicato tipo `contains()`, se `void` allora un nome che indichi cosa fa il metodo, altrimenti un nome che suggerisce il valore ritornato. |
 | Costanti  | UPPERCASE   |                                                                                                                                                                                          |
+
+## Principio di sostituzione di Liskov
+
+Come già visto [in precedenza](#metriche-di-qualità-del-software), quando si estendono classi, è bene che le classi figlie rispettino il principio di sostituzione di Liskov.
+
+Per verificare che una sottoclasse rispetti il LSP, ci sono tre regole da seguire:
+
+- _signature rule_: la sottoclasse deve avere almeno tutti i metodi con le stesse firme dell classe padre;
+- _method rule_: tutti i contratti dei metodi ereditati devono rispettare i contratti dei rispettivi metodi della classe padre (in particolare, con l'estensione, la precondizione si indebolisce mentre la postcondizione di rafforza);
+- _property rule_: la classe figlia deve rispettare tutti gli _invariants_ della classe padre.
+
+In JML, per specificare l'estensione della specifica si usa `@ also`:
+
+```java
+//@ requires (* precondizione originale *)
+//@ ensures (* postcondizione originale *)
+//@ also
+//@ requires (* estensione della precondizione *) 
+//@ ensures (* estensione della postcondizione *)
+```
+
+`@ also` mette in disgiunzione le precondizione e in congiunzione le postcondizioni.
 
 <!--
 ## Collaudo
