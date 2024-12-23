@@ -1203,3 +1203,28 @@ Ma nel 90% dei casi:
 
 Ricordo rapido rapido di FdA (guardate su appunti per approfondire).
 
+!["Retroazione"](assets/Capitolo_Retroazione/Retroazione.jpg)
+
+Se unidirezionali:
+
+$Y(s) = \varepsilon (s) A(s)$
+
+$\varepsilon (s) = X(s) - Y(s)B(s)$
+
+$\frac{Y(s)}{X(s)} = \frac{A(s)}{1 + A(s)B(s)}$
+
+$\frac{\varepsilon (s)}{X(s)} = \frac{1}{1+ A(s)B(s)}$
+
+Funzione d'anello: $L(s) = A(s)B(s)$
+
+Così da avere una funzione di trasferimento (FdT) indipendente da A ma dipendente da B.
+
+$\frac{Y(s)}{X(s)} = \frac{A(s)}{1+A(s)B(s)} \xrightarrow{A \to +\infty} \frac{1}{B(s)}
+\\
+\frac{\partial (\frac{Y(s)}{X(s)})}{\partial A(s)} = \frac{\partial (\frac{A}{1+AB})}{\partial A} = \frac{1(1+AB) - A(B)}{(1+AB)^2} = \frac {1}{(1+AB)^2} \xrightarrow{A \to + \infty} 0
+\\
+\frac{\partial (\frac{Y(s)}{X(s)})}{\partial B(s)} = \frac{\partial (\frac{A}{1+AB})}{\partial B} = \frac{0(1+AB) - A(A)}{(1+AB)^2} = \frac{A^2}{(1+AB)^2} \xrightarrow{A \to + \infty} 1$
+
+Si richia di creare poli instabili.
+
+## 9.1 Le retroazioni ed Elettronica (una storia d'amore)
