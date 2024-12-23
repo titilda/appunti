@@ -1228,3 +1228,138 @@ $\frac{Y(s)}{X(s)} = \frac{A(s)}{1+A(s)B(s)} \xrightarrow{A \to +\infty} \frac{1
 Si richia di creare poli instabili.
 
 ## 9.1 Le retroazioni ed Elettronica (una storia d'amore)
+
+Cosa è semplice fare in elettronica ? 
+
+- Fare amplificatori a grande guadagno $\to A$.
+- Fare reti passive stabili $\to B$.
+
+### Blocco A
+
+![](assets/Capitolo_Retroazione/Blocco%20A.jpg)
+
+Nel blocco $A$ usiamo un OpAmp comune, il generatore di tensione è dipendente.
+
+L'OpAmp notiamo che ha caratteristiche simili all'inverter.
+
+### Blocco B
+
+È una qualsiasi rete passiva $(R/L/C)$, che garantisce l'annullamento di $v_\varepsilon$.
+
+2 tipi:
+
+**Annullamento di tensione (non invertente)**
+
+![](assets/Capitolo_Retroazione/Blocco_B_Tensione.jpg)
+
+**Annullamento in corrente (INVERTENTE)**
+
+![](assets/Capitolo_Retroazione/Blocco_B_Corrente.jpg)
+
+## 9.2 Il $G_{Loop}$
+
+In elettronica risulta più pratico valutare il "guadagno d'Anello" $(G_{Loop})$:
+
+$G_{Loop} (s) = -A(s)B(s) = -L(s)$
+
+N.B. Essendo la rete B passiva, non è unidirezionale.
+
+### Esempio
+
+![](assets/Capitolo_Retroazione/Esempio_G_loop.jpg)
+
+$v_\varepsilon = V_{in} - V_{out}\frac{R_1}{R_1 + R_2}
+\\
+V_{out} = v_\varepsilon A_{d,OL}
+\\
+\frac{V_{out}}{A_{d,OL}} = V_{in} - V_{out}\frac{R_1}{R_1+R_2}
+\\
+V_{out}(\frac{1}{A_{d,OL}}+\frac{R_1}{R_1+R_2}) = V_{in}
+\\
+\frac{V_{out}}{V_{in}} = \frac{1}{(\frac{R_1 + R_2 + R_1 A_{d,OL}}{A_{d,OL}(R_1+R_2)})} = G_{REAL}
+\\
+G_{REAL} = \frac{(R_1 + R_2)A_{d,OL}}{R_1 + R_2 + R_1A_{d,OL}}
+\\
+G_{ID} = 1 + \frac{R_2}{R_1}
+\\
+G_{REAL} = \frac{R_1 + R_2}{R_1} \frac{A_{d,OL}}{\frac{R_1 + R_2}{R_1} + A_{d,OL}}
+\\
+G_{REAL} = G_{ID} \frac{1}{\frac{R_1 + R_2}{R_1}\frac{1}{A_{d,OL}} + 1} = G_{ID} \frac {1}{1 + \frac{1}{\frac{R_1}{R_1 + R_2}A_{d,OL}}}
+\\
+G_{LOOP} = - \frac{R_1}{R_1 + R_2}A_{d,OL}$
+
+Valutiamo il $G_{LOOP}$:
+
+- Spegnamo gli ingressi, tranne il gen. dipendente.
+- Tagliamo l'anello in un punto a caso, ricostruendo l'impedenza equivalente.
+
+![](assets/Capitolo_Retroazione/Esempio_G_loop_2.jpg)
+
+$V_{out}^{(T)} = v_\varepsilon^{(T)}A_{d,OL}
+\\
+V_{in}^{(T)} = 0 - v_\varepsilon^{(T)}
+\\
+V_{out}^{(T)} = \frac{R_1}{R_1 + R_2}V_{out}^{(T)}
+\\
+G_{Loop} = \frac{V_{out}^{(T)}}{V_{in}^{(T)}} = - \frac{R_1}{R_1 + R_2}A_{d,OL}
+\\
+G_{REAL} = \frac{G_{ID}}{1+\frac{1}{-G_{Loop}}}
+\\
+G_{REAL} = \frac{-G_{Loop}G_{ID}}{1-G_{Loop}}
+\\
+G_A = -G_{Loop}G_{ID}$
+
+Dunque:
+
+- $G_{ID} = 1 + \frac{R_2}{R_1}$
+- $G_{LOOP} = -L(s) = - \frac{R_1}{R_1 + R_2}A_{d,OL}$
+
+$G_{REAL} = \frac{G_{ID}}{1 + \frac{1}{-G_{LOOP}}} = \frac{-G_{LOOP}G_{ID}}{1 - G_{LOOP}}$:
+
+- se $|G_{LOOP}| >>1  G_{REAL} \cong G_{ID}.$
+- se $|G_{LOOP}| < 1 G_{REAL} \cong -G_{ID}G_{LOOP} = G_A.$
+
+### Stabilità
+
+Stesse cose di FdA solo che $G_{LOOP} = -L(s)$ quindi:
+
+- $G_{LOOP}$ deve essere $<0$.
+- Nel margine di fase usiamo $-180°$ come riferimento non $0°$.
+
+## 9.3 Ricostruzione dell'Impedenza
+
+![](assets/Capitolo_Retroazione/Ricostruzione_Impedenza_1.jpg)
+
+Tagliamo un ramo da cui non scorre corrente.
+
+![](assets/Capitolo_Retroazione/Ricostruzione_Impedenza_2.jpg)
+
+Tagliamo un ramo con corrente.
+
+![](assets/Capitolo_Retroazione/Ricostruzione_Impedenza_3.jpg)
+
+- Dobbiamo ricostruire l'impedenza dove si taglia guadagno nel verso della retroazione.
+- Se nel ramo tagliato **NON** scorre corrente l'impedenza da ricostruire sarà infinita.
+- Se tagliamo su un generatore di tensione, l'impedenza ricostruita verrà mascherata dal generatore stesso.
+
+3 Casi:
+
+- Impedenza d'ingresso
+
+![](assets/Capitolo_Retroazione/Impedenza_d_ingresso.jpg)
+
+![](assets/Capitolo_Retroazione/Impedenza_d_ingresso_2.jpg)
+
+![](assets/Capitolo_Retroazione/Impedenza_d_ingresso_3.jpg)
+
+- Impedenza d'uscita
+
+![](assets/Capitolo_Retroazione/Impedenza_d_uscita.jpg)
+
+- Impedenza d'uscita ed ingresso
+
+![](assets/Capitolo_Retroazione/Impedenza_d_uscita_ed_d_ingresso.jpg)
+
+Il $G_{LOOP}$ cambia anche le resistenze:
+
+![](assets/Capitolo_Retroazione/Cambiamenti_G_loop.jpg)
