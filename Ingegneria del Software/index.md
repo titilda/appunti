@@ -1413,6 +1413,35 @@ Se la clausola `@ assignable` è omessa, non vi sono garanzie.
 
 E' fortemente consigliato creare dei metodi **totali** ovvero il comportamento del metodo deve essere definito per qualunque ingresso: piuttosto si lancia un'eccezione.
 
+### Tipi di dato astratti
+
+Un **tipo di dato astratto** (ADT) è una struttura dati di cui sono stati specificati solo i possibili valori e le operazioni che è possibile compiere su di essi.
+L'utilizzo di ADT fa in modo che il programma dipenda solo dalla specifica e non dall'implementazione del tipo di dato.
+
+Per descrivere la specifica di un ADT si usa, ancora una volta, JML.
+
+Di seguito verrà analizzato cosa specificare e quali sono le regole da seguire (tranne dove diversamente specificato, quando ci si riferisce ad un metodo, ci si sta riferendo ad un metodo non statico di una classe che rappresenta un ADT).
+
+La specifica dei metodi pubblici non può usare metodi privati. Se un metodo è privato, allora non serve specificarlo (anche se non fa mai male farlo) in quanto non fa parte delle operazioni applicabili sull'ADT in questione.
+
+I metodi utilizzati all'interno di una specifica possono chiamare solamente metodi specificati puri. Per specificare un metodo come puro, si usa
+
+```java
+public int /*@ pure @*/ metodo() {...}
+```
+
+Se un costruttore non fa altro che inizializzare gli attributo dell'istanza allora può essere dichiarato come puro.
+
+I metodi puri sono anche detti **observer** in quanto consentono di osservare le caratteristiche dello stato di un'istanda di ADT.
+
+E' possibile dichiarare `/*@ pure @*/` una classe: in tal caso tutti i metodi sono considerati puri e la classe viene detta **immutabile**.
+
+Dato che non è possibile modificare una classe immutabile, per operarvici sopra si usano i codissetti **producer** ovvero operazioni che restituiscono una nuova istanza della classe immutabile il cui stato è il risultato dell'operazione applicata all'istanza sul quel il metodo è chiamato.
+
+Oltre a producer e observer, esistono anche i metodi **creator** (sono i costruttori delle classi che non sono anche producer e, solitamente, sono puri) e **modifier** (modificano lo stato dell'oggetto sul quale vengono chiamati e non sono mai puri).
+
+
+
 <!--
 ### Socket (si spera)
 
@@ -1471,7 +1500,6 @@ E' sempre utile utilizzare una convenzione condivisa per nominare le varie compo
 | Variabili | camelCase   | Se `boolean` allora `isQualcosa`, altrimenti un nome (eventualmente con aggettivi) che ne suggerisca il contenuto.                                                                       |
 | Metodi    | camelCase   | Se `boolean` allora `isQualcosa()` oppure un predicato tipo `contains()`, se `void` allora un nome che indichi cosa fa il metodo, altrimenti un nome che suggerisce il valore ritornato. |
 | Costanti  | UPPERCASE   |                                                                                                                                                                                          |
-|           |             |                                                                                                                                                                                          |
 
 <!--
 ## Collaudo
