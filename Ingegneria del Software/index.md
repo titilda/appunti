@@ -1925,6 +1925,45 @@ E' ragionevole pensare che programmi quali Excel implementino un meccanismo simi
 
 ### Strategy
 
+Si supponga di dover creare una classe in grado di ordinare elementi di un array con diversi algoritmi: un modo sarebbe quello di creare più metodi, ciascuno che implementa un algoritmo diverso. Si può decisamente fare meglio con il pattern **strategy**.
+
+```java
+interface SortStrategy {
+    void sort(int[] data);
+}
+
+class QuickSortStrategy implements SortStrategy {
+    @Override
+    void sort(int[] data) {
+        // Ordina `data` con Quicksort
+    }
+}
+
+class BubbleSortStrategy implements SortStrategy {
+    @Override
+    void sort(int[] data) {
+        // Ordina `data` con Bubblesort
+    }
+}
+```
+
+In questo modo è semplice aggiungere nuovi algoritmi di sorting senza dover modificare codice già esistente (al quale, magari, neanche si ha accesso perchè fa parte di librerie esterne al nostro programma).
+
+Per utilizzare le strategy appena definite, il procedimento è intuitivo
+
+```java
+public class Program {
+    public static void main(String[] args) {
+        int[] array = {5, 8, 4, 2, 3, 6, 8};
+        sortArray(array, new QuickSortStrategy());
+    }
+
+    static void sortArray(int[] array, SortStrategy sortStrategy) {
+        sortStrategy.sort(array);
+    }
+}
+```
+
 ### State
 
 ### Model View Controller
