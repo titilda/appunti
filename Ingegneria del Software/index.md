@@ -1566,8 +1566,137 @@ Il testing **strutturale** o **white box**, invece, è derivato dalla struttura 
 
 Non conviene eseguire i test d'intergazione solo dopo aver implementato tutti i moduli necessari: usare copiosamente driver e stub appena possibile aumenta le probabilità di trovare difetti (che, teoricamente, si sarebbero comunque ripresentati dopo) e ne facilità la risoluzione (in quanto il codice da analizzare per il _debugging_ è in quantità molto minore).
 
-<!--
-## UML
+## Diagrammi
 
+Come già accennato in precedenza, esistono dei diagrammi che rappresentano ed esemplificano le informazioni che servono a chi progetta il software, appunto, per progettarlo meglio e più efficacemente.
+
+Di tipologie di diagrammi ne esistono a bizzeffe, qui ne verranno analizzate solamente alcune.
+
+### Interaction diagram
+
+Un interaction diagram schematizza le interazioni (rappresentate come scambio di messaggi) tra attori diversi.
+
+Esistono tre tipi di messaggio: quello **sincrono**, quello **asincrono** e quello **di risposta**.
+
+```mermaid
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice ->> Bob: Messaggio sincrono
+    Bob -) Alice: Messaggio Asincrono
+    Bob --) Alice: Messaggio di risposta
+```
+
+Nello schema precedente, si vedono due attori (Alice e Bob) che si scambiano alcuni messaggi: il tempo scorre dall'alto verso il basso; sia Alice che Bob vengono _creati_ in cima al diagramma (dove c'è il loro nome) e _muoiono_ in fondo (quando ricompare il loro nome) (nonj è necessario specificare un'altra volta il nome con il riquadro: in ogni caso si considera morta l'entità dopo l'ultimo messaggio in cui è coinvolta).
+
+E' possibile evidenziare quando un attore è impegnato in uno scambio di messaggi sincrono come nello schema seguente.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant API
+    User ->> API: GET /cart/items
+    activate API
+    API --) User: {items: [...]}
+    deactivate API
+```
+
+E' possibile creare dei loop o inserire delle operaioni condizionali.
+
+```mermaid
+sequenceDiagram
+    loop for each item in cart
+        User ->> API: Try to buy item
+        alt User has enough money
+            API --) User: Receipt
+        else
+            API --) User: Not enough money
+        end
+    end
+```
+<!--
+### Communication diagrams
+-->
+
+### UML diagrams
+
+I diagrammi UML schematizzano la composizione delle classi e come sono correlate tra loro. La sintassi è abbastanza intuitiva.
+
+```mermaid
+classDiagram
+    class Volatile {
+        <<interface>>
+        +void vola()
+    }
+
+    class Animale {
+        <<abstract>>
+        #String nome
+        #TipoAlimentazione tipoAlimentazione
+        +String verso()
+        +TipoAlimentazione getTipoAlimentazione
+    }
+
+    class Cane
+    class Gatto
+    class Anatra
+    
+    class TipoAlimentazione {
+        <<enumeration>>
+        ERBIVORO
+        CARNIVORO
+        ONNIVORO
+    }
+
+    Animale <|-- Cane
+    Animale <|-- Gatto
+    Animale <|-- Anatra
+    Volatile <|.. Anatra
+    TipoAlimentazione <-- Animale
+```
+
+Nello schema precedente, si ha una classe astratta (denotata con `<<abstract>>`) `Animale` che può accedere (freccia stilizzata con linea piena) agli attributi dell'enumerazione (denotata con `<<enumeration>>`) `TipoAlimentazione`. La classe `Animale` è anche estesa (freccia vuota con linea piena) sia da `Cane` che da `Gatto` che da `Anatra`. `Anatra` implementa (freccia vuota con linea tratteggiata) l'interfaccia (denotata con `<<interface>>`) `Volatile`.
+
+I vari attributi e metodi sono decorati da un simbolo che ne denota la visibilità. Tale simbolo può essere uno dei seguenti: `+` (pubblico), `~` (package), `#` (protected) e `-` (private).
+
+Se due classi possono accedere entrambe l'una agli attributi e metodi dell'altra, allora queste sono connesse tramite una freccia senza testa con la linea piena.
+
+Se una classe `A` aggrega una o più istanze di `B` le quali possono esistere anche senza `A`, allora sono connesse in questo modo:
+
+```mermaid
+classDiagram
+    A o-- B
+```
+
+Se una classe `A` è composta da una o più istanze di `B` le quali _non_ possono esistere senza `A`, allora sono connesse in questo modo:
+
+```mermaid
+classDiagram
+    A *-- B
+```
+
+<!--
 ## Design pattern
+
+I **design pattern** rappresentano la risposta a problemi ricorrenti nel campo della programmazione della forma "Come progetto [sezione di codice] in modo che sia manutenibile, riutilizzabile ed estensibile?".
+
+Di seguito verranno esposti i principali design pattern.
+
+### factory
+
+### Adapter
+
+### Decorator
+
+### Command
+
+### Observer
+
+### Strategy
+
+### State
+
+### Model View Controller
+
+### Model View View-Model
 -->
