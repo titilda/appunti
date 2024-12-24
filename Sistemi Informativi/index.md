@@ -564,3 +564,221 @@ Il cloud computing si basa su quattro modelli di **deployment**:
 - **Community Cloud**: il cloud è fornito per un gruppo di organizzazioni che condividono gli stessi interessi.
 - **Public Cloud**: il cloud è fornito per il pubblico in generale. Questo modello è il più economico, ma presenta dei problemi di sicurezza e privacy.
 - **Hybrid Cloud**: il cloud è una combinazione di due o più cloud.
+
+## Sicurezza
+
+La sicurezza nei sistemi informativi è l'insieme delle misure atte a proteggere i seguenti requisiti:
+
+- **Integrità**: il sistema deve impedire l'alterazione delle informazioni, sia da parte di utenti e processi non autorizzati, sia da eventi accidentali
+- **Autenticità**: il sistema deve garantire che le informazioni siano autentiche e che l'utente sia chi dice di essere. Per fare ciò bisogna avere un sistema di *autenticazione*. Ogni *agente* (entità in grado di intraprendere azioni col sistema) deve essere identificato prima di poter interagire col sistema.
+- **Riservatezza**: nessun utente non autorizzato deve poter accedere alle informazioni che non è autorizzato a conoscere.
+- **Disponibilità**: il sistema deve rendere disponibili agli utenti abilitati, le informazioni e le risorse alle quali hanno accesso.
+- **Non Ripudio**: il sistema deve garantire che un utente non possa negare di aver compiuto un'azione.
+
+### Minacce alla Sicurezza
+
+Le minacce alla sicurezza possono essere di vario tipo:
+
+- **Fisiche**: danni all'infrastruttura del sistema
+- **Logiche**: sottrazione o alterazione delle informazioni o risorse
+- **Accidentali**: errori di configurazione del software, malfunzionamenti, etc
+
+Le minacce logiche nascono dalla presenza di *vulnerabilità* nel sistema. Una vulnerabilità è una debolezza del sistema che può essere sfruttata da un attaccante per compromettere la sicurezza del sistema.
+Le vulnerabilità vengono sfruttate da *exploit*, ovvero tecniche che sfruttano le vulnerabilità per compiere azioni non autorizzate.
+
+Gli *attacchi* sono azioni che colpiscono le basi di dati, infrastrutture, le reti o dispositivi tramite atti malevoli finalizzati al furto. alterazione o distruzione di elementi, violando le regole d'accesso.
+
+Gli attacchi più comuni a livello di rete sono:
+
+- **Sniffing**: intercettazione dei messaggi scambiati tra due agenti
+- **Spoofing**: falsificazione dell'identità di un agente
+- **Hijacking**: deviare le comunicazioni verso un agente malevolo al fine di intercettare e modificare i messaggi
+- **Flooding**: intasamento della rete con traffico non desiderato al fine di creare un Denial of Service (DoS)
+
+Gli attacchi più comuni a livello applicativo sono:
+
+- **Phishing**: invio di email fraudolente per ottenere informazioni sensibili
+- **Malware**: software malevolo che danneggia il sistema
+  - **Virus**: software che si auto-replica e si diffonde tramite altri programmi
+  - **Worm**: software che si auto-replica e si diffonde autonomamente
+  - **Trojan**: software che si presenta come legittimo, ma in realtà è malevolo
+  - **Ransomware**: software che limita l'accesso al sistema e chiede un riscatto per sbloccarlo
+- **Backdoor**: programma progettato per bypassare le misure di sicurezza, solitamente per motivi di manutenzione, ma può essere sfruttato da un attaccante
+- **Spyware**: software che raccoglie informazioni sulle attività dell'utente senza il suo consenso
+- **Vulnerabilità Zero-Day**: vulnerabilità sconosciuta agli sviluppatori e agli utenti
+
+E' necessario adottare misure per difendersi da queste minacce che possono essere sia di origine esterna che interna.
+
+### Crittografia
+
+Crittografare significa codificare un messaggio in modo che solo il destinatario possa leggerlo.
+
+I meccanismi si crittografia sa basano sulla presenza di un algoritmo (*funzione crittografica*) e una chiave.
+La segretezza della chiava è fondamentale per garantire la sicurezza del messaggio e deve essere scelta tra un vasto numero di combinazioni (*spazio delle chiavi*) e deve essere cambiata periodicamente (One Time Password OTP).
+
+La sicurezza dipende dalla lunghezza della chiave e dall'ampiezza dei possibili valori della chiave.
+
+La crittografia si divide in due categorie:
+
+#### Crittografia Simmetrica
+
+Nella crittografia simmetrica mittente e destinatario condividono la stessa chiave segreta K che deve essere condivisa in maniera sicura.
+Il mittente codifica il messaggio con la chiave segreta e il destinatario lo decodifica con la stessa chiave.
+Questo tipo di cifratura ha il vantaggio di essere veloce, ma presenta il problema dello scambio della chiave.
+
+```mermaid
+graph TD
+    subgraph Mittente A
+    A[Messaggio] --> |Chiave K| B[Messaggio Cifrato]
+    end
+    subgraph Destinatario
+    B --> |Trasmissione| D[Messaggio Ricevuto]
+    D --> |Chiave K| E[Messaggio]
+    end
+```
+
+In caso di sniffing, l'attaccante può intercettare numerosi messaggi cifrati ed applicare un'analisi per ricavare la chiave K. Per evitare questo problema si cerca di cambiare spesso la chiave K, tendenzialmente ad ogni sessione.
+
+Le tecniche principali della crittografia simmetrica sono:
+
+- **Sostituzione**: sostituzione di un carattere con un altro secondo una regola ben definita (esempio: cifrario di Cesare)
+- **Trasposizione**: permutazione dei caratteri del messaggio secondo una regola ben definita (esempio: cifrario di Colonna)
+
+Spesso per garantire la sicurezza vengono applicati in blocco sia la sostituzione che la trasposizione.
+
+Per la massima sicurezza la lunghezza della chiave dovrebbe essere uguale alla lunghezza del messaggio da cifrare.
+
+Alcuni esempi sono: DES, 3DES, AES.
+
+#### Crittografia Asimmetrica
+
+Nella crittografia asimmetrica mittente e destinatario possiedono due chiavi distinte: una chiave pubblica Kpub e una chiave privata Kpriv.
+Il principio è che un messaggio cifrato con la chiave pubblica può essere decifrato solo con la chiave privata e viceversa.
+
+Per garantire la sicurezza, la chiave pubblica deve essere resa pubblica, mentre la chiave privata deve essere mantenuta segreta e non deve essere possibile risalire alla chiave privata a partire dalla chiave pubblica, e viceversa.
+
+Questo tipo di cifratura è più lenta della simmetrica, ma presenta il vantaggio di non dover scambiare la chiave.
+
+Quando il mittente A vuole inviare un messaggio al destinatario B, cifra il messaggio con la chiave pubblica di B. Solo B potrà decifrare il messaggio con la sua chiave privata.
+
+```mermaid
+graph TD
+    subgraph Mittente A
+    A[Messaggio] --> |Chiave Pubblica B| B[Messaggio Cifrato]
+    end
+    subgraph Destinatario
+    B --> |Trasmissione| D[Messaggio Ricevuto]
+    D --> |Chiave Privata B| E[Messaggio]
+    end
+```
+
+Questa prima configurazione ha il problema che essendo la chiave di B pubblica, chiunque può cifrare un messaggio per B (man-in-the-middle).
+Per ovviare a questo problema si può introdurre una fase di autenticazione di A, dove A cifra il messaggio con la propria chiave privata e la chiave pubblica di B. In questo modo B può decifrare il messaggio con la chiave pubblica di A e la propria chiave privata.
+
+```mermaid
+graph TD
+    subgraph Mittente A
+    A[Messaggio] --> |Chiave Privata A| B[Messaggio Cifrato]
+    B --> |Chiave Pubblica B| C[Messaggio Cifrato]
+    end
+    subgraph Destinatario
+    C --> |Trasmissione| D[Messaggio Ricevuto]
+    D --> |Chiave Privata B| E[Messaggio Cifrato]
+    E --> |Chiave Pubblica A| F[Messaggio]
+    end
+```
+
+La generazione delle chiavi avviene mediante una semplice funzione matematica che genera due chiavi distinte, ma correlate. E' importante che la funzione inversa sia difficile da calcolare.
+
+Un esempio di crittografia asimmetrica è RSA che genera le chiavi basandosi sulla fattorizzazione di numeri primi:
+
+1. Si scelgono due numeri primi elevati $p$ e $q$
+2. Si calcola $n = p * q$ e $z = (p - 1) * (q - 1)$
+3. Si sceglie un numero $e$ (con $e < n$) coprimo con $z$
+4. Si calcola $d$ tale che $(d * e) \mod z \equiv 1$
+5. Si definiscono le chiavi pubbliche e private:
+   - Chiave Pubblica: $(n, e)$
+   - Chiave Privata: $(n, d)$
+
+Dato il messaggio da cifrare $m$ e il messaggio cifrato $c$, la cifratura e decifratura avvengono come segue:
+
+- Cifratura: $c = m^e \mod n$
+- Decifratura: $m = c^d \mod n$
+
+Lo svantaggio della cifratura asimmetrica è la lentezza computazionale. Per ovviare a questo problema si utilizza la cifratura asimmetrica per scambiare in maniera sicura la chiave simmetrica che verrà utilizzata per la comunicazione.
+
+### Integrità e Funzione di Hash
+
+La *funzione di hash* è una funzione che mappa un input di lunghezza arbitraria in un output di lunghezza fissa chiamato *fingerprint*, *hash* o *digest*.
+
+La funzione di hash deve avere le seguenti proprietà:
+
+- **Deterministica**: dato un input, la funzione deve restituire sempre lo stesso output
+- **Univocità**: la probabilità che due input diversi producano lo stesso output deve essere molto bassa
+- **Non Invertibilità**: non deve essere possibile risalire all'input a partire dall'output
+
+Le funzioni di hash sono utilizzate per garantire l'integrità dei dati. Per garantire l'integrità di un messaggio, il mittente calcola l'hash del messaggio e lo invia insieme al messaggio. Il destinatario calcola l'hash del messaggio ricevuto e lo confronta con l'hash ricevuto. Se i due hash coincidono, il messaggio è integro.
+
+```mermaid
+graph TD
+    subgraph Mittente
+    A[Testo] --> |Funzione Hash| B[Hash]
+    A --> C[Messaggio]
+    B --> C
+    end
+    subgraph Destinatario
+    C --> |Trasmissione| D[Messaggio Ricevuto]
+    D --> E[Testo]
+    D --> F[Hash Ricevuta]
+    E --> |Funzione Hash| G[Hash]
+    F --> H{Is Equal}
+    G --> H
+    H -->|Yes| I[Integro]
+    H -->|No| J[Non Integro]
+    end
+```
+
+#### Firma Digitale
+
+La *firma digitale* è un meccanismo che permette di garantire l'autenticità e l'integrità di un messaggio.
+
+Per creare una firma digitale, il mittente calcola l'hash del messaggio e lo cifra con la propria chiave privata. Il destinatario decifra la firma con la chiave pubblica del mittente e confronta l'hash del messaggio con l'hash ricevuto.
+
+```mermaid
+graph TD
+    subgraph Mittente
+    A[Testo] --> |Funzione Hash| B[Hash]
+    B --> |Chiave Privata| C[Firma]
+    A --> D[Messaggio]
+    C --> D
+    end
+    subgraph Destinatario
+    D --> |Trasmissione| E[Messaggio Ricevuto]
+    E --> F[Testo]
+    E --> G[Firma]
+    G --> |Chiave Pubblica| H[Hash]
+    F --> |Funzione Hash| I[Hash]
+    I --> J{Is Equal}
+    H --> J
+    J -->|Yes| K[Integro e Autentico]
+    J -->|No| L[Non Integro o Non Autentico]
+    end
+```
+
+#### Gestione delle chiavi
+
+La crittografia necessita di un sistema di gestione delle chiavi che permetta di generare, distribuire, archiviare e distruggere le chiavi.
+
+La **Generazione delle Chiavi** viene svolto da chi svolgerà le operazioni crittografiche, o in casi particolari da un ente certificatore.
+
+Lo **Scambio delle chiavi** è un'operazione delicata che deve essere svolta in maniera sicura, soprattutto nella crittografia simmetrica. Una tecnica utilizzata è OOB (Out Of Band) dove la chiave viene scambiata tramite un canale diverso da quello utilizzato per la comunicazione. Altrimenti si può utilizzare la crittografia asimmetrica per scambiare la chiave simmetrica.
+Nel caso delle chiavi pubbliche, queste vengono distribuite e identificata tramite un *certificato* rilasciato da un ente certificatore.
+
+I sistemi che si occupano della generazione e della gestione delle chiavi sono dette PKI (Public Key Infrastructure) e si occupano di:
+
+- Emissione di certificati
+- Revoca di certificati
+- Distribuzione di chiavi pubbliche
+
+I certificati sono rilasciati da un ente certificatore (CA) e identificano il proprietario della chiave pubblica tramite un Autorità di Registrazione (RA).
+I certificati vengono poi firmati dalla CA per garantire l'autenticità del certificato.
