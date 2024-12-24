@@ -1675,18 +1675,197 @@ classDiagram
     A *-- B
 ```
 
-<!--
 ## Design pattern
 
 I **design pattern** rappresentano la risposta a problemi ricorrenti nel campo della programmazione della forma "Come progetto [sezione di codice] in modo che sia manutenibile, riutilizzabile ed estensibile?".
 
 Di seguito verranno esposti i principali design pattern.
 
-### factory
+### Factory
+
+Quando una superclasse deve poter fare un'azione diversa a seconda del tipo della sottoclasse, non ha senso creare una condizione per ogni sottotipo: è molto meglio creare un metodo astratto da far reimplementare e poi chiamare quello.
+
+Il codice diventa da così 
+
+```java
+class Animale {
+    public void mangia() {
+        if(this instanceof Cane) {
+            // Mangia cibo per cani
+        } else if(this instanceof Gatto) {
+            // Mangia cibo per gatti
+        } else if (this instanceof Pesce) {
+            // Mangia cibo per pesci
+        } else {
+            // Non mangia ???
+        }
+    }
+}
+```
+
+a così
+
+```java
+class Animale {
+    public abstract void mangia();
+}
+
+class Cane {
+    @Override
+    public void mangia() {
+        // Mangia cibo per cani
+    }
+}
+
+class Gatto {
+    @Override
+    public void mangia() {
+        // Mangia cibo per gatti
+    }
+}
+
+class Pesce {
+    @Override
+    public void mangia() {
+        // Mangia cibo per pesci
+    }
+}
+```
+
+In questo modo non è neanche più necessario ricordarsi di modificare il metodo `mangia()` di `Animale` quando si insseriranno altre tipologie di animali.
 
 ### Adapter
 
+Si immagini di aver la necessità di usare una classe il cui codice non è accessibile come parametro di un metodo che però deve poter accettare come stesso parametro anche istanze di una classe che si ha esteso un centinaio di volte. Non conviene andare a modificare tutte le classi già estese per renderle compatibili con l'unica esterna, oltretutto, nel caso in cui le classi "diverse" siano più diuna, questo giochetto non è più fattibile.
+
+La soluzione è la creazione di un **adapter**, ovvero di un oggetto che fa da proxy tra il metodo e la classe esterna.
+
+Un esempio potra chiarire le idee: si immagini di avere le classi
+
+```java
+    abstract class ClasseFamiliare {
+        abstract void qualcosa();
+    }
+    class A extends ClasseFamiliare {...}
+    class B extends ClasseFamiliare {...}
+    class C extends ClasseFamiliare {...}
+
+    class ClasseEstranea {
+        public void qualcosaltro() {...}
+    }
+```
+
+ed un metodo
+
+```java
+void metodo(ClasseFamiliare cf){
+    cf.qualcosa();
+}
+```
+
+allora è possibile chiamare tale metodo con istanze di `A`, `B`, e `C` ma non con istanze di `ClasseEstranea`.
+
+Per risolvere questo problema, si introduce una nuova classe adapter:
+
+```java
+class ClasseEstraneaAdapter extends ClasseFamiliare {
+    private ClasseEstranea ce;
+
+    public ClasseEstraneaAdapter(ClasseEstranea ce) {
+        this.ce = ce;
+    }
+
+    @Override
+    public void qualcosa() {
+        this.ce.qualcosaltro();
+    }
+}
+```
+
+Questo rende possibile chiamate di questo genere:
+
+```java
+ClasseEstranea ce = new ClasseEstranea();
+ClasseEstraneaAdapter cea = new ClasseEstraneaAdapter(ce);
+metodo(cea);
+```
+
 ### Decorator
+
+Si ipotizzi di voler creare un oggetto (che magari potrebbe esere poi visualizzato concretamente a schermo) che potrebbe essere decorato da molteplici decorazioni, in una qualunque combinazione: non ha senso creare una classe per ciascuna combinazione.
+
+Un modo efficiente per avere accesso a tutte le combinazioni senza necessità di creare un numero enorme di classi è quello di crare una classe per ciascuna decorazione che mantiene un riferimento all'oggetto da decorare (che eventualmente potrebbe essere a sua volta una decorazione).
+
+Un esempio è d'obbligo:
+
+```java
+abstract class Decorazione {
+    private Decorazione oggettoDecorato;
+
+    protected Decorazione(Decorazione oggettoDecorato) {
+        this.oggettoDecorato = oggettoDecorato;
+    }
+
+    public disegna() {
+        // Prima disegna l'oggetto...
+        if(oggettoDecorato != null)
+            oggettoDecorato.diegna();
+        // ... e poi mettici sopra le decorazioni
+        disegnaDecorazione();
+    }
+
+    abstract void disegnaDecorazione();
+}
+
+class AlberoDiNatale extends Decorazione {
+    public AlberoDiNatale() {
+        super(null);
+    }
+
+    @Override
+    private void disegnaDecorazione() {
+        // Disegna un albero di natale
+    }
+}
+
+class Palline extends Decorazione {
+    public Palline(Decorazione oggettoDecorato) {
+        super(oggettoDecorato);
+    }
+
+    @Override
+    private void disegnaDecorazione() {
+        // Disegna le palline
+    }
+}
+
+class Lucine extends Decorazione {
+    private Color colore;
+
+    public Lucine(Decorazione oggettoDecorato, Color colore) {
+        super(oggettoDecorato);
+        this.colore = colore;
+    }
+
+    @Override
+    private void disegnaDecorazione() {
+        // Disegna le lucine
+    }
+}
+```
+
+In queto modo è possibile fare una cosa del genere:
+
+```java
+Decorazione d1 = new AlberoDiNatale();
+Decorazione d2 = new Palline(d1);
+Decorazione d3 = new Lucine(d2);
+d3.disegna();
+```
+
+Ma è anche possibile mettere le lucine sotto le palline od ometterle completamente o metterne 100 strati.
+
+E' anche possibile implementare facilmente nuove decorazioni senza andare a toccare il codice già esistente.
 
 ### Command
 
@@ -1699,4 +1878,3 @@ Di seguito verranno esposti i principali design pattern.
 ### Model View Controller
 
 ### Model View View-Model
--->
