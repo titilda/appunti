@@ -1871,7 +1871,59 @@ E' anche possibile implementare facilmente nuove decorazioni senza andare a tocc
 
 ### Command
 
+Si immagini di avere la necessità di dover implementare un menù i cui comandi disponibili possano cambiare dinamicamente: non è quindi possibile scrivere manualmente tutti i comandi e i vari callback. La soluzione è il pattern **command**:
+
+```java
+abstract class Command {
+    private String nome;
+    private String descrizione;
+
+    protected Command(String nome, String descrizione) {
+        this.nome = nome;
+        this.descrizione = descrizione;
+    }
+
+    abstract boolean executeCommand(Context ctx);
+}
+```
+
+Data la classe precedente, ora il menù può essere composto da più istanze di `Command` ciascuna con il propio nome e la propria descrizione. Logicamente il menù dovrà fare in modo che quando si selezione un comando, venga chiamato il metodo `executeCommand` e che gli venga passato come parametro un `Context` ovvero il contesto nel quale tale comando dovrà operare (potrebbe essere il  documento aperto in caso di software di videoscrittura o la pagina web attualmente aperta nel caso di un browser).
+
 ### Observer
+
+Si supponga di voler implementare una pipeline di dati nella quale si forza l'aggiornamento di un dato solo quando una delle sue dipendenze varia: il modo standard per implementare tale logica consiste nell'utilizzo del pattern **observer**.
+
+Lo schema base di un observer è il seguente:
+
+```java
+interface Subscriber {
+    void onUpdate(int data);
+}
+
+class PublishSubscribe {
+    ArrayList<Subscriber> subscribers;
+
+    public SharedValue() {
+        subscribers = new ArrayList<>();
+    }
+
+    public void subscribe(Subscriber subscriber) {
+        subscribers.add(subscriber);
+    }
+
+    public void unsubscribe(Subscriber subscriber) {
+        subscribers.remove(subscribers);
+    }
+
+    public void publish(int data) {
+        for(Subscriber subscriber: subscribers) {
+            subscriber.onUpdate(data);
+        }
+    }
+}
+```
+
+E' ragionevole pensare che programmi quali Excel implementino un meccanismo simile per aggiornare le celle che contengono formule quando i valori da cui dipendono subiscono cambiamenti.
 
 ### Strategy
 
