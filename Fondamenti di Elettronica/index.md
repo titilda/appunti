@@ -1363,3 +1363,222 @@ Tagliamo un ramo con corrente.
 Il $G_{LOOP}$ cambia anche le resistenze:
 
 ![](assets/Capitolo_Retroazione/Cambiamenti_G_loop.jpg)
+
+$R_{eq} = \frac{v}{i}
+\\
+v_\varepsilon = v - V_{out}
+\\
+V_{out} = v_\varepsilon A_{d,OL}
+\\
+i = \frac{v_\varepsilon}{R_{IN}}
+\\
+v = R_{IN} i + R_{IN} i A_{d,OL}
+\\
+R_{eq} = \frac{v}{i} = R_{IN}(1 - G_{LOOP})$
+
+![](assets/Capitolo_Retroazione/Cambiamenti_G_loop_2.jpg)
+
+$R_{eq} = \frac{v}{i}
+\\
+v_\varepsilon = -v
+\\
+i = \frac {v - v_\varepsilon A_{d,OL}}{R_{OUT}}
+\\
+\frac{i}{v} = \frac{1 + A_{d,OL}}{R_{OUT}}
+\\
+R_{eq} = \frac{v}{i} = \frac{R_{OUT}}{(1-G_{LOOP})}$
+
+## 9.4 Analisi in Frequenza
+
+Se dalla DC ci spostiamo in AC.
+
+$G_{REAL} (s) = \frac{- G_{LOOP} (s) G_{ID} (s)}{1 - G_{LOOP} (s)}:$
+
+- Se $|G_{LOOP} (s)| >> 1 \implies G_{REAL} (s) \cong G_{ID}(s)$
+- Se $|G_{LOOP} (s)| < 1 \implies G_{REAL} (s) \cong - G_{LOOP}(s)G_{ID}(s)$
+
+### Analisi in frequenza $(\beta)$
+
+Possiamo usare solo diagrammi di Bode.
+
+![](assets/Capitolo_Retroazione/Analisi_in_frequenza_Beta.jpg)
+
+$G_{ID}(s) = - \frac{R_2||\frac{1}{sC_1}}{R_1} = -\frac{R_2}{R_1}\frac{1}{1+sC_1R_2}
+\\
+G_{LOOP}(s) = - \frac{R_1}{R_1+R_2||\frac{1}{sC_1}} A_{d,OL}
+\\
+G_{LOOP}(s) = -\frac{R_1}{R_1+\frac{R_2}{1+sC_1R_2}}A_{d,OL}
+\\
+G_{LOOP}(s) = -\frac{R_1(1+sC_1R_2)}{R_1+R_2+sC_1R_1R_2}A_{d,OL}
+\\
+G_{LOOP}(s) = -\frac{R_1}{R_1+R_2}\frac{1+sC_1R_2}{1+sC_1\frac{R_1R_2}{R_1+R_2}}A_{d,OL}
+\\
+G_{ID} (s) = -\frac{R_2}{R_1}\frac{1}{1+sC_1R_2}
+\\
+G_A(s) = -G_{ID}G_{LOOP} = -\frac{R_2}{R_1+R_2}\frac{A_{d,OL}}{1+sC_1\frac{R_1R_2}{R_1+R_2}}$
+
+Sapendo che:
+
+- $R_1 < R_2$
+- $\frac{R_1R_2}{R_1+R_2} = R_1||R_2<R_1$
+- $\frac{R_2}{R_1}<<A_{d,OL}$
+
+![](assets/Capitolo_Retroazione/Grafico_frequenza_Beta.jpg)
+
+Frequenze $\beta$ non coinvolte.
+
+### Analisi in frequenza $(\alpha)$
+
+![](assets/Capitolo_Retroazione/Analisi_in_frequenza_Alfa.jpg)
+
+$G_{ID}(s) = -\frac{R_2}{R_1}
+\\
+G_{LOOP} (s) = \frac{R_1}{R_1 + R_2}A(s)
+\\
+G_{LOOP}(s) = -\frac{R_1}{R_1+R_2}\frac{A_{d,OL}}{1 + \tau s}
+\\
+G_A(s) = -G_{ID}G_{LOOP} = -\frac{R_2}{R_1 + R_2} \frac{A_{d,OL}}{1 + \tau s}$
+
+Sapendo che:
+
+- $R_1 < R_2$
+- $\frac{R_1R_2}{R_1 + R_2} = R_1||R_2<R_{1,2}$
+- $\frac{R_2}{R_1}<<A_{d,OL}$
+
+![](assets/Capitolo_Retroazione/Grafico_frequenza_Alfa.jpg)
+
+### Analisi in frequenza $(\alpha + \beta)$
+
+![](assets/Capitolo_Retroazione/Analisi_in_frequenza_Alfa_e_Beta.jpg)
+
+$G_{ID}(s) = -\frac{R_2}{R_1}\frac{1}{1+ sC_1R_2}
+\\
+G_{LOOP}(s) = - \frac{R_1}{R_1 + R_2 || \frac{1}{sC_1}}A(s)
+\\
+G_{LOOP}(s) = -\frac{R_1}{R_1 + R_2}\frac{1+sC_1R_2}{1+sC_1\frac{R_1R_2}{R_1 + R_2}}\frac{A_{d,OL}}{1+\tau s}$ quest'ultima parte richia di portare instabilità.
+
+$G_A(s) = -\frac{R_2}{R_1 + R_2}\frac{1}{1 + sC_1\frac{R_1R_2}{R_1 + R_2}}\frac{A_{d,OL}}{1 + \tau s}$
+
+Sapendo che: 
+
+- $R_1 < R_2$
+- $\frac{R_1R_2}{R_1 + R_2} = R_1 || R_2 < R_{1,2}$
+- $\frac{R_2}{R_1} << A_{d,OL}$
+- $\frac{1}{\tau}$ è la singolarità minore.
+
+### Stabilità
+
+IN questa particolare situazione è sufficiente verificare il margine di fase:
+
+- Distanza tra $-360°$ e $arg(G_{LOOP}(f))$ quando $|G_{LOOP}(f)|_{dB} = 0 dB$.
+- No sovra-elongazione.
+- $\varphi_m > 45°$
+- Per sicurezza meglio abbondare a $\varphi_m > 60°$
+
+![](assets/Capitolo_Retroazione/Stabilità.jpg)
+
+Ora cose che in FdA si sono già fatte in maniera più dettagliata ma in sostanza si osserva che, quando $|G_{LOOP}(f)|_{dB} = 0dB:$
+
+- Se taglia a $-60dB/dec \to$ sicuramente instabile.
+- Se a $-20dB/dec \to$ sicuramente stabile.
+- in altri casi controllare per stare tranquilli.
+
+# Capitolo Dieci: Acquisizione Digitale (The End)
+
+Come avviene l'acquisizione digitale ?
+
+![](assets/Capitolo_Acquisizione_Digitale/Acquisizione_digitale.jpg)
+
+## 10.1 Digital - to - Amplitude Converter (DAC)
+
+Trasforma un numero digitale $(d)$ in una ampiezza analogica $(V)$ compresa tra due valori: $V_{DD}$ ed $V_{SS}:$
+
+![](assets/Capitolo_Acquisizione_Digitale/DAC.jpg)
+
+$LSB = \frac{FSR}{2^n}
+\\
+V = d \cdot LSB
+\\
+d \in [0,2^n - 1]
+\\
+FSR = V_{DD} - V_{SS}
+\\
+n: \# bit$
+
+$FSR =$ Full Scale Range.
+
+$LSB =$ Last Significant Bit o Risoluzione.
+
+![](assets/Capitolo_Acquisizione_Digitale/Grafico_DAC.jpg)
+
+### Errori
+
+**Offset**, traslazione rispetto alla caratteristica ideale.
+
+![](assets/Capitolo_Acquisizione_Digitale/Offset_DAC.jpg)
+
+**Guadagno**, maggiore o minore pendenza rispetto alla caratteristica ideale.
+
+![](assets/Capitolo_Acquisizione_Digitale/Guadagno_DAC.jpg)
+
+**Non linearità**, l'ampiezza degli intervalli cambia da codice a codice.
+
+![](assets/Capitolo_Acquisizione_Digitale/Non_linearità_DAC.jpg)
+
+**Non Linearità Differenziale (DNL)**
+
+![](assets/Capitolo_Acquisizione_Digitale/DNL_DAC.jpg)
+
+**Non Linearità Differenziale Integrale (INL)**
+
+![](assets/Capitolo_Acquisizione_Digitale/INL_DAC.jpg)
+
+**Setting-time**, tempo necessario affinchè il livello di uscita $V$ raggiunga il valore $d \cdot LSB.$
+
+![](assets/Capitolo_Acquisizione_Digitale/Setting_time_DAC.jpg)
+
+**Non-monotocità**, presenza di tratti di curva a pendenza negativa.
+
+![](assets/Capitolo_Acquisizione_Digitale/Non_monotobicità_DAC.jpg)
+
+### Struttura del DAC
+
+![](assets/Capitolo_Acquisizione_Digitale/Struttura_DAC.jpg)
+
+Cosa succede nei casi di NON-Idealità ?
+
+- $V_{OS}$ ed $I_B^\pm$, creano una $V_{out}$ non nulla a fronte di un ingresso digitale $d$ nullo, ovvero un errore di offset.
+- $A_0$, genera un guadagno reale inferiore a quello $R.$
+- $GBWP$, introduce poli/zeri della FdT $\implies$ setting time.
+- $R_{parassita}$ switch $\implies$ non linearità.
+- Mismatch correnti pesate $\implies$ anche qui non linearità.
+
+## 10.2 Analog - to - Digital Converter (ADC)
+
+Trasforma una ampiezza analogica $(V)$ compresa tra $V_{DD}$ e $V_{SS}$ in un valore numerico $(d).$
+
+![](assets/Capitolo_Acquisizione_Digitale/ADC.jpg)
+
+$FSR = V_{DD} - V_{SS}
+\\
+LSB = \frac{FSR}{2^n}
+\\
+d = \frac{V}{LSB}
+\\
+d \in [0, 2^n - 1] \subset \N
+\\
+V \in [V_{SS}; V_{DD}] \equiv FSR - LSB$
+
+![](assets/Capitolo_Acquisizione_Digitale/Grafico_ADC.jpg)
+
+### Errori
+
+**Quantizzazione**, scostamento dovuto al troncamento/arrotondamento di $V/LSB.$
+
+![](assets/Capitolo_Acquisizione_Digitale/Quantizzazione_ADC.jpg)
+
+![](assets/Capitolo_Acquisizione_Digitale/Quantizzazione_ADC_2.jpg)
+
+$\overline{\varepsilon_Q} = \frac{1}{LSB} \int_{0}^{LSB} \varepsilon_Q(V) dV = \frac{1}{LSB} \int_{0}^{LSB} - VdV = -\frac{1}{LSB}\frac{V^2}{2}|_{0}^{LSB} = -\frac{LSB}{2}$
+
+$\varepsilon_{Qeff}^2 = \frac{1}{LSB} \int_{0}^{LSB} \varepsilon_Q^2(V) dV = \frac{1}{LSB} \int_{0}^{LSB}(-V)^2 dV = \frac{1}{LSB} \frac{V^3}{3}|_0^{LSB} = \frac{LSB^2}{3}$
