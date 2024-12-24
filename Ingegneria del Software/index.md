@@ -1966,9 +1966,57 @@ public class Program {
 
 ### State
 
+Si vuole modellare una macchina a stati che elabora le informazioni passatele in maniera differente a secoda dellos tato in cui si trova. Verrebbe intuitivo inserire una variabile che memorizza lo stato ed uno switch per scegliere quali tra le diverse operazioni eseguire.
+
+Questo approccio, oltre che essere brutto da vedere, non consente di modificare facilmente la quantità e il numero di stati: molto meglio il pattern **state**.
+
+Seguendo questo pattern si arriverà ad avere la macchina separata dagli stati: la macchina si occuperà solamente di fare da proxy tra l'esterno e lo stato attuale, l'elaborazione verrà portata a termine dallo stato che si occuperà anche di far transizionare la macchina allo stato successivo.
+
+```java
+abstract class State {
+    protected StateMachine machine;
+
+    protected State(StateMachine machine) {
+        this.machine = machine;
+    }
+
+    abstract public processData(Data data);
+}
+
+class StateMachine {
+    private State state;
+
+    public StateMachine(State initialState) {
+        this.state = initialState;
+    }
+
+    public void transition(State newState) {
+        this.state = newState;
+    }
+
+    public void processData(Data data) {
+        state.processData(data);
+    }
+}
+```
+
+Ovviamente si dovrà estendere la classe `State` per implementare al logica di tutti gli stati.
+
 ### Model View Controller
 
-### Model View View-Model
+In un programma complesso, è molto facile ad arrivare ad una blob class che si trova a dover gestire sia gui che business logic. Questa cosa è ovviamente un antipattern e va evitato.
+
+La soluzione consiste nel suddividere la blob class in tre componenti separate:
+
+- _Model_: gestisce solo ed esclusivamente la business logic ed è autosufficiente;
+- _View_: contiene la logica che gestisce l'interfaccia con l'utente;
+- _Controller_: si occupa di inoltrare al model gli input dalla view e di aggiornare la view con i risultati del model.
+
+#### Model View View-Model
+
+Il MVVM è un pattern derivato dal MVC: model e view sono sostanzialmente identici ma al posto del controller viene immesso un ViewModel.
+
+Il ViewModel è quello che fornisce i metodi per reagire agli input degli utenti ed espone un insieme di [observable](#observer) per comunicare con le altre due componenti.
 
 ## Cheatsheet
 
