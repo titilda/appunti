@@ -6,8 +6,6 @@ author:
 - "Andrea Lunghi"
 ---
 
-_Nota: è ora disponibile un cheatsheet [cliccando qui](cheatsheet/ids-cheatsheet.pdf)._
-
 # Ciclo di vita del Software
 
 Lo sviluppo di un software è un processo molto complesso: per semplicità lo si divide in fasi distinte; ciascuna fase prende il risultato della fase precedente, lo elabora e produce un **deliverable** che viene passato alla fase successiva.
@@ -1932,3 +1930,7 @@ E' ragionevole pensare che programmi quali Excel implementino un meccanismo simi
 ### Model View Controller
 
 ### Model View View-Model
+
+## Cheatsheet
+
+E' disponibile un cheatsheet riassuntivo di alcuni degli argomenti trattati in questo documento al [seguente link](cheatsheet/ids-cheatsheet.pdf).
