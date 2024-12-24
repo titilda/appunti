@@ -496,13 +496,84 @@ Di default, un'enumerazione eredita dalla classe `Enum` ([documentazione](https:
 - `name()`: restituisce il nome dell'istanza sul quale il metodo è chiamato (equivalente a `toString()`);
 - `values()`: restituisce un array di tutte le istanze della data enumerazione.
 
-<!--
 ### Casting e binding dinamico
 
-- instanceof
-- casting
-- autocasting
--->
+_Nota: allo scopo di rendere la comprensione di questo paragrafo più semplice, si farà uso della notazione insiemistica con qualche piccola specifica in più: in particolare, un nome che comincia con una lettera minuscola rappresenta un'istanza di oggetto mentre un nome che comincia con una lettera maiuscola rappresenta il nome di una classe.
+La scrittura $a \in A$ significherà quindi che `a` è un istanza di `A` mentre $A \sube B$ significa che qualunque istanza di `A` è anche istanza di `B` (quindi `A extrnds B`)._
+
+In Java è possibile cambiare il tipo di un espressione attraverso il **casting**: se il tipo dell'espressione `2 + 3` è `int`, allora il tipo dell'espressione `(float)(2 + 3)` sarà `float`.
+
+Un concetto simile vale per gli oggetti: se $Cane \sube Animale$ e $c \in Cane$ allora è possibile scrivere `(Animale) c`.
+
+Si è visto che in Java è possibile dichiarare un metodo `metodo(Animale a)` e poi passargli una qualsiasi istanza si una classe che estende (o, dato che funziona anche con le interfacce, implementa) `Animale` in quanto avviene un casting implicito verso l'alto, eppure se si scrivesse una roba del genere, il compilatore non si lamenterebbe:
+
+```java
+public class Program {
+    public static void main(String[] args) {
+        Animale a = new Cane();
+        Gatto g = (Gatto) a;
+        g.miagola();
+    }
+}
+
+class Animale {...}
+
+class Cane extends Animale {
+    void abbaia() {...}
+}
+
+class Gatto extends Animale {
+    void miagola() {...}
+}
+```
+
+Come ce lo si spiega?
+
+La risposta sta che, dato che una variabile di tipo `Animale` può contenere sia cani che gatti, il casting esplicito è concesso (logicamente, provando ad eseguire tale programma, verrebbe [sollevata un'eccezione di tipo `ClassCastException`](#eccezioni)).
+
+Eppure, se si provasse a fare qualcosa del tipo `Animale a = new Automobile();` il compilatore si lamenterebbe eccome.
+
+Questo comportamento all'apparenza irrazionale si spiega quando si scopre che le variabili in Java non dispongono di un solo tipo, bensì due (_circa..._).
+
+Questo comporatmento è detto **binding dinamico** ed è presto spiegato: sia $(S, D)$ la tupla che descrive il tipo di ciascuna variabile dove $S$ è il tipo _statico_ (quello dichiarato nel codice) mentre $D$ è il tipo dinamico (quello assegnato a runtime).
+
+A scopi dimostrativi, viene riportato il metodo `main` dell'esempio precedente commentato:
+
+```java
+public static void main(String[] args) {
+    Animale a = new Cane(); // a è di tipo (Animale, Cane)
+    Gatto g = (Gatto) a;    // g è di tipo (Gatto, Cane) --> Viene lanciata l'eccezione
+    g.miagola();
+}
+```
+
+Utilizzando `Cane` al posto di `Gatto`:
+
+```java
+public static void main(String[] args) {
+    Animale a = new Cane(); // a è di tipo (Animale, Cane)
+    Cane c = (Cane) a;    // c è di tipo (Cane, Cane)
+    c.abbaia();
+}
+```
+
+In sostanza, a compile time, è possibile fare il casting di $a \in A$ a $B$ se e solo se $A \cap B \ne \emptyset$ perchè non si può sapere se $a \in A \cap B$ o meno (si può fare affidamento solamente al tipo dichiarato: se il programmatore effettua il casto di un `Animale` (che prima era un `Cane`) a `Gatto`, il compilatore non può fare altro che sorridere ed annuire).
+
+A run time, invece, il tipo dinamico è noto e la JVM è libera di sfogarsi contro il programmatore che tenta di fare esperimenti sulla genetica di questa creatura qui sotto.
+
+![](assets/gatto.jpg)
+
+Per controllare se un'istanza $a \in A$ è anche istanza di $B \sube A$, in Java, si usa l'operatore `instanceof`:
+
+```java
+void metodo(Animale a) {
+    if(a instanceof Cane) {
+        ((Cane) a).abbaia()
+    } else if(a instanceof Gatto) {
+        ((Gatto) a).miagola();
+    }
+}
+```
 
 ### Generics
 
