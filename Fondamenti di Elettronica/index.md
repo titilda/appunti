@@ -1582,3 +1582,170 @@ V \in [V_{SS}; V_{DD}] \equiv FSR - LSB$
 $\overline{\varepsilon_Q} = \frac{1}{LSB} \int_{0}^{LSB} \varepsilon_Q(V) dV = \frac{1}{LSB} \int_{0}^{LSB} - VdV = -\frac{1}{LSB}\frac{V^2}{2}|_{0}^{LSB} = -\frac{LSB}{2}$
 
 $\varepsilon_{Qeff}^2 = \frac{1}{LSB} \int_{0}^{LSB} \varepsilon_Q^2(V) dV = \frac{1}{LSB} \int_{0}^{LSB}(-V)^2 dV = \frac{1}{LSB} \frac{V^3}{3}|_0^{LSB} = \frac{LSB^2}{3}$
+
+$\sigma_Q^2 = \frac{1}{LSB} \int_{0}^{LSB} [\varepsilon_Q (V) - \varepsilon_Q]^2 dV = \frac{LSB^2}{3} - (- \frac{LSB}{2})^2 = \frac{LSB^2}{12}$
+
+**Offset**, traslazione rispetto alla caratteristica ideale.
+
+![](assets/Capitolo_Acquisizione_Digitale/Offset_ADC.jpg)
+
+**Guadagno**, maggiore o minore pendenza rispetto alla caratteristica ideale.
+
+![](assets/Capitolo_Acquisizione_Digitale/Guadagno_ADC.jpg)
+
+**Non Linearità**, l'ampiezza degli intervalli cambia da codice a codice.
+
+![](assets/Capitolo_Acquisizione_Digitale/Non_linearità_ADC.jpg)
+
+**Non Linearità differenziale (DNL)**
+
+![](assets/Capitolo_Acquisizione_Digitale/DNL_ADC.jpg)
+
+$dnl[i] = \frac{CT[i] - CT_{ID}[i]}{LSB} = \frac{CT[i]}{LSB} - 1$
+
+oppure
+
+$dnl[i] = \frac{V[i] - V[i-1]}{LSB} - 1, i>0$ e $dnl[0] = 0$
+
+**Non Linearità differenziale integrale (INL)**
+
+![](assets/Capitolo_Acquisizione_Digitale/INL_ADC.jpg)
+
+**Conversione**, tempo necessario affinchè venga prodotto il codice d'sucita avviando la conversione sul livello d'ingresso $V$.
+
+![](assets/Capitolo_Acquisizione_Digitale/Conversione_ADC.jpg)
+
+**Codice mancante**, alcuni codici non sono prodotti, così la caratteristica reale non è monotona.
+
+![](assets/Capitolo_Acquisizione_Digitale/Codice_Mancante_ADC.jpg)
+
+**Massima pendenza d'ingresso**
+
+- Dobbiamo convertire il segnale $V*$ in un tempo di conversione $(T_{CONV}).$
+- Bisogna garantire che tra $V(t_{SOC})$ e $V(t_{EOC})$ ci sia uno scostamento minore di $\plusmn \frac{LSB}{2}.$
+- In questo modo abbiamo una coerenza tra $d*$ e $V*.$
+
+![](assets/Capitolo_Acquisizione_Digitale/Massima_pendenza_d_ingresso_ADC.jpg)
+
+Da Fourier possiamo considerare solo la generica armonica $i$ di ampiezza $V_i$ e frequenza $f_i:$
+
+$V_i (t) = V_i sin(2 \pi f_i t)$
+
+![](assets/Capitolo_Acquisizione_Digitale/Armonica_Generica.jpg)
+
+$\frac{d}{dt} V_i (t) |_{MAX} < \frac{\plusmn \frac{LSB}{2}}{T_{CONV|min}}
+\\
+\frac{d}{dt} V_i sin(2 \pi f_i t)|_{MAX} T_{CONV} |_{min} < \plusmn \frac{LSB}{2}
+\\
+2\pi f_i V_i cos(2\pi f_i t)|_{MAX} T_{CONV}|_{min} < \plusmn \frac{LSB}{2}
+\\
+cos(2 \pi f_i t) |_{MAX} = \plusmn 1
+\\
+V_i|_{MAX} = \plusmn \frac{FSR}{2}
+\\
+2 \pi f_i |_{MAX} V_i |_{MAX} cos(2 \pi f_i t) |_{MAX} T_{CONV}|_{min} < \plusmn \frac{LSB}{2}
+\\
+2 \pi f_i |_{MAX} \frac{FSR}{2} \plusmn 1 \cdot  T_{CONV} |_{min} < \plusmn \frac{LSB}{2}
+\\
+2 \pi f_i |_{MAX} \frac{FSR}{2}T_{CONV}|_{min} <\frac{FSR}{2}
+\\
+f_i |_{MAX} < \frac{1}{2 \pi}\frac{LSB}{FSR} \frac{1}{T_{CONV|min}}
+\\
+f_i |_{MAX} < \frac{1}{2 \pi} \frac{1}{2^n} \frac{1}{T_{CONV|min}}$
+
+## 10.3 Tipi di ADC
+
+### ADC Flash
+
+![](assets/Capitolo_Acquisizione_Digitale/ADC_Flash.jpg)
+
+- Molticomparatori $(2^n - 1)$
+  
+    - Consuma tanta potenza.
+    - Matching difficile $(DNL, INL).$
+
+- Velocità Elevata
+
+    - $T_{CONV} = T_{CLK}$
+
+- Pochi bit (max $12$) ad altissima velocità (GHz) e consumo di potenza.
+
+### ADC a Rampa Digitale
+
+![](assets/Capitolo_Acquisizione_Digitale/ADC_a_Rampa_Digitale.jpg)
+
+- Semplice Logica
+
+    - Consumi bassi
+    - Usa molti bit
+
+- Tempo di conversione dipendente da $V$
+
+    - $T_{CONV} \frac{FSR}{LSB}T_{CLK}$
+    - $T_{CONV|MAX} = 2^n T_{CLK}$
+
+- DNL, INL, offset e Gain dipendenti solo dal DAC.
+- Contatore digitale da $0\text{X} 0...0$ a $0 \text{X} F...F.$
+- Un DAC coverte il conteggio in livello di tensione.
+- Un comparatore confronta il livello del DAC con quello in ingresso $V.$
+- L'uscita del comparatore ferma il conteggio ottenendo $d.$
+
+### ADC Tracking
+
+- Funzionamento simile alla rampa digitale.
+
+### ADC a SAR
+
+![](assets/Capitolo_Acquisizione_Digitale/ADC_a_SAR.jpg)
+
+**Logica SAR**
+
+- Partiamo dal $MSB$ di $d$,
+
+    - Se $V_{in} > V_{dac} \to 1$, else $\to 0$
+
+- Muoviamoci su $MSB - 1$ di $d$ ricordandoci il valore di $MSB$,
+
+    - Se $V_{in} > V_{dac} \to 1$, else $\to 0$
+
+- Così fino ad $LSB$
+
+    - Se $V_{in} > V_{dac} \to 1$, else $\to 0$
+
+Simile alla rampa digitale, il contatore è sostituito da una logica ad approssimazioni successive (**SAR**).
+
+- In questo modo servono $n$ colpi di clock per ogni livello di $V$.
+- Consumi bassi.
+- Usa molti bit.
+- $T_{CONV} = n \cdot T_{CLK}$
+- DNL, INL, offset e Gain dipendenti solo dal DAC.
+
+### ADC a Rampa
+
+- Come l'ADC a rampa digitale ma il contatore + DAC è sostituito da una rampa analogica.
+- Un integratore ideale genera una rampa sul FSR:
+
+    - $V_{rmp} (t) = \frac{E}{RC} t$
+
+- Un clock alimenta un contatore che continua a contare.
+- Quando $V_{rmp} (t)$ supera $V:$
+
+    - Si ferma il conteggio.
+    - Il valore del conteggio rappresenta $d$ e viene posto in uscita.
+    - Viene resettata $V_{rmp} (t)$ per una nuova conversione.
+
+![](assets/Capitolo_Acquisizione_Digitale/Grafico_ADC_a_Rampa.jpg)
+
+- Consumi bassi.
+- Usa molti bit.
+- $T_{CONV} = \frac{V}{\frac{E}{RC}} = RC \cdot \frac{V}{E}$.
+- $T_{CONV|MAX} = RC \frac{FSR}{E} = 2^nT_{CLK}$
+- DNL, INL, offset e Gain dipendono solo dall'OpAmp.
+- I rumori/disturbi su $E$ e $V$ entrano $1:a:1$ nella conversione A/D.
+- $FSR = E \cdot 2^nT_{CLK}/RC.$
+- $LSB = E \cdot T_{CLK}/RC.$
+
+### ADC a Doppia Rampa
+
+![](assets/Capitolo_Acquisizione_Digitale/ADC_a_Doppia_Rampa.jpg)
+
