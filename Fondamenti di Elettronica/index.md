@@ -1749,3 +1749,197 @@ Simile alla rampa digitale, il contatore è sostituito da una logica ad approssi
 
 ![](assets/Capitolo_Acquisizione_Digitale/ADC_a_Doppia_Rampa.jpg)
 
+- Simile alla rampa singola.
+- Carichiamo $C(V_1)$ con $V_{in}$ usando una rampa $1,T_1:$
+
+    - $V_{rmp,1}(t) = - \frac{V_{in}}{RC} t$
+    - $T_1$ costante, scelto arbitrariamente.
+    - $V_{rmp,1} (T_1) = - \frac{V_{in}}{RC}T_1$.
+
+- Scarichiamo $C(V_1)$ con la seconda rampa $2,T_2:$
+
+    - $V_{rmp,2}(t) = - \frac{-V_R}{RC} t = \frac{V_R}{RC} t$.
+
+![](assets/Capitolo_Acquisizione_Digitale/Grafico_ADC_a_Doppia_Rampa.jpg)
+
+$t \in [T_1,T_1+T_2]$
+
+- $V_1 (t) = - \frac{V_{in}}{RC}T_1 + \frac{V_R}{RC} t$
+
+La conversione è compiuta quando $V_1 (T_1 + T_2) = 0:$
+
+- $- \frac{V_{in}}{RC}T_1 + \frac{V_R}{RC}T_2 = 0$.
+- $T_2 = \frac{V_{in}}{V_R}T_1$.
+- $T_{CONV} = T_1 + T_2 = T_1(1 + \frac{V_{in}}{V_R}).$
+
+$LSB = \frac{T_{CLK,2}}{T_1}V_R
+\\
+FSR = \frac{2^{n,2}T_{CLK,2}}{T_1}V_R
+\\
+FSR = LSB \cdot 2^{n,2}$
+
+- Consumi bassi.
+- Usa molti bit.
+- $T_{CONV}$ dipende da $V$.
+- $T_{CONV|MAX} = T_1 (1 + \frac{FSR}{V_R})$
+- $V_R = FSR \to T_{CONV|MAX} = 2T_1$
+- DNL, INL, offset e Gain dipendenti dall'OpAmp.
+- Filtro su $V_{in}.$
+
+$V_1 (t) = - \frac{1}{C} \int_{0}^{t} \frac{V_{in} (t)}{R} dt
+\\
+V_1(t) = - \frac{1}{RC} \int_{0}^{t} V_{in} (t) dt
+\\
+\overline{V_{in}} = \int_{0}^{T_1} V_{in}(t) =$ valor medio.
+
+$V_1 (T_1) = - \frac{\overline{V_{in}}}{RC}$
+
+- L'integrale ha una funzione di filtro passa basso su $V_{in}$.
+
+L'armonica generica a $\frac{1}{T_1}:$
+
+- $A_{\frac{1}{T_1}} sin(\frac{2 \pi t}{T_1} + \frac{\phi_1}{T_1})$
+- $\int_{0}^{T_1} A_{\frac{1}{T_1}} sin(\frac{2 \pi t}{T_1} + \frac{\phi_1}{T_1}) dt = 0$
+
+Bisogna progettare $T_1$ affinchè sia minimo comune multiplo del periodo dei dist. presenti, più $T_1$ cresce:
+
+- Più disturbi compensati.
+- Più allunghiamo il tempo di conversione stesso.
+
+## 10.4 Sample and Hold
+
+Se introducessimo un circuito in grado di mantenere $V^*$ che si vuole convertire per tutto il periodo $T_{CONV}$ allora potremmo eccedere il limite di $\frac{dV(t)}{dt} T_{CONV} < \plusmn \frac{LSB}{2}$.
+
+Questo circuito è chiamato "Sample and Hold" (S&H).
+
+Nel sampling legge $V (t) (V^*)$ e durante Hold viene mantenuta.
+
+![](assets/Capitolo_Acquisizione_Digitale/Sample_and_Hold.jpg)
+
+**Idealità**
+
+![](assets/Capitolo_Acquisizione_Digitale/S&H_Ideale.jpg)
+
+$T_{CONV}$ indipendente dalla pendenza del segnale.
+
+### Realtà e Switch
+
+Gli switch sono banali pass-transistor, con le stesse problematiche viste nel digitale, come ogni PT può essere di un NMOS o di un PMOS. In questo circuito portano in segnale analogico dall'ingresso alla $C_H$.
+
+**Switch NMOS**
+
+![](assets/Capitolo_Acquisizione_Digitale/Switch_NMOS.jpg)
+
+Considero $V_{in} \in [V_{in}^{min}, V_{in}^{MAX}]:$
+
+- $V_{SW}^{ON} > V_{in}^{MAX} + V_{T,n}$ per caricare $C_H$ al massimo di $V_{in}(t).$
+- $V_{SW}^{OFF} < V_{in}^{min} + V_{T,n}$ per isolare $C_H$ indipendente da $V_{in} (t).$
+
+**Switch PMOS**
+
+![](assets/Capitolo_Acquisizione_Digitale/Switch_PMOS.jpg)
+
+Con $V_{in} \in [V_{in}^{min},V_{in}^{MAX}]:$
+
+- $V_{SW}^{ON} < V_{in}^{min} + |V_{T,p}|$ scarica $C_H$ fino a  $V_{in}^{min}.$
+- $V_{SW}^{OFF} > V_{in}^{MAX} - |V_{T,p}|$ per isolare $C_H$ indipendentemente da $V_{in} (t).$
+
+**Switch NMOS + PMOS**
+
+![](assets/Capitolo_Acquisizione_Digitale/Switch_NMOS_e_PMOS.jpg)
+
+Con $V_{in} \in [V_{in}^{min}, V_{in}^{MAX}]$
+
+- Le condizioni per ON/OFF sono uguali a prima.
+- Basta che un MOS si accenda per portare $V_{in}$ su $V_{in,s} \implies$ per isolare $C_H$ devono essere entrambi OFF.
+- Basta che $S_{Wn,p}$ siano complementari tra $V_{in}^{MAX}$ e $V_{in}^{min}$ per avere un MOS acceso.
+
+### Fase di Sample
+
+![](assets/Capitolo_Acquisizione_Digitale/Fase_di_Sample.jpg)
+
+PMOS ed NMOS caricano/scaricano $C_H:$
+
+- Dobbiamo considerare i transitori.
+- La $V_{SW}$ deve restare ON affinchè il transitorio non si carica completamente (pena decapitazione).
+- I MOS possono lavorare sia in ohmica che in saturazione.
+- Spesso si usano $V_{SW}^{ON/OFF} >>$ dei valori minimi:
+
+    - quindi $|V_{DS}| < |V_{OV}|$, MOS in Ohmica.
+
+- Per $R_{CH}(V_{DS})$ si assume $R_{CH}(0)$ per semplicità:
+
+    - $R_{CH} (V_{DS}) = \frac{1}{2k(|V_{GS}| - |V_T| - |V_{DS}|)}$
+    - $R_{CH}(0) = \frac{1}{2k|V_{OV}|}$
+
+Teoricamente abbiamo:
+
+- $\tau_{SMP} = R_{CH}C_H$
+- $T_{SMP} > 5 \tau_{SMP}$
+
+In realtà:
+
+- $V_{in,s}$ lett da un ADC che da un certo $LSB$.
+- Quindi basta garantire un errore nella carica esponenziale inferiore a $LSB$, di solito $\frac{LSB}{2}$ o un $\varepsilon_{SMP}$.
+- Questo è il minimo $T_{SMP} \implies$ per avere un errore inferiore a $\varepsilon_{SMP}$ la fase deve essere $> T_{SMP}^{min}.$
+
+Legenda:
+
+- $\tau_{SMP} = R_{CH}C_H$.
+- $\varepsilon_{SMP}$ errore tollerato.
+- $V^0$ e $V^\infty$ tensione di partenza e arrivo di $V_{in,s}$ considerando $SW$ sempre ON.
+- Supponiamo di iniziare a $t_0 = 0:$
+
+    - $V_{in,s} (t) = V^0 + [V^\infty - V^0](1 - e^{-\frac{t}{\tau_{SMP}}})$
+    - $V_{in,s}(T_{SMP}^{min}) = V^\infty - \varepsilon_{SMP}$.
+
+![](assets/Capitolo_Acquisizione_Digitale/Fase_di_Sample_Dettaglio.jpg)
+
+**Esempio** $\varepsilon_{SMP} = LSB$
+
+- $V^0 = 0$.
+- Considero $0 \to FSR.$
+
+    - $V_{in,s} (t) = FSR(1 - e^{-\frac{t}{\tau_{SMP}}})$
+    - $V_{in,s} (T_{SMP}^{min}) = FSR - \varepsilon_{SMP}$
+    - $T_{SMP}^{min} = \tau_{SMP} ln(\frac{FSR}{\varepsilon_{SMP}}) \xrightarrow{\varepsilon_{SMP} = LSB} \tau_{SMP} ln (\frac{FSR}{LSB}) = \tau_{SMP} \cdot n \cdot ln(2)$
+
+### Fase di Hold
+
+![](assets/Capitolo_Acquisizione_Digitale/Fase_di_Hold.jpg)
+
+Se $SW$ è OFF, fase di Hold, $C_H$ si scarica su $R_{ADC}:$
+
+- $\tau_{HLD} = R_{ADC}C_H.$
+- $T_{HLD} \geq T_{CONV}$ dell'ADC per garantire una buona conversione.
+- Stesso discorso di prima per errore $\varepsilon_{HLD}$.
+- $T_{HLD} \in [T_{CONV}, T_{HLD}^{MAX}]$.
+
+Considerazioni uguali a Sample.
+
+- $V_{in,s} (t) = V^0 + [V^\infty - V^0](1 - e^{-\frac{t}{\tau_{HLD}}})$
+- $V_{in,s} (T_{HLD}^{MAX}) = V^0 - \varepsilon_{HLD}$
+
+![](assets/Capitolo_Acquisizione_Digitale/Fase_di_Hold_Dettaglio.jpg)
+
+**Esempio** $\varepsilon_{HLD} = LSB$
+
+- $V^0 = 0$
+- $FSR \to 0$
+- $V_{in,s}(t) = FSR(1 - e^{-\frac{t}{\tau_{HLD}}})$
+- $V_{in,s}(T_{HLD}^{MAX}) = FSR - \varepsilon_{HLD}$
+- $T_{HLD}^{MAX} = \tau_{HLD} ln(\frac{FSR}{FSR - \varepsilon_{HLD}}) \xrightarrow{\varepsilon_{HLD} = LSB} \tau_{HLD} ln (\frac{2^n - 1}{2^n})$
+
+### Buffer
+
+![](assets/Capitolo_Acquisizione_Digitale/Buffer.jpg)
+
+Se $SW$ OFF, fase di Hold, $C_H$ bufferizzato e separata dall'ADC.
+
+- $T_{HLD} \geq T_{CONV}$ dell'ADC.
+- In $T_{HLD}^{MAX}$ possiamo scaricare $V_{in,s}$ solo se un errore $\varepsilon_{HLD}$ pari $LSB$ che **NON** dipendono da $\tau_{HLD}$.
+- Abbiamo delle scariche a corrente costante dovute ai **leakage** $(I_L)$ dello $SW$ ed al bias $(I_B)$ dell'Op.Amp.
+
+### Leakage
+
+![](assets/Capitolo_Acquisizione_Digitale/Leakage.jpg)
