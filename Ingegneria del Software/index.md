@@ -5,7 +5,7 @@ author:
 - "Mattia Martinelli"
 - "Andrea Lunghi"
 - "Nadav Moscovici"
-- "El matador loco
+- "El matador loco"
 ---
 
 # Ciclo di vita del Software
