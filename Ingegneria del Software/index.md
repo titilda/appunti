@@ -4,6 +4,7 @@ author:
 - "Andrea Oggioni"
 - "Mattia Martinelli"
 - "Andrea Lunghi"
+- "Nadav Moscovici"
 ---
 
 # Ciclo di vita del Software
@@ -2091,6 +2092,39 @@ Il ViewModel è quello che fornisce i metodi per reagire agli input degli utenti
 
 ## Cheatsheet
 
-E' disponibile un cheatsheet riassuntivo di alcuni degli argomenti trattati in questo documento al [seguente link](cheatsheet/ids-cheatsheet.pdf).
+E' disponibile un cheatsheet riassuntivo di alcuni degli argomenti trattati in questo documento.<br>
+<button id="cs-btn" onclick="location.href='cheatsheet/ids-cheatsheet.html'">Ricevi CheatSheet</button>
 
 Ids Gritsmas
+
+<style>
+    #cs-btn 
+    {
+        border: none;
+        position: relative; 
+        margin-left: 25%; 
+        margin-right: 25%; 
+        margin-top: 5%; 
+        width: 25vw; 
+        overflow: hidden;
+        font: 400 normal 1.5em "Anton SC", sans-serif;
+        color: #F0E362;
+        background-color: #800080; 
+    }
+    #cs-btn::before 
+    {
+        content: "Ricevi CheatSheet";
+        position: absolute;
+        top: 2%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        display: block;
+        transition: height 0.25s ease-in;
+        color: #FFF;
+    }
+#cs-btn:hover::before {
+  height: 0%;
+}
+</style>
