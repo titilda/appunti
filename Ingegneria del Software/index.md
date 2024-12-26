@@ -1125,7 +1125,7 @@ for(int i = 10; i < 21; i++) {
 }
 
 persone.stream().parallel()                             // Utilizziamo uno stream parallelo
-    .filter(p -> p.getGiorno_di_nascita() % 2 == 0)     // Vengono mantenute solo le persone 
+    .filter(p -> p.getGiorno_di_nascita() % 2 == 0)     // Vengono mantenute solo le persone nate in un giorno pari 
     .mapToInt(p -> p.getAltezza())                      // Di ciascuna persona si prende l'altezza e la si mette in uno stream di interi
     .average()                                          // `IntStream` fornisce, tra le altre, la funzione `average`
     .ifPresentOrElse(System.out::println, () -> {       // Il valore ritornato da `average` è un `Optional`, più dettagli in seguito
