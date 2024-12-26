@@ -1943,3 +1943,90 @@ Se $SW$ OFF, fase di Hold, $C_H$ bufferizzato e separata dall'ADC.
 ### Leakage
 
 ![](assets/Capitolo_Acquisizione_Digitale/Leakage.jpg)
+
+$V_{in,s} (t) = V^0 - \frac{I}{C}t
+\\
+V_{in,s} (T_{HLD}^{MAX}) = V^0 - \varepsilon_{HLD}$
+
+- $I = I_L + I_B$
+- $\varepsilon_{HLD},$ errore gase di Hold.
+- Iniziamo a $t_0 = 0$
+
+$V_{in,s} (t) = V^0 -\frac{I}{C}t
+\\
+V_{in,s} (T_{HLD}^{min}) = V^0 \varepsilon_{HLD}
+\\
+\frac{I}{C_H}T_{HLD}^{MAX} = \varepsilon_{HLD}$
+
+Considero $\varepsilon_{HLD} = LSB.
+\\
+T_{HLD}^{MAX} = \varepsilon_{HLD} \cdot \frac{C_H}{I} \xrightarrow{\varepsilon_{HLD} = LSB} LSB \cdot \frac{C_H}{I}$
+
+Con $T_{HLD} \geq T_{CONV},$ possiamo progettare $C_H.$
+
+### Progettazione
+
+L'OpAmp avrà $G_{reale} < G_{ID}$ dovuto ad $A_0$ finito.
+
+- $G_R = \frac{A_0}{1 + A_0}$
+- Con $V: V \frac{A_0}{1 + A_0}$
+- Rispetto a $G_{ID} \varepsilon = V \cdot G_{ID} - V \cdot G_R = \frac{V}{1 + A_0}$
+- Se $\varepsilon < LSB$ possiamo usare $G_{ID}$ per i calcoli.
+- Nel caso pessimo è $\frac{FSR}{1 + A_0} <^! LSB$
+- $A_0 > \frac{FSR}{LSB} - 1 = 2^n - 1$
+
+### Charge Injection
+
+Quando $SW$ si ON/OFFA, le capacità parassite tra $SW$ e $C_H$ iniettano $\Delta Q$ in $C_H$ variando $\Delta V$ su $C_H.$
+
+- $\Delta V = \Delta V_{SW} \cdot \frac{C_{par}}{C_{par} + C_H}$
+- Passando da $HOLD \to SAMPLE$
+
+    - $V_{in}$ connesso a $V_{in,s}$, quindi $\Delta V$ rimossa.
+
+- Passando da $SAMPLE \to HOLD$
+
+    - $\Delta V$ diventa un $\varepsilon$.
+    - Di $\Delta V_{SW}$ bisognerebbe considerare solo la parte di $SW$ spenta.
+    - $\Delta V = \Delta V_{SW}^{OFF} \cdot \frac{C_{par}}{C_{par} + C_H}$
+
+- $\Delta V <^! LSB$ quello impone limiti su:
+
+    - parassiti, se fissata $C_H$ e $\Delta V_{SW}.$
+    - su $C_H$ se fissati i parassiti e $\Delta V_{SW}.$
+
+![](assets/Capitolo_Acquisizione_Digitale/Charge_Injection.jpg)
+
+### Campionamento
+
+$T_{ACQ} = T_{SMP} + T_{HLD}$
+
+- $T_{SMP}^{min} + T_{CONV} < T_{ACQ} < T_{SMP}^{min} + T_{HLD}^{MAX}$
+- $f_c = \frac{1}{T_{ACQ}}$
+- Per il Teorema di Nyquist Shannon non si ha aliasing fino a:
+
+    - $f_{MAX} \geq \frac{f_c}{2}$
+
+## 10.5 Finale
+
+### Blocco di Condizionamento
+
+- Eliminare armoniche sopra $\frac{f_c}{2}.$
+- Adatta la dinamica del segnale del sensore a quella dell'ADC.
+
+![](assets/Capitolo_Acquisizione_Digitale/Blocco_di_Condizionamento.jpg)
+
+### Filtraggio d'uscita
+
+- Serve a smussare gli scalini in uscita dal DAC per avere un onda più smussata.
+- Adatta eventualmente la dinamica del DAC con quella dell'attuatore.
+
+![](assets/Capitolo_Acquisizione_Digitale/Filtraggio_d_uscita.jpg)
+
+# Conclusioni
+
+Con questo si conclude il corso di Fondamenti di Elettronica spero che i miei appunti possano risultare utili e comprensibili, nel caso non fosse così non esitate a segnalare.
+
+Detto questo vi auguro un buono studio.
+
+-NP
