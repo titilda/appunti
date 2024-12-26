@@ -2110,6 +2110,8 @@ Ids Gritsmas
         font: 400 normal 1.5em "Anton SC", sans-serif;
         color: #F0E362;
         background-color: #800080; 
+	white-space: nowrap;
+	overflow: hidden; 
     }
     #cs-btn::before 
     {
