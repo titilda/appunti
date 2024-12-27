@@ -782,3 +782,146 @@ I sistemi che si occupano della generazione e della gestione delle chiavi sono d
 
 I certificati sono rilasciati da un ente certificatore (CA) e identificano il proprietario della chiave pubblica tramite un Autorità di Registrazione (RA).
 I certificati vengono poi firmati dalla CA per garantire l'autenticità del certificato.
+
+### Gestione Utenti
+
+#### Autenticazione
+
+Prima di far accedere un agente al sistema è necessario autenticarlo. L'autenticazione può avvenire tramite:
+
+- **Something you know** (SYK): qualcosa che l'utente conosce (esempio: password)
+- **Something you have** (SYH): qualcosa che l'utente possiede (esempio: smart card, smartphone)
+- **Something you are** (SYA): qualcosa che l'utente è (esempio: impronta digitale, riconoscimento facciale)
+
+Un tipo semplice di autenticazione si basa su una coppia username/password.
+Per aumentare il livello di sicurezza si possono utilizzare tecniche di autenticazione a due fattori (2FA) con meccanismi di challenge-response.
+
+L'autenticazione a più fattori (**Multiple Factor Authentication** - MFA) si basa sull'utilizzo di più fattori di autenticazione di natura diversa (es. SYK + SYH).
+Spesso il secondo fattore è un token generato da un'applicazione o inviato tramite SMS ottenuti tramite uno smartphone che funziona come OTP.
+
+#### Autorizzazione
+
+Dopo aver autenticato un agente, è necessario verificare se l'agente ha l'autorizzazione per svolgere delle funzioni elementari (*read*, *write* e *execute*) su delle date risorse.
+
+Il controllo alle funzioni può essere relativo a diverse risorse come il sistema operativo o un DBMS.
+
+- **Autorizzatori**: al momento della creazione di una risorsa di diventa owner ed è possibile assegnare diritti di accesso ad altri utenti.
+In un DBMS il controllo si basa su delle *regole d'accesso* che sono formate da:
+- **Soggetti**: utenti o gruppi di utenti
+- **Oggetti**: risorse a cui si vuole accedere. Queste possono essere tabelle, viste, procedure, etc
+- **Diritti**: operazioni che si possono svolgere sulla risorsa (esempio: CRUD - Create, Read, Update, Delete)
+
+Le creazioni di queste regole crea la *politica di sicurezza* di un sistema.
+Queste politiche possono essere i due tipi:
+
+- Sistema Chiuso: l'accesso è permesso solo a chi ha un'autorizzazione esplicita
+- Sistema Aperto: sono permessi tutti gli accessi tranne quelli esplicitamente vietati
+
+Le regole d'accesso vengono definite con un *modello a componenti* che si basa su tre componenti: *subject*, *object* e *right*.
+Questo modello è stato esteso con i *constrains* che rappresentano dei vincoli d'accesso dipendente dal contenuto.
+
+```plaintext
+(subject, object, right, constrain)
+```
+
+##### Politiche di accesso ai dati
+
+Le politiche di accesso ai dati possono essere di due tipi:
+
+Il primo tipo è detto **Discretionary Access Control** (DAC) dove l'accesso è basato sulle decisioni dell'owner della risorsa.
+
+Per garantire che queste regole vengano rispettate in un DBMS si possono effettuare due tecniche:
+
+- *Viste*: dare l'accesso ad un ruolo solo ad una vista modificata e non alla tabella originale
+- *Query modification*: dando ad un ruolo l'accesso solo ad una tipologia di query, quando si effettua una query il DBMS modifica la query in modo da rispettare le regole d'accesso
+
+Il secondo tipo è detto **Mandatory Access Control** (MAC) dove l'accesso è basato su regole di sicurezza definite da un'amministrazione centrale. Questo modello di politica assegna un *livello di sensitività* a ciascuna risorsa e a ciascun utente un *livello di clearance*.
+
+Vengono poi definite delle *Security Class* (SC) in base ad una componente gerarchica, che definisce il livello di sensitività delle risorse, e un insieme di categorie che indicano l'area di appartenenza del dato.
+
+I meccanismi di sicurezza si basano su due principi:
+
+- *No-Read-Up*: un soggetto può leggere solo risorse con un livello di sensitività inferiore o uguale al proprio livello di clearance
+- *No-Write-Down*: un soggetto può scrivere solo risorse con un livello di sensitività superiore o uguale al proprio livello di clearance
+
+Nei sistemi MAC si realizzano tabelle multi-livello dove ad ogni riga o attributo è associato un attributo detto *Tuple Classification* (TC) che indica il livello di sensitività della tupla.
+
+| field1_name | field1_classification | field2_name | field2_classification | tuple_classification |
+|-------------|-----------------------|-------------|-----------------------|----------------------|
+| value       | S                     | value       | S                     | S                    |
+| value       | TS                    | value       | S                     | TS                   |
+|             |                       |             |                       |                      |
+
+Quando si prova ad effettuare l'accesso ad una risorsa il cui livello di sensitività è maggiore del proprio livello di clearance, il sistema può effettuare due azioni:
+
+- Non mostrare la risorsa (mostrare un valore nullo)
+- Mostrare dei dati fittizi
+
+### Cybersecurity
+
+La *cybersecurity* è l'insieme delle misure fisiche, logiche e organizzative atte a proteggere i sistemi informativi da attacchi.
+
+Un approccio per proteggersi dagli attacchi è utilizzare una politica di tipo *Zero Trust* che consiste nel limitare l'accesso alle risorse solo se strettamente necessario.
+
+Con l'avvento del *cloud computing* e del *BYOD* (Bring Your Own Device) non esistono dei *perimetri di rete* e dei dispositivi affidabili di default ed è necessario proteggere i dati e le risorse da attacchi provenienti da dispositivi esterni.
+
+L'approccio Zero Trust si basa su tre principi:
+
+- Tutte le entità sono considerate non attendibili
+- L'accesso è basato sul privilegio minimo
+- Il sistema effettua una verifica continua della sicurezza
+
+Il sistema effettua dei controlli sulle credenziali dell'utente prima di dare accesso alle risorse. Questo controllo viene poi ripetuto a brevi intervalli di tempo per verificare costantemente l'identità dell'utente.
+
+Il sistema effettua anche dei operazioni di analisi, filtraggio e registrazione per verificare il comportamento delle entità alla ricerca di possibili minacce.
+
+### Meccanismi di sicurezza Infrastrutturali
+
+#### Firewall
+
+Il *firewall* è un dispositivo di rete che permette di filtrare il traffico in ingresso e in uscita da una rete. L'adozione di un firewall deve seguire re regole di sicurezza:
+
+- Il firewall deve essere l'unico punto di accesso tra la rete interna (intranet) e la rete esterna (internet)
+- Il firewall deve essere configurato in modo da permettere solo il traffico necessario ed autorizzato
+- Il firewall deve essere sicuro a sua volta
+
+I componenti principali di un firewall sono:
+
+- **Screening Router**: filtra i pacchetti in base alla loro intestazione (*Packet filtering*) o al loro contenuto (*packet inspection*). Si basa su una tabella di regole che definisce quali pacchetti devono essere bloccati e quali devono essere inoltrati.
+- **Application Gateway**: filtra il traffico in base al livello applicativo (esempio: HTTP, FTP) tramite un *proxy*. Il proxy si interpone tra il client e il server e permette di analizzare il traffico in maniera più approfondita.
+
+I firewall possono essere usati per creare delle *DMZ* (Demilitarized Zone) che è una zona intermedia tra la rete interna e la rete esterna. Questa zona contiene i servizi che devono essere accessibili dall'esterno, ma che non devono avere accesso alla rete interna.
+
+#### Intrusion Detection System (IDS)
+
+L'*Intrusion Detection System* (IDS) è un sistema che permette di rilevare intrusioni monitorando gli eventi in un sistema o in una rete.
+
+Questi dispositivi possono interagire con il firewall per bloccare una connessione da un indirizzo IP sospetto.
+
+Gli IDS si basano su alcuni presupposti:
+
+- Le attività sono osservabili
+- Le attività malevole sono diverse da quelle legittime
+- Si usano Features che catturano evidenze di intrusione
+- Si usano Modelli che permettono di comporre tali evidenze
+
+I componenti funzionali si un IDS sono:
+
+- **Sensori** (information source): si occupano di raccogliere le informazioni che permettono di rilevare un'intrusione
+- **Algoritmi di analisi**: si occupano di analizzare i dati raccolti dai sensori per rilevare un'intrusione
+- **Alerting e Response**: si occupano di notificare l'utente in caso di intrusione e di intraprendere delle azioni per mitigare l'attacco
+
+Gli IDS si dividono in due categorie in base al tipo di sensori utilizzati:
+
+- **Network-Based IDS**: monitorano il traffico di rete alla ricerca di pattern sospetti. Ha il vantaggio di essere poco impattante sulle prestazioni della rete, ma hanno problemi durante la congestione di rete e se il traffico è cifrato.
+- **Host-Based IDS**: monitorano le attività di un singolo host alla ricerca di pattern sospetti. Ha il vantaggio di essere più preciso, ma ha un impatto maggiore sulle prestazioni del sistema.
+
+Un'altra classificazione può essere svolta in base al tipo di analisi effettuata:
+
+- **Misure Detection**: analizzano l'attività del sistema alla ricerca di pattern noti. Ha il vantaggio di essere veloce, ma ha il problema di non rilevare attacchi nuovi, richiedendo aggiornamenti costanti.
+- **Anomaly Detection**: analizzano l'attività del sistema alla ricerca di comportamenti anomali. Cercano di costruire un profilo che rappresenta in normale stato di funzionamento del sistema. Quando il sistema esce oltre a delle soglie massime dal normale funzionamento genera un allarme. Ha il vantaggio di rilevare attacchi nuovi, ma ha il problema di generare falsi positivi.
+
+Infine gli IDS possono essere classificati in base al tipo di Response effettuata:
+
+- **Active Response**: l'IDS interviene direttamente per bloccare l'attacco (esempio: bloccare un indirizzo IP sospetto)
+- **Passive Response**: l'IDS notifica l'utente dell'attacco, ma non interviene direttamente
