@@ -229,3 +229,98 @@ $[1] \to [2, 3] \to [4, 5 , 3] \to [5, 3] \to [3] \to [6, 7] \to [7] \ 7$ is the
 - Temporal $\Omicron(b^m), \ m$ could be infinite.
 
 It is cleae that the DFS Algorithm isn't a good Tree Search Algorithm.
+
+### Uniform-Cost Search (UCS)
+
+It is an BFS modify, we choose the path with the smallest cost, in a situation of equal cost we choose with other condition (ex. alphabetic order).
+
+UCS is **complete** and **optimal**.
+
+**Complexity:**
+
+- worst-case temporal and spatial $\Omicron (b^{(1 + [\frac{c^*}{\varepsilon}])})$.
+- $b =$ step cost larger than $\varepsilon$.
+- $\varepsilon =$ smallest cost.
+- $c^* =$ cost of the optimal solution.
+
+## Chapter Six: Informed Search Strategies
+
+In this type of search there are two important things:
+
+- The Algorithm use knowledge that is not contained in problem formulation.
+- The most important object in this search is the "evaluation function" $(f(n))$, this function tell us "how much" a node is "promising". Smaller is the value of $f(n)$ better is. We can calculate $f(n)$ in two ways:
+
+    - Greedy Best-first Search (GBS).
+    - $A^*$ Search.
+
+### Greedy Best-first Search (GBS)
+
+- Uses an $f(n)$ that is equal to heuristic function $(h(n))$.
+- The $h(n)$ evaluates the estimated cost of the shortest path from a node $n$ to a goal node.
+- If we want to apply GBS, the $h(n)$ must be known.
+
+**IMPORTANT:** $h(n)$ is an **estimate**, not the actual cost.
+
+**Example**
+
+- Now two examples of heuristics for the 8-puzzle:
+
+    - $h_1(n) : \#$ of misplaced tiles.
+    - $h_2(n) :$ sum of Manhattan distances of each tile to its final position.
+
+      - Sum of Manhattan distances of two points $(x_1; y_1), (x_2; y_2)$ is $|x_1 - x_2| + |y_1 - y_2|$
+
+![](assets/Chapter%20Six/Ex%20GBS.jpg)
+
+- $h_1 (n) = 6$
+- $h_2 (n) = 2 (\text{for}\ 5) + 3(\text{for}\ 8) + 0(\text{for}\ 4) + 1(\text{for}\ 2) + 3(\text{for}\ 1) + 0(\text{for}\ 7) + 3(\text{for}\ 3) + 1(\text{for}\ 6) = 13$
+
+**$H(n)$ Accuracy**
+
+- Given two heuristic functions $h_1$ and $h_2$ and $h_1 (n) \leq h_2 (n)$ for any $n$.
+- $h_2$ dominates $h_1 \implies h_2$ is more accurate of more informed than $h_1$.
+
+**Graphical examples of 8-puzzle:**
+
+![](assets/Chapter%20Six/8-puzzle%20h1.jpg)
+
+![](assets/Chapter%20Six/8-puzzle%20h2.jpg)
+
+**Evaluation**
+
+- GBS is not complete and he can get stuck in a loop $\implies$ not optimal.
+- Temporal and spatial complexity of $\Omicron (b^m)$ nodes (worst-case), $m:$ maximum depth of the search tree.
+
+### $A^*$
+
+The evaluation funcion "$f(n)$" of a node $n$ is computed as the sum of two componets:
+
+- $A\ h(n)$.
+- The cost to reach $n$ from the root $g(n)$.
+
+$f(n) = g(n) + h(n)$
+
+- $f(n) :$ estimates the cost of a solution that passes though node $n$.
+- $g(n) :$ we already said.
+- $h(n) :$ estimates the cost of the shortest path from $n$ to a goal node.
+
+**IMPORTANT :** We **must** know $h(n)$ to apply $A^*$ search.
+
+**Example**
+
+![](assets/Chapter%20Six/Ex%20A*.jpg)
+
+**Evaluation**
+
+- $A^*$ search is complete and optimal for tree-search.
+
+    - When $h(n)$ is admissible.
+
+- $A^*$ search is complete and optimal for graph-search.
+
+    - When $h(n)$ is consistent.
+
+**Complexity**
+
+It has a temporal and spatial complexity that is exponential in the lenght of the solution.
+
