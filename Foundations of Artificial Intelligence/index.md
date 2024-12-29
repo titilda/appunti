@@ -324,3 +324,93 @@ $f(n) = g(n) + h(n)$
 
 It has a temporal and spatial complexity that is exponential in the lenght of the solution.
 
+**Wait, WHAT?! $h(n)$ admissible ?!**
+
+$h(n)$ is admissible when for each $n :$
+
+- $0 \leq h(n) \leq h^*(n)$
+
+$h^*(n) :$ actual cost from $n$ to the solution.
+
+### First Optimality Theorem for $A^*$ Search
+
+$A^*$ with tree-search is complete and optimal when $h(n)$ is admissible.
+
+**Completeness**
+
+If a solution exists, $A^*$ search terminates with the solution.
+
+**Optimality**
+
+- Call $C^*$ the cost of the optimal solution, consider a sub-optimal goal $G' : f(G') = g(G') + h(G').$
+- $G'$ is suboptimal $: g(G') > C^*.$
+- A node $n$ in the frontier, which is on the path of the optimal solution $: f(n) = g(n) + h(n) \leq C^*.$
+- So $f(n) \leq C^* f(G')$.
+- Thus, when $A^*$ search selects a node from the frontier, the path to the corresponding state is optimal.
+
+**Wait, WHAT?! (pt.2) $h(n)$ consistent ?!**
+
+A $h(n)$ is consistent when, for each node $n$ and each one of its successors $n' :$
+
+- $h(n) \leq c(n,a,n') + h(n')$
+
+A consistent $h(n)$ is also admissible, viceversa is not true.
+
+If $n$ is a goal node, then $h(n) = 0.$
+
+For Example the 8-puzzle solution, with $h_1(n)$ and $h_2(n)$ already saw, $h_1$ and $h_2$ are consistent.
+
+### Second Optimality Theorem for $A^*$ Search
+
+$A^*$ search with graph-search is complete and optimal when $h(n)$ is consistent.
+
+**Completeness**
+
+It can be proved that in the same way we did for tree search with an admissible $h(n).$
+
+**Optimality**
+
+- Given $n'$ successor of $n$, $f(n') = g(n') + h(n') = g(n) + c(n,a,n') + h(n') \geq g(n) + h(n) = f(n).$
+- Thus, $A^*$ chooses nodes in non-decreasing order of $f(n)$.
+- Thus, when $A^*$ selects the first goal node from the frontier, this is optimal solution.
+
+**Consistency is a stronger property than admissibility.**
+
+Other properties of $A^*$ Search:
+
+- $A^*$ expands all nodes with $f(n) < C^*.$
+- $A^*$ expands some nodes with $f(n) = C^*.$
+- $A^*$ expands no nodes with $f(n) > C^*.$
+- $A^*$ is optimally efficient.
+
+### Weighted $A^*$ Search
+
+It introduces a weight factor $w (1 \leq w < \infty)$ over the heuristics so that, $f(n) = g(n) + wh(n) \implies$ can be more efficient.
+
+### Iterative Deepening $A^* (IDA^*)$ Search
+
+$IDA^*$ reduces memory requirement of $A^*$ search by applying a limit to the values of $f(n).$
+
+It assumes to have a consistent $h(n).$
+
+**Evaluation of $IDA^*$ Search**
+
+**Completeness**
+
+$IDA^*$ Search is complete when $h(n)$ is admissible.
+
+**Optimality**
+
+$IDA^*$ Search is optimal when $h(n)$ is admissible.
+
+**Complexity**
+
+- $IDA^*$ requires less memory than $A^*$ and avoids to sort the frontier.
+- HOwever, $IDA^*$ cannot avoid to revisit states not on the current path, because it uses too little memory.
+- Thus, it is very efficient memory-wise but time-wise since it revisits states.
+
+$S(n) = \Omicron(bd)
+\\
+T(n) = \Omicron(b^d)$
+
+## Chapter Seven: Constraint Satisfaction Problems
