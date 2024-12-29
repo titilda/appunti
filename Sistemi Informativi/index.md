@@ -925,3 +925,151 @@ Infine gli IDS possono essere classificati in base al tipo di Response effettuat
 
 - **Active Response**: l'IDS interviene direttamente per bloccare l'attacco (esempio: bloccare un indirizzo IP sospetto)
 - **Passive Response**: l'IDS notifica l'utente dell'attacco, ma non interviene direttamente
+
+## Progettazione di Sistemi Informativi
+
+La progettazione di un sistema informativo è una fase importante e deve essere svolta in maniera sistematica prendendo in considerazione diversi aspetti: scalabilità, cambiamenti sull'organizzazione e sulle strategie organizzative.
+
+Durante il processo di gestione di un sistema informativo si susseguono diverse fasi in maniera ciclica e iterativa:
+
+- **Pianificazione**: definizione delle linee guida strategiche, componenti organizzativi e istruzioni operative
+- **Sviluppo**: raccolta e analisi dei requisite, definizione dell'architettura hardware e sviluppo software
+- **Gestione**: interventi di routine eseguiti per il mantenimento
+- **Controllo**: operazioni periodiche per valutare l'adeguatezza del sistema
+
+```mermaid
+graph TD
+    A[Pianificazione] --> B[Sviluppo]
+    B --> C[Gestione]
+    C --> D[Controllo]
+    D --> A
+```
+
+Esistono due tipologie di cambiamenti di che possono causare la necessità di cambiare il sistema informativo:
+
+- **Esogene all'organizzazione**: causati da fattori esterni all'organizzazione come cambiamenti normativi, tecnologici, etc
+- **Endogene all'organizzazione**: causati da fattori interni all'organizzazione come cambiamenti organizzativi, strategici, rinnovamento, etc
+
+### Pianificazione
+
+La pianificazione comprende due fasi:
+
+#### Pianificazione strategica
+
+La *pianificazione strategica* si basa sull'acquisizione di conoscenza del contesto e dello stato attuale dell'azienda. Questa fase si basa su due attività:
+
+- l'analisi delle opportunità di sviluppo: analizzare le tecnologie, strategie e processi, delineando i possibili sviluppi del sistema
+- l'analisi dei fabbisogni informativi: analizzare i bisogni informativi dell'azienda e definire i requisiti del sistema, definendo gli scambi informativi necessari e la modellazione delle informazioni
+
+Questa fase è supportata dall'identificazione dei *business driver*, ovvero i fattori che influenzano il business e che devono essere presi in considerazione nella progettazione del sistema.
+Questi fattori sono solitamente misurabili mediante i **KPI** (Key Performance Indicator).
+
+I KPI sono utili per misurare l'efficacia e l'efficienza del sistema informativo in base a tre variabili: *input*, *output atteso* e *output effettivo*.
+
+```mermaid
+graph TD
+    A[Input] --> B[Processo]
+    C[Output atteso] --> B
+    B --> D[Output effettivo]
+```
+
+I business driver sono solitamente divisi in due categorie:
+
+- **Efficacia**: definisce se l'azienda è stata in grado di raggiungere l'output atteso $$Efficacia = OutputEffettivo / OutputAtteso$$ A questo indicatore si aggiungono:
+  - **Reach**: obiettivi che allargano *geograficamente*, *temporalmente* o *modalità* (canali) l'azienda
+  - **Richness**: obiettivi che migliorano l'intensità della comunicazione con le parti con cui interagisce (es. clienti, fornitori)
+- **Efficienza**: definisce se l'azienda è stata in grado di raggiungere l'output effettivo con il minor input possibile $$Efficienza = OutputEffettivo / Input$$
+
+#### Studio di Fattibilità
+
+Lo *studio di fattibilità* è un'analisi preliminare che permette di valutare la fattibilità di un progetto.
+
+Questa fase si basa su tre fasi principali:
+
+##### Definizione degli Obiettivi e Specifiche Funzionali
+
+Questa fase mira a definire le aree su cui bisogna lavorare delineando i miglioramenti che si vogliono ottenere.
+
+Definite le aree di interesse di descrivono ad alto livello le funzioni che il sistema dovrebbe fornire.
+
+In fine ci si concentra sui vincoli da rispettare definiti da: costo, tempo e qualità. Questi vincoli possono essere ottimizzati a coppia, ma non tutti e tre insieme.
+
+##### Progettazione della soluzione
+
+La progettazione della soluzione si basa su tre fasi:
+
+1. **Identificazione delle soluzioni**: in base alle specifiche e ai vincoli si definiscono delle soluzioni informatiche in grado di soddisfarli. Queste soluzioni possono portare a svolgere due tipologie di analisi:
+    - *Make or Buy*: decidere se sviluppare internamente il sistema (make) o acquistare un sistema già pronto (buy). Sviluppare il proprio sistema permette di avere un sistema su misura, ma richiede tempo e risorse. Acquistare un sistema già pronto (COTS - Commercial Of-The-Shelf) permette di avere un sistema funzionante in tempi brevi, ma potrebbe non soddisfare tutte le esigenze.
+    - *Sourcing*: decidere se affidare lo sviluppo del sistema ad un'azienda esterna (Outsourcing) o svilupparlo internamente (in-house). è possibile anche adottare una soluzione mista che si divide in 6 livelli:
+      0. **In-House**: tutto lo sviluppo è svolto internamente
+      1. **Servizi Condivisi**: l'organizzazione è supportata da un'azienda IT che lavora in collaborazione diretta con l'azienda
+      2. **Supporto Esterno**: l'azienda si gestiscono internamente i sistemi, ma si appoggia ad aziende esterne per la supporto
+      3. **Consorzio**: un gruppo di aziende si unisce per sviluppare un sistema comune dividendo i costi
+      4. **Outsourcing Selettivo**: l'azienda si appoggia ad aziende esterne per lo sviluppo di alcune parti del sistema (solitamente non core)
+      5. **Outsourcing Completo**: l'intera gestione del sistema è affidata ad aziende esterne
+2. **Analisi di Fattibilità Tecnica**: si descrivono le possibili soluzioni per le esigenze definite. Le soluzioni vengono valutate in base a diversi criteri:
+    - **Disponibilità**: valutare se la soluzione è realizzabile (o acquistabile) nei tempi previsti
+    - **Maturità tecnologico**: valutare se lo stato di vita della tecnologia che si vuole adottare
+    - **Affidabilità**: valutare l'esposizione ai guasti della soluzione individuata
+    - **Sicurezza**: valutare la vulnerabilità della soluzione individuata
+    - **Scalabilità**: valutare la capacità della soluzione di adattarsi a nuove esigenze e quanto costerebbe in termini di risorse
+    - **Integrazione**: valutare la capacità della soluzione di integrarsi con i sistemi esistenti
+3. **Valutazione degli Impatti Organizzativi**: valutare l'impatto che l'introduzione del nuovo sistema avrà sull'organizzazione.
+
+##### Valutazione di Convenienza Economica
+
+Le soluzioni proposte devono essere convenienti dal punto di vista economico, ovvero il costo della soluzione deve essere inferiore al beneficio che si otterrà.
+
+I *costi* devono essere contabilizzati in maniera precisa.
+
+I *benefici* devono essere tangibili e diretti, quindi monetizzabili. Alcuni benefici possono essere una riduzione dei costi operativi, un aumento della produttività, un aumento dei ricavi, etc.
+
+### Ciclo di Vita del Sistema Informativo
+
+Una volta scelto effettuato lo studio di fattibilità e scelta la soluzione, si passa alla fase di sviluppo del sistema informativo che può variare in base a se si è scelto di sviluppare internamente il sistema o di acquistare un sistema già pronto.
+
+#### Ciclo di Sviluppo con strategia Make
+
+Il ciclo di sviluppo di un sistema informativo con strategia *make* si basa su un approccio iterativo basato su diverse fasi:
+
+- Pianificazione
+- Raccolta e Analisi dei requisiti
+- Analisi delle funzionalità
+  - Progettazione interfaccia
+  - Analisi Dettagliata
+- Progettazione dettagliata e Realizzazione
+- Deployment e Provisioning
+- Operations e Management
+- Evoluzione
+
+```mermaid
+graph TD
+    A[Pianificazione] --> B[Ingegneria dei Requisiti]
+    B --> C[Progettazione dell'Interazione]
+    C --> D[Progettazione dettagliata e Realizzazione]
+    D --> E[Analisi Dettagliata]
+    E --> F[Progettazione dettagliata e Realizzazione]
+    F --> G[Deployment e Provisioning]
+    G --> H[Operation e Management]
+    H --> I[Evoluzione]
+    I --> B
+    I --> A
+```
+
+#### Ciclo di sviluppo con strategia Buy
+
+In questo caso la difficoltà principale consiste nel selezionare il sistema più adatto alle esigenze dell'azienda.
+
+Bisogna quindi individuare diversi indicatori:
+
+- **Indicatori Funzionali**: valutano la capacità del sistema di soddisfare le esigenze dell'azienda
+  - *Grado di Completezza* (o copertura funzionale): metrica che misura il rapporto tra le funzionalità offerte dal sistema e le funzionalità richieste
+  - *Personalizzazione*: capacità del sistema di adattarsi alle esigenze dell'azienda, questo può essere solo basato sulla parametrizzazione o richiedere modifiche al codice
+- **Indicatori Architetturali**: aspetti tecnologici del sistema
+  - *Scalabilità*: capacità del sistema di adattarsi al crescere del carico di lavoro
+  - *Interoperabilità*: capacità del sistema di interagire con altri sistemi
+  - *Sicurezza*: sicurezza in termini di regolazione degli accessi, protocolli di sicurezza, etc
+- **Costi**: valutare il costo di acquisto e di manutenzione del sistema. Questi cosi comprendono le licenze, consulenza, hardware, sviluppo, formazione, etc
+
+Bisogna effettuare anche una valutazione sul venditore della soluzione presa in esame valutando fattori come la *credibilità* e la *capacità* del venditore.
+Questi parametri vengono valutati in base all'esperienza, la presenza e la reputazione del venditore.
