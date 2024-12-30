@@ -308,7 +308,7 @@ $f(n) = g(n) + h(n)$
 
 **Example**
 
-![](assets/Chapter%20Six/Ex%20A*.jpg)
+![](assets/Chapter%20Six/Ex%20Astar.jpg)
 
 **Evaluation**
 
