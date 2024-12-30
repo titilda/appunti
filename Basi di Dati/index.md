@@ -55,3 +55,29 @@ $$\pi_{\text{A}}(\pi_{\text{A}\cap\text{B}}R) \Rightarrow \pi_{A}R$$
 $$R\bowtie_{\text{P}}(S\cup T) \Rightarrow (R\bowtie_{\text{P}}S)\cup(R\bowtie_{\text{P}}T)$$
 
 Uno dei principi base è quello di *minimizzare* la dimensione dei risultati intermedi
+
+### Calcolo Relazionale
+
+Il calcolo relazionale è un *linguaggio dichiarativo*, ovvero descrive il risultato desiderato senza specificare la procedura.
+
+Le interrogazioni sono della forma:
+
+$$\{t\ |\ P(t)\}$$
+
+dove $t$ è una tupla e $P(t)$ è una formula che restituisce vero o falso. Se $P(t)$ è vero, la tupla $t$ viene restituita.
+
+$P(t)$ può essere composta da:
+
+- **Connettivi logici**: $\land$ (and), $\lor$ (or), $\lnot$ (not)
+- **Quantificatori**: $\forall$ (per ogni), $\exists$ (esiste)
+- **Comparazioni**: $=$, $\neq$, $<$, $>$, $\leq$, $\geq$
+- **Appartenenza**: $t \in r$, dove $r$ è una relazione
+
+Tramite questi operatori si possono costruire i seguenti operatori:
+
+- **Selezione**: $\{t\ |\ \exist\ t\in r (t[attributo]\ COMP\ valore) \}$
+- **Proiezione**: $\{t[attributo]\ |\ \exist\ t_1\in r (t[a, b] = t_1[a,b]) \}$
+- **Prodotto Cartesiano**: $\{t\ |\ \exist\ t_1\in r_1\ , \exist\ t_2\in r_2 (t[a] = t_1[a]\ \land\ t[b] = t_2[b]) \}$
+- **Join**: $\{t\ |\ \exist\ t_1\in r_1\ , \exist\ t_2\in r_2 (t[a] = t_1[a]\ \land\ t[b] = t_2[b]\ \land\ t_1[c] = t_2[c]) \}$
+- **Unione**: $\{t\ |\ \exist\ t_1\in r_1\ , \exist\ t_2\in r_2 (t = t_1\ \land\ t = t_2)\}$
+- **Differenza**: $\{t\ |\ (t \in r) \land (t \notin s)\}$
