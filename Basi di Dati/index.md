@@ -12,6 +12,8 @@ author:
 
 L'algebra relazionale è un *linguaggio procedurale*, ovvero descrive la procedura da attuare per ottenere il risultato desiderato.
 
+#### Operatori Algebra Relazionale
+
 Gli operatori principali dell'algebra relazionale sono:
 
 - **Selezione**: operatore unario che seleziona le righe di $R$ che soddisfano la condizione.
@@ -73,6 +75,8 @@ $P(t)$ può essere composta da:
 - **Comparazioni**: $=$, $\neq$, $<$, $>$, $\leq$, $\geq$
 - **Appartenenza**: $t \in r$, dove $r$ è una relazione
 
+#### Operatori Calcolo Relazionale
+
 Tramite questi operatori si possono costruire i seguenti operatori:
 
 - **Selezione**: $\{t\ |\ \exist\ t\in r (t[attributo]\ COMP\ valore) \}$
@@ -81,3 +85,61 @@ Tramite questi operatori si possono costruire i seguenti operatori:
 - **Join**: $\{t\ |\ \exist\ t_1\in r_1\ , \exist\ t_2\in r_2 (t[a] = t_1[a]\ \land\ t[b] = t_2[b]\ \land\ t_1[c] = t_2[c]) \}$
 - **Unione**: $\{t\ |\ \exist\ t_1\in r_1\ , \exist\ t_2\in r_2 (t = t_1\ \land\ t = t_2)\}$
 - **Differenza**: $\{t\ |\ (t \in r) \land (t \notin s)\}$
+
+### Datalog
+
+Datalog è un linguaggio dichiarativo basato su *prolog*.
+Datalog ha un potere espressivo maggiore rispetto al calcolo relazionale, in quanto permette di definire regole ricorsive.
+
+Si basa sull'idea di creare delle regole che definiscono delle *viste*. Le regole sono composte da un *head* (LHS) e un *body* (RHS) e sono della formula:
+
+$$p\ \text{:-} \ p_1,\ p_2$$
+
+dove ogni $p$ è un *letterale* ed è un istanza di un predicato composto da:
+
+- un nome
+- una lista di argomenti
+  - variabili: $X$
+  - costanti: $a$
+  - don't care: $\_$
+
+Le regole sono interpretate come implicazioni logiche.
+
+- LHS è vero se RHS è vero.
+- RHS è vero se, per ogni letterale, le variabili sono *unificabili*, ovvero possono essere sostituite con valori tali che la formula sia vera.
+
+Un esempio di regola è:
+
+$$\text{Padre}(X, Y)\ \text{:-}\ \text{Persona}(X, \_, \text{'M'}), \ \text{Genitori}(X,Y)$$
+
+In datalog si definiscono due tipologie di database:
+
+- **Estensionale** (EDB): tabelle presenti nel database
+- **Intensionale** (IDB): viste definite tramite regole
+
+Le query possono essere fatti sull'intera base di dati (EDB + IDB). La query termina con i **Goal**, ovvero i predicati che si vogliono verificare.
+
+$$\text{?-}\ \text{Padre}(\text{'Andrea'}, \text{'Marco'})$$
+
+#### Operatori Datalog
+
+Gli operatori principali di Datalog sono:
+
+- **Selezione**:
+$$\text{P}(X,\_,\_)\ \text{:-}\ \text{R}(X, \_, \text{'M'})$$
+- **Proiezione**: è possibile proiettare solo gli argomenti che si vogliono mantenere
+$$\text{P}(X)\ \text{:-}\ \text{R}(X, \_, \_)$$
+- **Join**: usa due letterali sulla stessa vista separati da virgola
+$$\text{P}(X, Y)\ \text{:-}\ \text{R}(X, \_, \text{'M'}), \ \text{S}(X,Y)$$
+- **Unione**: usare due regole separate sulla stessa vista
+$$\text{P}(X, Y)\ \text{:-}\ \text{R}(X, Y)$$
+$$\text{P}(X, Y)\ \text{:-}\ \text{S}(X, Y)$$
+- **Differenza**: da usare assieme ad un predicato positivo per evitare di avere risultati infiniti (unsafe).
+$$\text{P}(X, Y)\ \text{:-}\ \text{R}(X, Y), \neg \text{S}(X, Y)$$
+
+In datalog è possibile definire regole ricorsive, ma bisogna definire un'inizio prima del passo induttivo.
+
+$$\text{P}(X, Y)\ \text{:-}\ \text{R}(X, Y)$$
+$$\text{P}(X, Y)\ \text{:-}\ \text{R}(X, Z), \ \text{P}(Z, Y)$$
+
+Il passo induttivo continua finché non si raggiunge un punto fisso, ovvero non si hanno più nuovi fatti.
