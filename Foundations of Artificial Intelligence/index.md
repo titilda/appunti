@@ -546,4 +546,24 @@ Search akgorithms work on **any** standars search problem.
 **Constraint Grphs**
 
 - CSPs with binary constraints are represented using a constraint graph in which nodes are variables and arcs represent constraints.
-- The graph structu
+- The graph structure can speed up search.
+
+### 7.2 Backtracking Search
+
+An Uninformed DFS for CSPs applying two principles:
+
+**Principle #1 - One variable at a time**
+
+- Only need to consider assignments to a single variable at each step.
+- Variable assignments are commutative, so fix ordering.
+- The path to reaching the node is not relevant and all the solutions are at the same depth.
+
+**Principle #2 - Check constraints as you go**
+
+- Consider only values which do not conflict with previous assignments.
+- It usually needs to perform computation to check the constraints.
+- "Incremmental goal test".
+
+#### Improving Backtracking
+
+##### Filtering (Forward Checking & Arc Consistency)
