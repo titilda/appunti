@@ -126,7 +126,7 @@ $$\text{?-}\ \text{Padre}(\text{'Andrea'}, \text{'Marco'})$$
 Gli operatori principali di Datalog sono:
 
 - **Selezione**:
-$$\text{P}(X,\_,\_)\ \text{:-}\ \text{R}(X, \_, \text{'M'})$$
+$$\text{P}(X,\_,\_)\ \text{:-}\ \text{R}(X, \_, \text{'M'}), X > 10$$
 - **Proiezione**: è possibile proiettare solo gli argomenti che si vogliono mantenere
 $$\text{P}(X)\ \text{:-}\ \text{R}(X, \_, \_)$$
 - **Join**: usa due letterali sulla stessa vista separati da virgola
