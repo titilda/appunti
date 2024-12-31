@@ -57,77 +57,142 @@ This test give us 6 skill about the intelligence tested:
 
 This approach aims to create a **Rational Agent**, which is an AI that acts to achieve the best outcome based on its goals.
 
+### Types of AI
+
+We can classify AI based on their capabilities:
+
+- **Weak AI**: AI that perform as well as humans.
+- **Strong AI**: AI that replicate exactly how humans think.
+- **General AI**: Ai that can solve a variety of tasks.
+
 ## Chapter Two: Agent
 
-**Agent**: Anything that can perceive an enviroment and act upon it.
+An **agent** is a system that perceives its environment and acts upon it. It can be a human, a robot, or a software program.
 
-**Rational Agent**: This type of agent chooses the actions that maximizes the expected value of his **performance measure**.
+- The **Perception** is the process of obtaining information from the environment. This can be done through *sensors* (Human: eyes, hear, etc; Robot: camera, etc; Software: file, network, etc).
+- The **Action** is the process of affecting the environment. This can be done through *actuators* (Human: hands, mouth, etc; Robot: motors, etc; Software: file, UI, etc).
 
-**Performance measure**: It is the criterion for evalueting the success of our agent (for example in "il gioco dell'oca" more our agent is near to the arrive more us take point on its expected value).
+```mermaid
+flowchart TB
+    a[Environment]--> |Perception| b[Sensors]
+    d--> |Action| a
+    subgraph Agent
+        b--> c[Agent]
+        c--> d[Actuators]
+    end
+```
 
-Agent Architecture:
+An agent is defined by its **Agent Function**, which maps the *Built-in Knowledge* and a sequence of percepts (*Percept Sequence*) to an *action*. The implementation of the agent function is called the **Agent Program**.
 
-- Simple Reflex Agents.
-- Reflex Agents with state.
-- Goal-based Agents.
-- Utility-based Agents.
+The agent's behavior is evaluated based on a **Performance Measure**, which is a criterion for success.
 
-More we go down with the architecture more is the complexity and the power. (Utility is more power than Goal that is more power than Reflex etc.)
+The goal of an **rational agent** is to maximize the expected value of its performance measure. We do that by evaluating the sequence of state the environment go through.
+
+The nature of the **environment** can be classified based on different factors:
+
+- **Observable**: Whether the agent can observe the environment.
+  - **Fully Observable**: The agent can observe the entire state of the environment.
+  - **Partially Observable**: The agent can't observe the entire state of the environment. Need to remember the past state.
+- **Amount of Agent**: How many agents interact with the environment.
+  - **Single Agent**: Only one agent in the environment.
+  - **Multi-Agent**: Multiple agents in the environment.
+    - **Competitive**: Agents have conflicting goals, need to maximize mine and minimize others.
+    - **Cooperative**: Agents have the same goal, need to maximize the group's performance.
+- **Deterministic**: Whether the environment is deterministic.
+  - **Deterministic**: The next state is completely determined by the current state and the action.
+  - **Stochastic**: The next state is not completely determined by the current state and the action.
+- **History**: Whether the current state depends on the entire history of the environment.
+  - **Episodic**: The current state depends only on the current state and the action.
+  - **Sequential**: The current state depends on the entire history of the environment.
+- **Dynamic**: Whether the environment changes while the agent is deciding on an action.
+  - **Static**: The environment doesn't change while the agent is deciding on an action.
+  - **Dynamic**: The environment changes while the agent is deciding on an action.
+- **Discrete/Continuous**: Whether the environment is discrete or continuous.
+  - **Discrete**: The environment is discrete.
+  - **Continuous**: The environment is continuous.
+- **Known/Unknown**: Whether the agent knows the environment and its rules.
+  - **Known**: The agent knows the environment.
+  - **Unknown**: The agent doesn't know the environment.
 
 ## Chapter Three: Agent Architecture
 
-All 4 types of agents are rational but with difference Performance Measure.
+The **Agent Architecture** is the design of the agent, which includes the agent's components and how they interact.
+
+There are different types of agents based on their architecture:
+
+### Simple Reflex Agent
 
 ![Simple Reflex Agent](assets/Simple%20Reflex%20Agent.jpg)
 
-This is the simplest type of agent, our objective is be able to create this by the end of the course.
+This is the simplest type of agent, which acts based on the current percept. It doesn't have memory.
+
+The action is determined by the **Condition-Action Rule**, which maps the current percept to an action.
+
+```plaintext
+if condition then action
+```
+
+This agent is useful when the environment is **fully observable** and **deterministic**.
+In partially observable environments, the agent might result in a **loop**. To avoid that we could randomize the action, but this could lead to *inefficiency*.
+
+```plaintext
+function SIMPLE-REFLEX-AGENT(percept) returns an action
+    persistent: rules // a set of condition–action rules
+    
+    state = INTERPRET-INPUT(percept)
+    rule = RULE-MATCH(state,rules)
+    action = rule.ACTION
+
+    return action
+```
+
+### Model-Based Reflex Agent
 
 ![Reflex Agent with state](assets/Reflex%20Agent%20with%20state.jpg)
 
-An example of this agent is the first prototype of Rumba the automatic vacuum.
+To deal with partially observable environments, we can add a **State** to the agent, which stores information about the environment.
+
+```plaintext
+ function MODEL-BASED-REFLEX-AGENT(percept) returns an action
+    persistent: state // the agent’s current conception of the world state
+        transition_model // a description of how the next state depends on the current state and action
+        sensor_model // a description of how the current world state is reflected in the agent’s percepts
+        rules // a set of condition–action rules
+        action // the most recent action, initially none
+    
+    state = UPDATE-STATE(state, action, percept, transition_model, sensor_model)
+    rule = RULE-MATCH(state, rules)
+    action = rule.ACTION
+    
+    return action
+```
+
+### Goal-Based Agent
 
 ![Goal-based Agents](assets/Goal-based%20Agent.jpg)
 
-An example of possible agent is an agent build for play tic-tac-toe (tris). A pseudo-code of this agent is:
+This agent has a **Goal** that describe the desired state of the environment. The agent uses a **Problem-Solving Algorithm** to find a sequence of actions that lead to the goal (search and planning).
 
-    if canwin(player)
-        win(player);
-    if canwin(opponent)
-        block(opponent);
-    if free(center);
-        take(center);
-    if free(corner)
-        take(corner);
-    if free(side)
-        take(side);
+### Utility-Based Agent
 
 ![Utility-based Agent](assets/Utility-based%20Agent.jpg)
 
-For example the system of Auto-drive sets up on modern car is a utility-based agent. This bacause he must be control a lot sensors and variable (speed, navigator, tire's pressure, etc.).
+The *goal* is a binary value (achieved or not), but the *utility* is a real number that describe how desirable a state is. The agent uses a **Utility Function** to evaluate the desirability of a state.
 
-Can a Goal-based agent work like an Utility-based agent ? The answer is no, but an Utility-based can work like a Goal-based it's enough just maximaze the "happinest".
-
-A newest type of Agent is the **Learning Agents**.
+### Learning Agent
 
 ![Learning Agent](assets/Learning%20Agent.jpg)
 
-An example of learnig agent is the system used to build the flocking model (based on bird flocks).
+This type of agent learns from experience and it can be applied to any of the previous architectures.
 
-The flocking model consist in three basic behaviors:
+With learning, the agent can improve its performance over time and operate in unknown environments.
 
-- Separation: steer to avoid crowing local flockmates.
-- Alignemt: steer toward the avenge heading of local flockmates.
-- Coohesion: steer to move toward the avenge position of local flockmates.
+A learning agent has four main components:
 
-In this course we learn to build a weak AI.
-
-**Weak AI**: AI that perform as well as humans.
-
-**Strong AI**: AI that replicate exactly how humans think.
-
-**General AI**: AI that can solve wide variety of task.
-
-(**Funfacts** Open-AI Five build an AI that can compatitive internationaly on "Dota 2".)
+- **Performance Element**: The part of the agent that selects actions.
+- **Critic**: The part of the agent that evaluates the agent's actions.
+- **Learning Element**: The part of the agent that learns from the critic and improve the performance element.
+- **Problem Generator**: The part of the agent that suggests actions to explore new possibilities.
 
 ## Chapter Four: Problem Solving by Search
 
