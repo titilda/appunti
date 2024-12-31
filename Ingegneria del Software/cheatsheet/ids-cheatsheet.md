@@ -510,158 +510,300 @@ public class Utils
 } 
 */
 
-import static com.mycompany.inheritancetest.Utils.*; 
-
-
-class A
-{ 
-    public String name; 
-    
-    A(String name)
-    {
-        this.name = name; 
-    }
-    
-    public void shout()
-    {
-        print("Class A - Print from " + name);
-    }
-    
-    public void shoutVisibleA()
-    {
-        print("Class A - Print visible from " + name);
-    }
-    
-    private void shoutHiddenA()
-    {
-        print("Class A - Print hidden from " + name);
-    }
-}
-
-class B extends A
-{
-    public String name; //questo nascode il nome di A
-    
-    B(String name)
-    {
-        super(name);  // chiama il costruttore delle classe A
-        this.name = name; 
-    }
-    
-    @Override
-    public void shout()
-    {
-        print("Class B - Print from " + name); 
-    }
-    
-    public void shoutVisibleB()
-    {
-        print("Class B - Print visible from " + name);
-    }
-}
-
-class C extends B
-{
-    public String name;  //questo nasconde il nome di B
-    
-    C(String name)
-    {
-        super(name);  // chiama il costruttore delle classe B
-        this.name = name; 
-    }
-    
-    @Override
-    public void shout()
-    {
-        print("Class C - Print from " + name); 
-    }
-    
-    public void shoutVisibleC()
-    {
-        print("Class C - Print visible from " + name);
-    }
-}
-
-
-public class InheritanceTest {
-
-    public static void main(String[] args) {
-        A a1 = new A("a1");
-        A a2 = new B("a2"); 
-        A a3 = new C("a3"); 
-        
-        B b1 = new B("b1"); 
-        B b2 = new C("b2"); 
-        //B b3 = new A("b3"); /*illegal: A cannot be converted to B*/
-        
-        C c1 = new C("c1");
-        //C c2 = new B("c2"); /*illegal: B cannot be converted to C*/
-        //C c3 = new A("c3"); /*illegal: A cannot be converted to C*/
-        
-        //---------------
-        
-        a1.shout();
-        a1.shoutVisibleA(); 
-        //a1.shoutHiddenA(); /*illegal: shoutHiddenA è privato quindi non puo essere chiamato*/
-        //----------------
-        a2.shout();
-        a2.shoutVisibleA(); 
-        //a2.shoutVisibleB(); /*illegal: cannot find symbol shoutVisibleB() in a2*/ 
-        //----------------
-        a3.shout();
-        a3.shoutVisibleA(); 
-        //a3.shoutVisibleB(); /*illegal: cannot find symbol shoutVisibleB() in a3*/ 
-        //a3.shoutVisibleC(); /*illegal: cannot find symbol shoutVisibleC() in a3*/ 
-        
-        //----------------
-        
-        b1.shout();
-        b1.shoutVisibleB(); 
-        b1.shoutVisibleA();
-        //----------------
-        b2.shout(); 
-        b2.shoutVisibleB();
-        b2.shoutVisibleA();
-        //b2.shoutVisibleC(); /*illegal: cannot find symbol shoutVisibleC() in b2*/ 
-        
-        //----------------
-        
-        c1.shout();
-        c1.shoutVisibleC();
-        c1.shoutVisibleB();
-        c1.shoutVisibleA();
-    }
-}
-
-
-/*
-OUTPUT::
-
-
-Class A - Print from a1
-Class A - Print visible from a1
-
-Class B - Print from a2
-Class A - Print visible from a2
-
-Class C - Print from a3
-Class A - Print visible from a3
-
-Class B - Print from b1
-Class B - Print visible from b1
-Class A - Print visible from b1
-
-Class C - Print from b2
-Class B - Print visible from b2
-Class A - Print visible from b2
-
-Class C - Print from c1
-Class C - Print visible from c1
-Class B - Print visible from c1
-Class A - Print visible from c1
-
-
-*/
+ import static com.mycompany.inheritancetest.Utils.*; 
+ /**
+  *
+  * @author mosco
+  */
+ abstract class Z
+ {
+     private String name; 
+     
+     Z(String name)
+     {
+         this.name = name; 
+     }
+     
+     public void talk()
+     {
+         print("Class Z - talking " + name); 
+     }
+     
+     public void shout()
+     {
+         print("Class Z - " + name + " prints from abstract class");
+     }; 
+ }
+ class A extends Z
+ { 
+     public String name; 
+     
+     A(String name)
+     {
+         super(name); 
+         this.name = name; 
+     }
+     
+     public void shout()
+     {
+         print("Class A - Print from " + name);
+     }
+     
+     public void whisper(A obj)
+     {
+         print("Class A - " + name + " Shh " + obj.name + " has a secret");
+     }
+     
+     public void shoutVisableA()
+     {
+         print("Class A - Print visable from " + name);
+     }
+     
+     private void shoutHiddenA()
+     {
+         print("Class A - Print hidden from " + name);
+     }
+ }
+ 
+ class B extends A
+ {
+     public String name; //questo nascode il nome di A
+     
+     B(String name)
+     {
+         super(name);  // Call the constructor of class A
+         this.name = name; 
+     }
+     
+     public void shout()
+     {
+         print("Class B - Print from " + name); 
+     }
+     
+     public void whisper(A obj)
+     {
+         print("Class B - " + name + " Shh " + obj.name + " has a secret");
+     }
+     
+     public void shoutVisableB()
+     {
+         print("Class B - Print visable from " + name);
+     }
+ }
+ 
+ class C extends B
+ {
+     public String name;  //questo nasconde il nome di B
+     
+     C(String name)
+     {
+         super(name);  // Call the constructor of class B
+         this.name = name; 
+     }
+     
+     public void shout()
+     {
+         print("Class C - Print from " + name); 
+     }
+     
+     //C NON HA WHISPER
+     
+     public void shoutVisableC()
+     {
+         print("Class C - Print visable from " + name);
+     }
+ }
+ 
+ class D extends Z
+ {
+     private String name; 
+     
+     D(String name)
+     {
+         super(name); 
+         this.name = name; 
+     }
+     
+     //D NON HA SHOUT
+     
+     public void shoutVisableD()
+     {
+         print("Class D - Print visable from " + name);
+     }
+ }
+ 
+ 
+ public class InheritanceTest {
+ 
+     public static void main(String[] args) {
+         //Z z1 = new Z(); /*illegal: Z is abstract cannot be instantiated*/
+         Z z2 = new A("z2");
+         Z z3 = new B("z3");
+         Z z4 = new C("z4");
+         Z z5 = new D("z5");
+         
+         A a1 = new A("a1");
+         A a2 = new B("a2"); 
+         A a3 = new C("a3"); 
+         //A a4 = new D("a4"); /*illegal: D cannot be converted to A*/
+         
+         B b1 = new B("b1"); 
+         B b2 = new C("b2"); 
+         //B b3 = new A("b3"); /*illegal: A cannot be converted to B*/
+         //B b4 = new D("b4"); /*illegal: D cannot be converted to B*/
+         
+         C c1 = new C("c1");
+         //C c2 = new B("c2"); /*illegal: B cannot be converted to C*/
+         //C c3 = new A("c3"); /*illegal: A cannot be converted to C*/
+         //C c4 = new D("c4"); /*illegal: D cannot be converted to C*/
+         
+         D d1 = new D("d1"); 
+         //D d2 = new A("d2"); /*illegal: A cannot be converted to D*/
+         //D d3 = new B("d3"); /*illegal: B cannot be converted to D*/
+         //D d4 = new C("d4"); /*illegal: C cannot be converted to D*/
+         
+         //---------------
+         //z1.shout(); /*illegal: cannot find symbol*/
+         z2.shout();
+         z2.talk();
+         //z2.whisper(z2); /*illegal: cannot find symbol*/
+         z3.shout();
+         z3.talk();
+         z4.shout();
+         z4.talk();
+         z5.shout();
+         z5.talk();
+         
+         print("");//---------------
+         
+         a1.talk();
+         a1.shout();
+         a1.shoutVisableA(); 
+         a1.whisper(a1);
+         a1.whisper(a2);
+         a1.whisper(a3);
+         a1.whisper(b1);
+         a1.whisper(c1); 
+         //a1.shoutVisiableD(); /*illegal: cannot find symbol shoutVisableD() in a1*/
+         //a1.shoutHiddenA(); /*illegal: shoutHiddenA è privato quindi non puo essere chiamato*/
+         
+         print("");//----------------
+         
+         a2.talk();
+         a2.shout();
+         a2.shoutVisableA(); 
+         a2.whisper(a1);
+         a2.whisper(a2);
+         //a2.whisper(d1); /*illegal: D cannot be converted to A*/
+         //a2.shoutVisableB(); /*illegal: cannot find symbol shoutVisableB() in a2*/
+         
+         print("");//----------------
+         
+         a3.talk();
+         a3.shout();
+         a3.shoutVisableA(); 
+         a3.whisper(a3);
+         //a3.shoutVisableB(); /*illegal: cannot find symbol shoutVisableB() in a3*/ 
+         //a3.shoutVisableC(); /*illegal: cannot find symbol shoutVisableC() in a3*/ 
+         
+         print("");//----------------
+         
+         b1.talk();
+         b1.shout();
+         b1.shoutVisableB(); 
+         b1.shoutVisableA();
+         b1.whisper(a1);
+         b1.whisper(b1);
+         b1.whisper(c1);
+         
+         print("");//----------------
+         
+         b2.talk();
+         b2.shout(); 
+         b2.shoutVisableB();
+         b2.shoutVisableA();
+         //b2.shoutVisableC(); /*illegal: cannot find symbol shoutVisableC() in b2*/ 
+         b2.whisper(a2);
+         
+         print("");//----------------
+         
+         c1.talk();
+         c1.shout();
+         c1.shoutVisableC();
+         c1.shoutVisableB();
+         c1.shoutVisableA();
+         c1.whisper(a1);
+         c1.whisper(c1);
+         
+         print("");//----------------
+         
+         d1.talk();
+         d1.shout();
+         d1.shoutVisableD();
+         //d1.whisper(a2); /*illegal: cannot find symbol whisper() in d1*/ 
+         //d1.shoutVisableA(); /*illegal: cannot find symbol shoutVisableA() in d1*/ 
+     }
+ }
+ 
+ 
+ /*
+ OUTPUT::
+ 
+ Class A - Print from z2
+ Class Z - talking z2
+ Class B - Print from z3
+ Class Z - talking z3
+ Class C - Print from z4
+ Class Z - talking z4
+ Class Z - z5 prints from abstract class
+ Class Z - talking z5
+ 
+ Class Z - talking a1
+ Class A - Print from a1
+ Class A - Print visable from a1
+ Class A - a1 Shh a1 has a secret
+ Class A - a1 Shh a2 has a secret
+ Class A - a1 Shh a3 has a secret
+ Class A - a1 Shh b1 has a secret
+ Class A - a1 Shh c1 has a secret
+ 
+ Class Z - talking a2
+ Class B - Print from a2
+ Class A - Print visable from a2
+ Class B - a2 Shh a1 has a secret
+ Class B - a2 Shh a2 has a secret
+ 
+ Class Z - talking a3
+ Class C - Print from a3
+ Class A - Print visable from a3
+ Class B - a3 Shh a3 has a secret
+ 
+ Class Z - talking b1
+ Class B - Print from b1
+ Class B - Print visable from b1
+ Class A - Print visable from b1
+ Class B - b1 Shh a1 has a secret
+ Class B - b1 Shh b1 has a secret
+ Class B - b1 Shh c1 has a secret
+ 
+ Class Z - talking b2
+ Class C - Print from b2
+ Class B - Print visable from b2
+ Class A - Print visable from b2
+ Class B - b2 Shh a2 has a secret
+ 
+ Class Z - talking c1
+ Class C - Print from c1
+ Class C - Print visable from c1
+ Class B - Print visable from c1
+ Class A - Print visable from c1
+ Class B - c1 Shh a1 has a secret
+ Class B - c1 Shh c1 has a secret
+ 
+ Class Z - talking d1
+ Class Z - d1 prints from abstract class
+ Class D - Print visable from d1
+ */
 ```
 
 ## Testing 

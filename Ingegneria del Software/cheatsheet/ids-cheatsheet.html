@@ -4030,7 +4030,8 @@ Alternativamete al posto di &apos;this&apos; potevo mettere un oggetto di lock, 
         <th class="jop-noMdConv">controlla che tutti gli elementi dell&apos;array o della collezione siano non nulli</th>
         <th class="jop-noMdConv">predicato<br class="jop-noMdConv"/>(<i class="jop-noMdConv">boolean like</i>)</th>
         <th class="jop-noMdConv">&egrave; l&apos;equivalente di fare:<br class="jop-noMdConv"/><i class="jop-noMdConv">myArray != null &amp;&amp;
-  (\forall int i; 0 <= i="" &&="" <="" myarray.length;="" myarray[i]="" !="null)&lt;/i" class="jop-noMdConv">;</=></i></th>
+  (\forall int i; 0 &lt;= i &amp;&amp; i &lt; myArray.length;
+                  myArray[i] != null)</i>;</th>
     </tr>
     <tr class="jop-noMdConv"> 
         <th class="jop-noMdConv">\typeof(val)</th>
@@ -4042,7 +4043,7 @@ Alternativamete al posto di &apos;this&apos; potevo mettere un oggetto di lock, 
         <th class="jop-noMdConv">\max(val)</th>
         <th class="jop-noMdConv">Ritorna il massimo <u class="jop-noMdConv">dell&apos;set</u> passato</th>
         <th class="jop-noMdConv">?</th>
-        <th class="jop-noMdConv">Se ho un array devo prima transformarlo in set:<br class="jop-noMdConv"/><i class="jop-noMdConv">\max(\set(i; 0 <= i="" &&="" <="" arr.length;="" arr[i]))<="" class="jop-noMdConv">;</=></i></th>
+        <th class="jop-noMdConv">Se ho un array devo prima transformarlo in set:<br class="jop-noMdConv"/><i class="jop-noMdConv">\max(\set(i; 0 &lt;= i &amp;&amp; i &lt; arr.length; arr[i]))</i>;</th>
     </tr>
     <tr class="jop-noMdConv"> 
         <th class="jop-noMdConv">\min(val)</th>
@@ -4072,13 +4073,13 @@ Alternativamete al posto di &apos;this&apos; potevo mettere un oggetto di lock, 
         <th class="jop-noMdConv">\sum(var; condizione; val)</th>
         <th class="jop-noMdConv">fa la somma di tutti i val, cui var rispetta la condizione</th>
         <th class="jop-noMdConv">?</th>
-        <th class="jop-noMdConv"><i class="jop-noMdConv">\sum(int i; 0 <= i="" &&="" <="" arr.length;="" arr[i])<="" class="jop-noMdConv">;</=></i></th>
+        <th class="jop-noMdConv"><i class="jop-noMdConv">\sum(int i; 0 &lt;= i &amp;&amp; i &lt; arr.length; arr[i])</i>;</th>
     </tr>
     <tr class="jop-noMdConv"> 
         <th class="jop-noMdConv">\product(var; condizione; val)</th>
         <th class="jop-noMdConv">fa il prodotto di tutti i val, cui var rispetta la condizione</th>
         <th class="jop-noMdConv">?</th>
-        <th class="jop-noMdConv"><i class="jop-noMdConv">\product(int i; 0 <= i="" &&="" <="" arr.length;="" arr[i])<="" class="jop-noMdConv">;</=></i></th>
+        <th class="jop-noMdConv"><i class="jop-noMdConv">\product(int i; 0 &lt;= i &amp;&amp; i &lt; arr.length; arr[i])</i>;</th>
     </tr>
     <tr class="jop-noMdConv"> 
         <th class="jop-noMdConv">\is_initialized(class)</th>
@@ -4090,7 +4091,7 @@ Alternativamete al posto di &apos;this&apos; potevo mettere un oggetto di lock, 
         <th class="jop-noMdConv">\choose(var; condizione; predicato)</th>
         <th class="jop-noMdConv">Ritorna un qualsiasi valore nel range della condizione che rispetti il predicato</th>
         <th class="jop-noMdConv">?</th>
-        <th class="jop-noMdConv"><i class="jop-noMdConv">\choose(int i; 0 <= i="" <="" a.length;="" a[i]="=" 0)<="" class="jop-noMdConv">;</=></i></th>
+        <th class="jop-noMdConv"><i class="jop-noMdConv">\choose(int i; 0 &lt;= i &lt; a.length; a[i] == 0)</i>;</th>
     </tr>
     <tr class="jop-noMdConv"> 
         <th class="jop-noMdConv">==&gt;<br class="jop-noMdConv"/><i class="jop-noMdConv">implica</i></th>
@@ -4135,158 +4136,300 @@ public class Utils
 } 
 */
 
-import static com.mycompany.inheritancetest.Utils.*; 
-
-
-class A
-{ 
-    public String name; 
-    
-    A(String name)
-    {
-        this.name = name; 
-    }
-    
-    public void shout()
-    {
-        print(&quot;Class A - Print from &quot; + name);
-    }
-    
-    public void shoutVisibleA()
-    {
-        print(&quot;Class A - Print visible from &quot; + name);
-    }
-    
-    private void shoutHiddenA()
-    {
-        print(&quot;Class A - Print hidden from &quot; + name);
-    }
-}
-
-class B extends A
-{
-    public String name; //questo nascode il nome di A
-    
-    B(String name)
-    {
-        super(name);  // chiama il costruttore delle classe A
-        this.name = name; 
-    }
-    
-    @Override
-    public void shout()
-    {
-        print(&quot;Class B - Print from &quot; + name); 
-    }
-    
-    public void shoutVisibleB()
-    {
-        print(&quot;Class B - Print visible from &quot; + name);
-    }
-}
-
-class C extends B
-{
-    public String name;  //questo nasconde il nome di B
-    
-    C(String name)
-    {
-        super(name);  // chiama il costruttore delle classe B
-        this.name = name; 
-    }
-    
-    @Override
-    public void shout()
-    {
-        print(&quot;Class C - Print from &quot; + name); 
-    }
-    
-    public void shoutVisibleC()
-    {
-        print(&quot;Class C - Print visible from &quot; + name);
-    }
-}
-
-
-public class InheritanceTest {
-
-    public static void main(String[] args) {
-        A a1 = new A(&quot;a1&quot;);
-        A a2 = new B(&quot;a2&quot;); 
-        A a3 = new C(&quot;a3&quot;); 
-        
-        B b1 = new B(&quot;b1&quot;); 
-        B b2 = new C(&quot;b2&quot;); 
-        //B b3 = new A(&quot;b3&quot;); /*illegal: A cannot be converted to B*/
-        
-        C c1 = new C(&quot;c1&quot;);
-        //C c2 = new B(&quot;c2&quot;); /*illegal: B cannot be converted to C*/
-        //C c3 = new A(&quot;c3&quot;); /*illegal: A cannot be converted to C*/
-        
-        //---------------
-        
-        a1.shout();
-        a1.shoutVisibleA(); 
-        //a1.shoutHiddenA(); /*illegal: shoutHiddenA &egrave; privato quindi non puo essere chiamato*/
-        //----------------
-        a2.shout();
-        a2.shoutVisibleA(); 
-        //a2.shoutVisibleB(); /*illegal: cannot find symbol shoutVisibleB() in a2*/ 
-        //----------------
-        a3.shout();
-        a3.shoutVisibleA(); 
-        //a3.shoutVisibleB(); /*illegal: cannot find symbol shoutVisibleB() in a3*/ 
-        //a3.shoutVisibleC(); /*illegal: cannot find symbol shoutVisibleC() in a3*/ 
-        
-        //----------------
-        
-        b1.shout();
-        b1.shoutVisibleB(); 
-        b1.shoutVisibleA();
-        //----------------
-        b2.shout(); 
-        b2.shoutVisibleB();
-        b2.shoutVisibleA();
-        //b2.shoutVisibleC(); /*illegal: cannot find symbol shoutVisibleC() in b2*/ 
-        
-        //----------------
-        
-        c1.shout();
-        c1.shoutVisibleC();
-        c1.shoutVisibleB();
-        c1.shoutVisibleA();
-    }
-}
-
-
-/*
-OUTPUT::
-
-
-Class A - Print from a1
-Class A - Print visible from a1
-
-Class B - Print from a2
-Class A - Print visible from a2
-
-Class C - Print from a3
-Class A - Print visible from a3
-
-Class B - Print from b1
-Class B - Print visible from b1
-Class A - Print visible from b1
-
-Class C - Print from b2
-Class B - Print visible from b2
-Class A - Print visible from b2
-
-Class C - Print from c1
-Class C - Print visible from c1
-Class B - Print visible from c1
-Class A - Print visible from c1
-
-
-*/</pre><pre class="hljs"><code><span class="hljs-comment">/*
+ import static com.mycompany.inheritancetest.Utils.*; 
+ /**
+  *
+  * @author mosco
+  */
+ abstract class Z
+ {
+     private String name; 
+     
+     Z(String name)
+     {
+         this.name = name; 
+     }
+     
+     public void talk()
+     {
+         print(&quot;Class Z - talking &quot; + name); 
+     }
+     
+     public void shout()
+     {
+         print(&quot;Class Z - &quot; + name + &quot; prints from abstract class&quot;);
+     }; 
+ }
+ class A extends Z
+ { 
+     public String name; 
+     
+     A(String name)
+     {
+         super(name); 
+         this.name = name; 
+     }
+     
+     public void shout()
+     {
+         print(&quot;Class A - Print from &quot; + name);
+     }
+     
+     public void whisper(A obj)
+     {
+         print(&quot;Class A - &quot; + name + &quot; Shh &quot; + obj.name + &quot; has a secret&quot;);
+     }
+     
+     public void shoutVisableA()
+     {
+         print(&quot;Class A - Print visable from &quot; + name);
+     }
+     
+     private void shoutHiddenA()
+     {
+         print(&quot;Class A - Print hidden from &quot; + name);
+     }
+ }
+ 
+ class B extends A
+ {
+     public String name; //questo nascode il nome di A
+     
+     B(String name)
+     {
+         super(name);  // Call the constructor of class A
+         this.name = name; 
+     }
+     
+     public void shout()
+     {
+         print(&quot;Class B - Print from &quot; + name); 
+     }
+     
+     public void whisper(A obj)
+     {
+         print(&quot;Class B - &quot; + name + &quot; Shh &quot; + obj.name + &quot; has a secret&quot;);
+     }
+     
+     public void shoutVisableB()
+     {
+         print(&quot;Class B - Print visable from &quot; + name);
+     }
+ }
+ 
+ class C extends B
+ {
+     public String name;  //questo nasconde il nome di B
+     
+     C(String name)
+     {
+         super(name);  // Call the constructor of class B
+         this.name = name; 
+     }
+     
+     public void shout()
+     {
+         print(&quot;Class C - Print from &quot; + name); 
+     }
+     
+     //C NON HA WHISPER
+     
+     public void shoutVisableC()
+     {
+         print(&quot;Class C - Print visable from &quot; + name);
+     }
+ }
+ 
+ class D extends Z
+ {
+     private String name; 
+     
+     D(String name)
+     {
+         super(name); 
+         this.name = name; 
+     }
+     
+     //D NON HA SHOUT
+     
+     public void shoutVisableD()
+     {
+         print(&quot;Class D - Print visable from &quot; + name);
+     }
+ }
+ 
+ 
+ public class InheritanceTest {
+ 
+     public static void main(String[] args) {
+         //Z z1 = new Z(); /*illegal: Z is abstract cannot be instantiated*/
+         Z z2 = new A(&quot;z2&quot;);
+         Z z3 = new B(&quot;z3&quot;);
+         Z z4 = new C(&quot;z4&quot;);
+         Z z5 = new D(&quot;z5&quot;);
+         
+         A a1 = new A(&quot;a1&quot;);
+         A a2 = new B(&quot;a2&quot;); 
+         A a3 = new C(&quot;a3&quot;); 
+         //A a4 = new D(&quot;a4&quot;); /*illegal: D cannot be converted to A*/
+         
+         B b1 = new B(&quot;b1&quot;); 
+         B b2 = new C(&quot;b2&quot;); 
+         //B b3 = new A(&quot;b3&quot;); /*illegal: A cannot be converted to B*/
+         //B b4 = new D(&quot;b4&quot;); /*illegal: D cannot be converted to B*/
+         
+         C c1 = new C(&quot;c1&quot;);
+         //C c2 = new B(&quot;c2&quot;); /*illegal: B cannot be converted to C*/
+         //C c3 = new A(&quot;c3&quot;); /*illegal: A cannot be converted to C*/
+         //C c4 = new D(&quot;c4&quot;); /*illegal: D cannot be converted to C*/
+         
+         D d1 = new D(&quot;d1&quot;); 
+         //D d2 = new A(&quot;d2&quot;); /*illegal: A cannot be converted to D*/
+         //D d3 = new B(&quot;d3&quot;); /*illegal: B cannot be converted to D*/
+         //D d4 = new C(&quot;d4&quot;); /*illegal: C cannot be converted to D*/
+         
+         //---------------
+         //z1.shout(); /*illegal: cannot find symbol*/
+         z2.shout();
+         z2.talk();
+         //z2.whisper(z2); /*illegal: cannot find symbol*/
+         z3.shout();
+         z3.talk();
+         z4.shout();
+         z4.talk();
+         z5.shout();
+         z5.talk();
+         
+         print(&quot;&quot;);//---------------
+         
+         a1.talk();
+         a1.shout();
+         a1.shoutVisableA(); 
+         a1.whisper(a1);
+         a1.whisper(a2);
+         a1.whisper(a3);
+         a1.whisper(b1);
+         a1.whisper(c1); 
+         //a1.shoutVisiableD(); /*illegal: cannot find symbol shoutVisableD() in a1*/
+         //a1.shoutHiddenA(); /*illegal: shoutHiddenA &egrave; privato quindi non puo essere chiamato*/
+         
+         print(&quot;&quot;);//----------------
+         
+         a2.talk();
+         a2.shout();
+         a2.shoutVisableA(); 
+         a2.whisper(a1);
+         a2.whisper(a2);
+         //a2.whisper(d1); /*illegal: D cannot be converted to A*/
+         //a2.shoutVisableB(); /*illegal: cannot find symbol shoutVisableB() in a2*/
+         
+         print(&quot;&quot;);//----------------
+         
+         a3.talk();
+         a3.shout();
+         a3.shoutVisableA(); 
+         a3.whisper(a3);
+         //a3.shoutVisableB(); /*illegal: cannot find symbol shoutVisableB() in a3*/ 
+         //a3.shoutVisableC(); /*illegal: cannot find symbol shoutVisableC() in a3*/ 
+         
+         print(&quot;&quot;);//----------------
+         
+         b1.talk();
+         b1.shout();
+         b1.shoutVisableB(); 
+         b1.shoutVisableA();
+         b1.whisper(a1);
+         b1.whisper(b1);
+         b1.whisper(c1);
+         
+         print(&quot;&quot;);//----------------
+         
+         b2.talk();
+         b2.shout(); 
+         b2.shoutVisableB();
+         b2.shoutVisableA();
+         //b2.shoutVisableC(); /*illegal: cannot find symbol shoutVisableC() in b2*/ 
+         b2.whisper(a2);
+         
+         print(&quot;&quot;);//----------------
+         
+         c1.talk();
+         c1.shout();
+         c1.shoutVisableC();
+         c1.shoutVisableB();
+         c1.shoutVisableA();
+         c1.whisper(a1);
+         c1.whisper(c1);
+         
+         print(&quot;&quot;);//----------------
+         
+         d1.talk();
+         d1.shout();
+         d1.shoutVisableD();
+         //d1.whisper(a2); /*illegal: cannot find symbol whisper() in d1*/ 
+         //d1.shoutVisableA(); /*illegal: cannot find symbol shoutVisableA() in d1*/ 
+     }
+ }
+ 
+ 
+ /*
+ OUTPUT::
+ 
+ Class A - Print from z2
+ Class Z - talking z2
+ Class B - Print from z3
+ Class Z - talking z3
+ Class C - Print from z4
+ Class Z - talking z4
+ Class Z - z5 prints from abstract class
+ Class Z - talking z5
+ 
+ Class Z - talking a1
+ Class A - Print from a1
+ Class A - Print visable from a1
+ Class A - a1 Shh a1 has a secret
+ Class A - a1 Shh a2 has a secret
+ Class A - a1 Shh a3 has a secret
+ Class A - a1 Shh b1 has a secret
+ Class A - a1 Shh c1 has a secret
+ 
+ Class Z - talking a2
+ Class B - Print from a2
+ Class A - Print visable from a2
+ Class B - a2 Shh a1 has a secret
+ Class B - a2 Shh a2 has a secret
+ 
+ Class Z - talking a3
+ Class C - Print from a3
+ Class A - Print visable from a3
+ Class B - a3 Shh a3 has a secret
+ 
+ Class Z - talking b1
+ Class B - Print from b1
+ Class B - Print visable from b1
+ Class A - Print visable from b1
+ Class B - b1 Shh a1 has a secret
+ Class B - b1 Shh b1 has a secret
+ Class B - b1 Shh c1 has a secret
+ 
+ Class Z - talking b2
+ Class C - Print from b2
+ Class B - Print visable from b2
+ Class A - Print visable from b2
+ Class B - b2 Shh a2 has a secret
+ 
+ Class Z - talking c1
+ Class C - Print from c1
+ Class C - Print visable from c1
+ Class B - Print visable from c1
+ Class A - Print visable from c1
+ Class B - c1 Shh a1 has a secret
+ Class B - c1 Shh c1 has a secret
+ 
+ Class Z - talking d1
+ Class Z - d1 prints from abstract class
+ Class D - Print visable from d1
+ */</pre><pre class="hljs"><code><span class="hljs-comment">/*
 public class Utils 
 {
     public static void print(Object... mexs)
@@ -4296,158 +4439,300 @@ public class Utils
 } 
 */</span>
 
-<span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> com.mycompany.inheritancetest.Utils.*; 
-
-
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>
-{ 
-    <span class="hljs-keyword">public</span> String name; 
-    
-    A(String name)
-    {
-        <span class="hljs-built_in">this</span>.name = name; 
-    }
-    
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shout</span><span class="hljs-params">()</span>
-    {
-        print(<span class="hljs-string">&quot;Class A - Print from &quot;</span> + name);
-    }
-    
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shoutVisibleA</span><span class="hljs-params">()</span>
-    {
-        print(<span class="hljs-string">&quot;Class A - Print visible from &quot;</span> + name);
-    }
-    
-    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shoutHiddenA</span><span class="hljs-params">()</span>
-    {
-        print(<span class="hljs-string">&quot;Class A - Print hidden from &quot;</span> + name);
-    }
-}
-
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">A</span>
-{
-    <span class="hljs-keyword">public</span> String name; <span class="hljs-comment">//questo nascode il nome di A</span>
-    
-    B(String name)
-    {
-        <span class="hljs-built_in">super</span>(name);  <span class="hljs-comment">// chiama il costruttore delle classe A</span>
-        <span class="hljs-built_in">this</span>.name = name; 
-    }
-    
-    <span class="hljs-meta">@Override</span>
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shout</span><span class="hljs-params">()</span>
-    {
-        print(<span class="hljs-string">&quot;Class B - Print from &quot;</span> + name); 
-    }
-    
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shoutVisibleB</span><span class="hljs-params">()</span>
-    {
-        print(<span class="hljs-string">&quot;Class B - Print visible from &quot;</span> + name);
-    }
-}
-
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">B</span>
-{
-    <span class="hljs-keyword">public</span> String name;  <span class="hljs-comment">//questo nasconde il nome di B</span>
-    
-    C(String name)
-    {
-        <span class="hljs-built_in">super</span>(name);  <span class="hljs-comment">// chiama il costruttore delle classe B</span>
-        <span class="hljs-built_in">this</span>.name = name; 
-    }
-    
-    <span class="hljs-meta">@Override</span>
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shout</span><span class="hljs-params">()</span>
-    {
-        print(<span class="hljs-string">&quot;Class C - Print from &quot;</span> + name); 
-    }
-    
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shoutVisibleC</span><span class="hljs-params">()</span>
-    {
-        print(<span class="hljs-string">&quot;Class C - Print visible from &quot;</span> + name);
-    }
-}
-
-
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">InheritanceTest</span> {
-
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {
-        <span class="hljs-type">A</span> <span class="hljs-variable">a1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">A</span>(<span class="hljs-string">&quot;a1&quot;</span>);
-        <span class="hljs-type">A</span> <span class="hljs-variable">a2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">B</span>(<span class="hljs-string">&quot;a2&quot;</span>); 
-        <span class="hljs-type">A</span> <span class="hljs-variable">a3</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">C</span>(<span class="hljs-string">&quot;a3&quot;</span>); 
-        
-        <span class="hljs-type">B</span> <span class="hljs-variable">b1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">B</span>(<span class="hljs-string">&quot;b1&quot;</span>); 
-        <span class="hljs-type">B</span> <span class="hljs-variable">b2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">C</span>(<span class="hljs-string">&quot;b2&quot;</span>); 
-        <span class="hljs-comment">//B b3 = new A(&quot;b3&quot;); /*illegal: A cannot be converted to B*/</span>
-        
-        <span class="hljs-type">C</span> <span class="hljs-variable">c1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">C</span>(<span class="hljs-string">&quot;c1&quot;</span>);
-        <span class="hljs-comment">//C c2 = new B(&quot;c2&quot;); /*illegal: B cannot be converted to C*/</span>
-        <span class="hljs-comment">//C c3 = new A(&quot;c3&quot;); /*illegal: A cannot be converted to C*/</span>
-        
-        <span class="hljs-comment">//---------------</span>
-        
-        a1.shout();
-        a1.shoutVisibleA(); 
-        <span class="hljs-comment">//a1.shoutHiddenA(); /*illegal: shoutHiddenA &egrave; privato quindi non puo essere chiamato*/</span>
-        <span class="hljs-comment">//----------------</span>
-        a2.shout();
-        a2.shoutVisibleA(); 
-        <span class="hljs-comment">//a2.shoutVisibleB(); /*illegal: cannot find symbol shoutVisibleB() in a2*/ </span>
-        <span class="hljs-comment">//----------------</span>
-        a3.shout();
-        a3.shoutVisibleA(); 
-        <span class="hljs-comment">//a3.shoutVisibleB(); /*illegal: cannot find symbol shoutVisibleB() in a3*/ </span>
-        <span class="hljs-comment">//a3.shoutVisibleC(); /*illegal: cannot find symbol shoutVisibleC() in a3*/ </span>
-        
-        <span class="hljs-comment">//----------------</span>
-        
-        b1.shout();
-        b1.shoutVisibleB(); 
-        b1.shoutVisibleA();
-        <span class="hljs-comment">//----------------</span>
-        b2.shout(); 
-        b2.shoutVisibleB();
-        b2.shoutVisibleA();
-        <span class="hljs-comment">//b2.shoutVisibleC(); /*illegal: cannot find symbol shoutVisibleC() in b2*/ </span>
-        
-        <span class="hljs-comment">//----------------</span>
-        
-        c1.shout();
-        c1.shoutVisibleC();
-        c1.shoutVisibleB();
-        c1.shoutVisibleA();
-    }
-}
-
-
-<span class="hljs-comment">/*
-OUTPUT::
-
-
-Class A - Print from a1
-Class A - Print visible from a1
-
-Class B - Print from a2
-Class A - Print visible from a2
-
-Class C - Print from a3
-Class A - Print visible from a3
-
-Class B - Print from b1
-Class B - Print visible from b1
-Class A - Print visible from b1
-
-Class C - Print from b2
-Class B - Print visible from b2
-Class A - Print visible from b2
-
-Class C - Print from c1
-Class C - Print visible from c1
-Class B - Print visible from c1
-Class A - Print visible from c1
-
-
-*/</span></code></pre></div>
+ <span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> com.mycompany.inheritancetest.Utils.*; 
+ <span class="hljs-comment">/**
+  *
+  * <span class="hljs-doctag">@author</span> mosco
+  */</span>
+ <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Z</span>
+ {
+     <span class="hljs-keyword">private</span> String name; 
+     
+     Z(String name)
+     {
+         <span class="hljs-built_in">this</span>.name = name; 
+     }
+     
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">talk</span><span class="hljs-params">()</span>
+     {
+         print(<span class="hljs-string">&quot;Class Z - talking &quot;</span> + name); 
+     }
+     
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shout</span><span class="hljs-params">()</span>
+     {
+         print(<span class="hljs-string">&quot;Class Z - &quot;</span> + name + <span class="hljs-string">&quot; prints from abstract class&quot;</span>);
+     }; 
+ }
+ <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Z</span>
+ { 
+     <span class="hljs-keyword">public</span> String name; 
+     
+     A(String name)
+     {
+         <span class="hljs-built_in">super</span>(name); 
+         <span class="hljs-built_in">this</span>.name = name; 
+     }
+     
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shout</span><span class="hljs-params">()</span>
+     {
+         print(<span class="hljs-string">&quot;Class A - Print from &quot;</span> + name);
+     }
+     
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">whisper</span><span class="hljs-params">(A obj)</span>
+     {
+         print(<span class="hljs-string">&quot;Class A - &quot;</span> + name + <span class="hljs-string">&quot; Shh &quot;</span> + obj.name + <span class="hljs-string">&quot; has a secret&quot;</span>);
+     }
+     
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shoutVisableA</span><span class="hljs-params">()</span>
+     {
+         print(<span class="hljs-string">&quot;Class A - Print visable from &quot;</span> + name);
+     }
+     
+     <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shoutHiddenA</span><span class="hljs-params">()</span>
+     {
+         print(<span class="hljs-string">&quot;Class A - Print hidden from &quot;</span> + name);
+     }
+ }
+ 
+ <span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">A</span>
+ {
+     <span class="hljs-keyword">public</span> String name; <span class="hljs-comment">//questo nascode il nome di A</span>
+     
+     B(String name)
+     {
+         <span class="hljs-built_in">super</span>(name);  <span class="hljs-comment">// Call the constructor of class A</span>
+         <span class="hljs-built_in">this</span>.name = name; 
+     }
+     
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shout</span><span class="hljs-params">()</span>
+     {
+         print(<span class="hljs-string">&quot;Class B - Print from &quot;</span> + name); 
+     }
+     
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">whisper</span><span class="hljs-params">(A obj)</span>
+     {
+         print(<span class="hljs-string">&quot;Class B - &quot;</span> + name + <span class="hljs-string">&quot; Shh &quot;</span> + obj.name + <span class="hljs-string">&quot; has a secret&quot;</span>);
+     }
+     
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shoutVisableB</span><span class="hljs-params">()</span>
+     {
+         print(<span class="hljs-string">&quot;Class B - Print visable from &quot;</span> + name);
+     }
+ }
+ 
+ <span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">B</span>
+ {
+     <span class="hljs-keyword">public</span> String name;  <span class="hljs-comment">//questo nasconde il nome di B</span>
+     
+     C(String name)
+     {
+         <span class="hljs-built_in">super</span>(name);  <span class="hljs-comment">// Call the constructor of class B</span>
+         <span class="hljs-built_in">this</span>.name = name; 
+     }
+     
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shout</span><span class="hljs-params">()</span>
+     {
+         print(<span class="hljs-string">&quot;Class C - Print from &quot;</span> + name); 
+     }
+     
+     <span class="hljs-comment">//C NON HA WHISPER</span>
+     
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shoutVisableC</span><span class="hljs-params">()</span>
+     {
+         print(<span class="hljs-string">&quot;Class C - Print visable from &quot;</span> + name);
+     }
+ }
+ 
+ <span class="hljs-keyword">class</span> <span class="hljs-title class_">D</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Z</span>
+ {
+     <span class="hljs-keyword">private</span> String name; 
+     
+     D(String name)
+     {
+         <span class="hljs-built_in">super</span>(name); 
+         <span class="hljs-built_in">this</span>.name = name; 
+     }
+     
+     <span class="hljs-comment">//D NON HA SHOUT</span>
+     
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shoutVisableD</span><span class="hljs-params">()</span>
+     {
+         print(<span class="hljs-string">&quot;Class D - Print visable from &quot;</span> + name);
+     }
+ }
+ 
+ 
+ <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">InheritanceTest</span> {
+ 
+     <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {
+         <span class="hljs-comment">//Z z1 = new Z(); /*illegal: Z is abstract cannot be instantiated*/</span>
+         <span class="hljs-type">Z</span> <span class="hljs-variable">z2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">A</span>(<span class="hljs-string">&quot;z2&quot;</span>);
+         <span class="hljs-type">Z</span> <span class="hljs-variable">z3</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">B</span>(<span class="hljs-string">&quot;z3&quot;</span>);
+         <span class="hljs-type">Z</span> <span class="hljs-variable">z4</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">C</span>(<span class="hljs-string">&quot;z4&quot;</span>);
+         <span class="hljs-type">Z</span> <span class="hljs-variable">z5</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">D</span>(<span class="hljs-string">&quot;z5&quot;</span>);
+         
+         <span class="hljs-type">A</span> <span class="hljs-variable">a1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">A</span>(<span class="hljs-string">&quot;a1&quot;</span>);
+         <span class="hljs-type">A</span> <span class="hljs-variable">a2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">B</span>(<span class="hljs-string">&quot;a2&quot;</span>); 
+         <span class="hljs-type">A</span> <span class="hljs-variable">a3</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">C</span>(<span class="hljs-string">&quot;a3&quot;</span>); 
+         <span class="hljs-comment">//A a4 = new D(&quot;a4&quot;); /*illegal: D cannot be converted to A*/</span>
+         
+         <span class="hljs-type">B</span> <span class="hljs-variable">b1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">B</span>(<span class="hljs-string">&quot;b1&quot;</span>); 
+         <span class="hljs-type">B</span> <span class="hljs-variable">b2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">C</span>(<span class="hljs-string">&quot;b2&quot;</span>); 
+         <span class="hljs-comment">//B b3 = new A(&quot;b3&quot;); /*illegal: A cannot be converted to B*/</span>
+         <span class="hljs-comment">//B b4 = new D(&quot;b4&quot;); /*illegal: D cannot be converted to B*/</span>
+         
+         <span class="hljs-type">C</span> <span class="hljs-variable">c1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">C</span>(<span class="hljs-string">&quot;c1&quot;</span>);
+         <span class="hljs-comment">//C c2 = new B(&quot;c2&quot;); /*illegal: B cannot be converted to C*/</span>
+         <span class="hljs-comment">//C c3 = new A(&quot;c3&quot;); /*illegal: A cannot be converted to C*/</span>
+         <span class="hljs-comment">//C c4 = new D(&quot;c4&quot;); /*illegal: D cannot be converted to C*/</span>
+         
+         <span class="hljs-type">D</span> <span class="hljs-variable">d1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">D</span>(<span class="hljs-string">&quot;d1&quot;</span>); 
+         <span class="hljs-comment">//D d2 = new A(&quot;d2&quot;); /*illegal: A cannot be converted to D*/</span>
+         <span class="hljs-comment">//D d3 = new B(&quot;d3&quot;); /*illegal: B cannot be converted to D*/</span>
+         <span class="hljs-comment">//D d4 = new C(&quot;d4&quot;); /*illegal: C cannot be converted to D*/</span>
+         
+         <span class="hljs-comment">//---------------</span>
+         <span class="hljs-comment">//z1.shout(); /*illegal: cannot find symbol*/</span>
+         z2.shout();
+         z2.talk();
+         <span class="hljs-comment">//z2.whisper(z2); /*illegal: cannot find symbol*/</span>
+         z3.shout();
+         z3.talk();
+         z4.shout();
+         z4.talk();
+         z5.shout();
+         z5.talk();
+         
+         print(<span class="hljs-string">&quot;&quot;</span>);<span class="hljs-comment">//---------------</span>
+         
+         a1.talk();
+         a1.shout();
+         a1.shoutVisableA(); 
+         a1.whisper(a1);
+         a1.whisper(a2);
+         a1.whisper(a3);
+         a1.whisper(b1);
+         a1.whisper(c1); 
+         <span class="hljs-comment">//a1.shoutVisiableD(); /*illegal: cannot find symbol shoutVisableD() in a1*/</span>
+         <span class="hljs-comment">//a1.shoutHiddenA(); /*illegal: shoutHiddenA &egrave; privato quindi non puo essere chiamato*/</span>
+         
+         print(<span class="hljs-string">&quot;&quot;</span>);<span class="hljs-comment">//----------------</span>
+         
+         a2.talk();
+         a2.shout();
+         a2.shoutVisableA(); 
+         a2.whisper(a1);
+         a2.whisper(a2);
+         <span class="hljs-comment">//a2.whisper(d1); /*illegal: D cannot be converted to A*/</span>
+         <span class="hljs-comment">//a2.shoutVisableB(); /*illegal: cannot find symbol shoutVisableB() in a2*/</span>
+         
+         print(<span class="hljs-string">&quot;&quot;</span>);<span class="hljs-comment">//----------------</span>
+         
+         a3.talk();
+         a3.shout();
+         a3.shoutVisableA(); 
+         a3.whisper(a3);
+         <span class="hljs-comment">//a3.shoutVisableB(); /*illegal: cannot find symbol shoutVisableB() in a3*/ </span>
+         <span class="hljs-comment">//a3.shoutVisableC(); /*illegal: cannot find symbol shoutVisableC() in a3*/ </span>
+         
+         print(<span class="hljs-string">&quot;&quot;</span>);<span class="hljs-comment">//----------------</span>
+         
+         b1.talk();
+         b1.shout();
+         b1.shoutVisableB(); 
+         b1.shoutVisableA();
+         b1.whisper(a1);
+         b1.whisper(b1);
+         b1.whisper(c1);
+         
+         print(<span class="hljs-string">&quot;&quot;</span>);<span class="hljs-comment">//----------------</span>
+         
+         b2.talk();
+         b2.shout(); 
+         b2.shoutVisableB();
+         b2.shoutVisableA();
+         <span class="hljs-comment">//b2.shoutVisableC(); /*illegal: cannot find symbol shoutVisableC() in b2*/ </span>
+         b2.whisper(a2);
+         
+         print(<span class="hljs-string">&quot;&quot;</span>);<span class="hljs-comment">//----------------</span>
+         
+         c1.talk();
+         c1.shout();
+         c1.shoutVisableC();
+         c1.shoutVisableB();
+         c1.shoutVisableA();
+         c1.whisper(a1);
+         c1.whisper(c1);
+         
+         print(<span class="hljs-string">&quot;&quot;</span>);<span class="hljs-comment">//----------------</span>
+         
+         d1.talk();
+         d1.shout();
+         d1.shoutVisableD();
+         <span class="hljs-comment">//d1.whisper(a2); /*illegal: cannot find symbol whisper() in d1*/ </span>
+         <span class="hljs-comment">//d1.shoutVisableA(); /*illegal: cannot find symbol shoutVisableA() in d1*/ </span>
+     }
+ }
+ 
+ 
+ <span class="hljs-comment">/*
+ OUTPUT::
+ 
+ Class A - Print from z2
+ Class Z - talking z2
+ Class B - Print from z3
+ Class Z - talking z3
+ Class C - Print from z4
+ Class Z - talking z4
+ Class Z - z5 prints from abstract class
+ Class Z - talking z5
+ 
+ Class Z - talking a1
+ Class A - Print from a1
+ Class A - Print visable from a1
+ Class A - a1 Shh a1 has a secret
+ Class A - a1 Shh a2 has a secret
+ Class A - a1 Shh a3 has a secret
+ Class A - a1 Shh b1 has a secret
+ Class A - a1 Shh c1 has a secret
+ 
+ Class Z - talking a2
+ Class B - Print from a2
+ Class A - Print visable from a2
+ Class B - a2 Shh a1 has a secret
+ Class B - a2 Shh a2 has a secret
+ 
+ Class Z - talking a3
+ Class C - Print from a3
+ Class A - Print visable from a3
+ Class B - a3 Shh a3 has a secret
+ 
+ Class Z - talking b1
+ Class B - Print from b1
+ Class B - Print visable from b1
+ Class A - Print visable from b1
+ Class B - b1 Shh a1 has a secret
+ Class B - b1 Shh b1 has a secret
+ Class B - b1 Shh c1 has a secret
+ 
+ Class Z - talking b2
+ Class C - Print from b2
+ Class B - Print visable from b2
+ Class A - Print visable from b2
+ Class B - b2 Shh a2 has a secret
+ 
+ Class Z - talking c1
+ Class C - Print from c1
+ Class C - Print visable from c1
+ Class B - Print visable from c1
+ Class A - Print visable from c1
+ Class B - c1 Shh a1 has a secret
+ Class B - c1 Shh c1 has a secret
+ 
+ Class Z - talking d1
+ Class Z - d1 prints from abstract class
+ Class D - Print visable from d1
+ */</span></code></pre></div>
 <h2 id="testing">Testing</h2>
 <h3 id="statement-coverage">Statement Coverage</h3>
 <p>Deve entrare una volta in tutti gli if, else, while,for, ecc...</p>
