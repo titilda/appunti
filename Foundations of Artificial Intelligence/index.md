@@ -2,30 +2,60 @@
 title: "Foundations of Artificial Intelligence (FAI)"
 author: 
 - "Niccolò Papini"
+- "Andrea Lunghi"
 ---
 ## Introduction
 
 Hello reader this is a short summary of our notes about the course "FAI". If you find an error or you think that one point isn't clear please tell me and I fix it (sorry for my bad english). -NP
 
-## First Charpter: Types of AI and Turing Test
+## First Chapter: Types of AI and Turing Test
 
-We can established four categories that definy different types of  AI:
+When we talk about intelligence we can define it based on two factors:
 
-- Thinking Humanly
-- Thinking Rationally
-- Acting Humanly
-- Acting Rationally
+- **Performance**: The measure of how well an AI system functions
+  - **Human Performance**: Measured by how closely the AI's behavior resemble those of humans
+  - **Rational Performance**: Measured by how effectively the AI achieves its goals
+- **Approach**: The method employed by the AI to achieve its performance goals
+  - **Think**: Focuses on internal cognitive processes, aiming to replicate or simulate human or logical thought.
+  - **Act**: Focuses on observable behavior, regardless of the underlying thought process.
 
-**The Turing Test**: This test provides us a satisfactory operational definition of Intelligence. A person interrogates a computer and if, in the end, the person cannot understand if he wrote with a computer or another person the AI completes the test with a success.
+Based on those factors, we can define four categories of AI, displayed as a 2x2 matrix:
+
+| Approach \ Performance | Human            | Rational            |
+|------------------------|------------------|---------------------|
+| Think                  | Thinking Humanly | Thinking Rationally |
+| Act                    | Acting Humanly   | Acting Rationally   |
+
+### Thinking Humanly
+
+This approach aims to create AI that thinks like a human. This is the goal of the **Cognitive Modeling** approach, which involves creating a computer model of human cognitive processes.
+
+To achieve this, we need to understand how humans think, which can be done through **Cognitive Science**. This field combines insights from psychology, neuroscience, and linguistics, philosophy to understand how humans think.
+
+### Thinking Rationally
+
+This approach aims to create AI that thinks logically. This is the goal of the **Laws of Thought** approach, which involves creating AI that can reason logically.
+
+To achieve this, we need to understand how to reason logically, which can be done through **Logic** and *formal notation*.
+
+### Acting Humanly
+
+This approach aims to create AI that acts like a human, ignoring the process behind it.
+
+To test this, we can use the **Turing Test**, which involves a human interacting with a computer and another human, without knowing which is which. If the human can't tell the difference, the AI passes the test.
 
 This test give us 6 skill about the intelligence tested:
 
-- **Natural language processing**: correct comunication in English.
-- **Knoledge representation**: store what it know or hear.
-- **Aumated reasoring**: can use the stored info to arrive at new conclusion.
-- **Machine learning**: can adapth to a new circumstance.
-- **Computer vision**: perceive object.
-- **Robotics**: move object or manipulate them.
+- **Natural Language Processing**: The ability to communicate in natural language.
+- **Knowledge Representation**: The ability to store and retrieve information.
+- **Automated Reasoning**: The ability to solve problems.
+- **Machine Learning**: The ability to learn from experience.
+- **Computer Vision**: The ability to perceive objects.
+- **Robotics**: The ability to act on the environment.
+
+### Acting Rationally
+
+This approach aims to create a **Rational Agent**, which is an AI that acts to achieve the best outcome based on its goals.
 
 ## Chapter Two: Agent
 
@@ -196,8 +226,8 @@ Evaluation of Search Strategies
 - Complexity: How much time require ?
 - Parameters
 
-    - $b$,  the branching factor of search tree.
-    - $d$, the depth of shallowest goal node.
+  - $b$,  the branching factor of search tree.
+  - $d$, the depth of shallowest goal node.
 
 Bigger is the $b$ factor, harder is the problem.
 
@@ -250,8 +280,8 @@ In this type of search there are two important things:
 - The Algorithm use knowledge that is not contained in problem formulation.
 - The most important object in this search is the "evaluation function" $(f(n))$, this function tell us "how much" a node is "promising". Smaller is the value of $f(n)$ better is. We can calculate $f(n)$ in two ways:
 
-    - Greedy Best-first Search (GBS).
-    - $A^*$ Search.
+  - Greedy Best-first Search (GBS).
+  - $A^*$ Search.
 
 ### Greedy Best-first Search (GBS)
 
@@ -265,10 +295,10 @@ In this type of search there are two important things:
 
 - Now two examples of heuristics for the 8-puzzle:
 
-    - $h_1(n) : \#$ of misplaced tiles.
-    - $h_2(n) :$ sum of Manhattan distances of each tile to its final position.
+  - $h_1(n) : \#$ of misplaced tiles.
+  - $h_2(n) :$ sum of Manhattan distances of each tile to its final position.
 
-      - Sum of Manhattan distances of two points $(x_1; y_1), (x_2; y_2)$ is $|x_1 - x_2| + |y_1 - y_2|$
+    - Sum of Manhattan distances of two points $(x_1; y_1), (x_2; y_2)$ is $|x_1 - x_2| + |y_1 - y_2|$
 
 ![](assets/Chapter%20Six/Ex%20GBS.jpg)
 
@@ -314,11 +344,11 @@ $f(n) = g(n) + h(n)$
 
 - $A^*$ search is complete and optimal for tree-search.
 
-    - When $h(n)$ is admissible.
+  - When $h(n)$ is admissible.
 
 - $A^*$ search is complete and optimal for graph-search.
 
-    - When $h(n)$ is consistent.
+  - When $h(n)$ is consistent.
 
 **Complexity**
 
