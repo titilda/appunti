@@ -4,7 +4,7 @@ author:
 - "Andrea Oggioni"
 ---
 
-# Classificazione di sistemi
+# Capitolo Uno: Classificazione di sistemi
 
 Un sistema è una rappresentazione di un oggetto fisico che interagisce col mondo esterno attraverso un vettore di input ($u(t)$) e un vettore di output ($y(t)$). Lo stato del sistema è memorizzato dentro il vettore di stato ($x(t)$)
 
@@ -53,9 +53,9 @@ $$
 
 con $A \in \mathcal{M}_\mathbb{R}(n)$, $B \in \mathcal{M}_\mathbb{R}(n, m)$, $C \in \mathcal{M}_\mathbb{R}(p, n)$ e $D \in \mathcal{M}_\mathbb{R}(p, m)$.
 
-# Analisi di sistemi a tempo continuo
+# Capitolo Due: Analisi di sistemi a tempo continuo
 
-## Sistemi LTI
+## 2.1 Sistemi LTI
 
 Un sistema **LTI** (Lineare, Tempo-Invariante) è un sistema della forma
 
@@ -226,7 +226,7 @@ Si dis-ignorino tutte le righe ignorate:
 - se, percorrendo la prima colonna dall'alto verso il basso, si incontrano dei cambiamenti di segno, il sistema è instabile e il numero di cambiamenti di segno corrisponde al numero di autovalori con parte reale positiva
 - se c'è uno zero nella prima colonna, vuol dire che ci sono autovalori puramente immaginari e non è possibile distinguere se il sistema in questione sia semplicemente stabile o instabile con blocchi di Jordan
   
-## Sistemi nonlineari, tempo-invarianti
+## 2.2 Sistemi nonlineari, tempo-invarianti
 
 Si vuole studiare il movimento dello stato di un sistema nonlineare vicino ai punti di equilibrio:
 
@@ -249,7 +249,7 @@ Una volta fatto ciò, si vanno ad analizzare gli autovalori della matrice $A$:
 
 Per un sistema di ordine 1, un po' come nella [linea delle fasi](https://appunti.titilda.org/Analisi%202/index.html#studio-qualitativo-di-edo-del-primo-ordine), se $\frac{\partial f}{\partial x} \gt 0$ allora si tende ad andare a destra mentre se $\frac{\partial f}{\partial x} \lt 0$ allora si tende ad andare a sinistra. I punti in cui $\frac{\partial f}{\partial x} = 0$ sono i punti di equilibrio e sono stabili o meno a seconda della direzione in cui tendono ad andare le derivate come visto prima (il tutto è valido per un $\overline u$ fissato).
 
-# Analisi di sistemi a tempo discreto
+# Capitolo Tre: Analisi di sistemi a tempo discreto
 
 Mentre i modelli a tempo continuo utilizzano la variazione dello stato, i modelli a tempo discreto ne analizzano direttamente l'evoluzione. Continuano a valere le stesse categorizzazioni che valevano per i sistemi a tempo continuo.
 
@@ -304,7 +304,7 @@ Se tutte le radici di $\varphi(z)$ hanno modulo inferiore ad 1 allora tutte le r
 
 Su $\varphi(s)$ è possibile applicare il criterio di Routh.
 
-# Sistemi a tempo campionato
+# Capitolo Quattro: Sistemi a tempo campionato
 
 A seconda della continuità di ampiezza e tempo, ci sono 4 tipi diversi di segnali:
 
@@ -351,7 +351,7 @@ $$
 \end{cases}
 $$
 
-# Trasformata di Laplace
+# Capitolo Cinque: Trasformata di Laplace
 
 Dato un qualsiasi sistema LTI a tempo continuo
 
@@ -475,13 +475,13 @@ $$
 
 Si può esprimere $G$ come $G = [g_{ij}]$; in tal caso, $g_{ij}(s)$ è la funzione di trasferimento tra $U_j(s)$ e $Y_i(s)$.
 
-## Risposta all'impulso
+## 5.1 Risposta all'impulso
 
 Si vuole analizzare la risposta all'impulso di un sistema LTI:
 
 Se $U(s) = \mathcal{L}\{\text{Imp}(t)\}$ allora $Y(s) = G(s) \cdot U(s) = G(s) \cdot 1 = G(s)$: un impulso non va a modificare in alcun modo l'uscita
 
-## Caratterizzazione della funzione di trasferimento
+## 5.2 Caratterizzazione della funzione di trasferimento
 
 La funzione di trasferimento può essere scritta in **forma poli-zeri** 
 
@@ -531,7 +531,7 @@ $$
 
 quindi ha un guadagno $\mu$, un polo in $p$ è una costante di tempo $-\frac{1}{p}$.
 
-## Risposta allo scalino
+## 5.3 Risposta allo scalino
 
 In caso di $u(t) = \text{Sca}(t)$, quindi $U(s) = \frac{1}{s}$, si ha che
 
@@ -719,7 +719,7 @@ Se lo zero è reale negativo ($T \gt 0$), la risposta allo scalino è velocizzat
 
 Se lo zero è positivo, la derivata iniziale è negativa: per un periodo, la risposta è inversa (**sottoelongazione**), inoltre il tempo di salita è maggiore e la sovraelongazione diminuisce.
 
-# Schemi a blocchi
+# Capitolo Sei: Schemi a blocchi
 
 Con gli **schemi a blocchi** si possono rappresentare sistemi LTI complessi composti da molteplici sistemi più semplici collegati tra loro. Per fare ciò è necessario ipotizzare che il modo in cui i collegamenti sono effettuati non vada ad influenzare le dinamiche.
 
@@ -771,7 +771,7 @@ da cui segue che gli zeri del sistema equivalente sono l'unione degli zeri di $L
 
 Nei casi di sistemi in serie, parallelo o antiparallelo, è possibile che alcuni poli si semplifichino con alcuni zeri; in tal caso è importante fare attenzione: se si semplificano solo poli stabili non v'è alcun problema, se invece i poli candidati ad essere semplificati sono instabili, non si possono semplificare.
 
-## Funzione di trasferimento
+## 6.1 Funzione di trasferimento
 
 Una **funzione di trasferimento** è una funzione che lega un'uscita ad un ingresso.
 
@@ -779,7 +779,7 @@ Si immagini di voler calcolare la funzione di trasferimento $H(s)$ tra l'uscita 
 
 Vale la sovrapposizione degli effetti: siano $H_1(s)$ la funzione di trasferimento tra $Y(s)$ e $U_1(s)$ e $H_2(s)$ la funzione di trasferimento tra $Y(s)$ e $U_2(s)$. Se il sistema non ha altri ingressi allora $Y(s) = H_1(s) \cdot U_1(s) + H_2(s) \cdot U_2(s)$. questo ragionamento vale con un numero arbitrario di ingressi.
 
-## Risposta alla sinusoide
+## 6.2 Risposta alla sinusoide
 
 Un ingresso sinusoidale è della forma $U(s) = \frac{A \omega}{s^2 + \omega^2}$, dunque
 
@@ -851,11 +851,11 @@ Fase e modulo sono legati dal fatto che la pendenza del secondo è data dal prod
 
 I diagrammi polari servono per rappresentare modulo e fase di una funzione di trasferimento in un unico grafico: il risultato è una curva sul piano complesso del modulo (rappresentato dalla distanza dall'origine) e della fase (rappresentato dall'angolo).
 
-# Sistemi LTI come filtri
+# Capitolo Sette: Sistemi LTI come filtri
 
 Dato che ogni segnale può essere scomposto in infinite sinusoidi di frequenze diverse (trasformata di Fourier) e che ciascuna di queste sinusoidi subisce un guadagno diverso se passata dentro un sistema, è possibile utilizzare i sistemi LTI per filtrare segnali e far passare solamente le frequenze desiderate.
 
-# Sensitività
+## 7.1 Sensitività
 
 La sensitività di $\delta$ rispetto a $G$ indica, sostanzialmente, quanto il variare di $G$ influisce su $\delta$:
 
@@ -867,7 +867,7 @@ $G$ e $\delta$ possono essere, come si vedrà applicato nei paragrafi successivi
 
 In generale, è desiderabile un sistema che è molto sensibile all'input e poco sensibile a disturbi o variazioni dei parametri del sistema.
 
-## Sensitività di controllori in serie
+## 7.2 Sensitività di controllori in serie
 
 Un rudimentale sistema di controllo può essere costruito nel seguente modo:
 
@@ -881,7 +881,7 @@ $$
 
 Questo risultato dice che, in un sistema composto da una serie di un controllore ed un attuatore, tutte le variazioni dell'attuatore si sentiranno al $100\%$ sull'uscita.
 
-## Sensitività di controllori in retroazione
+## 7.3 Sensitività di controllori in retroazione
 
 Un sistema di controllo meno rudimentale del precedente (ma che rimane comunque rudimentale) può essere costruito nel seguente modo:
 
@@ -907,7 +907,7 @@ $$
 
 Da ciò segue che, se $|GHC| \gg 1$ allora il sistema è poco sensibile ai cambiamenti di processo ma molto ai guasti del sensore.
 
-# Elementi di un sistema di controllo
+# Capitolo Otto: Elementi di un sistema di controllo
 
 Un sistema di controllo _completo_ può essere rappresentato come segue
 
@@ -952,7 +952,7 @@ Per un sistema di controllo ben progettato, bisogna definire le seguenti caratte
 - Prestazioni dinamiche
 - Prestazioni robuste (come le p. statiche/dinamiche ma di fronte a variazioni del modello, non trattate in questo documento)
 
-## Stabilità nominale
+## 8.1 Stabilità nominale
 
 Si prenda il sistema semplificato e lo si semplifichi ancora di più rimuovendo i disturbi e accorpando $L(s) = R(s) \cdot G(s)$ ($L$ è detta **funzione di anello aperto**):
 
@@ -990,7 +990,7 @@ Vale il **criterio della piccola fase**: se $L(s)$ è asintoticamente stabile, u
 
 Sul diagramma di Bode, si nota se la condizione è verificata se la fase non esce dall'intervallo $(-180\degree, +180\degree)$.
 
-## Stabilità robusta
+## 8.2 Stabilità robusta
 
 Un sistema è stabile in condizioni perturbate se rimane asintoticamente stabile anche a fronte di variazioni limitate dei modellidi $R$ e $G$. Concretamente, ciò significa che anche aggiungendo un altro sistema $\Delta$ (che rappresenta la variazione) tra $G$ ed il nodo somma, il sistema equivalente rimane comunque stabile.
 
@@ -1016,7 +1016,7 @@ $$
 
 Vale il **criterio di Bode**: per sistemi $L(s)$ senza poli instabili, se il diagramma di Bode di $|L(j\omega)|$ attraversa una sola volta l'asse $0dB$ allora il sistema retroazionato negativamente è asintoticamente stabile se e solo se $\varphi_m \gt 0 \degree$.
 
-## Prestazioni statiche
+## 8.3 Prestazioni statiche
 
 Le prestazioni statiche consistono nella risposta ad ingressi costanti o periodici. Per segnali di tipo rampa o scalino, l'errore a regime è dato dalla differenza tra il segnale di riferimento $w(t)$ e l'uscita $y(t)$ mentre per segnali di tipo sonusoidale, l'errore è dato dalla differenza tra l'altezza dei picchi di $w(t)$ e l'alteza dei picchi di $y(t)$.
 
@@ -1066,7 +1066,7 @@ $$
 \max_t |u_\infty(t)| = A|Q(j \omega)| + B|Q(j \omega)| + C|Q(j \omega)|
 $$
 
-## Prestazioni dinamiche
+## 8.4 Prestazioni dinamiche
 
 Le prestazioni dinamiche consistono nell'andamento nel transitorio delle tre uscite del sistema ($y$, $e$, $u$).
 
@@ -1081,7 +1081,7 @@ $$
 
 Se invece $\varphi_m \lt 75 \degree$ allora $F(s)$ si comporta come un sistema con una coppia di poli complessi coniugati come poli dominanti e $\xi = \sin\left(\frac{\varphi_m}{2}\right) \simeq \frac{\varphi_m^\degree}{100} \simeq \frac{\varphi_m^{rad}}{2}$.
 
-# Sintesi dei regolatori
+# Capitolo Nove: Sintesi dei regolatori
 
 Per progettare un regolatore, bisogna trovare una $R(s)$ adatta. Tale funzione di trasferimento deve essere tale per cui vi sia:
 
@@ -1107,7 +1107,7 @@ In realtà, $R(s) = R_1(s) \cdot R_2(s)$ può essere una qualunque funzione di t
 - $R(s)$ è robusto, economico e producibile in grandi volumi
 - L'esistenza di $R(s)$ è fisicamente possibile (ovvero il grado relativo deve essere maggiore di zero)
 
-## Controllore PID
+## 9.1 Controllore PID
 
 Per sintetizzare il controllore desiderato, si può usare il controllore **PID** (o una sua parte).
 
@@ -1221,7 +1221,7 @@ In questo caso, dato che continuando ad integrare si accumulerebbe errore, si fa
 
 ![Il **blocco di saturazione indica ll massimo e minimo valore dell'uscita**](assets/PID/lim_int.png)
 
-# Controllori digitali
+# Capitolo Dieci: Controllori digitali
 
 Fino ad alcuni anni fa, i controllori venivano costruiti utilizzando elettronica analogica, oggi invece vengono utilizzati controllori digitali che sono più economici, veloci e versatili.
 

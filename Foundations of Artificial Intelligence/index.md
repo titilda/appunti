@@ -120,9 +120,9 @@ The **Agent Architecture** is the design of the agent, which includes the agent'
 
 There are different types of agents based on their architecture:
 
-### Simple Reflex Agent
+### 3.1 Simple Reflex Agent
 
-![Simple Reflex Agent](assets/Simple%20Reflex%20Agent.jpg)
+![Simple Reflex Agent](assets/Chapter_Three/Simple_Reflex_Agent.jpg)
 
 This is the simplest type of agent, which acts based on the current percept. It doesn't have memory.
 
@@ -146,9 +146,9 @@ function SIMPLE-REFLEX-AGENT(percept) returns an action
     return action
 ```
 
-### Model-Based Reflex Agent
+### 3.2 Model-Based Reflex Agent
 
-![Reflex Agent with state](assets/Reflex%20Agent%20with%20state.jpg)
+![Reflex Agent with state](assets/Chapter_Three/Reflex_Agent_with_state.jpg)
 
 To deal with partially observable environments, we can add a **State** to the agent, which stores information about the environment.
 
@@ -167,21 +167,21 @@ To deal with partially observable environments, we can add a **State** to the ag
     return action
 ```
 
-### Goal-Based Agent
+### 3.4 Goal-Based Agent
 
-![Goal-based Agents](assets/Goal-based%20Agent.jpg)
+![Goal-based Agents](assets/Chapter_Three/Goal-based_Agent.jpg)
 
 This agent has a **Goal** that describe the desired state of the environment. The agent uses a **Problem-Solving Algorithm** to find a sequence of actions that lead to the goal (search and planning).
 
 ### Utility-Based Agent
 
-![Utility-based Agent](assets/Utility-based%20Agent.jpg)
+![Utility-based Agent](assets/Chapter_Three/Utility-based_Agent.jpg)
 
 The *goal* is a binary value (achieved or not), but the *utility* is a real number that describe how desirable a state is. The agent uses a **Utility Function** to evaluate the desirability of a state.
 
-### Learning Agent
+### 3.5 Learning Agent
 
-![Learning Agent](assets/Learning%20Agent.jpg)
+![Learning Agent](assets/Chapter_Three/Learning_Agent.jpg)
 
 This type of agent learns from experience and it can be applied to any of the previous architectures.
 
@@ -200,7 +200,7 @@ Problem Solving by Search $\implies$ we can find the solution in many way.
 
 ### Eight Puzzle
 
-![8-Puzzle](assets/8-Puzzle.jpg)
+![8-Puzzle](assets/Chapter_Four/8-Puzzle.jpg)
 
 This is a puzzle game where I have matrix 3x3 complose by 8 numbers and I have to put in order from 1 to 8.
 
@@ -223,14 +223,14 @@ action = $(x,y)$
 - A goal test that given a state $s$ return true if the state is the goal state.
 - A step cost $c(s,a,s')$ of an action $a$ from $s$ to $s'$.
 
-![State Space](assets/Space%20state.jpg)
+![State Space](assets/Chapter_Four/Space_state.jpg)
 
 ### State Space
 
 - The state space is a directed graph with nodes rappresenting state, arcs rappresenting actions.
 - The solution to a search problem is a path in the state space from the initial state to the goal state.
 
-![State Space as a graph](assets/State%20space%202.jpg)
+![State Space as a graph](assets/Chapter_Four/State_space_2.jpg)
 
 **Optimal Solution**: solution with the lowest cost.
 
@@ -246,13 +246,13 @@ If I generate 100 millions states per second, I would requite 0.036 second to ge
 
 In this game I have to put 8 queens in a chess camp without any queens stay on the territory of the other.
 
-![8-Queens Puzzle](assets/8%20Queens-Puzzle.jpg)
+![8-Queens Puzzle](assets/Chapter_Four/8_Queens-Puzzle.jpg)
 
 ### Path planning
 
 I have multiple path.
 
-![Path Planning](assets/Path%20planning.jpg)
+![Path Planning](assets/Chapter_Four/Path_planning.jpg)
 
 I have to reach the black point on the left from the red at the right.
 
@@ -298,21 +298,21 @@ Bigger is the $b$ factor, harder is the problem.
 
 Bigger is the $d$ factor, more exploretion require the closest solution.
 
-### Breadth-First Search
+### 5.1 Breadth-First Search
 
 The Algorithm is the same we do in "API" but here we generate a tree step by step, so we don't color the node and the loop don't rappresent a problem for us.
 
-![BFS, 7 is the goal state](assets/BFS.jpg)
+![BFS, 7 is the goal state](assets/Chapter_Five/BFS.jpg)
 
 we start with the first node: $1$ and expand the branch so $[2, 3]$ we expand the first node we see: $2 \implies [3, 4, 5]$, we continue with thise idea $[4, 5, 6, 7] \to [5, 6, 7, 2] \to [6, 7, 2] \to [7, 2]$ now we have first 7 that is the goal state and interrupt the search, so we don't see the loop.
 
 **Complexity**: temporal and spatial (worse-case) $\Omicron(b^{d+1})$
 
-### Deapth-First Search
+### 5.2 Deapth-First Search
 
 The same we saw in "API" but we generate a tree step by step and here we can have a loop.
 
-![Depht-Fisrt Search, 7 is the goal state](assets/DFS.jpg)
+![Depht-Fisrt Search, 7 is the goal state](assets/Chapter_Five/DFS.jpg)
 
 $[1] \to [2, 3] \to [4, 5, 3] \to [2, 5, 3] \to [4, 5, 5, 3]$ so in this case we have a loop, now we delete it.
 
@@ -325,7 +325,7 @@ $[1] \to [2, 3] \to [4, 5 , 3] \to [5, 3] \to [3] \to [6, 7] \to [7] \ 7$ is the
 
 It is cleae that the DFS Algorithm isn't a good Tree Search Algorithm.
 
-### Uniform-Cost Search (UCS)
+### 5.3 Uniform-Cost Search (UCS)
 
 It is an BFS modify, we choose the path with the smallest cost, in a situation of equal cost we choose with other condition (ex. alphabetic order).
 
@@ -348,7 +348,7 @@ In this type of search there are two important things:
   - Greedy Best-first Search (GBS).
   - $A^*$ Search.
 
-### Greedy Best-first Search (GBS)
+### 6.1 Greedy Best-first Search (GBS)
 
 - Uses an $f(n)$ that is equal to heuristic function $(h(n))$.
 - The $h(n)$ evaluates the estimated cost of the shortest path from a node $n$ to a goal node.
@@ -365,7 +365,7 @@ In this type of search there are two important things:
 
     - Sum of Manhattan distances of two points $(x_1; y_1), (x_2; y_2)$ is $|x_1 - x_2| + |y_1 - y_2|$
 
-![](assets/Chapter%20Six/Ex%20GBS.jpg)
+![](assets/Chapter_Six/Ex_GBS.jpg)
 
 - $h_1 (n) = 6$
 - $h_2 (n) = 2 (\text{for}\ 5) + 3(\text{for}\ 8) + 0(\text{for}\ 4) + 1(\text{for}\ 2) + 3(\text{for}\ 1) + 0(\text{for}\ 7) + 3(\text{for}\ 3) + 1(\text{for}\ 6) = 13$
@@ -377,16 +377,16 @@ In this type of search there are two important things:
 
 **Graphical examples of 8-puzzle:**
 
-![](assets/Chapter%20Six/8-puzzle%20h1.jpg)
+![](assets/Chapter_Six/8-puzzle_h1.jpg)
 
-![](assets/Chapter%20Six/8-puzzle%20h2.jpg)
+![](assets/Chapter_Six/8-puzzle_h2.jpg)
 
 **Evaluation**
 
 - GBS is not complete and he can get stuck in a loop $\implies$ not optimal.
 - Temporal and spatial complexity of $\Omicron (b^m)$ nodes (worst-case), $m:$ maximum depth of the search tree.
 
-### $A^*$
+### 6.2 $A^*$
 
 The evaluation funcion "$f(n)$" of a node $n$ is computed as the sum of two componets:
 
@@ -403,7 +403,7 @@ $f(n) = g(n) + h(n)$
 
 **Example**
 
-![](assets/Chapter%20Six/Ex%20Astar.jpg)
+![](assets/Chapter_Six/Ex_Astar.jpg)
 
 **Evaluation**
 
@@ -427,7 +427,7 @@ $h(n)$ is admissible when for each $n :$
 
 $h^*(n) :$ actual cost from $n$ to the solution.
 
-### First Optimality Theorem for $A^*$ Search
+### 6.3 First Optimality Theorem for $A^*$ Search
 
 $A^*$ with tree-search is complete and optimal when $h(n)$ is admissible.
 
@@ -455,7 +455,7 @@ If $n$ is a goal node, then $h(n) = 0.$
 
 For Example the 8-puzzle solution, with $h_1(n)$ and $h_2(n)$ already saw, $h_1$ and $h_2$ are consistent.
 
-### Second Optimality Theorem for $A^*$ Search
+### 6.4 Second Optimality Theorem for $A^*$ Search
 
 $A^*$ search with graph-search is complete and optimal when $h(n)$ is consistent.
 
@@ -478,11 +478,11 @@ Other properties of $A^*$ Search:
 - $A^*$ expands no nodes with $f(n) > C^*.$
 - $A^*$ is optimally efficient.
 
-### Weighted $A^*$ Search
+#### Weighted $A^*$ Search
 
 It introduces a weight factor $w (1 \leq w < \infty)$ over the heuristics so that, $f(n) = g(n) + wh(n) \implies$ can be more efficient.
 
-### Iterative Deepening $A^* (IDA^*)$ Search
+### 6.5 Iterative Deepening $A^* (IDA^*)$ Search
 
 $IDA^*$ reduces memory requirement of $A^*$ search by applying a limit to the values of $f(n).$
 
@@ -509,3 +509,41 @@ $S(n) = \Omicron(bd)
 T(n) = \Omicron(b^d)$
 
 ## Chapter Seven: Constraint Satisfaction Problems
+
+**Stardard Search Problems:** State is a black box with arbitrary structure, Gual test only compare states, successor function can be anything.
+
+Search akgorithms work on **any** standars search problem.
+
+### 7.1 Constraint Satisfaction Problems (CSPs)
+
+- The state has a **factored representation**, consisting of variable-value pairs.
+- Set of **variables** $\{X_1, X_2, ..., X_n\}$ each one has a **domain** $D_i$ of possible values.
+- Set of **contraints** $\{C_1, C_2, ..., C_p\}$ involving a subset of variables and specifies the valid (or invalid) combinations of their values.
+- The goal is to assign a value to each variable in such away that all the constraints are satisfied, if all the domains have size $d$, then there are $\Omicron(d^n)$ complete assignments.
+- Solutions must be:
+
+    - **complete**(all variables are assigned a value).
+    - **consistent**(all constraints are satisfied) assignments.
+
+#### Example (8-Queens)
+
+- Eight variables $X_i$ with domain $D_i = \{1, 2, ..., 8\}$ representing a queen's position in column $i$.
+- Constraints:
+
+    - No two queens on the same row, $X_i \not ={X_j}$ for $i, j = 1, 2, ..., 8$ and $i \not ={j}$.
+    - No two queens on the same diagonal, $|X_i - X_j| \not ={|i - j|}$.
+    - No two queens on the same column.
+
+!["8-Puzzle and Verification"](assets/Chapter_Seven/8-Puzzle_CSP.jpg)
+
+### 7.2 Binary Constraints & Constraint Graphs
+
+**Binary Constrainsts**
+
+- We will consider binary constraints involving two variables.
+- Highed-order constraints involving three or more variables can be trasformed in a CSP with binary constraints through binarization.
+
+**Constraint Grphs**
+
+- CSPs with binary constraints are represented using a constraint graph in which nodes are variables and arcs represent constraints.
+- The graph structu
