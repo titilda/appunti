@@ -5,9 +5,9 @@ author: "Andrea Oggioni"
 
 # Riassunto di Analisi I
 
-## Insiemi numerici
+## Capitolo Uno: Insiemi numerici
 
-### Insieme N
+### 1.1 Insieme N
 
 - N contiene tutti i numeri naturali (interi senza segno)
   - $\mathbb{N} = \{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, \dots\}$
@@ -40,7 +40,7 @@ author: "Andrea Oggioni"
   - **Postulato d'induzione completa**:
     - $\begin{cases} \text{M è una classe di numeri} \\ \Z \in M \\ n \in M \implies n' \in M \end{cases} \implies \text{M contiene tutti i numeri}$
 
-### Principio d'induzione
+### 1.2 Principio d'induzione
 
 Serve per dimostrare proposizioni _per induzione_ e si attua in due step [data una preposizione P]:
 
@@ -61,7 +61,7 @@ $$
 P(n+1): \sum_{k=0}^{n+1} k = \sum_{k=0}^n k + (n+1) = \frac{n(n+1)}{2} + (n+1) = \frac{n(n+1) + 2(n+1)}{2} = \frac{(n+1)(n+2)}{2} = \frac{(n+1)((n+1)+1)}{2}
 $$
 
-### Insieme Z
+### 1.3 Insieme Z
 
 - Contiene tutti i numeri interi con segno:
   - $\mathbb{Z} = \{0, \pm 1, \pm 2, \dots \}$
@@ -71,7 +71,7 @@ $$
   - Se il segno è dierso, il numero con segno positivo è maggiore, se il segno è uguale, allora se il segno è negativo, il numero con valore assoluto maggiore è il minore, il contrario se i due numeri hanno segno positivo.
 - Le operazioni definite sull'insieme Q sono le stesse definite sull'insieme N ma si tiene conto del segno
 
-### Insieme Q
+### 1.4 Insieme Q
 
 - Contiene tutte le frazioni
   - $Q = \left\{ \frac{n}{m} : n \in \Z, m \in \N^+ \right\}$
@@ -87,7 +87,7 @@ $$
   - In più, ogni elemento ha un proprio inverso:
     - $\frac{n}{m} \times \frac{m}{n} = 1 \qquad (con\,n \ne 0)$
 
-### Irrazionalità della radice di 2
+### 1.5 Irrazionalità della radice di 2
 
 Per dimostrare che $sqrt(2)$ è irrazionale, bisogna procedere per assurdo, ma prima serve conoscere una definizione di numeri pari e dispari:
 
@@ -115,7 +115,7 @@ $$
 
 il che significherebbe che n è pari, ma questo va contro l'ipotesi, per cui la radice di 2 è irrazionale.
 
-### Insieme R
+### 1.6 Insieme R
 
 Un numero reale è un qualsiasi numero razionale o meno
 
@@ -144,7 +144,7 @@ $$
 
 **Teorema di completezza di R**: in R, l'estremo superiore di un insieme superiormente limitato esiste sempre. Idem per l'estremo inferiore.
 
-### Topologia in R
+### 1.7 Topologia in R
 
 Se $A \subset R$ allora
 
@@ -226,7 +226,7 @@ $$ A = \bigg\{\frac{1}{n} : n \in \N, n \gt 0 \bigg \} \subset \R $$
 - A ha soltanto punti isolati
 - A ha 0 come unico punto di accumulazione
 
-### Cardinalità di insiemi finiti, numerabilità di Q e non numerabilità di R
+### 1.8 Cardinalità di insiemi finiti, numerabilità di Q e non numerabilità di R
 
 La cardinalità di un insieme è il numero di elementi che contiene.
 Se un insieme è infinito, però non è sempre facile dire quanti elementi contiene: come posso dire se N ha più o meno elementi di R?
@@ -274,7 +274,7 @@ Ora alla lista aggiungiamo un nuovo numero composto da zero virgola tutte le nuo
 Se ripetiamo il processo infinite volte, non finiremo mai, quindi $(0, 1)$ non è numerabile.
 Siccome $(0, 1)$ non è numerabile ed è possibile associare ad ogni elemento di $(0, 1)$ un elemento di R e civecersa, allora anche R non è numerabile.
 
-### Numeri complessi
+### 1.9 Numeri complessi
 
 I numeri complessi numeri basati sull'esistenza del numero $i$ chiamato anche **Unità Immaginaria**.
 
@@ -457,7 +457,7 @@ In $\mathbb{C}$, ogni equazione algebrica di grado $n$ ha esattamente $n$ soluzi
 
 #### Ruffini (sia reale che complesso)
 
-## Successioni
+## Capitolo Due: Successioni
 
 Una successione è una funzione definita in $\N$ con valori in $\R$.
 
@@ -474,12 +474,12 @@ Esempi:
 - $b_n = s^n \implies 1, 2, 4, \dots$
 - $c_n = \left( -1 \right)^n \implies 1, -1, 1, \dots$
 
-### Successioni monotone
+### 2.1 Successioni monotone
 
 Una successione è monotona crescente se $a_n \leq a_{n+1}$ per ogni $n \in \N$.
 Per le monotone decrescenti, strettamente crescenti e strettamente decrescenti vale la stessa regola ma cambiando il '$\leq$' con '$\geq$', '$<$' e '$>$'.
 
-### Successioni limitate
+### 2.2 Successioni limitate
 
 Legati alle successioni ci sono alcuni numeri notevoli:
 - $\sup \left\{ a_n \right\}$: il minimo dei maggioranti della successione
@@ -495,7 +495,7 @@ $$
 
 In italiano: esite un numero arbitrariamente piccolo ($\varepsilon$) tale per cui, dopo un certo numero di elementi della successione, la differenza tra il limite e gli elementi della successione è minore di quel numero.
 
-### Definizione topologica di successione
+### 2.3 Definizione topologica di successione
 
 Oltre alla definizione metrica (quella espressa qui sopra) esiste anche una definizione topologica equivalente:
 
@@ -505,13 +505,13 @@ $$
 
 In italiano: esite un intorno di $L$  che contiene infiniti valori di $a_n$.
 
-### Regolarità di una successione
+### 2.4 Regolarità di una successione
 
 Una successione è regolare se ammette un limite finito o infinito.
 Una successione è irregolare se non ammette un limite.
 Ad esempio, la successione $a_n = \frac{1}{n}$ è regolare mentre $b_n = \sin n$ non lo è.
 
-### Teorema di monotonia
+### 2.5 Teorema di monotonia
 
 Se $a_n$ è una successione monotona crescente e superiormente limitata allora ammette limite.
 Se $a_n$ è una successione monotona decrescente e inferiormente limitata allora ammette limite.
@@ -526,7 +526,7 @@ S = Sup \left \{ a_n \right \} \\
 \forall n \ge n^* \quad S \ge a_n \ge a_{n^*} \implies \left( S - \varepsilon, S \right] \implies \left| S - a_n \right| < \varepsilon \\
 $$
 
-### Teorema di unicità del limite
+### 2.6 Teorema di unicità del limite
 
 Se $a_n$ è una successione regolare allora ammette un solo limite.
 
@@ -548,7 +548,7 @@ $$
 
 Di conseguenza $l_1$ e $l_2$ sono uguali.
 
-### Teorema di permaneza del segno
+### 2.7 Teorema di permaneza del segno
 
 Data una successione $a_n \to l$: allora
 
@@ -563,7 +563,7 @@ $$
 \implies a_n > l - \varepsilon > 0 \implies \text {Se $l < 0$ allora $a_n < 0$} \\
 $$
 
-### Teorema del confronto
+### 2.8 Teorema del confronto
 
 Date tre successioni $a_n$, $b_n$ e $c_n$ tali che $a_n < b_n < c_n$ allora se $a_n \to l$ e $c_n \to l$ allora anche $b_n \to l$.
 
@@ -578,12 +578,12 @@ $$
 
 Siccome $a_n < b_n < c_n$ allora anche $l - \varepsilon < b_n < l + \varepsilon$.
 
-### Corollario
+#### Corollario
 
 1.  Se $\left| b_n \right| \to 0$ allora $b_n \to 0$.
 2.  Se $b_n$ è limitata e $c_n \to 0$ allora $(b_n \times c_n) \to 0$
 
-### Algebra dei limiti
+### 2.9 Algebra dei limiti
 
 Se $a_n \to a$ e $b_n \to b$ allora
 - $a_n \pm b_n \to a \pm b$
@@ -609,7 +609,7 @@ $$
 \left| a_n \times b_n - a \times b \right| = \left| a_n \times b_n + a \times b_n - a \times b - a \times b_n \right| = \left| \left(a_n - a \right) \times b_n \right| + \left| a \times \left( b_n - b \right) \right| = \left| a_n - a \right| \times \left| b_n \right| + \left| a \right| \times \left| b_n - b \right| \le \varepsilon
 $$
 
-### Forme d'indecisione
+### 2.10 Forme d'indecisione
 
 A seconda della forma d'indecisione trovata, si può procedere in vari modi (il più adeguato dei quali varia da esercizio ad esercizio)
 Le forme d'indecisione sono: $\infty - \infty$, $0 \times \infty$ $\frac{0}{0}$, $\frac{\infty}{\infty}$, $\infty^0$, $\infty^{\infty}$, $1^\infty$.
@@ -621,7 +621,7 @@ $$
 
 Tutte le forme di indecisione sono riconducibili a $0 \times \infty$.
 
-### Confrontare infiniti e infinitesimi
+### 2.11 Confrontare infiniti e infinitesimi
 
 #### Confronto tra infiniti
 
@@ -702,7 +702,7 @@ $$
 n \to \infty \implies n! \sim n^n \times e^{-n} \times \sqrt{2 \pi n} \\
 $$
 
-## Serie numeriche
+## Capitolo Tre: Serie numeriche
 
 Una serie numerica è una sommatoria dei termini di una successione:
 
@@ -728,7 +728,7 @@ La prima cosa da fare, data una serie, è capire da quali tipi di termini è com
 
 Ci sono alcune serie più famose e comuni di altre.
 
-### Serie geometriche
+### 3.1 Serie geometriche
 
 Una serie geometrica è una serie della forma $S = \sum_{n = k}^\infty q^n$ e il loro valore di convergenza/divergenza si calcola con la seguente formula:
 
@@ -771,7 +771,7 @@ $$
 \sum_{k = 0}^\infty q^k = \frac{1 - q^{\infty + 1}}{1 - q} = \frac{1}{1 - q}
 $$
 
-### Serie di Mengoli
+### 3.2 Serie di Mengoli
 
 La serie di Mengoli fa parte delle cosiddette serie telescopiche, che possono essere compresse in una differenza tra due termini (ma si vedrà dopo).
 
@@ -786,7 +786,7 @@ S_k = \sum_{n = 1}^k \frac{1}{n(n+1)} = \sum_{n = 1}^k \left( \frac{1}{n} - \fra
 S = \lim_{k \to \infty} S_k = 1 - \frac{1}{\infty} = 1 - 0 = 1
 $$
 
-### Serie armonica
+### 3.3 Serie armonica
 
 Le serie armoniche sono le serie nella forma
 
@@ -800,7 +800,7 @@ $$
 
 Nota: se $\alpha = 1$ allora è un caso particolare della serie geometrica.
 
-### Teorema di Cauchy (Teorema della condizione necessaria)
+### 3.4 Teorema di Cauchy (Teorema della condizione necessaria)
 
 Se $\sum a_n$ converge allora $a_n \to 0$
 
@@ -825,7 +825,7 @@ $$
 
 Si pensi a $a_n = \frac{1}{n}$: $a_n \to 0$ ma $\sum a_n$ diverge.
 
-### Come risolvere le serie a termini positivi (e, di conseguenza, anche quelle a termini negativi)
+### 3.5 Come risolvere le serie a termini positivi (e, di conseguenza, anche quelle a termini negativi)
 
 Ci sono vari criteri a cui affidarsi per capire se una serie converge o diverge.
 
@@ -914,12 +914,12 @@ $$
 
 Siccome $m > 1$, la serie converge per il criterio del confronto.
 
-## Funzioni
+## Capitolo Quattro: Funzioni
 
 Una funzione è una relazione tra gli elementi di due insiemi, chiamati dominio e codominio.
 Una funzione defe essere definita per ciascun elemento del dominio.
 
-### Iniettività e suriettività
+### 4.1 Iniettività e suriettività
 
 Una funzione è iniettiva se a diversi elementi del codominio corrispondono diversi elementi del dominio:
 
@@ -934,7 +934,7 @@ $$
 \exists x \in D : f(x) = y \qquad \forall y \in C
 $$
 
-### simmetria
+### 4.2 Simmetria
 
 Una funzione è pari se $f(x) = f(-x)$.
 Una funzione è dispari se $f(x) = -f(-x)$.
@@ -945,11 +945,11 @@ Somma e differenza tra funzioni dispari daranno funzioni dispari.
 Prodotto e rapporto tra funzioni dispari daranno funzioni pari.
 Prodotto e rapporto tra funzioni pari e dispari daranno funzioni dispari.
 
-### Limitatezza e monotonia
+### 4.3 Limitatezza e monotonia
 
 Come le successioni, anche le funzioni possono essere monotone e limitate. [Monotonia di successioni](#successioni-monotone) e [limitatezza di successioni](#successioni-limitate).
 
-### Invertibilità di funzioni
+### 4.4 Invertibilità di funzioni
 
 Per essere invertibile, una funzione deve essere sia suriettiva che iniettiva (quindi monotona).
 In particolare, ad ogni $x$ deve corrispondere un solo $y$ e viceversa; in caso questo non sia possibile, si attua una restrizione del dominio.
@@ -1029,11 +1029,11 @@ Di seguito le principali funzioni e le loro inverse:
 
 Se $f$ è strettamente monotona allora $f$ è invertibile e la funzione inversa è monotona.
 
-### Funzioni periodiche
+### 4.5 Funzioni periodiche
 
 Una funzione $f$ è periodica con periodo $t$ se $f(x) = f(x + t)$ per ogni $x$.
 
-### Operazioni sul grafico di funzioni
+#### Operazioni sul grafico di funzioni
 
 $$
 y = f(x) + k \qquad \begin{cases}
@@ -1083,7 +1083,7 @@ $$
 y = f\left( \left| x \right| \right) \qquad \text{Il grafico di I° e IV° viene riflesso e sostituisce quanto presente nel II° e III° quadrante; la funzione diventa pari}
 $$
 
-### Limiti di funzioni
+### 4.6 Limiti di funzioni
 I limiti delle funzioni sono molto simili ai lititi per le successioni: asintotici, teoremi e proprietà varie che valgono sia per le successioni valgono anche per le funzioni.
 Di seguito le definizioni di limite di una funzione.
 
@@ -1162,7 +1162,7 @@ Dato $h(x) \to 0$ con $x \to x^*$ allora
 - $\exists \char"1D4B0(x^*) : \left| g(x) \right| \le h(x) \implies g(x) \to 0$
 - $\exists \char"1D4B0(x^*) : g(x) \text{ è limitata } \implies g(x) \times h(x) \to 0$
 
-### Continuità di funzioni
+### 4.7 Continuità di funzioni
 
 Dato un intervallo $(a, b)$ con $x_0 \in (a, b)$ allora
 
@@ -1317,11 +1317,11 @@ Se $I$ è un intervallo qualsiasi e $f \in \mathcal{C}(I)$ allora $f$ è inverti
 - Se $f \in \mathcal{C}(I)$ è invertibile allora $g = f^{-1} \in \mathcal{C}(\text{Im} f)$
 - Se $g$ non fosse continua, non lo sarebbe neanche $f$
 
-### Infiniti e infinitesimi
+#### Infiniti e infinitesimi
 
 Funzionano esattamente come con le successioni
 
-### Asintotici
+### 4.8 Asintotici
 
 #### Asintoto verticale
 Se
@@ -1355,7 +1355,7 @@ $$
 allora l'asintoto obliquo esiste ed è $y = mx + q$.
 Con $x \to \infty$, $f(x) \sim mx$
 
-### o piccoli e algebra degli stessi
+### 4.9 o-piccoli e algebra degli stessi
 $o(\square) =$ qualcosa di trascurabile rispetto a $\square$.
 Per $x \to x^*$, $f(x) \sim g(x) \iff f(x) = g(x) + o(g(x))$
 Per $x \to 0$ se $f(x) = o(x^\alpha)$ allora
@@ -1383,7 +1383,7 @@ o(x^\alpha) \pm o(x^\beta) = o(x^\alpha) \\
 o(x^\alpha) \pm ax^\beta = o(x^\alpha) \\
 $$
 
-### Parte principale di un infinito/esimo
+### 4.10 Parte principale di un infinito/esimo
 
 La parte principale di un infinito/esimo si calcola al limite indicato ed è nella forma $k(x - x_0)^\alpha$
 
@@ -1418,9 +1418,9 @@ $$
 \end{align*}
 $$
 
-## Glossario formule trigonometriche
+## Capitolo Cinque: Glossario formule trigonometriche
 
-### Seno, coseno, tangente
+### 5.1 Seno, coseno, tangente
 
 $$
 \sin x = -\sin -x \\
@@ -1429,14 +1429,14 @@ $$
 \left[ \tan x \right]^{-1} = \arctan x \\
 $$
 
-### Funzioni iperboliche
+### 5.2 Funzioni iperboliche
 
 $$
 \sh x = \frac{e^x - e^{-x}}{2} \\
 \ch x = \frac{e^x + e^{-x}}{2} \\
 $$
 
-### Seno e coseno di x mezzi
+### 5.3 Seno e coseno di x mezzi
 
 Il segno va deciso in base al quadrante di partenza e di arrivo.
 
@@ -1445,7 +1445,7 @@ $$
 \sin \frac{x}{2} = \pm \sqrt{\frac{1 - \cos x}{2}} \\
 $$
 
-### Seno e coseno di somme di angoli
+### 5.4 Seno e coseno di somme di angoli
 
 Conoscendo la prima di ogni coppia di formule, ci si può ricavare la seconda.
 
@@ -1457,7 +1457,7 @@ $$
 \tan (a + b) = \frac{\tan a + \tan b}{1 - \tan a \tan b} \\
 $$
 
-### Angoli famosi
+### 5.5 Angoli famosi
 
 | Angolo (rad) | Angolo (°) |    Seno    |   Coseno   |  Tangente  |
 | :----------: | :--------: | :--------: | :--------: | :--------: |
@@ -1467,7 +1467,7 @@ $$
 |    &pi;/3    |     60     | &radic;3/2 |    1/2     |  &radic;3  |
 |    &pi;/2    |     90     |     1      |     0      |   &infin   |
 
-### Cambio dei parametri
+### 5.6 Cambio dei parametri
 
 $$
 \sin (\alpha + \pi) = -\sin \alpha \\
@@ -1476,9 +1476,9 @@ $$
 \sin (\alpha + \frac{\pi}{2}) = \cos \alpha \\
 $$
 
-## Calcolo Differenziale
+## Capitolo Sei: Calcolo Differenziale
 
-### Definizione di derivata
+### 6.1 Definizione di derivata
 
 Data $f : (a, b) \to \mathbb{R}$ e $x_0 \in (a, b)$, $f$ si dice derivabile in $x_0$ se
 
@@ -1490,7 +1490,7 @@ $f'(x)$ associa ad ogni $x$ la derivata di $f$ nel punto $x$ ovvero il coefficen
 
 $\frac{f(x_0 + h) - f(x_0)}{h}$ è detto **rapporto incrementale**
 
-### Caratterizzazione dei punti di non derivabilità
+### 6.2 Caratterizzazione dei punti di non derivabilità
 
 Ci sono 3 tipi di punti di non derivabilità: il **Punto angoloso**, il **Flesso a tangente verticale** e la **Cuspide**.
 
@@ -1510,7 +1510,7 @@ Se $f'_+(x_0) = f'_-(x_0)$ allora la funzione è derivabile in $x_0$ altrimenti 
 3. **Cuspide**: $f'_+(x_0) = \pm \infty \ne f'_-(x_0) = \pm \infty$
    Ad esempio, se $f(x) = \sqrt[3]{x^2}$ e $x_0 = 0$ allora $f'_+(x_0) = +\infty \ne f'_-(x_0) = -\infty$
 
-### Relazione tra derivabilità e continuità
+### 6.3 Relazione tra derivabilità e continuità
 
 Se $f : (a, b) \to \mathbb{R}$ e $x_0 \in (a, b)$, se $f$ è derivabile in $x_0$ allora $f$ è anche continua in $x_0$.
 
@@ -1534,7 +1534,7 @@ $$
 \lim_{h \to 0} [f(x_0 + h) - f(x_0)] = \lim_{h \to 0} [f'(x_0) \cdot h + \small{o}(h)] = 0
 $$
 
-### Regole di derivazione
+### 6.4 Regole di derivazione
 
 Per evitare di calcolare sempre il rapporto incrementale, esistono delle forme generiche che possono essere riciclate per derivare velocemente quasi tutto.
 
@@ -1581,7 +1581,7 @@ $$
 
 _Il fatto che $\lim_{x \to 0} \frac{\sin x}{x} = 1$ si può dimostrare con l'Hopital che però richiede che sia dimostrato che $[\sin x]' = \cos x$, ma quest'ultimo fatto si può dimostrare con il fatto che $\lim_{x \to 0} \frac{\sin x}{x} = 1$ quindi serve la dimostrazione senza derivate (quella della "torta") per evitare di cadere nella definizione circolare e autoreferenziale ("l'Hopital ha ragione perchè $[\sin x]' = \cos x$ ma $[\sin x]' = \cos x$ è vero perchè l'Hopital ha ragione")._
 
-### Derivate elementari ma più in particolare
+### 6.5 Derivate elementari ma più in particolare
 
 | Funzione          | Derivata                                         |
 | ----------------- | ------------------------------------------------ |
@@ -1601,7 +1601,7 @@ _Il fatto che $\lim_{x \to 0} \frac{\sin x}{x} = 1$ si può dimostrare con l'Hop
 | $\cosh \square$   | $\sinh \square \cdot \square'$                   |
 | $\tanh \square$   | $\frac{1}{\cosh \square} \cdot \square'$         |
 
-### Algebra delle derivate
+### 6.6 Algebra delle derivate
 
 Siano $f, g : (a, b) \to \mathbb{R}$, $x_0 \in (a, b)$ e $f, g$ derivabili in $x_0$, allora:
 
@@ -1663,15 +1663,15 @@ $$
 \end{align*}
 $$
 
-### Derivata della funzione composta
+### 6.7 Derivata della funzione composta
 
 Se $f \colon (a, b) \to \mathbb{R}$, $x_0 \in (a, b)$, $f$ derivabile in $x_0$, $g \colon (c, d) \to \mathbb{R}$, $y_0 = f(x_0) \in (c, d)$, $g$ derivabile in $y_0$ allora $[g \cdot f]$ è derivabile in $x_0$ e $[f \cdot g](x_0)' = g'(f(x_0)) \cdot f'(x_0)$
 
-### Derivata della funzione inversa
+### 6.8 Derivata della funzione inversa
 
 Se $f \colon (a, b) \to \mathbb{R}$ è derivabile in $x_0 \in (a, b)$ ed è invertibile allora se $g = f^{-1}$ e $f(x_0) \ne 0$ allora $g$ è derivabile in $y_0 = f(x_0)$ e $g'(y_0) = \frac{1}{f'(x_0)}$
 
-### Teorema di Fermat
+### 6.9 Teorema di Fermat
 
 Se $f \colon (a, b) \to \mathbb{R}$, $x_0 \in (a, b)$ è punto di massimo o minimo relativo e $f$ è derivabile in $x_0$ allora $f'(x_0) = 0$.
 
@@ -1700,7 +1700,7 @@ $$
 Per trovare i massimi e miimi, bisogna considerare tulle le $x \colon f'(x) = 0$, gli estremi del dominio e i punti dove $f$ non è derivabile.
 Non vale il viceversa.
 
-### Teorema di Lagrange
+### 6.10 Teorema di Lagrange
 
 Se $f \colon [a, b] \to \mathbb{R}$, $f$ è continua in $[a, b]$ e derivabile in $(a, b)$ allora $\exists c \in (a, b) \colon f'(c) = \frac{f(b) - f(a)}{b - a}$
 
@@ -1739,7 +1739,7 @@ Per Fermat, esiste per forza un punto di massimo o minimo (quindi la cui derivat
 
 Siccome conosco $g$ (e quindi anche $g'$), la pongo uguale a zero e vedo che c'è effettivamente un punto nel quale la derivata di $f$ è effettivamente parallela al segmento.
 
-### Test di monotonia
+### 6.11 Test di monotonia
 
 Se $I$ è un intervallo qualsiasi, $I \sube \mathbb{R}$ e $f \colon I \to \mathbb{R}$ è continua e derivabile allora
 
@@ -1772,7 +1772,7 @@ _Verrà dimostrata solo la crescenza, la decrescenza è analoga._
   
   da cui $f(x_2) - f(x_1) \ge 0 \implies f$ è crescente
 
-### Teorema del tappabuchi
+### 6.12 Teorema del tappabuchi
 
 Se $f \colon (a, b) \to \mathbb{R}$ è continua in $(a, b)$ e derivabile in $(a, b)$ salvo al più in $x_0 \in (a, b)$ (quindi potrebbe esserlo o meno) allora, se $\exists \lim_{x \to x_0} f'(x_0)$, allora $f$ è derivabile in $x_0$ è $f'(x_0) = \lim_{x \to x_0} f'(x)$
 
@@ -1784,7 +1784,7 @@ $$
 \lim_{h \to 0^+} \frac{f(x_0 + h) - f(x_0)}{h} = \lim_{h \to 0^+} f'(x_0 + \alpha h) \quad 0 < \alpha < 1 = \lim_{x \to x_0} f'(x)
 $$
 
-### Concavità e convessità
+### 6.13 Concavità e convessità
 
 Data $f \colon D \to \mathbb{R}$e $I \sube D$, $f$ è convessa in $I$ se $\forall x_1, x_2 \in I, \, f(x_1 + (1-\alpha)x_2) \le \alpha f(x_1) + (1-\alpha) f(x_2) \quad \forall \alpha \in [0, 1]$.
 
@@ -1811,7 +1811,7 @@ Se $f$ è concava o convessa in $I$ allora si può dimostrare che $f$ è continu
 - Se $f'' < 0$ e $f' = 0$ ho un minimo
 - Se $f'' = 0$ per ora non lo so fare
 
-### Differenziabilità e derivabilità
+### 6.14 Differenziabilità e derivabilità
 
 Se $f \colon (a, b) \to \mathbb{R}$, $x_0 \in (a, b)$ allora $f$ si dice differenziale in $x_0$ se $\exists m \colon \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0) - mh}{h} = 0$.
 
@@ -1828,7 +1828,7 @@ Ciò è vero solo per le funzioni a una variabile, nelle funzioni a 2+ variabili
 
 Si chiama **Differenziale di $f$ nel punto $x_0$** l'espressione $df(x_0) = \underbrace{f'(x_0)}_m \cdot \underbrace{dx}_h$
 
-### Teorema di Cauchy
+### 6.15 Teorema di Cauchy
 
 Se $f, g \in \mathcal{C}[a, b]$ e sono derivabili in $(a, b)$ con $g'(x) \ne 0 \quad \forall x \in (a, b)$ allora $\exists c \in (a, b) \colon \frac{f(b) - f(a)}{g(b) - g(a)} = \frac{f'(c)}{g'(c)}$
 
@@ -1854,7 +1854,7 @@ $$
 
 Ho ottenuto la tesi.
 
-### Teorema di l'Hopital
+### 6.16 Teorema di l'Hopital
 
 Se $f, g \colon (a, b) \to \mathbb{R}$, $f, g \underset{x \to a^+}{\longrightarrow} 0 \text{ oppure } \pm \infty$, allora se $g' \ne 0$ in $(a, b)$ e se $\exists \lim_{x \to a^+} \frac{f'(x)}{g'(x)} = L$ allora $\exists \lim_{x \to a^+} \frac{f(x)}{g(x)} = L$
 
@@ -1875,7 +1875,7 @@ $$
 \lim_{x \to a^+} \frac{f(x)}{g(x)} = \lim_{x \to a^+} \frac{f'(c)}{g'(c)} = \lim_{c \to a^+} \frac{f'(c)}{g'(c)}
 $$
 
-## Polinomi di Taylor e di MacLurin
+## Capitolo Sette: Polinomi di Taylor e di MacLurin
 
 I polinomi di Taylor e MacLaurin servono ad approssimare una funzione nell'intorno di un punto in maniera molto precisa.
 
@@ -1891,13 +1891,13 @@ Con $x \to x_0$, $f(x) \sim T_{n, x_0}$, da cui $f(x) = T_{n, x_0} + resto$.
 
 Con $x_0 = 0$ il polinomio prende il nome di **Polinomio di MacLaurin**
 
-### Formula di Taylor con resto secondo Peano
+### 7.1 Formula di Taylor con resto secondo Peano
 
 Se $f \in \mathcal{C}^n(a, b)$ allora $f(x) = T_{1, x_0}(x) + \small o((x - x_0)^n)$
 
 In questo caso il resto è solo qualitativo, non abbiamo indicazioni oltre al fatto che è di un ordine di infinitesimo superiore rispetto al polinomio.
 
-### Formula di Taylor con resto secondo Lagrange
+### 7.2 Formula di Taylor con resto secondo Lagrange
 
 Se $f \in \mathcal{C}^{n + 1}(a, b)$ allora $f(x) = T_{n, x_0}(x) + f^{(n+1)}(c) \frac{(x - x_0)^{n+1}}{(n + 1)!}$ con $c \in (x, x_0)$
 
@@ -1909,7 +1909,7 @@ $$
 |err| = (\sin c) \frac{\left(\frac 1 2 \right)^6}{6!} \implies 0 < \sin c < \sin \frac 1 2 < \frac 1 2 \implies (\sin c) \frac{\left( \frac 1 2 \right)^6}{6!} < \frac{\left( \frac 1 2 \right)^7}{6!} = \frac{1}{720 \cdot 128} \simeq \frac{1}{75000}
 $$
 
-### Sviluppi noti da sapere a memoria
+### 7.3 Sviluppi noti da sapere a memoria
 
 | Funzione         | Sviluppo di MacLaurin                                                                                       |
 | ---------------- | ----------------------------------------------------------------------------------------------------------- |
@@ -1925,7 +1925,7 @@ _Per ricordare seno e coseno, sia iprbolico che non, è necessario sapere soltan
 
 _Per trovare $\sin$ e $\cos$ basta prendere gli sviluppi di $\sinh$ e $\cosh$ ma con segno alterno davanti ad ogni termine della somma._
 
-## Calcolo Integrale
+## Capitolo Otto: Calcolo Integrale
 
 Dato un intervallo $[a, b]$ e $f \colon [a, b] \to \mathbb{R}$ limitata
 
@@ -1942,7 +1942,7 @@ $$
 
 Se $f$ è integrabile su $[a, b]$ allora si dice che $f \in \mathcal{R}[a, b]$
 
-### Criteri di integrabilità
+### 8.1 Criteri di integrabilità
 
 1.  Se $f \in \mathcal{C}[a, b]$ allora $f \in \mathcal{R}[a, b]$
 2.  Se $f \in \mathcal{C}(a, b]$ ed esiste finito $\lim_{x \to a^+} f(x)$ allora $f \in \mathcal{R}[a, b]$
@@ -1958,13 +1958,13 @@ Se $f$ è integrabile su $[a, b]$ allora si dice che $f \in \mathcal{R}[a, b]$
     $$
     allora $h \in \mathcal{R}[a, c]$
 
-### Interpretazione geometrica
+### 8.2 Interpretazione geometrica
 
 Con l'integrale si può calcolare l'area che va dalla curva all'asse x ed è limitata da $y = a$ e $y = b$: se $dA = f(x) \, dx$ allora $A = \int_a^b dA = \int_a^b f(x) \, dx$ (l'area totale è la somma delle varie aree infinitesime).
 
 Funziona allo stesso modo col volume del solido ottenuto ruotando la curva attorno all'asse x: $dV = \pi (f(x))^2 \, dx$ e $V = \int_a^b \, dV = \int_a^b \pi(f(x))^2 \, dx$ (il volume totale è la somma dei vari volumi infinitesimi)
 
-### Proprietà delle integrali
+### 8.3 Proprietà delle integrali
 
 #### Linearità
 
@@ -2007,7 +2007,7 @@ $$
 \left| \int_a^b f(x) \, dx \right| \le \int_a^b |f(x)| \, dx
 $$
 
-### Media integrale
+### 8.4 Media integrale
 
 Se $f \in \mathcal{R}[a, b]$ la media integrale di $f$ su $[a, b]$ è 
 
@@ -2015,7 +2015,7 @@ $$
 M_f = \frac{1}{b - a} \int_a^b f(x) \, dx
 $$
 
-### Teorema della media integrale
+### 8.5 Teorema della media integrale
 
 $$
 f \in \mathcal{C}[a, b] \implies \exists c \in [a, b] \colon f(c) = \frac{1}{b - a} \int_a^b f(x) \, dx
@@ -2037,7 +2037,7 @@ $$
 \exists c \in [a, b] \colon f(c) = \frac{1}{b - a} \int_a^b f(x) \, dx
 $$
 
-### Primitiva
+### 8.6 Primitiva
 
 Se $f \colon [a, b]$ e $f(x) = F'(x) \quad \forall x \in [a, b]$, $F$ si dice primitiva di $f$.
 
@@ -2045,7 +2045,7 @@ Se $f \in \mathcal{C}[a, b]$ allora $F$ ammette primitiva su $[a, b]$.
 
 Se $f$ ha in $x_0$ una discontinuità a salto, $f$ non ammette primitiva.
 
-### Teorema fondamentale del calcolo integrale - 1
+### 8.7 Teorema fondamentale del calcolo integrale - 1
 
 Se $f \in \mathcal{C}[a, b]$ e $G$ è la sua primitiva allora
 
@@ -2063,7 +2063,7 @@ $$
 \end{align*}
 $$
 
-### Integrazione per parti
+### 8.8 Integrazione per parti
 
 Se $F, G : [a, b] \to \mathbb{R}$ derivabili e $f = F', g = G'$ allora
 
@@ -2077,7 +2077,7 @@ $$
 \frac{d}{dx} (F(x)G(x)) = F(x)g(x) + f(x)G(x) \implies \int_a^b [F(x)g(x) + f(x)G(x)] \, dx = [F(x)G(x)]_a^b
 $$
 
-### Integrazione per sostituzione
+### 8.9 Integrazione per sostituzione
 
 Sia $\varphi \colon [a, b] \to \mathbb{R}$ invertibile e derivabile: $\varphi(a) = \alpha$, $\varphi(b) = \beta$, $f \in \mathcal{C}[a, b]$ allora
 
@@ -2097,20 +2097,20 @@ $$
 \int_a^b f(\varphi(t))\varphi'(t) \, dt = [F(\varphi(t))]_a^b = F(\varphi(b)) - F(\varphi(a)) = F(\beta) - F(\alpha)
 $$
 
-### Integrazione di funzioni razionali
+### 8.10 Integrazione di funzioni razionali
 
 Sia $\int \frac{P_n(x)}{Q_m(x)} \, dx$, $n < m$ e $m = 1,2$ allora
 
 - $m = 1$: $\int \frac{k}{ax + b} \, dx = \frac{k}{a} \int \frac{a}{ax + b} \, dx$
 - $m = 2$: $\int \frac{3x + 5}{x^2 + x - 2} \, dx = \int \frac{\frac{8}{3}}{x - 1} \, dx + \int \frac{\frac{1}{3}}{x + 2} \, dx = \frac{8}{3} \ln |x - 1| + \frac{1}{3} \ln |x + 2| + c$
 
-### Funzioni integrali
+### 8.11 Funzioni integrali
 
 Se $f \colon [a, b] \to \mathbb{R}$ è integrabile in tutti l'intervallo $[a, b]$ e $x_0 \in [a, b]$ allora $\int_{x_0}^x f(t) \, dt$ è una funzione che dipende da $x$.
 
 $G(x) = \int_{x_0}^x f(t) \, dt$ è la funzione integrale della funzione $f$ centrata in $x_0$.
 
-### Teorema fondamentale del calcolo - 2
+### 8.12 Teorema fondamentale del calcolo - 2
 
 _Ricordo che il rpimo era $\int_a^b f'(x) \, dx = f(b) - f(a)$_
 
@@ -2179,7 +2179,7 @@ Nel primo passaggio ho trovato che il limite del numeratore del rapporto increme
 
 Nella seconda parte noto che il rapporto incrementale è scrivibile sotto forma 
 
-### E se la $x$ nell'integrale fosse $f(x)$?
+#### E se la $x$ nell'integrale fosse $f(x)$?
 
 $$
 \int_{x_0}^{i(x)} f(t) \, dt = G(i(x)) \qquad \left( \text{con } G(x) = \int_{x_0}^x f(t) \, dt\right)
@@ -2191,7 +2191,7 @@ $$
 \left[ \int_{x_0}^{i(x)} f(t) \, dt \right]' = f(x) \cdot i'(x)
 $$
 
-### E se invece l'integrale avesse $a(x)$ e $b(x)$ al posto di $x_0$ e $x$?
+#### E se invece l'integrale avesse $a(x)$ e $b(x)$ al posto di $x_0$ e $x$?
 
 Sia $F(x) = \int_{a(x)}^{b(x)} g(t) \, dt$ e $G$ primitiva di $g$ allora
 
@@ -2205,7 +2205,7 @@ $$
 \end{align*}
 $$
 
-### Integrali generalizzati
+### 8.13 Integrali generalizzati
 
 Dato $\int_a^b f(x) \, dx$, cosa succede se $b = \infty$ o se $f(x_0 \in (a, b)) = \pm \infty$? (quindi se la $f$ o l'intervallo non sono limitati)
 
@@ -2231,7 +2231,7 @@ _I due calcoli inglobano anche il controllo di convergenza: se il risultato è $
 
 Se un integrale risulta essere improprio in più punti, lo so spezza in quei punti e poi si va a verificare la convergenza di tutte le varie parti: se almeno una di esse diverge allora l'integrale originale diverge.
 
-### Criteri di convergenza per integrali generalizzati
+### 8.14 Criteri di convergenza per integrali generalizzati
 
 I criteri di convergenza per integrali generalizzati funzionano in maniera simile a quelli per le serie (con l'eccezione che il criterio del rapporto e della radice qui non esistono).
 

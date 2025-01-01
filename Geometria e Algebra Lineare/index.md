@@ -5,9 +5,9 @@ author: "Andrea Oggioni"
 
 # Elenco Teoremi con relative dimostrazioni per esame GAL
 
-## Teoremi
+## Capitolo Unico: Teoremi
 
-### Proposizione di struttura delle soluzioni di un sistema lineare (lez. 3 pag. 8)
+### 1.1 Proposizione di struttura delle soluzioni di un sistema lineare (lez. 3 pag. 8)
 
 Dati
 
@@ -29,7 +29,7 @@ $$
 Viceversa se $\tilde{\underline{v}}$ è soluzione di $A \cdot \tilde{\underline{v}} = \underline{b}$, osservo che $\tilde{\underline{v}} = \underline{v}_0 + (\tilde{\underline{v}} - \underline{v}_0)$ e che $A \cdot (\tilde{\underline{v}} - \underline{v}_0) = A\tilde{\underline{v}} - A\underline{v}_0 = \underline{b} - \underline{b} = \underline{0}$.
 Di conseguenza $\tilde{\underline{v}} = \underline{v}_0 + \underline{v}_h$ ove $\underline{v}_h = \tilde{\underline{v}} - \underline{v}_0 \in \ker(A)$
 
-### Proposizione di unicità della matrice inversa (lez. 5 pag 2)
+### 1.2 Proposizione di unicità della matrice inversa (lez. 5 pag 2)
 
 Data $A \in \mathcal{M}_{\mathbb{K}}(n, n)$ e siano $B, C$ rispettivamente inversa destra e sinistra di $A$, allora $B = C$.
 
@@ -37,7 +37,7 @@ Data $A \in \mathcal{M}_{\mathbb{K}}(n, n)$ e siano $B, C$ rispettivamente inver
 
 Sappiamo che $AB = CA = \mathbb{I}_n$, quindi $B = \mathbb{I}_n \cdot B = (C \cdot A) \cdot B = C \cdot (A \cdot B) = C \cdot \mathbb{I}_n = C$, di conseguenza l'inversa sinistra e l'inversa destra sono uguali.
 
-### Condizioni necessarie e sufficienti per l'invertibilità di una matrice (lez. 5 pag. 2)
+### 1.3 Condizioni necessarie e sufficienti per l'invertibilità di una matrice (lez. 5 pag. 2)
 
 Sia $A \in \mathcal{M}_{\mathbb{K}}(n, n)$ allora le seguenti affermazioni sono equivalenti:
 
@@ -75,7 +75,7 @@ Nel quarto punto, per definizione se una matrice invertibile allora ammette un'i
 Nel sesto punto, $A'$ è inversa destra di $A$, $A''$ è inversa destra di $A'$.
 Se $A \cdot A' = \mathbb{I}_n = A' \cdot A''$ allora $A = A''$ e, di conseguenza $A \cdot A' = A' \cdot A = \mathbb{I}_n$.
 
-### Nucleo e immagine di un'applicazione lineare sono sottospazi vettoriali (lez. 6 pag. 7)
+### 1.4 Nucleo e immagine di un'applicazione lineare sono sottospazi vettoriali (lez. 6 pag. 7)
 
 Dati $V$ e $W$ spazi vettoriali su $\mathbb{K}$ e $\mathscr{L} : V \to W$ applicazione lineare, allora:
 
@@ -101,7 +101,7 @@ So che $H \sube W$ e che $U \sube V$.
 
 Per verificare che, per esempio, $W$ sia sottospazio vettoriale di $V$, basta verificare che $\underline{0}_W \in W$ e che $\forall t_1, t2 \in \mathbb{K}, \forall \underline{v}_1, \underline{v}_2 \in W, t_1 \underline{v}_1 + t_2 \underline{v}_2 \in W$
 
-### Proposizione di linearità dell'inversa di un applicazione lineare (lez. 6 pag. 12)
+### 1.5 Proposizione di linearità dell'inversa di un applicazione lineare (lez. 6 pag. 12)
 
 Siano $V$ e $W$ spazi vettoriali su $\mathbb{K}$ e $\mathcal{L}: V \to W$ applicazione lineare.
 Se $\mathcal{L}$ è invertibile allora l'inverza $\mathcal{L}^{-1} : W \to V$ è lineare.
@@ -120,7 +120,7 @@ $$
 \end{align*}
 $$
 
-### Applicazioni lineari iniettive (lez. 6 pag. 14)
+### 1.6 Applicazioni lineari iniettive (lez. 6 pag. 14)
 
 Siano $V$ e $W$ due spazi vettoriali sul campo $\mathbb{K}$ e $\mathscr{L} : V \to W$ applicazione lineare allora $\mathscr{L}$ è iniettiva $\iff \ker (\mathscr{L}) = \{ \underline{0}_V \}$
 
@@ -145,7 +145,7 @@ $$
 
 Ho dimostrato che non possono esserci due valori distinti per cui l'applicazione lineare restituisca lo stesso risultato.
 
-### Isomorfismo canonico (lez. 7 pag. 1,2)
+### 1.7 Isomorfismo canonico (lez. 7 pag. 1,2)
 
 Sia $V$ uno spazio vettoriale su $\mathbb{K}$ e $\mathcal{B} = \{ \underline{b}_1, \dots, \underline{b}_n \}$ una sua base.
 Allora, per definizione di base, sappiamo che ad ogni $v \in V$ rimane associata un'unica n-upla $[t_1, \dots, t_n]^T \in \mathbb{K}^n$ tale che $\underline{v} = t_1 \underline{b}_1 + \dotsm +t_n \underline{b}_n$.
@@ -155,7 +155,7 @@ L'applicazione $X_B : V \to \mathbb{K}^n$ definita da $X_B(\underline{v}) = [t_1
 
 Per definizione, $X_B$ è l'inversa della mappa di parametrizzazione, che è lineare, iniettiva e suriettiva, pertanto anche $X_B$ è lineare, iniettiva e suriettiva.
 
-### Proposizione senza nome (lez. 9 pag. 2)
+### 1.8 Proposizione senza nome (lez. 9 pag. 2)
 
 Dati $V$ è $W$ spazi vettoriali su $\mathbb{K}$ e $\mathscr{L} : V \to W$ applicazione lineare, allora se $\mathscr{L}$ è iniettiva e $\{ \underline{v}_1, \dots, \underline{v}_d \} \sub V$ è linearmente indipendente allora $\{ \mathscr{L}(\underline{v}_1), \dots, \mathscr{L}(\underline{v}_d) \} \sub W$ è linearmente indipendente.
 
@@ -171,7 +171,7 @@ Dunque $\mathscr{L}(\underline{v}_1), \dots, \mathscr{L}(\underline{v}_d)$ sono 
 
 Ho sfruttato il fatto che l'unica combinazione lineare di termini linearmente indipendenti che è ugule al vettore nullo, è quella nella quale tutti i coefficienti sono nulli.
 
-### Lemma fondamentale (lez. 9 pag. 5)
+### 1.9 Lemma fondamentale (lez. 9 pag. 5)
 
 Se $V$ è un insieme di generatori su $\mathbb{K}$ che ammette un insimeme di generatori di cardinalità $m$ allora ogni altro insieme di $V$ che ha cardinalità maggiore di $m$ è linearmente dipendente.
 
@@ -208,7 +208,7 @@ Ho dimostrato che se ho un'insieme di generatori di cardinalità $m$, allora un 
 
 Nella seconda parte, utilizzando il fatto che la mappa di parametrizzazione è suriettiva, l'ho dimostrato per un qualsiasi spazio vettoriale, non solo per $\mathbb{K}^m$
 
-### La dimensione è la cardinalità della base (lez. 9 pag. 6)
+### 1.10 La dimensione è la cardinalità della base (lez. 9 pag. 6)
 
 Sia $V$ uno spazio vettoriale su $\mathbb{K}$, allora valgono le seguenti implicazioni:
 1.  Se $V$ ha una base di cardinalità $n$ allora $\dim(V) = n$
@@ -222,7 +222,7 @@ Sia $\mathcal{B} = \{ \underline{b}_1, \dots, \underline{b}_n \}$ una base per $
 
 Se $\dim(V) \ge n$ e $\dim(V) \le n$ allora $\dim(V) = n$
 
-### Un'altra proposizione senza nome (lez. 9 pag. 10)
+### 1.11 Un'altra proposizione senza nome (lez. 9 pag. 10)
 
 Sia $V$ spazio vettoriale su $\mathbb{K}$ tale che $\dim(V) = n < + \infty$. Sia $\mathscr{L}: V \to W$ applicazione lineare iniettiva, allora $\dim(\mathscr{L}(H)) = \dim(H)$ per ogni sottospazio $H$ di $V$.
 Inoltre, due spazi vettoriali su $\mathbb{K}$ sono isomorfi se e solo se hanno la stessa dimensione.
@@ -233,7 +233,7 @@ Sia $\{ \underline{v}_1, \dots, \underline{v}_d \}$ una base di $H$, allora $H =
 
 Poiche $\mathscr{L}$ è lineare: $\mathscr{L}(H) = Span\{ \mathscr{L}(\underline{v}_1), \dots, \mathscr{L}(\underline{v}_d) \}$ sono linearmente indipendenti, quindi $\{ \mathscr{L}(\underline{v}_1), \dots, \mathscr{L}(\underline{v}_d) \}$ sono una base di $\mathscr{L}(H)$ da cui $\dim(\mathscr{L}(H)) = d = \dim(H)$
 
-### Teorema di rappresentazione (lez. 11 pag. 2)
+### 1.12 Teorema di rappresentazione (lez. 11 pag. 2)
 
 Sia $\mathscr{L} : V \to W$ un'applicazione lineare, $\mathcal{B} = \{ \underline{b}_1, \dots, \underline{b}_n \}$ base per $V$ e $\mathcal{C} = \{ \underline{c}_1, \dots, \underline{c}_n \}$ base per $W$ allora posto $A := \mathcal{M}_C^B(\mathcal{L})$, si ha che $A$ è una matrice tale per cui $X_C(\mathcal{L}(\underline{v})) = A \cdot X_B(\underline{v}) \quad \forall \underline{v} \in V$
 
@@ -293,7 +293,7 @@ A =
 \left[ X_C(\mathscr{L}(\underline{{b}_i})) | \dots | X_C(\mathscr{L}(\underline{b}_n)) \right]
 $$
 
-### Costruzione di applicazioni lineari (lez. 12 bis pag. 1)
+### 1.13 Costruzione di applicazioni lineari (lez. 12 bis pag. 1)
 
 Siavo $V$ e $W$ spazi vettoriali su $\mathbb{K}$, $\dim(V) = n$, $\mathcal{B} = \{ \underline{b}_1, \dots, \underline{b}_n \}$ una base di $\mathcal{b}$ e $\{ \underline{w}_1, \dots, \underline{w}_n \} \sube W$ un sottoinsieme di $W$ allor aesiste un'unica applicazione lineare $\mathscr{L} : V \to W$ tale che $\mathscr{L}(\underline{b}_i) = \underline{w}_i \quad \forall i = 1, \dots, n$.
 L'applicazione è definita dalla formula $\mathscr{L}(x_1 \underline{b}_1 + \dots + x_n \underline{b}_n) = x_1 \underline{w}_1 + \dots + x_n \underline{w}_n$
@@ -338,7 +338,7 @@ L'applicazione è definita dalla formula $\mathscr{L}(x_1 \underline{b}_1 + \dot
     $$
     Di conseguenza $g(\underline{v}) = \mathscr{L}(\underline{v}) \quad \forall \underline{v} \in V$
 
-### Formula di Grassmann (lez. 12 bis pag 5)
+### 1.14 Formula di Grassmann (lez. 12 bis pag 5)
 
 Siano $H$ e $K$ sue sottospazi vettoriali di $V$ spazio vettoriale su $\mathbb{K}$.
 Se $\dim(H) < + \infty$ e $\dim(K) < è \infty$ allora $\dim(H+K) = \dim(H) + \dim(K) - \dim(H \cap K)$
@@ -376,7 +376,7 @@ Ma, essendo $\{ \underline{v}_1, \dots, \underline{v}_r, \underline{h}_1, \dots,
 
 All'inizio ho dimostrato che $w$ appartiene sia a $V$ (ovvio) che ad $H$ che a $K$, di conseguenza appartiene a $H \cap K$.
 
-### Terza proposizione senza nome (lez. 16 pag. 2)
+### 1.15 Terza proposizione senza nome (lez. 16 pag. 2)
 
 Siano $\{ \underline{v}_1, \dots, \underline{v}_r \}$ autovettori relativi ad autovalori distinti $\lambda_1, \dots, \lambda_r \in \mathbb{K}$ relativi ad unamatrice $A \in \mathcal{M}_\mathbb{K} (n, n)$ allora ${\underline{v}_1, \dots, \underline{v}_r}$ è linearmente indipendente.
 
@@ -417,7 +417,7 @@ Sottraendo membro a membro otteniamo che $\underline{0} = (\lambda_{r + 1}) \tau
 
 Quindi $\underline{v}_1, \dots, \underline{v}_r, \underline{v}_{r + 1}$ non possono essere linearmente dipendenti e dunque sono linearmente indipendenti.
 
-### Secondo criterio di diagonalizzabilità (lez. 16 pag. 5)
+### 1.16 Secondo criterio di diagonalizzabilità (lez. 16 pag. 5)
 
 Sia $A \in \mathcal{M}_\mathbb{K} (n, n)$. $A$ è diagonalizzabile su $\mathbb{K}$ se e solo se il polinomio caratteristico di $A$ ha $n$ radici, contate con la loro molteplicità, in $\mathbb{K}$ ed ogni autovalore di $A$ è regolare.
 
@@ -435,7 +435,7 @@ $$
 
 Viceversa, se $ma(\lambda_1) + \dots + ma(\lambda_r) = n$ e $ma(\lambda_i) = mg(\lambda_i) \quad \forall i = 1, \dots, r$ allora $M = mg(\lambda_1) + \dots + mg(\lambda_r) = n$
 
-### Invarianti per similitudine (lez. 16 pag. 9)
+### 1.17 Invarianti per similitudine (lez. 16 pag. 9)
 
 Siano $a, B \in \mathcal{M}_\mathbb{K}(n, n)$ matrici simili allora
 1.  le due matric hanno stesso polinomio caratteristico, la stessa traccia, lo stesso determinante e gli stessi autovalori con la stessa molteplicità algebrica
@@ -466,7 +466,7 @@ Se $\underline{w}$ è autovettore di $A$ allora $P^{-1} \underline{w}$ è autove
 Dunque se $V_\lambda$ è $V'_\lambda$ sono autospazi di $\lambda$ relativi ad $A$ e $B$ rispettivamente, $\mathscr{L}_P \colon V'_\lambda \to V_\lambda \quad (\underline{v} \mapsto P \cdot \underline{v})$ è isomorfismo.
 Quindi $mg^B(\lambda) = \dim(V'_\lambda) = \dim(V_\lambda) = mg^A(\lambda)$
 
-### Proiezione ortogonale (lez. 18 pag. 6)
+### 1.18 Proiezione ortogonale (lez. 18 pag. 6)
 
 Sia $(V, \lang \cdot, \cdot \rang)$ uno spazio euclideo, sia $\underline{w} \in V$ e sia $H = span(\underline{w})$. Allora si ha che peogni $\underline{v} \in V$
 
@@ -497,7 +497,7 @@ Infine domostro le proprietà di minima distanza.
 
 $\forall \underline{h} \in H$ si ha che $\| \underline{v} - \underline{h} \| ^2 = \| \underline{v} - \underline{v}_H + \underline{v}_H - \underline{h} \| ^2$ che, per il teorema di Pitagola è pari a $\| \underline{v} - \underline{v}_H \| ^2 + \| \underline{v}_H - \underline{h} \| ^2 \ge \| \underline{v} - \underline{v}_H$
 
-### Disuguaglianza di Schwarz (lez. 18 pag. 7)
+### 1.19 Disuguaglianza di Schwarz (lez. 18 pag. 7)
 
 Sia $(V, \lang \cdot, \cdot \rang)$ uno spazio euclideo, dati $\underline{v}, \underline{w} \in V$ allora $| \lang \underline{v}, \underline{w} \rang | \le \| \underline{v} \| \| \underline{w} \|$.
 Inoltre vale l'uguaglianza se e solo se $\underline{v}$ e $\underline{w}$ sono linearmente dipendenti.
@@ -512,7 +512,7 @@ $$
 
 Da cui $|\lang \underline{v}, \underline{w} \rang | \le \|\underline{v}\|\|\underline{w}\|$
 
-### Disuguaglianza triangolare (lez. 18 pag. 7)
+### 1.20 Disuguaglianza triangolare (lez. 18 pag. 7)
 
 $\| \underline{v} + \underline{w} \| \le \| \underline{v} \| + \| \underline{w} \|$
 
@@ -520,7 +520,7 @@ $\| \underline{v} + \underline{w} \| \le \| \underline{v} \| + \| \underline{w} 
 
 $\| \underline{v} + \underline{w} \|^2 = \| \underline{v} \|^2 + \| \underline{w} \|^2 + 2 \lang \underline{v}, \underline{w} \rang \le \| \underline{v} \|^2 + \| \underline{w} \|^2 + 2 \| \underline{v} \|\| \underline{w} \| = (\| \underline{v} \| + \| \underline{w} \|)^2$ da cui la tesi.
 
-### Matrici ortogonali rappresentano isometrie (lez. 19 pag. 6)
+### 1.21 Matrici ortogonali rappresentano isometrie (lez. 19 pag. 6)
 
 Sia $U \in \mathcal{M}_\mathbb{R}(n, n)$ allora le seguenti condizioni sono equivalenti:
 1. $U$ è ortogonale: $U^T \cdot U = \mathbb{I}_n$
@@ -550,7 +550,7 @@ Sia $U \in \mathcal{M}_\mathbb{R}(n, n)$ allora le seguenti condizioni sono equi
   Inoltre osserviamo che $\lang U \underline{e}_i, U \underline{e}_j \rang = (U \underline{e}_i)^T \cdot (U \underline{e}_j) = \underline{e}_i^T \cdot U^T \cdot U \cdot \underline{e}_j = [U^TU]_{ij}$.
   Quindi, poiche $U$ preserva il prodotto scalare: $\delta_{ij} = \lang \underline{e}_i, \underline{e}_j \rang = \lang U \underline{e}_i, U \underline{e}_j \rang = [U^TU]_{ij} \implies U^TU = \mathbb{I}_n$.
 
-### Ancora un'altra proposizione senza nome (lez. 20 pag. 5)
+### 1.22 Ancora un'altra proposizione senza nome (lez. 20 pag. 5)
 
 Sia $V$ uno spazio euclideo di dimensione finita e sia $\mathcal{B}$ una base ortonormale. Un endomorfismo $\mathscr{L} \colon V \to V$ è simmetrico se e solo se $\mathcal{M}_\mathcal{B}^\mathcal{B}(\mathscr{L})$ è simmetrica.
 
@@ -569,7 +569,7 @@ $$
 \end{align*}
 $$
 
-### Teorema spettrale (lez. 20 pag. 8)
+### 1.23 Teorema spettrale (lez. 20 pag. 8)
 
 Sia $(V, \lang \cdot, \cdot \rang)$ uno spazio euclideo, $\dim(V) < +\infty$ e $\mathscr{L} \colon V \to V$ un endomorfismo simmetrico. Allora esiste una base ortonormale di $V$ formata da autovettori di $\mathscr{L}$. In particolare una matrice simmetrica reale è ortogonalmente diagonalizzabile.
 
@@ -596,7 +596,7 @@ Poniamo $U = [\underline{q}_1 | \dots | \underline{q}_n]$ ($U$ è ortogonale) al
 $A \cdot U = [A \underline{q}_1 | \dots | A \underline{q}_n] = [\lambda_1 \underline{q}_1 | \dots | \lambda_n \underline{q}_n] = U \cdot diag(\lambda_1, \dots, \lambda_n)$.
 Dunque $U^TAU = diag(\lambda_1, \dots, \lambda_n)$ e quindi $A$ è ortogonalmente diagonalizzabile
 
-### Autovalori e segno do una forma quadratica reale (lez. 21 pag. 9)
+### 1.24 Autovalori e segno do una forma quadratica reale (lez. 21 pag. 9)
 
 Sia $A \in \mathcal{M}_\mathbb{R}(n, n)$ simmetrica e $q(\underline{x}) = \underline{x}^T \cdot A \cdot \underline{x}$ $\forall \underline{x} \in \mathbb{R}^n$. Allora:
 1. Se $\underline{v}$ è autovettore di $A$ allora $q(\underline{v}) = \lambda \| \underline{v} \| ^2$
@@ -616,7 +616,7 @@ Sia $A \in \mathcal{M}_\mathbb{R}(n, n)$ simmetrica e $q(\underline{x}) = \under
   \lambda_{min} \| \underline{x} \| ^2 \le q(\underline{x}) \le \lambda_{max} \| \underline{x} \|^2
   $$
 
-### Forma canonica di un polinomio di secondo grado (lez. 23 pag. 1)
+### 1.25 Forma canonica di un polinomio di secondo grado (lez. 23 pag. 1)
 
 Dato un polinomio di secondo grado $q(\underline{x}) = \underline{x}^T \cdot A \cdot \underline{x} + 2 \cdot \underline{b}^T \cdot \underline{x} + c$ ove $A \in \mathcal{M}_\mathbb{R}(n, n)$ è simmetrica, $\underline{b} \in \mathbb{R}^n$ e $c \in \mathbb{R}$, data una rototransalzione $F(\underline{y}) = Q \cdot \underline{y} + \underline{v}$, ove $Q \in \mathcal{M}_\mathbb{R}(n, n)$ è ortogonale con $\det(Q) = 1$ e $\underline{v} \in \mathbb{R}^n$, posto $\tilde{q}(\underline{y}) = q(F(\underline{y})) = \underline{y}^T \cdot \tilde{A} \cdot \underline{y} + 2 \cdot \tilde{\underline{b}} \cdot \underline{y} + c$ si ha che
 1. gli autovalori e il rango di $A$ e $\tilde{A}$ sono uguali

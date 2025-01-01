@@ -31,7 +31,7 @@ $$
 
 E' importante notare che l'assioma 3 (e il teorema che ne segue) si applicano anche ad un infinità di eventi, purchè tale infinità sia numerabile.
 
-# Probabilità condizionate
+# Capitolo Uno: Probabilità condizionate
 
 Condizionare una probabilità significa andare a mappare lo spazio campionario su un altro evento.
 
@@ -66,19 +66,19 @@ $$
 P(A_i | B) = \frac{P(B \cap A_i)}{P(B)} = \frac{P(B | A_i) \cdot P(A_i)}{P(B)} = \frac{P(B | A_i) P(A_i)}{\sum\limits_{j=1}^n P(B | A_j) \cdot P(A_j)}
 $$
 
-# Eventi indipendenti
+# Capitolo Due: Eventi indipendenti
 
 Due eventi sono **indipendenti** se e solo se $P(A \cap B) = P(A) \cdot P(B)$.
 
 Se due eventi sono indipendenti, allora è anche vero che $P(B | A) = P(B)$.
 
-## Indipendenza condizionata
+## 2.1 Indipendenza condizionata
 
 Siano $A$ e $B$ due eventi non necessariamente indipendenti. Tali eventi sono indipendenti condizionatamente ad un evento $C$ se e solo se $P(A \cap B | C) = P(A | C) \cdot P(B | C)$.
 
 L'indipendenza condizionata non è legata in alcun modo a quella non condizionata.
 
-## Indipendenza tra insiemi di eventi
+## 2.2 Indipendenza tra insiemi di eventi
 
 Sia $\{A_1, A_2, \dots, A_n\}$ un insieme di eventi. Tali eventi sono detti **indipendenti** se e solo se $P(A_i \cap A_j \cap \dots \cap A_q) = P(A_i) \cdot P(A_j) \cdot \dots \cdot P(A_q)$ per ogni sottoinsieme $\{A_i, A_j, \dots, A_q\} \sube \{A_1, A_2, \dots, A_n\}$.
 
@@ -86,7 +86,7 @@ Se la condizione di cui sopra vale solo per i sottoinsiemi di arità 2 allora l'
 
 L'indipendenza totale implica l'indipendenza a coppie ma non vale il viceversa.
 
-# Principi di calcolo combinatorio
+# Capitolo Tre: Principi di calcolo combinatorio
 
 Se si ha un esperimento composto da $r$ stadi, ognuno con $n_i$ scelte possibili, il numero totale di scelte è dato da
 
@@ -128,7 +128,7 @@ $$
 \frac{{n_1 \choose k_1} {n_2 \choose k_2} \dots {n_r \choose k_r}}{n_1 + n_2 + \dots + n_r \choose k_1 + k_2 + \dots + k_r}
 $$
 
-# Variabili aleatorie discrete
+# Capitolo Quattro: Variabili aleatorie discrete
 
 Una **variabile aleatoria** è una funzione $H : \Omega \to \mathbb{R}$.
 
@@ -152,7 +152,7 @@ X \sim \text{Bin}(n, p) \iff P_X(k) = \begin{cases}
 \end{cases}
 $$
 
-# Valore atteso e varianza
+## 4.1 Valore atteso e varianza
 
 Il **valore atteso** rappresenta la media delle varie realizzazioni, pesate per la loro probabilità di realizzarsi:
 
@@ -198,7 +198,7 @@ X \sim \text{Bin}(n, p) \implies \begin{cases}
 \end{cases}
 $$
 
-## Valore atteso condizionato
+## 4.2 Valore atteso condizionato
 
 Il **valore atteso condizionato** è come il valore atteso ma condizionato ad un altro evento:
 
@@ -218,7 +218,7 @@ $$
 E[X] = \sum_{i=1}^n P(A_i) \cdot E[X | A_i]
 $$
 
-# Variabili aleatorie discrete multiple
+## 4.3 Variabili aleatorie discrete multiple
 
 Le **variabili aleatorie discrete multiple** funzionano esattamente come quelle singole ma vanno a descrivere eventi composti da più variabili aleatorie invece che una sola.
 
@@ -285,7 +285,7 @@ $$
 Var[X] = np(1 - p)
 $$
 
-# Variabili aleatorie continue
+## 4.4 Variabili aleatorie continue
 
 Le **variabili aleatorie continue** sono come quelle discrete ma le realizzazioni possono assumere un qualsiasi valore compreso in un un intervallo continuo. Le probabilità di ogni realizzazione sono descritte dalla funzione continua **probability density function** (**pdf**). In realtà, la frase appena scritta non è proriamente corretta: la pdf viene utilizzata per descrivere la probabilità che una realizzazione rientri entro un certo intervallo, non che assuma un certo valore:
 
@@ -335,7 +335,7 @@ $$
 \lim_{x \to \infty} F_X(x) = 1
 $$
 
-## Variabili aleatorie gaussiane (normali)
+## 4.5 Variabili aleatorie gaussiane (normali)
 
 Le **variabili aleatorie gaussiane (normali)** meritano un paragrafo a parte perchè sono un concetto molto importante.
 
@@ -381,7 +381,7 @@ $$
 \frac{(Y - \mu_X)^2}{\sigma_X^2} - \frac{(Y - \mu_Y)^2}{\sigma_Y^2} = k
 $$
 
-# Densità di probabilità congiunta e trasformazioni di variabili aleatorie
+# Capitolo Cinque: Densità di probabilità congiunta e trasformazioni di variabili aleatorie
 
 Una **densità di probabilità congiunta** è una pdf che mappa un $n$-upla di elementi ad un valore reale. Valgono ancora una volta se solite proprietà:
 
@@ -454,7 +454,7 @@ $$
 
 Se le due variabili $X$ e $Y$ sono gaussiane, si dimostra con la formula appena sopra che la pdf della loro somma è a sua volta gaussiana. In particolare se $X \sim \mathcal{N}(\mu_X, \sigma_X^2)$ e $Y \sim \mathcal{N}(\mu_Y, \sigma_Y^2)$ allora $X + Y \sim \mathcal{N}(\mu_X + \mu_Y, \sigma_X^2 + \sigma_Y^2)$.
 
-# Covarianza
+# Capitolo Sei: Covarianza
 
 La **covarianza** descrive quanto due variabili sono correlate tra loro.
 
@@ -468,13 +468,13 @@ E' utile notare che
 - $E[X] = 0 \lor E[Y] = 0 \implies Cov[X, Y] = E[X \cdot Y]$
 - $X \perp Y \implies Cov[X, Y] = 0$ ma non vale il contrario
 
-## Varianza della somma di variabili aleatorie qualunque
+## 6.1 Varianza della somma di variabili aleatorie qualunque
 
 $$
 Var \left[ \sum_{i = 1}^{n} X_i \right] = \sum_{i = 1}^{n} Var[X_i] + 2 \sum_{i \lt j} Cov[X_i, X_j]
 $$
 
-## Coefficiente di correlazione lineare
+## 6.2 Coefficiente di correlazione lineare
 
 Il **coefficiente di correlazione lineare** funziona un po' come la varianza ma è adimensionale e normalizzato rispetto alle variabili aleatorie.
 
@@ -488,7 +488,7 @@ Valgono alcune proprietà:
 - $|\rho[X, Y]| = 1 \iff X - E[X] = c(Y - E[Y]), \ Y = aX + b$
 - $X \perp Y \implies \rho[X, Y] = 0$
 
-# Valore atteso condizionato e varianza condizionata
+# Capitolo Sette: Valore atteso condizionato e varianza condizionata
 
 Il **valore atteso condizionato** è identico al valore atteso ma condizionato ad una specifica realizzazione (o un insieme di esse) ma è esso stesso una variabile aleatoria in quanto funzione di altre variabili aleatorie.
 
@@ -520,7 +520,7 @@ $$
 
 In pratica, è come se il primo termine descrivesse la variabilità all'interno di ciascuna realizzazione di $Y$ mentre il secondo, la variabilità tra le diverse realizzazioni.
 
-# Somma di un numero casuale di variabili aleatorie
+## 7.1 Somma di un numero casuale di variabili aleatorie
 
 Sia $N$ una variabile aleatoria discreta e $X_1, X_2, \dots, X_N$ variabili aleatorie continue e $X$ la variabile aleatoria che descrive la somma delle varie $X_i$, allora
 
@@ -546,13 +546,13 @@ $$
 Var[X] = Var[E[X | N]] + E[Var[X | N]] = Var[N] \cdot E[X_1]^2 + E[N] \cdot Var[X_1]
 $$
 
-# Disuguaglianza di Markov e di Chebyshev
+## 7.2 Disuguaglianza di Markov e di Chebyshev
 
 La **disuguaglanza di Markov** afferma che, se $X \ge 0$ allora $E[X] \gt a \cdot P(X \ge a)\ \forall a \ge 0$.
 
 La **disuguaglianza di Chebyshev** (che è derivata da quella di Markov) afferma che $Var[X] \ge a \cdot P((X - E[X])^2 \ge a)\ \forall a \ge 0$.
 
-# Convergenza in probabilità
+# Capitolo Otto: Convergenza in probabilità
 
 Sia $\{A_k\}$ una successione di variabili aleatorie ed $a$ un numero. Si dice che $\{A_k\}$ **converge in probabilità** ad $a$ ($A_k \overset{P}{\to} a$) se 
 
@@ -562,7 +562,7 @@ $$
 
 Questo tipo di convergenza è anche detta **convergenza debole** in quanto non dà garanzie sulla convergenza dei momenti di $A_k$.
 
-# Media campionaria e legge dei grandi numeri
+## 8.1 Media campionaria e legge dei grandi numeri
 
 La media campionaria si utilizza per calcolare la media di una variabile aleatoria avendo a disposizione un numero limitato di campioni.
 
@@ -586,7 +586,7 @@ $$
 
 allora $M_n \overset{P}{\to} E[M_n] = E[X]$. Questo risultato viene detto **legge debole dei grandi numeri** (**WLLN**) e dice che la media campionaria converge in probabilità al proprio valore atteso.
 
-# Problema del sondaggista
+## 8.2 Problema del sondaggista
 
 Si ha una popolazione nella quale ogni persona può soddisfare o meno un evento $A$. Si vuole stimare la frazione $f$ delle persone che soddisfano l'evento senza intervistare l'intera popolazione.
 
@@ -613,7 +613,7 @@ dunque basta imporre $\frac{1}{4nl_a^2} \le 1 - l_f$ per trovare il minimo $n$ t
 
 Per diminuire $n$ è possibile abbassare l'accuratezza (ottenendo un vantaggio quadratico) o il livello fiduciario, oppure è possibile utilizzare approssimazioni migliori rispetto a quella derivata dalla disuguaglianza di Chebyshev.
 
-# CLT - Teorema fondamentale del limite
+## 8.3 CLT - Teorema fondamentale del limite
 
 Se $Z_n$ è la media campionaria $n$ variabili aleatorie $X_i$ indipendenti e identicamente distribuite con varianza finita, allora $F_{Z_n}(c) \overset{n \to \infty}{\to} \Phi(c)$. Questo teorema vale per qualsiasi distribuzione di probabilità delle $X_i$.
 
@@ -631,7 +631,7 @@ $$
 
 Con quanto appena visto si possono facilmente calcolare probabilità della forma $P(S_n \lesseqgtr s)$. Per l'uguaglianza si considera $P(s - 0.5 \le S_n \le s + 0.5)$.
 
-# Processi di Bernoulli
+# Capitolo Nove: Processi di Bernoulli
 
 Un **processo di Bernoulli** $BP(p)$ può essere considerato come una serie di slot ordinati, nei quali un evento ha sempre la stessa probabilità $p$ di accadere.
 
@@ -651,7 +651,7 @@ Lo splitting di un $BP(p)$ che avviene con probabilità $q$ genera un $BP(pq)$.
 
 Il merging di $BP(p)$ con $BP(q)$ genera un $BP(p + q - pq)$.
 
-# Processi di Poisson
+## 9.1 Processi di Poisson
 
 I **processi di Poisson** sono l'equivalente tempo-continuo dei processi di Bernoulli: gli eventi possono accadere in un qualsiasi istante. Un processo di Poisson non è descritto dalla probabilità che un evento accada ma da quanti eventi accasono in media per unità di tempo.
 
@@ -667,7 +667,7 @@ Lo splitting di un $PP(\lambda)$ che avviene con probabilità $\delta$ genera un
 
 Il merging di $PP(\lambda)$ con $PP(\delta)$ genera un $PP(\lambda + \delta)$.
 
-# Stimatori
+## 9.2 Stimatori
 
 Si ha una variabile aleatoria $\theta$, misurata con uno strumento di misura impreciso, che legge il valore $X$.
 
@@ -677,7 +677,7 @@ $$
 f_{\theta|X}(\theta, x) = \frac{f_{X|\theta}(x|\theta) f_\theta(\theta)}{f_X(x)}
 $$
 
-## Stimatore MAP
+## 9.3 Stimatore MAP
 
 Lo **stimatore MAP** consiste nel selezionare il $\theta$ con maggior probabilità:
 
@@ -687,7 +687,7 @@ $$
 
 Lo stimatore MAP massimizza la probabilità a posteriori, cioè prende la $\theta$ con maggior probabilità di essere quella vera dopo aver effettuato la lettura.
 
-## Stimatore LMS
+## 9.4 Stimatore LMS
 
 Lo **stimatore LMS** tende a minimizzare l'errore quadratico medio.
 
@@ -707,7 +707,7 @@ L'errore quadratico medio corrispondente è $Var[\theta]$. Questo stimatore è q
 
 Sia $\tilde \theta = \hat \theta_{\text{LMS}} - \theta$, $E[\tilde \theta | X = x] = 0 \implies [\tilde \theta] = 0 \implies E[\hat \theta_{\text(LMS)}] = E[\theta]$, $E[\tilde \theta \cdot h(X)] = 0$, $Cov[\tilde \theta, \hat \theta_{\text{LMS}}] = 0$.
 
-## Stimatore LIN
+## 9.5 Stimatore LIN
 
 Lo **stimatore LIN** consente di trovare una correlazione lineare tra il valore stimato di $\theta$ ed $X$:
 
@@ -723,7 +723,7 @@ $$
 
 In questo caso, l'errore quadratico medio associato è pari a $E\left[(\theta - \hat \theta_\text{LIN}(X))^2\right] = (1 - \rho[X, \theta]^2) Var[\theta]$ da cui segue che se $\rho[X, \theta] = 0$ allora l'errore è pari a $Var[\theta]$ mentre se $\rho[X, \theta] = \pm 1$ allora l'errore quadratico medio è pari a $0$.
 
-## Errore di stima
+## 9.6 Errore di stima
 
 In generale, per controllare la bontà di una stima, esistono alcune metodologie:
 
@@ -734,9 +734,9 @@ In generale, per controllare la bontà di una stima, esistono alcune metodologie
   \sqrt{\frac{MSE_n}{E[M_n]^2}} = \sqrt{\frac{1 - E[M_n]}{E[M_n]}\frac{1}{n}} \lt \varepsilon
   $$
 
-# Generatori di Variabili aleatorie
+# Capitolo Dieci: Generatori di Variabili aleatorie
 
-## Generatori di variabili aleatorie uniformi
+## 10.1 Generatori di variabili aleatorie uniformi
 
 E' possibile generare numeri $X \sim \text{U}[0, 1]$ generando una sequenza di bit e interpretandoli come parte a destra della virgola in un numero in base 2.
 
@@ -752,14 +752,14 @@ $$
 
 L'efficienza dell'algoritmo è del 100% ma vi è difficoltà nel trattare variabili aleatorie congiunte.
 
-## Metodo acceptance-rejection
+## 10.2 Metodo acceptance-rejection
 
 Sia $f_X$ la pdf della distribuzione da generare e $m$ un valore tale per cui $m \ge \underset{x}{\max} f_X(x)$.
 Si generino dei punti distribuiti uniformemente nel rettangolo $[a, b] \times [0, m]$ dove $[a, b]$ è l'intervallo dove la $f_X$ è non-nulla. Per ciascuno di questi punti generati, si tengono solo quelli che cadono sotto la $f_X$. Le ascisse dei punti mantenuti, sono distribuite come $f_X$.
 
 Per avere un efficienza massima, si vuole avere $m$ minimo possibile.
 
-## Generazione distribuzioni gaussiane a partire da un'uniforme e da una esponenziale
+## 10.3 Generazione distribuzioni gaussiane a partire da un'uniforme e da una esponenziale
 
 Per generare una gaussiana semplicemente, è possibile scomporla in segno e modulo, per poi generare ciascuna parte indipendentemente: $Z = S \cdot |Z|$.
 
@@ -775,7 +775,7 @@ Per generare $|Z|$:
 
 L'efficienza di questo metodo è sempre pari a $\left(\sqrt{\frac{2e}{\pi}}\right)^{-1} \simeq 76\%$
 
-## Generazione di un vettore di gaussiane
+## 10.4 Generazione di un vettore di gaussiane
 
 Sia $\underline X = (\underline X_1, \underline X_2, \dots, \underline X_n)$ un vettore di variabili aleatorie gaussiane a con media $\underline \mu = E[X]$.
 
@@ -789,7 +789,7 @@ Per generare un $X$, si comincia generando un vettore $\underline Z = (\underlin
 
 Per imporre il $\underline \mu$ desiderato, si pone $\underline b = \underline \mu$, mentre per imporre la covarianza tra elementi desiderata, si pone $Cov[\underline X, \underline X] = A \cdot A^T = \Sigma$ da cui $A = \text{Cholesky}(\Sigma)$.
 
-# Simulazione Montecarlo
+# Capitolo Undici: Simulazione Montecarlo
 
 Il metodo Montecarlo serve per stimare il valore atteso di una funzione $g(X)$ di una variabile aleatoria $X$.
 
@@ -808,7 +808,7 @@ E \left[ \left( \frac{1}{n} \sum_{i = 1}^n X_i - E[X] \right)^2 \right] = Var\le
 \frac{\sqrt{Var \left[ \frac{1}{n} \sum\limits_{i = 1}^n X_i \right]}}{E[X]} = \frac{1}{\sqrt{n}} \sqrt{\frac{1 - E[X]}{E[X]}}
 $$
 
-# Importance sampling
+# Capitolo Docici: Importance sampling
 
 Utile quando si vuole campionare un evento $A$ raro: in pratica si va a trovare un esperimento equivalente nel quale $A$ è molto più probabile che accada e poi si riscala adegauatamente la probabilità stimata.
 
@@ -838,7 +838,7 @@ $$
 
 Dunque, per avere una stima precisa, devo scegliere un $f_Y$ il più vicino possibile a quello appena visto.
 
-# Calcolo di integrali
+# Capitolo Tredici: Calcolo di integrali
 
 Si vuole calcolare il seguente integrale:
 
@@ -851,7 +851,7 @@ L'algoritmo è il seguente:
 1. Si estraggono $X_1, X_2, \dots, X_n \sim \text{U}[a, b]$ iid.
 2. Si calcola $\hat I_n = \frac{1}{n} \sum\limits_{i=1}^n f(X_i)$
 
-# Entropia e information theory
+# Capitolo Quattordici: Entropia e information theory
 
 L'autoinformazione di un evento $A$ è la funzione $i(A) = \log \frac{1}{P(A)}$. A seconda della base del logaritmo, cambia l'unità di misura:
 
@@ -885,7 +885,7 @@ $$
 E[L] = \sum_{j=1}^{m} l_j P_X(x_j) \ge H(X)
 $$
 
-# Disuguaglianza di Jensen
+# Capitolo Quindici: Disuguaglianza di Jensen
 
 La disuguaglianza di Jensen afferma che: siano $\lambda_1, \lambda_2, \dots, \lambda_n$ tali per cui $\sum \lambda_i = 1$ e $\lambda_i \ge 0$ $\forall i$, allora
 
@@ -902,7 +902,7 @@ $$
 \end{cases}
 $$
 
-# Tabella riassuntiva distribuzioni variabili aleatorie
+# Capitolo Sedici: Tabella riassuntiva distribuzioni variabili aleatorie
 
 | Distribuzione | Costruttore                  | Valore atteso       | Varianza                |
 | ------------- | ---------------------------- | ------------------- | ----------------------- |
@@ -919,7 +919,7 @@ $$
 
 La pdf delle distribuzioni geometriche e binomiali sono già state [riportate qui](#valore-atteso-e-varianza).
 
-## Distribuzione bernoulliana
+## 16.1 Distribuzione bernoulliana
 
 $$
 p_X(x) = \begin{cases}
@@ -928,7 +928,7 @@ p_X(x) = \begin{cases}
 \end{cases}
 $$
 
-## Distribuzione uniforme
+## 16.2 Distribuzione uniforme
 
 $$
 f_X(x) = \begin{cases}
@@ -937,7 +937,7 @@ f_X(x) = \begin{cases}
 \end{cases}
 $$
 
-## Distribuzione gaussiana
+## 16.3 Distribuzione gaussiana
 
 $$
 f_X(x) = \frac{1}{\sqrt{2 \pi} \sigma} e^{-\left(\frac{x - \mu}{\sigma}\right)^2\frac{1}{2}}
@@ -947,7 +947,7 @@ $$
 F_X(x) = \Phi \left( \frac{x - \mu}{\sigma} \right)
 $$
 
-## Distribuzione esponenziale
+## 16.4 Distribuzione esponenziale
 
 $$
 f_X(x) = \begin{cases}
@@ -960,21 +960,21 @@ F_X(x) = \begin{cases}
 \end{cases}
 $$
 
-## Distribuzione laplaciana
+## 16.5 Distribuzione laplaciana
 
 $$
 f_X(x) = \frac{\lambda}{2} e^{-\lambda |x|} \\
 F_X(x) = \frac{\lambda}{2} \left( \frac{-e^{\lambda x \text{sgn}(x)}}{\lambda \text{sgn}(x)} + \frac{\text{sgn}(x)}{\lambda} \right)
 $$
 
-## Distribuzione di Poisson
+## 16.6 Distribuzione di Poisson
 
 $$
 f_X(x) = \frac{\lambda^n}{n!} e^{-\lambda}\\
 F_X(x) = e^{-\lambda} \sum\limits_{j=0}^{\lfloor n \rfloor}{\frac{\lambda^j}{j!}}\\
 $$
 
-## Distribuzione di Erlang-k
+## 16.7 Distribuzione di Erlang-k
 
 $$
 f_X(x) = \begin{cases}
@@ -987,7 +987,7 @@ F_X(x) = \begin{cases}
 \end{cases}\\
 $$
 
-## Qualcosa che può servire
+## Capitolo Extra: Qualcosa che può servire
 
 Sappiamo come comportarci con i processi di Poisson , se dobbiamo calcolare la probabilità che <b>K</b> arrivi avvengano in un intervallo <b>[0,T]</b> facciamo riferimento alla ddp e siamo apposto.
 
@@ -1048,7 +1048,7 @@ $$ f_P(p)=C *\int_{0}^\infty t^k e^{-(\lambda+v) t} dt$$
 
 La situzione non sembra essere molto migliorata , ma la struttura di questo integrale ci permette di ricondurci ad una funzione molto particolare:
 
-## Introduciamo la funzione $ \Gamma(K) $ 
+## Capitolo Extra 2: Introduciamo la funzione $\Gamma(K)$ 
 La funzione $\Gamma(K)$ è particolarmente utile :
 * è una funzione ricorsiva: $ K* \Gamma(K) =\Gamma(K+1)$.
 * la sua applicazione è immediata una volta individuata.

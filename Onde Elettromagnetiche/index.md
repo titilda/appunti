@@ -4,7 +4,7 @@ author:
 - "Alessandro Modica"
 ---
 
-# Segnali
+# Capitolo Uno: Segnali
 Un **segnale** $s(t)$ è una grandezza fisica che varia nel tempo e nello spazio. 
 Per trasmettere informazioni, un segnale non deve essere periodico.
 
@@ -18,7 +18,7 @@ $$
 
 I segnali digitali sono sequenze di valori discreti nel tempo che prendono il nome di **simboli**.
 
-## Perdite di trasmissione
+## 1.1 Perdite di trasmissione
 
 - **attenuazione**: diminuzione dell'ampiezza del segnale
 - **distorsione**: deformazione temporale dell'onda
@@ -28,7 +28,7 @@ I segnali digitali sono sequenze di valori discreti nel tempo che prendono il no
     - **modale** (in fibra ottica): frequenze diverse si propagano in *modi* (traiettorie) diverse
 - **rumore**: segnale indesiderato, casuale, che si somma al segnale utile (**NON trattato in questo corso**)
 
-## Serie di Fourier
+## 1.2 Serie di Fourier
 
 Ogni segnale periodico può essere scomposto in una sommatoria di sinusoidi con coefficienti complessi:
 
@@ -52,7 +52,7 @@ ovvero:
 | $\cos$ | $\displaystyle\frac{1}{2}$  | $\displaystyle\frac{1}{2}$   |
 | $\sin$ | $\displaystyle\frac{1}{2j}$ | $-\displaystyle\frac{1}{2j}$ |
 
-## Trasformata di Fourier
+## 1.3 Trasformata di Fourier
 
 La trasformata di Fourier è una generalizzazione della serie di Fourier per segnali non periodici.
 
@@ -86,7 +86,7 @@ s(t) e^{j2\pi f_0 t} &\to S(f-f_0)\\
 
 La banda del nuovo segnale ha la stessa ampiezza di quella originale, ma è centrata in una nuova **frequenza portante** incrementata di $f_0$.
 
-## Risposta in frequenza di un mezzo di trasmissione
+## 1.4 Risposta in frequenza di un mezzo di trasmissione
 
 La **risposta in frequenza** di un mezzo di trasmissione $H(f)$ è la sua capacità di trasmettere segnali con frequenze diverse.
 
@@ -103,7 +103,7 @@ Affinché esista $H(f)$, il mezzo di trasmissione deve essere **lineare** e **te
 
 In questo corso, tutti i mezzi di trasmissione sono **passivi** (il modulo di $H(f)$ è sempre minore di 1).
 
-## Rappresentazione in scala logaritmica
+## 1.5 Rappresentazione in scala logaritmica
 
 ### Decibel (base 10)
 $$\begin{align*}
@@ -136,7 +136,7 @@ P_{\text{dBm}} &= 10 \log_{10} \frac{10^{-3}}{1} = -30\ \text{dBm}\\
 \end{align*}$$
 
 
-# Linee di trasmissione
+# Capitolo Due: Linee di trasmissione
 
 Una linea di trasmissione è un mezzo di trasmissione che permette di trasmettere segnali elettrici da un punto a un altro.
 
@@ -145,7 +145,7 @@ Data la lunghezza $l$ del mezzo di trasmissione e la lunghezza d'onda $\lambda$ 
  * se $l \ll \lambda$, posso usare un modello a parametri concentrati (v. Elettrotecnica)
  * se $l \approx \lambda$, devo usare un modello a parametri distribuiti
 
-## Modello a parametri distribuiti
+## 2.1 Modello a parametri distribuiti
 
 Il modello a parametri distribuiti è un modello a circuito equivalente che considera la linea di trasmissione come una serie di tratti infinitesimi $dz$, più piccoli della lunghezza d'onda del segnale.
 
@@ -156,7 +156,7 @@ Sono presenti:
  * $R$ e $G$: resistenza (serie) e conduttanza (parallela) per unità di lunghezza (misurate in $\left[\frac{\Omega}{m}\right]$ e $\left[\frac{S}{m}\right]$)
  * $L$ e $C$: induttanza (serie) e capacità (parallela) per unità di lunghezza (misurate in $\left[\frac{H}{m}\right]$ e $\left[\frac{F}{m}\right]$)
 
-## Equazioni dei telegrafisti
+## 2.2 Equazioni dei telegrafisti
 
 Applicando le leggi di Kirchhoff, si ottengono le due equazioni differenziali che prendono il nome di Equazioni dei Telegrafisti (nel dominio del tempo):
 
@@ -174,7 +174,7 @@ $$\begin{cases}
 \displaystyle - \frac{d I(z)}{d z} = (G + j \omega C)\, V(z)\, e^{j \omega t}\\
 \end{cases}$$
 
-## Equazioni delle onde
+## 2.3 Equazioni delle onde
 
 Derivando nuovamente ciascuna equazione rispetto a $z$ e sostituendo l'altra equazione, si ottengono le equazioni delle onde per le tensioni e le correnti:
 
@@ -184,7 +184,7 @@ $$\begin{cases}
 \displaystyle - \frac{d^2 I(z)}{d z^2} = (R + j\omega L) (G + j\omega C)\, I(z) = 0\\
 \end{cases}$$
 
-###  Costante di propagazione
+### Costante di propagazione
 
 Definita la *costante di propagazione* (complessa) $\gamma$ come:
 
@@ -250,7 +250,7 @@ i(z,t) &= &I_0^+ \cos(\omega t - \beta z) - I_0^- \cos(\omega t + \beta z)\\
 
 Essendo la fase $\beta z$ lineare con $f$, in una linea senza perdite non si ha alcuna dispersione cromatica.
 
-## Onda progressiva e regressiva
+## 2.4 Onda progressiva e regressiva
 
 La parte $V_0^+ \cos(\omega t - \beta z)$ rappresenta un'onda che si propaga in avanti (**progressiva**/**propagante**), mentre la parte $V_0^- \cos(\omega t + \beta z)$ rappresenta un'onda che torna indietro (**regressiva**).
 
@@ -260,7 +260,7 @@ Il **coefficiente di riflessione sul carico** $\Gamma_L$ indica quanto dell'onda
 
 $$\Gamma_L = \frac{V_0^-}{V_0^+}$$
 
-## Impedenza caratteristica
+## 2.5 Impedenza caratteristica
 
 L'impedenza caratteristica $Z_0$ di una linea di trasmissione è l'impedenza costante (che non cambia in diversi punti della linea) associata alla linea di trasmissione che lega la tensione alla corrente nella soluzione delle equazioni delle onde. **In una linea senza perdite:**
 
@@ -279,7 +279,7 @@ L'impedenza caratteristica non dipende da:
   * frequenza del segnale
   * terminazione della linea
 
-## Adattamento di impedenza
+## 2.6 Adattamento di impedenza
 
 Considerando un carico $Z_L$ collegato a una linea di trasmissione con impedenza caratteristica $Z_0$, si ha che:
 
@@ -287,7 +287,7 @@ $$V_0^- = \frac{Z_L - Z_0}{Z_L + Z_0} V_0^+$$
 
 In altre parole, se $Z_L = Z_0$, non ci sono onde regressive.
 
-## Impedenza d'onda
+## 2.7 Impedenza d'onda
 
 L'impedenza d'onda $Z(z)$ è l'impedenza vista da un punto $z$ della linea di trasmissione. **In una linea senza perdite:**
 

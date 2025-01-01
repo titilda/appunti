@@ -8,9 +8,9 @@ author:
 
 _Questa pagina è la seconda versione, per la prima versione, visitare [questa pagina](/Analisi%202/old.html)_.
 
-# Equazioni differenziali
+# Capitolo Uno: Equazioni differenziali
 
-## Equazioni differenziali ordinarie (EDO)
+## 1.1 Equazioni differenziali ordinarie (EDO)
 
 Risolvere un'equazione differenziale vuol dire trovare una funzione $y(t)$ che soddisfa un'equazione del tipo $y'(t) = f(t, y(t))$ (un equazione del genere è detta **in forma normale**).
 
@@ -20,12 +20,12 @@ Una EDO si dice **del primo ordine** se contiene al massimo occorrnze della deri
 
 Per trovare il dominio di una EDO, si scrive $f(t, s)$ e si trovano le condizioni di esistenza sul piano t-s.
 
-## Soluzioni costanti
+## 1.2 Soluzioni costanti
 
 Una **soluzione costante** è una soluzione della forma $y(t) = k \quad \forall t$.
 Per trovare le soluzioni costanti, so sostituisce nella EDO $y(t)$ con $k$ e $y'(t)$ con $0$ (infatti la derivata di una costante è nulla) e si risolve per $k$ l'equazione ottenuta.
 
-## EDO a variabili separabili
+## 1.3 EDO a variabili separabili
 
 Una EDO del primo ordine si dice **a variabili separabili** se è della forma $y'(t) = h(t) \cdot g(y(t))$ con $h : J_1 \sube \mathbb{R} \to \mathbb{R}$ e $g : J_2 \sube \mathbb{R} \to \mathbb{R}$ continue.
 
@@ -47,7 +47,7 @@ Per risolvere una EDO a variabili separabili, è necessario seguire una procedur
     $$
     e si risolve per $t(t)$, inglobando tutte le costanti in $C$ (o altre lettere se la $C$ è già stata utilizzata).
 
-## Problema di Cauchy per una EDO del primo ordine
+## 1.4 Problema di Cauchy per una EDO del primo ordine
 
 Data una EDO del primo ordine $y'(t) = f(t, y(t))$, sia $(t_0, y_0)$ un punto appartenente al dominio di $f$. Il **problema di Cauchy** consiste nel determinare una soluzione dell'equazione che passi per quel punto.
 
@@ -68,7 +68,7 @@ Per risolvere un problema di Cauchy di tale genere, si seguono i seguenti passag
 
 Se il dominio di $f$ è diviso in più parti, è sufficiente considerare solo la regione in cui si trova il punto $(t_0, y_0)$.
 
-## EDO del primo ordine lineari
+## 1.5 EDO del primo ordine lineari
 
 Una EDO del primo ordine **lineare** in forma normale è una EDO della forma $y'(t) = a(t) \cdot y(t) + b(t)$ con $a,b : J \sub \mathbb{R} \to R$ continue su $J$.
 
@@ -111,7 +111,7 @@ E' detta omogenea una EDO lineare con $b(t) = 0 \forall t$.
 
 In tal caso, l'EDO è anche a variabili separabili e si può risolvere come si preferisce.
 
-## Equazioni di Bernoulli
+## 1.6 Equazioni di Bernoulli
 
 Un'equazione di Bernoulli è una EDO del primo ordine non lineare della forma $y'(t) = k(t) \cdot y(t) + h(t) \cdot y(t)^\alpha$ con $\alpha \in \mathbb{R}$, $\alpha \ne 0$, $\alpha \ne 1$, $h, k$ continue.
 
@@ -158,11 +158,11 @@ $$
 y(t) = z(t)^\frac{1}{1 - \alpha}
 $$
 
-## EDO del secondo ordine lineari
+## 1.7 EDO del secondo ordine lineari
 
 Una **EDO del secondo ordine lineare** è un'equazione della forma $a(t) \cdot y''(t) + b(t) \cdot y'(t) + c(t) \cdot y(t) = f(t)$ con $a, b, c, f : J \sube \mathbb{R} \to \mathbb{R}$ e $a \ne 0$.
 
-## Problema di Cauchy per una EDO del secondo ordine lineare
+## 1.8 Problema di Cauchy per una EDO del secondo ordine lineare
 
 Il problema di Cauchy per una EDO del secondo ordine è analogo al problema di Cauchy per una EDO del primo ordine, ma vengono imposte, al posto che una, due condizioni aggiuntive che vanno a vincolare sia la $y$ che la $y'$.
 In particolare, un problema di Cauchy per una EDO lineare del secondo ordine è un sistema della forma
@@ -244,7 +244,7 @@ $$
 Definisco ora una funzione $z(t) = C_1 \cdot y_{o1}(t) + C_2 \cdot y_{o2}(t) = y_o(t)$.
 $z(t)$ risolve lo stesso problema di Cauchy di $y_o(t)$ e quindi per il teorema di esistenza e unicità globale del problema di Cauchy, sono la stessa cosa.
 
-## Struttura dell'integrale generale di EDO del secondo ordine lineari non omogenee
+## 1.9 Struttura dell'integrale generale di EDO del secondo ordine lineari non omogenee
 
 Siano $a,b,c : J \sube \mathbb{R} \to \mathbb{R}$ continue in $J$ con $a \ne 0$.
 
@@ -252,7 +252,7 @@ L'integrale generale dell'equazione completa $a(t)y''(t) + b(t)y'(t) + c(t)y(t) 
 
 In pratica, l'integrale generale di una EDO del secondo ordine lineare non omogenea è uno spazio affine di dimensione due che consiste dello span delle soluzioni dell'omogenea associata, translata di $y_p$.
 
-## Risoluzione di EDO omogenee a coefficienti costanti
+## 1.10 Risoluzione di EDO omogenee a coefficienti costanti
 
 Per risolvere una edo omogenea a coefficienti costanti, scrivo il **polinomio caratteristico** $p(\lambda) = a \lambda^2 + b \lambda + c$ e risolvo **l'equazione caratteristica** $p(\lambda) = 0$ con $\Delta = b^2 - 4ac$.
 
@@ -266,7 +266,7 @@ A seconda del segno di $\Delta$, l'integrale generale assume forme diverse:
 
 La soluzione particolare la si può trovare con il metodo di somiglianza.
 
-## Sistemi differenziali lineari
+## 1.11 Sistemi differenziali lineari
 
 Un sistema differenziale lineare è un'equazione della forma $\underline y'(t) = A \underline y(t) + \underline b(t)$ con $\underline y', \underline y, \underline b \in (\mathbb{R} \to \mathbb{R})^n$, $A \in \mathcal{M}_\mathbb{R}(n)$.
 
@@ -309,7 +309,7 @@ Questo teorema ha 2 conseguenze importanti:
 
 Dato un sistema differenziale lineare $n \times n$ omogeneo, chiamiamo **sistema fondamentale di soluzioni** una famiglia di $n$ soluzioni linearmente indipendenti $\underline y_{o1}(t), \dots, \underline y_{on}(t)$ che costituiscono una base dello spazio vettoriale delle soluzioni del sistema.
 
-## Determinante wronskiano
+## 1.12 Determinante wronskiano
 
 Supponiamo di conoscere $n$ soluzioni $\underline y_{o1}(t), \dots, \underline y_{on}(t)$ di un sistema differenziale lineare $n \times n$ omogeneo: il sistema fondamentale esiste se e solo se esiste un $t_0$ (tipicamente 0) tale che $\det(\underline y_{o1}(t) | \dots | \underline y_{on}(t)) \ne 0$.
 
@@ -321,7 +321,7 @@ $$
 
 Con questa notazione, l'integrale generale del sistema omogeneo diventa $\underline y_o(t) = W(t) \cdot \underline C$ con $\underline C \in \mathbb{R}$ e la soluzione del problema di Cauchy si ottiene scegliendo $\underline C = W(t_0)^{-1} \cdot \underline y_o$ quindi $\underline y(t) = W(t) \cdot [W(t_0)]^{-1} \cdot \underline y_o$.
 
-## Risoluzione esplicita di sistemi con $A$ diagonalizzabile reale
+## 1.13 Risoluzione esplicita di sistemi con $A$ diagonalizzabile reale
 
 Se $A \in \mathcal{M}_\mathbb{R}(2)$ è diagonalizzabile reale ($A$ è diagonalizzabile reale $\iff$ esistono $n$ autovettori di $A$ che formano una base di $\mathbb{R}^n$ $\iff$ tutti gli autovalori sono regolari; se $A$ è simmetrica o ha $n$ autovalori reali distinti, allora è diagonalizzabile reale), detta $S$ la matrice ottenuta affiancando una base di $\mathbb{R}^n$, vale che 
 
@@ -334,7 +334,7 @@ Una matrice wronskiana relativa al sistema omogeneo è $W(t) = (e^{\lambda_1 t} 
 Eqivalentemente, l'integrale generale è $\underline y_0(t) = C_1 e^{\lambda_1 t} \underline v_1 + \dots + C_n e^{\lambda_n t} \underline v_n$ con $C_1, \dots, C_n \in \mathbb{R}$.
 
 <!-- NON cambiare il titolo: vi è una reference in fauto -->
-## Esponenziale di una matrice
+## 1.14 Esponenziale di una matrice
 
 Sia $A \in \mathcal{M}_\mathbb{R}(n)$, la **matrice esponenziale** $e^A$ è definita dalla serie
 
@@ -356,7 +356,7 @@ Se $A$ è diagonalizzabile reale allora $e^{At}$ è una matrice wronskiana relat
 
 La matrice esponenziale è comoda per risolvere il problema di Cauchy: dato che $(e^{At_0})^{-1} = e^{-At_0}$, la soluzione del problema di Cauchy è $\underline y(t) = e^{A(t - t_0)}\underline y_0$.
 
-## Risoluzione esplicita di sistemi con $A \in \mathcal{M}_\mathbb{R}(2 )$ con autovalori complessi coniugati
+## 1.15 Risoluzione esplicita di sistemi con $A \in \mathcal{M}_\mathbb{R}(2 )$ con autovalori complessi coniugati
 
 Sia $A \in \mathcal{M}_{\mathbb{R}}(2)$ con autovalori $\lambda$ e $\overline \lambda$ complessi coniugati, $\Im \lambda = 0$ e $\underline v \in \mathbb{C}^2$ autovalore associato a $\lambda$.
 Un sistema fondamentale di soluzioni di un sistema omogeneo è dato da
@@ -367,7 +367,7 @@ $$
 
 Equivalentemente, l'integrale generale è $y_o(t) = C_1 \Re(e^{\lambda t} \underline v) + C_2 \Im(e^{\lambda t} \underline v)$.
 
-## Sistemi non omogenei
+## 1.16 Sistemi non omogenei
 
 ### Struttura dell'integrale generale dei sistemi non omogenei:
 
@@ -402,7 +402,7 @@ $$
 \underline y(t) = e^{A(t - t_0)} \cdot \int_{t_0}^t e^{-A \tau} \cdot \underline b(\tau) d \tau + e^{A(t - t_0)} \underline y(t_0)
 $$
 
-# Serie di funzioni
+# Capitolo Due: Serie di funzioni
 
 Siano $f_n : J \sube \mathbb{R} \to \mathbb{R}$ con $n=0, 1, \dots$, allora la **serie di funzioni di termine generale $f_n$**  è la successione delle somme parziali
 
@@ -441,11 +441,11 @@ Diciamo che la serie di termine generale $f_n(x)$ con $x \in J$ converge **total
 
 _La convergenza totale in $I \sube J$ implica la convergenza assoluta e puntuale $\forall x \in I$ e la convergenza totale in ogni sottoinsieme non vuoto di $I$_.
 
-### Teorema di continuità della somma
+## 2.1 Teorema di continuità della somma
 
 Siano $f_n$ funzioni definite almeno in un intervallo $I \sube R$. Se le funzioni sono continue in $I$ e la serie generale converge totalmente in $I$ allora la funzione somma è continua in $I$.
 
-### Teorema di integrabilità termine a termine
+## 2.2 Teorema di integrabilità termine a termine
 
 Nelle stesse ipotesi del teorema precedente, per un qualunque intervallo $[c, d] \sub I$ chiuso e limitato, si ha che la funzione somma $f$ è integrabile e vale che 
 
@@ -459,7 +459,7 @@ $$
 f' = \left( \sum_{n=0}^{+\infty} f_n \right)' = \sum_{n=0}^{+\infty} f'_n
 $$
 
-# Serie di potenze
+## 2.3 Serie di potenze
 
 Una **serie di potenze** è una serie numerica della forma
 
@@ -573,11 +573,11 @@ Derivando una serie si ottiene il comportamento opposto: se la serie potrebbe pe
 
 Ne segue che il comportamento negli estremi va studiato a parte.
 
-## Criterio di Leibniz
+## 2.4 Criterio di Leibniz
 
 Come in Analisi I, per le serie di potenze reali, vale il criterio di Leibniz: per $\sum a_n$, $a_n = (-1)^nb_n$ con $b_n \gt 0$, arrestando la somma al termine $a_n$, si commette un errore minore a $|a_{n+1}|$.
 
-# Serie di Taylor
+# Capitolo Quattro: Serie di Taylor
 
 Una funzione è detta **analitica reale** se nell'intervallo non vuoto $(a, b)$ è somma di una serie di potenze in $(a, b)$, quindi se 
 
@@ -597,7 +597,7 @@ f''(x) = \sum_{n=2}^{+\infty} n^2 a_n (x - x_0)^{n-2} \implies f''(x_0) = 2a_2 \
 a_n = \frac{f^{(n)}(x_0)}{n!}
 $$
 
-## funzioni analitiche reali
+## 4.1 Funzioni analitiche reali
 
 Sia $f$ una funzione di una variabile reale, analitica su di un intervallo non vuoto $(a, b)$. Allora $f$ è derivabile ad ogni ordine in $(a, b)$ e $\forall x_0 \in (a, b)$ è sviluppabile in una serie di Taylor:
 
@@ -605,7 +605,7 @@ $$
 f(x) = \sum_{n=0}^{+\infty} \frac{f^{(n)}(x_0)}{n!}(x - x_0)^n \qquad x \in (a, b)
 $$
 
-## Serie di potenze complesse
+## 4.2 Serie di potenze complesse
 
 Una **serie di potenze complesse** è una serie numerica della forma
 
@@ -625,7 +625,7 @@ $$
 
 ed è definito $\forall z \in \mathbb{C}$ dato che $R = +\infty$.
 
-## Serie di Fourier
+## 4.3 Serie di Fourier
 
 Con le serie di Fourier, si possono scomporre funzioni non necessariamente analitiche in una serie infinita di funzioni trigonometriche della forma
 
@@ -692,7 +692,7 @@ allora la serie trigonometrica converge totalmente in $\mathbb{R}$. In particola
 
 Inoltre, nella stessa circostanza di quanto appena scritto, la funzione somma è derivabile in tutto $\mathbb{R}$ e vale la formula di derivazione termine a termine.
 
-## Costruzione della serie di Fourier di una funzione periodica
+## 4.4 Costruzione della serie di Fourier di una funzione periodica
 
 Per calcolare i coefficienti di Fourier per esprimere una funzione periodica come serie di Fourier, ci si basa sul teorema che segue, di cui è fornita anche la dimostrazione.
 
@@ -856,7 +856,7 @@ $$
 \end{align*}
 $$
 
-# Cenni di topologia in $\mathbb{R}$
+# Capitolo Cinque: Cenni di topologia in $\mathbb{R}$
 
 Si dice **intorno sferico** o **palla** di raggio $r$ e centro in $\underline x_0 \in \mathbb{R}$ il seguente insieme:
 
@@ -880,7 +880,7 @@ Un insieme $E$ si dice **limitato** se esiste un $r$ tale per cui tutto l'insiem
 
 Un insieme chiuso e limitato è detto **compatto**.
 
-# Curve
+## 5.1 Curve
 
 Una curva in $\mathbb{R}^3$ può essere descritta attraverso la sua parametrizzazione o attraverso il suo sostegno.
 
@@ -1021,7 +1021,7 @@ $$
 \int_\gamma f ds = \int_a^b f(\underline r(t)) \|\underline r'(t)\| dt
 $$
 
-# Funzioni di due variabili
+# Capitolo Sei: Funzioni di due variabili
 
 Una **funzione di due variabili reali** $f : A \sube \mathbb{R}^2 \to \mathbb{R}$ è una relazione che associa ad ogni $(x, y) \in \mathbb{R}$ un unico valore reale $f(x, y) \in \mathbb{R}$.
 
@@ -1033,7 +1033,7 @@ $$
 
 che è una curva piana.
 
-## Limite multivaraibile
+## 6.1 Limite multivaraibile
 
 Siano $a \sube \mathbb{R}^2$ aperto, $x_0 \in A$, $f : A \backslash \{\underline x_0\} \to \mathbb{R}$.
 Diciamo che $f$ tende al limite $l \in \mathbb{R}$ per $\underline x \to \underline x_0$ e scriviamo che $\lim_{\underline x \to \underline x_0} f(x) = l$ se 
@@ -1044,7 +1044,7 @@ $$
 
 Per stabilire che un limite non esiste, devo esibire due curve che mandano la funzione in valori diversi quando si fa tendere tale funzione nel punto limite.
 
-## Calcolo del limite con coordinate polari
+## 6.2 Calcolo del limite con coordinate polari
 
 _La procedura di seguito è valida solo per limiti che tendono a $\underline 0$. In caso di limiti che non tendono a $\underline 0$, si transla la funzione._
 
@@ -1065,7 +1065,7 @@ Se la funzione sotto esame non è quoziente di polinomi o radici, prima di inizi
 
 Il metodo dei limiti notevoli è utilizzabile anche per la dimostrazione della non esistenza del limite.
 
-## Continuità
+## 6.3 Continuità
 
 Sia $A \sube \mathbb{R}^2$ aperto, $f : A \to \mathbb{R}$, $\underline x_0 \in A$. $f$ è **continua** in $\underline x_0$ se
 
@@ -1079,7 +1079,7 @@ Tutte le funzioni elementari (1-dimensionali) sono continue sul loro insieme di 
 
 Da ciò segue che la continuità di funzioni 2-dimensionali va verificata solamente nel caso di funzioni definite a tratti.
 
-## Derivate parziali e gradienti
+## 6.4 Derivate parziali e gradienti
 
 Sia $A \sube \mathbb{R}^2$ aperto, $f : A \to \mathbb{R}$, $(x_0, y_0) \in A$. Le **derivate parziali** di $f$ in $(x_0, y_0)$ sono
 
@@ -1102,7 +1102,7 @@ Per calcolare le derivate parziali, derivo una variabile per volta, considerando
 
 E' necessario usare la definizione per calcolare le derivate parziali quando la funzione sotto esame è definita per casi o quando nella definizione di tale funzione compare $t^\alpha$ con $\alpha \in (0, 1)$ o $|t|^\alpha$ con $\alpha \in (0, 1]$. In tutti gli altri casi, $f$ è sempre derivabile.
 
-## Differenziabilità e piano tangente
+## 6.5 Differenziabilità e piano tangente
 
 Siano $A \sube \mathbb{R}^2$ aperto (aperto perchè serve poter fare i limiti), $f : A \to \mathbb{R}$, allora diciamo che $f$ è **differenziabile** in $\underline x_0 \in A$ se $f$ è derivabile in $\underline x_0$ e se
 
@@ -1126,7 +1126,7 @@ $$
 
 <div id="Dim6"></div>
 
-## Differenziabilità $\implies$ continuità
+## 6.6 Differenziabilità $\implies$ continuità
 
 Sia $A \sube \mathbb{R}$ aperto, $\underline x_0 \in A$, $f : A \to \mathbb{R}$ differenziabile in $\underline x_0$. Allora $f$ è continua in $\underline x_0$.
 
@@ -1246,7 +1246,7 @@ Siano $A \sube \mathbb{R}^2$ aperto, $\underline x_0 \in A$, $f : A \to \mathbb{
     \frac{\partial f}{\partial \underline v_{\text{max}}} (\underline x_0) = \|\nabla f(\underline x_0)\| \qquad \frac{\partial f}{\partial v_{\text{min}}}(\underline x_0) = - \|\nabla f(\underline x_0)\|
    $$
 
-# Ottimizzazione libera
+# Capitolo Sette: Ottimizzazione libera
 
 Sia $A \sube \mathbb{R}^2$ aperto, $f : A \to \mathbb{R}$ derivabile. Supponiamo che le derivate parziali di $f$ siano a loro volta derivabili in $A$. Definiamo le **derivate parziali seconde** come
 
@@ -1285,7 +1285,7 @@ Dalla forma quadratica indotta, si può ricavare la matrice $A = \begin{bmatrix}
 | $=0$     | $\lt 0$ | $-0$       | Semidefinita negativa |
 | $\lt 0$  |         | $+-$       | Indefinita            |
 
-## Serie di Taylor al secondo ordine
+## 7.1 Serie di Taylor al secondo ordine
 
 Sia $A \sube \mathbb{R}^2$, $f \in \mathcal{C}^2(A)$. $\forall \underline x_0 \in A$ vale che 
 
@@ -1383,7 +1383,7 @@ Bisogna però prestare attenzione al fatto che il teorema non parla dell'esisten
 
 Quando utilizzo il suddetto teorema, devo specificare che lo sto utilizzando.
 
-## Vincoli di uguaglianza
+## 7.2 Vincoli di uguaglianza
 
 Lo scopo è cercare i punti di massimo e minimo di una funzione $f(x, y)$ sotto un vincolo della forma $F(x, y) = 0$ con $F(x, y) = f(x, y) - k$, cioè $f$ ma vincolata all'insiem di livello $k$.
 
@@ -1428,7 +1428,7 @@ e poi classificare le varie combinazioni soluzioni ottenute (ignorando le $\lamb
 
 Siano $A \sube \mathbb{R}^2$ aperto, $f,F \in \mathcal{C}^1(A)$. Si definisce **Lagrangiana** la funzione di tre variabili $\mathscr{L}(x, y, \lambda) = f(x, y) - \lambda F(x, y)$ il cui gradiente posto uguale a zero risolve il sistema dei moltiplicatori di Lagrange.
 
-# Integrali doppi
+# Capitolo Otto: Integrali doppi
 
 $D \sube \mathbb{R}^2$ è detta **regione y-semplice** se è della forma 
 
@@ -1468,7 +1468,7 @@ $$
 {\int\int}_D f(x, y) dxdy = \int_a^b \left( \int_{g_1(x)}^{g_2(x)} f(x, y) dy \right) dx = \int_c^d f_2(y) dy \cdot \int_a^b f_1(x) dx
 $$
 
-## Cambio di variabili (coordinate polari)
+## 8.1 Cambio di variabili (coordinate polari)
 
 Se applico alla $f$ da integrare una mappa del tipo $\varphi(x, y) = \begin{pmatrix} r \cos \theta \\ r \sin \theta \end{pmatrix}$ allora ottengo che $f(\varphi(x, y)) = f(r, \theta)$ e che $f' = f'(\varphi(x, y)) \cdot \varphi'(x, y)$. Necessito di trovare $\varphi'$, per farlo utilizzo la **matrice jacobiana**:
 
@@ -1495,7 +1495,7 @@ Dunque $\varphi'(r, \theta) = r$.
 
 Per effettuare un cambio di variabili con una mappa generica, $\varphi$ deve essere di classe $\mathcal{C}^1$, biunivoca e $\det J_\varphi(u, v) \ne 0$ e limitato $\forall u,v$.
 
-# Integrali tripli
+# Capitolo Nove: Integrali tripli
 
 $E \sube \mathbb{R}^3$ è detta **regione z-semplice se è della forma**
 
@@ -1505,7 +1505,7 @@ $$
 
 con $D$ regione semplice, $h_1 \le h_2$ e $h_1,h_2$ continue in $D$.
 
-## Integrazione per fili
+## 9.1 Integrazione per fili
 
 Sia $E$ regione z-semplice, $f : E \to R$ continua in $E$, allora $f$ è **integrabile** su $E$ e vale la formula di integrazione per fili.
 
@@ -1517,7 +1517,7 @@ $$
 
 Se fosse richiesto di integrare su una regione x-semplice o y-semplice allora si sotituisce la z con, rispettivamente, x e y.
 
-## Integrazione per strati.
+## 9.2 Integrazione per strati.
 
 Sia $E$ regione z-semplice, $f : E \to R$ continua in $E$, allora $f$ è **integrabile** su $E$ e vale la formula di integrazione per strati.
 
@@ -1531,7 +1531,7 @@ dove i parametri $a$ e $b$ sono i limiti entro i quali è compresa $z$.
 
 Per scegliere tra integrazione per fili o per strati, è necessario capire "di che forma" è il dominio e vedere se è più facile trgliarlo a fette (integrale per strati) o in fili. Tendenzialmente, se i limiti entro i quali è compresa $z$ sono costanti, è preferibile l'integrazione per strati.
 
-## Cambio di variabili (coordinate sferiche)
+## 9.3 Cambio di variabili (coordinate sferiche)
 
 Il ragionamento è identico a quello del [cambiamento di coordinate in coordinate polari](#cambio-di-variabili-coordinate-polari) ma cambia il determinante jacobiano.
 
@@ -1578,7 +1578,7 @@ J_T(r, \varphi, \theta) = \begin{bmatrix}
 \end{align*}
 $$
 
-## Massa e baricentro
+## 9.4 Massa e baricentro
 
 Sia $E \sube \mathbb{R}^3$ regione semplice che rappresenta un corpo rigido e $\rho(x, y, z) : E \to \mathbb{R}^+$ la funzione che rappresenta la densità di massa nel punto $(x, y, z)$, allora 
 
@@ -1594,7 +1594,7 @@ $$
 \overline z_B = \frac{1}{\text{Massa}(E)} \cdot {\int\int\int}_E z \cdot \rho(x, y, z) dxdydz \\
 $$
 
-## Cambio di variabili (coordinate cilindriche)
+## 9.5 Cambio di variabili (coordinate cilindriche)
 
 Il passaggio a coordinate cilindriche si applica quando $E$ è z-semplice della forma $E = \{(x, y, z) \in \mathbb{R}^3 : (x, y) \in D, h_1(x, y) \le x \le h_2(x, y)\}$ e $D$ è a simmetria radiale.
 
@@ -1605,7 +1605,7 @@ j(x, y) = \int_{h_1(x, y)}^{h_2(x, y)} f(x, y, z) dz \\
 {\int\int\int}_E f(x, y, z) dxdydz = {\int\int}_D j(x, y) dxdy = \int\int j(r \cos \theta, r \sin \theta) r drd\theta
 $$
 
-# Studio qualitativo EDO
+# Capitolo Dieci: Studio qualitativo EDO
 
 Sia $A \sube \mathbb{R}^2$, $f : A \to \mathbb{R}$ continua in $A$. Se in un intorno del punto $(t_0, y_0) \in A$, $\frac{\partial f}{\partial y}(t, y)$ esiste ed è continua allora il problema di Cauchy 
 
@@ -1630,7 +1630,7 @@ Nel caso in cui valga il teorema di esistenza e unicità locale in tutti i punti
 2. se per una soluzione particolare $\overline y$ esiste $k \gt 0$ tale che $\overline y(t) \le k \quad \forall t$ nel dominio di definizione di $\overline y$ allora $\overline y$ è definita $\forall t \in [a, b]$.
 
 <!-- non cambiare titolo che vi è una reference in FAUTO -->
-## Studio qualitativo di EDO del primo ordine
+## 10.1 Studio qualitativo di EDO del primo ordine
 
 Lo studio qualitativo di una EDO consiste nel tracciare un gragfco approssimativo della sua soluzione anche senza saperla risolvere.
 
@@ -1666,7 +1666,7 @@ E' importante ricordare ancora una volta che, per il teorema di esistenza e unic
 
 Se viene richiesto di disegnare una soluzione approssimativa che passa in un punto particolare, si transla orizzontalmente la soluzione approssimativa trovata nell'intervallo che contiene il punto finchè la soluzione non passa per tale punto.
 
-## Sistemi differenziali autonomi nel piano
+## 10.2 Sistemi differenziali autonomi nel piano
 
 Un **sistema differenziale autonomo** è un sistema differenziale della forma
 
@@ -1695,7 +1695,7 @@ In caso di autovalori diversi con lo stesso segno, le famiglie di soluzioni sono
 
 Sia nell'asse che nel piano delle fasi, se una soluzione costante ha soltanto frecce entranti, è detta punto di equilibrio stabile, se invece ha anche una sola freccia uscente, è detta di equilibrio instabile.
 
-# Varie ed eventuali
+# Capitolo Finale: Varie ed eventuali
 
 Di seguito lista delle dimostrazioni da conoscere per l'esame:
 

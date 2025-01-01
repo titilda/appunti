@@ -60,7 +60,7 @@ Le 10 proprietà dell'algebra sono fondamentali per riiuscire a capire come siam
 
 # Capitolo Due: Teorema di Shannon e mappe di Karnaugh
 
-## Teorema di espansione di Shannon
+## 2.1 Teorema di espansione di Shannon
 
 **Teorema di Espansione di Shannon**: Data $f(a,b)$ posso scriverla come $a f(1,b) + \neg a f(0,b)$.
 
@@ -68,7 +68,7 @@ Dimostrazione
 
 $a = 1 \implies f(1,b) = 1f(1,b) + 0f(0,b)$ visto che $a = 1 \implies \nexists 0 \to = f(1,b)$ si potrebbe espandere anche per $b$ quindi $a(bf(1,1) + \neg b f(1,0)) + \neg a (bf(0,1) + \neg b f(0,0))$.
 
-## Mappa di Karnaugh
+## 2.2 Mappa di Karnaugh
 
 **Logica che sta dietro Karnaugh**: l'idea di Karnaugh è una rivoluzione a livello logico, ovvero lui ha pensato di poter rendere visibili gli $0$ e $1$ delle formule logiche mettendole su quadrati di N dimensioni.
 

@@ -4,7 +4,7 @@ author:
 - "Andrea Oggioni"
 ---
 
-# Cinematica
+# Capitolo Uno: Cinematica
 
 La cinematica studia i moti degli oggetti senza preoccuparsi delle cause.
 
@@ -21,7 +21,7 @@ $$
 
 Di seguito alcune definizioni importanti.
 
-## Velocità scalare media e istantanea
+## 1.1 Velocità scalare media e istantanea
 
 $$
 v_m = \frac{\Delta S}{\Delta t} \qquad S(t) = \int_{t_0}^t v(t)dt + S(t_0)
@@ -39,7 +39,7 @@ $$
   v = \lim_{\Delta t \to 0} \frac{\Delta S}{\Delta t} = \frac{dS}{dt}
 $$
 
-## Velocità vettoriale media e istantanea
+## 1.2 Velocità vettoriale media e istantanea
 
 $$
 \vec v_m = \frac{\Delta \vec r}{\Delta t} = \frac{\Delta x}{\Delta t} \hat u_x + \frac{\Delta y}{\Delta t} \hat u_y + \frac{\Delta z}{\Delta t} \hat u_z
@@ -59,7 +59,7 @@ $$
 
 Andando al limite, $|d \vec r| = |dS|$ quindi lo spostamento (e, di conseguenza, la velocità) è sempre tangente alla traiettoria.
 
-## Accelerazione vettoriale media e istantanea
+## 1.3 Accelerazione vettoriale media e istantanea
 
 $$
 \vec a_m = \frac{\Delta \vec v}{\Delta t}
@@ -97,7 +97,7 @@ Se $\vec a_n = 0$ allora ho un moto rettilineo.
 
 Se $\frac{dv}{dt} = 0$ allora ho un moto uniforme (non necessariamente rettilineo).
 
-## La madre di tutti i moti
+## 1.4 La madre di tutti i moti
 
 Dato un corpo con posizione iniziale, velocità iniziale e accelerazione, la sua posizione in funzione del tempo si calcola nel seguente modo:
 
@@ -107,7 +107,7 @@ $$
 
 Menzione particolare meritano il moto circolare e il moto armonico (pendolo, molla e simili)
 
-## Moto circolare
+## 1.5 Moto circolare
 
 La posizione di una particella che compie moto circolare è la seguente:
 
@@ -138,7 +138,7 @@ $$
 
 ove $\vec \omega  =\omega \hat u_z$ ed è perpendicolare al piano su cui giace la traiettria (grazie alla regola della mano destra, conosco anche il senso di percorrenza).
 
-## Moto armonico
+## 1.6 Moto armonico
 
 Il moto armonico è il moto di un oggetto che oscilla nel tempo.
 
@@ -158,7 +158,7 @@ ed ho ottenuto un'equazione differenziale.
 
 Il moto armonico è un tipo di moto periodico.
 
-## Moto periodico
+## 1.7 Moto periodico
 
 Un moto è periodico se 
 
@@ -175,7 +175,7 @@ $$
 f = \frac 1T = \frac{\omega}{2 \pi} \qquad \omega = 2 \pi f
 $$
 
-## Moto piano in coordinate polari
+## 1.8 Moto piano in coordinate polari
 
 E' possibile esprimere uno stesso punto sia in cordinate cartesiane $(x, y)$ che in coordinate polari $(r, \theta)$.
 
@@ -184,7 +184,7 @@ $$
 \vec v = \frac{d \vec r}{dt} = \frac{d(r \hat u_r)}{dt} = \underbrace{\frac{dr}{dt} \hat u_r}_{\text{Velocità radiale}} + r \frac{d \hat u_r}{dt} = v_r \hat u_r + r \omega \hat u_\theta \qquad \frac{d \hat u_r}{dt} = \vec \omega \times \hat u_r = \omega \hat u_\theta
 $$
 
-# Dinamica
+# Capitolo Due: Dinamica
 
 La dinamica studia le cause del moto degli oggetti.
 
@@ -200,7 +200,7 @@ Tutto ciò che è relativo ad un sistema di riferimento inerziale è a sua volta
 
 Di seguito alcune nozioni fondamentali per la comprensione di quanto seguirà.
 
-## Massa inerziale
+## 2.1 Massa inerziale
 
 Immaginiamo di prendere due masse $m_1$ e $m_2$ e di schiacciarle contro una molla: quando le si rilascia partiranno a velocità diverse.
 
@@ -214,7 +214,7 @@ Se scelgo $m_1$ come massa campione e gli assegno il valore $1$, posso ripetere 
 
 La massa $m_1$ è il chilogrammo di platino-iridio conservato a Parigi.
 
-## Quantità di moto
+## 2.2 Quantità di moto
 
 La quantità di moto è letteralmente quanta massa si sta muovendo e a quale velocità.
 
@@ -234,7 +234,7 @@ $$
 \Delta \vec P = \Delta \vec P_1 + \Delta \vec P_2 = m_1 \Delta \vec v_1 + m_2 \Delta \vec v_2 = 0 \implies m_1 \Delta \vec v_1 = -m_2 \Delta \vec v_2
 $$
 
-## I 3 principi della dinamica
+## 2.3 I 3 principi della dinamica
 
 ### 1 - Principio d'inerzia
 
@@ -290,17 +290,17 @@ $$
 
 da cui si ricava che $\vec F_1 = - \vec F_2$
 
-## Teorema dell'impulso
+## 2.4 Teorema dell'impulso
 
 $$
 \vec I = \int_{t_1}^{t_2} \vec F \, dt = \int_{t_1}^{t_2} \frac{d \vec P}{\cancel{dt}} \, \cancel{dt} = \int_{t_1}^{t_2} d \vec P  =\Delta \vec P
 $$
 
-# Interazioni
+# Capitolo Tre: Interazioni
 
 Ci sono diversi tipi di interazioni che dipendono sia dalle caratteristiche dei corpi che interagiscono che dalla loro distanza.
 
-### Interazione gravitazionale
+## 3.1 Interazione gravitazionale
 
 E' responsabile dell'attrazione tra corpi dotati di massa gravitazionale (che a livello macroscopico corrisponde alla massa inerziale mentre a livello quantistico no) e ha raggio d'azione infinito.
 
@@ -310,7 +310,7 @@ $$
 
 ove $\gamma$ (a volte nota anche come $G$) è la costante di gravitazione universale, $r$ indica la distanza tra le due masse e $\hat u_r$ è la direzione che va dalla prima massa alla seconda e viceversa.
 
-### Interazione elettromagnetica
+## 3.2 Interazione elettromagnetica
 
 E' responsabile dell'attrazione e repulsione di oggetti carichi, è responsabile della stabilità degli atomi, delle forze di attrito, di contatto ed elettrostatiche.
 
@@ -320,11 +320,11 @@ $$
 \vec F = \frac{1}{4 \pi \varepsilon_0} \frac{q_1 q_2}{r^2} \hat u_r \qquad \varepsilon_0 = 8.854 \cdot 10^{12} \frac{C}{m^2N}
 $$
 
-### Interazione nucleare debole
+## 3.3 Interazione nucleare debole
 
 E' responsabile del decadimento $\beta$, ha un raggio d'azione dell'ordine di $10^{-18}m$ (per intenderci, un atomo è circa $10^{-10}m$).
 
-### Interazione nucleare forte
+## 3.4 Interazione nucleare forte
 
 E' responsabile per la stabilità del nucleo ed è la più forte attualmente conosciuta (all'interno del suo raggio d'azione che è dell'ordine di $10^{-15}m$).
 
@@ -332,11 +332,11 @@ In particolare è quella forza che mantiene assieme i quark:
 - quark diversi: viene mediata da scambio di _pioni_ e attrae tra loro protoni e neutroni
 - quark uguali: viene mediata da scambio di _gluoni_ e tiene interi i protoni
 
-# Forze principali e altre misure utili
+# Capitolo Quattro: Forze principali e altre misure utili
 
 Di seguito le principali forze utilizzate, alcune misure ad esse relative e moti tipici ove applicabile.
 
-## Forza peso
+## 4.1 Forza peso
 
 La forza peso è causata dall'attrazione gravitazionale.
 
@@ -359,7 +359,7 @@ $$
 g = -\gamma \frac{M_T}{r_T^2} = -6.67 \frac{N \cdot m^2}{kg^2} \cdot 10^{-11} \frac{5.98 \cdot 10^{24} kg}{(6.37 \cdot 10^6)^2 m^2} \simeq 9.81 \frac{m}{s^2} 
 $$
 
-## Densità
+## 4.2 Densità
 
 La densità è la misura di quanta massa c'è in un dato volume
 
@@ -379,7 +379,7 @@ $$
 P_{sm} = \rho_m g = \frac{mg}{V} \qquad P_s = \rho g = \frac{dm}{dV} g
 $$
 
-## Reazione vincolare
+## 4.3 Reazione vincolare
 
 La reazione vincolare è la forza che non fa sprofondare gli oggetti quando li si poggia su un tavolo:
 
@@ -389,7 +389,7 @@ La reazione vincolare può essere composta da una parte normale al piano ($\vec 
 
 Se $\vec R < 0$ allora l'oggetto non è poggiato contro niente e si considera $\vec R = 0$.
 
-## Forza elastica
+## 4.4 Forza elastica
 
 La forza elastica è un tipo di forza che dipende dalla posizione: se fisso un corpo ad una molla e lo sposto, questo subirà una forza proporzionale allo spostamento.
 
@@ -423,7 +423,7 @@ $$
 \end{cases}
 $$
 
-## Forza di attrito radente
+## 4.5 Forza di attrito radente
 
 E' la componente che si oppone al moto degli oggetti su un piano scabro.
 
@@ -443,7 +443,7 @@ Entrambe hanno direzione opposta al moto (o al moto che ci sarebbe se non ci fos
 
 Se il piano è liscio, $\mu_s = \mu_d = 0$.
 
-## Forza di Lorentz
+## 4.6 Forza di Lorentz
 
 La forza di Lorentz è la forza subita dalle particelle cariche (di carica $q$) che si trovano in un campo elettrico o magnetico:
 - Se il campo è un campo magnetico e $\vec B$ è il vettore di induzione magnetica, $\vec F_{\mathscr L} = q(\vec v \times \vec B)$
@@ -451,7 +451,7 @@ La forza di Lorentz è la forza subita dalle particelle cariche (di carica $q$) 
 
 Si può dimostrare che particelle soggette soltanto a forza di Lorentz si muovono percorrendo traiettoria circolare.
 
-# Lavoro ed energia
+# Capitolo Cinque: Lavoro ed energia
 
 Se una forza $\vec F$ sposta una massa di una distanza $d\vec r$ allora
 
@@ -465,7 +465,7 @@ Siccome la forza è additiva, allora anche il lavoro lo è.
 Il lavoro può essere scomposto in componenti $x$, $y$ e $z$.
 In generale il lavoro dipende dalla traiettoria $\gamma$ (se non è vero allora si parla di forze non conservative).
 
-## Teorema delle forze vive / Teorema dell'energia cinetica
+## 5.1 Teorema delle forze vive / Teorema dell'energia cinetica
 
 $$
 \mathscr L_{AB} = \int_A^B \delta \mathscr L = \int_A^B \vec F \cdot d \vec r = \int_A^B dE_k = E_k(B) - E_k(A) = \Delta E_k
@@ -516,7 +516,7 @@ Di conseguenza
 $$
 \mathscr L = \int \delta L = \int dE_k = \Delta E_k
 $$
-## Forze conservative
+## 5.2 Forze conservative
 
 Per comprendere le forze conservative, è necessario conoscere il significato di _gradiente_ e _rotore_.
 
@@ -556,7 +556,7 @@ Una forza è conservativa se:
 4.  $\vec F = - \vec \nabla E_p(\vec r)$
 5.  $\text{rot}(F) = 0$
 
-## Forze centrali a simmetria sferica
+## 5.3 Forze centrali a simmetria sferica
 
 Una forza è centrale a simmetria sferica se è esprimibile nella forma
 
@@ -585,7 +585,7 @@ $$
 
 ove $E_p(r) = \gamma \frac{m_1 m_2}{r} + c$ e $c = 0 \implies E_p(r \to \infty) \to 0$.
 
-## Esempi di forze non conservative
+### Esempi di forze non conservative
 
 La forza di attrito radente non è conservativa: se si parla di attrito statico, non c'è movimento e pertanto il lavoro si annulla mentre se si parla di attrito dinamico allora 
 
@@ -605,7 +605,7 @@ $$
 \mathscr L_{AB}^\gamma = {\int_A^B}_\gamma \vec F_{av} \cdot d \vec r = {\int_A^B}_\gamma -\beta \vec v \cdot \vec v \, dt = -\beta {\int_A^B}_\gamma |\vec v|^2 \, dt \le 0
 $$
 
-## Energia meccanica
+## 5.4 Energia meccanica
 
 L'energia meccanica di un oggetto è la somma della sua energia cinetica con la sua energia potenziale (ne esistono di vari tipi).
 
@@ -631,7 +631,7 @@ Con il termine _trasformismo dell'energia_ si intende il fatto che l'energia pot
 - Energia potenziale gravitazionale: $E_{pg} = mgh$ oppure $U = -\gamma \frac{m_1 m_2}{r}$
 - Energia potenziale elastica: $E_{pe} = \frac 12 k (\Delta l)^2$
 
-## Potenza
+## 5.5 Potenza
 
 La potenza è la quantità di energia trasferita nell'unità di tempo.
 
@@ -642,7 +642,7 @@ $$
 
 Si misura in Watt: $W = \frac J S$.
 
-# Dinamica relativa
+# Capitolo Sei: Dinamica relativa
 
 La dinamica classica si occupa di studiare le interazioni tra oggetti in un sistema di riferimento inserziale fisso.
 Con la dinamica relativa, si possono studiare anche i moti relativi a sistemi di riferimento che accelerano: in questo caso andranno studiate anche le cosiddette forze apparenti.
@@ -655,7 +655,7 @@ $$
 \vec a = \frac{d \vec v}{dt} = \frac{d \vec v'}{dt} + \frac{d \omega}{dt} \times \vec r' + \vec \omega \times \frac{d \vec r'}{dt} + \frac{d \vec v_{o'}}{dt} = \vec a' + \underbrace{2(\vec \omega \times \vec v)}_{= \vec a_c, \text{ accelerazione di Coriolis}} + \underbrace{\overbrace{\frac{d \vec \omega}{dt} \times \vec r'}^{\vec \alpha \times \vec r'} + \vec \omega \times (\vec \omega \times \vec r)}_{=a_T, \text{ accelerazione di trascinamento}} + \vec a_{o'}
 $$
 
-## Dinamica in sistemi di riferimento non inerziali
+## 6.1 Dinamica in sistemi di riferimento non inerziali
 
 Se $\vec F = m \vec a$ allora $\vec F' = m \vec a'$ quindi $\vec F = m \vec a = \underbrace{m \vec a'}_{\vec F'} + m \vec a_{co} + m \vec a_T$
 
@@ -671,11 +671,11 @@ $$
 v = 0, F = 0 \implies \vec F' = \vec F + \vec F_{co} + \vec F_T
 $$
 
-# Gravitazione
+# Capitolo Sette: Gravitazione
 
 Per comprendere la gravitazione, è necessario aver compreso le nozioni di momento di un vettore/forza/quantità di moto.
 
-## Momento di tutte le robe quì sopra
+## 7.1 Momento di tutte le robe quì sopra
 
 ![Immagine da [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:MomentoForza.svg)][EsempioMomentoVettore]
 
@@ -713,13 +713,13 @@ $$
 
 In caso di forze assiali, $\vec L_{(O)}$ è costante per cui $\vec \tau_{(O)} = 0$ ma ciò non vuol dire che $\sum F = 0$.
 
-## Gravitazione - Leggi di Kepler
+## 7.2 Gravitazione - Leggi di Kepler
 
 1.  Le orbite dei pianeti sono ellittiche e il sole sta in uno dei due fuochi
 2.  Il vettore posizione copre aree uguali in tempi uguali (quindi, la velocità areolare si conserva)
 3.  Il quadrato del periodo di rotazione è proporzionale al cubo del semiasse maggiore
 
-## Energia potenziale gravitazionale
+## 7.3 Energia potenziale gravitazionale
 
 Come già accennato nella sezione sull'energia, esiste un'enrgia potenziale gravitazionale dipendente solamente dalla distanza:
 
@@ -743,7 +743,7 @@ Ma $E_k(r \to \infty) < 0$ non ha senso quindi non posso avere orbite che vanno 
 - $E = 0$: orbita parabolica
 - $E > 0$: orbita iperbolica
 
-## Velocità di fuga
+## 7.4 Velocità di fuga
 
 La velocità di fuga è quella velocità che va conferita ad un oggetto per permettergli di arrivare ad n altezza prestabilita.
 
@@ -767,7 +767,7 @@ $$
 
 In un orbita ellitica, $\vec L_{(O)}$ è costante: $|\vec L_{(O)}| = mr_pv_p = |\vec L_{(O)}| = mr_av_a$, ove il pedice $_a$ indica i valori relativi all'afelio/apogeo (il punto dell'orbita più lontano dal sole) mentre il pedice $_p$ indica i valori relativi al perielio/perigeo (il punto dell'orbita più vicino al sole) e $m$ indica la massa del pianeta.
 
-# Campo gravitazionale
+## 7.5 Campo gravitazionale
 
 Sia $\vec F$ la forza di gravità e $\mathscr {\vec G} = \frac{\vec F}{m}$ l'accelerazione (che non dipenda dalla massa che subisce la forza ma soltanto dalla massa che la esercita).
 
@@ -785,7 +785,7 @@ $$
 
 Ora si rennde necessario comprendere il concetto di flusso di un vettore per poi poter utilizzare il teorema di Gauss.
 
-## Flusso di un vettore
+## 7.6 Flusso di un vettore
 
 Il flusso di un vettore può essere inteso come la quantità di vettore che passa attraverso una superficie in una data quantità di tempo.
 
@@ -803,7 +803,7 @@ $$
 \varphi_S(\vec E) = \int_S d \varphi = \int_S \vec E \cdot d \vec S = \int_S \vec E \cdot \hat n \, dS
 $$
 
-## Teorema di Gauss
+## 7.7 Teorema di Gauss
 
 Normalmente, computare un calcolo del genere è estremamente difficile con una superficie generica ma non con una sfera.
 Il flusso di potenziale gravitazionale $\varphi_S (\mathscr{\vec G})$ attraverso una sfera di raggio $r$ e centrata sulla  massa puntiforme $M$ è:
@@ -822,7 +822,7 @@ $$
 
 ed ho così ottenuto il teorema di Gauss.
 
-## Moto nel campo gravitazionale
+## 7.8 Moto nel campo gravitazionale
 
 _Ovviamente valido per tutte le forze centrali a simmetria sferica._
 

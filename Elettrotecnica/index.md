@@ -5,11 +5,11 @@ author: "Andrea Oggioni"
 
 # Teoria
 
-## Analisi nodale
+## Capitolo Uno: Analisi nodale
 
 L'analisi nodale è un metodo sistematico per risolvere circuiti (almeno quelli fatti fino alla quinta esercitazione)
 
-### Fasi
+### 1.1 Fasi
 
 0.  Scelgo un nodo di riferimento per il potenziale zero e lo indico
 1.  Scrivo tutte le $v$ in funzione delle $u$
@@ -20,7 +20,7 @@ In caso non sia possibile ricavare la corrente di un ramo (si ha un bad-branch),
 
 3.  Scrivo le KCL per tutti i nodi (tranne quello di riferimento) e le equazioni di tutti i componenti sui bad-branch
 
-### Esempio
+#### Esempio
 
 ![][analisi_nodale]
 
@@ -42,7 +42,7 @@ Siccome $V_x = u_3$ allora devo trovare $u_3$ in funzione di tutto il resto.
 
 ![][analisi_nodale_4]
 
-## Ricavare parametri della reppresentazione in (ad esempio) corrente per un doppio bipolo
+## Capitolo Due: Ricavare parametri della reppresentazione in (ad esempio) corrente per un doppio bipolo
 
 Ricavare la rappresentazione in corrente di un doppio bipolo proprio significa ricavare i parametri necessari per completare la sua equazione descrittiva
 
@@ -74,7 +74,7 @@ $$
 
 Per doppi bipoli propri controlati in "non corrente" basta sostituire le $i$ con le $v$ e viceversa. Il resto del procedimento è analogo.
 
-## Risoluzione di equazioni differenziali
+### 2.1 Risoluzione di equazioni differenziali
 
 All'inizio sappiamo che 
 
@@ -142,11 +142,11 @@ Per un induttore, il procedimento è analogo:
 $\lambda = -\frac{-R_{eq}}{L}$ ove $R_{eq}$ è la resistenza vista dai morsetti ai capi dell'induttore
 $u = \frac{E_{eq}}{L}$ ove $E_{eq}$ è la tensione che si misurerebbe su un cirtuito aperto messo al posto dell'induttore.
 
-## Funzione di rete (anche nota come Funzione di trasferimento)
+### 2.2 Funzione di rete (anche nota come Funzione di trasferimento)
 
 Una funzione di rete è un rapporto tra un'uscita ed un ingresso: se ci sono più ingressi se ne considera uno solo.
 
-## Rifasamento
+### 2.3 Rifasamento
 
 > Il fattore di potenza non è un contadino della Basilicata.
 > \- _F. Bizzarri_, 2023
@@ -168,7 +168,7 @@ Se $Q \gt 0$ allora si dice che $\cos \varphi$ è in ritardo (proprio perchè, g
 
 Il rifasamento consiste nell'installazione di un condensatore, solitamente in parallelo ad un carico resistivo-capacitivo in modo da portare il fattore di potenza più vicino ad 1 (con conseguente risparmio sulla voce "spese di trasporto" in bolletta e tensione più stabile).
 
-### Esempio
+#### Esempio
 
 ![][triangolo_potenze_esempio]
 
@@ -210,7 +210,7 @@ $$
 \hat A = \frac{1}{2} \frac{|\overline V|^2}{\left( \frac{1}{j \omega C} \right)^*} = - \frac{1}{2} j \omega C |\overline V|^2 \implies Q_c = \Im{\hat A} = -\frac{1}{2} \omega C |\overline V|^2 \implies C = \frac{-2Q_c}{\omega |\overline V|^2} \simeq 250 \, \mu F
 $$
 
-## Elettromagnetismo
+## Capitolo Tre: Elettromagnetismo
 
 Tutti gli esercizi sui campi magnetici e l'elettromagnetismo si basano sulla legge di Faraday-Henry:
 
@@ -248,7 +248,7 @@ ove $i$ è la corrente che passa nel filo e $r$  la distanza dal filo a cui si v
 
 Nel vuoto $\mu_0 = 4 \cdot 10^{-7} \, H/m$
 
-## Reti trifase
+## Capitolo Quattro: Reti trifase
 
 Tutte le reti trifase considerate saranno _simmetriche ed equilibrate_ mentre tutti i fasori considerati sono riferiti al loro valore efficace (non come quelli considerati altrove che si riferiscono al valore massimo).
 
@@ -269,7 +269,7 @@ $$
 \end{cases}
 $$
 
-### Tensioni trifase
+### 4.1 Tensioni trifase
 
 In un sistema trifase, ci sono 3 tensioni sinusoidali sfasate di 120 ciascuna.
 
@@ -315,7 +315,7 @@ Nel caso di sequenza positiva, le tensioni di linea (ab, bc, ca) sono scalate di
 
 Anche nel caso di sequenza negativa, le tensioni di linea sono scalate di un fattore $\sqrt 3$ rispetto alle corrispondenti tensioni di fase ma al posto che essere in anticipo, sono in ritardo di $\pi / 6$.
 
-### Carichi trifase
+### 4.2 Carichi trifase
 
 Anche i carichi (solitamente resistenze, capicità e induttanze) possono essere in configurazione a stella e a triangolo.
 
@@ -331,7 +331,7 @@ $$
 
 Si dice che il carico è bilanciato quanto tutte e tre le parti che lo compongono sono di ugual valore.
 
-### Connessioni tra elementi trifase
+### 4.3 Connessioni tra elementi trifase
 
 Abbiamo già introdotto le tensioni di linea e le tensioni di fase parlando di generatori trivase, ora segue una definizione più rigorosa.
 
@@ -350,7 +350,7 @@ Di seguito alcuni esempi:
 
 ![](assets/trifase/carico_triangolo_app.png)
 
-### Studio di un circuito trifase
+### 4.4 Studio di un circuito trifase
 
 Per poter studiare e semplificare un circuito trifase sono necessari due passaggi preventivi.
 
@@ -366,7 +366,7 @@ Unica eccezione a questa regola sono i circuiti completamente composti da colleg
 
 Segue esempio.
 
-### Esempio di studio di circuito trifase
+#### Esempio di studio di circuito trifase
 
 Il circuito iniziale è molto semplice
 
@@ -384,7 +384,7 @@ Infine, si procede a scegliere una fase e a riportarla da sola.
 
 ![In questo esempio si ha scelto di utilzzare la fase a.](assets/trifase/esempio/3.png)
 
-### Potenza trifase
+### 4.5 Potenza trifase
 
 Siano $\theta = \theta_V - \theta_I$ lo sfasamento tra tensione e corrente, $V_p$ la tensione di fase e $I_p$ la corrente di fase.
 
@@ -400,7 +400,7 @@ $$
 \hat A_{3p} = P_{3p} + j Q_{3p} = 3P_p + j 3Q_p = 3 \hat A_p
 $$
 
-## Circuiti magnetici
+## Capitolo Cinque: Circuiti magnetici
 
 In un circuito magnetico, al posto del flusso elettrico, si studia il flusso magnetico, studando il flusso elettrico di un circuito elettrico equivalente a cui si arriva con adeguate trasformazioni.
 
@@ -453,7 +453,7 @@ Tralasciando tutti i ragionamenti sul verso della tensione e delle forze elettro
 
 Anche nei circuiti magnetici convertiti ad elettrici valgono KVL, KCL e una specie di legge di Ohm: $v = \mathscr R \cdot \psi$
 
-### Doppio bipolo induttivo
+### 5.1 Doppio bipolo induttivo
 
 E' possibile trovarsi di fronte ad un doppio bipolo composto da due induttori accoppiato avvolti attorno allo stesso circuito magentico: in questo caso, è possibile trasformarlo in due induttori mutualmente accoppiati sapendo che
 
@@ -485,13 +485,13 @@ Se accendendo gli altri induttori si otterrebbe interferenza costruttiva allora 
 
 # Formule comode
 
-## Potenza assorbita di un doppio bipolo proprio
+## 1.1 Potenza assorbita di un doppio bipolo proprio
 
 $$
 P_a^{DBP} = v_1 i_1 + v_2   i_2
 $$
 
-## Massima potenza assorbita da un resistore
+## 1.2 Massima potenza assorbita da un resistore
 
 Il resistore $R_2$ assorbe la massima potenza quando il suo valore è pari a quello di $R_1$.
 
@@ -515,13 +515,13 @@ $$
 \hat A = \frac 12 \frac{|E_{th}^2|} {4 \Re\{Z_{th}\}}
 $$
 
-## Potenza immagazzinata da condensatori e induttori
+## 1.3 Potenza immagazzinata da condensatori e induttori
 
 $$
 W_c(t) = \frac 12 C V_c^2(t) \qquad W_l(t) = \frac 12 L i_l^2(t)
 $$
 
-## pulsazione di risonanza
+## 1.4 Pulsazione di risonanza
 
 La frequenza di risonanza si calcola come
 
@@ -543,7 +543,7 @@ $$
 \end{align*}
 $$
 
-## Trasformazione dal dominio delle frequenze al dominio dei fasori e viceversa e derivata di un fasore
+## 1.5 Trasformazione dal dominio delle frequenze al dominio dei fasori e viceversa e derivata di un fasore
 
 Sia $v(t) = V \cos(\omega t + \phi)$ allora $\overline{v} = V e^{j \phi}$.
 
@@ -564,13 +564,13 @@ $$
 \overline v \rightarrow \overline v' = j \omega \overline v
 $$
 
-## Teorema di Tellegen
+## 1.6 Teorema di Tellegen
 
 $$
 \sum P^a_i = 0
 $$
 
-## Teorema di Bucherot
+## 1.7 Teorema di Bucherot
 
 $$
 \sum \hat A_i = 0 \implies \begin{cases}
@@ -579,13 +579,13 @@ $$
 \end{cases}
 $$
 
-## Potenza complessa
+## 1.8 Potenza complessa
 
 $$
 \hat A = \frac 12 \overline v (\overline i) ^ *
 $$
 
-## Costante di tempo tau
+## 1.9 Costante di tempo tau
 
 $$
 \tau = \frac{1}{|\lambda|}
@@ -593,7 +593,7 @@ $$
 
 # Componenti ed equazioni caratteristiche
 
-## Trasferitore ideale di potenza
+## 1.1 Trasferitore ideale di potenza
 
 ![][trasferitore_idelae_potenza]
 
@@ -609,7 +609,7 @@ $$
 
 Il trasferitore ideale di potenza è controllabile con basi miste, non con base corrente o base tensione.
 
-## Amplificatore operazionale
+## 1.2 Amplificatore operazionale
 
 ![][opamp]
 
@@ -618,7 +618,7 @@ i_1 = i_2 = 0 \qquad
 v_{+-} = 0
 $$
 
-## Mutui induttori
+## 1.3 Mutui induttori
 
 ![](assets/componenti/mutui_induttori/mutui_induttori.png)
 

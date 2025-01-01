@@ -4,11 +4,11 @@ author:
 - "Andrea Oggioni"
 ---
 
-# Relazioni
+# Capitolo Uno: Relazioni
 
 Dati $N$ insiemi $A_1, A_2, \dots, A_N$, si defisce **relazione N-aria** o **di arità N** tra gli insiemi dati un qualunque sottoinsieme del prodotto cartesiano $A_1 \times A_2 \times \dots \times A_N$.
 
-## Relazioni binarie
+## 1.1 Relazioni binarie
 
 Una **relazione binaria** è tale se è una relazione tra solo due insiemi.
 
@@ -16,7 +16,7 @@ Può essere rappresentata con il grafo di adiacenza o con la matrice di adiacenz
 
 Dati $R \sube A_1 \times A_2, T \sube A_1 \times A_2, |A_1| = n, |A_2| = m$, se $M_R$ e $M_T$ sono le matrici di adiacenza delle relazioni allora $R \cap T \to M_{R \cap T} = M_R \cdot M_T$ e $R \cup T \to M_{R \cup T} = M_R + M_T$ dove $+$ e $\cdot$ sono, rispettivamente, somma e prodotto elemento per elemento.
 
-## Prodotto di relazioni
+## 1.2 Prodotto di relazioni
 
 Siano $R \sube A_1 \times A_2$ e $T \sube A_2 \times A_3$ allora $RT = \left\{ (a_1, a_3) \in A_1 \times A_3 | \exist a_2 \in A_2 : (a_1, a_2) \in R \cap (a_2, a_3) \in T \right\}$.
 
@@ -30,7 +30,7 @@ Il prodotto di possiede alcune proprietà:
 2. Il prodotto di relazioni gode della proprietà commutativa;
 3. Siano $R,T \sube A_1 \times A_2$, $S,V \sube A_3 \times A_4$, $R \sube T$ e $S \sube V$ allora $RS \sube TV$.
 
-## Inverso di una relazione
+## 1.3 Inverso di una relazione
 
 Dato $R \sube A_1 \times A_2$ allora $R^{-1} = \{(b, a) \in A_2 \times A_1 | (a, b) \in A_1 \times A_2\}$.
 
@@ -47,7 +47,7 @@ La relazione inversa gode di alcune proprietà (che spesso tornano comode negli 
 5. $R(T \cap S) = RT \cap RS$
 6. $R(T \cup S) = RT \cup RS$
 
-## Potenza di una relazione
+## 1.4 Potenza di una relazione
 
 Sia $R \sube A \times A$ e $n \gt 0$ allora
 
@@ -62,7 +62,7 @@ $$
 Se $n,m \gt 0$ vale che (i) $R^n R^m = R^{n+m}$ e che (ii) $(R^n)^m = R^{nm}$;
 se $n \lt 0$ o $m \lt 0$ allora non è detto che valga la prima.
 
-## Proprietà delle relazioni binarie
+## 1.5 Proprietà delle relazioni binarie
 
 Sia $R \sube A \times A$.
 
@@ -119,7 +119,7 @@ Siano $R,T \sube A \times A$ e assumo di volta in volta le proprietà in oggetto
 | Antisimmetricità | NO                  | SI                  | NO         | SI         | NO                |
 | Transitività     | NO                  | NO                  | NO         | SI         | Solo se $RT = TR$ |
 
-## Chiusure di relazioni rispetto ad un insieme di proprietà
+## 1.6 Chiusure di relazioni rispetto ad un insieme di proprietà
 
 Siano $R \sube A \times A, P=\{proprietà\}$.
 
@@ -148,7 +148,7 @@ Sia $S$ la chiusura di $R \sube A \times A$ rispetto alle proprietà date di vol
 - Per ottenere la chiusura riflessiva e transitiva si deve fare $S = \underset{i \ge 0}{\bigcup} R^i$ (iterando fino ad arrivare al fix point)
 - Per ottenere la chiusura riflessiva, simmetrica e transitiva si deve fare $S = \underset{i \ge 0}{\bigcup} (R \cup I_A \cup R^{-1})$
 
-## Relazioni di equivalenza
+## 1.7 Relazioni di equivalenza
 
 Una relazione è detta **relazione di equivalenza** se gode delle proprietà riflessiva, simmetrica e transitiva.
 
@@ -158,13 +158,13 @@ Sia $\rho$ una relazione di equivalenza si $A$ e $a \in A$, allora si definisce 
 
 Se uno stesso elemento compare in due classi di equivalenza, allora le due classi sono la stessa classe.
 
-## Partizioni
+## 1.8 Partizioni
 
 Sia $A$ un insieme e $B_i \in A$ allora $\{ B_i \}$ è detta **partizione di $A$** se (i) $\underset{i \ in I}{\bigcup} B_i = A$ e (ii) $\forall B_i, B_j, i \ne j, B_i \cap B_j = \emptyset$.
 
 In una partizione non ci sono insiemi vuoti.
 
-## Insieme quoziente
+## 1.9 Insieme quoziente
 
 Data una relazione di equivalenza $\rho$ su $A$, si definisce **insieme quoziente di $A$ rispetto a $\rho$** il seguente insieme:
 
@@ -174,7 +174,7 @@ $$
 
 L'insieme quoziente contiene tutte le classi di equivalenza di un insieme e costituisce una partizione dell'insieme da cui origina.
 
-## Relazioni d'ordine
+## 1.10 Relazioni d'ordine
 
 Una relazione è detta **relazione d'ordine** se gode delle proprietà riflessiva, antisimmetrica e transitiva.
 
@@ -205,7 +205,7 @@ Sia $B \sube A$ allora
 
 Non è detto che il maggiorante o il minorante esistano.
 
-# Funzioni
+# Capitolo Due: Funzioni
 
 Una relazione $f \sube A \times B$ che si può scrivere anche $f : A \to B$ è detta **funzione** se $\forall a \in A \exist ! b\in B : (a, b) \in f$; in tal caso vale che:
 
@@ -252,7 +252,7 @@ Se $f$ e $g$ sono biunivoche allora $f \cdot g$ è a sua volta binuivoca.
 
 Se $f \cdot g$ è biunivoca allora $f$ è almeno iniettiva e $g$ è almeno suriettiva.
 
-## Funzioni inverse
+## 2.1 Funzioni inverse
 
 Sia $f : A \to B$ una funzione, allora si definisce **inversa di f** una funzione $g : B \to A$ tale che $g \cdot f = i_B$ (inversa sinistra) e che $f \cdot g i_A$ (inversa destra).
 
@@ -260,7 +260,7 @@ Se $f$ ammette sia inversa destra che inversa sinistra allora coincidono e l'inv
 
 Una funzione è iniettiva se e solo se ammette inversa destra mentre è suriettiva se e solo se ammette inversa sinistra.
 
-## Teorema di fattorizzazione
+## 2.2 Teorema di fattorizzazione
 
 Sia $f : A \to B$ una funzione, allora si può definire la relazione $\ker(f)$ come segue:
 
@@ -274,7 +274,7 @@ Definiamo anche la funzione $P_\rho : A \to \frac{A}{\rho}$ chiamata **proiezion
 
 Il **teorema di fattorizzazione** afferma che date $f : A \to B$ e $P_{\ker(f)}$ esiste ed è unica la funzione $g : \frac{A}{\ker(f)} \to B$ tale che $P_{\ker(f)} \cdot g = f$. Inoltre $g$ è iniettiva.
 
-## Cardinalità di insiemi
+## 2.3 Cardinalità di insiemi
 
 Due insiemi $A$ e $B$ hanno la stessa cardinalità ($|A| = |B|$) se e solo se esiste una funzione biunivoca $f : A \to B$.
 
@@ -293,11 +293,11 @@ Un insieme è detto numerabile se può essere messo in corrispondenza biunivoca 
 
 Un insieme ha la potenza del continuo se può essere messo in corrispondenza biunivoca con $\mathbb{R}$.
 
-## Teorema di Cantor
+## 2.4 Teorema di Cantor
 
 La cardinalità di un insieme è sempre minore di quella del suo insieme delle parti.
 
-# Logica
+# Capitolo Tre: Logica
 
 La sintassi della logica è composta da
 
@@ -349,7 +349,7 @@ Un insieme $\Gamma$ di f.b.f. è detto **soddisfacibile** se ammette un modello.
 
 Un insieme $\Gamma$ di f.b.f. è detto **insoddisfacibile** se non ammette modelli.
 
-## Teorema di deduzione semantica
+## 3.1 Teorema di deduzione semantica
 
 Sia $\Gamma$ un insieme di f.b.f. e $A$ e $B$ due f.b.f.
 
@@ -359,7 +359,7 @@ Se ne deduce che $B \models A$ se e solo se $B \implies A$ è una tautologia.
 
 Il teorema contrario afferma che $\Gamma \models A$ se e solo se $\Gamma \cup \{ \neg A \}$ è insoddisfacibile.
 
-## Teorema di compattezza
+## 3.2 Teorema di compattezza
 
 Un insieme $\Gamma$ di f.b.f. è soddisfacibile se e solo se ogni suo sottoinsieme finito lo è.
 
@@ -367,7 +367,7 @@ Questo teorema è più utile se enunciato al contrario.
 
 Un insieme $\Gamma$ di f.b.f. è insoddisfacibile se esiste un suo sottoinsieme finito che è anch'esso insoddisfacibile.
 
-## Equivalenze semantiche
+## 3.3 Equivalenze semantiche
 
 Una f.b.f. è detta in **forma normale congiuntiva** se è scritta come congiunzione di disgiunzioni.
 
@@ -394,7 +394,7 @@ Qualunque f.b.f. può essere scritta utilizzando solo connettivi logici da un **
 - $\neg(A \cap B) \equiv \neg A \cup \neg B$
 - $A \iff B \equiv (A \implies B) \cap (B \implies A) \equiv (\neg A \cup B) \cap (\neg B \cup A)$
 
-# Teorie formali
+# Capitolo Quattro: Teorie formali
 
 Una **teoria formale** è definita da
 
@@ -409,7 +409,7 @@ Un **teorema** di una teoria formale $\mathcal H$ è l'ultima riga di una dimost
 
 Una formula $\mathscr A$ si deduce sintatticamente da un insieme $\Gamma$ di f.b.f ($\Gamma \vdash_\mathcal H \mathscr A$) se esiste una dimostrazione di $\mathscr A$ da $\Gamma$ cioè esiste una sequenza finita di righe in cui $\mathscr A$ è l'ultima riga nella quale le f.b.f. sono o assiomi di $\mathcal H$ o f.b.f. dedotte dalle precedenti mediante regole di inferenza di $\mathcal H$ oppure f.b.f. di $\Gamma$.
 
-## Teoria $\mathcal L$
+## 4.1 Teoria $\mathcal L$
 
 - Alfabeto: unione di
   - $\{A, B, \dots\}$  insieme al più numerabile di lettere enunciative
@@ -444,7 +444,7 @@ Grazie al teorema di completezza e correttezza, si può affermare che i teoremi 
 
 $\Gamma \cup \{\mathscr B\} \vdash_\mathcal L \mathscr A$ se e solo se $\Gamma \vdash_\mathcal L \mathscr B \implies \mathscr A$.
 
-## Teoria della risoluzione $\mathscr R$
+## 4.2 Teoria della risoluzione $\mathscr R$
 
 Un **letterale** è una lettera enunciativa o la sua negazione.
 
@@ -490,7 +490,7 @@ $S \vdash_\mathcal R \square$ se e solo se $S$ è insoddisfacibile (infatti $S \
 
 Ne segue che S è insoddisfacibile se e solo se $\square \in \text{Ris}^*(S)$.
 
-# Logica del primo ordine
+# Capitolo Cinque: Logica del primo ordine
 
 La sintassi della logica del primo ordine è composta da
 
@@ -563,7 +563,7 @@ Una formula si dice in **forma normale prenessa** se tutti i quantificatori comp
 
 E' possibile portare una qualsiasi f.b.f. in forma normale prenessa attraverso alcuni lemmi.
 
-## Equivalenze semantiche
+## 5.1 Equivalenze semantiche
 
 - $(\forall x)(\forall y) \mathscr A \equiv (\forall y)(\forall x) \mathscr A$
 - $(\exists x)(\exists y) \mathscr A \equiv (\exists y)(\exists x) \mathscr A$
@@ -572,7 +572,7 @@ E' possibile portare una qualsiasi f.b.f. in forma normale prenessa attraverso a
 - $(\forall x) \mathscr A \cap (\forall x) \mathscr B \equiv (\forall x)(\mathscr A \cap \mathscr B)$
 - $(\forall x) \mathscr A \cup (\forall x) \mathscr B \equiv (\forall x)(\mathscr A \cup \mathscr B)$
 
-## Lemmi per le forme normai prenesse
+## 5.2 Lemmi per le forme normai prenesse
 
 - $(\forall x) \mathscr A(x) \implies \mathscr B \equiv (\exists t)(\mathscr A(t) \implies \mathscr B)$ (se $\mathscr B$ non contiene occorrenze libere di $t$)
 - $(\exists x) \mathscr A(x) \implies \mathscr B \equiv (\forall t)(\mathscr A(t) \implies \mathscr B)$ (se $\mathscr B$ non contiene occorrenze libere di $t$)
@@ -585,13 +585,13 @@ Se necessario, nel portare in forma normale prenessa è possibile andare a cambi
 
 In pratica, se estraendo un quantificatore si va a vincolare occorrenze di variabili che prima non erano vincolate, è necessario, prima di procedere all'estrazione, cambiare nome alla variabile quantificata e a tutte le occorrenze vincolate.
 
-## Forma normale di Skolem
+## 5.3 Forma normale di Skolem
 
 Skolemizzare una formula significa trasformarla in un modo tale per cui si ottiene una formula non equivalente ma che conserva la soddisfacibilità.
 
 Per portare una formula in forma normale di Skolem, è prima necessario portarla in forma normale prenessa, successivamente, se comincia con dei quantificatori esistenziali, li tolgo e sostituisco le variabili da essi quantificate con delle costanti; poi per ogni altro quantificatore esistenziale, lo tolgo e sostituisco la variabile quantificata con una lettera funzionale che prende come argomenti tutte le lettere quantificate dai $\forall$ prima del $\exists$ appena rimosso.
 
-## Sostituzioni
+## 5.4 Sostituzioni
 
 Una sostituzione $\sigma$ è una scrittura finita del tipo
 
@@ -617,7 +617,7 @@ Un unificatore $\sigma$ di $E_1, E_2, \dots, E_N$ è detto **unificatore più ge
 
 Il m.g.u., a parte ordine e nome delle variabili, è unico.
 
-## Risolvente per una logica del primo ordine
+## 5.5 Risolvente per una logica del primo ordine
 
 Siano $C_1, C_2$ due clausole di un linguaggio del primo ordine.
 
@@ -626,11 +626,11 @@ Siano $C_1, C_2$ due clausole di un linguaggio del primo ordine.
 
 In pratica, è come la risoluzione vista [precedentemente](#teoria-della-risoluzione) ma senza tenere conto del nome diverso delle variabili.
 
-## Teorema di risoluzione
+## 5.6 Teorema di risoluzione
 
 $S \vdash_\mathcal R \square$ se e solo se $S$ è insoddisfacibil; $S \models \mathscr A$ se e solo se $S \cup \{\neg \mathscr A\}$ è insoddisfacibile.
 
-## Teoria formale $\mathcal K$
+## 5.7 Teoria formale $\mathcal K$
 
 La teoria formale $\mathcal K$ è l'equivalente della teoria $\mathcal L$ ma per la logica del primo ordine.
 
@@ -665,11 +665,11 @@ $\Gamma \mathscr A \vdash \mathscr B$ se e solo se $\Gamma \vdash \mathscr A \im
 
 Se vengono usate solamente formule chiuse, non vi sono variabili libere e quindi il teorema di deduzione sintattica vale sempre.
 
-# Strutture algebriche
+# Capitolo Sei: Strutture algebriche
 
 Una **struttura algebrica** è una coppia $\lang A, \Omega \rang$ con $A$ un insieme qualsiasi e $\Omega$ un insieme di operazioni interne su $A$ e n-arie
 
-## Proprietà delle operazioni
+## 6.1 Proprietà delle operazioni
 
 Sia $\lang A, \star \rang$
 
@@ -710,7 +710,7 @@ Le operazioni di $\Omega$ possono avere alcune proprietà
   $$
 9. Sia $\star$ associativa, $e \in A$, $a,b \in A$ abbiano inversi, rispettivamente, $a^{-1}$ e $b^{-1}$, allora $(a \star b)^{-1} = b^{-1} \star a^{-1}$.
 
-## Lista di strutture algebriche
+## 6.2 Lista di strutture algebriche
 
 Sia $\lang A, \cdot \rang$ una struttura algebrica, allora
 
@@ -738,7 +738,7 @@ $\lang A, \cap, \cup \rang$ si dice **reticolo** se
 
 Notare come $\{\text{Anelli}\} \sub \{\text{Corpi}\} \sub \{\text{Campi}\} \sub \{\text{Reticoli}\}$.
 
-## Teorema di risoluzione dei postulati
+## 6.3 Teorema di risoluzione dei postulati
 
 Sia $\lang A, \cdot \rang$ una struttura algebrica, $\cdot$ associativa, allora sono equivalenti le seguenti affermazioni
 
@@ -746,7 +746,7 @@ Sia $\lang A, \cdot \rang$ una struttura algebrica, $\cdot$ associativa, allora 
 2. $\exists e \in A : \forall a \in A \ e \cdot a = a$ e $\forall a \in A \ \exists b \in A : b \cdot a = e$.
 3. Ogni equazione del tipo $a \cdot x = b$ e $x \cdot a = b$ ha una e una sola soluzione.
 
-## Proprietà degli anelli
+## 6.4 Proprietà degli anelli
 
 Sia $\lang A, +, \cdot \rang$ un anello e $a - b = a + (-b)$, allora valgono le seguenti
 
@@ -767,7 +767,7 @@ Un anello è privo di divisori dello zero se e solo se valgono le leggi di cance
 
 Un anello commutativo privo di divisori dello zero è detto **dominio d'integrità**.
 
-## Sottostrutture algebriche
+## 6.5 Sottostrutture algebriche
 
 Sia $\lang A, \Omega \rang$ una struttura algebrica. $\lang H \sube A, \Omega \rang$ è detto **sottostruttura algebrica** di $\lang A, \Omega \rang$ se è una struttura algebrica dello stesso tipo di $\lang A, \Omega \rang$ rispetto alle operazioni di $\Omega$.
 
@@ -799,7 +799,7 @@ $\lang H, +, \cdot \rang$ è sottoanello se $\forall a,b \in H \ a - b \in H$ e 
 
 $\lang H, +, \cdot \rang$ è sottocorpo se $\forall a,b \in H \ a - b \in H$, $\forall a,b \in H_0 \ a \cdot b^{-1} \in H$.
 
-## Relazioni di equivalenza tra strutture algebriche
+## 6.6 Relazioni di equivalenza tra strutture algebriche
 
 Dati un insieme $A$, una relazione di equivalenza $\rho$ su $A$ ed un'operazione $\omega$ $n$-aria su A, si dice che **$\rho$ è compatibile con $\omega$** se $\forall a_1, a_2, \dots, a_n, b_1, b_2, \dots, b_n \in A$ vale che da $\forall i \ a_i \rho b_i$ segue che $\omega(a_1, a_2, \dots, a_n) \rho \omega(b_1, b_2, \dots, b_n)$.
 
@@ -834,7 +834,7 @@ Di seguito alcune specifiche per morfismi tra strutture algebriche:
   - $f(a_1 + a_2) = f(a_1) \oplus f(a_2) \quad \forall a_1,a_2 \in A$
   - $f(a_1 \cdot a_2) = f(a_1) \odot f(a_2) \quad \forall a_1,a_2 \in A$
 
-## Laterali e ideali
+## 6.7 Laterali e ideali
 
 Sia $\lang A, \cdot \rang$ un gruppo, $H \sube A$ un suo sottogruppo e $a \in A$. Sono detti **laterale destro** di $H$ in $A$ l'insieme $Ha = \{h \cdot a : h \in H\}$ e **laterale sinistro** di $H$ in $A$ l'insieme $aH = \{a \cdot h : h \in H\}$.
 
@@ -875,7 +875,7 @@ Le operazioni indotte sono
 - $(I + a) + (I + b) = I + (a + b)$
 - $(I + a) \cdot (I + b) = I + (a \cdot b)$
 
-# Equazioni in $\mathbb{Z}_n$
+# Capitolo Sette: Equazioni in $\mathbb{Z}_n$
 
 Sia $\lang \mathbb{Z}_n, \oplus, \cdot \rang$ un anello. Si vogliono risolvere equazioni del tipo $[a]x = [b]$ in $\mathbb{Z}_n$.
 
@@ -885,7 +885,7 @@ Nel primo caso, moltiplico entrambi i lati dell'equazione per $[a]^{-1}$ e ho fi
 
 Nel secondo caso, se possibile, cerco una soluzione $x_0$ a tentativi (non è detto che esista) e poi so che tutte le altre soluzioni sono della forma $x = x_0 + \frac{n}{\text{MCD}(a, n)} \cdot k$ con $k \in \mathbb{Z}$.s
 
-# Teorie del primo ordine con identità
+# Capitolo Otto: Teorie del primo ordine con identità
 
 Le **teorie del primo ordine con identità** sono teorie del primo ordine con una lettera predicativa $\mathscr A_1^2$ a cui vengono aggiunti, oltre ad A1..A5, gli assiomi propri A6 e A7.
 
@@ -916,7 +916,7 @@ Partendo da qui, si può arrivare anche ai corpi (aggiungendo l'esistenza dell'e
 
 Per il significato dei vari assiomi, vedere la [tabella riassuntiva degli assiomi](#assiomi).
 
-# Tabelle riassuntive
+# Capitolo Extra: Tabelle riassuntive
 
 ## Assiomi
 

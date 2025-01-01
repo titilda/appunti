@@ -9,7 +9,7 @@ author:
 
 # Riassuntino di Misure
 
-## Formule di base
+## Capitolo Uno: Formule di base
 
 Siano $x_i$, con $i = 1, \dots, N$, le $N$ misurazioni effettuate, allora posso calcolare la media del misurando ($\overline x$), la varianza campionaria ($S^2(x)$), la varianza del valor medio ($S^2(\overline x)$) e la sua incertezza o deviazione standard ($S(\overline x) = u(x)$).
 
@@ -20,7 +20,7 @@ S^2(\overline x) = \frac{S^2(x)}{N} \\
 S(\overline x) = u(x) = \sqrt{S^2(\overline x)}
 $$
 
-### Derivate dalle precedenti
+### 1.1 Derivate dalle precedenti
 
 Ovviamente, ci sono alcune formule comode che sono derivate dalle precedenti, che permettono, in alcuni casi, conti più veloci.
 
@@ -30,7 +30,7 @@ S(x) = \sqrt{\frac{1}{N - 1} \sum_{i = 1}^N \left[(x_i - \overline x)^2 \right]}
 u(x) = \sqrt{\frac{1}{N(N - 1)}\sum_{i = 1}^N \left[(x_i - \overline x)^2\right]}
 $$
 
-## Formule riguardanti l'incertezza
+## Capitolo Due: Formule riguardanti l'incertezza
 
 Ci sono due tipi di incertezze: (A) calcolate con metodi statistici (vedere [formule di base](#formule-di-base)) e (B) conosciute a priori e/o in altro modo.
 
@@ -61,7 +61,7 @@ $$
 u(u) = \frac{1}{\sqrt{2 \nu}} = \frac{1}{\sqrt{2 \cdot (N - 1)}}
 $$
 
-### Misure indirette
+### 2.1 Misure indirette
 
 Nel caso in cui si debba compiere una misurazione indiretta, il cui risultato è descritto dalla funzione $R = R(x_1, x_2, \dots, x_N)$ dove $x_1, x_2, \dots, x_N$ sono i valori utilizzati nel calcolo, l'incertezza finale è data dalla formula
 
@@ -77,7 +77,7 @@ $$
 
 Se $x_i$ e $x_j$ sono statisticamente indipendenti allora $r_{ij} = 0$.
 
-### Incertezza estesa
+### 2.2 Incertezza estesa
 
 E' possibile che un'incertezza venga espressa come percentuale. In tal caso viene data la probabilità che una misurazione ricada in un dato range.
 
@@ -99,7 +99,7 @@ $$
 |x_a - x_b| \le k \sqrt{u^2(x_a) + u^2(x_b) - \underbrace{2r_{ab}u(x_a)u(x_b)}_{\text{Nullo se indipendenti}}}
 $$
 
-### Incertezza di tipo B
+### 2.3 Incertezza di tipo B
 
 L'incertezza di tipo B si basa su dati conosciuto a priori (ad esempio ci viene data dal manuale).
 
@@ -136,7 +136,7 @@ $$
 $$
 
 
-### Derivate dalle precedenti
+### 2.4 Derivate dalle precedenti
 
 In caso si voglia calcolare l'incertezza del risultato di una formula che sia una produttoria, è possibile utilizzare un formula semplificata. Sia $R = R(a, b, \dots) = a^{e_a} \cdot b^{e_b} \cdot \dots$ allora
 
@@ -151,7 +151,7 @@ x_{mp} = \frac{x_1 \cdot \frac{1}{u^2(x_1)} + x_2 \cdot \frac{1}{u^2(x_2)} + \do
 u(x_{mp}) = \sqrt{\frac{1}{\frac{1}{u^2(x_1)}+\frac{1}{u^2(x_2)} + \dots}}
 $$
 
-## Regressione lineare
+## Capitolo Tre: Regressione lineare
 
 Data una serie di coppie $(x_i, y_i)$ è possibile calcolarne la regressione lineare (nella forma $y = mx + q$) con le seguenti formule.
 
@@ -169,7 +169,7 @@ $$
 \end{cases} \implies x = -\frac{q}{m}
 $$
 
-## Voltmetro ad approssimazioni successive (SAR)
+## Capitolo Quattro: Voltmetro ad approssimazioni successive (SAR)
 
 Un voltemtro ad approssimazioni successive funziona un po' come una ricerca binaria su di una lista, solo che è applicata ad una tensione.
 
@@ -201,7 +201,7 @@ $$
 S = \left\lfloor \frac{V_{in} \cdot 2^n}{D} \right\rfloor
 $$
 
-## Voltmetro integratore a doppia rampa
+## Capitolo Cinque: Voltmetro integratore a doppia rampa
 
 Il voltmetro integratore a doppia rampa è il voltmetro più preciso e resistente ai dusturbi (ma anche quello più lento) esistente.
 
@@ -265,7 +265,7 @@ $$
 
 Il ragionamento dietro tale formula è quello di voler eguagliare l'integrale della tensione d'ingresso sul tempo con quello della tensione in uscita sulla costante di tempo.
 
-## Oscilloscopio
+## Capitolo Sei: Oscilloscopio
 
 Un oscilloscopio è uno strumento per visualizzare come cambia un segnale nel tempo.
 
@@ -335,9 +335,9 @@ Il campionamento in tempo equivalente sequenziale consiste nel capionare un segn
 
 Col campionamento in tempo casuale, invece, si fa lavorare il campionatore alla massima velocità e poi si riordinano i punti in base a quanto tempo è passato dall'ultimo trigger a quando sono stati campionati, poi si visualizza il segnale.
 
-## Definizioni varie
+## Capitolo Sette: Definizioni varie
 
-### Definizioni base
+### 7.1 Definizioni base
 
 Accuratezza
 : Grado di concordanza tra un valore misurato ed il valore vero del misurando.
@@ -363,7 +363,7 @@ Riproducibilità
 Riferibilità
 : Proprietà di una misura di essere messa in relazione (riferita) con quella fornita da un campione riconosciuto.
 
-### Unità di misura del nuovo Sistema Internazionale
+### 7.2 Unità di misura del nuovo Sistema Internazionale
 
 Secondo 
 : L'intervallo di tempo che contiene 9192631770 periodi della radiazione emessa da un atomo di cesio imperturbato che decade tra due livelli iperfini dello stato fondamentale.
@@ -386,7 +386,7 @@ Mole
 Candela
 : L'intensità luminosa in una data direzione di una sorgente che emette radiazione monocromatica alla frequenza di $540 \cdot 10^{12} Hz$ con intensità radiante di $\frac{1}{683} W$ 
 
-### Taratura e messa in punto
+### 7.3 Taratura e messa in punto
 
 Taratura
 : E' una fotografia dello stato di uno strumento che consente di valutarne l'incertezza. ☻
@@ -394,7 +394,7 @@ Taratura
 Messa in punto
 : La regolazione dello strumento per fare in modo che operi nelle migliori condizioni possibili.
 
-### Errori
+### 7.4 Errori
 
 E. sistematici
 : Errori che si presentano nella stessa entità ogni volta che si ripete la misura (offset/polarizzazione)
@@ -402,7 +402,7 @@ E. sistematici
 E. accidentali
 : Errori che si presentano in maniera impredicibile ogni volta che si ripete la misura
 
-### Tipologie di campioni
+### 7.5 Tipologie di campioni
 
 C. primari
 : Realizzano l'unità con i maggiori livelli di accuratezza possibili.
@@ -422,7 +422,7 @@ C. di riferimento
 C. di lavoro
 : Usati nei lavori di routine previo confronto con quelli di riferimento.
 
-### Gradi di libertà
+### 7.6 Gradi di libertà
 
 Gradi di libertà
 : Misurano la bontà della stima, in quanto ogni stima dell'incertezza è a sua volta incerta.
