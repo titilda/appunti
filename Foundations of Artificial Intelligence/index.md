@@ -567,3 +567,79 @@ An Uninformed DFS for CSPs applying two principles:
 #### Improving Backtracking
 
 ##### Filtering (Forward Checking & Arc Consistency)
+
+###### Forward Checking
+
+Tracks domains for unassigned variables and cross off bad options.
+
+Cross off values that violate a constraint when added to the existing assignment.
+
+**Complexity**
+
+$n$ variables, $d :$ size of the domain, $s :$ the largerst number of constraints.
+
+$\Omicron (n \cdot s \cdot d)$
+
+###### Arc Consistency
+
+Applicable to CSPs with binary constraints and directed constraint graph.
+
+Remove from the domain of $X$ the values that are inconsistent with the values in the domain of $Y$.
+
+An arc from $X$ to $Y$ is consistent if and only if for every $X$ in the tail $(X)$ there is some $Y$ inthe head $(Y)$ that can be assigned without violating a constraint.
+
+**Complexity**
+
+$\Omicron (n \cdot s \cdot d^3)$
+
+##### Variable & Value Ordering
+
+###### Minimum Remaning Values (MRV)
+
+- Choose the variable with the fewest legal values in its domain.
+- It is also called "most constrained variable".
+
+###### Least Constraining Value
+
+- Given a variable, choose the value that rules out the fawest values in the remaining vaeiables.
+
+###### Degree Heuristic (Tie Breaker)
+
+- Choose the variable that is involved in the largest number of constraints with unassigned variables.
+- It is used to break ties of the MRV heuristic.
+
+##### Structure
+
+**Problem**
+
+We can identify indipendent subproblems as connected conponents in the graph structure.
+
+Suppose a graph of $n$ variables can be broken into subproblems of only $c$ variables:
+
+- Worst-case solution cost is $\Omicron ((\frac{n}{c})(d \cdot c)), n = 80, d = 2, c = 20$
+- $280 = 4$ billion years at $10$ million noded/sec.
+- $(4)(220) = 0.4$ seconds at $10$ million nodes/sec.
+
+### 7.3 Local Search and Optimization
+
+So far, we started from an empty configuration and search for a solution.
+
+In informed and uninformed search, we started from an empty path and built one, step by step.
+
+In CSPs, we started from an empty configuration and built a feasible one, step by step.
+
+In **local search**, we start from a random solution and modify it little bit until we reach a feasible solution.
+
+We need a function that evaluates whether the modified solution improves current solution.
+
+#### Modeling CSPs as optimization problem
+
+We start from an unfeasible solution and modify it a little bit until we reach a feasible solution.
+
+We need a function that evaluates how far away the unfeasible solution is far from a feasible  one.
+
+**Example 4-Queens as an Optimization Problem**
+
+!["4-Queens with Optimization search"](assets/Chapter_Seven/4-Puzzle_Optimization.jpg)
+
+## Chapter Eight: Adversarial Search Strategies
