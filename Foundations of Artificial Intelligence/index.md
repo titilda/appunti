@@ -202,9 +202,9 @@ Problem Solving by Search $\implies$ we can find the solution in many way.
 
 ![8-Puzzle](assets/Chapter_Four/8-Puzzle.jpg)
 
-This is a puzzle game where I have matrix 3x3 complose by 8 numbers and I have to put in order from 1 to 8.
+This is a puzzle game where I have matrix 3x3 compose by 8 numbers and I have to put in order from 1 to 8.
 
-I can rapresent the 8-puzzle in an array:
+I can represent the 8-puzzle in an array:
 
 state = $[[0,8,2],[3,4,7],[5,1,6]]$
 
@@ -218,7 +218,7 @@ action = $(x,y)$
 ### Search Problems
 
 - A set of states $S$ and an initial state $s_0$.
-- The function $actions(s)$ that given a state $s$, return the set of feable actions.
+- The function $actions(s)$ that given a state $s$, return the set of fable actions.
 - The function $result(s,a)$, $s$ is the state and $a$ the action, return the state reached.
 - A goal test that given a state $s$ return true if the state is the goal state.
 - A step cost $c(s,a,s')$ of an action $a$ from $s$ to $s'$.
@@ -227,7 +227,7 @@ action = $(x,y)$
 
 ### State Space
 
-- The state space is a directed graph with nodes rappresenting state, arcs rappresenting actions.
+- The state space is a directed graph with nodes representing state, arcs representing actions.
 - The solution to a search problem is a path in the state space from the initial state to the goal state.
 
 ![State Space as a graph](assets/Chapter_Four/State_space_2.jpg)
@@ -264,7 +264,7 @@ State space is made of states and connections.
 
 The idea is take a state and from it draw the tree with every way the state can take, until I arrive to the final state.
 
-So I build from zero everytime? Yes, I do.
+So I build from zero every time? Yes, I do.
 
 Dear reader, before continuing, try to answer this question, why i prefer build a tree?
 
@@ -272,9 +272,9 @@ For some problem I have an infinite tree (for loop or none solution) so I must f
 
 The best algorithm for the tree search is the **Best-First Search**.
 
-## Chapter Five: Uninformed Search Startegies
+## Chapter Five: Uninformed Search Strategies
 
-**Uninformed Search Startegies**: They use only the information conteined in the problem formulation.
+**Uninformed Search Strategies**: They use only the information contained in the problem formulation.
 
 **The Five Elements of U.S.S.**
 
@@ -286,7 +286,7 @@ The best algorithm for the tree search is the **Best-First Search**.
 
 Evaluation of Search Strategies
 
-- Completeness: Is the S.S. guarateed to find a solution when exist ?
+- Completeness: Is the S.S. guaranteed to find a solution when exist ?
 - Optimality: Does the S.S. optimal ?
 - Complexity: How much time require ?
 - Parameters
@@ -296,23 +296,23 @@ Evaluation of Search Strategies
 
 Bigger is the $b$ factor, harder is the problem.
 
-Bigger is the $d$ factor, more exploretion require the closest solution.
+Bigger is the $d$ factor, more exploration require the closest solution.
 
 ### 5.1 Breadth-First Search
 
-The Algorithm is the same we do in "API" but here we generate a tree step by step, so we don't color the node and the loop don't rappresent a problem for us.
+The Algorithm is the same we do in "API" but here we generate a tree step by step, so we don't color the node and the loop don't represent a problem for us.
 
 ![BFS, 7 is the goal state](assets/Chapter_Five/BFS.jpg)
 
-we start with the first node: $1$ and expand the branch so $[2, 3]$ we expand the first node we see: $2 \implies [3, 4, 5]$, we continue with thise idea $[4, 5, 6, 7] \to [5, 6, 7, 2] \to [6, 7, 2] \to [7, 2]$ now we have first 7 that is the goal state and interrupt the search, so we don't see the loop.
+we start with the first node: $1$ and expand the branch so $[2, 3]$ we expand the first node we see: $2 \implies [3, 4, 5]$, we continue with this idea $[4, 5, 6, 7] \to [5, 6, 7, 2] \to [6, 7, 2] \to [7, 2]$ now we have first 7 that is the goal state and interrupt the search, so we don't see the loop.
 
 **Complexity**: temporal and spatial (worse-case) $\Omicron(b^{d+1})$
 
-### 5.2 Deapth-First Search
+### 5.2 Depth-First Search
 
 The same we saw in "API" but we generate a tree step by step and here we can have a loop.
 
-![Depht-Fisrt Search, 7 is the goal state](assets/Chapter_Five/DFS.jpg)
+![Depth-First Search, 7 is the goal state](assets/Chapter_Five/DFS.jpg)
 
 $[1] \to [2, 3] \to [4, 5, 3] \to [2, 5, 3] \to [4, 5, 5, 3]$ so in this case we have a loop, now we delete it.
 
@@ -323,7 +323,7 @@ $[1] \to [2, 3] \to [4, 5 , 3] \to [5, 3] \to [3] \to [6, 7] \to [7] \ 7$ is the
 - The spatial (worse-case) $\Omicron (bm)$.
 - Temporal $\Omicron(b^m), \ m$ could be infinite.
 
-It is cleae that the DFS Algorithm isn't a good Tree Search Algorithm.
+It is clear that the DFS Algorithm isn't a good Tree Search Algorithm.
 
 ### 5.3 Uniform-Cost Search (UCS)
 
@@ -388,7 +388,7 @@ In this type of search there are two important things:
 
 ### 6.2 $A^*$
 
-The evaluation funcion "$f(n)$" of a node $n$ is computed as the sum of two componets:
+The evaluation function "$f(n)$" of a node $n$ is computed as the sum of two components:
 
 - $A\ h(n)$.
 - The cost to reach $n$ from the root $g(n)$.
@@ -417,7 +417,7 @@ $f(n) = g(n) + h(n)$
 
 **Complexity**
 
-It has a temporal and spatial complexity that is exponential in the lenght of the solution.
+It has a temporal and spatial complexity that is exponential in the length of the solution.
 
 **Wait, WHAT?! $h(n)$ admissible ?!**
 
@@ -510,15 +510,15 @@ T(n) = \Omicron(b^d)$
 
 ## Chapter Seven: Constraint Satisfaction Problems
 
-**Stardard Search Problems:** State is a black box with arbitrary structure, Gual test only compare states, successor function can be anything.
+**Standard Search Problems:** State is a black box with arbitrary structure, Goal test only compare states, successor function can be anything.
 
-Search akgorithms work on **any** standars search problem.
+Search algorithms work on **any** standards search problem.
 
 ### 7.1 Constraint Satisfaction Problems (CSPs)
 
 - The state has a **factored representation**, consisting of variable-value pairs.
 - Set of **variables** $\{X_1, X_2, ..., X_n\}$ each one has a **domain** $D_i$ of possible values.
-- Set of **contraints** $\{C_1, C_2, ..., C_p\}$ involving a subset of variables and specifies the valid (or invalid) combinations of their values.
+- Set of **constraints** $\{C_1, C_2, ..., C_p\}$ involving a subset of variables and specifies the valid (or invalid) combinations of their values.
 - The goal is to assign a value to each variable in such away that all the constraints are satisfied, if all the domains have size $d$, then there are $\Omicron(d^n)$ complete assignments.
 - Solutions must be:
 
@@ -538,12 +538,12 @@ Search akgorithms work on **any** standars search problem.
 
 ### 7.2 Binary Constraints & Constraint Graphs
 
-**Binary Constrainsts**
+**Binary Constraints**
 
 - We will consider binary constraints involving two variables.
-- Highed-order constraints involving three or more variables can be trasformed in a CSP with binary constraints through binarization.
+- Higher-order constraints involving three or more variables can be transformed in a CSP with binary constraints through binarization.
 
-**Constraint Grphs**
+**Constraint Graphs**
 
 - CSPs with binary constraints are represented using a constraint graph in which nodes are variables and arcs represent constraints.
 - The graph structure can speed up search.
@@ -562,7 +562,7 @@ An Uninformed DFS for CSPs applying two principles:
 
 - Consider only values which do not conflict with previous assignments.
 - It usually needs to perform computation to check the constraints.
-- "Incremmental goal test".
+- "Incremental goal test".
 
 #### Improving Backtracking
 
@@ -576,7 +576,7 @@ Cross off values that violate a constraint when added to the existing assignment
 
 **Complexity**
 
-$n$ variables, $d :$ size of the domain, $s :$ the largerst number of constraints.
+$n$ variables, $d :$ size of the domain, $s :$ the largest number of constraints.
 
 $\Omicron (n \cdot s \cdot d)$
 
@@ -586,7 +586,7 @@ Applicable to CSPs with binary constraints and directed constraint graph.
 
 Remove from the domain of $X$ the values that are inconsistent with the values in the domain of $Y$.
 
-An arc from $X$ to $Y$ is consistent if and only if for every $X$ in the tail $(X)$ there is some $Y$ inthe head $(Y)$ that can be assigned without violating a constraint.
+An arc from $X$ to $Y$ is consistent if and only if for every $X$ in the tail $(X)$ there is some $Y$ in the head $(Y)$ that can be assigned without violating a constraint.
 
 **Complexity**
 
@@ -594,14 +594,14 @@ $\Omicron (n \cdot s \cdot d^3)$
 
 ##### Variable & Value Ordering
 
-###### Minimum Remaning Values (MRV)
+###### Minimum Remaining Values (MRV)
 
 - Choose the variable with the fewest legal values in its domain.
 - It is also called "most constrained variable".
 
 ###### Least Constraining Value
 
-- Given a variable, choose the value that rules out the fawest values in the remaining vaeiables.
+- Given a variable, choose the value that rules out the fewest values in the remaining variables.
 
 ###### Degree Heuristic (Tie Breaker)
 
@@ -612,12 +612,12 @@ $\Omicron (n \cdot s \cdot d^3)$
 
 **Problem**
 
-We can identify indipendent subproblems as connected conponents in the graph structure.
+We can identify independent subproblems as connected components in the graph structure.
 
 Suppose a graph of $n$ variables can be broken into subproblems of only $c$ variables:
 
 - Worst-case solution cost is $\Omicron ((\frac{n}{c})(d \cdot c)), n = 80, d = 2, c = 20$
-- $280 = 4$ billion years at $10$ million noded/sec.
+- $280 = 4$ billion years at $10$ million nodes/sec.
 - $(4)(220) = 0.4$ seconds at $10$ million nodes/sec.
 
 ### 7.3 Local Search and Optimization
