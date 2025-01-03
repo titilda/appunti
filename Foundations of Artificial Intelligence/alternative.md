@@ -282,3 +282,136 @@ The complexity is measured in terms of:
 - **Maximum Depth** ($m$): The maximum depth of the search tree.
 - **Optimal Solution** ($C^*$): The cost of the optimal solution.
 - **Smaller cost-action** ($\epsilon$): The cost of the action.
+
+### 3.2 Uninformed Search
+
+An **Uninformed Search** is a category of search algorithms that has no information about how close a state is to the goal.
+
+#### 3.2.1 Breadth-First Search
+
+This algorithm expands the shallowest node first and it's good when all actions have the same cost.
+
+We can implement this using:
+
+- **Evaluation Function**: $f(n) = \text{depth}(n)$
+- **Frontier**: Queue, because the shallowest node is the one that has been added first.
+
+This algorithm allows to find the solution with the minimum amount of actions for each node. This allows to perform an *Early Goal Test*, which is a test that checks if a generated node is a goal before expanding it.
+A *Late Goal Test* is a test that checks if a popped node is a goal before expanding it.
+
+##### Breadth-First Performance
+
+On each level of the tree, the algorithm generates $b^n$ nodes, where $b$ is the branching factor and $n$ is the depth of the tree.
+
+- **Completeness**: The algorithm is complete if the branching factor is finite.
+- **Optimality**: The algorithm is optimal if the cost of the actions is the same.
+- **Time Complexity**: $O(b^d)$
+- **Space Complexity**: $O(b^d)$
+
+#### 3.2.2 Uniform-Cost Search
+
+This algorithm expands the node with the lowest path cost. This is also called **Dijkstra's Algorithm**.
+
+We can implement this using:
+
+- **Evaluation Function**: $f(n) = \text{path-cost}(n)$
+- **Frontier**: Priority Queue
+
+##### Uniform-Cost Performance
+
+The complexity is based on the cost of the optimal solution and the cost of the actions.
+The algorithm might explore trees with a low cost before exploring trees with a high cost, but more useful.
+
+- **Completeness**: The algorithm is complete if the cost of the actions is finite.
+- **Optimality**: The algorithm is optimal.
+- **Time Complexity**: $O(b^{1+\lfloor C^*/\epsilon \rfloor})$
+- **Space Complexity**: $O(b^{1+\lfloor C^*/\epsilon \rfloor})$
+
+#### 3.2.3 Depth-First Search
+
+This algorithm expands the deepest node first and it's good when the solution is far from the initial state.
+
+This can be implemented using:
+
+- **Evaluation Function**: $f(n) = -\text{depth}(n)$
+- **Frontier**: Stack, because the deepest node is the one that has been added last.
+
+This algorithm is usually implemented as a tree-search instead of a graph-search.
+
+##### Depth-First Performance
+
+The advantage of this algorithm is that it doesn't need much memory. There is no need to store a reached table, and the frontier is small.
+
+- **Completeness**: The algorithm is not complete if the tree is infinite.
+- **Optimality**: The algorithm is not optimal because it return the first solution found.
+- **Time Complexity**: $O(b^m)$
+- **Space Complexity**: $O(bm)$
+
+#### 3.2.4 Backtracking Search
+
+This is a variant of the depth-first search that doesn't generate all the successors of a node. Instead, it generates a successor and, if it doesn't lead to a solution, it generates the next one.
+
+This algorithm can reduce the memory requirements to just a single state and a list of actions. This allow to modify the current state instead of creating a new one.
+
+It's necessary to undo the changes made to the state when backtracking.
+
+##### Backtracking Performance
+
+- **Completeness**: The algorithm is complete if the tree is finite.
+- **Optimality**: The algorithm is not optimal.
+- **Time Complexity**: $O(b^m)$
+- **Space Complexity**: $O(m)$
+
+#### 3.2.5 Depth-Limited Search
+
+This is a variant of the depth-first search that limits the search to a specific depth ($l$) of the tree. This is useful when the tree is infinite.
+
+If the depth limit is less than the depth of the solution, the algorithm'll never find the solution.
+This is not a problem if we know the maximum depth that the tree can reach or the *Diameter* (the minimum amount of actions to reach each state).
+
+##### Depth-Limited Performance
+
+- **Completeness**: The algorithm is not complete if the depth limit is less than the depth of the solution.
+- **Optimality**: The algorithm is not optimal.
+- **Time Complexity**: $O(b^l)$
+- **Space Complexity**: $O(bl)$
+
+#### 3.2.6 Iterative Deepening Search
+
+This is a variant of the depth-limited search that iteratively increases the depth limit until a solution is found.
+
+##### Iterative Deepening Performance
+
+This algorithm might seem inefficient because it explores the same nodes multiple times, but most of the nodes are at the bottom of the tree, so it's complexity is asymptotical to the breadth-first search.
+
+- **Completeness**: The algorithm is complete.
+- **Optimality**: The algorithm is optimal if the cost of the actions is the same.
+- **Time Complexity**: $O(b^d)$ if there is a solution, $O(b^m)$ if there isn't.
+- **Space Complexity**: $O(bd)$
+
+#### 3.2.7 Bidirectional Search
+
+This algorithm starts from the initial state and the goal state and expands both until they meet in the middle.
+
+This algorithm needs to store two frontiers and two explored state table.
+
+This algorithm can be implemented using any search algorithm, but it's usually implemented using the breadth-first search.
+
+##### Bidirectional Performance
+
+- **Completeness**: The algorithm is complete if the branching factor is finite.
+- **Optimality**: The algorithm is optimal if the cost of the actions is the same.
+- **Time Complexity**: $O(b^{d/2})$
+- **Space Complexity**: $O(b^{d/2})$
+
+#### 3.2.8 Comparison
+
+| Algorithm                  | Completeness | Optimality | Time Complexity                         | Space Complexity                        |
+|----------------------------|--------------|------------|-----------------------------------------|-----------------------------------------|
+| Breadth-First Search       | Yes          | Yes        | $O(b^d)$                                | $O(b^d)$                                |
+| Uniform-Cost Search        | Yes          | Yes        | $O(b^{1+\lfloor C^*/\epsilon \rfloor})$ | $O(b^{1+\lfloor C^*/\epsilon \rfloor})$ |
+| Depth-First Search         | No           | No         | $O(b^m)$                                | $O(bm)$                                 |
+| Backtracking Search        | Yes          | No         | $O(b^m)$                                | $O(m)$                                  |
+| Depth-Limited Search       | No           | No         | $O(b^l)$                                | $O(bl)$                                 |
+| Iterative Deepening Search | Yes          | Yes        | $O(b^d)$                                | $O(bd)$                                 |
+| Bidirectional Search       | Yes          | Yes        | $O(b^{d/2})$                            | $O(b^{d/2})$                            |
