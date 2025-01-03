@@ -2094,7 +2094,7 @@ Il ViewModel è quello che fornisce i metodi per reagire agli input degli utenti
 ## Cheatsheet
 
 E' disponibile un cheatsheet riassuntivo di alcuni degli argomenti trattati in questo documento.<br>
-<button id="cs-btn" onclick="location.href='cheatsheet/ids-cheatsheet.pdf'">Ricevi CheatSheet</button>
+<button id="cs-btn" onclick="location.href='cheatsheet/ids-cheatsheet2.html'">Ricevi CheatSheet</button>
 
 Ids Gritsmas
 
@@ -2109,7 +2109,7 @@ Ids Gritsmas
         width: 25vw; 
         overflow: hidden;
         font: 400 normal 1.5em "Anton SC", sans-serif;
-        color: #F0E362;
+        color: #FFFFFF;
         background-color: #800080; 
 	white-space: nowrap;
 	overflow: hidden; 
@@ -2121,13 +2121,13 @@ Ids Gritsmas
         top: 2%;
         left: 0%;
         width: 100%;
-        height: 100%;
+        height: 0%;
         overflow: hidden;
         display: block;
         transition: height 0.25s ease-in;
-        color: #FFF;
+        color: #F0E362;
     }
 #cs-btn:hover::before {
-  height: 0%;
+  height: 100%;
 }
 </style>
