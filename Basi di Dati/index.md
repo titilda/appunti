@@ -6,9 +6,9 @@ author:
 
 # Basi di Dati
 
-## Linguaggi Formali
+## Capitolo Uno: Linguaggi Formali
 
-### Algebra Relazionale
+### 1.1 Algebra Relazionale
 
 L'algebra relazionale è un *linguaggio procedurale*, ovvero descrive la procedura da attuare per ottenere il risultato desiderato.
 
@@ -58,7 +58,7 @@ $$R\bowtie_{\text{P}}(S\cup T) \Rightarrow (R\bowtie_{\text{P}}S)\cup(R\bowtie_{
 
 Uno dei principi base è quello di *minimizzare* la dimensione dei risultati intermedi
 
-### Calcolo Relazionale
+### 1.2 Calcolo Relazionale
 
 Il calcolo relazionale è un *linguaggio dichiarativo*, ovvero descrive il risultato desiderato senza specificare la procedura.
 
@@ -86,7 +86,7 @@ Tramite questi operatori si possono costruire i seguenti operatori:
 - **Unione**: $\{t\ |\ \exist\ t_1\in r_1\ , \exist\ t_2\in r_2 (t = t_1\ \land\ t = t_2)\}$
 - **Differenza**: $\{t\ |\ (t \in r) \land (t \notin s)\}$
 
-### Datalog
+### 1.3 Datalog
 
 Datalog è un linguaggio dichiarativo basato su *prolog*.
 Datalog ha un potere espressivo maggiore rispetto al calcolo relazionale, in quanto permette di definire regole ricorsive.

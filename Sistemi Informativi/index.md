@@ -6,7 +6,7 @@ author:
 
 # Sistemi Informativi
 
-## Dati
+## Capitolo Uno: Dati
 
 I dati sono sempre più importanti all'interno del sistema informativo aziendale.
 Secondo la **Piramide DIKW** è possibile dividere i dati e le informazioni in
@@ -16,9 +16,9 @@ Secondo la **Piramide DIKW** è possibile dividere i dati e le informazioni in
 - **Knowledge**: La *conoscenza* è ottenibile integrando l'informazione con l'esperienza. (es. se a dicembre ci sono 32 gradi in aula, c'è qualcosa che non va)
 - **Wisdom**: La *saggezza* è applicare l'esperienza alla conoscenza per guidare all'azione più adatta al momento. (es. se a dicembre ci sono 32 gradi in aula, spegnere il riscaldamento).
 
-## Organizzazioni
+## Capitolo Due: Organizzazioni
 
-### Risorse
+### 2.1 Risorse
 
 Le risorse sono ciò con cui un'organizzazione opera, sia materiale che immateriale, e sono divise in:
 
@@ -38,7 +38,7 @@ Le risorse hanno un ciclo di vita:
 - Gestione
 - Manutenzione
 
-### Processi
+### 2.2 Processi
 
 I processi sono un'insieme di attività che l'organizzazione svolge per gestire il ciclo di vita di una risorsa.
 
@@ -69,7 +69,7 @@ Le attività sono divise in:
   - Sviluppo della Tecnologia
   - Approvvigionamenti
 
-## Sistemi informativi
+## Capitolo Tre: Sistemi informativi
 
 I sistemi informativi sono un insieme di procedure, metodi e strumenti dedicati allo svolgimento di alcune funzioni per raggiungere un risultato.
 Il sistema di alimenta di eventi basati da dati, li trasforma in informazioni tramite dei processi.
@@ -85,7 +85,7 @@ I dati sono classificabili in base al livello (operativo/controllo/strategico).
 I dati *operativi* sono ben strutturati, e in alti volume e provenienti dall'interno.
 Andando verso il livello *strategico* i dati diventano sempre più aggregati, il formato potrebbe essere meno strutturato e potrebbero provenire anche da fonti esterne.
 
-### Base di Dati
+### 3.1 Base di Dati
 
 I sistemi informativi sono applicazioni che interagiscono con basi di dati.
 Le interazioni solitamente avvengono con le *transazioni*.
@@ -125,17 +125,17 @@ Altre caratteristiche del DW sono:
 - **Variabile nel Tempo**: i dati sono associati a un'etichetta temporale
 - **Persistente**: i dati sono archiviati in sola lettura
 
-### Organizzazione e IT
+### 3.2 Organizzazione e IT
 
 Le scelte all'interno dell'azienda possono avere impatto sulle scelte tecnologiche (*Requirements Pull*) e derivano spesso dall'esigenza di nuove funzionalità o migliorare le funzionalità attuali.
 In altri casi i cambiamenti delle nuove tecnologie possono portare a scelte nuove organizzative (*Technology Push*).
 
-## Enterprise Architecture (EA)
+## Capitolo Quattro: Enterprise Architecture (EA)
 
 L'*Enterprise Architecture* è usato per analizzare e descrivere lo stato attuale e futuro di un'azienda.
 L'EA fornisce una panoramica dei processi, dei sistemi, delle tecnologie e delle capacità dell'azienda.
 
-### Framework di Zachman
+### 4.1 Framework di Zachman
 
 Questa architettura viene descritta dal **Framework di Zachman** che utilizza una matrice per descrivere l'EA.
 Zachman utilizza le colonne per definire gli *Aspetti* da analizzare:
@@ -156,11 +156,11 @@ Le righe invece indicano i *Punti di Vista* che possono interessare gli stakehol
 
 L'intersezione tra le righe e le colonne sono definite *Viste* e forniscono le informazioni su un particolare aspetto in base ad un punto di vista.
 
-## Elementi Tecnologici
+## Capitolo Cinque: Elementi Tecnologici
 
 Le tecnologie si possono dividere in tre livelli:
 
-### Livello Applicativo
+### 5.1 Livello Applicativo
 
 A livello applicativo le tecnologie supportano i processi operazionali e informazionali.
 L'insieme delle tecnologie a livello applicativo viene detto *portafoglio applicativo* ed è costituito da:
@@ -222,7 +222,7 @@ Il CRM ha tre componenti principali:
   - *Predicting*: predice le azioni e i desideri dei clienti.
 - **CRM Collaborativo**: si occupa di calcolare alcuni indici rilevanti per l'intera azienda e condividere tali informazioni.
 
-### Livello di Piattaforma
+### 5.2 Livello di Piattaforma
 
 L'implementazione delle applicazioni richiede l'utilizzo di componenti di supporto divise in quattro categorie:
 
@@ -235,11 +235,11 @@ L'implementazione delle applicazioni richiede l'utilizzo di componenti di suppor
 - **Tecnologie di Base**: tecnologie che permettono la comunicazione tra le applicazioni e i componenti.
 - **Advanced Platform Technology**: sistemi per messaggistica, gestione degli eventi e delle transazioni.
 
-### Livello di Architettura Fisica
+### 5.3 Livello di Architettura Fisica
 
 Questo livello indica l'architettura fisica che hosta l'applicazione.
 
-## Analisi dei Dati
+## Capitolo Sei: Analisi dei Dati
 
 I dati sono essenziali per supportare i processi decisionali all'interno dell'azienda. Bisogna quindi essere in grado di aggregare e interrogare i dati per analizzare ed estrarre eventuali correlazioni.
 Alcuni strumenti di supporto alle decisioni sono:
@@ -255,7 +255,7 @@ I dati a supporto delle attività strategiche e decisionali si caratterizzano pe
 - *Livello di Dettaglio*: sono dati aggregati a presi dai dati operazionali o da fonti esterne
 - *Accesso*: l'accesso è in sola lettura
 
-### Data Warehouse
+### 6.1 Data Warehouse
 
 il Data Warehouse è una base di dati di tipo [OLAP](#olap) che si distingue dai tradizionali DBMS che sono sistemi di tipo [OLTP](#oltp), i quali sono caratterizzati da un gran numero di operazioni brevi.
 
@@ -316,7 +316,7 @@ I Data Warehouse comprende un'insieme di tecniche per analizzare i dati:
 - **Slice**: permette di focalizzare l'analisi su una porzione di dati fissando il valore di una delle dimensioni di analisi.
 - **Dice**: permette di identificare un insieme di coordinate che riduce l'ipercubo
 
-### Data Mining
+### 6.2 Data Mining
 
 Il *Data Mining* è una tecnica che permette di riconoscere ed estrarre in modo automatico informazioni utili dai dati.
 
@@ -355,7 +355,7 @@ L'estrazione di informazioni dai dati può avvenire tramite:
   - **Complete**: ogni elemento appartiene ad un cluster
   - **Parziali**: un elemento può non appartenere a nessun cluster
 
-### Process Discovery
+### 6.3 Process Discovery
 
 Il *Process Discovery* è una tecnica che permette di estrarre i processi da un insieme di dati, solitamente da un log di eventi.
 
@@ -369,7 +369,7 @@ Le relazioni che possono esistere tra gli eventi sono:
 Questa analisi permette di analizzare la frequenza delle attività, durata delle attività, la sequenza delle attività e la relazione tra le attività.
 Queste informazioni possono essere utilizzate per migliorare i processi, identificare i problemi e le opportunità.
 
-## Tecnologie Livello Piattaforma
+## Capitolo Sette: Tecnologie Livello Piattaforma
 
 Le tecnologie a livello piattaforma forniscono l'infrastruttura, gli strumenti e i servizi che consentono lo sviluppo.
 Un sistema informativo è formato da diversi moduli applicativi che realizzano delle funzionalità. Tali moduli devono essere collegati tra di loro per permettere la collaborazione.
@@ -382,7 +382,7 @@ E' importante che tra i vari moduli ci sia un buon flusso informativo perché
 
 Spesso il sistema informativo aziendale deve comunicare con sistemi di aziende esterne. E' probabile che questi sistemi siano differenti, bisogna quindi trovare tecniche per collaborare efficacemente.
 
-### Tecniche di Integrazione
+### 7.1 Tecniche di Integrazione
 
 Per poter coordinare attività intra-organizzative e inter-organizzative bisogna adottare tecniche di integrazione quali:
 
@@ -411,7 +411,7 @@ Questo approccio non è sempre possibile e dipende dall'apertura dell'applicativ
 
 Questo approccio è possibile in applicativi modulari dove il frontend è separato dal backend ed è quindi possibile modificare il client per interagire con funzioni lato server di altri applicativi.
 
-### Modelli di Integrazione delle Applicazioni
+### 7.2 Modelli di Integrazione delle Applicazioni
 
 L'integrazione delle tecniche di integrazione può avvenire mediante diversi modelli:
 
@@ -456,7 +456,7 @@ Sevizi diversi possono essere usati in maniera congiunta da una singola applicaz
 
 Per comporre un servizio si usa una *service orchestration* che determina una sequenza di invocazione per i servizi.
 
-## Tecnologie livello Architettura Fisica
+## Capitolo Otto: Tecnologie livello Architettura Fisica
 
 Le architetture fisiche si dividono solitamente in *centralizzate* e *distribuite*.
 
@@ -471,7 +471,7 @@ Un'architettura si dice distribuita quando una delle seguenti condizioni è veri
 - **Elaborazione Distribuita**: le applicazioni, fra loro cooperanti, sono distribuite su più nodi
 - **Base di Dati Distribuita**: i dati sono distribuiti su più nodi
 
-### Applicazioni Distribuite
+### 8.1 Applicazioni Distribuite
 
 Nei sistemi distribuiti i livelli logici (*layer*) sono distribuiti su una o più macchine detti livelli (*tier*).
 A seconda di come avviene la distribuzione dei layer sui tier si possono avere diverse architetture:
@@ -503,7 +503,7 @@ Un sistema a tre tier conferisce buona scalabilità e flessibilità.
 
 Per diminuire il carico sui server e migliorare le prestazioni si possono aggiungere ulteriori nodi di elaborazione dove ognuno si occupa di un compito specifico.
 
-### Scalabilità
+### 8.2 Scalabilità
 
 Con scalabilità si intende la capacità di un sistema di adattarsi a un aumento di carico.
 
@@ -525,7 +525,7 @@ Le server farm possono essere realizzate secondo due principi:
   - **shared-disk**: i server condividono un server dedicato alla memorizzazione e alla gestione dei dati.
 - **Partitioning**: i server contengono informazioni e applicativi differenti.
 
-### Virtualizzazione
+### 8.3 Virtualizzazione
 
 La *virtualizzazione* è una tecnica che permette di creare una versione virtuale di un sistema operativo. Questo permette di:
 
@@ -537,7 +537,7 @@ Le risorse virtuali sono dette *macchine virtuali* (VM) e sono gestite da un sof
 
 Questa tecnica permette di avere all'interno della medesima macchina fisica più macchine virtuali, ognuna con la propria applicazione.
 
-### Cloud Computing
+### 8.4 Cloud Computing
 
 Il *Cloud Computing* è un modello che permette l'accesso a risorse informatiche tramite internet, senza la necessità di possedere fisicamente le risorse.
 
@@ -565,7 +565,7 @@ Il cloud computing si basa su quattro modelli di **deployment**:
 - **Public Cloud**: il cloud è fornito per il pubblico in generale. Questo modello è il più economico, ma presenta dei problemi di sicurezza e privacy.
 - **Hybrid Cloud**: il cloud è una combinazione di due o più cloud.
 
-## Sicurezza
+## Capitolo Nove: Sicurezza
 
 La sicurezza nei sistemi informativi è l'insieme delle misure atte a proteggere i seguenti requisiti:
 
@@ -575,7 +575,7 @@ La sicurezza nei sistemi informativi è l'insieme delle misure atte a proteggere
 - **Disponibilità**: il sistema deve rendere disponibili agli utenti abilitati, le informazioni e le risorse alle quali hanno accesso.
 - **Non Ripudio**: il sistema deve garantire che un utente non possa negare di aver compiuto un'azione.
 
-### Minacce alla Sicurezza
+### 9.1 Minacce alla Sicurezza
 
 Le minacce alla sicurezza possono essere di vario tipo:
 
@@ -609,7 +609,7 @@ Gli attacchi più comuni a livello applicativo sono:
 
 E' necessario adottare misure per difendersi da queste minacce che possono essere sia di origine esterna che interna.
 
-### Crittografia
+### 9.2 Crittografia
 
 Crittografare significa codificare un messaggio in modo che solo il destinatario possa leggerlo.
 
@@ -707,7 +707,7 @@ Dato il messaggio da cifrare $m$ e il messaggio cifrato $c$, la cifratura e deci
 
 Lo svantaggio della cifratura asimmetrica è la lentezza computazionale. Per ovviare a questo problema si utilizza la cifratura asimmetrica per scambiare in maniera sicura la chiave simmetrica che verrà utilizzata per la comunicazione.
 
-### Integrità e Funzione di Hash
+### 9.3 Integrità e Funzione di Hash
 
 La *funzione di hash* è una funzione che mappa un input di lunghezza arbitraria in un output di lunghezza fissa chiamato *fingerprint*, *hash* o *digest*.
 
@@ -783,7 +783,7 @@ I sistemi che si occupano della generazione e della gestione delle chiavi sono d
 I certificati sono rilasciati da un ente certificatore (CA) e identificano il proprietario della chiave pubblica tramite un Autorità di Registrazione (RA).
 I certificati vengono poi firmati dalla CA per garantire l'autenticità del certificato.
 
-### Gestione Utenti
+### 9.4 Gestione Utenti
 
 #### Autenticazione
 
@@ -857,7 +857,7 @@ Quando si prova ad effettuare l'accesso ad una risorsa il cui livello di sensiti
 - Non mostrare la risorsa (mostrare un valore nullo)
 - Mostrare dei dati fittizi
 
-### Cybersecurity
+### 9.5 Cybersecurity
 
 La *cybersecurity* è l'insieme delle misure fisiche, logiche e organizzative atte a proteggere i sistemi informativi da attacchi.
 
@@ -875,7 +875,7 @@ Il sistema effettua dei controlli sulle credenziali dell'utente prima di dare ac
 
 Il sistema effettua anche dei operazioni di analisi, filtraggio e registrazione per verificare il comportamento delle entità alla ricerca di possibili minacce.
 
-### Meccanismi di sicurezza Infrastrutturali
+### 9.6 Meccanismi di sicurezza Infrastrutturali
 
 #### Firewall
 
@@ -926,7 +926,7 @@ Infine gli IDS possono essere classificati in base al tipo di Response effettuat
 - **Active Response**: l'IDS interviene direttamente per bloccare l'attacco (esempio: bloccare un indirizzo IP sospetto)
 - **Passive Response**: l'IDS notifica l'utente dell'attacco, ma non interviene direttamente
 
-## Progettazione di Sistemi Informativi
+## Capitolo Dieci: Progettazione di Sistemi Informativi
 
 La progettazione di un sistema informativo è una fase importante e deve essere svolta in maniera sistematica prendendo in considerazione diversi aspetti: scalabilità, cambiamenti sull'organizzazione e sulle strategie organizzative.
 
@@ -950,7 +950,7 @@ Esistono due tipologie di cambiamenti di che possono causare la necessità di ca
 - **Esogene all'organizzazione**: causati da fattori esterni all'organizzazione come cambiamenti normativi, tecnologici, etc
 - **Endogene all'organizzazione**: causati da fattori interni all'organizzazione come cambiamenti organizzativi, strategici, rinnovamento, etc
 
-### Pianificazione
+### 10.1 Pianificazione
 
 La pianificazione comprende due fasi:
 
@@ -1024,7 +1024,7 @@ I *costi* devono essere contabilizzati in maniera precisa.
 
 I *benefici* devono essere tangibili e diretti, quindi monetizzabili. Alcuni benefici possono essere una riduzione dei costi operativi, un aumento della produttività, un aumento dei ricavi, etc.
 
-### Ciclo di Vita del Sistema Informativo
+### 10.2 Ciclo di Vita del Sistema Informativo
 
 Una volta scelto effettuato lo studio di fattibilità e scelta la soluzione, si passa alla fase di sviluppo del sistema informativo che può variare in base a se si è scelto di sviluppare internamente il sistema o di acquistare un sistema già pronto.
 
