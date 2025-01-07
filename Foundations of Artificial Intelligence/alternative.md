@@ -1,8 +1,8 @@
 ---
 title: "Foundations of Artificial Intelligence (FAI)"
 author: 
-- "Niccolò Papini"
 - "Andrea Lunghi"
+- "Niccolò Papini"
 ---
 ## Introduction
 
@@ -996,9 +996,291 @@ def EXPECTIMINIMAX(s)
     elif TO_MOVE(s) == MIN
         return min(ACTIONS(s), lambda a: EXPECTIMINIMAX(RESULT(s, a)))
     else
-        return sum(P(a) * EXPECTIMINIMAX(RESULT(s, a)) for a in ACTIONS(s))
+        return sum(P(a) * EXPECTIMINIMAX(RESULT(s, a)) for a in ACTIONS(s)) 
 ```
 
 The evaluation function should be a positive linear transformation of the probability of winning.
 
 Considering the chance node, the time complexity of the expectiminimax algorithm is $O(b^m \dot n^m)$, where $b$ is the branching factor, $m$ is the maximum depth of the tree, and $n$ is the number of possible outcomes of the chance node.
+
+## Chapter Six: Logical Agents
+
+The central component of a logical agent is the **Knowledge Base** (KB) that contains the knowledge of the agent as a set of sentences in a formal language called *knowledge representation language*.
+
+The agent can perform two types of operations:
+
+- **Tell**: Add a sentence to the KB.
+- **Ask**: Query the KB to check if a sentence is true.
+
+At the beginning the kb has a set of **axioms** that are the initial knowledge of the agent.
+
+During the *ask* operation, the agent can perform **Inference** to derive new sentences from the KB based on what has been *tell(ed)*.
+
+The agent is based on three steps:
+
+1. *Tell* the kb what it perceives.
+2. *Ask* the kb what to do. During this phase extensive reasoning can be performed.
+3. *Tell* the kb what action was chosen.
+
+```python
+# counter that indicates time
+t = 0
+
+def KB_AGENT(percept)
+"""
+    return an action
+"""
+    KB.tell(MAKE_PERCEPT_SENTENCE(percept, t))
+    action = KB.ask(MAKE_ACTION_QUERY(t))
+    KB.tell(MAKE_ACTION_SENTENCE(action, t))
+
+    t += 1
+
+    return action
+```
+
+### 6.1 Logic
+
+The sentences are expressed according to the **Syntax** of the language, which is the set of rules that define the structure of the sentences.
+
+The **Semantics** of the language is the meaning of the sentences. The semantics is defined by the **Model** of the language, which is a set of mathematical abstractions that has fixed values for every relevant sentence.
+
+If a sentence ($\alpha$) is true in a model ($m$), we say that $m$ **satisfies* $\alpha$, or $m$ **is a model of** $\alpha$. We write $M(\alpha)$ to indicate all the models that satisfy $\alpha$.
+
+If a sentence is true in all the models, we say that the sentence is **valid** or **tautology**.
+
+A sentence is **satisfiable** if there is at least one model that satisfies the sentence.
+
+A sentence is **unsatisfiable** if there is no model that satisfies the sentence.
+
+Given two sentences $\alpha$ and $\beta$, if every model of $\alpha$ is also a model of $\beta$, we say that $\beta$ **follows logically** $\alpha$, or $\alpha$ **entails** $\beta$.
+
+$$\alpha \models \beta \iff M(\alpha) \subseteq M(\beta)$$
+
+If $\alpha \models \beta$ and $\beta \models \alpha$, we say that $\alpha$ and $\beta$ are **logically equivalent** and we write $\alpha \equiv \beta$.
+
+$$\alpha \equiv \beta \iff \alpha \models \beta \land \beta \models \alpha$$
+
+Using entails we can carry out **Logical Inference**, which is the process of deriving new sentences from the KB. This process is done by an inference algorithm ($i$). If an inference algorithm can derive a sentence $\beta$ from a KB, we write $KB \vdash_i \beta$ ($\alpha$ is derived by $KB$ by $i$).
+
+An inference algorithm can be:
+
+- **Soundness**: An inference algorithm is sound if it only derives sentences that are logically entailed by the KB. In simpler terms, a sound algorithm does not produce any "false positives" or incorrect inferences based on the provided information.
+$$KB \vdash_i \beta \implies KB \models \beta$$
+- **Complete**: An inference algorithm is complete if it can derive all the sentences that are logically entailed by the KB. In other words, a complete algorithm does not miss any "true positives" or valid inferences that can be made from the available information.
+$$KB \models \beta \implies KB \vdash_i \beta$$
+
+### 6.2 Propositional Logic
+
+**Propositional Logic** is a type of logic that deals with propositions, which are statements that can be true or false.
+
+#### 6.2.1 Syntax
+
+The syntax of propositional logic is defined by the following elements:
+
+- **Propositional Symbols**: $P, Q, R, ...$
+- **Connectives**: $\neg$ (negation), $\land$ (conjunction), $\lor$ (disjunction), $\implies$ (implication), $\iff$ (biconditional).
+
+A sentence is based on:
+
+- **Atomic Sentence**: A sentence that contains only a propositional symbol.
+- **Complex Sentence**: A sentence that contains a connective and one or more sentences.
+
+The **Well-Formed Formula** (WFF) is a sentence that is correctly formed according to the syntax of the language.
+
+#### 6.2.2 Semantics
+
+The semantics of propositional logic is defined by the **Truth Table** that defines the truth value of a complex sentence based on the truth values of the atomic sentences.
+
+#### 6.2.3 Inference
+
+One way to perform inference is with **Model-Checking** that enumerates all the models and checks if the $\alpha$ is true in all the models where the KB is true.
+
+A general algorithm is the **Truth Table Enumeration** that generates all the models and checks if the KB entails $\alpha$.
+
+```python
+def TT_ENTAILS(KB, alpha)
+"""
+    return true if KB entails alpha
+"""
+    symbols = SYMBOLS(KB, alpha)
+    return TT_CHECK_ALL(KB, alpha, symbols, {})
+
+def TT_CHECK_ALL(KB, alpha, symbols, model)
+"""
+    return true if KB entails alpha
+"""
+    if not symbols
+        # check if a sentence is true in a model
+        if PL_TRUE(KB, model)
+            return PL_TRUE(alpha, model)
+        else
+            # when KB is false, alpha is true
+            return True
+    else
+        P = symbols.pop()
+        return (TT_CHECK_ALL(KB, alpha, symbols, extend(model, P, True)) and
+                TT_CHECK_ALL(KB, alpha, symbols, extend(model, P, False)))
+```
+
+This algorithm is sound an complete, but it is not efficient because it has an exponential time complexity.
+
+### 6.3 Propositional Theorem Proving
+
+**Propositional Theorem Proving** is the process of deriving new sentences from the KB using inference rules. This is done without consulting models.
+
+One way to perform theorem proving is with a technique called *reductio ad absurdum*, or proof by **refutation**. This technique is based on the fact that $\alpha \models \beta$ if and only if $\alpha \land \neg \beta$ is unsatisfiable.
+
+$$\alpha \models \beta \iff \alpha \land \neg \beta \text{ is unsatisfiable}$$
+
+#### 6.3.1 Inference Rules
+
+There are different inference rules that can be used to derive new sentences from the KB:
+
+- **Modus Ponens**: If $\alpha$ and $\alpha \implies \beta$ are true, then $\beta$ is true.
+$$\frac{\alpha, \alpha \implies \beta}{\beta}$$
+- **And-Elimination**: If $\alpha \land \beta$ is true, then $\alpha$ and $\beta$ are true.
+$$\frac{\alpha \land \beta}{\alpha} \quad \frac{\alpha \land \beta}{\beta}$$
+
+Those inference rules are sound.
+
+#### 6.3.2 Resolution
+
+**Resolution** is a sound and complete inference rule that can be used to derive new sentences from the KB.
+
+The KB should be in **Conjunctive Normal Form** (CNF), which is a conjunction of disjunctions of literals, or a conjunction of **clauses** (disjunction of literals).
+
+The *resolution* takes two clauses with a **complementary literal** ($\not \alpha$ and $\alpha$) and produce a new clause called **resolvent**. If one of the clauses is only one literal it's called *unit resolution*.
+
+$$C = (C_1 - \{l\}) \cup (C_2 - \{\neg l\})$$
+
+$$\frac{P \lor Q, \neg P}{Q} \quad \frac{P \lor Q, \neg P \lor R}{Q \lor R}$$
+
+To show that a sentence $\alpha$ is entailed by the KB, we use the principle of proof by contradiction and we show that $KB \land \neg \alpha$ is unsatisfiable.
+
+The resolution algorithm is based on the resolution rule and it works by generating new clauses from the KB and the negation of the sentence. The algorithm ends if:
+
+- The empty clause is generated, which means that the sentence is entailed by the KB ($KB \models \alpha$).
+- No new clauses can be generated, which means that the sentence is not entailed by the KB ($KB \not\models \alpha$).
+
+```python
+def PL_RESOLUTION(KB, alpha)
+"""
+    return true if KB entails alpha
+"""
+    clauses = CONVERT_TO_CNF(KB) + CONVERT_TO_CNF(~alpha)
+    new = set()
+
+    while True
+        for c_i in clauses
+            for c_j in clauses
+                resolvents = PL_RESOLVE(c_i, c_j)
+
+                if resolvents is empty
+                    return True
+
+                new = new.union(resolvents)
+
+        if new.issubset(clauses)
+            return False
+
+        clauses = clauses.union(new)
+```
+
+An **Horn Clause** is a clause that has at most one positive literal. A special type of Horn Clause is the **Definite Clause**, which has exactly one positive literal. Definite clauses can be written as implications.
+
+#### 6.3.3 Forward and Backward Chaining
+
+**Forward Chaining** is a theorem proving algorithm that starts from a KB of definite clauses and tries to derive new sentences until the query is found.
+
+Forward chaining is **Data-Driven** because it starts from the data and tries to derive new sentences.
+
+The algorithm works by maintaining a list of the sentences that are true and a list of the sentences that are false. The algorithm iterates over the sentences that are true and tries to derive new sentences until the query is found.
+
+```python
+def PL_FC_ENTAILS(KB, q)
+"""
+    return true if KB entails q
+"""
+    count = {c: len(c) for c in KB} # how many implications are left to be true
+    inferred = {c: False for c in KB}   # if the symbols has been inferred
+    queue = [c for c in KB]    # list of the symbols that are true but not yet processed
+
+    while queue
+        p = queue.pop()
+        if p == q
+            return True
+
+        if not inferred[p]
+            inferred[p] = True
+
+            for c in KB
+                if p in c
+                    count[c] -= 1
+                    if count[c] == 0
+                        queue.append(c)
+
+    return False
+```
+
+This algorithm is sound and complete and it's linear in the size of the KB, but can do works irrelevant to the goal.
+
+The **Backward Chaining** is a theorem proving algorithm that starts from the query and tries to derive the KB.
+This algorithm is **Goal-Driven** because it starts from the goal and tries to derive the KB.
+
+### 6.4 Propositional Model Checking
+
+#### 6.4.1 DPLL Algorithm
+
+The **Davis-Putnam-Logemann-Loveland** (DPLL) algorithm is similar to TT_ENTAILS but it is more efficient because it uses a **Backtracking Search**. There are three advantages of DPLL over TT_ENTAILS:
+
+- *Early Termination*: The algorithm can decide if a sentences is satisfiable or unsatisfiable with a partial model. $(A \lor B) \land (\neg C \lor A)$ is satisfiable with {$A = True$} and is unsatisfiable with {$A = False$, }.
+- *Pure Symbol Heuristic*: The algorithm can select the symbols that are always true or always false in all clauses. This allows to reduce the search space because the algorithm can assign a value to the symbol without exploring the other branches.
+- *Unit Clause Heuristic*: The algorithm can assign a value to a symbol if the symbol appears only once in a clause. $(A \lor B) \land (\neg C)$ in this case $C$ is false.
+
+The algorithm works by assigning a value to a symbol and then propagating the constraints. If the assignment is consistent, the algorithm continues with the next symbol. If the assignment is not consistent, the algorithm backtracks and tries a different value.
+
+```python
+def DPLL_SATISFIABLE(s)
+"""
+    return true if the sentence is satisfiable
+"""
+    clauses = CONVERT_TO_CNF(s)
+    symbols = SYMBOLS(s)
+
+    return DPLL(clauses, symbols, {})
+
+def DPLL(clauses, symbols, model)
+"""
+    return true if the sentence is satisfiable
+"""
+    # check if all the clauses are true with the current model
+    if clauses.every(lambda c: IS_TRUE(c, model))
+        return True
+
+    # check if there is a clause that is false with the current model
+    if clauses.some(lambda c: IS_FALSE(c, model))
+        return False
+
+    P, value = FIND_PURE_SYMBOL(symbols, clauses, model)
+
+    if P is not None
+        return DPLL(clauses, symbols - P, extend(model, P, value)) # repeat assigning the value to the pure symbol
+
+    P, value = FIND_UNIT_CLAUSE(clauses, model)
+
+    if P is not None
+        return DPLL(clauses, symbols - P, extend(model, P, value)) # repeat assigning the value to the unit clause
+
+    P = symbols.pop()
+    
+    # try assigning true and false to the symbol
+    return DPLL(clauses, symbols, extend(model, P, True)) or DPLL(clauses, symbols, extend(model, P, False))
+```
+
+Some enhancements to the DPLL algorithm are:
+
+- **Component Analysis**: The algorithm can divide the clauses into disjoint subsets called **components** and solve them separately.
+- **Variable and Value Ordering**: The algorithm can use a heuristic to select the variable to assign and the value to assign. An example is the *degree heuristic* that selects the variable that appears in the most clauses.
+- **Intelligent Backtracking**: The algorithm stores the conflicts and avoid to repeat them.
+- **Clever Indexing**: speed up the search by indexing the clauses based on the things like clauses where a variable appears as positive or negative.
