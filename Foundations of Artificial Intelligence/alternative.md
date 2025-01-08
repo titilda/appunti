@@ -1284,3 +1284,46 @@ Some enhancements to the DPLL algorithm are:
 - **Variable and Value Ordering**: The algorithm can use a heuristic to select the variable to assign and the value to assign. An example is the *degree heuristic* that selects the variable that appears in the most clauses.
 - **Intelligent Backtracking**: The algorithm stores the conflicts and avoid to repeat them.
 - **Clever Indexing**: speed up the search by indexing the clauses based on the things like clauses where a variable appears as positive or negative.
+
+### 6.5 First-Order Logic
+
+**First-Order Logic** is a type of logic that extends propositional logic, focussing on the relationships between objects.
+
+#### 6.5.1 Syntax
+
+The syntax of first-order logic is defined by the following elements:
+
+- **Constants**: $A, B, C, ...$
+- **Variables**: $x, y, z, ...$
+- **Functions**: $F, G, H, ...$. Each function has an *arity* that is the number of arguments.
+
+A **Term** is a logical expression that refers to an object. A term can be a constant, a variable, or a function applied to a list of terms.
+
+A sentence is based on:
+
+- **Atomic Sentence**: A sentence that contains a predicate and a list of terms.
+- **Complex Sentence**: A sentence that contains a connective and one or more sentences.
+
+Instead of enumerate the  objects by name we can use **Quantifiers** to express properties of an entire collection of objects.
+
+- **Universal Quantifier** ($\forall$): The sentence is true for all the objects.
+- **Existential Quantifier** ($\exists$): The sentence is true for at least one object.
+
+Those quantifiers are equivalent and can be expressed in terms of the other.
+
+$$\forall x \alpha \equiv \neg \exists x \neg \alpha$$
+$$\exists x \alpha \equiv \neg \forall x \neg \alpha$$
+
+We can also use **Equality** to express that two terms are equal.
+
+#### 6.6 Knowledge Engineering Process
+
+The process of creating a knowledge base is called **Knowledge Engineering**. This process is based on the following steps:
+
+1. **Identify the questions**: Determine the range of questions the knowledge base should answer and the type of information available for each problem.
+2. **Assemble the relevant knowledge**: Gather all necessary information about the domain, potentially working with experts.
+3. **Decide on a vocabulary**: Translate domain concepts into logical predicates, functions, and constants, creating the domain's ontology (a theory of existence).
+4. **Encode general knowledge**: Write axioms that define the meaning of the vocabulary terms.
+5. **Encode the problem instance**: Describe the specific problem using atomic sentences based on the established ontology.
+6. **Pose queries and get answers**: Use an inference procedure to derive answers from the axioms and problem-specific facts.
+7. **Debug and evaluate**: Correct errors in the knowledge base by identifying missing or incorrect axioms. Missing axioms lead to incomplete reasoning, while incorrect axioms are false statements about the world. This debugging process differs from traditional program debugging as errors are often logical inconsistencies rather than simple code errors.
