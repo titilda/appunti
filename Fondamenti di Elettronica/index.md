@@ -325,8 +325,6 @@ D'ora in avanti ci troveremo davanti svariate parole che indicano determinate ca
 - **Area:** Spazio occupato.
 - **Fan-Out:** Numero massimo di device pilotabili senza perdita di informazioni.
 
-## 4.2 Work in progress
-
 # Capitolo Cinque: Logica CMOS
 
 Come abbiamo detto nel capitolo tre i MOS sono ottimi interruttori che hanno due funzioniamenti distinti: pull-up (PU) e pull-down (PD) con PD forziamo un livello "low" (L) in uscita mentre con PU un livello "high" (H) in uscita.
@@ -1785,6 +1783,8 @@ FSR = LSB \cdot 2^{n,2}$
 - $V_R = FSR \to T_{CONV|MAX} = 2T_1$
 - DNL, INL, offset e Gain dipendenti dall'OpAmp.
 - Filtro su $V_{in}.$
+- $FSR =$ Full Scale Range.
+- $LSB =$ Least Significant Bit.
 
 $V_1 (t) = - \frac{1}{C} \int_{0}^{t} \frac{V_{in} (t)}{R} dt
 \\
