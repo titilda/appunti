@@ -1263,12 +1263,10 @@ def DPLL(clauses, symbols, model)
         return False
 
     P, value = FIND_PURE_SYMBOL(symbols, clauses, model)
-
     if P is not None
         return DPLL(clauses, symbols - P, extend(model, P, value)) # repeat assigning the value to the pure symbol
 
     P, value = FIND_UNIT_CLAUSE(clauses, model)
-
     if P is not None
         return DPLL(clauses, symbols - P, extend(model, P, value)) # repeat assigning the value to the unit clause
 
@@ -1327,3 +1325,93 @@ The process of creating a knowledge base is called **Knowledge Engineering**. Th
 5. **Encode the problem instance**: Describe the specific problem using atomic sentences based on the established ontology.
 6. **Pose queries and get answers**: Use an inference procedure to derive answers from the axioms and problem-specific facts.
 7. **Debug and evaluate**: Correct errors in the knowledge base by identifying missing or incorrect axioms. Missing axioms lead to incomplete reasoning, while incorrect axioms are false statements about the world. This debugging process differs from traditional program debugging as errors are often logical inconsistencies rather than simple code errors.
+
+## Chapter Seven: Planning
+
+The **Classical Planning** is the task of finding a sequence of actions to accomplish a goal in a discrete, deterministic, static, and fully observable environment.
+
+To achieve this we use a family language called **Planning Domain Definition Language** (PDDL) that is based on the following elements:
+
+- **Objects** (or constants): The objects in the domain.
+- **Predicates**: The predicates that define the state of the world, used to represent properties of objects and relationships between them.
+
+The **State** is represented as a conjunction of ground atomic fluents. It means that:
+
+- There are no variables in the state (ground).
+- Each fluent is made by a single predicate. (atomic)
+
+The planning problem is defined by:
+
+- **Initial State**: The state of the world at the beginning.
+- **Goal State**: A conjunction of literals (or sub-goals) that the state must satisfy.
+
+Some assumptions of the are:
+
+- **Unique Name Assumption** (UNA): Different constants denote different objects.
+- **Domain Closuse Assumption** (DCA): The environment includes only the objects that are denoted by a constant
+- **Closed World Assumption** (CWA): All the fluents that are not explicitly mentioned are false.
+
+To reach the goal we need to perform an **Action** that is defined by:
+
+- **Parameters**: The objects that are involved in the action.
+- **Preconditions**: The conditions that must be true to perform the action.
+- **Effects**: The effects of the action. The effects can be positive (add a predicate (*add list*)) or negative (remove a predicate (*delete list*)).
+
+```plaintext
+Action( Name(parameters),
+    Precondition: [list of Preconditions]
+    Effect: [list of Effects]
+)
+```
+
+### 7.1 Algorithms for Planning
+
+#### 7.1.1 Forward State Space Search
+
+The **Forward State Space Search** is a search algorithm that starts from the initial state and tries to reach the goal state by applying the *applicable* actions available in the current state (preconditions are satisfied).
+
+We can apply any search algorithm to perform the search.
+
+The main problems are that for each state there might be a large number of actions and usually only a few actions are relevant to the goal. This increase the branching factor of the search tree, making the search inefficient.
+
+#### 7.1.2 Backward State Space Search
+
+The **Backward State Space Search** (or regression search) is a search algorithm that starts from the goal state and tries to reach the initial state.
+
+Instead of considering all applicable actions, only the *relevant* actions are considered. An action is relevant if it has an effect that is needed to satisfy the sub-goal and don't have a negative effect that makes the sub-goal unsatisfiable.
+
+The **regression** from the the goal $g$ over an action $a$ gives a new goal $s$ that satisfy the preconditions of the action $a$ and the application of the action $a$ to the state $s$ gives the state $g$.
+
+$$\text{regress}(g, a) = s = g - \text{delete}(a) \cup \text{add}(a)$$
+
+The backward search has a lower branching factor than the forward search, but it's harder to come up with a good heuristic due to the use of variables.
+
+#### 7.1.3 SAT Planning
+
+The **SAT Planning** is a planning algorithm that uses a SAT solver to find a plan.
+
+The PDDL representation need to be converted to propositional logic by encoding the initial state, the actions, and the goal $\gamma$ as a set of propositional sentences.
+
+The KB is the conjunction of the initial state, the actions. If something is false in the initial state it must be state explicitly.
+
+The solution is based on an iterative process that tries to find a model that satisfies the KB and the goal with a plan of length $l$ using DPLL. The algorithm starts with $l = 0$ and increases the length until a solution is found. A solution is found if a model of $\text{KB} \land \gamma^l$ is found.
+
+All the symbols will have an index to indicate the time step.
+
+$\text{Open}(Box) \to \text{OpenBox}^l$ : The box is open at time $l$.
+$\text{open}(Box) \to \text{openBox}^l$ : The box will be open at time $l$ (with effects at time $l+1$).
+
+To convert an action to a sentence we need to set the preconditions as a necessary condition as a implication of the action (**Precondition Axiom**).
+
+$$\text{openBox}^l \implies \neg \text{OpenBox}^t$$
+$$\neg \text{openBox}^l \lor \neg \text{OpenBox}^t$$
+
+The effects of an action are dealt using **Fluent Axioms** that need to hold a fluent at time $t+1$.
+
+$$P^{t+1} \iff \text{actionCausingP}^t \lor (P^t \land \neg \text{actionCausingNotP}^t)$$
+
+We also have to impose that there are no two actions that are applicable at the same time (**Exclusion Axiom**).
+
+$$\neg (\text{action}_i^t \land \text{action}_j^t)$$
+
+Those three axioms need to be added to the KB for each step.
