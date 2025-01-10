@@ -1,9 +1,10 @@
 ---
 title: "Foundations of Artificial Intelligence (FAI)"
-author: 
-- "Andrea Lunghi"
-- "Niccolò Papini"
+author:
+  - "Andrea Lunghi"
+  - "Niccolò Papini"
 ---
+
 ## Introduction
 
 Hello reader this is a short summary of our notes about the course "FAI". If you find an error or you think that one point isn't clear please tell me and I fix it (sorry for my bad english). -NP
@@ -22,7 +23,7 @@ When we talk about intelligence we can define it based on two factors:
 Based on those factors, we can define four categories of AI, displayed as a 2x2 matrix:
 
 | Approach \ Performance | Human            | Rational            |
-|------------------------|------------------|---------------------|
+| ---------------------- | ---------------- | ------------------- |
 | Think                  | Thinking Humanly | Thinking Rationally |
 | Act                    | Acting Humanly   | Acting Rationally   |
 
@@ -36,7 +37,7 @@ To achieve this, we need to understand how humans think, which can be done throu
 
 This approach aims to create AI that thinks logically. This is the goal of the **Laws of Thought** approach, which involves creating AI that can reason logically.
 
-To achieve this, we need to understand how to reason logically, which can be done through **Logic** and *formal notation*.
+To achieve this, we need to understand how to reason logically, which can be done through **Logic** and _formal notation_.
 
 ### Acting Humanly
 
@@ -69,8 +70,8 @@ We can classify AI based on their capabilities:
 
 An **agent** is a system that perceives its environment and acts upon it. It can be a human, a robot, or a software program.
 
-- The **Perception** is the process of obtaining information from the environment. This can be done through *sensors* (Human: eyes, hear, etc; Robot: camera, etc; Software: file, network, etc).
-- The **Action** is the process of affecting the environment. This can be done through *actuators* (Human: hands, mouth, etc; Robot: motors, etc; Software: file, UI, etc).
+- The **Perception** is the process of obtaining information from the environment. This can be done through _sensors_ (Human: eyes, hear, etc; Robot: camera, etc; Software: file, network, etc).
+- The **Action** is the process of affecting the environment. This can be done through _actuators_ (Human: hands, mouth, etc; Robot: motors, etc; Software: file, UI, etc).
 
 ```mermaid
 flowchart TB
@@ -82,7 +83,7 @@ flowchart TB
     end
 ```
 
-An agent is defined by its **Agent Function**, which maps the *Built-in Knowledge* and a sequence of percepts (*Percept Sequence*) to an *action*. The implementation of the agent function is called the **Agent Program**.
+An agent is defined by its **Agent Function**, which maps the _Built-in Knowledge_ and a sequence of percepts (_Percept Sequence_) to an _action_. The implementation of the agent function is called the **Agent Program**.
 
 The agent's behavior is evaluated based on a **Performance Measure**, which is a criterion for success.
 
@@ -133,12 +134,12 @@ if condition then action
 ```
 
 This agent is useful when the environment is **fully observable** and **deterministic**.
-In partially observable environments, the agent might result in a **loop**. To avoid that we could randomize the action, but this could lead to *inefficiency*.
+In partially observable environments, the agent might result in a **loop**. To avoid that we could randomize the action, but this could lead to _inefficiency_.
 
 ```plaintext
 function SIMPLE-REFLEX-AGENT(percept) returns an action
     persistent: rules // a set of condition–action rules
-    
+
     state = INTERPRET-INPUT(percept)
     rule = RULE-MATCH(state,rules)
     action = rule.ACTION
@@ -159,11 +160,11 @@ To deal with partially observable environments, we can add a **State** to the ag
         sensor_model // a description of how the current world state is reflected in the agent’s percepts
         rules // a set of condition–action rules
         action // the most recent action, initially none
-    
+
     state = UPDATE-STATE(state, action, percept, transition_model, sensor_model)
     rule = RULE-MATCH(state, rules)
     action = rule.ACTION
-    
+
     return action
 ```
 
@@ -177,7 +178,7 @@ This agent has a **Goal** that describe the desired state of the environment. Th
 
 ![Utility-based Agent](assets/Chapter_Three/Utility-based_Agent.jpg)
 
-The *goal* is a binary value (achieved or not), but the *utility* is a real number that describe how desirable a state is. The agent uses a **Utility Function** to evaluate the desirability of a state.
+The _goal_ is a binary value (achieved or not), but the _utility_ is a real number that describe how desirable a state is. The agent uses a **Utility Function** to evaluate the desirability of a state.
 
 #### 2.5 Learning Agent
 
@@ -205,8 +206,8 @@ There are four main phases of a search problem:
 - **Search**: The agent looks for a sequence of actions that lead to the goal.
 - **Execution**: The agent executes the plan.
 
-When the environment is *fully-observable*, *deterministic*, and *known*, the solution is fixed and we can ignore the *perception*. This is called **Open-Loop**.
-Otherwise, we need to consider the *perception* during the *execution* of the plan. This is called **Closed-Loop**.
+When the environment is _fully-observable_, _deterministic_, and _known_, the solution is fixed and we can ignore the _perception_. This is called **Open-Loop**.
+Otherwise, we need to consider the _perception_ during the _execution_ of the plan. This is called **Closed-Loop**.
 
 A **Problem** is defined by:
 
@@ -221,7 +222,7 @@ If that solution has the lowest cost among all the possible solutions, it is cal
 
 We can represent the problem as a **State Space Graph**, where the nodes are the states and the edges are the actions.
 
-We want to find a solution without building the entire graph, because it could be too large. We want to *partially build* the graph while searching for the solution.
+We want to find a solution without building the entire graph, because it could be too large. We want to _partially build_ the graph while searching for the solution.
 To do that we use a **Search Algorithm**.
 
 ### 3.1 Search Algorithm
@@ -235,7 +236,7 @@ The search algorithm has two main components:
 - **Frontier**: The set of nodes that the agent has to explore.
 - **Explored Set**: The set of nodes that the agent has already explored.
 
-When we *explore* a node, we add it to the explored set and remove it from the frontier. Then we *expand* the node, generating the children nodes, and add them to the frontier.
+When we _explore_ a node, we add it to the explored set and remove it from the frontier. Then we _expand_ the node, generating the children nodes, and add them to the frontier.
 
 #### 3.1.1 Best-First Search
 
@@ -296,8 +297,8 @@ We can implement this using:
 - **Evaluation Function**: $f(n) = \text{depth}(n)$
 - **Frontier**: Queue, because the shallowest node is the one that has been added first.
 
-This algorithm allows to find the solution with the minimum amount of actions for each node. This allows to perform an *Early Goal Test*, which is a test that checks if a generated node is a goal before expanding it.
-A *Late Goal Test* is a test that checks if a popped node is a goal before expanding it.
+This algorithm allows to find the solution with the minimum amount of actions for each node. This allows to perform an _Early Goal Test_, which is a test that checks if a generated node is a goal before expanding it.
+A _Late Goal Test_ is a test that checks if a popped node is a goal before expanding it.
 
 ##### Breadth-First Performance
 
@@ -367,7 +368,7 @@ It's necessary to undo the changes made to the state when backtracking.
 This is a variant of the depth-first search that limits the search to a specific depth ($l$) of the tree. This is useful when the tree is infinite.
 
 If the depth limit is less than the depth of the solution, the algorithm'll never find the solution.
-This is not a problem if we know the maximum depth that the tree can reach or the *Diameter* (the minimum amount of actions to reach each state).
+This is not a problem if we know the maximum depth that the tree can reach or the _Diameter_ (the minimum amount of actions to reach each state).
 
 ##### Depth-Limited Performance
 
@@ -407,7 +408,7 @@ This algorithm can be implemented using any search algorithm, but it's usually i
 #### 3.2.8 Comparison
 
 | Algorithm                  | Completeness | Optimality | Time Complexity                         | Space Complexity                        |
-|----------------------------|--------------|------------|-----------------------------------------|-----------------------------------------|
+| -------------------------- | ------------ | ---------- | --------------------------------------- | --------------------------------------- |
 | Breadth-First Search       | Yes          | Yes        | $O(b^d)$                                | $O(b^d)$                                |
 | Uniform-Cost Search        | Yes          | Yes        | $O(b^{1+\lfloor C^*/\epsilon \rfloor})$ | $O(b^{1+\lfloor C^*/\epsilon \rfloor})$ |
 | Depth-First Search         | No           | No         | $O(b^m)$                                | $O(bm)$                                 |
@@ -451,7 +452,7 @@ This algorithm is not optimal because it doesn't consider the cost of the path a
 - **Time Complexity**: $O(b^m)$
 - **Space Complexity**: $O(b^m)$
 
-#### 3.3.3 A* Search
+#### 3.3.3 A\* Search
 
 This algorithm expands the node with the lowest $f(n)$ cost, where $f(n) = g(n) + h(n)$, $g(n)$ is the cost of the path from the initial state to node $n$ and $h(n)$ is the heuristic function.
 
@@ -465,20 +466,20 @@ Or it should be **consistent**, which means that the cost of reaching the goal f
 
 $$h(n) \leq h(n') + c(n, a, n')$$
 
-A* only expands nodes that have a lower cost than the cost of the optimal solution. This allow to **prune** the search tree, reducing the number of nodes generated.
+A\* only expands nodes that have a lower cost than the cost of the optimal solution. This allow to **prune** the search tree, reducing the number of nodes generated.
 
-##### A* Performance
+##### A\* Performance
 
 - **Completeness**: The algorithm is complete.
 - **Optimality**: The algorithm is optimal if the heuristic function is admissible.
 - **Time Complexity**: $O(b^d)$
 - **Space Complexity**: $O(b^d)$
 
-#### 3.3.4 Weighted A* Search
+#### 3.3.4 Weighted A\* Search
 
-A* has the problem that the heuristic function can be too optimistic, leading to a large number of nodes generated.
+A\* has the problem that the heuristic function can be too optimistic, leading to a large number of nodes generated.
 
-One way to solve this is to use a **Weighted A***, which multiplies the heuristic function by a weight $w$ ($w > 1$).
+One way to solve this is to use a **Weighted A\***, which multiplies the heuristic function by a weight $w$ ($w > 1$).
 
 $$f(n) = g(n) + w \cdot h(n)$$
 
@@ -486,27 +487,27 @@ This introduce an inadmissible heuristic function, but it can be useful to reduc
 
 Based on the weight we can have different algorithms:
 
-| Weight | Evaluation function | Algorithm |
-|--------|---------------------|-----------|
-| $w = 0$ | $f(n) = g(n)$ | Uniform-cost search |
-| $w = 1$ | $f(n) = g(n) + h(n)$ | A* search |
-| $1 < w < \infin$ | $f(n) = g(n) + w \cdot h(n)$ | Weighted A* search |
-| $w = \infin$ | $f(n) = h(n)$ | Greedy best-first search |
+| Weight           | Evaluation function          | Algorithm                |
+| ---------------- | ---------------------------- | ------------------------ |
+| $w = 0$          | $f(n) = g(n)$                | Uniform-cost search      |
+| $w = 1$          | $f(n) = g(n) + h(n)$         | A\* search               |
+| $1 < w < \infin$ | $f(n) = g(n) + w \cdot h(n)$ | Weighted A\* search      |
+| $w = \infin$     | $f(n) = h(n)$                | Greedy best-first search |
 
-##### Weighted A* Performance
+##### Weighted A\* Performance
 
 - **Completeness**: The algorithm is complete.
 - **Optimality**: The algorithm is suboptimal.
 - **Time Complexity**: $O(b^d)$
 - **Space Complexity**: $O(b^d)$
 
-#### 3.3.5 Iterative Deepening A* Search
+#### 3.3.5 Iterative Deepening A\* Search
 
-This algorithm is a variant of the A* search that introduces a *cutoff* value. This value is the maximum cost of the path that the algorithm can explore.
+This algorithm is a variant of the A*search that introduces a*cutoff\* value. This value is the maximum cost of the path that the algorithm can explore.
 
 If the algorithm reaches the cutoff value, it restarts and increases the cutoff value to the smallest evaluation of non-expanded nodes.
 
-##### Iterative Deepening A* Performance
+##### Iterative Deepening A\* Performance
 
 This algorithm is efficient memory-wise, but it can be slow because it explores the same nodes multiple times.
 
@@ -535,12 +536,12 @@ One problem with this algorithm is that we don't know which is the best node to 
 
 #### 3.3.7 Comparison
 
-| Algorithm                      | Completeness | Optimality | Time Complexity | Space Complexity|
-|--------------------------------|--------------|------------|-----------------|-----------------|
-| Greedy Best-First Search       | No           | No         | $O(b^m)$        | $O(b^m)$        |
-| A* Search                      | Yes          | Yes        | $O(b^d)$        | $O(b^d)$        |
-| Weighted A* Search             | Yes          | No         | $O(b^d)$        | $O(b^d)$        |
-| Bidirectional heuristic search | Yes          | Yes        | $O(b^{d/2})$    | $O(b^{d/2})$    |
+| Algorithm                      | Completeness | Optimality | Time Complexity | Space Complexity |
+| ------------------------------ | ------------ | ---------- | --------------- | ---------------- |
+| Greedy Best-First Search       | No           | No         | $O(b^m)$        | $O(b^m)$         |
+| A\* Search                     | Yes          | Yes        | $O(b^d)$        | $O(b^d)$         |
+| Weighted A\* Search            | Yes          | No         | $O(b^d)$        | $O(b^d)$         |
+| Bidirectional heuristic search | Yes          | Yes        | $O(b^{d/2})$    | $O(b^{d/2})$     |
 
 ## Chapter Four: Constraint Satisfaction Problems
 
@@ -552,7 +553,7 @@ Each state is represented by a set of variables, each with a domain of possible 
 
 - **Variable** ($X$), {$X_1$, ..., $X_n$}: A symbol that represents a value.
 - **Domain** ($D$), {$D_1$, ..., $D_n$}: The set of possible values {$v_1$, ..., $v_k$} that a variable can take.
-- **Constraint** ($C$), {$C_1$, ..., $C_n$}: A restriction on the possible values of the variables. Each constraint is a pair {*scope*, *rel*}, where *scope* is a set of variables that are involved in the constraint and *rel* is a relation that defines the values that the variable can take. There are four types of constraints:
+- **Constraint** ($C$), {$C_1$, ..., $C_n$}: A restriction on the possible values of the variables. Each constraint is a pair {_scope_, _rel_}, where _scope_ is a set of variables that are involved in the constraint and _rel_ is a relation that defines the values that the variable can take. There are four types of constraints:
   - **Unary Constraint**: A constraint that involves a single variable.
   - **Binary Constraint**: A constraint that involves two variables.
   - **Higher-Order Constraint**: A constraint that involves more than two variables. This can be represented as a set of binary constraints.
@@ -571,7 +572,7 @@ This type of problem are called **constraint optimization problems**.
 
 ### 4.1 Constraint Propagation
 
-**Constraint Propagation** is a technique that allows to reduce the domain of the variables based on the constraints, ensuring *local consistency*.
+**Constraint Propagation** is a technique that allows to reduce the domain of the variables based on the constraints, ensuring _local consistency_.
 
 There are different types of consistency:
 
@@ -588,7 +589,7 @@ If every variable is arc consistent, the graph is **arc consistent**.
 The most popular algorithm to enforce arc consistency is the **AC-3** algorithm.
 
 It uses a queue to store the arcs that need to be checked. On each iteration, it removes an arc from the queue and checks if the domain of the variables involved in the arc has changed. If it has, it adds the arcs that involve the variable to the queue.
-If the domain of a variable is reduced to zero, the algorithm stops and returns *false* because there is an inconsistency.
+If the domain of a variable is reduced to zero, the algorithm stops and returns _false_ because there is an inconsistency.
 
 ```python
 def AC_3(csp)
@@ -675,14 +676,14 @@ This algorithm is called **Chronological Backtracking**.
 
 #### 4.2.1 Variable and Value Selection
 
-To select the variable to assign, we can use a *fail-first* strategy. This is useful to prune a branch tree because it reduces the number of possible values to try before an inconsistency is found.
+To select the variable to assign, we can use a _fail-first_ strategy. This is useful to prune a branch tree because it reduces the number of possible values to try before an inconsistency is found.
 
 Some strategies to select the variable are:
 
 - **Minimum Remaining Values** (MRV): Select the variable with the fewest remaining values in its domain.
 - **Degree Heuristic**: Select the variable that is involved in the largest number of constraints.
 
-Once a variable is selected, we need to select a value to assign. This is done with a *fail-last* strategy, which selects the value that is most likely to lead to a solution.
+Once a variable is selected, we need to select a value to assign. This is done with a _fail-last_ strategy, which selects the value that is most likely to lead to a solution.
 
 To select the value we can use:
 
@@ -703,7 +704,7 @@ To solve this, we can use the **Maintain Arc Consistency** algorithm that calls 
 When a failure is found, the chronological backtracking algorithm backtracks to the most recent variable that has been assigned a value and tries a different value.
 
 A different approach is **Backjumping**, which backtracks to a variable that might fix the problem.
-To do so we keep track of the variables that are involved in the failure (*conflict set*) and when backtracking we jump to the most recent variable that is involved in the failure.
+To do so we keep track of the variables that are involved in the failure (_conflict set_) and when backtracking we jump to the most recent variable that is involved in the failure.
 
 A backtracking algorithm that uses backjumping is called **Conflict-Directed Backjumping**.
 
@@ -726,7 +727,7 @@ Some techniques to improve the search are:
 
 ## Chapter Five: Adversarial Search
 
-**Adversarial Search** is a type of search is used in *competitive environments* where two or more agents have conflicting goals. In this type of search, the agent tries to maximize its performance while minimizing the performance of the opponent.
+**Adversarial Search** is a type of search is used in _competitive environments_ where two or more agents have conflicting goals. In this type of search, the agent tries to maximize its performance while minimizing the performance of the opponent.
 
 There are three main ways to represent a multi-agent environment:
 
@@ -749,7 +750,7 @@ To model a zero-sum we need two players (MAX and MIN) and some elements:
 - **Terminal Test** ($IS-TERMINAL(s)$): A function that checks if the state $s$ is a terminal state.
 - **Utility Function** ($UTILITY(s, p)$): A function that returns the result of the game for player $p$ in the terminal state $s$.
 
-The initial state, the actions, and the transition model define the *state space graph* of the game. The **Game Tree** is the search tree that follows every sequence of moves to a terminal state.
+The initial state, the actions, and the transition model define the _state space graph_ of the game. The **Game Tree** is the search tree that follows every sequence of moves to a terminal state.
 
 ### 5.2 Minimax Algorithm
 
@@ -882,7 +883,7 @@ The alpha-beta pruning algorithm is based on a **Depth-First Search** so, until 
 
 ### 5.4 Heuristic Alpha-Beta Pruning Search
 
-Due to the high computational time we can try to limit the search to a specific depth and use a heuristic function to estimate the utility of the states that are not terminal. In this way we explore a *shallow but wide* tree.
+Due to the high computational time we can try to limit the search to a specific depth and use a heuristic function to estimate the utility of the states that are not terminal. In this way we explore a _shallow but wide_ tree.
 
 We replace the utility function with an **Evaluation Function** ($EVAL(s)$) that estimates the utility of the state $s$. If the state is terminal, the evaluation function returns the utility of the state and for non-terminal states, it returns the estimated utility between a win and a loss.
 
@@ -904,7 +905,7 @@ def H_MINIMAX(s, d):
 
 #### 5.4.1 Evaluation Function
 
-A good evaluation function should be *fast to compute* and should be correlated with the chance of winning.
+A good evaluation function should be _fast to compute_ and should be correlated with the chance of winning.
 
 Most evaluation functions are based on calculating **Features** of the state and then combining them to estimate the utility. The features can have a weight based on their importance. The weight should be between 0 (loss) and 1 (win).
 
@@ -914,10 +915,10 @@ $$EVAL(s) = \sum_{i=1}^n w_i \cdot f_i(s)$$
 
 #### 5.4.2 Cutoff Test
 
-Instead of having a fixed depth, we can use the *Iterative Deepening Alpha-Beta Pruning* algorithm until a time limit is reached.
+Instead of having a fixed depth, we can use the _Iterative Deepening Alpha-Beta Pruning_ algorithm until a time limit is reached.
 
 The evaluation function should be used only on states that are **quiescent**, which means that the state is stable and doesn't have any pending actions that would change the utility significantly.
-The cutoff test should perform a *quiescent search* and avoid terminating on a state that is not quiescent.
+The cutoff test should perform a _quiescent search_ and avoid terminating on a state that is not quiescent.
 
 Another problem is the **Horizon Effect**, which is the problem that the search algorithm can't see the consequences of a move that is beyond the search horizon. The algorithm will make moves that are good on the short term but bad on the long term.
 
@@ -925,7 +926,7 @@ One way to deal with this is to use **Singular Extensions**, which allows to ext
 
 #### 5.4.3 Forward Pruning
 
-One way to optimize the search is with **Forward Pruning** that is a to prune the branches that have a low probability of being the best move. This strategy saves computational time at the risk of making errors. In this way we explore a *deep but narrow* tree.
+One way to optimize the search is with **Forward Pruning** that is a to prune the branches that have a low probability of being the best move. This strategy saves computational time at the risk of making errors. In this way we explore a _deep but narrow_ tree.
 
 There are different approaches to forward pruning:
 
@@ -945,7 +946,7 @@ When the search reaches a state that is not in the table, the algorithm will per
 
 In games with a high branching factor, a high depth, and a complex evaluation function, the search algorithms can be slow and inefficient.
 
-**Monte Carlo Tree Search** (MCTS) is a search algorithm that uses random *simulations* to explore the search space. This algorithm doesn't use an evaluation function, but it uses the results of the simulations to estimate the utility of the states.
+**Monte Carlo Tree Search** (MCTS) is a search algorithm that uses random _simulations_ to explore the search space. This algorithm doesn't use an evaluation function, but it uses the results of the simulations to estimate the utility of the states.
 
 A simulation (or playout) is a sequence of random moves that starts from a state and ends in a terminal state.
 
@@ -996,7 +997,7 @@ def EXPECTIMINIMAX(s)
     elif TO_MOVE(s) == MIN
         return min(ACTIONS(s), lambda a: EXPECTIMINIMAX(RESULT(s, a)))
     else
-        return sum(P(a) * EXPECTIMINIMAX(RESULT(s, a)) for a in ACTIONS(s)) 
+        return sum(P(a) * EXPECTIMINIMAX(RESULT(s, a)) for a in ACTIONS(s))
 ```
 
 The evaluation function should be a positive linear transformation of the probability of winning.
@@ -1005,7 +1006,7 @@ Considering the chance node, the time complexity of the expectiminimax algorithm
 
 ## Chapter Six: Logical Agents
 
-The central component of a logical agent is the **Knowledge Base** (KB) that contains the knowledge of the agent as a set of sentences in a formal language called *knowledge representation language*.
+The central component of a logical agent is the **Knowledge Base** (KB) that contains the knowledge of the agent as a set of sentences in a formal language called _knowledge representation language_.
 
 The agent can perform two types of operations:
 
@@ -1014,13 +1015,13 @@ The agent can perform two types of operations:
 
 At the beginning the kb has a set of **axioms** that are the initial knowledge of the agent.
 
-During the *ask* operation, the agent can perform **Inference** to derive new sentences from the KB based on what has been *tell(ed)*.
+During the _ask_ operation, the agent can perform **Inference** to derive new sentences from the KB based on what has been _tell(ed)_.
 
 The agent is based on three steps:
 
-1. *Tell* the kb what it perceives.
-2. *Ask* the kb what to do. During this phase extensive reasoning can be performed.
-3. *Tell* the kb what action was chosen.
+1. _Tell_ the kb what it perceives.
+2. _Ask_ the kb what to do. During this phase extensive reasoning can be performed.
+3. _Tell_ the kb what action was chosen.
 
 ```python
 # counter that indicates time
@@ -1045,7 +1046,7 @@ The sentences are expressed according to the **Syntax** of the language, which i
 
 The **Semantics** of the language is the meaning of the sentences. The semantics is defined by the **Model** of the language, which is a set of mathematical abstractions that has fixed values for every relevant sentence.
 
-If a sentence ($\alpha$) is true in a model ($m$), we say that $m$ **satisfies* $\alpha$, or $m$ **is a model of** $\alpha$. We write $M(\alpha)$ to indicate all the models that satisfy $\alpha$.
+If a sentence ($\alpha$) is true in a model ($m$), we say that $m$ **satisfies\* $\alpha$, or $m$**is a model of\*\* $\alpha$. We write $M(\alpha)$ to indicate all the models that satisfy $\alpha$.
 
 If a sentence is true in all the models, we say that the sentence is **valid** or **tautology**.
 
@@ -1066,9 +1067,9 @@ Using entails we can carry out **Logical Inference**, which is the process of de
 An inference algorithm can be:
 
 - **Soundness**: An inference algorithm is sound if it only derives sentences that are logically entailed by the KB. In simpler terms, a sound algorithm does not produce any "false positives" or incorrect inferences based on the provided information.
-$$KB \vdash_i \beta \implies KB \models \beta$$
+  $$KB \vdash_i \beta \implies KB \models \beta$$
 - **Complete**: An inference algorithm is complete if it can derive all the sentences that are logically entailed by the KB. In other words, a complete algorithm does not miss any "true positives" or valid inferences that can be made from the available information.
-$$KB \models \beta \implies KB \vdash_i \beta$$
+  $$KB \models \beta \implies KB \vdash_i \beta$$
 
 ### 6.2 Propositional Logic
 
@@ -1129,7 +1130,7 @@ This algorithm is sound an complete, but it is not efficient because it has an e
 
 **Propositional Theorem Proving** is the process of deriving new sentences from the KB using inference rules. This is done without consulting models.
 
-One way to perform theorem proving is with a technique called *reductio ad absurdum*, or proof by **refutation**. This technique is based on the fact that $\alpha \models \beta$ if and only if $\alpha \land \neg \beta$ is unsatisfiable.
+One way to perform theorem proving is with a technique called _reductio ad absurdum_, or proof by **refutation**. This technique is based on the fact that $\alpha \models \beta$ if and only if $\alpha \land \neg \beta$ is unsatisfiable.
 
 $$\alpha \models \beta \iff \alpha \land \neg \beta \text{ is unsatisfiable}$$
 
@@ -1138,9 +1139,9 @@ $$\alpha \models \beta \iff \alpha \land \neg \beta \text{ is unsatisfiable}$$
 There are different inference rules that can be used to derive new sentences from the KB:
 
 - **Modus Ponens**: If $\alpha$ and $\alpha \implies \beta$ are true, then $\beta$ is true.
-$$\frac{\alpha, \alpha \implies \beta}{\beta}$$
+  $$\frac{\alpha, \alpha \implies \beta}{\beta}$$
 - **And-Elimination**: If $\alpha \land \beta$ is true, then $\alpha$ and $\beta$ are true.
-$$\frac{\alpha \land \beta}{\alpha} \quad \frac{\alpha \land \beta}{\beta}$$
+  $$\frac{\alpha \land \beta}{\alpha} \quad \frac{\alpha \land \beta}{\beta}$$
 
 Those inference rules are sound.
 
@@ -1150,7 +1151,7 @@ Those inference rules are sound.
 
 The KB should be in **Conjunctive Normal Form** (CNF), which is a conjunction of disjunctions of literals, or a conjunction of **clauses** (disjunction of literals).
 
-The *resolution* takes two clauses with a **complementary literal** ($\not \alpha$ and $\alpha$) and produce a new clause called **resolvent**. If one of the clauses is only one literal it's called *unit resolution*.
+The _resolution_ takes two clauses with a **complementary literal** ($\not \alpha$ and $\alpha$) and produce a new clause called **resolvent**. If one of the clauses is only one literal it's called _unit resolution_.
 
 $$C = (C_1 - \{l\}) \cup (C_2 - \{\neg l\})$$
 
@@ -1234,9 +1235,9 @@ This algorithm is **Goal-Driven** because it starts from the goal and tries to d
 
 The **Davis-Putnam-Logemann-Loveland** (DPLL) algorithm is similar to TT_ENTAILS but it is more efficient because it uses a **Backtracking Search**. There are three advantages of DPLL over TT_ENTAILS:
 
-- *Early Termination*: The algorithm can decide if a sentences is satisfiable or unsatisfiable with a partial model. $(A \lor B) \land (\neg C \lor A)$ is satisfiable with {$A = True$} and is unsatisfiable with {$A = False$, }.
-- *Pure Symbol Heuristic*: The algorithm can select the symbols that are always true or always false in all clauses. This allows to reduce the search space because the algorithm can assign a value to the symbol without exploring the other branches.
-- *Unit Clause Heuristic*: The algorithm can assign a value to a symbol if the symbol appears only once in a clause. $(A \lor B) \land (\neg C)$ in this case $C$ is false.
+- _Early Termination_: The algorithm can decide if a sentences is satisfiable or unsatisfiable with a partial model. $(A \lor B) \land (\neg C \lor A)$ is satisfiable with {$A = True$} and is unsatisfiable with {$A = False$, }.
+- _Pure Symbol Heuristic_: The algorithm can select the symbols that are always true or always false in all clauses. This allows to reduce the search space because the algorithm can assign a value to the symbol without exploring the other branches.
+- _Unit Clause Heuristic_: The algorithm can assign a value to a symbol if the symbol appears only once in a clause. $(A \lor B) \land (\neg C)$ in this case $C$ is false.
 
 The algorithm works by assigning a value to a symbol and then propagating the constraints. If the assignment is consistent, the algorithm continues with the next symbol. If the assignment is not consistent, the algorithm backtracks and tries a different value.
 
@@ -1271,7 +1272,7 @@ def DPLL(clauses, symbols, model)
         return DPLL(clauses, symbols - P, extend(model, P, value)) # repeat assigning the value to the unit clause
 
     P = symbols.pop()
-    
+
     # try assigning true and false to the symbol
     return DPLL(clauses, symbols, extend(model, P, True)) or DPLL(clauses, symbols, extend(model, P, False))
 ```
@@ -1279,7 +1280,7 @@ def DPLL(clauses, symbols, model)
 Some enhancements to the DPLL algorithm are:
 
 - **Component Analysis**: The algorithm can divide the clauses into disjoint subsets called **components** and solve them separately.
-- **Variable and Value Ordering**: The algorithm can use a heuristic to select the variable to assign and the value to assign. An example is the *degree heuristic* that selects the variable that appears in the most clauses.
+- **Variable and Value Ordering**: The algorithm can use a heuristic to select the variable to assign and the value to assign. An example is the _degree heuristic_ that selects the variable that appears in the most clauses.
 - **Intelligent Backtracking**: The algorithm stores the conflicts and avoid to repeat them.
 - **Clever Indexing**: speed up the search by indexing the clauses based on the things like clauses where a variable appears as positive or negative.
 
@@ -1293,7 +1294,7 @@ The syntax of first-order logic is defined by the following elements:
 
 - **Constants**: $A, B, C, ...$
 - **Variables**: $x, y, z, ...$
-- **Functions**: $F, G, H, ...$. Each function has an *arity* that is the number of arguments.
+- **Functions**: $F, G, H, ...$. Each function has an _arity_ that is the number of arguments.
 
 A **Term** is a logical expression that refers to an object. A term can be a constant, a variable, or a function applied to a list of terms.
 
@@ -1302,7 +1303,7 @@ A sentence is based on:
 - **Atomic Sentence**: A sentence that contains a predicate and a list of terms.
 - **Complex Sentence**: A sentence that contains a connective and one or more sentences.
 
-Instead of enumerate the  objects by name we can use **Quantifiers** to express properties of an entire collection of objects.
+Instead of enumerate the objects by name we can use **Quantifiers** to express properties of an entire collection of objects.
 
 - **Universal Quantifier** ($\forall$): The sentence is true for all the objects.
 - **Existential Quantifier** ($\exists$): The sentence is true for at least one object.
@@ -1355,7 +1356,7 @@ To reach the goal we need to perform an **Action** that is defined by:
 
 - **Parameters**: The objects that are involved in the action.
 - **Preconditions**: The conditions that must be true to perform the action.
-- **Effects**: The effects of the action. The effects can be positive (add a predicate (*add list*)) or negative (remove a predicate (*delete list*)).
+- **Effects**: The effects of the action. The effects can be positive (add a predicate (_add list_)) or negative (remove a predicate (_delete list_)).
 
 ```plaintext
 Action( Name(parameters),
@@ -1368,7 +1369,7 @@ Action( Name(parameters),
 
 #### 7.1.1 Forward State Space Search
 
-The **Forward State Space Search** is a search algorithm that starts from the initial state and tries to reach the goal state by applying the *applicable* actions available in the current state (preconditions are satisfied).
+The **Forward State Space Search** is a search algorithm that starts from the initial state and tries to reach the goal state by applying the _applicable_ actions available in the current state (preconditions are satisfied).
 
 We can apply any search algorithm to perform the search.
 
@@ -1378,7 +1379,7 @@ The main problems are that for each state there might be a large number of actio
 
 The **Backward State Space Search** (or regression search) is a search algorithm that starts from the goal state and tries to reach the initial state.
 
-Instead of considering all applicable actions, only the *relevant* actions are considered. An action is relevant if it has an effect that is needed to satisfy the sub-goal and don't have a negative effect that makes the sub-goal unsatisfiable.
+Instead of considering all applicable actions, only the _relevant_ actions are considered. An action is relevant if it has an effect that is needed to satisfy the sub-goal and don't have a negative effect that makes the sub-goal unsatisfiable.
 
 The **regression** from the the goal $g$ over an action $a$ gives a new goal $s$ that satisfy the preconditions of the action $a$ and the application of the action $a$ to the state $s$ gives the state $g$.
 
@@ -1415,3 +1416,97 @@ We also have to impose that there are no two actions that are applicable at the 
 $$\neg (\text{action}_i^t \land \text{action}_j^t)$$
 
 Those three axioms need to be added to the KB for each step.
+
+#### 7.1.4 Graph Plan
+
+The **Graph Plan** is a planning algorithm that uses a graph to represent the planning problem.
+
+The graph has multiple layer (level) and each layer has all the literals that could be tre true in the state.
+
+Between a level and the other we have to repeat the previous literals and apply all the available actions that can be applied to the level. The available action are those that are not been applied yet and have all the preconditions satisfied.
+
+```mermaid
+graph TD
+    subgraph Level 1
+        A[literal1]
+        B[literal2]
+    end
+
+    A --> C
+    A --> F[Action1]
+    F --> D
+
+    B --> D
+    B --> H[Action 2]
+    H --> E
+
+    subgraph Level 2
+        C[literal1]
+        D[literal2]
+        E[literal3]
+    end
+```
+
+If all the literals of the goal are in the last level, the lower bound of the length of the plan is the number of levels.
+
+#### 7.1.5 Hierarchical Planning
+
+The **Hierarchical Planning** is a planning algorithm that uses a hierarchy of sub-goals to reach the goal. Each sub-goal can be decomposed into smaller sub-goals until the sub-goals are primitive actions that the agent can perform.
+
+### 7.2 Planning and Acting in complex worlds
+
+The classical planning is based on the assumption that the environment is deterministic (each action has a single outcome), fully observable (everything stated in the state is sure), and static (the world doesn't change while the agent is planning).
+
+There are some extensions to the classical planning to deal with more complex environments.
+
+#### 7.2.1 Sensorless Planning
+
+Sensorless planning is used in environment with no observation. The initial state is not known but all the action are deterministic.
+
+The agent has to plan a sequence of actions that will achieve the goal in any possible state of the world.
+
+#### 7.2.2 Contingent Planning
+
+Contingent planning is used in environment where the action can have multiple outcomes.
+
+The agent can perform some action to percept the environment and reduce uncertainty.
+
+The planning include sequences and branches of actions that can be performed based on the outcome of the previous actions.
+
+#### 7.2.3 Replannign
+
+Replanning is used in environment where the world can change while the agent is planning.
+
+The agent keep monitoring the environment and replan if the world changes in a way that makes the current plan invalid.
+
+To monitor the environment the agent can use three different strategies:
+
+- **Action Monitoring**: Before executing an action, the agent checks if the preconditions are still satisfied.
+- **Plan Monitoring**: The agent checks if the current plan is still valid.
+- **Goal Monitoring**: The agent checks if there is a better goal to achieve.
+
+There are some replanning strategies:
+
+- New plan to reach the goal from the current state.
+- New plan _repair_ to plan to reach the last state of the previous plan.
+- New plan to reach the most convenient state of the previous plan (**serendipity**).
+
+#### 7.2.4 Continuous Planning
+
+Continuous planning is used in dynamic environment where the agent has to plan and act at the same time.
+
+The idea is to build a plan of length $m$ and than execute the first $n$ actions ($n < m$). After executing the first $n$ actions, the agent replans to reach the goal from the current state.
+
+## Summary: Problem Modeling
+
+The state can be differentiated based on the the degree of the structure:
+
+- **Atomic**: The state is denoted by an id and can be equal or different to other states.
+- **Factored**: The state is denoted by a set of variables and the state is a combination of the values of the variables.
+- **Structured**: The state is denoted by a set of objects and the state is a combination of the properties and relationship of the objects.
+
+The best approach to solve a problem is based on the solution:
+
+- If the solution require a sequence of actions, the best approach is to use a **Planning** or **Classical Search** algorithm.
+- If the solution require finding a final state, but the final state can have different cost we should use **Optimization** (local search) algorithm.
+- If the solution require finding a final state but all the state are equally good we should use a **Constrain Satisfaction** algorithm.
