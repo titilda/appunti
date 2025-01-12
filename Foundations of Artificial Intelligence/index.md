@@ -1379,11 +1379,11 @@ The main problems are that for each state there might be a large number of actio
 
 The **Backward State Space Search** (or regression search) is a search algorithm that starts from the goal state and tries to reach the initial state.
 
-Instead of considering all applicable actions, only the _relevant_ actions are considered. An action is relevant if it has an effect that is needed to satisfy the sub-goal and don't have a negative effect that makes the sub-goal unsatisfiable.
+Instead of considering all applicable actions, only the _relevant_ and _consistent_ actions are considered. An action is relevant if it has an effect that is present in the goal or the current state. An action is consistent if it doesn't have effects that contradict the goal or the current state.
 
-The **regression** from the the goal $g$ over an action $a$ gives a new goal $s$ that satisfy the preconditions of the action $a$ and the application of the action $a$ to the state $s$ gives the state $g$.
+The **regression** from the the state $s$ over an action $a$ gives a new state $s'$ that satisfy the preconditions of the action $a$ and the application of the action $a$ to the state $s'$ gives a state that satisfy $s$.
 
-$$\text{regress}(g, a) = s = g - \text{delete}(a) \cup \text{add}(a)$$
+$$s' = \text{regress}(s, a) = (s - \text{add}(a)) \land \text{pre}(a)$$
 
 The backward search has a lower branching factor than the forward search, but it's harder to come up with a good heuristic due to the use of variables.
 
