@@ -887,7 +887,7 @@ Due to the high computational time we can try to limit the search to a specific 
 
 We replace the utility function with an **Evaluation Function** ($EVAL(s)$) that estimates the utility of the state $s$. If the state is terminal, the evaluation function returns the utility of the state and for non-terminal states, it returns the estimated utility between a win and a loss.
 
-We also replace the terminal test with a **Cutoff Test** ($IS_CUTOFF(s, d)$) that checks if the state $s$ is terminal or if the depth $d$ is greater than a specific value or the state has a particolar property.
+We also replace the terminal test with a **Cutoff Test** ($IS_CUTOFF(s, d)$) that checks if the state $s$ is terminal or if the depth $d$ is greater than a specific value or the state has a particular property.
 
 ```python
 def H_MINIMAX(s, d):
@@ -1473,7 +1473,7 @@ The agent can perform some action to percept the environment and reduce uncertai
 
 The planning include sequences and branches of actions that can be performed based on the outcome of the previous actions.
 
-#### 7.2.3 Replannign
+#### 7.2.3 Replanning
 
 Replanning is used in environment where the world can change while the agent is planning.
 
