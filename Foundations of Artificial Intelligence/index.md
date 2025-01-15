@@ -1696,3 +1696,138 @@ The best approach to solve a problem is based on the solution:
 - If the solution require a sequence of actions, the best approach is to use a **Planning** or **Classical Search** algorithm.
 - If the solution require finding a final state, but the final state can have different cost we should use **Optimization** (local search) algorithm.
 - If the solution require finding a final state but all the state are equally good we should use a **Constrain Satisfaction** algorithm.
+
+## Questions
+
+### **Chapter One: Types of AI and Turing Test**
+
+1. What are the two factors used to define intelligence in AI?
+2. Explain the difference between "Thinking Humanly" and "Thinking Rationally."
+3. What is the Turing Test, and what are the six skills it evaluates?
+4. Define "Weak AI," "Strong AI," and "General AI."
+5. What is the goal of the Cognitive Modeling approach?
+6. How does the "Laws of Thought" approach differ from the "Cognitive Modeling" approach?
+7. What is a Rational Agent, and how does it differ from an AI that acts humanly?
+8. What are the four categories of AI based on performance and approach?
+9. What is the difference between "Human Performance" and "Rational Performance" in AI?
+10. How does the Turing Test evaluate an AI's ability to act humanly?
+
+---
+
+### **Chapter Two: Agent**
+
+1. What is an agent in the context of AI?
+2. Explain the difference between perception and action in an agent.
+3. What is an Agent Function, and how does it relate to the Agent Program?
+4. What is a Performance Measure, and why is it important for an agent?
+5. Describe the difference between a fully observable and a partially observable environment.
+6. What is a Simple Reflex Agent, and what are its limitations?
+7. How does a Model-Based Reflex Agent improve upon a Simple Reflex Agent?
+8. What is the role of a Goal-Based Agent, and how does it differ from a Utility-Based Agent?
+9. Explain the concept of a Learning Agent and its four main components.
+10. What are the different types of environments an agent can operate in, and how do they affect the agent's behavior?
+
+---
+
+### **Chapter Three: Problem Solving by Search**
+
+1. What are the four main phases of a search problem?
+2. Define the terms "Initial State," "Goal State," and "Transition Model" in the context of search problems.
+3. What is the difference between a State Space Graph and a Search Tree?
+4. Explain the Best-First Search algorithm and how it uses an evaluation function.
+5. What is the difference between Breadth-First Search and Depth-First Search?
+6. How does Uniform-Cost Search ensure that it finds the optimal solution?
+7. What is the purpose of the Iterative Deepening Search, and how does it work?
+8. Explain the concept of Bidirectional Search and its advantages.
+9. What is the difference between Informed and Uninformed Search strategies?
+10. How does the A* Search algorithm work, and what are the properties of its heuristic function?
+
+---
+
+### **Chapter Four: Constraint Satisfaction Problems**
+
+1. What is a Constraint Satisfaction Problem (CSP), and how is it represented?
+2. Define the terms "Variable," "Domain," and "Constraint" in the context of CSPs.
+3. What is the difference between a Consistent and a Complete assignment in CSPs?
+4. Explain the concept of Arc Consistency and how it is enforced using the AC-3 algorithm.
+5. What is the Backtracking Search algorithm, and how does it work in CSPs?
+6. What is the Minimum Remaining Values (MRV) heuristic, and why is it useful in CSPs?
+7. Explain the concept of Forward Checking and how it helps in solving CSPs.
+8. What is the difference between Chronological Backtracking and Conflict-Directed Backjumping?
+9. How does Local Search work in the context of CSPs, and what is the Min-Conflicts heuristic?
+10. What is the role of Constraint Propagation in solving CSPs?
+
+---
+
+### **Chapter Five: Adversarial Search**
+
+1. What is a Zero-Sum Game, and how is it represented in AI?
+2. Explain the Minimax algorithm and how it works in adversarial search.
+3. What is the purpose of Alpha-Beta Pruning, and how does it improve the Minimax algorithm?
+4. How does the Expectiminimax algorithm handle stochastic games?
+5. What is the role of an Evaluation Function in heuristic adversarial search?
+6. Explain the concept of Monte Carlo Tree Search (MCTS) and how it works.
+7. What is the difference between Forward Pruning and Backward Pruning in adversarial search?
+8. How does the Iterative Deepening Alpha-Beta Pruning algorithm work?
+9. What is the role of a Transposition Table in adversarial search?
+10. How does the UCT (Upper Confidence Bound applied to Trees) policy balance exploration and exploitation in MCTS?
+
+---
+
+### **Chapter Six: Logical Agents**
+
+1. What is a Knowledge Base (KB) in the context of logical agents?
+2. Explain the difference between the "Tell" and "Ask" operations in a KB.
+3. What is the difference between Syntax and Semantics in logic?
+4. Define the terms "Valid," "Satisfiable," and "Unsatisfiable" in the context of logical sentences.
+5. What is the Resolution rule, and how is it used in logical inference?
+6. Explain the concept of Forward Chaining and how it works in propositional logic.
+7. What is the difference between Propositional Logic and First-Order Logic?
+8. How does the DPLL algorithm work, and what are its advantages over Truth Table Enumeration?
+9. What is the role of Quantifiers in First-Order Logic, and how do they differ from propositional logic?
+10. Explain the process of Knowledge Engineering and its steps.
+
+---
+
+### **Chapter Seven: Planning**
+
+1. What is Classical Planning, and what are its assumptions?
+2. Define the terms "Initial State," "Goal State," and "Action" in the context of planning.
+3. What is the difference between Forward State Space Search and Backward State Space Search?
+4. Explain the concept of SAT Planning and how it converts PDDL to propositional logic.
+5. What is the Graph Plan algorithm, and how does it represent the planning problem?
+6. How does Hierarchical Planning decompose a problem into sub-goals?
+7. What is the difference between Sensorless Planning and Contingent Planning?
+8. Explain the concept of Replanning and its strategies in dynamic environments.
+9. What is Continuous Planning, and how does it handle dynamic environments?
+10. How does the PDDL language represent actions, preconditions, and effects in planning?
+
+---
+
+### **Chapter Eight: Uncertainty**
+
+1. What is a Belief State, and how does it handle uncertainty in AI?
+2. Explain the concept of Maximum Expected Utility (MEU) in decision theory.
+3. What is a Bayesian Network, and how does it represent probabilistic dependencies?
+4. How does the Chain Rule work in Bayesian Networks?
+5. What is the difference between Casual Reasoning, Evidential Reasoning, and Intercausal Reasoning?
+6. Explain the concept of Marginalization in Bayesian Networks.
+7. What is the role of Sampling in Approximate Inference?
+8. How does the Markov Decision Process (MDP) model uncertainty in reinforcement learning?
+9. What is the difference between Exact Inference and Approximate Inference in Bayesian Networks?
+10. How does the concept of Active Trails help in determining influence in Bayesian Networks?
+
+---
+
+### **Chapter Nine: Learning**
+
+1. What are the three main types of learning in AI, and how do they differ?
+2. Explain the concept of Supervised Learning and how it uses labeled data.
+3. What is Unsupervised Learning, and what is the goal of clustering?
+4. How does Reinforcement Learning differ from Supervised and Unsupervised Learning?
+5. What is the role of the Reward Function in Reinforcement Learning?
+6. Explain the concept of the Exploration-Exploitation Dilemma in Reinforcement Learning.
+7. What is the Q-Learning algorithm, and how does it update the action-value function?
+8. How does the Bellman Equation decompose the state-value function in Reinforcement Learning?
+9. What is the role of Function Approximation in Reinforcement Learning?
+10. How does the $\epsilon$-greedy policy balance exploration and exploitation in Reinforcement Learning?
