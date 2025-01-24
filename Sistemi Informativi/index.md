@@ -1077,3 +1077,135 @@ Bisogna quindi individuare diversi indicatori:
 
 Bisogna effettuare anche una valutazione sul venditore della soluzione presa in esame valutando fattori come la *credibilità* e la *capacità* del venditore.
 Questi parametri vengono valutati in base all'esperienza, la presenza e la reputazione del venditore.
+
+## Domande
+
+### Domande Capitolo Uno: Dati
+
+1. Cosa rappresenta la Piramide DIKW e quali sono i suoi livelli?
+2. Qual è la differenza tra dato e informazione?
+3. Come si ottiene la conoscenza secondo la Piramide DIKW?
+4. Cosa si intende per "saggezza" nella Piramide DIKW?
+5. Qual è l'importanza dei dati all'interno di un sistema informativo aziendale?
+6. Come può un dato diventare utile all'interno di un contesto aziendale?
+7. Quali sono le caratteristiche di un dato ben strutturato?
+8. Cosa si intende per "aggregazione dei dati"?
+9. Quali sono le fonti principali dei dati in un sistema informativo?
+10. Come possono i dati provenienti da fonti esterne influenzare le decisioni aziendali?
+
+### Domande Capitolo Due: Organizzazioni
+
+1. Quali sono le risorse interne ed esterne di un'organizzazione?
+2. Descrivi il ciclo di vita delle risorse in un'organizzazione.
+3. Cosa si intende per "processi" in un'organizzazione?
+4. Quali sono i livelli della Piramide di Anthony?
+5. Quali sono le attività primarie e di supporto nel Modello di Porter?
+6. Come si differenziano le attività operative da quelle strategiche?
+7. Qual è l'importanza della pianificazione strategica nelle organizzazioni?
+8. Cosa si intende per "risorse di scambio" e "risorse di struttura"?
+9. Quali sono le principali differenze tra il livello operativo e il livello di pianificazione strategica?
+10. Come influiscono le risorse di gestione sui processi aziendali?
+
+### Domande Capitolo Tre: Sistemi Informativi
+
+1. Cosa si intende per sistema informativo e quali sono le sue componenti principali?
+2. Qual è la differenza tra un sistema informatico e un sistema informativo?
+3. Cosa sono i sistemi operazionali e quali sono le loro caratteristiche?
+4. Qual è il ruolo dei sistemi decisionali in un'organizzazione?
+5. Cosa si intende per OLTP e OLAP?
+6. Quali sono le proprietà FASMI dei sistemi OLAP?
+7. Come vengono organizzati i dati in un sistema OLAP?
+8. Qual è la differenza tra dati operativi e dati strategici?
+9. Cosa si intende per "Business Rules" in un sistema informativo?
+10. Quali sono le principali differenze tra un sistema OLTP e un sistema OLAP?
+
+### Domande Capitolo Quattro: Enterprise Architecture (EA)
+
+1. Cosa si intende per Enterprise Architecture (EA)?
+2. Quali sono gli aspetti analizzati nel Framework di Zachman?
+3. Cosa rappresentano le righe e le colonne nel Framework di Zachman?
+4. Quali sono i punti di vista degli stakeholder nel Framework di Zachman?
+5. Cosa si intende per "viste" nel Framework di Zachman?
+6. Qual è l'importanza dell'analisi dei dati nell'Enterprise Architecture?
+7. Come si integrano i processi aziendali nell'Enterprise Architecture?
+8. Quali sono i principali obiettivi dell'Enterprise Architecture?
+9. Come può l'Enterprise Architecture supportare la pianificazione strategica?
+10. Quali sono le principali differenze tra il modello contestuale e il modello logico nel Framework di Zachman?
+
+### Domande Capitolo Cinque: Elementi Tecnologici
+
+1. Quali sono i livelli tecnologici in un sistema informativo?
+2. Cosa si intende per "portafoglio applicativo"?
+3. Quali sono le principali caratteristiche di un Data Warehouse (DW)?
+4. Cosa si intende per Business Intelligence (BI)?
+5. Qual è il ruolo di un ERP in un'organizzazione?
+6. Quali sono le principali componenti di un CRM?
+7. Cosa si intende per "modularità" in un ERP?
+8. Quali sono le differenze tra CRM operativo, analitico e collaborativo?
+9. Come funziona un sistema di Advanced Planning and Scheduling (APS)?
+10. Quali sono le principali funzionalità di un Manufacturing Execution System (MES)?
+
+### Domande Capitolo Sei: Analisi dei Dati
+
+1. Cosa si intende per Data Warehouse e quali sono le sue componenti principali?
+2. Quali sono le operazioni ETL e perché sono importanti?
+3. Cosa si intende per "Data Cleaning" nel processo ETL?
+4. Quali sono le principali differenze tra un modello MOLAP e un modello ROLAP?
+5. Cosa si intende per "Drill-Down" e "Roll-Up" nell'analisi dei dati?
+6. Quali sono le principali tecniche di Data Mining?
+7. Cosa si intende per "clustering" nel Data Mining?
+8. Quali sono le principali funzioni di Machine Learning nel Data Mining?
+9. Cosa si intende per "Process Discovery" e come viene utilizzato?
+10. Quali sono le principali differenze tra analisi descrittiva e predittiva?
+
+### Domande Capitolo Sette: Tecnologie Livello Piattaforma
+
+1. Quali sono le principali tecnologie di integrazione a livello dati?
+2. Cosa si intende per "middleware" e qual è il suo ruolo nell'integrazione dei dati?
+3. Quali sono i principali modelli di integrazione delle applicazioni?
+4. Cosa si intende per architettura "Hub-and-Spoke"?
+5. Qual è il ruolo di un BPMS nell'integrazione delle applicazioni?
+6. Cosa si intende per "architettura orientata ai servizi" (SOA)?
+7. Quali sono i principali vantaggi di un'architettura a servizi?
+8. Cosa si intende per "orchestrazione di servizi"?
+9. Quali sono le principali differenze tra integrazione a livello dati e integrazione a livello di logica applicativa?
+10. Quali sono i principali problemi legati all'integrazione dei dati?
+
+### Domande Capitolo Otto: Tecnologie Livello Architettura Fisica
+
+1. Quali sono le principali differenze tra architetture centralizzate e distribuite?
+2. Cosa si intende per "architettura single-tiered"?
+3. Quali sono i vantaggi e gli svantaggi di un'architettura two-tiered?
+4. Cosa si intende per "scalabilità verticale" e "scalabilità orizzontale"?
+5. Quali sono le principali caratteristiche di una server farm?
+6. Cosa si intende per "virtualizzazione" e quali sono i suoi vantaggi?
+7. Quali sono i principali modelli di servizio nel cloud computing?
+8. Cosa si intende per "IaaS", "PaaS" e "SaaS"?
+9. Quali sono i principali modelli di deployment nel cloud computing?
+10. Quali sono le principali differenze tra un cloud pubblico e un cloud privato?
+
+### Domande Capitolo Nove: Sicurezza
+
+1. Quali sono i principali requisiti di sicurezza in un sistema informativo?
+2. Cosa si intende per "integrità" e "riservatezza" dei dati?
+3. Quali sono le principali minacce alla sicurezza dei sistemi informativi?
+4. Cosa si intende per "vulnerabilità" e "exploit"?
+5. Quali sono i principali attacchi a livello di rete?
+6. Cosa si intende per "crittografia simmetrica" e "crittografia asimmetrica"?
+7. Quali sono le principali differenze tra crittografia simmetrica e asimmetrica?
+8. Cosa si intende per "funzione di hash" e qual è il suo ruolo nella sicurezza?
+9. Quali sono i principali meccanismi di autenticazione e autorizzazione?
+10. Cosa si intende per "Zero Trust" e quali sono i suoi principi?
+
+### Domande Capitolo Dieci: Progettazione di Sistemi Informativi
+
+1. Quali sono le principali fasi del ciclo di vita di un sistema informativo?
+2. Cosa si intende per "pianificazione strategica" nella progettazione di un sistema informativo?
+3. Quali sono i principali obiettivi di uno studio di fattibilità?
+4. Cosa si intende per "make or buy" nella progettazione di un sistema informativo?
+5. Quali sono i principali criteri per la valutazione di una soluzione tecnologica?
+6. Cosa si intende per "sourcing" e quali sono i suoi livelli?
+7. Quali sono i principali indicatori funzionali nella scelta di un sistema informativo?
+8. Cosa si intende per "ciclo di sviluppo iterativo"?
+9. Quali sono le principali differenze tra sviluppo interno e acquisto di un sistema informativo?
+10. Quali sono i principali costi da considerare nella progettazione di un sistema informativo?
