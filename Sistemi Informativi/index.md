@@ -9,12 +9,14 @@ author:
 ## Capitolo Uno: Dati
 
 I dati sono sempre più importanti all'interno del sistema informativo aziendale.
-Secondo la **Piramide DIKW** è possibile dividere i dati e le informazioni in
+Secondo la **Piramide DIKW** è possibile dividere i dati e le informazioni in:
 
 - **Data**: Il *dato* rappresenta la base della piramide. Esso rappresenta un elemento che descrive la realtà. Associato al dato c'è un tipo (numerico, stringa, etc) o un'unità di misura. Singolarmente il dato è poco utile (es. ci sono 32 gradi).
 - **Information**: L'*informazione* è l'interpretazione di un singolo (o un insieme) di dati. Unendo diversi dati è possibile definire un contesto (es. a dicembre ci sono 32 gradi in aula).
 - **Knowledge**: La *conoscenza* è ottenibile integrando l'informazione con l'esperienza. (es. se a dicembre ci sono 32 gradi in aula, c'è qualcosa che non va)
 - **Wisdom**: La *saggezza* è applicare l'esperienza alla conoscenza per guidare all'azione più adatta al momento. (es. se a dicembre ci sono 32 gradi in aula, spegnere il riscaldamento).
+
+!["Piramide DIKW"](assets/Piramide%20DIKW.png)
 
 ## Capitolo Due: Organizzazioni
 
@@ -51,6 +53,8 @@ La tabella si basa su tre livelli:
 - **Livello Operativo**: attività di tipo operative.
 - **Livello di Programmazione e Controllo**: si considerano le attività tattiche come programmazione delle risorse e il controllo degli obiettivi.
 - **Livello di Pianificazione Strategica**: Attività legate alla scelta degli obiettivi e politiche aziendali.
+
+![](assets/Piramide%20di%20Antony.png)
 
 #### Modello di Porter
 
