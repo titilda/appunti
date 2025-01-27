@@ -501,7 +501,7 @@ Di default, un'enumerazione eredita dalla classe `Enum` ([documentazione](https:
 ### Casting e binding dinamico
 
 _Nota: allo scopo di rendere la comprensione di questo paragrafo più semplice, si farà uso della notazione insiemistica con qualche piccola specifica in più: in particolare, un nome che comincia con una lettera minuscola rappresenta un'istanza di oggetto mentre un nome che comincia con una lettera maiuscola rappresenta il nome di una classe.
-La scrittura $a \in A$ significherà quindi che `a` è un istanza di `A` mentre $A \sube B$ significa che qualunque istanza di `A` è anche istanza di `B` (quindi `A extrnds B`)._
+La scrittura $a \in A$ significherà quindi che `a` è un istanza di `A` mentre $A \sube B$ significa che qualunque istanza di `A` è anche istanza di `B` (quindi `A extends B`)._
 
 In Java è possibile cambiare il tipo di un espressione attraverso il **casting**: se il tipo dell'espressione `2 + 3` è `int`, allora il tipo dell'espressione `(float)(2 + 3)` sarà `float`.
 
