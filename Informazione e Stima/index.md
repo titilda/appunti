@@ -383,7 +383,7 @@ $$
 
 # Capitolo Cinque: Densità di probabilità congiunta e trasformazioni di variabili aleatorie
 
-Una **densità di probabilità congiunta** è una pdf che mappa un $n$-upla di elementi ad un valore reale. Valgono ancora una volta se solite proprietà:
+Una **densità di probabilità congiunta** è una pdf che mappa un $n$-upla di elementi ad un valore reale. Valgono ancora una volta le solite proprietà:
 
 $$
 f_{X,Y}(x, y) \ge 0 \qquad \forall (x, y) \in \mathbb{R}^2 \\
