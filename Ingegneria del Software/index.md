@@ -1276,7 +1276,7 @@ class Deadlocked {
 }
 ```
 
-Si supponga di avere due thread che, sulla stessa istanza di `Deadlocked` chiamano uno `metodo1` e l'altro `metodo2`.
+Si supponga di avere due thread che, sulla stessa istanza di `Deadlocked`, chiamano uno `metodo1` e l'altro `metodo2`.
 In questa situazione è probabile che si verifichi un cosiddetto **deadlock** in quanto, se entrambi i thread riscono a prendere il lock, rispettivamente, su `lock1` e `lock2`, allora nessuno dei due potrà procedere ulteriormente e rilsciare il lock finchè l'altro non termina.
 
 #### Wait e notify
