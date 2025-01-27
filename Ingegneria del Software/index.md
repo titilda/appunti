@@ -1615,7 +1615,7 @@ Il meccanismo è semplice: si sottopongono al software dei casi di test e si ver
 
 Prima di procedere, si tenga presente che nessun tipo di analisi è al 100% affidabile: vi saranno sepre dei falsi negativi dovuti, per esempio, al fatto che l'[halting problem non sia decidibile](https://appunti.titilda.org/Algoritmi%20e%20Principi%20dell'Informatica/index.html#il-problema-dellarresto-halting-problem).
 
-L'**analisi statica** è quella compiuta direttamente sul codice sorgente del software e punta ad identificare errori comuni quali variabili utilizzate senza essere inizializzate, blocchi di codice irraggiungibili e simili. Vi sono due tipi di analisi statica: quella **rigirosa** (che segnala solamente gli errori certi) e quella **pessimistica** (che segnala anche gli errori possibili).
+L'**analisi statica** è quella compiuta direttamente sul codice sorgente del software e punta ad identificare errori comuni quali variabili utilizzate senza essere inizializzate, blocchi di codice irraggiungibili e simili. Vi sono due tipi di analisi statica: quella **rigorosa** (che segnala solamente gli errori certi) e quella **pessimistica** (che segnala anche gli errori possibili).
 
 L'analisi statica non è in grado di identificare i _difetti_ del software, ovvero non è in grado di decidere se il software scritto sia conforme o meno alle specifiche: questo è il compito del _testing_.
 
