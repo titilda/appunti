@@ -1140,7 +1140,7 @@ Il tipo `Optional<T>` si usa per descrivere una variabile che potrebbe, o meno, 
 
 L'utilizzo principale di `Optional` è quello di eliminare i problemi dovuti a `null`: applicando una funzione ad un `Optional` verrà restituito un altro `Optional` che conterrà il risultato della funzione applicata al valore del vecchio optional (se pieno), altrimenti un `Optional` vuoto.
 
-In termini prettamente di informatic teorica, `Optional` è una monade. Si rimanda alla relativa [pagina wikipedia](https://en.wikipedia.org/wiki/Monad_(functional_programming)) per ulteriori informazioni.
+Prettamente in termini di informatica teorica, `Optional` è una monade. Si rimanda alla relativa [pagina wikipedia](https://en.wikipedia.org/wiki/Monad_(functional_programming)) per ulteriori informazioni.
 
 ![Obligatory `Monad` meme](assets/monad.jpg)
 
