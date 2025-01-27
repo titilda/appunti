@@ -1626,7 +1626,7 @@ Ci sono vari livelli di testing, a seconda dell'obiettivo e della granularità d
 - _system testing_: punta a trovare difetti nell'intero sistema con tutti i moduli presenti, si divide in **verifica** (controllo del rispetto delle specifiche (**alfa test**)) e **validazione** (controllo del rispetto delle volontà del committente oppure immissione sul mercato per una ristratta cerchia di utenti (**beta test**));
 - _regression testing_: dopo aver modificato una parte del software, in questa fase ci si assicura che tutto ciò che era precedentemente funzionante, lo sia ancora.
 
-Non tutte le tipologie di difetti sono uguali: gli **Errori (error)** sono dovuti ad un inpuit errato da parte dell'utente, i **difetti (fault)** sono dovuti a bug nel software mentre i **malfunzionamenti (failure)** sono dovuti all'hardware.
+Non tutte le tipologie di difetti sono uguali: gli **Errori (error)** sono dovuti ad un input errato da parte dell'utente, i **difetti (fault)** sono dovuti a bug nel software mentre i **malfunzionamenti (failure)** sono dovuti all'hardware.
 
 Per progettare i casi di test in modo efficiente (cioè senza testare tutti i possibili input di un programma), esistono delle strategie da seguire.
 
