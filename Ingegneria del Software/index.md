@@ -709,7 +709,7 @@ try {
 }
 ```
 
-Se ci si dimentica di chiudere la socket dopo l'errore, è possibile che rimanga allocata in memoria indefinitamente causando un memory leak di conseguenza è stato inventato il `try-with-resources`:
+Se ci si dimentica di chiudere la socket dopo l'errore, è possibile che rimanga allocata in memoria indefinitamente causando un memory leak. Per ovviare a questo problema è stato introdotto il `try-with-resources`:
 
 ```java
 try(Socket s = new Socket("127.0.0.1", 3000)) {
