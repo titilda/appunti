@@ -1451,7 +1451,7 @@ La precondizione è una condizione che deve essere rispettata per poter chimare 
 
 La postcondizione normale è una condizione che è garantita vera al termine dell'esecuzione del metodo al quale si riferisce: tale condizione può essere espressa in funzione dei parametri passati al metodo, allo stato dell'oggetto sul quale il metodo è chiamato o al valore di ritorno del metodo.
 
-La postcondizione eccezionale, oltra d indicare il tipo di eccezione lanciata, è una condizione che è vera quando l'eccezione specificata viene lanciata: tale condizione può essere espressa in funzione dei parametri passati al metodo, dello stato dell'oggetto sul quale il metodo è stato chiamato o dell'eccezione lanciata. E' possibile specificare molteplici `//@ signals` con eccezioni e condizioni differenti.
+La postcondizione eccezionale, oltre ad indicare il tipo di eccezione lanciata, è una condizione che è vera quando l'eccezione specificata viene lanciata: tale condizione può essere espressa in funzione dei parametri passati al metodo, dello stato dell'oggetto sul quale il metodo è stato chiamato o dell'eccezione lanciata. E' possibile specificare molteplici `//@ signals` con eccezioni e condizioni differenti.
 
 La filosofia dell'utilizzo dei contratti si può riassumere come "Se il chiamante garantisce che i requisiti (_requires_) sono soddisfatti allora il chiamato garantisce (_ensures_) che il risultato sia corretto".
 
