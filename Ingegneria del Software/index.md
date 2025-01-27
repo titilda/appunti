@@ -1636,7 +1636,7 @@ Il testing **strutturale** o **white box**, invece, è derivato dalla struttura 
 
 - _criterio di copertura_: si scelgono i casi di input in modo da poter eseguire una buona percentuale (idealmente 100%) delle righe di codice scritte;
 - _criterio di edge coverage_: si scelgono i casi di input facendo in modo che ogni ramo delle varie condizioni e dei vari cicli venga testato almeno una volta per ciascuna sottoespressione che compare nelle condizioni, testando sia il caso vero che il caso falso,
-- _path coverage_: si scelgono i casi di test per fare in modo di collaudare tutte le strade che portano dall'input all'output.
+- _criterio di path coverage_: si scelgono i casi di test per fare in modo di collaudare tutte le strade che portano dall'input all'output.
 
 Non conviene eseguire i test d'intergazione solo dopo aver implementato tutti i moduli necessari: usare copiosamente driver e stub appena possibile aumenta le probabilità di trovare difetti (che, teoricamente, si sarebbero comunque ripresentati dopo) e ne facilità la risoluzione (in quanto il codice da analizzare per il _debugging_ è in quantità molto minore).
 
