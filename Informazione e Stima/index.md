@@ -378,7 +378,7 @@ $$
 E' possibile calcolare la **marginale** di una combinazione di variabili gaussiane andando ad imporre quanto segue:
 
 $$
-\frac{(Y - \mu_X)^2}{\sigma_X^2} - \frac{(Y - \mu_Y)^2}{\sigma_Y^2} = k
+\frac{(X - \mu_X)^2}{\sigma_X^2} - \frac{(Y - \mu_Y)^2}{\sigma_Y^2} = k
 $$
 
 # Capitolo Cinque: Densità di probabilità congiunta e trasformazioni di variabili aleatorie
