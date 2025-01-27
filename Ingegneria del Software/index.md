@@ -1313,7 +1313,8 @@ class ProduttoreConsumatore<T> {
 }
 ```
 
-I metodi protagonisti di questo paragrafo sono 3:
+I metodi protagonisti di questo paragrafo sono 3:.
+
 - `wait`: rilascia eventuali lock, mette il thread in attesa di una `notify` sull'oggetto sul quale la `wait` è stata chiamata e poi prosegue; se un lock è stato rilasciato, prima di proseguire attende di poterlo riprendere;
 - `notify`: risveglia un thread a caso tra quelli mandati in wait dall'oggetto sul quale il metodo è stata chiamato;
 - `notifyAll`: risveglia tutti i thread mandati in wait dall'oggetto sul quale il metodo è stato chiamato.
