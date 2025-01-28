@@ -1,7 +1,7 @@
 ---
 title: "Fondamenti di Elettronica (FdE)"
 author: 
-- "Niccolò Papini"
+- "Niccolò Papini (aggiustato da Flavio Milinanni)"
 ---
 # Introduzione
 
@@ -11,19 +11,19 @@ Salve lettori, questa pagina è stata creata per riassumere o ampliare gli appun
 
 Il diodo non è altro che un componente NON-lineare che fa passare la corrente in un verso e ne impedisce il movimento nel verso opposto.
 
-Ha un comportamento NON-lineare, per essere precisi di tipo semi-esponenziale, avendo polirizzazione diretta, inversa e avendo un possibile evento di Breackdown.
+Ha un comportamento NON-lineare, per essere precisi di tipo semi-esponenziale, avendo polarizzazione diretta, inversa e avendo un possibile evento di Breakdown.
 
 ## 1.1 Comportamento fisico-chimico
 
-Per capire ciò bisogna fare un leggero passo indietro, dobbiamo partire dall'atomo di Silicio, ora tanti atomi di silicio vicini a temperature superiori allo $0K$ fanno ciò che gli atomi fanno, dunque rottura dei legami e successiva riformazione di questi legami con altri atomi con posti liberi. Ora se levassi un atomo di silicio con uno di boro (1 elettrone in meno) faccio una procedura di **DROGAGGIO** di tipo **ACCETTORE** visto che il boro ha uno spazio libero tende a chiedere un elettrone per andare in stabilità, se lo sostituissi con un atomo di fosforo (un elettrone in più) il drogaggio è di tipo **DONORE**, avendo un elettrone in più cede per andare in stabilità, quindi qui si spostano più elettroni.
+Per capire ciò bisogna prima fare un passo indietro, dobbiamo partire dall'atomo di Silicio, gli atomi di silicio vicini a temperature superiori allo $0K$ tendono a rompere i legami e successivamente a formarne di nuovi con altri atomi. Dunque, se sostituissi un atomo di silicio con uno di boro (1 elettrone in meno) effettuerei una procedura di **DROGAGGIO** di tipo **ACCETTORE** e, visto che il boro ha uno spazio libero, tende a chiedere un elettrone per andare in stabilità, se lo sostituissi con un atomo di fosforo (un elettrone in più) il drogaggio è di tipo **DONORE**, avendo un elettrone in più cede per andare in stabilità, quindi qui si spostano più elettroni.
 
-Detto questo cosa succede ? Dobbiamo immaginarci il diodo come un rettagolo pieno di atomi di silicio, dentro questo rettangolo ci solo cariche positive e cariche negative, ora queste cariche si bilanciano in due zone: catodo $(-)$ e anodo $(+)$.
+Detto questo cosa succede? Dobbiamo immaginarci il diodo come un rettagolo pieno di atomi di silicio, dentro questo rettangolo ci sono cariche positive e cariche negative che si bilanciano in due zone: catodo $(-)$ e anodo $(+)$.
 
-Le cariche positive nello spostarsi dal catodo all'anodo si perdono qualche carica positiva, idem gli elettroni, creando una zona non bilanciata, che crea un campo elettrico che impedisce ulteriori diffusioni.
+Le cariche positive nello spostarsi dal catodo all'anodo perdono qualche carica positiva, come anche gli elettroni, creando una zona non bilanciata, che crea un campo elettrico che impedisce ulteriori diffusioni.
 
 ## 1.2 Polarizzazione Inversa e Diretta
 
-Detto ciò, in **polarizzazione inversa** questa zona aumenta e ciò impedisce alla corrente di passare. In **polarizzazione diretta** la zona si restringe e la corrente aumenta, la tensione rimane costante a 0,7 V.
+In **polarizzazione inversa** questa zona aumenta e ciò impedisce alla corrente di passare. In **polarizzazione diretta** la zona si restringe e la corrente aumenta, la tensione rimane costante a 0,7 V.
 
 ## 1.3 Evento di Breakdown
 
@@ -59,13 +59,13 @@ A P.I. la corrente vale $-I_{SO}$.
 
 ## 1.6 Potenza Dissipata
 
-Vista la caratteristica dei diodi di avere 3 tipi di funzinamento diversi, calcolare la potenza dissipata dal diodo non è passeggiata.
+Vista la caratteristica dei diodi di avere 3 tipi di funzinamento diversi, calcolare la potenza dissipata dal diodo non è semplice.
 
 In teoria la potenza dissipata in questi 3 periodi $(T)$ è:
 
 $P_D=\frac{E_D}{T}=\frac{1}{T}*\int_{0}^{T} V_D(t)i_D(t)dt$
 
-Per facilitare tale impresa la dividiamo secondo i 3 periodi e poi facciamo la somma (un pò come nella sovrapposizione degli effetti).
+Per facilitare tale impresa la dividiamo secondo i 3 periodi e poi facciamo la somma (un po' come nella sovrapposizione degli effetti).
 
 - In diretta, abbiamo $V$ costante:
 
