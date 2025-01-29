@@ -617,7 +617,7 @@ Di seguito una carrellata di definizioni che illustrano le potenzialità dei tip
 
 | Tipo Generico              | Significato                                                                                                                                                    |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<T>`                      | Qualsiasi oggetto di tipo `T` o che eredita da ``T`                                                                                                            |
+| `<T>`                      | Qualsiasi oggetto di tipo `T` o che eredita da `T`                                                                                                            |
 | `<T extends U>`            | Qualsiasi oggetto che eredita da o estende `T`                                                                                                                 |
 | `<T extends U & V>`        | Qualsiasi oggetto che eredita da o estende contemporaneamente sia `U` che `V` (se una tra `U` e `V` è una classe, allora deve comparire in prima posizione)    |
 | `<T super U>`              | Qualsiasi oggetto di un tipo da cui `U` eredita                                                                                                                |
