@@ -1471,10 +1471,10 @@ Segue carrellata di esempi di utilizzo di JML per poterne illustrare i vari cost
 | `\old(a)`                                  | Il valore di `a` prima dell'invocazione del metodo                                                                  |
 | `\not_modified(a, b, ...)`                 | Il valore degli oggetti passati come parametro non cambia                                                           |
 | `\not_modified(a.*)`                       | Lo stato dell'oggetto `a` non è modificato                                                                          |
-| `(\forall variabile, dominio, condizione)` | `true` se `condizione` è vera per tutte le `variabile` nel `dominio`                                                |
-| `(\exists variabile, dominio, condizione)` | `true` se `condizione` è vera per almeno una `variabile` nel `dominio`                                              |
-| `(\num_of variabile, dominio, condizione)` | Il numero di volte che la `condizione` si è verificata per ogni `variabile` nel `dominio`                           |
-| `(\sum variabile, dominio, espressione)`   | La somma di `espressione` valutata per ogni `variabile` nel `dominio`. (esistono anche `\product`, `\max` e `\min`) |
+| `(\forall variabile; dominio; condizione)` | `true` se `condizione` è vera per tutte le `variabile` nel `dominio`                                                |
+| `(\exists variabile; dominio; condizione)` | `true` se `condizione` è vera per almeno una `variabile` nel `dominio`                                              |
+| `(\num_of variabile; dominio; condizione)` | Il numero di volte che la `condizione` si è verificata per ogni `variabile` nel `dominio`                           |
+| `(\sum variabile; dominio; espressione)`   | La somma di `espressione` valutata per ogni `variabile` nel `dominio`. (esistono anche `\product`, `\max` e `\min`) |
 
 Si usa `@ assignable` per identificare quali possono essere gli effetti collaterali della chiamata di un metodo sui suoi parametri:
 
