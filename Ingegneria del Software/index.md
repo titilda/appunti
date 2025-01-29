@@ -531,7 +531,7 @@ class Gatto extends Animale {
 
 Come ce lo si spiega?
 
-La risposta sta che, dato che una variabile di tipo `Animale` può contenere sia cani che gatti, il casting esplicito è concesso (logicamente, provando ad eseguire tale programma, verrebbe [sollevata un'eccezione di tipo `ClassCastException`](#eccezioni)).
+La risposta è che, dato che una variabile di tipo `Animale` può contenere sia cani che gatti, il casting esplicito è concesso (logicamente, provando ad eseguire tale programma, verrebbe [sollevata un'eccezione di tipo `ClassCastException`](#eccezioni)).
 
 Eppure, se si provasse a fare qualcosa del tipo `Animale a = new Automobile();` il compilatore si lamenterebbe eccome.
 
