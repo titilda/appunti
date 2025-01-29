@@ -1154,6 +1154,7 @@ Di seguito un elenco di metodi da conoscere per l'utilizzo di `Optional<T>`:
 - `isPresent()` restituisce un booleano che indica se l'optional contiene qualcosa;
 - `ifPresent(Consumer<? super T>)`: se nell'`Optional` è presente un valore allora chiama la funzione passata come parametro passando come parametro il valore contenuto;
 - `flatMap(Function<? super T, ? extends Optional<? extends U>> mapper)`: ritorna un `Optional` vuoto se l'`Optional` sul quale è chiamato è vuoto, altrimenti ritorna un `Optional` che contiene il valore restituito dalla funzione passata come parametro chiamata con il valore contenuto nell'`Optional` di partenza come parametro;
+- `get()`: restituisce il valore contenuto nell'`Optional`, se presente, altrimenti solleva una `NoSuchElementException`;
 - `orElse(T val)`: se l'`Optional` non è vuoto ne ritorna il contenuto, altrimenti ritorna `val`;
 - `ifPresentOrElse(Consumer<? super T> action, Runnable emptyAction)`: se l'`Optional` non è vuoto allora chiama `action` passando come parametro il contenuto, altrimenti chiama `emptyAction`.
 
