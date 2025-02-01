@@ -7,7 +7,7 @@ author: "Andrea Oggioni"
 
 ## Capitolo Uno: Analisi nodale
 
-L'analisi nodale è un metodo sistematico per risolvere circuiti (almeno quelli fatti fino alla quinta esercitazione)
+L'analisi nodale è un metodo sistematico per risolvere circuiti
 
 ### 1.1 Fasi
 
@@ -22,9 +22,7 @@ In caso non sia possibile ricavare la corrente di un ramo (si ha un bad-branch),
 
 #### Esempio
 
-![][analisi_nodale]
-
-Disegno il circuito segnando tutte le correnti, tensioni e potenziali di nodo.
+Ipotizzando di dover trovare $V_x$, disegno il circuito segnando tutte le correnti, tensioni e potenziali di nodo.
 
 ![][analisi_nodale_1]
 
@@ -168,6 +166,7 @@ Se $Q \gt 0$ allora si dice che $\cos \varphi$ è in ritardo (proprio perchè, g
 
 Il rifasamento consiste nell'installazione di un condensatore, solitamente in parallelo ad un carico resistivo-capacitivo in modo da portare il fattore di potenza più vicino ad 1 (con conseguente risparmio sulla voce "spese di trasporto" in bolletta e tensione più stabile).
 
+<!--
 #### Esempio
 
 ![][triangolo_potenze_esempio]
@@ -209,6 +208,8 @@ e, siccome parliamo di un condensatore, allora
 $$
 \hat A = \frac{1}{2} \frac{|\overline V|^2}{\left( \frac{1}{j \omega C} \right)^*} = - \frac{1}{2} j \omega C |\overline V|^2 \implies Q_c = \Im{\hat A} = -\frac{1}{2} \omega C |\overline V|^2 \implies C = \frac{-2Q_c}{\omega |\overline V|^2} \simeq 250 \, \mu F
 $$
+
+-->
 
 ## Capitolo Tre: Elettromagnetismo
 
