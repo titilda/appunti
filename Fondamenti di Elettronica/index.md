@@ -11,15 +11,17 @@ Salve lettori, questa pagina è stata creata per riassumere o ampliare gli appun
 
 Il diodo non è altro che un componente NON-lineare che fa passare la corrente in un verso e ne impedisce il movimento nel verso opposto.
 
-Ha un comportamento NON-lineare, per essere precisi di tipo semi-esponenziale, avendo polirizzazione diretta, inversa e avendo un possibile evento di Breackdown.
+Ha un comportamento NON-lineare, per essere precisi di tipo semi-esponenziale, avendo polarizzazione diretta, inversa e avendo un possibile evento di Breakdown.
 
 ## 1.1 Comportamento fisico-chimico
 
-Per capire ciò bisogna fare un leggero passo indietro, dobbiamo partire dall'atomo di Silicio, ora tanti atomi di silicio vicini a temperature superiori allo $0K$ fanno ciò che gli atomi fanno, dunque rottura dei legami e successiva riformazione di questi legami con altri atomi con posti liberi. Ora se levassi un atomo di silicio con uno di boro (1 elettrone in meno) faccio una procedura di **DROGAGGIO** di tipo **ACCETTORE** visto che il boro ha uno spazio libero tende a chiedere un elettrone per andare in stabilità, se lo sostituissi con un atomo di fosforo (un elettrone in più) il drogaggio è di tipo **DONORE**, avendo un elettrone in più cede per andare in stabilità, quindi qui si spostano più elettroni.
+Per capire ciò bisogna prima fare un piccolo passo indietro, dobbiamo partire dall'atomo di Silicio, ora tanti atomi di silicio vicini a temperature superiori allo $0K$ fanno ciò che gli atomi fanno, dunque rottura dei legami e successiva riformazione di questi ultimi con altri atomi con posti liberi. Ora se sostituissi un atomo di silicio con uno di boro (1 elettrone in meno) farei una procedura chiamata **DROGAGGIO** di tipo **ACCETTORE**, visto che il boro ha uno spazio libero tende a chiedere un elettrone per andare in stabilità, se lo sostituissi con un atomo di fosforo (un elettrone in più) il drogaggio è di tipo **DONORE**, avendo un elettrone in più cede per andare in stabilità, quindi qui si spostano più elettroni.
 
-Detto questo cosa succede ? Dobbiamo immaginarci il diodo come un rettagolo pieno di atomi di silicio, dentro questo rettangolo ci solo cariche positive e cariche negative, ora queste cariche si bilanciano in due zone: catodo $(-)$ e anodo $(+)$.
+**Detto questo cosa succede ?**
 
-Le cariche positive nello spostarsi dal catodo all'anodo si perdono qualche carica positiva, idem gli elettroni, creando una zona non bilanciata, che crea un campo elettrico che impedisce ulteriori diffusioni.
+Dobbiamo immaginarci il diodo come un rettagolo pieno di atomi di silicio, dentro questo rettangolo ci sono cariche positive e cariche negative, queste cariche si bilanciano in due zone: catodo $(-)$ e anodo $(+)$.
+
+Le cariche positive nello spostarsi dal catodo all'anodo perdono qualche carica positiva, idem gli elettroni, creando una zona non bilanciata, che crea un campo elettrico che impedisce ulteriori diffusioni.
 
 ## 1.2 Polarizzazione Inversa e Diretta
 
@@ -65,7 +67,7 @@ In teoria la potenza dissipata in questi 3 periodi $(T)$ è:
 
 $P_D=\frac{E_D}{T}=\frac{1}{T}*\int_{0}^{T} V_D(t)i_D(t)dt$
 
-Per facilitare tale impresa la dividiamo secondo i 3 periodi e poi facciamo la somma (un pò come nella sovrapposizione degli effetti).
+Per facilitare tale impresa la dividiamo secondo i 3 periodi e poi facciamo la somma (un po' come nella sovrapposizione degli effetti).
 
 - In diretta, abbiamo $V$ costante:
 
@@ -136,7 +138,6 @@ V_D=V_G-0V \iff V_G=V_D$
 
 ![Grafico Corrente-Tensione](assets/Capitolo_Analisi_Circuitale/Grafico_Corrente_Tensione.jpg)
 
-## 2.4 Work in progress
 
 # Capitolo Tre: MOSFET
 
@@ -164,7 +165,7 @@ Ma come funziona ?
 
 ## 3.2 Funzionamento
 
-Il funzionamento è quello di applicare una tensione agli elettrodi e induco una carica $Q=CV_1$, ora applico una tensione $V_2$ al semiconduttore.
+Il funzionamento si basa sull'applicare una tensione agli elettrodi e indurre una carica $Q=CV_1$, applico poi una tensione $V_2$ al semiconduttore.
 
 $>$ carica indotta, $>$ è la corrente.
 
@@ -181,9 +182,9 @@ Per i ragazzi che come me si trovano disorientati quando vi è un cambio di rapp
 
 ![Spiegazione NMOS](assets/Capitolo_MOSFET/NMOS_2.jpg)
 
-Dunque sul gate troviamo il metallo, poi ossido (spessore $t_{ox}=1-10 nm$) e il semiconduttore che nel PMOS è N come di vede che ha il compito di modulare la carica nel canale (sopra semiconduttore e sotto ossido).
+Dunque sul gate troviamo il metallo, poi ossido (spessore $t_{ox}=1-10 nm$) e il semiconduttore che nel PMOS è N, che come si può notare ha il compito di modulare la carica nel canale (sopra semiconduttore e sotto ossido).
 
-Se si è capito il funzionamento del diodo, adorerai MOSFET Live, ehm... dicevo, se si è capito il diodo capire il FET sarà più semplice. Se applichiamo una tensione positiva creiamo cariche negative libere che diventano fisse (quindi NO corrente) il MOS è in **interdizione**, se aumento la tensione creo **elettroni di conduzione**, la tensione che crea elettroni di conduzione è settata ed è detta **di soglia** (threshold voltage, $V_T$) e questa condizione viene chiamata **inversione del canale** ($V_T=0,5V - 2V$).
+Se hai capito il funzionamento del diodo, adorerai MOSFET Live, ehm... dicevo, se si è capito il diodo capire il FET sarà più semplice. Applicando una tensione positiva creiamo cariche negative libere che diventano fisse, (quindi NO corrente) il MOS è in **interdizione**, aumentando la tensione creo **elettroni di conduzione**, la tensione che crea elettroni di conduzione è settata ed è detta **di soglia** (threshold voltage, $V_T$), questa condizione viene chiamata **inversione del canale** ($V_T=0,5V - 2V$).
 
 In parole povere più tensione applico più induco corrente (nella realtà prima o poi qualcosa fa "boom").
 

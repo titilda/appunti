@@ -531,7 +531,7 @@ class Gatto extends Animale {
 
 Come ce lo si spiega?
 
-La risposta sta che, dato che una variabile di tipo `Animale` può contenere sia cani che gatti, il casting esplicito è concesso (logicamente, provando ad eseguire tale programma, verrebbe [sollevata un'eccezione di tipo `ClassCastException`](#eccezioni)).
+La risposta è che, dato che una variabile di tipo `Animale` può contenere sia cani che gatti, il casting esplicito è concesso (logicamente, provando ad eseguire tale programma, verrebbe [sollevata un'eccezione di tipo `ClassCastException`](#eccezioni)).
 
 Eppure, se si provasse a fare qualcosa del tipo `Animale a = new Automobile();` il compilatore si lamenterebbe eccome.
 
@@ -617,7 +617,7 @@ Di seguito una carrellata di definizioni che illustrano le potenzialità dei tip
 
 | Tipo Generico              | Significato                                                                                                                                                    |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<T>`                      | Qualsiasi oggetto di tipo `T` o che eredita da ``T`                                                                                                            |
+| `<T>`                      | Qualsiasi oggetto di tipo `T` o che eredita da `T`                                                                                                            |
 | `<T extends U>`            | Qualsiasi oggetto che eredita da o estende `T`                                                                                                                 |
 | `<T extends U & V>`        | Qualsiasi oggetto che eredita da o estende contemporaneamente sia `U` che `V` (se una tra `U` e `V` è una classe, allora deve comparire in prima posizione)    |
 | `<T super U>`              | Qualsiasi oggetto di un tipo da cui `U` eredita                                                                                                                |
@@ -798,6 +798,8 @@ class Libro {
     }
 }
 ```
+
+L'implementazione di default di `equals` si comporta come `==`.
 
 Nel caso sia necessario implementare una relazione d'ordine tra oggetti (non necessariamente due istanze della stessa classe) bisogna dichiarare tale classe come `implements Comparable<T>`: così facendo, si verrà obbligati ad implementare un metodo `int compareTo(T o)` che, per specifica, deve ritornare (a) un numero negativo se `this` viene prima di `o` oppure (b) il numero zero se `this` è equivalente ad `o` oppure (c) un numero positivo se `this` viene dopo di `o`.
 
@@ -1152,6 +1154,7 @@ Di seguito un elenco di metodi da conoscere per l'utilizzo di `Optional<T>`:
 - `isPresent()` restituisce un booleano che indica se l'optional contiene qualcosa;
 - `ifPresent(Consumer<? super T>)`: se nell'`Optional` è presente un valore allora chiama la funzione passata come parametro passando come parametro il valore contenuto;
 - `flatMap(Function<? super T, ? extends Optional<? extends U>> mapper)`: ritorna un `Optional` vuoto se l'`Optional` sul quale è chiamato è vuoto, altrimenti ritorna un `Optional` che contiene il valore restituito dalla funzione passata come parametro chiamata con il valore contenuto nell'`Optional` di partenza come parametro;
+- `get()`: restituisce il valore contenuto nell'`Optional`, se presente, altrimenti solleva una `NoSuchElementException`;
 - `orElse(T val)`: se l'`Optional` non è vuoto ne ritorna il contenuto, altrimenti ritorna `val`;
 - `ifPresentOrElse(Consumer<? super T> action, Runnable emptyAction)`: se l'`Optional` non è vuoto allora chiama `action` passando come parametro il contenuto, altrimenti chiama `emptyAction`.
 
@@ -1468,10 +1471,10 @@ Segue carrellata di esempi di utilizzo di JML per poterne illustrare i vari cost
 | `\old(a)`                                  | Il valore di `a` prima dell'invocazione del metodo                                                                  |
 | `\not_modified(a, b, ...)`                 | Il valore degli oggetti passati come parametro non cambia                                                           |
 | `\not_modified(a.*)`                       | Lo stato dell'oggetto `a` non è modificato                                                                          |
-| `(\forall variabile, dominio, condizione)` | `true` se `condizione` è vera per tutte le `variabile` nel `dominio`                                                |
-| `(\exists variabile, dominio, condizione)` | `true` se `condizione` è vera per almeno una `variabile` nel `dominio`                                              |
-| `(\num_of variabile, dominio, condizione)` | Il numero di volte che la `condizione` si è verificata per ogni `variabile` nel `dominio`                           |
-| `(\sum variabile, dominio, espressione)`   | La somma di `espressione` valutata per ogni `variabile` nel `dominio`. (esistono anche `\product`, `\max` e `\min`) |
+| `(\forall variabile; dominio; condizione)` | `true` se `condizione` è vera per tutte le `variabile` nel `dominio`                                                |
+| `(\exists variabile; dominio; condizione)` | `true` se `condizione` è vera per almeno una `variabile` nel `dominio`                                              |
+| `(\num_of variabile; dominio; condizione)` | Il numero di volte che la `condizione` si è verificata per ogni `variabile` nel `dominio`                           |
+| `(\sum variabile; dominio; espressione)`   | La somma di `espressione` valutata per ogni `variabile` nel `dominio`. (esistono anche `\product`, `\max` e `\min`) |
 
 Si usa `@ assignable` per identificare quali possono essere gli effetti collaterali della chiamata di un metodo sui suoi parametri:
 
