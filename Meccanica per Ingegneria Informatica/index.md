@@ -17,3 +17,5 @@ Nella cinematica del punto la cosa fondamentale da fare è:
 2. Settare un numero di coordinate minimo per descrivere il movimento
 
 ![](assets/Capitolo_Uno/Coordinate.jpg)
+
+Prova
