@@ -214,7 +214,66 @@ $\vec{a_B} = \vec{a_A} + \dot{\vec{w}} \times (B - A) - w^2 (B - A)$
 
 ## 1.3 Vincoli
 
+Capitolo che raggruppa e presenta le varie tipologie di vincoli.
 
+### Vincoli Tripli
+
+#### Incastro
+
+![](assets/Capitolo_Uno/Vincoli/incastro.jpg)
+
+Il vincolo è triplo quindi vincola 3 gdl, che quindi impediscono i movimenti del piano, il corpo non ha più gradi di libertà.
+
+Non può muoversi e non ruota.
+
+$\begin{cases}
+  x_A (t) = 0\\
+  y_A (t) = 0\\
+  \theta (t) = 0 
+\end{cases}$
+
+$\forall t$
+
+$3$ condizioni di vincolo $- 3$ gradi di libertà $= 0$.
+
+### Vincoli Doppi
+
+#### Cerniera
+
+![](assets/Capitolo_Uno/Vincoli/cerniera.jpg)
+
+$\begin{cases}
+   x_A (t) = 0\\
+   y_A (t) = 0
+\end{cases}$
+
+$\forall t$, può ruotare $3$ gradi di libertà $- 2$ condizioni di vincolo $= 1$ grado di libertà.
+
+#### Pattino
+
+![](assets/Capitolo_Uno/Vincoli/pattino.jpg)
+
+$\begin{cases}
+    y_A (t) = 0\\
+    \theta (t) = 0
+\end{cases}$
+
+$\forall t$, può muoversi parallelamente al piano, $3$ gradi di libertà $- 2$ condizioni di vincolo $= 1$ grado di libertà.
+
+#### Manicotto
+
+![](assets/Capitolo_Uno/Vincoli/manicotto.jpg)
+
+$\begin{cases}
+  y_A (t) = 0\\
+  \theta (t) = 0
+\end{cases}$
+
+$\forall t$, stessa cosa del pattino, in più nello spazio può ruotare sul proprio asse.
+
+### Vincoli Singoli
+
+#### Carrello
 
 # Capitolo Fatal Error
 
