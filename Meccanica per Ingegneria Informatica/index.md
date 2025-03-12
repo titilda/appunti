@@ -313,6 +313,60 @@ Per capire il valore $(P - O_1)$ c'è bisogno di un analisi con la scomposizione
 
 ![](assets/Capitolo_Uno/Vincoli/scomposizione_i_j.jpg)
 
+$|\overline{OA_1}| = |\overline{OA_2}| = 1$
+
+$\begin{cases}
+  A_1 - O_1 = \vec{i_1}\\
+  A_2 - O_1 = \vec{j_1}
+\end{cases}$
+
+$\begin{cases}
+  (A_1 - O) = (O_1 - O) + (A_1 - O_1)\\
+  (A_2 - O) = (0_1 - O) + (A_2 - O_1)
+\end{cases}$
+
+$\frac{d}{dt} (A_1 - O) = \frac{d}{dt} (O_1 - O) + \frac{d}{dt} (A_1 - O_1)$
+
+$\vec{v_{A_1}} = \vec{v_{O_1}} + \frac{d \vec{i_1}}{dt}$
+
+Per Rivals $\vec{v_{A_1}} = \vec{v_{O_1}} + \vec{w} \times (A_1 - O_1) \implies \vec{v_{O_1}} + \vec{w} \times (A_1 - O_1) = \vec{v_{O_1}} + \frac{d \vec{i_1}}{dt}$
+
+Da qui siamo arrivati alla soluzione che cercavamo con la scomposizione, questo si chiama **Poisson**.
+
+$\frac{d \vec{i_1}}{dt} = \vec{w} \times \vec{i_1}$
+
+$\frac{d \vec{j_1}}{dt} = \vec{w} \times \vec{j_1}$
+
+La somma tra $v_{O_1} + \vec{w} \times (P - O_1)$ si chiama **velocità di trascinamento** o $\vec{v_{tr,P}} \implies \vec{v_P} = \vec{v_{tr,P}} + \vec{v_{rel,P}}$.
+
+### Accelerazione
+
+$\vec{a_P} = \frac{d \vec{v_P}}{dt} = \frac{d}{dt} \vec{v_{O_1}} + \frac{d}{dt}(\vec{w} \times (P - O_1)) + \frac{d}{dt} \vec{v_{rel,P}}$.
+
+$d(\vec{w} \times (P - O_1)) = \frac{d \vec{w_1}}{dt} \times (P - O_1) + \vec{w} \times \frac{d}{dt} (P - O_1) \implies \vec{\dot{w}} \times (P - O_1) + \vec{w} \times v_{rel,P} + \vec{w} \times [\vec{w} \times (P - O_1)]$
+
+$\frac{d v_{rel,P}}{dt} = \ddot{x_{P,1}} \vec{i_1} + \ddot{y_{P,1}} \vec{j_1} + \dot{x_{P,1}} \frac{d \vec{i_1}}{dt} + \dot{y_{P,1}} \frac{d \vec{j_1}}{dt}\\
+= \vec{a_{rel,P}} + \dot{x_{P,1}} \vec{w} \times \vec{i_1} + \dot{y_{P,1}} \vec{w} \times \vec{j_1}\\
+= \vec{a_{rel,P}} + \vec{w} \times (\dot{x_{P,1}} \vec{i_1} + \dot{y_{P,1}} \vec{j_1}) = \vec{a_{rel,P}} + \vec{w} \times \vec{v_{rel,P}}$
+
+$\vec{a_P} = \vec{a_{O_1}} + \dot{\vec{w}} \times (P - O_1) + \vec{w} \times [\vec{w} \times (P - O_1)] + 2 \vec{w} \times \vec{v_{rel,P}} + \vec{a_{rel,P}} \implies a^{(t)} + a^{(n)} + 2 \vec{w} \times \vec{v_{rel,P}} + \vec{a_{rel,P}}$
+
+Con $a^{(t)} =$ accelerazione tangeziale e $a^{(n)} =$ accelerazone normale.
+
+**Teorema di Coriolis**
+
+$\vec{a_P} = \vec{a_{tr,P}} + \vec{a_{rel,P}} + \vec{a_{co}}$
+
+$\vec{a_{co}} =$ Accelerazione di Coriolis
+
+$\vec{a_{co}} = 0$ in certi casi:
+
+1. $\vec{w} // \vec{v_{rel,P}}$ (impossibile nel piano)
+2. $\vec{w} = 0$
+3. $\vec{v_{rel,P}} = 0$
+
+# Capitolo Due: I sistemi meccanici
+
 
 
 # Capitolo Fatal Error
