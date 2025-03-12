@@ -126,7 +126,7 @@ Uno spostamento si definisce rigido se posso trovare un nuovo sistema di riferim
 1. Per ogni spostamento, la lunghezza dei suoi componenti rimane invariata.
 2. Per ogni spostamento, l'angolo formato per ogni coppia di componenti rimane invariato.
 
-Il corpo rigido nel piano ha 3 **gradi di libertà (o gdl)** ovvero può muoversi liberamente in 3 direzioni, la coordinata $x$, la coordinata $y$ e l'angolo $\theta$ che forma con il sistema di riferimento, nello spazio il corpo rigido ha 5 gdl, oltre ai tre elencati ha coordinata $z$ e angolo dell'asse $\alpha$ che passa per il sio centro.
+Il corpo rigido nel piano ha 3 **gradi di libertà (o gdl)** ovvero può muoversi liberamente in 3 direzioni, la coordinata $x$, la coordinata $y$ e l'angolo $\theta$ che forma con il sistema di riferimento, nello spazio il corpo rigido ha 6 gdl, oltre ai tre elencati ha coordinata $z$ e angolo dell'asse $\alpha$ che passa per il sio centro.
 
 Ora vedremo una sequela di movimenti che il corpo rigido può fare:
 
@@ -274,6 +274,34 @@ $\forall t$, stessa cosa del pattino, in più nello spazio può ruotare sul prop
 ### Vincoli Singoli
 
 #### Carrello
+
+![](assets/Capitolo_Uno/Vincoli/carrello.jpg)
+
+$\begin{cases}
+  y_A (t) = 0
+\end{cases}$
+
+$\forall t$, $3$ gradi di libertà $- 1$ condizione di vincolo $= 2$ gradi di libertà rimanenti $s, \theta$.
+
+Esempio di insiemi di vincoli:
+
+!["cerniera + pattino"](assets/Capitolo_Uno/Vincoli/esempio.jpg)
+
+**Teorema dei moti relativi**
+
+Asssegno un osservatore fisso in $A$ e uno mobile in $B$ che ruota con esso, scomponendo il moto rototraslatorio in due moti poù facili da analizzare.
+
+!["scomposizione"](assets/Capitolo_Uno/Vincoli/teorema_dei_moti_relativi.jpg)
+
+dati noti: $x_{O1} (t), y_{O1} (t), \theta (t)$
+
+Si sa che il punto $P$ rispetto a $O$ è dato da: $(P - O) = (O_1 - O) + (P - O_1) \implies x_P\vec{i} + y_P\vec{j} = x_{O1}\vec{i} + y_{O1}\vec{j} + y_{P,1}\vec{i_1} + y_{P,1}\vec{j_1}$.
+
+Questo è quello che si fa sostanzialmente con i moti relativi, si crea un Sistema di Riferimento fisso $(X,Y)$ e uno mobile $(X_1,Y_1)$ e si determina la posizione del punto $P$ nello spazio e nel tempo.
+
+### Velocità
+
+
 
 # Capitolo Fatal Error
 
