@@ -367,6 +367,8 @@ $\vec{a_{co}} = 0$ in certi casi:
 
 # Capitolo Due: I sistemi meccanici
 
+**Sistema meccanico:** insieme di corpi rigidi vincolati tra loro e vincolati a un corpo esterno fisso, chiamato **telaio**.
+
 
 
 # Capitolo Fatal Error
