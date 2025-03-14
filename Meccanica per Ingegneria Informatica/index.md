@@ -369,7 +369,125 @@ $\vec{a_{co}} = 0$ in certi casi:
 
 **Sistema meccanico:** insieme di corpi rigidi vincolati tra loro e vincolati a un corpo esterno fisso, chiamato **telaio**.
 
+**Grübler**
 
+Hp:
+
+- Sistema piano.
+- Vincoli connettono al più 2 corpi.
+
+**Calcolo gradi di libertà:** $n = n_0 - n_v = 3n_c - (1n_1 + 2n_2 +3n_3)$
+
+con $n_c =$ numero di corpi rigidi, $n_1 =$ numero vincoli singoli, $n_2 =$ numero vincoli doppi e $n_3 =$ numero vincoli tripli.
+
+## 2.1 Esempi e definizioni
+
+![](assets/capitolo_due/2.1_definizioni/esempio_1.jpg)
+
+$n_c = 2 \implies n = 3n_c = 6$ gdl.
+
+![](assets/capitolo_due/2.1_definizioni/esempio_2.jpg)
+
+$n_v = 2*2 = 4 \implies n = 3*2 - 4 = 2$ gdl, $\alpha, \beta$
+
+![](assets/capitolo_due/2.1_definizioni/esempio_3.jpg)
+
+$n_v = 2*2 + 1*1 = 5 \implies n = 6 - 5 = 1$ gdl, $\alpha \lor c$
+
+![](assets/capitolo_due/2.1_definizioni/esempio_4.jpg)
+
+$n_v = 2*3 = 6 \implies n = 6 - 6 = 0$ gdl, $n_v = n_0$
+
+![](assets/capitolo_due/2.1_definizioni/esempio_5.jpg)
+
+$n_v = 2*2 + 3*1 = 7 \implies n = 6 - 7 = 0$gdl, $n_v > n_0$
+
+### Nomenclatura
+
+- $n = 0$ gdl $\implies$ **Struttura.**
+- $n \geq 1$ gdl $\implies$ **Meccanismo.**
+- $n_v = n_0 \implies$ **Isostatica.**
+- $n_v > n_0 \implies$ **Iperstatica.**
+
+ Anche il meccanismo si può identificare in due sottoclassi:
+
+ - Catena cinematica aperta: Ogni corpo (telaio incluso) è sempre connesso al corpo che lo precede o al corpo che lo segue.
+ - Catena cinematica chiusa: Ogni corpo (telaio incluso) è sempre connesso al corpo che lo precede e al corpo che lo segue.
+
+Su una catena chiusa ho un **equazione di chiusura,** derivandola rispetto al tempo posso avere: posizione, velocità e accelerazione di ogni corpo.
+
+## 2.2 Selective Compliance Assembly Robot Arm (SCARA)
+
+![](assets/capitolo_due/2.2_scara/scara.jpg)
+
+$2$ gdl $: \alpha, \beta \to \alpha (t), \beta (t)$
+
+$(B - O) = (A - O) + (B - A)$
+
+N.B. Qui **NON** abbiamo alcuna equazone di chiusura perchè non ho corpi che chiudono il meccanismo.
+
+Qui procederemo con la solita procedura per trovare *posizione, velocità e accelerazione* quindi se non si vuole rivedere tutta la procedura skippate direttamente ai capitoli desiderati e avrete la formula.
+
+Intato guardiamo tutto con la forma più elegante e bella che sia mai stata inventata, la forma complessa: $(B - O) = ae^{i\alpha} + be^{i(\alpha + \beta)}$
+
+### Posizione
+
+$\begin{cases}
+  x_B = a cos (\alpha) + b cos (\alpha + \beta)\\
+  y_B = a sin (\alpha) + b sin (\alpha + \beta)
+\end{cases}$
+
+### Velocità
+
+$\vec{v_B} = a \dot{\alpha} e^{i (\alpha + \frac{\pi}{2})} + b (\dot{\alpha} + \dot{\beta})e^{i(\alpha + \beta \frac{\pi}{2})}$
+
+$\begin{cases}
+  \vec{v_{X,B}} = -a \dot{\alpha} sin(\alpha) - b (\dot{\alpha} + \dot{\beta}) sin (\alpha + \beta)\\
+  \vec{v_{Y,B}} = a \dot{\alpha} cos (\alpha) + b (\dot{\alpha} + \dot{\beta}) cos (\alpha + \beta)
+\end{cases}$
+
+Ora approccio differente, proviamo a derivare la velocità usando i moti relativi.
+
+$\vec{v_B} = \vec{v_{tr,B}} + \vec{v_{rel,B}}$
+
+Introduco un sistema di riferimento mobile in $A$, vedendolo come un moto circolatorio con velocità angolare $\vec{w}$.
+
+![](assets/capitolo_due/2.2_scara/velocita'_scara.jpg)
+
+Sapendo che nella terna traslante $w_t = 0$
+
+$\vec{v_{tr,B}} = \vec{v_A} + \cancel{\vec{w_t} \times (B - A)} \implies a \dot{\alpha} e^{i(\alpha + \frac{\pi}{2})}$
+
+$\vec{v_{rel,B}} = \vec{w_{BA}} \times (B - A) \implies b(\dot{\alpha} + \dot{\beta}) e^{i(\alpha + \beta + \frac{\pi}{2})}$
+
+$\vec{v_B} = a \dot{\alpha}e^{i(\alpha + \frac{\pi}{2})} + b(\dot{\alpha} + \dot{\beta}) e^{i(\alpha + \beta + \frac{\pi}{2})}$
+
+### Accelerazione
+
+$\vec{a_B} = a \ddot{\alpha}e^{i(\alpha + \frac{\pi}{2})} - a \dot{\alpha^2} e^{i\alpha} + b(\ddot{\alpha} + \ddot{\beta})e^{i (\alpha + \beta + \frac{\pi}{2})} - b(\dot{\alpha} + \dot{\beta})^2 e^{i(\alpha + \beta)}$
+
+$\begin{cases}
+  \ddot{x_B} = -a\ddot{\alpha} sin (\alpha) - a \dot{\alpha^2} cos(\alpha) - b (\ddot{\alpha} + \ddot{\beta}) sin (\alpha + \beta) - b (\dot{\alpha} + \dot{\beta})^2 cos(\alpha + \beta)\\
+  \ddot{y_B} = a \ddot{\alpha} cos (\alpha) - a \dot{\alpha^2} sin (\alpha) + b (\ddot{\alpha} + \ddot{\beta}) cos (\alpha + \beta) - b (\dot{\alpha} + \dot{\beta})^2 sin (\alpha + \beta)
+\end{cases}$
+
+$\vec{a_B} = \ddot{x_B} \vec{i} + \ddot{y_B} \vec{j}$
+
+Come prima abbiamo derivato la velocità anche con i moti relativi qui proveremo a ricavare l'accelerazione con il Teorema di Coriolis.
+
+$\vec{a_B} = \vec{a_{tr,B}} + \vec{a_{rel,B}} + \cancel{\vec{a_{co}}}$
+
+$\vec{a_{co}} = 2 \vec{w_t} \times \vec{v_rel,B} = \vec{0} \implies \vec{w_t} = 0 \implies \dot{\vec{w_t}} = 0$
+
+$\vec{a_{tr,B}} = \vec{a_A} + \cancel{\dot{\vec{w_t}} \times (B - A)} + \cancel{\vec{w_t} \times \vec{w_t} \times (B - A)} \implies \dot{\vec{w_{AO}}} \times (A - O) + \vec{w_{AO}} \times \vec{w_{AO}} \times (A - O)$
+
+$\vec{a_{rel,B}} = \dot{\vec{w_{AB}}} \times (B - A) + \vec{w_{AB}} \times \vec{w_{AB}} \times (B - A)$
+
+$\vec{a_B} = \vec{a_{tr,B}^{(t)}} + \vec{a_{tr,B}^{(n)}} + \vec{a_{rel,B}^{(t)}} + \vec{a_{rel,B}^{(n)}}$
+
+$\vec{a_B} = a \ddot{\alpha}e^{i(\alpha + \frac{\pi}{2})} - a \dot{\alpha^2} e^{i\alpha} + b (\ddot{\alpha} + \ddot{\beta})e^{i(\alpha + \beta \frac{\pi}{2})} - b(\dot{\alpha} + \dot{\beta})^2 e^{i (\alpha + \beta)}$
+
+## 2.3 Manovellismo
 
 # Capitolo Fatal Error
 
