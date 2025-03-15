@@ -489,6 +489,42 @@ $\vec{a_B} = a \ddot{\alpha}e^{i(\alpha + \frac{\pi}{2})} - a \dot{\alpha^2} e^{
 
 ## 2.3 Manovellismo
 
+![](assets/capitolo_due/2.3_manovellismo/manovellismo.jpg)
+
+$n_c = 3$
+
+$n_0 = 3*3 = 9$
+
+$n_v = 4*2 = 8 \implies n = 1$ gdl
+
+Questo sistema meccanico può essere schematizzato anche come:
+
+### Manovellismo ordinario centrato
+
+![](assets/capitolo_due/2.3_manovellismo/manovellismo_ordinario_centrato.jpg)
+
+$n_c = 2, n_0 = 6, n_v = 2*2 + 1 = 5 \implies n = 1$ gdl
+
+Si può notare che cambiamo il punto di vista del numero dei corpi e dei vincoli ma i gradi di libertà rimangono invariati.
+
+### Manovellismo ordinario deviato
+
+![](assets/capitolo_due/2.3_manovellismo/manovellismo_ordinario_non_centrato.jpg)
+
+In questo corso tratteremo principalmente "manovellismo ordinario centrato".
+
+### Esempio
+
+Consideriamo un manovellismo ordinario centrato.
+
+![](assets/capitolo_due/2.3_manovellismo/esempio.jpg)
+
+Noti $\alpha (t), \dot{\alpha} (t), \ddot{\alpha} (t)$
+
+Si vogliono cercare $\vec{v_B}, \vec{a_B}, \dot{\beta}. \ddot{\beta}$
+
+
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
