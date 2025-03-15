@@ -523,7 +523,164 @@ Noti $\alpha (t), \dot{\alpha} (t), \ddot{\alpha} (t)$
 
 Si vogliono cercare $\vec{v_B}, \vec{a_B}, \dot{\beta}. \ddot{\beta}$
 
+### Posizione
 
+Per studiarne il movimento cercando i dati richiesti, guarderemo il sistema guardando i punti da lui raggiungibili, partiamo dal **punto morto esterno (PME)**.
+
+![](assets/capitolo_due/2.3_manovellismo/punto_morto_esterno.jpg)
+
+$\alpha = 0, c = c_{MAX} = a + b, v_B = 0, |a_B| = |a_{MAX}|$
+
+Ora quando $\alpha = \frac{\pi}{2}$
+
+![](assets/capitolo_due/2.3_manovellismo/esesmpio_2.jpg)
+
+Abbiamo che $|v_B| \approx |v_{MAX}|$
+
+Questa apprissimazione è vera quanto più il **rapporto caratteristico del manovellismo** $\lambda = \frac{a}{b}$ è più piccolo di 1.
+
+![](assets/capitolo_due/2.3_manovellismo/esempio_3.jpg)
+
+$\delta \in (-\frac{\pi}{2}; \frac{\pi}{2})$
+
+![](assets/capitolo_due/2.3_manovellismo/esempio_4.jpg)
+
+$\beta = 2 \pi - \delta$
+
+Inoltre sappiamo che in questa figura $cos(\beta) > 0$ sempre.
+
+Ora guardiamo quando ci troviamo nel **punto morto interno(PMI)**
+
+![](assets/capitolo_due/2.3_manovellismo/punto_morto_interno.jpg)
+
+$c = c_{min} = b - a, v_B = 0, |a_B| = |a_{MAX}|$
+
+![](assets/capitolo_due/2.3_manovellismo/grafico_posizione.jpg)
+
+Questo grafico indica il cambiamento della posizione al variare dell'angolo $\alpha$
+
+### Velocità
+
+!["catena chiusa"](assets/capitolo_due/2.3_manovellismo/catena_chiusa.jpg)
+
+Si può dare anche una rappresentazione vettoriale della catena chiusa.
+
+![](assets/capitolo_due/2.3_manovellismo/rappresentazione_vettoriale.jpg)
+
+Una catena chiusa ha anche un **equazione di chiusura:** $\vec{c} = \vec{a} + \vec{b}$
+
+![](assets/capitolo_due/2.3_manovellismo/esempio_con_numeri_complessi.jpg)
+
+Mettendo la vettorializzazione in un sistema di riferimento troviamo che l'equazione di chiusura è rappresentabile come: $a e^{i \alpha} + be^{i \beta} = c e^{i\gamma} = c$
+
+Ora proiettiamo su $x$ e $y$ e ricaviamo il seguente sistema.
+
+$\begin{cases}
+  x : a cos (\alpha) + b cos (\beta) = c\\
+  y : a sin (\alpha) + b sin (\beta) = 0
+\end{cases}$
+
+$sin (\beta) = - \frac{a}{b} sin (\alpha) = - \lambda sin (\alpha)$
+
+$cos^2(\beta) + sin^2(\beta) = 1 \implies cos (\beta) = + \sqrt{1 - \lambda^2 sin^2 (\alpha)}$ 
+
+La radice dovrebbe avere $+$ e $-$ davanti ma essendo il coseno solo positivo il $-$ non lo consideriamo.
+
+$cos (\beta) = + \sqrt{1 - \lambda^2 sin^2 (\alpha)}$
+
+$c = a cos (\alpha) + b \sqrt{1 - \lambda^2 sin^2(\alpha)}$, ma essendo $\lambda<<1$ lo approssimo a $\lambda = 0$, questo è impossibile fisicamente ma per i calcoli approssimiamo.
+
+$c \cong a cos (\alpha) + b \implies$ **approssimazione del primo ordine**
+
+Per cercare la velocità derivo rispetto al tempo:
+
+![](assets/capitolo_due/2.3_manovellismo/esempio_moti_relativi.jpg)
+
+$ia \dot{\alpha}e^{i\alpha} + i b \dot{\beta} e^{i\beta} = \dot{c}$
+
+$\dot{\alpha} a e ^{i(\frac{\pi}{2} + \alpha)} + \dot{\beta} b e^{i(\frac{\pi}{2} + \beta)} = \dot{c}$
+
+con $w_t = 0$
+
+$\vec{v}_{tr,B} + \vec{v}_{rel,B} = \vec{v}_B$
+
+![](assets/capitolo_due/2.3_manovellismo/vettorializzazione.jpg)
+
+Proietto su $x$ e $y$ e dopo metto tutto in forma matriciale.
+
+$\begin{cases}
+  x : -a\dot{\alpha} sin (\alpha) - b \dot{\beta} sin (\beta) = \dot{c}\\
+  y: a \dot{\alpha} cos(\alpha) + b \dot{\beta} cos (\beta) = 0
+\end{cases}$
+
+$\begin{bmatrix}
+  1 & b sin(\beta)\\
+  0 & -b cos(\beta)
+\end{bmatrix}$
+$\begin{Bmatrix}
+  \dot{c}\\
+  \dot{\beta}
+\end{Bmatrix}$
+$=$
+$\begin{Bmatrix}
+  -a \dot{\alpha} sin (\alpha)\\
+  a \dot{\alpha} cos (\alpha)
+\end{Bmatrix}$
+
+$[A] \underline{X} = \underline{Y} \implies \underline{X} = [A]^{-1} \underline{Y}$
+
+$\dot{\beta} = - \frac{a \dot{\alpha} cos (\alpha)}{b cos (\beta)}$
+
+$[A]^{-1} =$
+$\begin{bmatrix}
+  1 & tan (\beta)\\
+  0 & - \frac{1}{b cos (\beta)}
+\end{bmatrix}$
+
+Otteniamo quindi che:
+
+$\dot{c} = -a \dot{\alpha} sin (\alpha) + a \dot{\alpha} cos (\alpha) tan (\beta)$
+
+A questo punto introduciamo lo Jacobiano $\curlywedge_B = \frac{v_B}{\dot{\alpha}} = \frac{\dot{c}}{\dot{\alpha}} = \frac{d c}{\cancel{dt}} * \frac{\cancel{dt}}{d \alpha} = \frac{dc}{d \alpha}$
+
+$\curlywedge_B = - a(sin (\alpha) - cos (\alpha) tan(\beta)) = \curlywedge_B (\alpha)$
+
+$v_B = \curlywedge w = \frac{dc}{d \alpha} w$
+
+![](assets/capitolo_due/2.3_manovellismo/grafico_velocita'.jpg)
+
+### Accelerazione
+
+$a \ddot{\alpha} e^{i (\alpha + \frac{\pi}{2})} - a \dot{\alpha^2} e^{i\alpha} + b \ddot{\beta} e^{i(\beta + \frac{\pi}{2})} - b \dot{\beta^2} e^{i\beta} = \ddot{c}$
+
+$\vec{a}_{co} = 2 \vec{w}_t \times \vec{v}_{rel,B} = \vec{0}$
+
+Questo perchè $\vec{w}_t = \vec{0}$
+
+$\begin{cases}
+  -a \ddot{\alpha} sin (\alpha) - a \dot{\alpha^2} cos (\alpha) - b \ddot{\beta} sin (\beta) - b \dot{\beta^2} cos (\beta) = \ddot{c}\\
+  -a \ddot{\alpha} cos (\alpha) - a \dot{\alpha^2} sin (\alpha) + b \ddot{\beta} cos (\beta) - b \dot{\beta^2} sin (\beta) = 0 
+\end{cases}$
+
+$\begin{bmatrix}
+  1 & b sin(\beta)\\
+  0 & -b cos(\beta)
+\end{bmatrix}$
+$\begin{Bmatrix}
+  \ddot{c}\\
+  \ddot{\beta}
+\end{Bmatrix}$
+$=$
+$\begin{Bmatrix}
+  -a \ddot{\alpha} sin (\alpha) - a \dot{\alpha^2} cos (\alpha) - b \ddot{\beta} sin (\beta) - b \dot{\beta^2} cos (\beta)\\
+  -a \ddot{\alpha} cos (\alpha) - a \dot{\alpha^2} sin (\alpha) + b \ddot{\beta} cos (\beta) - b \dot{\beta^2} sin (\beta)
+\end{Bmatrix}$
+
+$v_B = \curlywedge (\alpha) \dot{\alpha}$
+
+$a_B = \frac{d \curlywedge (\alpha)}{dt} \dot{\alpha} + \curlywedge(\alpha) \ddot{\alpha} = \frac{d}{dt}(\frac{dc}{d\alpha}) \dot{\alpha} + \frac{dc}{d\alpha} \ddot{\alpha} = \frac{d^2 c}{d\alpha^2} \dot{\alpha^2} + \frac{dc}{d\alpha} \ddot{\alpha}$
+
+![](assets/capitolo_due/2.3_manovellismo/grafico_accelerazione.jpg)
 
 # Capitolo Fatal Error
 
