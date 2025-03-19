@@ -682,6 +682,76 @@ $a_B = \frac{d \curlywedge (\alpha)}{dt} \dot{\alpha} + \curlywedge(\alpha) \ddo
 
 ![](assets/capitolo_due/2.3_manovellismo/grafico_accelerazione.jpg)
 
+# Capitolo Tre: Statica
+
+In questo capitolo studieremo la statica del punto e del corpo, e i metodi per capirne l'equilibrio.
+
+!["Figure di presentzione statica"](assets/capitolo_tre/figure_d'esempio.jpg)
+
+## 3.1 Statica del punto materiale
+
+**Condizione necessaria e sufficiente per l'equilibrio statico del punto materiale:** $\vec{R} = \vec{0}$, La condizione NeS affinchè un punto materiale si dica in equilibrio è che la risultate delle forse attive e reattive, $\vec{R}$, che agiscono sul corpo sia nulla, $\implies \Sigma_{i=1}^n \vec{F}_i = \vec{0}$
+
+### Esempio
+
+![](assets/capitolo_tre/3.1_statica_del_punto/esempio.jpg)
+
+Avendo noto che la forza $F$ applicata a $P$ sia: $F = \frac{\sqrt{3}}{3} mg$ e che il corpo è in equilibrio determiniamo l'angolo $\theta$.
+
+Studiando le forze nel dettaglio notiamo che:
+
+![](assets/capitolo_tre/3.1_statica_del_punto/dettaglio.jpg)
+
+Impostiamo quindi le condizioni di equilibrio.
+
+$\begin{cases}
+  R_x = 0\\
+  R_y = 0
+\end{cases}$
+$\implies$
+$\begin{cases}
+  F - T sin (\theta) = 0\\
+  T cos (\theta) - mg = 0
+\end{cases}$
+
+$tan (\theta) = \frac{F}{mg} = \frac{\sqrt{3}}{3} \implies \theta = 30°$
+
+$T = \frac{F}{sin (\theta)} = 2F$
+
+## 3.2 Statica del corpo rigido
+
+**Condizione necessaria e sufficiente per l'equilibrio statico del corpo rigido:** La codizione NeS affinchè un corpo rigido si possa definire in equilibrio è che:
+
+1. La risultate delle forze attive e reattive, $\vec{R}$,  si annulli. $\vec{R} = 0 \implies \Sigma_{i = 1}^n \vec{F}_i = \vec{0}$
+2. La risultate dei momenti di tutte le forze, $\vec{M}_O$, si annulli su in generico polo $O$. $\vec{M}_O = \vec{0} \implies \Sigma_{i = 1}^n (P_i - O) \times \vec{F}_i + \Sigma_{j = 1}^m \vec{C}_j = \vec{0}$.
+
+Con $\Sigma_{i = 1}^n (P_i - O) \times \vec{F}_i$ che indica il **momento di $F_i$** e $\Sigma_{j = 1}^m \vec{C}_j$ che indica le **coppie**.
+
+### Momento
+
+![](assets/capitolo_tre/3.2_statica_del_corpo/momento.jpg)
+
+$\vec{M}_O = (P - O) \times \vec{F} = F \overline{PO} sin (\theta) \vec{k} = F \overline{OH} \vec{k} = F b \vec{k}$
+
+con $b$ che indica il **braccio** ovvero la distanza dal polo $O$.
+
+$\vec{M}_O = (x_P \vec{i} + y_P \vec{j}) \times (F_x \vec{i} + F_y \vec{j}) = x_P F_y \vec{k} - F_x y_P \vec{k} = (F_y x_P - F_x y_P)\vec{k}$
+
+### Coppia
+
+![](assets/capitolo_tre/3.2_statica_del_corpo/coppie.jpg)
+
+Si idicano come coppie quel "sistema" che ha:
+
+1. $\vec{F}_1 // \vec{F}_2$
+2. $|\vec{F}_1| = |\vec{F}_2| = F$
+3. $\vec{F}_1 = -\vec{F}_2$
+4. $P_1 \not ={P_2}$
+
+$\vec{C} = F d \vec{k}$
+
+$\vec{M}_O = (P_1 - O) \times \vec{F}_1 + (P_2 - O) \times \vec{F}_2 = (P_1 - O) \times \vec{F}_1 - (P_2 - O) \times \vec{F}_1 = [(P_1 - O) - (P_2 - O)] \times \vec{F}_1 = (P_1 - P_2) \times \vec{F}_1 \implies F d \vec{k}$
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
