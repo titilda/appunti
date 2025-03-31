@@ -169,9 +169,190 @@ $$
 
 Complessivamente, calcolare la fattorizzazione LU di una matrice e risolvere il sistema equivalente con le due passate di sostituzioni è _molto_ più veloce dell'utilizzo del metodo di Cramer (con Cholesky la velocità di fattorizzazione raddoppia).
 
+## Metodi itarativi
 
-<!-- ## Metodi itarativi -->
+Mentre i metodi diretti terminano restituendo una soluzione, questi non sono adatti per sistemi eccessivamente grossi o sparsi. Per queste tipologie di sistemi si usano i metodi iterativi. Questi metodi generano una successione infinita di soluzioni $x^{(k)}$ sempre più precise. 
+E' compito dell'utilizzatore di questi metodi decidere quale criterio utilizzare per determinare il momento di fermare l'algoritmo.
 
+A differenza dei metodi diretti, i metodi iterativi sono soggetti ad errore anche in aritmetica esatta.
+
+Un metodo iterativo generico si può esprimere come
+
+$$
+x^{(k+1)} = Bx^{(k)} + f
+$$
+
+$B$ è detta **matrice d'iterazione**.
+
+Un metodo iterativo sensato gode di due proprietà:
+
+- proprietà di **consistenza**: $x = Bx + f$ da cui si ricava che una consizione necessaria ma non sufficiente per la consistenza è che $f = (I - B)A^{(-1)}b$;
+- proprietà di **convergenza**: $\lim\limits_{k \to \infty} x^{(k)} = x$.
+
+Dalle due proprietà appena citate segue che, definendo l'errore come $e^{(k)} = x - x^{(k)}$ allora $\|e^{(k+1)}\| \le \|B\|^{k+1}\|e^{(0)}\|$, da cui segue che una condizione sufficiente di convergenza è che $\|B\| \le 1$.
+
+Notare che, per identificare un metodo iterativo e assumento che sia sensato, basta la matrice $B$.
+
+Viene definita **raggio spettrale** la quantità $\rho(B) = \max\limits_j |\lambda_j(B)|$.
+
+La velocità di convergenza è tanto più alta quanto è più piccolo il raggio spettrale.
+
+Il raggio spettrale gode di due proprietà:
+
+- $\rho(B) \le \|B\|$;
+- $ rho(B) \lt 1$ è condizione necessaria e sufficiente per la convergenza del metodo iterativo.
+
+Se $B$ è SDP allora $\rho(B) = \|B\|_2$.
+
+Per comodità, vengono definite alcune matrici ampiamente utilizzate nei paragrafi successivi (viene utilizzata la sintassi MATLAB).
+
+```matlab
+D = diag(diag(A));
+E = -tril(A, -1);
+F = -tril(A, +1);
+```
+
+### Metodo di Jacobi
+
+Il metodo di Jacobi è un metodo iterativo facilmente parallelizzabile esprimibile come segue:
+
+$$
+x_i^{(k+1)} = \frac{b_i - \sum_{j \ne i} a_{ij}x_j^{(k)}}{a_{ii}} \quad \forall i = 1, \dots, n
+$$
+
+Il metodo di Jacobi è competitivo con MEG se il numero di iterazioni programmate è inferiore a $n$.
+
+Il metodo di Jacobi può essere identificato dalla seguente matrice d'iterazione
+
+$$
+B_J = I - D^{-1}A \\
+$$
+
+### Metodo di Gauss-Seidel
+
+Il metodo di Gauss-Seidel è un metodo iterativo non facilmente parallelizzabile ma più veloce (in termini di numero di iterazioni) del metodo di Jacobi esprimibile matematicamente come segue:
+
+$$
+x_i^{(k+1)} = \frac{b_i - \sum\limits_{j \lt i} a_{ij}x_j^{(k+1)} - \sum\limits_{j \gt i} a_{ii}x_j^{(k)}}{a_{ii}}
+$$
+
+Il metodo di Gauss-Seidel può essere identificato dalla seguente matrice d'iterazione:
+
+$$
+B_{GS} = (D - E)^{-1} F
+$$
+
+Per entrambi i metodi, valgono le seguenti proprietà:
+
+- se $A$ strettamente dominante diagonale per righe allora convergono entrambi;
+- se $A$ è SDP allora Gauss-Seidel converge;
+- se $A$ è tridiagonale allora convergono entrambi o non convergono entrambi; Se convergono, Gauss-Seidel è più veloce.
+
+### Metodo di Richardson stazionario
+
+Il metodo di Richaradson stazionario è basato sulla seguente legge di aggiornamento:
+
+$$
+x^{(k+1)} = x^{(k)} + \alpha r^{(k)}
+$$
+
+La matrice d'iterazione corrispondente è la seguente:
+
+$$
+B_\alpha = I - \alpha A
+$$
+
+**Teorema**: il metodo di Richardson stazionario con $A$ SDP converge se e solo se
+
+$$
+0 \lt \alpha \lt \frac{2}{\lambda_{max}(A)}
+$$
+
+Il parametro $\alpha$ ottimale è calcolato come
+
+$$
+\alpha_{opt} = \frac{2}{\lambda_{min}(A) + \lambda_{max}(A)}
+$$
+
+Ne segue che, con $\alpha$ ottimale, 
+
+$$
+\rho_{opt} = \frac{K(A) - 1}{K(A) + 1}
+$$
+E' possibile aumentare ulteriormente la velocità di convergenza moltiplicando la matrice $A$ per l'inverso di una matrice di **precondizionamento** invertibile $P$.
+
+Il sistema da risolvere diventa dunque $P^{-1}Ax = P^{-1}b$ e nelle formule tutte le occorrenze di $A$ vengono sostituite con $P^{-1}A$.
+
+Logicamente, per fare in modo che il precondizionamento abbia effetto, deve essere scelta una $P$ tale per cui $K(P^{-1}A) \lt\lt K(A)$.
+
+Per matrici $A$ sparse, esiste la **fattorizzazione LU inesatta** che si trova ponendo $l_{ij} = u_{ij} = 0$ dove $a_{ij} = 0$. La fattorizzazione LU inesatta restituisce due matrici $\tilde L$ e $\tilde U$ il cui prodotto viene utilizzato per costruire la matrice $P$: $P = \tilde L \tilde U$.
+
+### Metodo del gradiente
+
+Sia
+
+$$
+\Phi(y) = \frac{1}{2} y^T A y - y^T b
+$$
+
+allora
+
+$$
+\nabla \Phi(y) = Ay - b
+$$
+
+e i punti in cui $\nabla \Phi(y) = 0$ sono esattamente le soluzioni di $Ax = b$.
+
+La legge di aggiornamento è dunque la seguente:
+
+$$
+x^{(k+1)} = x^{(k)} - \alpha_k\nabla\Phi(x^{(k)})
+$$
+
+Per scegliere $\alpha$ (che varia ad ogni iterazione, ottenendo una successione), si impone che
+
+$$
+\frac{d\Phi(x^{(k+1)})}{d\alpha_k} = 0
+$$
+
+da cui si ottiene che
+
+$$
+\alpha_k = \frac{(r^{(k)})^Tr^{(k)}}{((r^{(k)}))^TAr^{(k)}}
+$$
+
+L'errore per il metodo del gradiente si misura come
+
+$$
+\|e^{(k)}\|_A \le \left( \frac{K(A) - 1}{K(A) + 1} \right)^k \|e^{(0)}\|_A
+$$
+
+### Metodo del gradiente coniugato
+
+La direzione di aggiornamento utilizzata dal metodo del gradiente è sempre ortogonale alla direzione precedente: in questo modo ci si avvicina al punto di convergenza in maniera non ottimale.
+
+Il metodo del gradiente coniugato (che non verrà spiegato ulteriormente, almeno per ora), risolve questo problema: basti sapere in aritmentica esatta questo metodo converge alla soluzione esatta in al più $n$ iterazioni e che
+
+$$
+\|e^{(k)}\|_A \le \frac{2c^k}{1 + 2c^k} \|e^{(0)}\|_A \qquad c = \frac{\sqrt{K(A)} - 1}{\sqrt{K(A)} + 1}
+$$
+
+### Gradiente coniugato precondizionato
+
+Analogamente al [metodo di Richardson precondizionato](#metodo-di-richardson-stazionario) si vanno a sostituire tutte le occorrenze di $A$ con $P^{-1}A$ avendo cura di scegliere una $P$ invertibile e che faccia ridurre il numero di condizionamento.
+
+### Criteri di arresto
+
+Per decidere quando fermarsi, i criteri più sensati sono due:
+
+- **criterio sul residuo**: ci si ferma quando $\frac{\|r^{(k)}\|}{\|b\|} \le \varepsilon$;
+- **criterio sull'incremento**: sia $\delta^{(k)} = x^{(k+1)} - x^{(k)}$ allora ci si ferma quando $\|\delta^{(k)}\| \le \varepsilon$.
+
+Mentre il secondo si usa per $\rho(B)$ piccoli, il primo è buono per bassi condizionamenti; la versione modificata del criterio sul residuo per metodi precondizionati è la seguente:
+
+$$
+\frac{\|z^{(k)}\|}{\|b\|} \qquad z^{(k)} = P^{-1}r^{(k)}
+$$
 
 # Richiami di algebra lineare
 
