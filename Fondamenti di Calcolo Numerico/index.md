@@ -8,7 +8,7 @@ _Nota: questa pagina è work in progress. I contenuti potrebbero variare rapidam
 
 # Introduzione
 
-La disciplica chiamata _calcolo numerico_ (che si contrappone al _caclolo simbolico_) si occupa di trovare modi di risolvere problemi al computer.
+La disciplica chiamata _calcolo numerico_ (che si contrappone al _calcolo simbolico_) si occupa di trovare modi di risolvere problemi al computer.
 I computer, essendo macchine finite (sia in termini di memoria che in termini di velocità), non sono in grado di rappresentare numeri con una precisione illimitata (causando quindi problemi di approssimazione) e, a seconda del tipo di problema da risolvere e della metodologia scelta, si dovrà attendere un tempo più o meno lungo prima di arrivare ad una soluzione.
 
 Per fare un esempio, la rappresentazione numerica di una funzione non è una curva ma una serie di campioni più o meno vicini tra loro. Spesso bisogna scescliere un compromesso tra _grandezza del numero_ e _precisione della rappresentazione_: per questo motivo esistono casi nei quali le classiche proprietà delle operazioni non sono valide (ad esempio, $(1 + 10^{20}) - 10^{20} = 0$ ma $1 + (10^{20} - 10^{20}) = 1$).
