@@ -1,5 +1,5 @@
 ---
-title: "Riassunto di Fondamenti di Automatica"
+title: "Riassunto di Fondamenti di Calcolo Numerico"
 author:
 - "Andrea Oggioni"
 ---
