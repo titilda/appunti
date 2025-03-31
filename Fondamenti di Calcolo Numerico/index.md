@@ -52,7 +52,7 @@ Esistono delle condizioni sufficienti:
 - la matrice $A$ è a dominanza diagonale stretta per righe (o per colonne);
 - la matrice $A$ è simmetrica e definita positiva (SDP).
 
-La fattorizzazione LU si trova applicando il **Metodi di Eliminazione Gaussiana (MEG)**.
+La fattorizzazione LU si trova applicando i **Metodi di Eliminazione Gaussiana (MEG)**.
 
 Nel caso di elemento nullo sulla diagonale di $A$, il MEG calcolerà una divisione per zero che non è consentita: per questo motivo viene effettuato il **Pivoting** ovvero uno scambio di righe (o colonne) per fare in modo di ovviare al problema.
 
@@ -111,7 +111,7 @@ $$
 K_2(A) = \frac{\lambda_{max}(A)}{\lambda_{min}(A)}
 $$
 
-Il numero di condiionamento descrive _quanto malamente_ si propagano gli errori di arrotondamento durante l'esecuzione del MEG.
+Il numero di condizionamento descrive _quanto malamente_ si propagano gli errori di arrotondamento durante l'esecuzione del MEG.
 
 Una matrice è detta **ben condizionata** se $K_2(A) \tilde \le 10^4$.
 
