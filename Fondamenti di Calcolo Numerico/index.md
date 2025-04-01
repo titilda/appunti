@@ -354,6 +354,129 @@ $$
 \frac{\|z^{(k)}\|}{\|b\|} \qquad z^{(k)} = P^{-1}r^{(k)}
 $$
 
+# Ricerca di radici di funzioni non lineari
+
+Sia $f : (a, b) \to \mathbb R$, l'obiettivo è trovare $\alpha \in (a, b): f(\alpha) = 0$.
+
+## Metodi iterativi locali
+
+I metodi iterativi locali funzionano in maniera simile ai metodi iterativi per la soluzione di sistemi lineari: si sceglie un $x^{(0)}$ iniziale e da lì si procede generando una successione $x{(k)}$ che converge ($\lim\limits_{k \to \infty} x^{(k)} = \alpha$).
+
+I metodi che verranno spiegati nelle sezioni successive sono detti anche **metodi di locali** e la loro convergenza (tranne per una singola eccezione) è garantita dai teoremi di esistenza e unicità del punto fisso e di convergenza locale che verranno illustrati nel paragrafo successivo.
+
+### Iterazioni di punto fisso
+
+L'iterazione di punto fisso è un modo _standard_ di identificare ed esprimere la legge di aggiornamento per un metodo iterativo locale per la ricerca di radici di una funzione non lineare.
+
+Dato un $x^{(0)}$ iniziale, la funzione di iterazione di punto fisso è espressa come $\varphi : [a, b] \to \mathbb R$ tale che
+
+$$
+x^{(k+1)} = \varphi(x^{(k)}) \qquad k \ge 0
+$$
+
+**Teorema** (esistenza e unicità del punto fisso): sia $\varphi : [a, b] \to \mathbb R$ continua e sia $x^{(0)} \in [a, b]$ assegnato. Considerando $x^{(k+1)} = \varphi(x^{(k)}) \qquad k \ge 0$ allora
+
+1. se $\forall x \in [a, b]$ vale che $\varphi(x) \in [a, b]$ allora $\exists \alpha \in [a, b]$ punto fisso;
+2. se inoltre $\exists L \lt 1 : |\varphi(x_1) - \varphi(x_2)| \le L|x_1 - x_2|$ per ogni $x_1, x_2 \in [a, b]$ allora
+   1. $\exists ! \alpha \in [a, b] : \varphi(\alpha) = \alpha$;
+   2. $\forall x^{(0)} \in [a, b] \quad \lim\limits_{k \to \infty}x^{(k)} = \alpha$.
+
+**Teorema** (convergenza locale): sia $\varphi : [a, b] \to \mathbb R$ una funzione di iterazione con $\alpha$ punto fisso, $I_\alpha$ un intorno di $\alpha$ e $\varphi \in \mathcal C^1(I_\alpha)$, allora
+
+1. se $|\varphi'(\alpha)| \lt 1$ allora $\exists \delta \gt 0 : \forall x^{(0)} |x^{(0)} - \alpha| \lt \delta, x^{(k)} \to \alpha$. Inoltre
+   $$
+   \lim_{k \to \infty} \frac{x^{(k+1)} - \alpha}{(x^{(k)} - \alpha)} = \varphi'(\alpha)
+   $$
+2. se inoltre $\varphi \in \mathcal C^2(I_\alpha), \varphi'(\alpha) = 0, \varphi''(\alpha) \ne 0$ allora $x^{(k)} \to \alpha$ e
+   $$
+   \lim_{k \to \infty} \frac{x^{(k+1)} - \alpha}{(x^{(k)} - \alpha)^2} = \frac{\varphi''(\alpha)}{2}
+   $$
+
+Dal precedente teorema si possono ricavare due spunti interessanti: se i requisiti del punto 1 sono soddisfatti, allora l'errore scende linearmente mentre se i requisiti del punto 2 sono soddisfatti allora l'errore scala quadraticamente (e la convergenza è molto più veloce).
+
+### Metodo di Newton
+
+Il metodo di Newton è un metodo iterativo identificato dalla seguente legge di aggiornamento:
+
+$$
+x^{(k+1)} = x^{(k)} - \frac{f(x^{(k)})}{f'(x^{(k)})} \qquad k \ge 0
+$$
+
+Questo aggiorna la successione prendendo come valore successivo la $x$ nella quale la retta tangente al punto $(x^{(k)}, f(x^{(k)}))$ interseca l'asse x.
+
+Il metodo di Newton può essere visto come metodo di punto fisso:
+
+$$
+\varphi_N(x) = x - \frac{f(x)}{f'(x)} \qquad \varphi'_N(x) = \frac{f(x)f''(x)}{[f'(x)]^2}
+$$
+
+<!-- NOTA: in base a cosa $f'(\alpha) \ne 0$??? -->
+Se $\alpha$ è una radice allora $f(\alpha) = 0$ e $f'(\alpha) \ne 0$ di conseguenza
+
+$$
+\varphi''(\alpha) = \frac{f''(\alpha)}{f'(\alpha)} \ne 0
+$$
+
+Sono soddisfatte le condizioni del punto 2 del teorema di convergenza locale: il metodo di Newton converge localmente.
+
+Il metodo di Newton richiede la conoscenza della derivata prima della funzione di cui si vuole trovare la radice: i metodi successivi rimuovono questa limitazione.
+
+Se la radice $\alpha$ ha molteplicità maggiore, allora le derivate superiori si annullano e Newton converge ma non più del secondo ordine: per ovviare a questo problema lo si modifica introducendo una variabile $m$ che è pari alla molteplicità della radice (si comincia con $m = 1$ e si aumenta se si vede che converge lentamente):
+
+$$
+x^{(k+1)} = x^{(k)} - m \frac{f(x^{(k)})}{f'(x^{(k)})} \implies \varphi(x) = x - m \frac{f(x)}{f'(x)}
+$$
+
+### Metodo delle corde
+
+Il metodo delle corde è un metodo iterativo identificato dalla seguente legge di aggiornamento:
+
+$$
+x^{(k+1)} = x^{(k)} - \frac{f(x^{(k)})}{q} \qquad q = \frac{f(b) - f(a)}{b - a} \ne 0
+$$
+
+Il metodo delle corde può essere visto come metodo di punto fisso:
+
+$$
+\varphi_C(x) = x - \frac{1}{q} f(x)
+$$
+
+Sia $\alpha$ punto fisso di $f$, allora
+
+$$
+\varphi'(\alpha) = 1 - \frac{1}{q} f'(\alpha)
+$$
+
+Se $f'(\alpha) \ne 0$ (se valesse l'uguaglianza, non saprei dire nulla) allora il metodo converge solo se
+
+$$
+\begin{cases}
+    q \text{ e } f'(\alpha) \text{ hanno lo stesso segno} \\
+    b - a \lt \frac{2}{f'(\alpha)}[f(b) - f(a)]
+\end{cases}
+$$
+
+### Metodo delle secanti
+
+Il metodo delle secanti va a sostituire la derivata prima di $f$ con un rapporto incrementale tra i due ultimi valori della successione $x^{(k)}$:
+
+$$
+x^{(k+1)} = x^{(k)} - (x^{(k)} - x^{(k-1)})\frac{f(x^{(k)})}{f(x^{(k)}) - f(x^{(k-1)})}
+$$
+
+Questo metodo necessita, oltre di $x^{(0)}$, anche di $x^{(-1)}$.
+
+Questo metodo non può essere visto come metodo di punto fisso perchè $x^{(k+1)}$ non dipende solo da $x^{(k)}$ ma anche da $x^{(k-1)}$.
+
+### Criteri di arresto
+
+Come qualsiasi metodo iterativo, anche i metodi iterativi locali non terminano autonomamente: bisogna quindi scegliere un criterio sensato per decidere quando far terminare la computazione.
+
+I due criteri più utilizzati sono
+
+- **criterio sul residuo** (buono per $|f'(\alpha)| \simeq 1$): ci si ferma se $|f(x^{(k)})| \lt \varepsilon$;
+- **criterio sull'incrmento** (buono per Newton o per $-1 \lt \varphi'(\alpha) \lt 0$): ci si ferma quando $|x^{(k+1)} - x^{(k)}| \lt \varepsilon$.
+
 # Richiami di algebra lineare
 
 In questa sezione verranno ripresi concetti di algebra lineare necessari per la comprensione di quanto scritto nelle sezioni precedenti.
