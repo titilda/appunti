@@ -193,14 +193,14 @@ Dalle due proprietà appena citate segue che, definendo l'errore come $e^{(k)} =
 
 Notare che, per identificare un metodo iterativo e assumento che sia sensato, basta la matrice $B$.
 
-Viene definita **raggio spettrale** la quantità $\rho(B) = \max\limits_j |\lambda_j(B)|$.
+Viene definita **raggio spettrale** la quantità $\rho(B) = \max\limits_j |\lambda_j(B)|$. Vale anche l'approssimazione $\lim\limits_{k \to \infty} \|B^k\|^{\frac{1}{k}} = \rho(B)$.
 
 La velocità di convergenza è tanto più alta quanto è più piccolo il raggio spettrale.
 
 Il raggio spettrale gode di due proprietà:
 
 - $\rho(B) \le \|B\|$;
-- $ rho(B) \lt 1$ è condizione necessaria e sufficiente per la convergenza del metodo iterativo.
+- $\rho(B) \lt 1$ è condizione necessaria e sufficiente per la convergenza del metodo iterativo.
 
 Se $B$ è SDP allora $\rho(B) = \|B\|_2$.
 
