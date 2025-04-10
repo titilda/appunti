@@ -752,6 +752,25 @@ $\vec{C} = F d \vec{k}$
 
 $\vec{M}_O = (P_1 - O) \times \vec{F}_1 + (P_2 - O) \times \vec{F}_2 = (P_1 - O) \times \vec{F}_1 - (P_2 - O) \times \vec{F}_1 = [(P_1 - O) - (P_2 - O)] \times \vec{F}_1 = (P_1 - P_2) \times \vec{F}_1 \implies F d \vec{k}$
 
+# Capitolo Quattro: Centro di Massa
+
+### Baricentro
+
+![](assets/capitolo_quattro/baricentro.jpg)
+
+$\begin{cases}
+  x_G = \frac{1}{m}\Sigma_i x_i m_i\\
+  y_G = \frac{1}{m} \Sigma_i y_i m_i
+\end{cases}$
+
+$m = \Sigma_i m_i$
+
+![](assets/capitolo_quattro/momento_statico_I_ordine.jpg)
+
+$G$ è il centro delle forze peso
+
+$\vec{M}_Q = \Sigma_i (P_i - Q) \times \vec{F}_P{_i} = 0$
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
