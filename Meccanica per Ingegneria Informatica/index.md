@@ -771,6 +771,90 @@ $G$ è il centro delle forze peso
 
 $\vec{M}_Q = \Sigma_i (P_i - Q) \times \vec{F}_P{_i} = 0$
 
+$\vec{M}_Q = -\Sigma_i (x_i - x_Q)m_i g \vec{k} = 0$
+
+$\Sigma (x_i - x_Q) m_i \cancel{g} = 0$
+
+$\Sigma x_i m_i = \Sigma_i x_Q m_i = x_Q \Sigma m_i = x_Q m$
+
+$x_Q = \frac{\Sigma x_i m_i}{m} = x_G$
+
+![](assets/capitolo_quattro/baricentro_corpo_rigido.jpg)
+
+$\begin{cases}
+  x_G = \frac{1}{m} \int_m x dm\\
+  y_G = \frac{1}{m} \int_m y dm 
+\end{cases}$
+
+$dm = \rho (x,y,z) dV$
+
+$\rho [\frac{kg}{m^3}] =$ densità di massa.
+
+$x_G = \frac{1}{m} \int_V \rho x dV = \frac{\delta y}{m}$
+
+$y_G = \frac{1}{m} \int_V \rho y dV = \frac{\delta x}{m}$
+
+- Omogeneo $\implies \rho (x,y,z) = \rho =$ cost.
+- Spessore costante $\implies R =$ cost $V = A h$
+
+$\begin{cases}
+  x_G = \frac{1}{m} \int_A \rho x h dA = \frac{\rho R}{\rho R A} \int_A xdA = \frac{1}{A} \int_A xdA\\
+  y_G = \frac{1}{A} \int_A ydA
+\end{cases}$
+
+## 4.1 Momento d'inerzia
+
+![](assets/capitolo_quattro/4.1_momento_d_inerzia/momento_d_inerzia.jpg)
+
+$J_a = md^2 = S_a^{II}$ : Momento statico del II ordine o momento d'inerzia.
+
+$J_a = \Sigma_i m_i d_i^2$
+
+![](assets/capitolo_quattro/4.1_momento_d_inerzia/momento_d_inerzia_corpo_rigido.jpg)
+
+$J_{ZO} = J_O = \int_m d^2 dm = \int_V \rho d^2 dV$
+
+$J_O = \int_V \rho (x^2 + y^2) dV$
+
+Omogeneo, spessore costante, $dV = hdA$
+
+$J_O = \rho h \int_A (x^2 + y^2) dA$
+
+**Teorema del trasporto o "teorema di Huygens" :** $J_O = J_G + m \overline{OG}^2$
+
+![](assets/capitolo_quattro/4.1_momento_d_inerzia/teorema.jpg)
+
+$J_O = \int_V \rho (x^2 + y^2) dV = \int_V \rho [(x_G + x_1)^2 + (y_G + y_1)^2]dV$
+
+$= \int_V \rho (x_G^2 + y_G^2) dV + \int_V (x_1^2 + y_1^2) dV + 2 \int_V x_1 x_G dV + 2 \int_V y_1 y_G dV$
+
+Notiamo che:
+
+$\int_V \rho (x_G^2 + y_G^2) dV = (x_G^2 + y_G^2) \int_V \rho dV = m \overline{OG}^2$
+
+e
+
+$2x_G \int_V x_1 \rho dV = 0$
+
+ne deduciamo che:
+
+$= J_G + m \overline{OG}^2$
+
+### Esempio
+
+#### Trave
+
+![](assets/capitolo_quattro/4.1_momento_d_inerzia/trave.jpg)
+
+$
+J_G = \rho h \int_A (x^2 + y^2) dA\\
+= \rho h \int_{- \frac{a}{2}}^{\frac{a}{2}} \int_{-\frac{b}{2}}^{\frac{b}{2}} (x^2 + y^2) dx dy\\
+=\rho h \int_{-\frac{b}{2}}^{\frac{b}{2}} x^2 dx \int_{-\frac{a}{2}}^{\frac{a}{2}} dy + \rho h \int_{- \frac{a}{2}}^{\frac{a}{2}} y^2 dy \int_{-\frac{b}{2}}^{\frac{b}{2}} dx\\
+=\rho h a [\frac{x^3}{3}]_{-\frac{b}{2}}^{\frac{b}{2}} + \rho h b[\frac{y^3}{3}]_{-\frac{a}{2}}^{\frac{a}{2}}\\
+= \rho h a (\frac{b^3}{24} + \frac{b^3}{24}) + \rho h b (\frac{a^3}{24} + \frac{a^3}{24})\\
+= \rho h a b (\frac{b^2 + a^2}{12}) = \frac{m}{12}(a^2 + b^2) [kg \cdot m^3]
+$
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
