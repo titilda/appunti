@@ -855,6 +855,54 @@ J_G = \rho h \int_A (x^2 + y^2) dA\\
 = \rho h a b (\frac{b^2 + a^2}{12}) = \frac{m}{12}(a^2 + b^2) [kg \cdot m^3]
 $
 
+Nel caso di trave snella $b >> a \implies J_G = \frac{m}{12}b^2$
+
+Introduciamo il **raggio giratorio d'inerzia** $r_G = \frac{b}{\sqrt{12}}$
+
+da qui capiamo che $J_G = m r_G^2$
+
+#### Corona
+
+![](assets/capitolo_quattro/4.1_momento_d_inerzia/corona.jpg)
+
+Sapendo che: 
+- $A = \pi (R_e^2 - R_i^2)$
+- $V = Ah$
+- $m=\rho V$
+
+Proviamo a trovare il momento d'inerzia della corona applicando la definizione:
+
+$
+J_G = \rho h \int_A (x^2 + y^2) dA = \rho h \int_A r^2 dA = \rho h \int_0^{2\pi} \int_{R_i}^{R_e} r^3 dr d\alpha\\
+= 2\pi \rho h \int_{R_i}^{R_e} r^3 dr = 2 \pi \rho h [\frac{r^4}{4}]_{R_i}^{R_e}\\
+= 2 \pi \rho h \frac{R_e^2 - R_i^2}{4} = \frac{\pi \rho h}{2}(R_e^2 - R_i^2)(R_e^2 + R_i^2)\\
+= \frac{m}{2}(R_e^2 + R_i^2)
+$
+
+#### Anello
+
+![](assets/capitolo_quattro/4.1_momento_d_inerzia/anello.jpg)
+
+Da qui daremo solo la formula del momento di inerzia:
+
+$R_e = R_i = R$
+
+$J_G = m R^2$
+
+$r_G = R$
+
+#### Disco
+
+![](assets/capitolo_quattro/4.1_momento_d_inerzia/disco.jpg)
+
+$R_i = 0$
+
+$R_e = R$
+
+$J_G = \frac{m R^2}{2}$
+
+$r_G = \frac{\sqrt{2}}{2} R \cong 0,7 R$
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
