@@ -468,6 +468,52 @@ Questo metodo necessita, oltre di $x^{(0)}$, anche di $x^{(-1)}$.
 
 Questo metodo non può essere visto come metodo di punto fisso perchè $x^{(k+1)}$ non dipende solo da $x^{(k)}$ ma anche da $x^{(k-1)}$.
 
+### Metodo di Newton per sistemi non lineari
+
+Siano $x = [x_1, x_2, \dots, x_n]^T$ e
+
+$$
+f(x) = \begin{bmatrix}
+    f_1(x_1, x_2, \dots, x_n) \\
+    f_2(x_1, x_2, \dots, x_n) \\
+    \vdots \\
+    f_n(x_1, x_2, \dots, x_n) \\
+\end{bmatrix}
+$$
+
+Si supponga di voler trovare $x : f(x) = \underline 0$: il metodo di Newton può essere applicato, con alcune piccole modifiche anche alla risoluzione di questo problema.
+
+Ogni iterazione è composta da 
+
+1. La risoluzione del sistema $J(x^{(k)})\delta x^{(k)} = -f(x^{(k)})$
+2. Il calcolo di $x^{(k+1)} = x^{(k)} + \delta x^{(k)}$.
+
+Nei pinti precedenti, $J$ è la matrice Jacobiana di $f$ calcolata come
+
+$$
+j_{ij} = \frac{\partial f_i}{\partial x_l} \qquad \forall i = 1, \dots, n \quad \forall j = 1, \dots, n
+$$
+
+Ovviamente il metodo converge: se $\exists \delta \gt 0 : \|\alpha - x^{(0)}\| \lt \delta$ allora
+
+$$
+\lim_{k\ to \infty} \|\alpha - x^{(k)}\| = 0
+$$
+
+Se il metodo converge e $J$ è derivabile, allora la convergenza è del secondo ordine:
+
+$$
+\frac{\|\alpha - x^{(k+1)}\|}{\|\alpha - x^{(k)}\|^2} \le C
+$$
+
+Il costo computazionale per questo metodo è dato dal numero di iterazioni ($\#iter$) moltiplicato per il costo di costruzione della matrice $J$ ($C_{cos}$) sommato al costo di risoluzione del corrispondente sistema lineare ($C_{sl}$).
+
+$$
+C = \#iter \times (C_{cos} + C_{sl})
+$$
+
+Questo numero, spesso, è molto grande: per ridurlo si potrebbe pensare di aggiornare la matrice jacobiana non a tutte le iterazioni oppure di utilizzare il metodo di Broyden (che non verrà analizzato).
+
 ### Criteri di arresto
 
 Come qualsiasi metodo iterativo, anche i metodi iterativi locali non terminano autonomamente: bisogna quindi scegliere un criterio sensato per decidere quando far terminare la computazione.
@@ -475,7 +521,11 @@ Come qualsiasi metodo iterativo, anche i metodi iterativi locali non terminano a
 I due criteri più utilizzati sono
 
 - **criterio sul residuo** (buono per $|f'(\alpha)| \simeq 1$): ci si ferma se $|f(x^{(k)})| \lt \varepsilon$;
-- **criterio sull'incrmento** (buono per Newton o per $-1 \lt \varphi'(\alpha) \lt 0$): ci si ferma quando $|x^{(k+1)} - x^{(k)}| \lt \varepsilon$.
+- **criterio sull'incremento** (buono per Newton o per $-1 \lt \varphi'(\alpha) \lt 0$): ci si ferma quando $|x^{(k+1)} - x^{(k)}| \lt \varepsilon$.
+
+Per il [Metodo di Newton per sistemi non lineari](#metodo-di-newton-per-sistemi-non-lineari) i due criteri sono applicabili sostituendo i valori assoluti con norme vettoriali.
+
+Esistono anche altri tipi di criteri, più o meno robusti, come, ad esempio, il criterio tale per cui entrambi i criteri devono essere soddisfatti. Logicamente, più un criterio è robusto, più il risultato numerico si avvicinerà a quello simbolico, sempre a discapito del numero di iterazioni.
 
 # Richiami di algebra lineare
 
