@@ -52,3 +52,41 @@ Per fondare un'impresa, l'imprenditore (o i soci) devono come prima cosa sceglie
 La vita dell'impresa e quella dell'imprenditore non terminano necessariamente nello stesso momento: l'impresa può fallire (scioglimento per ordine del giudice), essere liquidata (scioglimento per volontà dei soci), essere acquisita o essere ereditata.
 
 In Italia, un'impresa dura, in media, 12 anni prima di essere sciolta per qualsivoglia motivo.
+
+## Classificazione di imprese
+
+Un'impresa è caratterizzata da diversi punti:
+
+1. Proprietà:
+   - **proprietà pubblica**: di proprietà di un ente pubblico quale lo Stato;
+   - **proprietà privata**: di proprietà di un privato.
+2. Obiettivo:
+   - **profit**: l'imprenditore vuole guadagnare;
+   - **non profit**: lo scopo non sono i soldi ma qualcosa di socialmente rilevante.
+3. Dimensione
+   - **grande**: &ge; 250 addetti e &gt; 50 mln € fatturato;
+   - **medie**: 50-249 addetti e 10-50 mln € fatturato;
+   - **piccole**: &lt; 50 addetti e &lt; 10 mln € fatturato;
+   - **micro**: &lt; 10 addetti e &le; 2 mln € fatturato.
+4. Output:
+   - **beni materiali**
+     - **imprese agricole**: produzione di beni con processi legati alla terra;
+     - **imprese industriali e manufatturiere**: produzione di beni utilizzando trasformazioni tecniche;
+   - **servizi**: trasporti, distribuzioni di acqua o energia, ristorazione, banche, eccetera.
+5. Numero di output:
+   - **monoprodotto**: autoesplicativo;
+   - **diversificate**: più servizi o prodotti simili tra loro;
+   - **conglomerati**: più servizi o prodotti anche molto diversi (spesso con un _core business_ prevalente).
+6. Consumatore:
+   - **all'ingrosso**: beni acquistati da altre imprese;
+   - **al dettaglio**: beni acquistati dal consumatore finale.
+7. Localizzazione:
+   - **multinazionale**;
+   - **nazionale**.
+
+Un **settore** è l'insieme di tutte le imprese che producono beni od offrono servizi considerati sostituibili (tra di loro) dal consumatore finale. Le imprese che appartengono ad uno stesso settore sono in competizione tra loro.
+
+Le tipologie di impresa sono descritte dai **codici ATECO**.
+
+<!-- forme giuridiche -->
+
