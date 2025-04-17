@@ -88,5 +88,56 @@ Un **settore** è l'insieme di tutte le imprese che producono beni od offrono se
 
 Le tipologie di impresa sono descritte dai **codici ATECO**.
 
-<!-- forme giuridiche -->
+## Forme giuridiche
+
+Un'impresa può assumere una di molte forme giuridiche: la forma giuridica assunta da un'impresa ne determina diritti, doveri, norme che si applicano eccetera.
+
+Le forme giuridiche dell'impresa si distinguono in **imprese individuali** (costituite da unìunica persona fisica) e **imprese collettive** (costituite da più persone).
+
+### Impresa individuale
+
+In un'impresa individuale, l'impresa coincide con l'imprenditore che risponde illimitatamente (con tutto il patrimonio personale) dei rischi dell'impresa.
+
+Le **imprese familiari** sono un'estensione delle imprese individuali: in questo tipo di impresa si ha un imprenditore singolo che si avvale in modo continuativo delle prestazioni lavorative dei propri familiari.
+
+Le imprese individuali (che, tra l'altro, costituiscono la maggior parte delle imprese italiane) richiedono poca burocrazia, nessun versamendo del capitale, pochi obblighi e sono, in generale, veloci in termini di decisioni da prendere. Di contro, però, si ha che la responsabilità dell'imprenditore è illimitata e che le imposte crescono più velocemente del reddito.
+
+### Imprese collettive
+
+Come già accennato, le società collettive, sono composte da un gruppo (almeno due) di persone che uniscono le proprie forze (e capitali) allo scopo di generare profitto.
+
+Esistono tre tipi di imprese collettive:
+
+- **società di persone**: responsabilità solidale illimitata;
+- **sovcità di capitale**: responsabilità limitata ai conferimenti iniziali;
+- **società cooperative**: responsabilità limitata ai conferimenti iniziali e scopo mutualistico.
+
+Ciascuna di queste tipologie comprende a sua volta diverse sotto-tipologie di imprese che verranno analizzate in seguito.
+
+### Società di persone
+
+Le società di persone sono abbastanza semplici sia dal punto della gestione che da un punto di vista burocratico. Vista la scarsa presenza di gerarchie ben definite, i soci di una società di persone hanno spesso problemi di coordinamento e poca autonomia decisionale. Trattandosi di società a responsabilità, oltre che illimitata, anche solidale, se un socio non paga, gli altri devono farlo per lui.
+
+Le tipologie di società di persone riconosciute per legge sono:
+
+- **società semplice** (s.s.): riservata ad attività economiche non commerciali;
+- **società in nome collettivo** (s.n.c.): sia attività di impresa commerciale che non;
+- **società in accomandita semplice** (s.a.s.): i soci sono distinti in **accomandatari** (responsabilità illimitata) e **accomandanti** (responsabilità limitata).
+
+### Società di capitale
+
+Le società di capitale possono risultare molto più complesse e macchinose da gestire in quanto sono soggette a dover adempire a molti obblighi burocratici, fiscali, di trasparenza e di governance. Di contro, però, è possibile una maggiore autonomia decisionale in molti campi, le tasse sono spesso minori e la responsabilità di ogni socio è limitata al capitale conferito in partenza (salvo in casi di illecito).
+
+Le tipologie di società di persone riconosciute per legge sono:
+
+- **società a responsabilità limitata** (s.r.l.): il capitale sociale (che parte da 10000€) è diviso in quote non quotabili in borsa;
+- **società a responsabilità limitata semplificata**: nata per favorire l'imprenditorialità, è una s.r.l. con capitale iniziale minimo di 1€;
+- **società per azioni** (s.p.a.): il capitale sociale (che parte da 50000€) è diviso in quote quotabili in borsa;
+- **società in accomandità per azioni** (s.a.p.a): come la s.p.a. ma i soci si dividono in accomandatari ed accomandanti.
+
+### Società cooperative
+
+Lo scopo di queste società è quello di fornire ai soci servizi a condizioni più vantaggiose di quelle presenti sul mercato.
+
+Dovendo reinvestire tutti i profitti nell'attività imprenditoriale, godono di buone agevolazioni fiscali (che possono perdere in caso non vengano rispettati i requisiti di _società cooperativa_).
 
