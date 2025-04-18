@@ -527,6 +527,71 @@ Per il [Metodo di Newton per sistemi non lineari](#metodo-di-newton-per-sistemi-
 
 Esistono anche altri tipi di criteri, più o meno robusti, come, ad esempio, il criterio tale per cui entrambi i criteri devono essere soddisfatti. Logicamente, più un criterio è robusto, più il risultato numerico si avvicinerà a quello simbolico, sempre a discapito del numero di iterazioni.
 
+# Approssimazione ed interpolazione
+
+Siano date $n+1$ coppie $(x_i, y_i)$ con $i = 0, \dots, n$. Tali coppie sono definite genericamente **dati**. Un dato può rappresentare una **misura** nel caso in cui $y$ misura la risposta di un sistema fisico ad una sollecitazione $x$ (in questo caso il dato viene chiamato anche **nodo**) oppure un **valore di una funzione** nel caso in cui la si vuole campionare o semplificare (in questo caso il dato ciene chiamato anche **punto**). Di seguito, si farà riferimento a dati, nodi e punti come se fossero sinonimi.
+
+Le principali motivazioni dietro alla scelta di voler approssimare una funzione sono due:
+
+- si vuole trovare un modo di descrivere il comportamento di un sistema a partire dai dati a disposizione per una sollecitazione arbitraria senza effettivamente andare a disturbare il sistema ogni volta;
+- si vuole trovare una funzione molto simile ad una già conosciuta ma che sia più semplice da maneggiare.
+
+La differenza tra interpolazione ed approssimazione non è trascurabile:
+
+- **interpolare** significa trovare una **funzione interpolatoria** $\tilde f(x)$ tale che $\tilde f(x_i) = y_i \quad \forall i=0, \dots, n$;
+- **approssimare** significa minimizzare la distanza tra la $\tilde f$ e i punti (ad esempio col metodo dei **minimi quadrati**: $\min \sum\limits_{i=0}^n\left| \tilde f(x_i) - y_i \right|^2$).
+
+## Interpolazione polinomiale
+
+Si supponga di voler trovare interpolatore polinomiale $p(x) = a_nx^n + a_{n-1}x^{n-1} + \dots + a_1x + a_0$. Questo polinomio esiste sempre ed è unico: per ipotesi $p(x_i) = y_i \quad \forall i$ quindi si ha un sistema di $n+1$ equazioni in $n+1$ incognite. Tale sistema è detto **sistema di Vandermonde** ed è garantito che la sua matrice $A$ sia invertibile dunque ha una ed una sola soluzione. Il problema di questo metodo è che il numero di condizionamento di $A$ cresce molto velocemente con la sua dimensione quindi si usa un altro metodo.
+
+## Interpolazione Lagrangiana
+
+_Nota: il signor Lagrange era italiano, non francese e, di cognome, faceva Lagrangia. Però si faceva chiamare Lagrange perchè, all'epoca, se un matematico era francese, allora era automaticamente più credibile._
+
+Sia definito il **polinomio di Lagrange** come
+
+$$
+\varphi_k(x) = \prod_{j = 0, j \ne k}^n \frac{x - x_j}{x_k - x_j} = \frac{(x - x_0)(x - x_1) \dots (x - x_{k-1})(x - x_{k+1}) \dots (x - x_n)}{(x_k - x_0)(x_k - x_1) \dots (x_k - x_{k-1})(x_k - x_{k+1}) \dots (x_k - x_n)}
+$$
+
+Valutando il polinomio di Lagrange in $x_i$ si ottiene che 
+
+$$
+\varphi_k(x_i) = \begin{cases}
+    0 & i \ne k \\
+    1 & \text{Altrimenti}
+\end{cases}
+$$
+
+Sfruttando questa interessante proprietà, si può riscrivere il polinomio interpolatore del paragrafo precedente come 
+
+$$
+p(x) = \sum_{j=0}^n y_j \varphi_j(x)
+$$
+
+Per convenzione, un polinomio interpolatore è indicato da $\Pi_n(x)$ (se $y_i = f(x_i)$ si può scrivere anche $\Pi_nf(x)$).
+
+Anche qui dimostriamo l'unicità di $\Pi_n(x)$ (e la conseguente equivalenza tra l'interpolazione lagrangiana e quella polinomiale): sia $\Psi_n(x)$ un polinomio interpolante di grado $n$ e $D(x) = \Pi_n(x) - \Psi_n(x)$, anch'esso di grado $n$. $\forall i = 0, \dots, n$ vale che $D(x_i) = \Pi_n(x_i) - \Psi_n(x_i) = 0$. Questo significa che $D$ ha almeno $n+1$ radici ma essendo di grado $n$ allora per forza vale che $D \equiv 0$ da cui $\Pi_n(x) = \Psi_n(x)$.
+
+Sia $I$ un intervallo limitato e si considerino $n+1$ nodi di interpolazione distinti $x_i \in I$. Sia $f \in \mathcal C^{n+1}(I)$ allora $\forall x \in I, \exists \xi_i \in I$ tale che
+
+$$
+E_nf(x) = f(x) - \Pi_nf(x) = \frac{f^{(n+1)}(\xi_n)}{(n+1)!}\prod_{i=0}^n(x - x_i)
+$$
+
+Vale la seguente maggiorazione:
+
+$$
+\max_{x \in I} |E_nf(x)| \le \frac{\left|\max\limits_{x \in i}f^{(n+1)}(x)\right|}{4(n+1)}h^{(n+1)}
+$$
+
+Nella formula precedente, il denominatore e l'esponenziazione di $h$ tendono a mandare a zero il risultato. Questo non accade per il modulo del massimo al numeratore quando si tenta di creare un interpolatore per alcune funzioni (**fenomeno di Runge**).
+
+Il fenomeno di Runge consiste in ampie oscillazioni nel valore della funzione interpolante verso gli estremi del dominio. PEr risolvere questo problema si può utilizzare l'**interpolatore lagrangiano composito** o l'**interpolazione con ubicazione specifica dei nodi**.
+
+<!-- continuare con gli interpolatori -->
+
 # Richiami di algebra lineare
 
 In questa sezione verranno ripresi concetti di algebra lineare necessari per la comprensione di quanto scritto nelle sezioni precedenti.
