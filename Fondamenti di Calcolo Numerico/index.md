@@ -588,9 +588,45 @@ $$
 
 Nella formula precedente, il denominatore e l'esponenziazione di $h$ tendono a mandare a zero il risultato. Questo non accade per il modulo del massimo al numeratore quando si tenta di creare un interpolatore per alcune funzioni (**fenomeno di Runge**).
 
-Il fenomeno di Runge consiste in ampie oscillazioni nel valore della funzione interpolante verso gli estremi del dominio. PEr risolvere questo problema si può utilizzare l'**interpolatore lagrangiano composito** o l'**interpolazione con ubicazione specifica dei nodi**.
+Il fenomeno di Runge consiste in ampie oscillazioni nel valore della funzione interpolante verso gli estremi del dominio. Per risolvere questo problema si può utilizzare l'**interpolatore lagrangiano composito** o l'**interpolazione con ubicazione specifica dei nodi**.
 
-<!-- continuare con gli interpolatori -->
+## Interpolazione Lagrangiana composita
+
+La differenza fondamentale tra l'interpolazione lagrangiana e l'interpolazione lagrangiana composita è che mentre la prima interpola su tutto il dominio ottenendo una sola funzione interpolante, la seconda interpola su piccoli sottodomini che contengono ciascuno $k+1$ nodi e di lunghezza $H = kh$ dove $h$ è la distanza tra due nodi.
+
+L'interpolatore globale composto dai piccoli interpolatori è denotato con $\Pi_k^H(x)$ o $\Pi_k^Hf(x)$.
+
+I piccoli interpolatori non sono mai di grado superiore al 3 e questo ne garantisce la convergenza.
+
+L'interpolatore globale perde in regolarità (la derivata non è continua in corrispondenza delle _giunture_ tra interpolatori piccoli) rispetto all'interpolatore di Lagrange.
+
+## Interpolazione con ubicazione specifica dei nodi
+
+Dato che il fenomeno di Runge si verifica in prossimità degli estremi del dominio, una soluzione potrebbe essere quella di aumentare il numero di nodi solo dove necessario: si usano i **nodi di Chebyshev**
+
+$$
+\hat x = -\cos\left( \frac{\pi j}{n} \right) \quad j=0, \dots, n
+$$
+
+La formula precedente genera punti nell'intervallo $[-1, 1]$ ma è possibile scalarlo e translarlo su di un intervallo generico $[a, b]$ con la seguente mappa:
+
+$$
+x_{ab} = \frac{a+b}{2} + \frac{b-a}{2} \hat x
+$$
+
+L'interpolatore generato utilizzando i nodi di Chebyshev si denota con $\Pi_n^C(x)$ o $\Pi_n^Cf(x)$.
+
+Supponiamo che $f \in \mathcal{C}^{s+1}([-1, 1])$ allora vale che
+
+$$
+\max_{x \in [-1, 1]} |f(x) - \Pi_n^Cf(x)| \le \tilde C \frac{1}{n^s}
+$$
+
+Ne seguono tre proprietà:
+
+- se $s > 1$ allora si ha sempre convergenza;
+- la velocità di convergenza cresce con $s$;
+- se l'ipotesi precedente è valida per qualunque $s$ allora la velocità di covergenza è esponenziale.
 
 # Richiami di algebra lineare
 
