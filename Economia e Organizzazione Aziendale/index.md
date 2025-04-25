@@ -261,4 +261,28 @@ Questa classificazione dà vita a quattro tipologie di relazioni:
 - **network collaborativo** (cooperazione tra organizzazioni dissimili);
 - **istituzionalismo** (cooperazione tra organizzazioni simili).
 
+# Contabilità esterna, stato patrimoniale e conto economico
 
+La **contabilità** è quel processo di raccolta di tutte le informazioni che consentono dare una valutazione dell'impresa.
+
+La **contabilità esterna** si occupa di tutte le informazioni pubbliche riguardo le interazioni dell'organizzazione con l'esterno. Queste informazioni devono essere raccolte ed esaminate seguendo criteri omogeneri definiti dalla legge. Il principale documento _output_ di questo processo è il **bilancio d'esercizio** (un **esercizio** è un anno contabile).
+
+## Bilancio d'esercizio
+
+Il bilancio deve contenere informazioni sul **patrimonio** dell'impresa (nello **stato patrimoniale**), sull'**utile** dell'impresa (nel **conto economico**) e sulla **cassa** (nel **rendiconto finanziario**).
+
+Lo stato patrimoniale rappresenta un riassunto di tutti i possedimenti di un'impresa, sia in **attivo** (risorse a disposizione dell'impresa) che in **passivo** (diritti vantati da terzi sulle risorse dell'impresa).
+
+Il passivo comprende anche il **patrimonio netto** ovvero il valore delle attività dell'impresa dopo aver dedotto tutte le passività.
+
+Vale sempre la formula
+
+$$
+\text{Totale Attività} \equiv \text{Totale Passività} + \text{Patrimonio Netto}
+$$
+
+<!-- 
+Le attività sono riportate sulla base del _criterio di liquidità_ mentre le passività sono riportate secondo il _criterio di esigibilità_: entrambi questi criteri consistono nel riportare le varie voci secondo la loro capacità di trasformarsi in risorse monetarie liquide. L'ordine è: _attività non correnti_, _attività correnti_ e _attività cessate o destinate ad essere cedute_.
+
+file:///D:/Users/Andrea/Documents/WeBeep%20Sync/ECONOMIA%20E%20ORGANIZZAZIONE%20AZIENDALE/Modulo%20III/Modulo%203.1%20-%20Contabilit%C3%A0%20esterna_Stato%20Patrimoniale%20e%20Conto%20Economico.pdf
+-->
