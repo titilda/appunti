@@ -224,4 +224,28 @@ La cultura organizzativa di un azienda può assumere una di quattro diverse form
 - competitiva;
 - imprenditoriale.
 
-<!-- file:///D:/Users/Andrea/Documents/WeBeep%20Sync/ECONOMIA%20E%20ORGANIZZAZIONE%20AZIENDALE/Modulo%20II/Modulo%202%20-%20Organizzazione.pdf : 44 -->
+## Progettazione della macrostruttura
+
+Mentre la microstruttura si occupa del posizionamento del singolo individuo, la macrostruttura si occupa delle interazioni tra individui e tra gruppi di individui.
+
+Tre sono i passi fondamentali per la progettazione della macrostruttura di un'organizzazione:
+
+1. creazione delle unità organizzative;
+2. definizione delle competenze, mansioni, responsabilità, obiettivi e meccanismi di coordinamento con altre UO;
+3. formalizzazione e creazione dell'organigramma derivando le informazioni da rappresentare dai due punti precedenti.
+
+L'organigramma possiede due proprietà intrinseche che ne descrivono la complessità: l'**ampiezza del controllo** (la dimensione orizzontale) e la **profondità del controllo** (la dimensione verticale).
+
+LE UO nell'organigramma si distinguono tra **UO di linea** (che compongono l'albero principale dell'organigramma) e **UO di staff** (che fungono da supporto alle unità di linea sottostanti).
+
+Le UO possono essere distinte anche tra **permanenti** e **temporanee**.
+
+Le varie UO su di un organigramma possono essere raggruppate per **raggruppamento numerico** (squadre, turni, ecc.), per **input** (unità che usano le stesse risorse) e per **output** (unità dedite allo stesso mercato/cliente/area geografica).
+
+Esistono diversi meccanismi di coordinamento tra le UO:
+
+- ruoli di collegamento;
+- manager integratori;
+- team interfunzionali;
+- sistemi di pianificazione e controllo;
+- sistemi informativi azientali.
