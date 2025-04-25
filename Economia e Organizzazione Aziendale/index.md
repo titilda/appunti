@@ -249,3 +249,16 @@ Esistono diversi meccanismi di coordinamento tra le UO:
 - team interfunzionali;
 - sistemi di pianificazione e controllo;
 - sistemi informativi azientali.
+
+# Relazioni interorganizzative
+
+Le relazioni interorganizzative si classificano in base alla similitudine tra le organizzazioni e alla tipologia di rapporto (**competitività** vs. **cooperazione**).
+
+Questa classificazione dà vita a quattro tipologie di relazioni:
+
+- **dipendenza dalle risorse** (competitività tra organizzazioni dissimili);
+- **ecologia delle popolazioni** (competitività tra organizzazioni simili);
+- **network collaborativo** (cooperazione tra organizzazioni dissimili);
+- **istituzionalismo** (cooperazione tra organizzazioni simili).
+
+
