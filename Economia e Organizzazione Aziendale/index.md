@@ -3,6 +3,8 @@ title: "Riassunto di Economia ed Organizzazione Aziendale"
 author: "Andrea Oggioni"
 ---
 
+_Nota: questa pagina è work in progress. I contenuti potrebbero variare rapidamente._
+
 # Introduzione
 
 La definizione di **impresa** non è presente all'interno del codice civile italiano; è invece presente quella di **imprenditore** (coluiche esercita professionalmente un'attività economica organizzata al fine della produzione o dello scambio di beni o servizi). Da questa definizione si trae che un **impresa** (che è l'attività svolta dall'imprenditore) è un'attività economica organizzata svolta professionalmente al fine della produzione o dello scambio di beni o servizi.
@@ -141,3 +143,85 @@ Lo scopo di queste società è quello di fornire ai soci servizi a condizioni pi
 
 Dovendo reinvestire tutti i profitti nell'attività imprenditoriale, godono di buone agevolazioni fiscali (che possono perdere in caso non vengano rispettati i requisiti di _società cooperativa_).
 
+# Organizzazione di un impresa
+
+L'impresa, di per sé, punta a massimizzare il profitto in maniera autonoma, egoista e razionale (teoria dell _homo economicus_). Il problema è che le persone di cui l'impresa si avvale non sono _homo economicus_ ma _persone umane_ che, magari, possono voler massimizzare anche il proprio tempo libero, oltre che ai loro guadagni.
+
+E' detto **organizzazione** un insieme di individui con uno scopo comune, perseguibile tramite azioni individuali e collettive oportunamente definite e coordinate. Nella pratica, l'organizzazione di un'impresa consiste nell'assegnazione mansioni e nel loro coordinamento.
+
+Le imprese hanno un proprio ciclo di vita che segue alcune fasi: le prime tre sono _sviluppo_, _crescita_ e _maturità_. A quest'ultima può seguire la fase di _rivitalizzazione_ oppure le fasi di _declino_ e _morte_.
+
+Maggiore è la complessità di un'organizzazione e più saranno le attività da svolgere e la specializzazione dei membri.
+
+Col crescere del numero di individui di un'organizzazione, crescono i problemi di diffusione delle informazioni, di allineamento degli obiettivi e di coordinamento.
+
+Per tentare di contenere gli effetti negativi di questi problemi, il **vertice organizzativo** dell'organizzazione deve occuparsi di progettare sia la **macrostruttura** (quali sono le unità organizzative) che la **microstruttura** (quali sono le mansioni del singolo individuo).
+
+## Progettazione della microstruttura
+
+Un **compito** è un insieme di azioni collegate ed imprescindibili.
+
+Una **mansione** è un insieme di compiti caratterizzanti una posizione individuale.
+
+Una **posizione individuale** è la posizione di un undividuo all'interno dell'organizzazione a cui è associata una mansione (ogni posizione individuale è assegnata ad una sola persona ma la stessa mansione può essere assegnata a più persone).
+
+Un **ruolo** è composto dalle aspettative circa i comportamenti attesi da chi ricopre una data posizione individuale.
+
+Una progettazione efficace
+
+- assegna un numero adeguato di persone alle attività da svolgere;
+- fa in modo che le persone assegnate abbiano profili coerenti con le attività;
+- definisce in maniera chiara ed inequivocabile i compiti di ciascuna persona;
+- definisce in maniera chiara ed inequivocabile, per ogni persona, gli obiettivi da raggiungere e le risorse a disposizione.
+
+Una delle attività fondamentali per la progettazione della microstruttura di un'organizzazione è quella del **disegno delle mansioni**: per ogni individuo, si deve decidere come assegnargli autorità decisionale e quanto deve essere specializzato.
+
+L'alta specializzazione comporta i seguenti vantaggi:
+
+- favoreggiamento dell'apprendimento;
+- riduzione dei costi di formazione;
+- riduzione dei tempi morti dovuti ai _context switch_;
+- standardizzazione delle modalità di lavoro.
+
+Ma porta anche svantaggi:
+
+- alienazione del lavoratore;
+- perdita di competenze da parte del lavoratore;
+- aumento dei costi di coordinamento.
+
+Come già ampiamente osservato e doumentato fin dai tempi della catena di montaggio, un'eccessiva specializzazione porta i lavoratori a sentirsi frustrati e alienati: per risolvere ciò è necessario ridurre la specializzazione tramite **job enlargement** (aggiunta di compiti diversi alle mansioni specializzate), **job enrichment** (aggiunta di compiti più importanti con più autonomia decisionale) e **job rotation** (i lavoratori sono assegnati alle diverse mansioni a rotazione).
+
+Una mansione, per essere trasmessa ad un lavoratore, deve essere codificata: questo può avvenire per forma scritta (tramite protocolli, procedure et similia) o per forma orale (lavoratore esperto effettua il _training_ di un lavoratore appena assunto).
+
+La **formalizzazione** di una mansione descrive le modalità di svolgimento di una mansione, quali sono le possibili deciioni che il lavoratore può prendere in autonomia e come avviene il controllo da parte dei superiori.
+
+Riguardo l'autonomia decisionale, si può dire che è molto apprezzata dagli individui, che riduce i tempi di attesa dovuti all'attesa della risposta da parte del supervisore e che è necessaria in contesti di mansioni che richiedono conoscenze molto specifiche. 
+
+Una maggiore autonomia decisionale assegnata agli individui, oltre che a portare diversi vantaggi, porta alla perdita di controllo da parte dell'organizzazione (il che va a braccetto con il fatto che, spesso, gli obiettivi di organizzazione e individuo non combacino).
+
+Per evitare la perdita di controllo pur mantenendo autonomi gli individui, si devono introdurre degli incentivi per spingere i lavoratori a compiere scelte adeguate per la persecuzione degli obiettivi dell'impresa.
+
+Ovviamente gli incentivi devono essere misurati in modo da non poterne abusare.
+
+Le motivazioni che spingono un invividuo a lavorare possono essere categorizzate in diversi modi: una prima distinzione può essere quella tra **motivazioni intrinseche** (ad es. si diverte) e **motivazioni estrinseche** (ad ed. ritorno economico).
+
+Un'altro modo di categorizzare queste motivazioni è la **piramide di Maslow**: in questa piramide vengono categorizzati i bisogni che un individuo è motivato a soddisfare nei 5 livelli elencati di seguito da quelli alla base a quelli in cima (i primi due sono anche detti **bisogni primari** mentre gli altri sono anche detti **bisogni secondari**).
+
+1. Bisogni fisiologici;
+2. bisogni di sicurezza;
+3. bisogni di appartenenza;
+4. bisogni di stima;
+5. bisogni di autorealizzazione.
+
+Quando un individuo ha soddisfatto i bisogni appartenenti ad un certo livello della piramide, non si sente più appagato e tenterà di soddisfare i bisogni del livello più in alto.
+
+I metodi per ricompensare, motivare e controllare i lavoratori dipendono dalla **cultura organizzativa** che consiste di tutte le norme sociali attuate all'interno dell'azienda.
+
+La cultura organizzativa di un azienda può assumere una di quattro diverse forme, ciascuna con i suoi obiettivi, vantaggi e svantaggi:
+
+- burocratica;
+- comunitaria;
+- competitiva;
+- imprenditoriale.
+
+<!-- file:///D:/Users/Andrea/Documents/WeBeep%20Sync/ECONOMIA%20E%20ORGANIZZAZIONE%20AZIENDALE/Modulo%20II/Modulo%202%20-%20Organizzazione.pdf : 44 -->
