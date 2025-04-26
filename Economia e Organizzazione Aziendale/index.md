@@ -281,8 +281,73 @@ $$
 \text{Totale Attività} \equiv \text{Totale Passività} + \text{Patrimonio Netto}
 $$
 
-<!-- 
-Le attività sono riportate sulla base del _criterio di liquidità_ mentre le passività sono riportate secondo il _criterio di esigibilità_: entrambi questi criteri consistono nel riportare le varie voci secondo la loro capacità di trasformarsi in risorse monetarie liquide. L'ordine è: _attività non correnti_, _attività correnti_ e _attività cessate o destinate ad essere cedute_.
+Le attività sono riportate sulla base del _criterio di liquidità_ mentre le passività sono riportate secondo il _criterio di esigibilità_: entrambi questi criteri consistono nel riportare le varie voci secondo la loro capacità di trasformarsi in risorse monetarie liquide. 
+Per le attività l'ordine è: _attività non correnti_, _attività correnti_ e _attività cessate o destinate ad essere cedute_.
+Per le passività l'ordine è: _patrimonio netto_, _passività non correnti_, _passività correnti_ e _passività correlate ad attività cessate o destinate ad essere cedute_.
 
-file:///D:/Users/Andrea/Documents/WeBeep%20Sync/ECONOMIA%20E%20ORGANIZZAZIONE%20AZIENDALE/Modulo%20III/Modulo%203.1%20-%20Contabilit%C3%A0%20esterna_Stato%20Patrimoniale%20e%20Conto%20Economico.pdf
--->
+Di seguito viene riportato un riassunto di tutti i campi di un bilancio ordinati seguendo i vari criteri:
+
+- Attività
+  - Attività non correnti
+    - Attività materiali
+      - Immobili, impianti, macchinari di proprietà
+      - Beni in locazione finanziaria
+      - Investimenti immobiliari
+    - Attività immateriali
+      - Avviamento e attività immateriali a vita non definita
+      - Attività materiali a vita definita
+    - Altre attività non correnti
+      - Partecipazioni
+      - Titoli e crediti finanziari
+      - Crediti vari e altre attività non correnti
+    - Attività per imposte anticipate
+  - Attività correnti
+    - Rimanenze di magazzino
+    - Lavori in corso su ordinazione
+    - Crediti commerciali
+    - Titoli, crediti finanziari, altre attività finanziarie correnti e altre attività disponibili per la vendita
+    - Cassa e altre disponibilità liquide equivalenti
+  - Attività cessate o destinate ad essere ceduce
+    - Di natura finanziaria
+    - Di natura non finanziaria
+- Passività
+  - Patrimonio netto
+    - Capitale emesso
+    - Riserve
+      - Riserva da sovrapprezzo
+      - Riserva da rivalutazione
+      - Altre riserve
+    - Utili (e perdite) di esercizio
+    - Utili (e perdite) portate a nuovo
+  - Passività non correnti
+    - Passività finanziarie non correnti
+      - Obbligazioni in circolazione
+      - Debiti verso banche
+      - Altre attività finanziarie
+    - TFR e altri fondi relativi al personale
+    - Fondo imposte differite
+    - Fondo per rischi e oneri futuri
+    - Debiti vari e altre attività non correnti
+  - Passività correnti
+    - Passività finanziarie correnti
+      - Obbligazioni in circolazione
+      - Debiti verso banche
+      - Altre passività finanziarie
+    - Debiti commerciali
+    - Debiti per imposte
+    - Debiti vari e altre passività correnti
+  - Passività correlate ad attività cessate o destinate ad essere cessate
+    - Di natura finanziaria
+    - Di natura non finanziaria
+
+Le _attività a vita utile definita_ perdono valore col passare del tempo: l'**ammortamento** avviene a **quote costanti**, a **quote crescenti** o **secondo le quantità prodotte**.
+
+Le _attività a vita utile non definita_, invece, possono subire sia una _svalutazione_ che una _valutazione_.
+
+Per le _rimanenze di magazzino_, il valore considerato è il minimo tra il costo (che può essere calcolato con il metodo _FIFO_ (si considerano venduti i pezzi prodotti precedentmente) o con il metodo del _costo medio_ (si considera il prezzo medio dei prodotti)) e il valore di realizzo.
+
+<!-- Mettere esempi di transazioni e i vari delta sul bilancio conseguenti -->
+
+Il **conto economico** è il documento che descrive tutti i flussi di soldi in entrata ed uscita e determina l'utile di esercizio.
+
+<!-- 3.1 contabilità esterna ecc : 121 -->
