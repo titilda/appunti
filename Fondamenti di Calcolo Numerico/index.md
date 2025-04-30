@@ -628,7 +628,7 @@ Ne seguono tre proprietà:
 - la velocità di convergenza cresce con $s$;
 - se l'ipotesi precedente è valida per qualunque $s$ allora la velocità di covergenza è esponenziale.
 
-## Aprossimazione
+## Approssimazione
 
 Approssimare una funzione significa minimizzare l'errore (lo scarto) tra i dati a disposizione e la funzione (solitamente un polinomio) trovata.
 
