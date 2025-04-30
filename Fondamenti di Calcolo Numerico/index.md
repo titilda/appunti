@@ -60,7 +60,7 @@ Il pivoting consiste nel moltiplicare a sinistra la matrice di partenza $A$ per 
 
 E' utile notare come $P = P^T = P^{-1}$ da cui $PP^T = PP^{-1} = I$.
 
-Il sistema $Ax = B$ si può dunque riscrivere come $PLUx = Pb$ e può essere risolto come
+Il sistema $Ax = B$ si può dunque riscrivere come $LUx = Pb$ e può essere risolto come
 
 $$
 \begin{cases}
@@ -169,6 +169,41 @@ $$
 
 Complessivamente, calcolare la fattorizzazione LU di una matrice e risolvere il sistema equivalente con le due passate di sostituzioni è _molto_ più veloce dell'utilizzo del metodo di Cramer (con Cholesky la velocità di fattorizzazione raddoppia).
 
+In MATLAB è possibile definire le funzioni di `sostituzione_avanti` e `sostituzione_indietro` come segue:
+
+```matlab
+function [x] = forward_sub(L, b)
+    N = length(b);
+    x = zeros(N, 1);
+
+    for i = 1:N
+        x(i) = (b(i) - L(i, 1:i-1) * x(1:i-1)) / L(i, i);
+    end
+end
+
+
+function [x] = backward_sub(U, b)
+    N = length(b);
+    x = zeros(N, 1);
+
+    x(N) = b(N) / U(N, N);
+
+    for i = N-1:-1:1
+        x(i) = (b(i) - U(i, i+1:N) * x(i+1:N)) / U(i, i);
+    end
+end
+```
+
+La procedura completa per la risoluzione di un sistema lineare è quindi codificata come segue:
+
+```matlab
+function [x] = solve_by_sub(A, b)
+    [L, U, P] = lu(A);
+    y = forward_sub(L, P*b);
+    x = backward_sub(U, y);
+end
+```
+
 ## Metodi itarativi
 
 Mentre i metodi diretti terminano restituendo una soluzione, questi non sono adatti per sistemi eccessivamente grossi o sparsi. Per queste tipologie di sistemi si usano i metodi iterativi. Questi metodi generano una successione infinita di soluzioni $x^{(k)}$ sempre più precise. 
@@ -209,7 +244,7 @@ Per comodità, vengono definite alcune matrici ampiamente utilizzate nei paragra
 ```matlab
 D = diag(diag(A));
 E = -tril(A, -1);
-F = -tril(A, +1);
+F = -triu(A, +1);
 ```
 
 ### Metodo di Jacobi
@@ -228,6 +263,30 @@ $$
 B_J = I - D^{-1}A \\
 $$
 
+In MATLAB, è possibile implementare il metodo di Jacobi (con criterio di arresto sul residuo, che verrà spiegato [più avanti](#criteri-di-arresto)) nel seguente modo:
+
+```matlab
+function [x, n_iters] = solve_jacobi(A, b, x0, tolerance)
+    N = length(b);
+
+    D = diag(diag(A));
+
+    B = eye(N) - D\A;
+    f = (eye(N) - B) / A * b;
+
+    n_iters = 0;
+    normalized_residue = tolerance + 1;
+    x = x0;
+
+    while normalized_residue > tolerance
+        n_iters = n_iters + 1;
+        x = B * x + f;
+        residue = b - A*x;
+        normalized_residue = norm(residue)/norm(b);
+    end
+end
+```
+
 ### Metodo di Gauss-Seidel
 
 Il metodo di Gauss-Seidel è un metodo iterativo non facilmente parallelizzabile ma più veloce (in termini di numero di iterazioni) del metodo di Jacobi esprimibile matematicamente come segue:
@@ -242,11 +301,57 @@ $$
 B_{GS} = (D - E)^{-1} F
 $$
 
-Per entrambi i metodi, valgono le seguenti proprietà:
+In MATLAB, è possibile implementare il metodo di Gauss-Seidel (con criterio di arresto sull'incremento, che verrà spiegato [più avanti](#criteri-di-arresto)) nel seguente modo:
+
+```matlab
+function [x, n_iters] = solve_gauss_seidel(A, b, x0, tolerance)
+    N = length(b);
+
+    D = diag(diag(A));
+    E = -tril(A, -1);
+    F = -triu(A, +1);
+
+    B = (D - E) \ F;
+    f = (eye(N) - B) / A * b;
+
+    increment = tolerance + 1;
+    n_iters = 0;
+
+    x = x0;
+
+    while increment > tolerance
+        n_iters = n_iters + 1;
+        x_new = B * x + f;
+        increment = norm(x_new - x);
+        x = x_new;
+    end
+end
+```
+
+Per entrambi i metodi visti precedentemente, valgono le seguenti proprietà:
 
 - se $A$ strettamente dominante diagonale per righe allora convergono entrambi;
 - se $A$ è SDP allora Gauss-Seidel converge;
 - se $A$ è tridiagonale allora convergono entrambi o non convergono entrambi; Se convergono, Gauss-Seidel è più veloce.
+
+A scopo puramente illustrativo, nel seguente script, viene generata casualmente una matrice $A$ strettamente dominante diagonale per righe ed un vettore $b$, anch'esso casuale, poi, per ciascuno dei metodi visti, viene risolto il sistema $Ax = b$ e viene stampato il numero di iterazioni necessarie:
+
+```matlab
+N = 10;
+
+A = generate_converging_matrix(N);
+b = rand(N, 1);
+
+x0 = zeros(N, 1);
+
+[x_j, n_j] = solve_jacobi(A, b, x0, 1e-12);
+[x_gs, n_gs] = solve_gauss_seidel(A, b, x0, 1e-12);
+
+fprintf('Iterazioni Jacobi: %d\n', n_j);
+fprintf('Iterazioni Gauss-Seidel: %d\n', n_gs);
+```
+
+La funzione `generate_converging_matrix` è disponibile [nell'appendice](#funzioni-matlab).
 
 ### Metodo di Richardson stazionario
 
@@ -735,11 +840,13 @@ $$
 
 da cui deriva che la formula di Simpson composita ha grado di esattezza pari a 3.
 
-# Richiami di algebra lineare
+# Appendice
+
+## Richiami di algebra lineare
 
 In questa sezione verranno ripresi concetti di algebra lineare necessari per la comprensione di quanto scritto nelle sezioni precedenti.
 
-## Metodo di Cramer
+### Metodo di Cramer
 
 Sia $Ax = b$ un sistema lineare. I membri del vettore soluzione $x$ vengono calcolati col metodo di Cramer attraverso la seguente formula:
 
@@ -749,7 +856,7 @@ $$
 
 dove $a_i$ è la $i$-esima colonna di $A$.
 
-## Norma
+### Norma
 
 Sia $x \in \mathbb{R}^n$, allora la norma-$k$ di tale vettore è data da
 $$
@@ -773,7 +880,7 @@ $$
 \|A\|_k = \sup_{v \in \mathbb R^n, v \ne 0} \frac{\|Av\|_k}{\|v\|_k} = \sqrt[k]{\lambda_{max}(A^TA)}
 $$
 
-## Disuguaglianze di Cauchy-Schwartz e triangolare
+### Disuguaglianze di Cauchy-Schwartz e triangolare
 
 Siano $x, y \in \mathbb R^n$ allora
 
@@ -781,3 +888,13 @@ Siano $x, y \in \mathbb R^n$ allora
 - per la triangolare vale che $\| x + y \| \le \| x \| + \| y \|$.
 
 Entrambe valgono per qualsiasi norma.
+
+## Funzioni MATLAB
+
+```matlab
+function [A] = generate_converging_matrix(N)
+    T = rand(N);
+    v = sum(T, 2);
+    A = T + diag(v);
+end
+```
