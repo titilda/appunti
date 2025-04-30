@@ -628,6 +628,113 @@ Ne seguono tre proprietà:
 - la velocità di convergenza cresce con $s$;
 - se l'ipotesi precedente è valida per qualunque $s$ allora la velocità di covergenza è esponenziale.
 
+## Aprossimazione
+
+Approssimare una funzione significa minimizzare l'errore (lo scarto) tra i dati a disposizione e la funzione (solitamente un polinomio) trovata.
+
+Si supponga di avere a disposizione $n$ coppie di dati e di volerne trovare un'approssimazione polinomiale: il risultato sarà un polinomio di grado $m$ e vale che se $m = n$ allora si trova esattamente il polinomio interpolatore mentre se $m \lt n$ se ne rova un'approssimazione e il polinomio trovato, in generale, **non** passa per i dati.
+
+Solitamente si sceglie $m$ di valore pari a 2 o 3 per evitare di incorrere nel fenomeno di Runge.
+
+In MATLAB è possibile trovare il polinomio approssimate o interpolatore con la funzione `polyfit`: `polinomio = polyfit(X, Y, m);`.
+
+Il metodo più spesso utilizzato per cercare il polinomio approssimante è quello dei **minimi quadrati**: sia $q(x)$ il polinomio in $x$ di grado $m$ che meglio approssima i dati a disposizione, allora $q$ è il polinomio di grado $m$ tra tutti i polinomi di grado $m$ che minimizza l'errore tra i dati e se stesso valutato nelle stesse posizioni.
+
+$$
+\sum_{i=0}^n \left[ y_i - q(x_i) \right]^2 \le \sum_{i=0}^n \left[ y_i - p_m(x_i) \right]^2 \qquad \forall p_m \in \mathbb{P}_m
+$$
+
+Con $m = 1$ il polinomio assume la forma di una retta chiamata **retta di regressione** per la quale esiste una formula analitica:
+
+$$
+q(x) = a_1x + a_0 \\
+a_0 = \frac{1}{D} \left[ \sum_{i=0}^n y_i \cdot \sum_{j=0}^n x_j^2 - \sum_{j=0}^n x_j \cdot \sum_{i=0}^n x_iy_i\right] \\
+a_1 = \frac{1}{D} \left[ (n+1) \sum_{i=0}^n x_iy_i - \sum_{j=0}^n x_j \sum_{i=0}^n y_i\right] \\
+D = (n+1) \sum_{i=0}^n x_i^2 - \left( \sum_{i=0}^n x_i \right)^2
+$$
+
+Nel caso generale, trovare minimizzare una funzione significa trovarne i punti a gradiente nullo. La funzione **errore quadratico** è definita come segue:
+
+$$
+\Phi(a_0, a_1, \dots, a_m) = \sum_{n=0}^n \left[ y_i - (a_0 + b_1x_i + \dots + b_mx_i^m) \right]^2
+$$
+
+# Integrazione numerica
+
+Attualmente non esistono metodi numerici per calcolare in maniera esatta (a meno di errori dovuti alla quantizzazione del numero) valori di integrali (salvo casi molto particolari e specifici).
+
+Per calcolare numericamente integrali, si usano le **formule di quadratura** che riconducono il problema del calcolo ad un problema di calcolo di aree (introducendo un errore).
+
+In questa sezione si farà uso della seguente notazione:
+
+$$
+I(f) = \int_a^b f(x) dx
+$$
+
+Sia $I_H(f)$ il valore dell'integrale calcolato utilizzando una formula di quadratura: si dice che la formula di quadratura è di **ordine** $p$ se
+
+$$
+E_H = |I(f) - I_H(f)| \le CH^p
+$$
+
+Si dice anche che la formula di quadratura ha **grado di esattezza** pari ad $r$ se, quando applicata a polinomi di grado pari od inferiore ad $r$ vale che
+
+$$
+E_H = |I(f) - I_H(f)| = 0 \quad \forall f \in \mathbb{P}^r (a, b)
+$$
+
+Dei tre metodi visti, esistono sia la versione _composita_ (analizzate di seguito) che quella _semplice_ (ottenuta ottenuta utilizzando l'intero intervallo invece che tanti intervallini). 
+
+## Formula del punto medio composita
+
+Questa formula si basa sul separare l'intervallo $(a, b)$ in molteplici intervallini uguali (di dimensione $H$) per poi calcolarne l'area sottesa dalla funzione considerando come altezza il valore $f(\bar x_k)$ dove $x_k = \frac{x_k + x_{k+1}}{2}$:
+
+$$
+I_{pm}(f) = H \sum_{k=1}^M f(\bar x_k)
+$$
+
+Una stima per l'errore di questa formula è la seguente:
+
+$$
+|I(f) - I_{pm}(f)| \le \max_x |f''(x)|\frac{b - a}{24} H^2
+$$
+
+da cui deriva chela formula del punto medio ha grado di esattezza pari a 1.
+
+## Formula dei trapezi composita
+
+La formula dei trapezi composita si basa sull'approssimazione dell'area sottesa dalla curva come somma di trapezi:
+
+$$
+I_{tr}(f) = \frac{H}{2} \sum_{k=1}^M \left( f(x_{k-1} + f(x_k)) \right) = \frac{H}{2} \left( f(a) + f(b) \right) + H \sum_{k=1}^{M-1}f(x_k) = \int_a^b \Pi_1^Hf(x)dx
+$$
+
+L'integrale dell'ultimo passaggio è calcolabile in maniera esatta anche numericamente.
+
+Una stima per l'errore di questa formula è la seguente:
+
+$$
+|I(f) - I_{tr}(f)| \le \frac{1}{12} \max_x |f''(x)|(b-a)H^2
+$$
+
+da cui deriva che la formula dei trapezi composita ha grado di esattezza pari a 1.
+
+## Formula di Simpson composita
+
+La formula di Simpson composita è l'equivalente della formula dei trapezi composita che utilizza l'interpolatore Lagrangiano composito di grado 2 invece che di garado 1:
+
+$$
+I_{sim}(f) = \frac{H}{6} \sum_{k=1}^M \left( f(x_{k-1}) + 4f(\bar x_k) + f(x_k) \right) = \int_a^b \Pi_2^Hf(x)dx \qquad \bar x_k = \frac{x_{k-1} + x_k}{2}
+$$
+
+Una stima per l'errore di questa formula è la seguente:
+
+$$
+|I(f) - I_{sim}(f)| \le \frac{b - a}{2880} \max_x \left| f''''(x) \right| H^4
+$$
+
+da cui deriva che la formula di Simpson composita ha grado di esattezza pari a 3.
+
 # Richiami di algebra lineare
 
 In questa sezione verranno ripresi concetti di algebra lineare necessari per la comprensione di quanto scritto nelle sezioni precedenti.
