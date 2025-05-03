@@ -392,6 +392,29 @@ Logicamente, per fare in modo che il precondizionamento abbia effetto, deve esse
 
 Per matrici $A$ sparse, esiste la **fattorizzazione LU inesatta** che si trova ponendo $l_{ij} = u_{ij} = 0$ dove $a_{ij} = 0$. La fattorizzazione LU inesatta restituisce due matrici $\tilde L$ e $\tilde U$ il cui prodotto viene utilizzato per costruire la matrice $P$: $P = \tilde L \tilde U$.
 
+Un'implementazione MATLAB del metodo appena analizzato è la seguente:
+
+```matlab
+function [x, n_iters] = solve_richardson(A, b, alpha, x0, tolerance)
+    N = length(b);
+    
+    B = eye(N) - alpha * A;
+
+    f = (eye(N) - B) / A * b;
+
+    n_iters = 0;
+    normalized_residue = tolerance + 1;
+    x = x0;
+
+    while normalized_residue > tolerance
+        n_iters = n_iters + 1;
+        x = B*x + f;
+        residue = b - A*x;
+        normalized_residue = norm(residue)/norm(b);
+    end
+end
+```
+
 ### Metodo del gradiente
 
 Sia
@@ -431,6 +454,25 @@ L'errore per il metodo del gradiente si misura come
 $$
 \|e^{(k)}\|_A \le \left( \frac{K(A) - 1}{K(A) + 1} \right)^k \|e^{(0)}\|_A
 $$
+
+Di seguito compare il listato di un'implementazione di una funzione MATLAB che risolve un sistema $Ax = b$ col metodo del gradiente:
+
+```matlab
+function [x, n_iters] = solve_gradient(A, b, x0, tolerance)
+    x = x0;
+    n_iters = 0;
+    residue = b - A*x;
+    normalized_residue = tolerance + 1;
+
+    while normalized_residue > tolerance
+        n_iters = n_iters + 1;
+        alpha = (residue' * residue) / (residue' * A * residue);
+        x = x - alpha * (A * x - b);
+        residue = b - A * x;
+        normalized_residue = norm(residue) / norm(b);
+    end
+end
+```
 
 ### Metodo del gradiente coniugato
 
@@ -891,10 +933,19 @@ Entrambe valgono per qualsiasi norma.
 
 ## Funzioni MATLAB
 
+Di seguito vengono riportati i listati per alcune delle funzioni utilizzate nella presente pagina o che possono comunque risultare utili per mettere in pratica quanto appena riassunto.
+
 ```matlab
 function [A] = generate_converging_matrix(N)
     T = rand(N);
     v = sum(T, 2);
     A = T + diag(v);
+end
+```
+
+```matlab
+function [A] = generate_sdp_matrix(N)
+    A = rand(N);
+    A = A * A';
 end
 ```
