@@ -903,6 +903,87 @@ $J_G = \frac{m R^2}{2}$
 
 $r_G = \frac{\sqrt{2}}{2} R \cong 0,7 R$
 
+## 4.2 Principio D'Alambert
+
+Equilibrio dinamico:
+
+- Equazioni cardinali dinamica (non lo vedremo).
+- Principio D'Alambert.
+
+Approccio energetico:
+
+- PLV (Principio dei Lavori Virtuali).
+- BdP (Bilancio di Potenze o teorema dell'energia cinetica).
+- Equazioni di Lagrange.
+
+### Punto
+
+![](assets/capitolo_quattro/4_2_principio_d_alambert/punto.jpg)
+
+Preso un punto in figura e applicate le forse che si vedono per Newton sappiamo che:
+
+$\Sigma_i \vec{F}_i = m \vec{a} \to \Sigma_i \vec{F}_i - m \vec{a} = 0$
+
+Si introduce la forza d'inerzia $\vec{F}_{in} = -m \vec{a}$
+
+indica la resistenza del corpo a muoversi, quindi quanta forza deve applicare a $m$ per farlo andare a un accelerazione $a$.
+
+$\Sigma_i \vec{F}_i + \vec{F}_{in} = \vec{0}$
+
+con: 
+
+- $\Sigma_i \vec{F}_i :$ Forze attive e reattive.
+
+come si agisce ?
+
+- Forze note $\implies \vec{a} ?$ Dinamica diretta.
+- $a$ nota $\implies$ Forze ? Dinamica inversa (o cinetostatica).
+
+### Corpo rigido
+
+$\begin{cases}
+  \vec{R} = \vec{0}\\
+  \vec{M}_o = \vec{0}
+\end{cases}$
+
+Forze, coppie, attive e reattive.
+
+Condizioni di equilibrio dinamico
+
+$\begin{cases}
+  \vec{R} = \vec{0}\\
+  \vec{M}_o = \vec{0}
+\end{cases}$
+
+Forze, coppie, attive, reattive e inerzia.
+
+$\begin{cases}
+  \Sigma_i \vec{F}_i + \vec{F}_{in} = \vec{0}\\
+  \Sigma_i (P_i - O) \land \vec{F}_i + \Sigma_k C_k + (G - O) \land \vec{F}_{in} + \vec{C}_{in} = 0
+\end{cases}$
+
+Calcoliamo $F_{in}$ e $C_{in}$ per il corpo rigido:
+
+![](assets/capitolo_quattro/4_2_principio_d_alambert/corpo_rigido.jpg)
+
+Corpo rigido costituito da infiniti punti, per ogni punto $P$ infitesimale, ho una $F_{in}$ uguale all'accelerazione $a_P$ per la massa infinitesimale $dm$.
+
+$d \vec{F}_{in} = - \vec{a_P} dm = - \vec{a_P} \rho dV$
+
+$d\vec{C}_{in} = - (P - G) \land \rho \vec{a_P} dV$
+
+### Forza di inerzia
+
+**Rivals** $= \vec{a_P} = \vec{a_G} + \vec{\dot{w}} \land (P - G) + \vec{w} \land \vec{w} \land (P - G)$
+
+$=\vec{a_G} + a_{PG}^{(t)} + a_{PG}^{(n)}$
+
+$\vec{F}_{in} = - \int_V{\rho \vec{a_P} dV} = - \int_V{\rho \vec{a_G} dV} - \int_V{\dot{\vec{w}} \land (P - G) \rho dV} - \int_V{\vec{w} \land \vec{w} \land (P - G) \rho dV}$
+
+$= - \vec{a_G} \int_V{\rho dV} - \cancel{\vec{\dot{w}} \land \int_V{(P - G) \rho dV}} - \cancel{\vec{w} \land \vec{w} \land \int_V{(P - G) \rho dV}}$
+
+### Coppia
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
