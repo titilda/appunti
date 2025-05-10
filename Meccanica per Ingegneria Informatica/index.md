@@ -1042,6 +1042,78 @@ $\begin{cases}
 
 # Capitolo Cinque: Bilancio di Potenze
 
+Ipotesi:
+
+- Vincoli fissi.
+- perfetti: no attrito.
+- bilateri: vincolo da entrambe le direzioni.
+
+!["Vincolo"](assets/capitolo_cinque/vincolo.jpg)
+
+### Teorema dell'energia cinetica
+
+$W = 0$
+
+$W_{att} + W_{in} = 0 \forall t$
+
+![](assets/capitolo_cinque/corpo_rigido.jpg)
+
+$W = \vec{F} \times \vec{v_P}$
+
+$W = F v_P cos(\theta)$
+
+$W = \vec{C} \times \vec{w} = \plusmn Cw$
+
+$\Sigma_i <\vec{F}_i, \vec{v}_{Pi}> + \Sigma_{j=1}^{n_c} (<\vec{F}_{m,J}, \vec{v}_{G,J}> + <\vec{C}_{m,J}, \vec{w}_J>) = 0$
+
+con:
+
+- $W_{att} = \Sigma_i <\vec{F}_i, \vec{v}_{Pi}>$
+- $W_{in} = \Sigma_{j=1}^{n_c} (<\vec{F}_{m,J}, \vec{v}_{G,J}> + <\vec{C}_{m,J}, \vec{w}_J>)$
+
+$\vec{F}_{in} = - m \vec{a}_G$
+
+$\vec{C}_{in} = -J_G \vec{\dot{w}}$
+
+$W_{att} - \Sigma_{j=1}^{n_c} (<\vec{F}_{m,J}, \vec{v}_{G,J}> + <\vec{C}_{m,J}, \vec{w}_J>) = 0$
+
+Si sa che:
+
+$W_{in} = - \frac{dE_c}{dt} \implies W_{att} - \frac{dE_c}{dt} = 0$
+
+**Teorema energia cinetica:** $W_{att} = \frac{dE_c}{dt}$
+
+![](assets/capitolo_cinque/teorema_energia_cinetica.jpg)
+
+$E_c = \frac{1}{2} m v^2 = \frac{1}{2} m \vec{v} \vec{v}$
+
+$E_c = \int_m{\frac{1}{2} \vec{v_P} \vec{v_P} dm} = \int_V{\frac{1}{2} \vec{v_P} \vec{v_P} \rho dV}$
+
+**Rivals:** $\vec{v_P} = \vec{v_G} + \vec{w} \land (P - G)$
+
+$E_c = \frac{1}{2} \int_V{\vec{v_G} \vec{v_G} \rho dV} + \frac{1}{2} \int_V{\vec{v_G} [\vec{w} \land (P - G)] \rho dV} + \frac{1}{2} \int_V{[\vec{w} \land (P - G)] \vec{v_G} \rho dV} + \frac{1}{2} \int_V{w^2 \overline{PG}^2 \rho dV}$
+
+## 5.1 Coulomb attrito statico
+
+![](assets/capitolo_cinque/5.1_coulomb_attrito_statico/esempio.jpg)
+
+Questo è sostanzialmente un ripasso di fisica quindi non ci perdiamo troppo tempo.
+
+$T \leq T_{lim} = f_s N$
+
+$\begin{cases}
+  T_1 = T = F\\
+  N_1 = N = P
+\end{cases}$
+
+## 5.2 Attrito dinamico
+
+![](assets/capitolo_cinque/5.2_attrito_dinamico/esempio.jpg)
+
+![](assets/capitolo_cinque/5.2_attrito_dinamico/scomposizione_forze.jpg)
+
+
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
