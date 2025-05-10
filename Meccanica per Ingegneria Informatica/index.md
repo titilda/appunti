@@ -984,6 +984,64 @@ $= - \vec{a_G} \int_V{\rho dV} - \cancel{\vec{\dot{w}} \land \int_V{(P - G) \rho
 
 ### Coppia
 
+$(P - G) \land \vec{a_P} =  (P - G) \land \vec{a_G} + (P - G) \land \vec{\dot{w}} \land (P - G) + \cancel{(P - G) \land \vec{w} \land \vec{w} \land (P - G)}$
+
+$= (P - G) \land \vec{a_G} + \dot{\vec{w}} \overline{PG^2}$
+
+$\vec{C}_{in} = - \cancel{[\int_V{(P - G) \rho dV}]} \land \vec{a_G} + \dot{\vec{w}} \int_V{\overline{PG^2} \rho dV} = - J_G \dot{\vec{w}}$
+
+$|C_{in}| = J_G |\vec{\dot{w}}|$
+
+### Condizioni equilibrio dinamico
+
+$\begin{cases}
+  \Sigma_i \vec{F}_i - m \vec{a_G} =  \vec{0}\\
+  \Sigma_i(P - O) \land \vec{F}_i + \Sigma_k C_k - (G - O) \land m \vec{a_G} - J_G \vec{\dot{w}} = \vec{0}
+\end{cases}$
+
+### Esempio
+
+!["Trave snella"](assets/capitolo_quattro/4_2_principio_d_alambert/esempio.jpg)
+
+Dati:
+
+- $m = 6 kg$
+- $l = 1 m$
+- $\alpha = 30°$
+- $\dot{\alpha} = 3 rad/s$
+- $\ddot{\alpha} = 1 rad/s$
+
+Incognite:
+
+- $M$
+- $H_o$
+- $V_o$
+
+$1 gdl : \alpha$
+
+!["Studio delle forze"](assets/capitolo_quattro/4_2_principio_d_alambert/esempio_dettaglio.jpg)
+
+$\begin{cases}
+  R_x = 0 \implies H_o - m \ddot{\alpha} \frac{l}{2} cos(\alpha) + m \dot{\alpha^2} \frac{l}{2} sin(\alpha) = 0\\
+  R_y = 0 \implies V_o - mg - m\dot{\alpha^2} \frac{l}{2} cos(\alpha) - m \ddot{\alpha} \frac{l}{2} sin(\alpha) = 0\\
+  \vec{M_o} = 0 \implies M - J_G \ddot{\alpha} - mg \frac{l}{2} sin(\alpha) - m \ddot{\alpha} \frac{l^2}{4} = 0
+ \end{cases}$
+
+ $M = \ddot{\alpha} (J_G + m \frac{l^2}{4}) + m g \frac{l}{2} sin(\alpha) = 16,7 Nm$
+
+ $H_o = m (\ddot{\alpha} \frac{l}{2} cos(\alpha) - \dot{\alpha^2} \frac{l}{2} sin(\alpha)) = -10,9 N$
+
+ $V_o = m (g + \dot{\alpha^2} \frac{l}{2} cos(\alpha) + \ddot{\alpha} \frac{l}{2} sin(\alpha)) = 83,7N$
+
+ ### Sistema corpi rigidi
+
+$\begin{cases}
+  \vec{R_J} = \vec{0} \implies \Sigma_i \vec{F}_{i,J} + \vec{F}_{in,J} = 0\\
+  \vec{M}_{O,J} = \vec{0} \implies \Sigma_i (P_i - O) \land \vec{F}_{i,J} + \Sigma_k \vec{C}_{k,J} + (G_J - O) \land \vec{F}_{in,J} + \vec{C}_{in,J} = 0
+\end{cases}$
+
+# Capitolo Cinque: Bilancio di Potenze
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
