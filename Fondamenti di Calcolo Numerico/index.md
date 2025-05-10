@@ -574,6 +574,26 @@ $$
 x^{(k+1)} = x^{(k)} - m \frac{f(x^{(k)})}{f'(x^{(k)})} \implies \varphi(x) = x - m \frac{f(x)}{f'(x)}
 $$
 
+Il listato di un'implementazione MATLAB di una funzione che trova lo zero di una funzione è riportato di seguito:
+
+```matlab
+function [x, iters] = find_root_newton(f, df, x0, toll)
+    x = x0;
+    iters = 0;
+
+    increment =  toll;
+
+    phi = @(x_) x_ - f(x_)/df(x_);
+
+    while increment >= toll
+        iters = iters + 1;
+        x_new = phi(x);
+        increment = norm(x_new - x);
+        x = x_new;
+    end
+end
+```
+
 ### Metodo delle corde
 
 Il metodo delle corde è un metodo iterativo identificato dalla seguente legge di aggiornamento:
@@ -602,6 +622,28 @@ $$
     b - a \lt \frac{2}{f'(\alpha)}[f(b) - f(a)]
 \end{cases}
 $$
+
+Segue listato di un'implementazione MATLAB di una funzione che trova lo zero di una funzione:
+
+```matlab
+function [x, iters] = find_root_chord(f, a, b, x0, toll)
+    x = x0;
+    iters = 0;
+
+    q = (f(b) - f(a)) / (b - a);
+
+    phi = @(x_) x_ - f(x_)/q;
+
+    increment = toll;
+
+    while increment >= toll
+        iters = iters + 1;
+        x_new = phi(x);
+        increment = norm(x_new - x);
+        x = x_new;
+    end
+end
+```
 
 ### Metodo delle secanti
 
