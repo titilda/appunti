@@ -1112,7 +1112,37 @@ $\begin{cases}
 
 ![](assets/capitolo_cinque/5.2_attrito_dinamico/scomposizione_forze.jpg)
 
+$\begin{cases}
+  \vec{T}_1 = - \vec{T}_2\\
+  \vec{N}_1 = - \vec{N}_2
+\end{cases}$
 
+$\begin{cases}
+  |\vec{T}_1| = |\vec{T}_2| = T\\
+  |\vec{N}_1| = |\vec{N}_2| = N
+\end{cases}$
+
+Nel caso dell'attrito noi sappiamo che se rispetta Coulomb allora l'attrito è statico altrimenti è dinamico, dunque $\implies T \leq T_{lim} = f_s N :$
+
+- OK: Attrito statico.
+- KO: attrito dinamico $\implies$ moto relativo. $N = P$
+
+Con Coulomb $\implies |\vec{T}_1| = T = f_d N$
+
+da fisica sappiamo che: 
+
+$f_d < f_s$
+
+Esempio:
+
+- $f_d \cong 0,1$ acciaio - acciaio.
+- $f_d \cong 0,7$ pneumatico - strada.
+
+$\vec{T}_1 = -f_d N \frac{\vec{v}_{12}}{|\vec{v}_{12}|}$
+
+$\vec{T}_2 = -f_d N \frac{\vec{v}_{21}}{|\vec{v}_{21}|} = f_d N \frac{\vec{v}_{12}}{|\vec{v}_{12}|}$
+
+**FATAL ERROR: Orientare ben l'attrito**
 
 # Capitolo Fatal Error
 
@@ -1120,3 +1150,4 @@ Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono
 
 - **La velocità è SEMPRE tangente alla traiettoria.**
 - **L'accelerazione è SEMPRE composta da $\vec{a} = a_t \vec{t} + a_n \vec{n}$ quindi da accelerazione tangenziale e normale, solo in certi casi una delle due componenti si annulla.**
+- **Orientare ben l'attrito**
