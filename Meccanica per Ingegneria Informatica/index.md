@@ -1142,7 +1142,152 @@ $\vec{T}_1 = -f_d N \frac{\vec{v}_{12}}{|\vec{v}_{12}|}$
 
 $\vec{T}_2 = -f_d N \frac{\vec{v}_{21}}{|\vec{v}_{21}|} = f_d N \frac{\vec{v}_{12}}{|\vec{v}_{12}|}$
 
-**FATAL ERROR: Orientare ben l'attrito**
+#### **FATAL ERROR: Orientare ben l'attrito**
+
+Nel modello teorico di Coulomb la transizione da $f_s$ a $f_d$ è istantanea, nella realtà non è così, ma la velocità di transizione è talmente alta che possiamo fare questa assunzione.
+
+!["Grafico di transizione"](assets/capitolo_cinque/5.2_attrito_dinamico/grafico.jpg)
+
+### Potenza attrito dinamico
+
+$P = <\vec{T}_1, \vec{v}_1> + <\vec{T}_2, \vec{v}_2> + \cancel{<\vec{N}_1, \vec{v}_1>} + \cancel{<\vec{N}_2, \vec{v}_2>}$
+
+$= <\vec{T}_1, (\vec{v}_1 - \vec{v}_2)> = <- f_d N \frac{\vec{v}_{12}}{|\vec{v}_{12}|}, \vec{v}_{12}> = -f_d N |\vec{v}_{12}| = P_d < 0$
+
+Si sa che la potenza dell'attrito dinamico è **SEMPRE** negativa.
+
+L'attrito dissipa sempre, in attrito statico non dissipa e produce nulla.
+
+#### **FATAL ERROR: L'attrito dinamico dissipa sempre potenza, $P_d < 0$**
+
+#### **FATAL ERROR: L'attrito statico ha $P_s = 0$**
+
+## 5.3 Resistenza al rotolamento
+
+![](assets/capitolo_cinque/5.3_resistenza_al_rotolamento/resistenza_al_rotolamento.jpg)
+
+Ipotesi:
+
+- Puro rotolamento
+
+$\vec{v}_c = \vec{0} \implies c \equiv CIR \implies 1gdl: \theta (o\ x) \implies v = Rw$
+
+$\implies$ attrito statico $\implies T \leq T_{lim} = f_s N$
+
+$P = P_d = \cancel{<\vec{T}, \vec{v}_c>} + \cancel{<\vec{N}, \vec{v}_c>} = 0$
+
+![](assets/capitolo_cinque/5.3_resistenza_al_rotolamento/scomposizione.jpg)
+
+Ma cosa accade nella realtà ? Vediamo meglio:
+
+![](assets/capitolo_cinque/5.3_resistenza_al_rotolamento/visuale_semi-reale.jpg)
+
+Quando si è in statica si crea una deformazione che crea un area di contatto, simmetrica.
+
+Ora vediamo cosa succede quando il corpo cerca di muoversi.
+
+![](assets/capitolo_cinque/5.3_resistenza_al_rotolamento/visuale_reale.jpg)
+
+Quando il corpo si muove la simmetria si sposta.
+
+![](assets/capitolo_cinque/5.3_resistenza_al_rotolamento/esempio.jpg)
+
+Questo disassamento crea una forza chiamata, **Forza di resistenza al rotolamento.**
+
+$P = P_d = \cancel{<\vec{T}, \vec{v}_c>} + \cancel{<\vec{N}, \vec{v}_c>} + <\vec{C}_r, \vec{w}> = -C_r w = - N u w < 0$ sempre.
+
+Sempre puro rotolamento ma più realistico, il corpo rigido ha la reazione vincolare disallineata rispetto a $c$ di $u$.
+
+Anche nel caso di resistenza al rotolamento viene dato un coefficiente di attrito, chiamato **coefficiente di attrito volvente:** $f_v = \frac{u}{R}$
+
+N.B. l'attrito volvente **NON** esiste, è sempre attrito statico.
+
+$f_v \cong 0,01$ pneumatico - strada.
+
+$f_v \cong 0,001$ acciaio - acciaio.
+
+$f_v$ dipende dalla deformabilità del corpo.
+
+![](assets/capitolo_cinque/5.3_resistenza_al_rotolamento/esempio_puro_rotolamento.jpg)
+
+Ipotesi:
+
+- Puro rotolamento
+
+$T \leq T_{lim} = f_s N:$
+
+- Nel caso di puro rotolamento
+
+$C \equiv CIR$
+
+$v = wR$
+
+$P_d = <\vec{C}_r, \vec{w}>$
+
+Attrito statico
+
+- Nel caso di strisciamento (rompiamo Coulomb)
+
+$v_c \not ={0}$
+
+$T = - f_d N \frac{\vec{v}_c}{|\vec{v}_c|}$
+
+$P_d = <\vec{T}, \vec{v}_c> \not ={0} (<0)$
+
+L'attrito volvente è talmente piccolo da essere trascurabile.
+
+### Esempio
+
+![](assets/capitolo_cinque/5.3_resistenza_al_rotolamento/esmpio_2.jpg)
+
+![](assets/capitolo_cinque/5.3_resistenza_al_rotolamento/esempio_scomposizione_forze.jpg)
+
+$\begin{cases}
+  v = wR\\
+  a = \dot{w}R
+\end{cases}$
+
+$\begin{cases}
+  T = ma\\
+  N = P + mg\\
+  C_m - C_R - J \dot{w} - maR = 0
+\end{cases}$
+
+$(J + mR^2) \dot{w} = C_m - C_r = C_m - Nu$
+
+$T \leq T_{lim} = f_s N$
+
+$ma \leq f_s (P + mg)$
+
+$T = - f_d N \frac{\vec{v}_c}{|\vec{v}_c|}$
+
+$2gdl: w, v$
+
+Punto della situzione:
+
+Ad ora sapevamo che:
+
+Lavoravamo con vincoli fissi, perfetti e bilateri.
+
+BdP: $P_{att} + P_{in} = 0$
+
+Teorema $E_c: P_{att} = \frac{dE_c}{dt}$
+
+Ma con l'attrito non abbiamo più la perfezione dei vincoli, quindi:
+
+Con vincoli fissi e bilateri.
+
+BdP: $P_{att} + P_d + P_{in} = 0 \forall t$
+
+Teorema $E_c: P_{att} + P_d = \frac{dE_c}{dt} \forall t$
+
+#### **FATAL ERROR: $T = f_v N$**
+
+#### **FATAL ERROR: $T \leq f_v N$**
+
+#### **FATAL ERROR: $T = f_d N v$**
+
+#### **FATAL ERROR: $T = f_d N v_{12}$**
 
 # Capitolo Fatal Error
 
@@ -1151,3 +1296,9 @@ Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono
 - **La velocità è SEMPRE tangente alla traiettoria.**
 - **L'accelerazione è SEMPRE composta da $\vec{a} = a_t \vec{t} + a_n \vec{n}$ quindi da accelerazione tangenziale e normale, solo in certi casi una delle due componenti si annulla.**
 - **Orientare ben l'attrito**
+- **L'attrito dinamico dissipa sempre potenza, $P_d < 0$**
+- **L'attrito statico ha $P_s = 0$**
+- $T = f_v N$
+- $T \leq f_v N$
+- $T = f_d N v$
+- $T = f_d N v_{12}$
