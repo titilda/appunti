@@ -657,6 +657,29 @@ Questo metodo necessita, oltre di $x^{(0)}$, anche di $x^{(-1)}$.
 
 Questo metodo non può essere visto come metodo di punto fisso perchè $x^{(k+1)}$ non dipende solo da $x^{(k)}$ ma anche da $x^{(k-1)}$.
 
+Di seguito viene riportata una possibile implementazione MATLAB del metodo delle secanti:
+
+```matlab
+function [x, iters] = find_root_secant(f, x0, x_prec, toll)
+    xs = [x_prec; x0];
+
+    iters = 0;
+
+    while abs(f(xs(2))) >= toll
+        iters = iters + 1;
+
+        disp(f(xs(2)));
+
+        xs = [
+            xs(2);
+            xs(2) - (xs(2) - xs(1)) * f(xs(2)) / (f(xs(2)) - f(xs(1)));
+        ];
+    end
+
+    x = xs(2);
+end
+```
+
 ### Metodo di Newton per sistemi non lineari
 
 Siano $x = [x_1, x_2, \dots, x_n]^T$ e
