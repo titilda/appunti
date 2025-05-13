@@ -802,6 +802,8 @@ Nella formula precedente, il denominatore e l'esponenziazione di $h$ tendono a m
 
 Il fenomeno di Runge consiste in ampie oscillazioni nel valore della funzione interpolante verso gli estremi del dominio. Per risolvere questo problema si può utilizzare l'**interpolatore lagrangiano composito** o l'**interpolazione con ubicazione specifica dei nodi**.
 
+Per trovare il polinomio interpolatore in MATLAB, si usa la funzione `polyfit`.
+
 ## Interpolazione Lagrangiana composita
 
 La differenza fondamentale tra l'interpolazione lagrangiana e l'interpolazione lagrangiana composita è che mentre la prima interpola su tutto il dominio ottenendo una sola funzione interpolante, la seconda interpola su piccoli sottodomini che contengono ciascuno $k+1$ nodi e di lunghezza $H = kh$ dove $h$ è la distanza tra due nodi.
@@ -811,6 +813,53 @@ L'interpolatore globale composto dai piccoli interpolatori è denotato con $\Pi_
 I piccoli interpolatori non sono mai di grado superiore al 3 e questo ne garantisce la convergenza.
 
 L'interpolatore globale perde in regolarità (la derivata non è continua in corrispondenza delle _giunture_ tra interpolatori piccoli) rispetto all'interpolatore di Lagrange.
+
+In MATLAB, si può implementare l'interpolazione Lagrangiana composita come segue:
+
+```matlab
+function [f_approx] = composite_polyfit(f, xs, H, k)
+    nodes_x = (xs(1):H/k:xs(end))';
+    nodes_y = f(nodes_x);
+
+    f_approx = zeros(length(xs), 1);
+
+    for j = 1:k:length(nodes_x)-k
+        p = polyfit(nodes_x(j:j+k), nodes_y(j:j+k), k);
+        subset = (nodes_x(j) <= xs) & (xs <= nodes_x(j+k));
+        xx_subset = xs(subset);
+        f_approx(subset) = polyval(p, xx_subset);
+    end
+end
+```
+
+<!--
+Nota per il futuro: questo codice è quasi 1:1 di parte di quello usato per la mia soluzione del "progetto 2".
+E' la funzione qui sopra che è presa dal progetto, non il contrario (vorrei far notare che la data del commit è 13/05 a circa le 22:15, ovvero circa 34 ore DOPO la chiusura delle consegne).
+-->
+
+Dato che i parametri di questa funzione possono risultare non immediatamente chiari, si riporta che `f` è la funzione da approssimare e che `xs` è il vettore di valori nei quali valutare sia `f` che la sua approssimazione. `H` e `k`, invece, mantengono lo stesso significato visto nei paragrafi precedenti.
+
+Col seguente script si decide di confrontare il valore di una funzione $f$ con la sua interpolazione Lagrangiana composita:
+
+```matlab
+xs = (0:1e-5:10)';
+
+f = @(x) exp(3 * x) ./ (log(x) + x);
+g = @(x) composite_polyfit(f, xs, 0.1, 3);
+
+subplot(3, 1, 1);
+plot(xs, f(xs));
+
+subplot(3, 1, 2);
+plot(xs, g(xs));
+
+subplot(3, 1, 3);
+plot(xs, abs(g(xs) - f(xs)));
+```
+
+Vengono riportati anche i grafici prodotti dallo script precedente:
+
+![**La funzione `f` (riga 1), la sua approssimazione (riga 2) e l'errore (riga 3)** <br /> Si noti la differenza di ben 5 ordini di grandezza tra i valori della funzione e l'errore.](./assets/composite_polyfit.svg)
 
 ## Interpolazione con ubicazione specifica dei nodi
 
