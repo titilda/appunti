@@ -944,7 +944,7 @@ $$
 E_H = |I(f) - I_H(f)| = 0 \quad \forall f \in \mathbb{P}^r (a, b)
 $$
 
-Dei tre metodi visti, esistono sia la versione _composita_ (analizzate di seguito) che quella _semplice_ (ottenuta ottenuta utilizzando l'intero intervallo invece che tanti intervallini). 
+Dei tre metodi visti, esistono sia la versione _composita_ (analizzate di seguito) che quella _semplice_ (ottenuta ottenuta utilizzando l'intero intervallo invece che tanti intervallini).
 
 ## Formula del punto medio composita
 
@@ -962,12 +962,14 @@ $$
 
 da cui deriva chela formula del punto medio ha grado di esattezza pari a 1.
 
+Sia `f` una funzione, allora è possibile calcolarne l'integrale in MATLAB con la formula del punto medio composita come `I = H * sum(f((xs(1:end-1) + xs(2:end)) / 2))`.
+
 ## Formula dei trapezi composita
 
 La formula dei trapezi composita si basa sull'approssimazione dell'area sottesa dalla curva come somma di trapezi:
 
 $$
-I_{tr}(f) = \frac{H}{2} \sum_{k=1}^M \left( f(x_{k-1} + f(x_k)) \right) = \frac{H}{2} \left( f(a) + f(b) \right) + H \sum_{k=1}^{M-1}f(x_k) = \int_a^b \Pi_1^Hf(x)dx
+I_{tr}(f) = \frac{H}{2} \sum_{k=1}^M \left( f(x_{k-1}) + f(x_k) \right) = \frac{H}{2} \left( f(a) + f(b) \right) + H \sum_{k=1}^{M-1}f(x_k) = \int_a^b \Pi_1^Hf(x)dx
 $$
 
 L'integrale dell'ultimo passaggio è calcolabile in maniera esatta anche numericamente.
@@ -980,9 +982,11 @@ $$
 
 da cui deriva che la formula dei trapezi composita ha grado di esattezza pari a 1.
 
+Sia `f` una funzione, allora è possibile calcolarne l'integrale in MATLAB con la formula dei trapezi composita come `I = sum(f(xs(1:end-1)) + f(xs(2:end))) / 2 * H`.
+
 ## Formula di Simpson composita
 
-La formula di Simpson composita è l'equivalente della formula dei trapezi composita che utilizza l'interpolatore Lagrangiano composito di grado 2 invece che di garado 1:
+La formula di Simpson composita è l'equivalente della formula dei trapezi composita che utilizza l'interpolatore Lagrangiano composito di grado 2 invece che di grado 1:
 
 $$
 I_{sim}(f) = \frac{H}{6} \sum_{k=1}^M \left( f(x_{k-1}) + 4f(\bar x_k) + f(x_k) \right) = \int_a^b \Pi_2^Hf(x)dx \qquad \bar x_k = \frac{x_{k-1} + x_k}{2}
@@ -995,6 +999,8 @@ $$
 $$
 
 da cui deriva che la formula di Simpson composita ha grado di esattezza pari a 3.
+
+Sia `f` una funzione, allora è possibile calcolarne l'integrale in MATLAB con la formula di simpson composita come `I = H / 6 * sum(f(xs(1:end-1) + f(xs(2:end) + f((xs(1:end-1) + xs(2:end))/2))))`.
 
 # Appendice
 
