@@ -169,7 +169,7 @@ $$
 
 Complessivamente, calcolare la fattorizzazione LU di una matrice e risolvere il sistema equivalente con le due passate di sostituzioni è _molto_ più veloce dell'utilizzo del metodo di Cramer (con Cholesky la velocità di fattorizzazione raddoppia).
 
-In MATLAB è possibile definire le funzioni di `sostituzione_avanti` e `sostituzione_indietro` come segue:
+In MATLAB è possibile definire le funzioni di sostituzione in avanti e sotituzione all'indietro come segue:
 
 ```matlab
 function [x] = forward_sub(L, b)
