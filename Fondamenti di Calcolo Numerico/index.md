@@ -1141,7 +1141,7 @@ $$
 v(t_{n+1}) - v(t_{n-1}) = 2hv'(t_n) + \frac{h^3}{3}v'''(t_n) + O(h^3)
 $$
 
-da cui, isolando $v'(t_n)$ si deduce la tesi.
+da cui, isolando $v'(t_n)$, si deduce la tesi.
 
 ## Funzioni MATLAB
 
