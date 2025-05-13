@@ -1002,9 +1002,43 @@ da cui deriva che la formula di Simpson composita ha grado di esattezza pari a 3
 
 Sia `f` una funzione, allora è possibile calcolarne l'integrale in MATLAB con la formula di simpson composita come `I = H / 6 * sum(f(xs(1:end-1) + f(xs(2:end) + f((xs(1:end-1) + xs(2:end))/2))))`.
 
+# Approssimazione di derivate
+
+Esistono tre modi principali di appsorrimare una derivata e sono tutti e tre abbastanza intuitivi: il **metodo delle differenze in avanti**, il **metodo delle differenze all'indietro** e il **metodo dell'approssimazione centrata**. Tutti e tre, alla fine, sono riconducibili ad una rielaborazione di un rapporto incrementale.
+
+Nelle definizioni seguenti, si considererà $\tilde T = \{t_n | i = 1, \dots, N; \ t_i - t_{i-1} = h \ \forall i = 2, \dots, N\}$.
+
+Sia $v : \tilde T \to \mathbb{R}^n$ una funzione, allora la sua derivata approssimata con il metodo delle differenze in avanti è denotata con $D^+v(t_n)$ e si calcola come
+
+$$
+D^+v(t_n) = \frac{v(t_{n+1}) - v(t_n)}{h}
+$$
+
+Sia $v : \tilde T \to \mathbb{R}^n$ una funzione, allora la sua derivata approssimata con il metodo delle differenze all'indietro è denotata con $D^-v(t_n)$ e si calcola come
+
+$$
+D^-v(t_n) = \frac{v(t_n) - v(t_{n-1})}{h}
+$$
+
+Sia $v : \tilde T \to \mathbb{R}^n$ una funzione, allora la sua derivata approssimata con il metodo dell'approssimazione centrata è denotata con $D^cv(t_n)$ e si calcola come
+
+$$
+D^cv(t_n) = \frac{v(t_{n+1}) - v(t_{n-1})}{2h}
+$$
+
+La tabella seguente mostra, per ogni tipologia di approssimazione, il loro errore:
+
+| Approssimazione          | Errore  |
+| ------------------------ | ------- |
+| Differenze in avanti     | $O(h)$  |
+| Differenze in indietro   | $O(h)$  |
+| Approssimazione centrata | $O(2h)$ |
+
+La dimostrazione, per ciascuna riga della tabella, è presente nell'[appendice](#dimostrazioni).
+
 # Appendice
 
-## Richiami di algebra lineare
+## Richiami di algebra lineare ed analisi
 
 In questa sezione verranno ripresi concetti di algebra lineare necessari per la comprensione di quanto scritto nelle sezioni precedenti.
 
@@ -1050,6 +1084,60 @@ Siano $x, y \in \mathbb R^n$ allora
 - per la triangolare vale che $\| x + y \| \le \| x \| + \| y \|$.
 
 Entrambe valgono per qualsiasi norma.
+
+### Problema di Cauchy
+
+Risolvere un problema di Cauchy consiste nel trovare una funzione $y : I \subseteq \mathbb R \to \mathbb{R}^n$ tale che
+
+$$
+\begin{cases}
+    y'(t) = f(t, y(t)) \\
+    y(t_0) = y_0
+\end{cases}
+$$
+
+con $t_0$ e  $y_0$ dati e $f : I \times \mathbb{R}^n \to \mathbb{R}^n$.
+
+Sia $f$ continua e limitata rispetto ad entrambi gli argomenti e lipschitziana rispetto al secondo, allora la soluzione $y$ esiste ed è unica ed inoltre $y \in \mathcal{C}^1(I)$.
+
+## Dimostrazioni
+
+### Approssimazione di derivate
+
+Di seguito viene dimostrato che l'errore dell'approssimazione di derivate tramite il metodo delle differenze in avanti è un O-grande di $h$ (il procedimento è analogo per il metodo delle differenze all'indietro).
+
+Siano $\tilde T = \{t_n | i = 1, \dots, N; \ t_i - t_{i-1} = h \ \forall i = 2, \dots, N\}$ e $v : \tilde T \to \mathbb{R}^n$.
+
+$$
+v(t_{n+1}) = v(t_n) + hv'(t_n) + \frac{h^2}{2}v''(t_n) + \frac{h^3}{6}v'''(t_n) + O(h^3)
+$$
+
+Dalla formula precedente deriva che
+
+$$
+v'(t_n) = \frac{v(t_{n+1}) - v(t_n)}{h} \underbrace{- \frac{h^2}{2}v''(t_n) - \frac{h^3}{6}v'''(t_n) + O(h^3)}_{O(h)}
+$$
+
+Da cui la tesi.
+
+Per l'approssimazione centrata, il procedimento è simile ma con un passaggio in più.
+
+Sapendo che
+
+$$
+\begin{cases}
+    v(t_{n+1}) = v(t_n) + hv'(t_n) + \frac{h^2}{2}v''(t_n) + \frac{h^3}{6}v'''(t_n) + O(h^3) \\
+    v(t_{n-1}) = v(t_n) - hv'(t_n) + \frac{h^2}{2}v''(t_n) - \frac{h^3}{6}v'''(t_n) + O(h^3)
+\end{cases}
+$$
+
+allora si può calcolare
+
+$$
+v(t_{n+1}) - v(t_{n-1}) = 2hv'(t_n) + \frac{h^3}{3}v'''(t_n) + O(h^3)
+$$
+
+da cui, isolando $v'(t_n)$ si deduce la tesi.
 
 ## Funzioni MATLAB
 
