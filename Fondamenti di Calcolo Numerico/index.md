@@ -784,7 +784,7 @@ $$
 
 Per convenzione, un polinomio interpolatore è indicato da $\Pi_n(x)$ (se $y_i = f(x_i)$ si può scrivere anche $\Pi_nf(x)$).
 
-Anche qui dimostriamo l'unicità di $\Pi_n(x)$ (e la conseguente equivalenza tra l'interpolazione lagrangiana e quella polinomiale): sia $\Psi_n(x)$ un polinomio interpolante di grado $n$ e $D(x) = \Pi_n(x) - \Psi_n(x)$, anch'esso di grado $n$. $\forall i = 0, \dots, n$ vale che $D(x_i) = \Pi_n(x_i) - \Psi_n(x_i) = 0$. Questo significa che $D$ ha almeno $n+1$ radici ma essendo di grado $n$ allora per forza vale che $D \equiv 0$ da cui $\Pi_n(x) = \Psi_n(x)$.
+La dimostrazione dell'unicità di $\Pi_n(x)$ (e della conseguente equivalenza tra l'interpolazione Lagrangiana e quella polinomiale) è presente nell [appendice](#appendice).
 
 Sia $I$ un intervallo limitato e si considerino $n+1$ nodi di interpolazione distinti $x_i \in I$. Sia $f \in \mathcal C^{n+1}(I)$ allora $\forall x \in I, \exists \xi_i \in I$ tale che
 
@@ -1102,7 +1102,11 @@ Sia $f$ continua e limitata rispetto ad entrambi gli argomenti e lipschitziana r
 
 ## Dimostrazioni
 
-### Approssimazione di derivate
+### Unicità del polinomio interpolatore
+
+sia $\Psi_n(x)$ un polinomio interpolante di grado $n$ e $D(x) = \Pi_n(x) - \Psi_n(x)$, anch'esso di grado $n$.$\forall i = 0, \dots, n$ vale che $D(x_i) = \Pi_n(x_i) - \Psi_n(x_i) = 0$.Questo significa che $D$ ha almeno $n+1$ radici ma essendo di grado $n$ allora per forza vale che $D \equiv 0$ da cui $\Pi_n(x) = \Psi_n(x)$.
+
+### Errore di approssimazione di derivate
 
 Di seguito viene dimostrato che l'errore dell'approssimazione di derivate tramite il metodo delle differenze in avanti è un O-grande di $h$ (il procedimento è analogo per il metodo delle differenze all'indietro).
 
