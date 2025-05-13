@@ -1295,6 +1295,93 @@ Teorema $E_c: P_{att} + P_d = \frac{dE_c}{dt} \forall t$
 
 Sistema meccanico che preleva energia per compiere un lavoro utile.
 
+**Macchina (MTU)** composta da:
+
+- Motore: produce potenza meccanica.
+- Trasmissione: rende possibile il trasferimento di potenza da uno all'altro.
+- Utilizzatore: usa la potenza prodotta dal motore.
+
+Noi studiamo macchine a $1\ gdl : w_m = \frac{d \theta_m}{dt} \implies$ velocità angolare del motore.
+
+Jacobiamo: $\mathbb{J} = \frac{v}{w_m}$
+
+Teorema $E_c : \Sigma P = \frac{dE_c}{dt}$
+
+Nelle macchine MTU a $1\ gdl$ è meglio non fare la sommatoria unica ma far vedere il contributo di ogni componente:
+
+$P_m + P_u + P_p = \frac{d}{dt}(E_{c_m} + E_{c_u} + E_{c_T})$
+
+- $P_m :$ Motore.
+- $P_u :$ Utilizzatore
+- $P_p :$ potenza dissipata per attrito da trasmissione $(<0)$ sempre.
+- $E_{c_T} :$ trascurabile perché molto piccolo.
+
+$P_m + P_u + P_p = \frac{d}{dt}(E_{c_m} + E_{c_u})$
+
+## 6.1 Motore
+
+Noi studieremo 3 motori:
+
+- Combustione interna.
+- Elettrici:
+  - Continua.
+  - Alternata.
+
+![](assets/capitolo_sei/6.1_motore/schematizzazione_motore.jpg)
+
+$C_m :$ coppia ridotta all'albero motore.
+
+$P_m = \vec{C}_m \times \vec{w}_m = \Sigma_i \vec{F}_i \times \vec{v}_i + \Sigma_j \vec{C}_j \times \vec{w}_j = (\Sigma_i \vec{F}_i \mathbb{J}_{v_i} + \Sigma_j \vec{C}_j \mathbb{J}_{w_j}) \times \vec{w}_m$
+
+$\vec{v} = \mathbb{J}_{v_i} \vec{w}_m$
+
+$\vec{w} = \mathbb{J}_{w_j} \vec{w}_m$
+
+Volàno equivalente $J_m$
+
+$E_{c_m} = \frac{1}{2} J_m w_m^2 = \frac{1}{2} \Sigma_{i = 1}^{n_c} (m_i v_{G_i}^2 + J_{G_i} w_i^2)$
+
+$= \frac{1}{2} \Sigma_{i = 1}^{n_c} (m_i \mathbb{J}_{v_{G_i}}^2 + J_{G_i} \mathbb{J}_{w_i}^2) w_m^2$
+
+$\begin{cases}
+  C_m = C_m (w_m): \text{funzione in funzione di}\ w_m\\
+  J_m = \text{cost}
+\end{cases}$
+
+questo di solito, in altri casi si può trovare
+
+$\begin{cases}
+  C_m = C_m (w_m, \theta_m)\\
+  J_m = J_m (\theta_m)
+\end{cases}$
+
+questa si chiama **macchina a regime periodico** (es. macchina a combustione).
+
+$\dot{c} = \mathbb{J} (\theta_m) w_m:$ velocità pistone.
+
+Trascuriamo sempre $\theta_m$, ma consideriamo sola la **curva caratteristica del motore.**
+
+## 6.2 Curva caratteristica del motore
+
+Legame che mette in relazione $C_m$ con $w_m$, in condizioni di regime.
+
+Condizioni di regime:
+
+- $w_m =$ const.
+- $\dot{w}_m = 0$
+
+### Motore a combustione interna
+
+![](assets/capitolo_sei/6.2_curva_caratteristica_del_motore/grafico_motore_a_combustione_interna.jpg)
+
+$w_{min} =$ il motore si ferma sotto $w_{min}$.
+
+$w_{max} =$ il motore va fuorigiri sopra $w_{max}$.
+
+$C_m (\overline{w_m}) = \gamma C_{max} (\overline{w_m}) + (1 - \gamma) C_{min} (\overline{w_m})$
+
+### Motore a corrente continua
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
