@@ -1289,6 +1289,12 @@ Teorema $E_c: P_{att} + P_d = \frac{dE_c}{dt} \forall t$
 
 #### **FATAL ERROR: $T = f_d N v_{12}$**
 
+# Capitolo Sei: La Macchina
+
+### Definizione
+
+Sistema meccanico che preleva energia per compiere un lavoro utile.
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
