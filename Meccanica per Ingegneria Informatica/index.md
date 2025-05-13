@@ -1382,6 +1382,53 @@ $C_m (\overline{w_m}) = \gamma C_{max} (\overline{w_m}) + (1 - \gamma) C_{min} (
 
 ### Motore a corrente continua
 
+![](assets/capitolo_sei/6.2_curva_caratteristica_del_motore/circuito_motore_elettrico_continua.jpg)
+
+$\begin{cases}
+  V_a = R_a i_a + e \ \text{Kirchoff}\\
+  e = k_\phi w_m\ \text{Faraday}\\
+  C_m = k_\phi i_a \ \text{Lorenz}
+\end{cases}$
+
+- $e =$ f.e.m.
+- $k_\phi =$ capacità caratteristica del motore.
+
+$i_a = \frac{V_a - k_\phi w_m}{R_a}$
+
+$C_m = \frac{k_\phi V_a - k_\phi^2 w_m}{R_a}$
+
+![](assets/capitolo_sei/6.2_curva_caratteristica_del_motore/grafico_motore_corrente_continua.jpg)
+
+### Motore a corrente alternata
+
+![](assets/capitolo_sei/6.2_curva_caratteristica_del_motore/grafico_motore_corrente_alternata.jpg)
+
+## 6.3 Utilizzatore
+
+![](assets/capitolo_sei/6.3_utilizzatore/schematizzazione_utilizzatore.jpg)
+
+$P_u = \vec{C}_u \times \vec{w}_u$
+
+$E_{c_u} = \frac{1}{2} J_u w_u^2$
+
+Come per il motere si ha che: $C_u = C_u (w_u)$
+
+### Sollevatore
+
+![](assets/capitolo_sei/6.3_utilizzatore/grafico_sollevatore.jpg)
+
+### Compressore
+
+![](assets/capitolo_sei/6.3_utilizzatore/grafico_compressore.jpg)
+
+### Compressore e Sollevatore
+
+![](assets/capitolo_sei/6.3_utilizzatore/grafico_compressore_sollevatore.jpg)
+
+Al momento quello che abbiamo è uno schema della macchina MTU incompleta in cui M e U sono schematizzati come alberi con un Volàno con $J_u$ e $J_m$.
+
+!["Schema macchina MTU incompleto"](assets/capitolo_sei/6.3_utilizzatore/grafico_macchina_MTU_incompleto.jpg)
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
