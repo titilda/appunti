@@ -1036,6 +1036,92 @@ La tabella seguente mostra, per ogni tipologia di approssimazione, il loro error
 
 La dimostrazione, per ciascuna riga della tabella, è presente nell'[appendice](#dimostrazioni).
 
+# Risoluzione di equazioni differenziali (problemi di Cauchy)
+
+Per ciascuno dei tre metodi appena visti per approssimare derivate, esiste un metodo corrispondente per la risoluzione di equazioni differenziali.
+
+## Metodo di Eulero in avanti
+
+Sia data l'equazione $y'(t_n) = f(t_n, y(t_n))$ e sia $u_n$ la successione numerica che approssima la soluzione, allora si può scrivere che
+
+$$
+D^+y(t_n) = \frac{y(t_{n+1}) - y(t_n)}{h} \simeq f(t_n, y(t_n))
+$$
+
+da cui 
+
+$$
+\frac{u_{n+1} - u_n}{h} = f(t_n, u_n)
+$$
+
+da cui si deriva il passo ricorsivo per l'applicazione del metodo di Eulero in avanti:
+
+$$
+u_{n+1} = u_n + hf(t_n, u_n)
+$$
+
+Dato che la conoscenza della soluzione al tempo $t_n$ permette di calcolare direttamente la soluzione all'istante successivo, il metodo di Eulero in avanti è detto _esplicito_.
+
+## Metodo di Eulero all'indietro
+
+Analogamente al metodo precedente, sia data l'equazione $y'(t_{n+1}) = f(t_{n+1}, y(t_{n+1}))$ e sia $u_n$ la successione numerica che approssima la soluzione, allora si può scrivere che
+
+$$
+D^-y(t_{n+1}) = \frac{y(t_{n+1}) - y(t_n)}{h} \simeq f(t_{n+1}, y(t_{n+1}))
+$$
+
+da cui
+
+$$
+\frac{u_{n+1} - u_n}{h} = f(t_{n+1}, u_{n+1})
+$$
+
+da cui si deriva il passo ricorsivo per l'applicazione del metodo di Eulero all'indietro:
+
+$$
+u_{n+1} = u_n + hf(t_{n+1}, u_{n+1})
+$$
+
+Dato che non è possibile, data la soluzione al tempo $t_n$, calcolare la soluzione all'istante successivo senza prima risolvere un'equazione, non necessariamente lineare, il metodo di Eulero all'indietro è detto _implicito_.
+
+## Approssimazione tramite differenze centrate
+
+Analogamente ai metodi precedenti, sia data l'equazione $y'(t_{n+1}) = f(t_{n+1}, y(t_{n+1}))$ e sia $u_n$ la successione numerica che approssima la soluzione, allora si può scrivere che
+
+$$
+D^cy(t_n) = \frac{y(t_{n+1}) - y(t_{n-1})}{2h} \simeq f(t_n, y(t_n))
+$$
+
+da cui
+
+$$
+\frac{u_{n+1} - u_{n-1}}{2h} = f(t_n, u_n)
+$$
+
+da cui si deriva il passo ricorsivo per l'applicazione del metodo di approssimazione tramite differenze centrate:
+
+$$
+u_{n+1} = u_{n-1} + 2hf(t_n, u_n)
+$$
+
+La particolarità di questo metodo è che non serve conoscese solo la condizione iniziale $u_0 = y(t_0) = y_0$ ma serve anche calcolare $u_1$ col metodo di Eulero in avanti. Dopo aver calcolato $u_1$, il metodo è _esplicito_.
+
+Questo metodo può anche essere derivato in un altro modo: sia dato un generico problema di Cauchy, allora si può scrivere che
+
+$$
+y(t) = y(t_0) + \int_{t_0}^t f(s, y(s)) ds
+$$
+
+Questa equazione, che prende il nome di **Equazione di Volterra**, è risolvibile attraverso uno qualsiasi dei [metodi di quadratura](#integrazione-numerica) visti precedentemente.
+
+Sia $t = 2h$, allora l'intervallo d'integrazione è $[t_0, t_2 = t_0 + 2_h]$ (con $t_1 = t_0 + h$). Utilizzando la [formula del punto medio](#formula-del-punto-medio-composita) si ottiene che
+
+$$
+y(2h) \simeq u_2 = u_0 + 2hf(t_1, u_1)
+$$
+
+e vale in generale.
+
 # Appendice
 
 ## Richiami di algebra lineare ed analisi
