@@ -1004,7 +1004,7 @@ Sia `f` una funzione, allora è possibile calcolarne l'integrale in MATLAB con l
 
 # Approssimazione di derivate
 
-Esistono tre modi principali di appsorrimare una derivata e sono tutti e tre abbastanza intuitivi: il **metodo delle differenze in avanti**, il **metodo delle differenze all'indietro** e il **metodo dell'approssimazione centrata**. Tutti e tre, alla fine, sono riconducibili ad una rielaborazione di un rapporto incrementale.
+Esistono cinque modi principali di approssimare una derivata e sono tutti e cinque abbastanza intuitivi: il **metodo delle differenze in avanti**, il **metodo delle differenze all'indietro**, il **metodo dell'approssimazione centrata**, il **metodi di Crank-Nicolson** ed il **metodo di Heun**. Tutti e cinque, alla fine, sono riconducibili ad una rielaborazione di un rapporto incrementale o alla soluzione dell'equzione di volterra tramite formula di quadratura.
 
 Nelle definizioni seguenti, si considererà $\tilde T = \{t_n | i = 1, \dots, N; \ t_i - t_{i-1} = h \ \forall i = 2, \dots, N\}$.
 
@@ -1028,11 +1028,11 @@ $$
 
 La tabella seguente mostra, per ogni tipologia di approssimazione, il loro errore:
 
-| Approssimazione          | Errore  |
-| ------------------------ | ------- |
-| Differenze in avanti     | $O(h)$  |
-| Differenze in indietro   | $O(h)$  |
-| Approssimazione centrata | $O(2h)$ |
+| Approssimazione          | Errore   |
+| ------------------------ | -------- |
+| Differenze in avanti     | $O(h)$   |
+| Differenze in indietro   | $O(h)$   |
+| Approssimazione centrata | $O(h^2)$ |
 
 La dimostrazione, per ciascuna riga della tabella, è presente nell'[appendice](#dimostrazioni).
 
@@ -1106,21 +1106,126 @@ $$
 
 La particolarità di questo metodo è che non serve conoscese solo la condizione iniziale $u_0 = y(t_0) = y_0$ ma serve anche calcolare $u_1$ col metodo di Eulero in avanti. Dopo aver calcolato $u_1$, il metodo è _esplicito_.
 
-Questo metodo può anche essere derivato in un altro modo: sia dato un generico problema di Cauchy, allora si può scrivere che
+Questo metodo può essere derivato anche dall'**equzione di Volterra** prendendo $\Delta t = 2h$ e sostituendo l'integrale con la [formula del punto medio](#formula-del-punto-medio-composita) ottenendo che
 
 $$
-y(t) = y(t_0) + \int_{t_0}^t f(s, y(s)) ds
+y(t_{n+2}) \simeq u_{n+2} = u_n + 2hf(t_{n+1}, u_{n+1})
 $$
 
-Questa equazione, che prende il nome di **Equazione di Volterra**, è risolvibile attraverso uno qualsiasi dei [metodi di quadratura](#integrazione-numerica) visti precedentemente.
+## Metodo di Crank-Nicolson
 
-Sia $t = 2h$, allora l'intervallo d'integrazione è $[t_0, t_2 = t_0 + 2_h]$ (con $t_1 = t_0 + h$). Utilizzando la [formula del punto medio](#formula-del-punto-medio-composita) si ottiene che
+Sia data l'equazione di Volterra corrispondente alla soluzione del problema di Cauchy sotto esame:
 
 $$
-y(2h) \simeq u_2 = u_0 + 2hf(t_1, u_1)
+y(t_{n+1}) = y(t_n) + \int_{t_n}^{t_{n+1}} f(t, y(t)) dt
 $$
 
-e vale in generale.
+Applicando la formula dei trapezi per risolvere l'integrale a destra, si ottiene che
+
+$$
+y(t_{n+1}) = y(t_n) + h \left( \frac{f(t_n, y(t_n)) + f(t_{n+1}, y(t_{n+1}))}{2} \right)
+$$
+
+da cui si deriva il passo ricorsivo per l'applicazione del metodi di Crank-Nicolson:
+
+$$
+u_{n+1} = u_n + \frac{h}{2} \left( f(t_n, u_n) + f(t_{n+1}, u_{n+1}) \right)
+$$
+
+Come si può osservare, questo metodo è esattamente un media tra il metodo di Eulero in avanti ed il metodo di Eulero all'indietro e quindi converge meglio.
+
+Il metodo di Crank-Nicolson è _implicito_.
+
+## Metodo di Heun
+
+Il metodo di Heun è molto simile al metodo di Crank-Nicolson ma, approssimando $u_{n+1}$ con il metodo di Eulero in avanti, riesce a rimanere esplicito pur mantenendone lo stesso ordine di convergenza.
+
+Il passo ricorsivo per l'applicazione del metodo di Heun è il seguente:
+
+$$
+u_{n+1} = u_n + \frac{h}{2} \left( f(t_n, u_n) + f(t_{n+1}, u_n + hf(t_n, u_n)) \right)
+$$
+
+## Assoluta stabilità
+
+Il concetto di **assoluta stabilità** si riferisce al fatto che, facendo scelte sbagliate in termini di $h$, la soluzione di un problema di Cauchy, approssimata con i metodi appena visti potrebbe oscillare e/o esplodere.
+
+Sia dato il seguente problema modello con la sua soluzione esatta:
+
+$$
+\begin{cases}
+    y'(t) = -\lambda y(0) \quad \lambda \gt 0 \\
+    y(0) = 1
+\end{cases} \qquad y(t) = e^{-\lambda t}
+$$
+
+Dato un $h \gt 0$, un metodo numerico si dice assolutamente stabile per tale valore di $h$ se
+
+$$
+|u_{n+1}| \le C_{AS} |u_n| \qquad |C_{AS}| \lt 1
+$$
+
+il che implica che
+
+$$
+\lim_{n \to + \infty} |u_n| = 0
+$$
+
+Viene analizzata ora la stabilità per ciascuno dei cinque metodi analizzati nelle sezioni precedenti.
+
+Risolvendo il problema modello con metodo di Eulero in avanti si ottiene che
+
+$$
+u_{n+1} = u_n + h \lambda u_n = (1 + h \lambda)u_n \implies C_{AS} = |1 + h \lambda|
+$$
+
+da cui si ottiene che, per garantire stabilità, bisogna che valga che
+
+$$
+-1 \lt 1 + h \lambda \lt 1 \implies h \lt - \frac{2}{\lambda}
+$$
+
+Risolvendo il problema modello con il metodo di Eulero all'indietro si ottiene che
+
+$$
+u_{n+1} = u_n - h \lambda u_{n+1} \implies u_{n+1} = \frac{1}{1 - h \lambda} u_n \implies C_{AS} = \left| \frac{1}{1 - h \lambda} \right|
+$$
+
+da cui si ottiene che, per garantire assoluta stabilità, bisogna che valga
+
+$$
+-1 \lt \left| \frac{1}{1 - h \lambda} \right| \lt 1
+$$
+
+che è sempre vero.
+
+<!--
+Risolvendo il problema modello con il metodo di approssimazione tramite differenze centrate si ottiene che
+ Ma si può ottenere qualcosa?? non si può esprimere mica -->
+
+Risolvendo il problema modello con il metodo di Crank-Nicolson si ottiene che
+
+$$
+u_{n+1} = u_n + \frac{h \lambda}{2}(u_n + u_{n+1}) \implies u_{n+1} = \frac{2 + h \lambda}{2 - h \lambda} u_n
+$$
+
+da cui si ottiene che, per garantire assoluta stabilità, bisogna che valga
+
+$$
+-1 \lt \left| \frac{2 + h \lambda}{2 - h \lambda} \right| \lt 1
+$$
+
+che è sempre vero.
+
+<!--
+Risolvendo il problema modello con il metodo di Heun si ottiene che
+
+RIFARE conto del C_AS che non torna
+
+$$
+
+$$
+-->
 
 # Appendice
 
@@ -1185,6 +1290,12 @@ $$
 con $t_0$ e  $y_0$ dati e $f : I \times \mathbb{R}^n \to \mathbb{R}^n$.
 
 Sia $f$ continua e limitata rispetto ad entrambi gli argomenti e lipschitziana rispetto al secondo, allora la soluzione $y$ esiste ed è unica ed inoltre $y \in \mathcal{C}^1(I)$.
+
+Qualunque soluzione di qualunque problema di Cauchy può essere scritta nella forma dell'**Equazione di Volterra**:
+
+$$
+y(t) = y(t_0) + \int_{t_0}^{\Delta t} f(s, y(s)) ds
+$$
 
 ## Dimostrazioni
 
