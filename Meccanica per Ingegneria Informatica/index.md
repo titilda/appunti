@@ -1429,6 +1429,177 @@ Al momento quello che abbiamo è uno schema della macchina MTU incompleta in cui
 
 !["Schema macchina MTU incompleto"](assets/capitolo_sei/6.3_utilizzatore/grafico_macchina_MTU_incompleto.jpg)
 
+## 6.4 Trasmissione
+
+### Cinematica
+
+$\tau = \frac{w_u}{w_m}$ = rapporto di trasmissione.
+
+Il $\tau$ può avere due comportamenti:
+
+- $\tau =$ cost $\implies$ trasmissione omocinetica.
+- $\tau < 1 \implies$ trasmissione riducente $\implies w_u = \tau w_n < w_m$
+
+### Dinamica
+
+![](assets/capitolo_sei/6.4_trasmissione/dinamica.jpg)
+
+Con il BdP: $P_1 + P_2 + P_p = \frac{dE_c}{dt} = 0$
+
+Si possono vedere due comportamenti differenti a seconda del moto:
+
+1. $P_1 > 0, P_2 < 0, P_p < 0:$ Moto diretto.
+2. $P_1 < 0, P_2 > 0, P_p < 0:$ Moto retrogrado.
+
+$\eta = \frac{P_{out}}{P_{in}}:$ rendimento
+
+### Moto diretto
+
+$P_1 = -(P_2 + P_p)$
+
+$\eta_d = \frac{|P_2|}{P_1} = - \frac{P_2}{P_1}$
+
+$0 < \eta_d < 1$ sempre
+
+$P_2 = -\eta_d P_1$
+
+$P_p = - P_1 - P_2 = - (1 - \eta_d) P_1$
+
+### Moto retrogrado
+
+$P_2 = - (P_1 + P_p)$
+
+$\eta_d = - \frac{P_1}{P_2} = \frac{|P_1|}{P_2}$
+
+$0 < \eta_R < 1$ sempre
+
+$\eta_R < \eta_d$
+
+$P_p = - (P_1 + P_2) = - (1 - \eta_R) P_2 \implies$ retrogrado.
+
+$P_p = - (1 - \eta_d) P_1 \implies$ diretto.
+
+**Condizioni moto diretto**
+
+$P_1 > 0\  \lor \ P_2 < 0$
+
+**Condizioni moto retrogrado**
+
+$P_2 > 0\ \lor \ P_1 < 0$
+
+**Importante** $P_1 \not ={P_m}$ e $P_2 \not ={P_u}$
+
+## 6.5 The End
+
+![](assets/capitolo_sei/6.5_the_end/p1.jpg)
+
+$P_m - P_1 = \frac{dE_{c_m}}{dt} \to \frac{dE_{c_m}}{dw_m} \frac{dw_m}{dt}$
+
+$E_{c_m} = \frac{1}{2} J_m w_m^2$
+
+$C_m w_m - P_1 = J_m w_m \dot{w}_m$
+
+$P_1 = (C_m - J_m \dot{w}_m)w_m$
+
+Ora per gestire questi casi abbiamo 2 modi, uno veloce e uno potenzialmente triste:
+
+1. $\dot{w}_m$ noto $\implies$ conosco dunque $P_1:$
+
+   - $P_1 > 0$ moto diretto
+   - $P_1 < 0$ moto retrogrado
+
+2. $\dot{w}_m$ non noto, dunque si fanno ipotesi, ipotizzo moto diretto
+
+$P_p = - (1 - \eta_d) P_1$
+
+$P_p + P_u + P_m = \frac{d}{dt} (E_{c_m} + E_{c_u})$
+
+$\dot{w}_m$
+
+$P_1 = (C_m - J_m \dot{w}_m) w_m \implies$ speriamo sia giusto.
+
+### Riepilogo
+
+![](assets/capitolo_sei/6.3_utilizzatore/grafico_macchina_MTU_incompleto.jpg)
+
+$P_m + P_u + P_p = \frac{d}{dt} (E_{c_m} + E_{c_u})$
+
+$\dot{w}_m ?$ Ipotizzo moto diretto
+
+$P_m = C_m w_m$
+
+$\tau = \frac{w_u}{w_m}$
+
+$P_u = - C_u w_u \implies P_u = - C_u \tau w_m$
+
+$E_{c_u} = \frac{1}{2} J_u w_u^2 = \frac{1}{2} J \tau^2 w_m^2$
+
+$P_p = (1 - \eta_d) P_1 = (1 - \eta_d) (C_m - J_m \dot{w}_m) w_m$
+
+BdP: $C_m w_m - \tau C_u w_m - (1 - \eta_d) (C_m - J_m \dot{w}_m) w_m = J_m w_m \dot{w}_m + J_u \tau^2 w_m \dot{w_m}$ semplifico $w_m$
+
+$C_m - \tau C_u - (1 - \eta_d) (C_m - J_m \dot{w}_m) = J_m \dot{w}_m + J_u \tau^2 \dot{w}_m$
+
+$\dot{w}_m = \frac{\eta_d C_m - \tau C_u}{\eta_d J_m + \tau^2 J_u}$
+
+Verifichiamo
+
+$P_1 = (C_m - J_m \dot{w}_m)w_m$
+
+$P_1 > 0$ giusto, moto diretto.
+
+$P_1 < 0$ sbagliato, moto retrogrado, si piange e si ricalcola $\dot{w}_m$
+
+$P_p = - (1 - \eta_R) P_2$
+
+### Condizioni di moto vario o transitorio
+
+- $\dot{w}_m \not ={0}$
+- $E_c \not ={cost}$
+- $w_m \not ={cost}$
+
+### Condizioni regime assoluto
+
+- $w_m = cost$
+- $E_c = cost$
+- $\dot{w}_m = 0$
+
+$\eta_d C_m (\overline{w_m}) = \tau C_u (\overline{w_m})$
+
+**Esempio**
+
+![](assets/capitolo_sei/6.5_the_end/esempio.jpg)
+
+### Condizioni regime periodico
+
+- $E_c = 0$ dentro un periodo
+
+![](assets/capitolo_sei/6.5_the_end/regime_periodico.jpg)
+
+### Trasmissioni concatenate
+
+![](assets/capitolo_sei/6.5_the_end/tersmissioni_concatenate.jpg)
+
+Ipotesi moto diretto
+
+no coppie, no inerzie su albero $i$.
+
+$\tau_1 = \frac{w_1}{w_1}\ \tau_2 = \frac{w_2}{w_i}$
+
+$\tau = \frac{w_2}{w_1} = \tau_1 \tau_2 = \frac{\cancel{w_i}}{w_1} \frac{w_2}{\cancel{w_i}}$
+
+$\tau = \tau_1 \tau_2$
+
+$\eta_1 = \frac{|P_i|}{P_1} \ \eta_2 = \frac{|P_2|}{|P_i|}$
+
+$\eta = \frac{|P_2|}{P_1} = \eta_1 \eta_2 = \frac{\cancel{|P_i|}}{P_1} \frac{|P_2|}{\cancel{|P_i|}} \implies \frac{|P_2|}{P_1}$
+
+$\eta = \eta_1 \eta_2$
+
+Con questo si conclude questo corso, spero vi sia piaciuto.
+
+Se trovate errori è presente il pulsante per segnalare tutto, bye bye.
+
 # Capitolo Fatal Error
 
 Capitolo in cui si raggruppano tutti i Fatal Error del corso, errori che possono comportare la bocciatura.
