@@ -1038,8 +1038,6 @@ La dimostrazione, per ciascuna riga della tabella, è presente nell'[appendice](
 
 # Risoluzione di equazioni differenziali (problemi di Cauchy)
 
-Per ciascuno dei tre metodi appena visti per approssimare derivate, esiste un metodo corrispondente per la risoluzione di equazioni differenziali.
-
 ## Metodo di Eulero in avanti
 
 Sia data l'equazione $y'(t_n) = f(t_n, y(t_n))$ e sia $u_n$ la successione numerica che approssima la soluzione, allora si può scrivere che
@@ -1154,7 +1152,7 @@ Sia dato il seguente problema modello con la sua soluzione esatta:
 
 $$
 \begin{cases}
-    y'(t) = -\lambda y(0) \quad \lambda \gt 0 \\
+    y'(t) = -\lambda y(t) \quad \lambda \gt 0 \\
     y(0) = 1
 \end{cases} \qquad y(t) = e^{-\lambda t}
 $$
@@ -1176,25 +1174,25 @@ Viene analizzata ora la stabilità per ciascuno dei cinque metodi analizzati nel
 Risolvendo il problema modello con metodo di Eulero in avanti si ottiene che
 
 $$
-u_{n+1} = u_n + h \lambda u_n = (1 + h \lambda)u_n \implies C_{AS} = |1 + h \lambda|
+u_{n+1} = u_n - h \lambda u_n = (1 - h \lambda)u_n \implies C_{AS} = 1 - h \lambda
 $$
 
 da cui si ottiene che, per garantire stabilità, bisogna che valga che
 
 $$
--1 \lt 1 + h \lambda \lt 1 \implies h \lt - \frac{2}{\lambda}
+-1 \lt 1 - h \lambda \lt 1 \implies h \lt \frac{2}{\lambda}
 $$
 
 Risolvendo il problema modello con il metodo di Eulero all'indietro si ottiene che
 
 $$
-u_{n+1} = u_n - h \lambda u_{n+1} \implies u_{n+1} = \frac{1}{1 - h \lambda} u_n \implies C_{AS} = \left| \frac{1}{1 - h \lambda} \right|
+u_{n+1} = u_n + h \lambda u_{n+1} \implies u_{n+1} = \frac{1}{1 + h \lambda} u_n \implies C_{AS} = \frac{1}{1 + h \lambda}
 $$
 
 da cui si ottiene che, per garantire assoluta stabilità, bisogna che valga
 
 $$
--1 \lt \left| \frac{1}{1 - h \lambda} \right| \lt 1
+-1 \lt \frac{1}{1 + h \lambda} \lt 1
 $$
 
 che è sempre vero.
@@ -1212,20 +1210,68 @@ $$
 da cui si ottiene che, per garantire assoluta stabilità, bisogna che valga
 
 $$
--1 \lt \left| \frac{2 + h \lambda}{2 - h \lambda} \right| \lt 1
+-1 \lt \frac{2 + h \lambda}{2 - h \lambda} \lt 1
 $$
 
 che è sempre vero.
 
-<!--
 Risolvendo il problema modello con il metodo di Heun si ottiene che
 
-RIFARE conto del C_AS che non torna
-
+$$
+u_{n+1} = u_n + \frac{h}{2} \left( -\lambda u_n + (-\lambda)\left( u_n + h(-\lambda u_n) \right) \right) = \left( 1 - h\lambda + \frac{(h\lambda)^2}{2} \right)u_n
 $$
 
+da cui si ottiene che, per garantire assoluta stabilità, bisogna che valga
+
 $$
+-1 \lt \frac{(h\lambda)^2}{2} - h\lambda + 1 \lt 1
+$$
+
+ovvero 
+
+<!--
+Completare con il C_AS di Heun 
 -->
+
+Di seguito viene proposta una tabella che riassume le principali caratteristiche dei cinque metodi appena visti:
+
+| Metodo              | Esplicitezza | Ordine di convergenza | Stabilità                                 |
+| ------------------- | ------------ | --------------------- | ----------------------------------------- |
+| Eulero in Avanti    | Esplicito    | 1                     | $h \lt \frac{2}{\lambda}$                 |
+| Eulero all'Indietro | Implicito    | 1                     | Incondizionatamente assolutamente stabile |
+| Differenze centrate | 50/50        | 2                     | N/A                                       |
+| Crank-Nicolson      | Implicito    | 2                     | Incondizionatamente assolutamente stabile |
+| Heun                | Esplicito    | 2                     | $h \lt \frac{2}{\lambda}$                 |
+
+Nel caso in cui il problema di Cauchy sotto esame non sia riconducibile alla forma del problema modello, si prende
+
+$$
+\lambda = \max_{t,y} \left| \frac{\partial f}{\partial y} \right|
+$$
+
+## Consistenza
+
+Si definisce **errore di troncamento** la quantità
+
+$$
+\tau_n = \left| f(t_n, y(t_n)) - Dy(t_n) \right|
+$$
+
+dove $Dy(t)$ è l'approssimazione data dal metodo numerico scelto.
+
+Il metodo numerico scelto è **consistente** se
+
+$$
+\lim_{h \to 0} \tau_n = 0 \qquad \forall n
+$$
+
+E' possibile affermare che un metodo numerico è **consistente di ordine $p$** se
+
+$$
+\tau_n = O(h^p) \qquad \forall n
+$$
+
+In generale, per un metodo convergente, l'ordine di convergenza è uguale all'ordine di consistenza.
 
 # Appendice
 
