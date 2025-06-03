@@ -204,7 +204,7 @@ function [x] = solve_by_sub(A, b)
 end
 ```
 
-## Metodi itarativi
+## Metodi iterativi
 
 Mentre i metodi diretti terminano restituendo una soluzione, questi non sono adatti per sistemi eccessivamente grossi o sparsi. Per queste tipologie di sistemi si usano i metodi iterativi. Questi metodi generano una successione infinita di soluzioni $x^{(k)}$ sempre più precise. 
 E' compito dell'utilizzatore di questi metodi decidere quale criterio utilizzare per determinare il momento di fermare l'algoritmo.
