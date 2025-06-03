@@ -4,8 +4,6 @@ author:
 - "Andrea Oggioni"
 ---
 
-_Nota: questa pagina è work in progress. I contenuti potrebbero variare rapidamente._
-
 # Introduzione
 
 La disciplica chiamata _calcolo numerico_ (che si contrappone al _calcolo simbolico_) si occupa di trovare modi di risolvere problemi al computer.
@@ -16,6 +14,8 @@ Per fare un esempio, la rappresentazione numerica di una funzione non è una cur
 E' denominato `eps` di un calcolatore il più piccolo numero tale per cui, con la precisione di tale calcolatore, vale che $1 + eps = 1$.
 
 _Nota: in questa pagina verranno fatti frequenti riferimenti a MATLAB. Nel caso in cui non si possieda una licenza MATLAB, è possibile utilizzare l'alternativa open-source gratuita [GNU Octave](https://octave.org/) che ha una sintassi quasi completamente compatibile._
+
+_Al [seguente link](https://github.com/titilda/appunti/tree/main/Fondamenti%20di%20Calcolo%20Numerico/matlab) è possibile trovare tutte le funzioni e gli script MATLAB utilizzati di seguito._
 
 # Risoluzione di sistemi lineari
 
@@ -171,38 +171,13 @@ Complessivamente, calcolare la fattorizzazione LU di una matrice e risolvere il 
 
 In MATLAB è possibile definire le funzioni di sostituzione in avanti e sotituzione all'indietro come segue:
 
-```matlab
-function [x] = forward_sub(L, b)
-    N = length(b);
-    x = zeros(N, 1);
+<iframe frameborder="0" scrolling="no" style="width:100%; height:286px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fforward_sub.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=off&showCopy=on&maxHeight=500"></iframe>
 
-    for i = 1:N
-        x(i) = (b(i) - L(i, 1:i-1) * x(1:i-1)) / L(i, i);
-    end
-end
-
-
-function [x] = backward_sub(U, b)
-    N = length(b);
-    x = zeros(N, 1);
-
-    x(N) = b(N) / U(N, N);
-
-    for i = N-1:-1:1
-        x(i) = (b(i) - U(i, i+1:N) * x(i+1:N)) / U(i, i);
-    end
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:289px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fbackward_sub.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 La procedura completa per la risoluzione di un sistema lineare è quindi codificata come segue:
 
-```matlab
-function [x] = solve_by_sub(A, b)
-    [L, U, P] = lu(A);
-    y = forward_sub(L, P*b);
-    x = backward_sub(U, y);
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:205px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fsolve_by_sub.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 ## Metodi iterativi
 
@@ -265,27 +240,7 @@ $$
 
 In MATLAB, è possibile implementare il metodo di Jacobi (con criterio di arresto sul residuo, che verrà spiegato [più avanti](#criteri-di-arresto)) nel seguente modo:
 
-```matlab
-function [x, n_iters] = solve_jacobi(A, b, x0, tolerance)
-    N = length(b);
-
-    D = diag(diag(A));
-
-    B = eye(N) - D\A;
-    f = (eye(N) - B) / A * b;
-
-    n_iters = 0;
-    normalized_residue = tolerance + 1;
-    x = x0;
-
-    while normalized_residue > tolerance
-        n_iters = n_iters + 1;
-        x = B * x + f;
-        residue = b - A*x;
-        normalized_residue = norm(residue)/norm(b);
-    end
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:520px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fsolve_jacobi.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 ### Metodo di Gauss-Seidel
 
@@ -303,30 +258,7 @@ $$
 
 In MATLAB, è possibile implementare il metodo di Gauss-Seidel (con criterio di arresto sull'incremento, che verrà spiegato [più avanti](#criteri-di-arresto)) nel seguente modo:
 
-```matlab
-function [x, n_iters] = solve_gauss_seidel(A, b, x0, tolerance)
-    N = length(b);
-
-    D = diag(diag(A));
-    E = -tril(A, -1);
-    F = -triu(A, +1);
-
-    B = (D - E) \ F;
-    f = (eye(N) - B) / A * b;
-
-    increment = tolerance + 1;
-    n_iters = 0;
-
-    x = x0;
-
-    while increment > tolerance
-        n_iters = n_iters + 1;
-        x_new = B * x + f;
-        increment = norm(x_new - x);
-        x = x_new;
-    end
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:562px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fsolve_gauss_seidel.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 Per entrambi i metodi visti precedentemente, valgono le seguenti proprietà:
 
@@ -336,20 +268,7 @@ Per entrambi i metodi visti precedentemente, valgono le seguenti proprietà:
 
 A scopo puramente illustrativo, nel seguente script, viene generata casualmente una matrice $A$ strettamente dominante diagonale per righe ed un vettore $b$, anch'esso casuale, poi, per ciascuno dei metodi visti, viene risolto il sistema $Ax = b$ e viene stampato il numero di iterazioni necessarie:
 
-```matlab
-N = 10;
-
-A = generate_converging_matrix(N);
-b = rand(N, 1);
-
-x0 = zeros(N, 1);
-
-[x_j, n_j] = solve_jacobi(A, b, x0, 1e-12);
-[x_gs, n_gs] = solve_gauss_seidel(A, b, x0, 1e-12);
-
-fprintf('Iterazioni Jacobi: %d\n', n_j);
-fprintf('Iterazioni Gauss-Seidel: %d\n', n_gs);
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:331px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fverifica_iterazione_jacobi_gs.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 La funzione `generate_converging_matrix` è disponibile [nell'appendice](#funzioni-matlab).
 
@@ -394,26 +313,7 @@ Per matrici $A$ sparse, esiste la **fattorizzazione LU inesatta** che si trova p
 
 Un'implementazione MATLAB del metodo appena analizzato è la seguente:
 
-```matlab
-function [x, n_iters] = solve_richardson(A, b, alpha, x0, tolerance)
-    N = length(b);
-    
-    B = eye(N) - alpha * A;
-
-    f = (eye(N) - B) / A * b;
-
-    n_iters = 0;
-    normalized_residue = tolerance + 1;
-    x = x0;
-
-    while normalized_residue > tolerance
-        n_iters = n_iters + 1;
-        x = B*x + f;
-        residue = b - A*x;
-        normalized_residue = norm(residue)/norm(b);
-    end
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:457px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fsolve_richardson.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 ### Metodo del gradiente
 
@@ -457,22 +357,7 @@ $$
 
 Di seguito compare il listato di un'implementazione di una funzione MATLAB che risolve un sistema $Ax = b$ col metodo del gradiente:
 
-```matlab
-function [x, n_iters] = solve_gradient(A, b, x0, tolerance)
-    x = x0;
-    n_iters = 0;
-    residue = b - A*x;
-    normalized_residue = tolerance + 1;
-
-    while normalized_residue > tolerance
-        n_iters = n_iters + 1;
-        alpha = (residue' * residue) / (residue' * A * residue);
-        x = x - alpha * (A * x - b);
-        residue = b - A * x;
-        normalized_residue = norm(residue) / norm(b);
-    end
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:373px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fsolve_gradient.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 ### Metodo del gradiente coniugato
 
@@ -576,23 +461,7 @@ $$
 
 Il listato di un'implementazione MATLAB di una funzione che trova lo zero di una funzione è riportato di seguito:
 
-```matlab
-function [x, iters] = find_root_newton(f, df, x0, toll)
-    x = x0;
-    iters = 0;
-
-    increment =  toll;
-
-    phi = @(x_) x_ - f(x_)/df(x_);
-
-    while increment >= toll
-        iters = iters + 1;
-        x_new = phi(x);
-        increment = norm(x_new - x);
-        x = x_new;
-    end
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:394px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Ffind_root_newton.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 ### Metodo delle corde
 
@@ -625,25 +494,7 @@ $$
 
 Segue listato di un'implementazione MATLAB di una funzione che trova lo zero di una funzione:
 
-```matlab
-function [x, iters] = find_root_chord(f, a, b, x0, toll)
-    x = x0;
-    iters = 0;
-
-    q = (f(b) - f(a)) / (b - a);
-
-    phi = @(x_) x_ - f(x_)/q;
-
-    increment = toll;
-
-    while increment >= toll
-        iters = iters + 1;
-        x_new = phi(x);
-        increment = norm(x_new - x);
-        x = x_new;
-    end
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:457px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Ffind_root_chord.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 ### Metodo delle secanti
 
@@ -659,26 +510,7 @@ Questo metodo non può essere visto come metodo di punto fisso perchè $x^{(k+1)
 
 Di seguito viene riportata una possibile implementazione MATLAB del metodo delle secanti:
 
-```matlab
-function [x, iters] = find_root_secant(f, x0, x_prec, toll)
-    xs = [x_prec; x0];
-
-    iters = 0;
-
-    while abs(f(xs(2))) >= toll
-        iters = iters + 1;
-
-        disp(f(xs(2)));
-
-        xs = [
-            xs(2);
-            xs(2) - (xs(2) - xs(1)) * f(xs(2)) / (f(xs(2)) - f(xs(1)));
-        ];
-    end
-
-    x = xs(2);
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:474px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Ffind_root_secant.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 ### Metodo di Newton per sistemi non lineari
 
@@ -816,21 +648,7 @@ L'interpolatore globale perde in regolarità (la derivata non è continua in cor
 
 In MATLAB, si può implementare l'interpolazione Lagrangiana composita come segue:
 
-```matlab
-function [f_approx] = composite_polyfit(f, xs, H, k)
-    nodes_x = (xs(1):H/k:xs(end))';
-    nodes_y = f(nodes_x);
-
-    f_approx = zeros(length(xs), 1);
-
-    for j = 1:k:length(nodes_x)-k
-        p = polyfit(nodes_x(j:j+k), nodes_y(j:j+k), k);
-        subset = (nodes_x(j) <= xs) & (xs <= nodes_x(j+k));
-        xx_subset = xs(subset);
-        f_approx(subset) = polyval(p, xx_subset);
-    end
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:373px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fcomposite_polyfit.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 <!--
 Nota per il futuro: questo codice è quasi 1:1 di parte di quello usato per la mia soluzione del "progetto 2".
@@ -841,21 +659,7 @@ Dato che i parametri di questa funzione possono risultare non immediatamente chi
 
 Col seguente script si decide di confrontare il valore di una funzione $f$ con la sua interpolazione Lagrangiana composita:
 
-```matlab
-xs = (0:1e-5:10)';
-
-f = @(x) exp(3 * x) ./ (log(x) + x);
-g = @(x) composite_polyfit(f, xs, 0.1, 3);
-
-subplot(3, 1, 1);
-plot(xs, f(xs));
-
-subplot(3, 1, 2);
-plot(xs, g(xs));
-
-subplot(3, 1, 3);
-plot(xs, abs(g(xs) - f(xs)));
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:352px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Ftest_polyfit_composito.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 Vengono riportati anche i grafici prodotti dallo script precedente:
 
@@ -1060,6 +864,10 @@ $$
 
 Dato che la conoscenza della soluzione al tempo $t_n$ permette di calcolare direttamente la soluzione all'istante successivo, il metodo di Eulero in avanti è detto _esplicito_.
 
+Un'implementazione del metodo appena visto attraverso MATLAB è la seguente:
+
+<iframe frameborder="0" scrolling="no" style="width:100%; height:310px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fode_solve_ea.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
+
 ## Metodo di Eulero all'indietro
 
 Analogamente al metodo precedente, sia data l'equazione $y'(t_{n+1}) = f(t_{n+1}, y(t_{n+1}))$ e sia $u_n$ la successione numerica che approssima la soluzione, allora si può scrivere che
@@ -1081,6 +889,10 @@ u_{n+1} = u_n + hf(t_{n+1}, u_{n+1})
 $$
 
 Dato che non è possibile, data la soluzione al tempo $t_n$, calcolare la soluzione all'istante successivo senza prima risolvere un'equazione, non necessariamente lineare, il metodo di Eulero all'indietro è detto _implicito_.
+
+Un'implementazione del metodo appena visto attraverso MATLAB è la seguente:
+
+<iframe frameborder="0" scrolling="no" style="width:100%; height:394px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fode_solve_ei.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 ## Approssimazione tramite differenze centrate
 
@@ -1110,6 +922,10 @@ $$
 y(t_{n+2}) \simeq u_{n+2} = u_n + 2hf(t_{n+1}, u_{n+1})
 $$
 
+Un'implementazione del metodo appena visto attraverso MATLAB è la seguente:
+
+<iframe frameborder="0" scrolling="no" style="width:100%; height:457px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fode_solve_cd.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
+
 ## Metodo di Crank-Nicolson
 
 Sia data l'equazione di Volterra corrispondente alla soluzione del problema di Cauchy sotto esame:
@@ -1134,6 +950,10 @@ Come si può osservare, questo metodo è esattamente un media tra il metodo di E
 
 Il metodo di Crank-Nicolson è _implicito_.
 
+Un'implementazione del metodo appena visto attraverso MATLAB è la seguente:
+
+<iframe frameborder="0" scrolling="no" style="width:100%; height:411px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fode_solve_cn.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
+
 ## Metodo di Heun
 
 Il metodo di Heun è molto simile al metodo di Crank-Nicolson ma, approssimando $u_{n+1}$ con il metodo di Eulero in avanti, riesce a rimanere esplicito pur mantenendone lo stesso ordine di convergenza.
@@ -1143,6 +963,10 @@ Il passo ricorsivo per l'applicazione del metodo di Heun è il seguente:
 $$
 u_{n+1} = u_n + \frac{h}{2} \left( f(t_n, u_n) + f(t_{n+1}, u_n + hf(t_n, u_n)) \right)
 $$
+
+Un'implementazione del metodo appena visto attraverso MATLAB è la seguente:
+
+<iframe frameborder="0" scrolling="no" style="width:100%; height:348px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fode_solve_hn.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
 ## Assoluta stabilità
 
@@ -1390,17 +1214,6 @@ da cui, isolando $v'(t_n)$, si deduce la tesi.
 
 Di seguito vengono riportati i listati per alcune delle funzioni utilizzate nella presente pagina o che possono comunque risultare utili per mettere in pratica quanto appena riassunto.
 
-```matlab
-function [A] = generate_converging_matrix(N)
-    T = rand(N);
-    v = sum(T, 2);
-    A = T + diag(v);
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:184px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fgenerate_converging_matrix.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
 
-```matlab
-function [A] = generate_sdp_matrix(N)
-    A = rand(N);
-    A = A * A';
-end
-```
+<iframe frameborder="0" scrolling="no" style="width:100%; height:184px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Fgenerate_sdp_matrix.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
