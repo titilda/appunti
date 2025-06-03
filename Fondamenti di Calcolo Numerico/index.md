@@ -1048,14 +1048,8 @@ $$
 da cui si ottiene che, per garantire assoluta stabilità, bisogna che valga
 
 $$
--1 \lt \frac{(h\lambda)^2}{2} - h\lambda + 1 \lt 1
+-1 \lt \frac{(h\lambda)^2}{2} - h\lambda + 1 \lt 1 \implies h \lt \frac{2}{\lambda}
 $$
-
-ovvero 
-
-<!--
-Completare con il C_AS di Heun 
--->
 
 Di seguito viene proposta una tabella che riassume le principali caratteristiche dei cinque metodi appena visti:
 
@@ -1072,6 +1066,27 @@ Nel caso in cui il problema di Cauchy sotto esame non sia riconducibile alla for
 $$
 \lambda = \max_{t,y} \left| \frac{\partial f}{\partial y} \right|
 $$
+
+## Confronto
+
+Viene risolto, con uno script, per 5 volte (una per ciascun metodo) lo stesso problema di Cauchy nell'intervallo $[0, 2]$ e ne vengono mostrate le soluzioni.
+
+<iframe frameborder="0" scrolling="no" style="width:100%; height:348px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Ftest_ode_comparison.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on&maxHeight=500"></iframe>
+
+$$
+\begin{cases}
+    y'(t) = \frac{y}{t + 1} + 12t^2 \\
+    y(0) = 7;
+\end{cases}
+$$
+
+Il risultato è il seguente:
+
+![](./assets/cauchy_full.svg)
+
+Viene mostrato anche uno zoom sull'intervallo $[1.75, 2]$.
+
+![Notare la quasi corrispondenza dei risultati dei tre metodi impliciti.](./assets/cauchy_zoom.svg)
 
 ## Consistenza
 
