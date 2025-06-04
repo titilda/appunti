@@ -1071,7 +1071,7 @@ $$
 
 Viene risolto, con uno script, per 5 volte (una per ciascun metodo) lo stesso problema di Cauchy nell'intervallo $[0, 2]$ e ne vengono mostrate le soluzioni.
 
-<iframe frameborder="0" scrolling="no" style="width:100%; height:348px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Ftest_ode_comparison.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></iframe>
+<iframe frameborder="0" scrolling="no" style="width:100%;height: 750px;" allow="clipboard-write" src="https://emgithub.com/iframe.html?target=https%3A%2F%2Fgithub.com%2Ftitilda%2Fappunti%2Fblob%2Fmain%2FFondamenti%2520di%2520Calcolo%2520Numerico%2Fmatlab%2Ftest_ode_comparison.m&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></iframe>
 
 $$
 \begin{cases}
