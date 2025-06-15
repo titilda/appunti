@@ -1,31 +1,39 @@
 ---
 title: "Riassunto di Economia ed Organizzazione Aziendale"
-author: "Andrea Oggioni"
+author: 
+- "Andrea Oggioni"
+- "Andrea Lunghi"
 ---
 
 _Nota: questa pagina è work in progress. I contenuti potrebbero variare rapidamente._
 
-# Introduzione
+## Introduzione
 
-La definizione di **impresa** non è presente all'interno del codice civile italiano; è invece presente quella di **imprenditore** (coluiche esercita professionalmente un'attività economica organizzata al fine della produzione o dello scambio di beni o servizi). Da questa definizione si trae che un **impresa** (che è l'attività svolta dall'imprenditore) è un'attività economica organizzata svolta professionalmente al fine della produzione o dello scambio di beni o servizi.
+### Definizione Giuridica
+
+La definizione di **impresa** non è presente all'interno del codice civile italiano; è invece presente quella di **imprenditore** (colui che esercita professionalmente un'attività economica organizzata al fine della produzione o dello scambio di beni o servizi).
+
+Da questa definizione si trae che un **impresa** (che è l'attività svolta dall'imprenditore) è un'attività economica organizzata svolta professionalmente al fine della produzione o dello scambio di beni o servizi.
 
 Un imprenditore può avvalersi della collaborazione di uno o più **lavoratori subordinati** ovvero coloro i quali si obbligano, mediante retribuzione, a collaborare nell'impresa prestando il proprio lavoro (che può essere sia intellettuale che manuale) alle dipendenze e sotto la direzione dell'imprenditore.
 
 Un'attività è un'impresa se rispecchia le tre caratteristiche seguenti:
 
-- **economica**: l'output deve avere un valore economico e deve essere scambiabile;
-- **professionale**: svolta abitualmente e in maniera sistematica (ma non necessariamente con continuità temporale, in esclusiva o dall'imprenditore);
+- **economica**: l'output deve avere un _valore economico_ e deve essere _scambiabile_;
+- **professionale**: svolta abitualmente e in _maniera sistematica_ (ma non necessariamente con continuità temporale, in esclusiva o dall'imprenditore);
 - **organizzata**: deve avere una sua organizzazione e gestione delle risorse.
 
-Un **società** è un contratto con cui due o più persone conferiscono beni o servizi per l'esercizio in comune di un'attività economica allo scopo di dividerne gli utili.
+Una **società** è un contratto con cui due o più persone conferiscono beni o servizi per l'esercizio in comune di un'attività economica allo scopo di dividerne gli utili.
 
 Un **azienda** è il complesso dei beni organizzati dall'imprenditore per l'esercizio dell'impresa.
 
 Una **ditta** (dal latino _dicta_, ovvero _dire_) è il nome commerciale scelto dall'imprenditore per esercitare l'impresa. Questo nome è quello che consente ai consumatori di identificare l'impresa e la legge ne garantisce l'uso esclusivo all'interno del mercato target.
 
-Un'impresa si occupa di trasforamre _input_ in _output_ utilizzando risorse quali **capitale fisico** (macchinari), **risorse immateriali** (conoscenze, brevetti) e **capitale umano** (persone). L'output delle imprese è poi scambiato/venduto ad altre imprese (B2B) o a consumatori finali (B2C).
+### Scopo dell'impresa
 
-L'obiettivo dell'impresa, alla fine, è generare il maggior guadagno possibile per i proprietari (la cui remunerazione, appunto, dipende dalla capacità dell'impresa di generare profitto/utile).
+Un'impresa si occupa di trasformare _input_ in _output_ utilizzando risorse quali **capitale fisico** (macchinari), **risorse immateriali** (conoscenze, brevetti) e **capitale umano** (persone). L'output delle imprese è poi scambiato/venduto ad altre imprese (B2B) o a consumatori finali (B2C).
+
+L'obiettivo dell'impresa, alla fine, è generare il _maggior guadagno possibile_ per i proprietari (la cui remunerazione, appunto, dipende dalla capacità dell'impresa di generare profitto/utile).
 
 La formula per calcolare il profitto è molto intuitiva:
 
@@ -33,25 +41,50 @@ $$
 \text{Utile} = \text{Ricavi} - \text{Costi}
 $$
 
-Per aumentare l'utile è possibile (i) aumentare i ricavi o (ii) diminuire i costi, ad esempio, aumentando le quite di mercato, migliorando il prodotto, aprendosi a nuovi mercati, diversificando l'offerta, eccetera.
+Per aumentare l'utile è possibile (i) aumentare i ricavi o (ii) diminuire i costi, ad esempio, aumentando le quote di mercato, migliorando il prodotto, aprendosi a nuovi mercati, diversificando l'offerta, eccetera.
 
 Nella realtà, l'impresa non può avere come unico obiettivo quello di massimizzare i ricavi, altrimenti si rischierebbe di cadere nello sfruttamento (che, in teoria, dovrebbe essere vietato dalla normativa vigente): l'impresa deve anche fare in modo di garantire un certo livello di benessere nei confronti dei dipendenti e deve impegnarsi ad essere sostenibile nei confronti dell'ambiente.
 
-## Rischi
+### Rischi
 
-Il lavoro dell'imprenditore e **rischioso**: deve prendere decisioni _nel presente_ che influenzeranno _il futuro_ senza però avere tutte le informazioni necessarie per prendere la miglior decisione.
+Il lavoro dell'imprenditore e **rischioso**. Questo rischio è dato da diversi fattori:
 
-L'impreza è molto rigida, non si possono assumere e licenziare dipendenti ogni giorno in risposta alle variazioni del mercato.
+- **Tempo**: le decisioni vengono essere prese _nel presente_ e influenzeranno _il futuro_ senza però avere tutte le informazioni necessarie per prendere la miglior decisione (_Contesto di Incertezza_).
+- **Rigidità Strutturale**: la struttura dell'imprese è molto rigida, non si possono effettuare cambi, come assumere e licenziare dipendenti, ogni giorno in risposta alle variazioni del mercato.
+- **Contesto Dinamico**: il mercato cambia continuamente e le imprese devono essere in grado di adattarsi a questi cambiamenti (domanda, preferenze, tecnologie, etc).
 
 L'imprenditore si assume _il rischio d'impresa_ ovvero intasca i guadagni se l'impresa va bene e risponde delle perdite in caso contrario.
 
-La responsabilità dell'imprenditore può essere **illimitata** (risponde con tutto il patrimonio personale, casa e mutande incluse) o **limitata** (risponde solo con i capitali conferiti).
+La responsabilità dell'imprenditore (o dei soci) può essere:
 
-## Ciclo di vita di un'impresa
+- **illimitata**: risponde con tutto il patrimonio personale, casa e mutande incluse.
+- **limitata**: risponde solo con i capitali conferiti.
 
-Per fondare un'impresa, l'imprenditore (o i soci) devono come prima cosa scegliere la tipologia di impresa (vedremo in seguito) da fondare. Questa scelta influisce profondamente sulla credibilità del _business plan_ e sulle possibilità di farsi finanziare da investitori. Il **business plan** è un documento che contiene tutte le informazioni che descrivono, in pratica, tutta la struttura dell'impresa e come si prevede che essa potrà generare profitto (prodotto offerto, mercato di operazione, strategia, composizione del gruppo dirigente e previsioni finanziarie).
+### Ciclo di vita di un'impresa
 
-La vita dell'impresa e quella dell'imprenditore non terminano necessariamente nello stesso momento: l'impresa può fallire (scioglimento per ordine del giudice), essere liquidata (scioglimento per volontà dei soci), essere acquisita o essere ereditata.
+#### Nascita
+
+Per fondare un'impresa l'imprenditore deve predisporre un capitale iniziale.
+Questo capitale può essere:
+
+- **Capitale proprio**: l'imprenditore investe i propri risparmi;
+- **Capitale di Rischio**: l'imprenditore si fa finanziare da investitori privati (soci esterni);
+- **Capitale di Debito**: l'imprenditore si fa finanziare da istituti di credito (banche).
+
+La presenza di capitale proprio aumenta la credibilità dell'impresa e la rende più appetibile per gli investitori esterni diminuendo il rischio di insolvenza.
+
+Successivamente l'imprenditore deve stilare un **business plan** che descriva l'idea imprenditoriale, il prodotto o servizio offerto, il mercato di riferimento, la strategia, il gruppo dirigente e le previsioni finanziarie.
+Questo documento è fondamentale per attrarre investitori e ottenere finanziamenti.
+
+#### Morte
+
+La vita dell'impresa e quella dell'imprenditore non terminano necessariamente nello stesso momento.
+
+Un'impresa può essere sciolta per diversi motivi:
+
+- **Fallimento** (_Scioglimento Coatto_): l'impresa viene scolta per ordine del tribunale e i beni vengono liquidati per pagare i creditori.
+- **Liquidazione** (_Scioglimento Volontario_): l'imprenditore decide di chiudere l'impresa volontariamente.
+- **Acquisizione/Fusione**: l'impresa si unisce ad un'altra impresa, cessando di esistere come entità autonoma.
 
 In Italia, un'impresa dura, in media, 12 anni prima di essere sciolta per qualsivoglia motivo.
 
@@ -73,28 +106,30 @@ Un'impresa è caratterizzata da diversi punti:
 4. Output:
    - **beni materiali**
      - **imprese agricole**: produzione di beni con processi legati alla terra;
-     - **imprese industriali e manufatturiere**: produzione di beni utilizzando trasformazioni tecniche;
+     - **imprese industriali e manifatturiere**: produzione di beni utilizzando trasformazioni tecniche;
    - **servizi**: trasporti, distribuzioni di acqua o energia, ristorazione, banche, eccetera.
 5. Numero di output:
-   - **monoprodotto**: autoesplicativo;
+   - **monoprodotto**: produce un solo bene o servizio;
    - **diversificate**: più servizi o prodotti simili tra loro;
    - **conglomerati**: più servizi o prodotti anche molto diversi (spesso con un _core business_ prevalente).
 6. Consumatore:
-   - **all'ingrosso**: beni acquistati da altre imprese;
-   - **al dettaglio**: beni acquistati dal consumatore finale.
+   - **wholesale** (_all'ingrosso_): beni acquistati da altre imprese;
+   - **retail** (_al dettaglio_): beni acquistati dal consumatore finale.
 7. Localizzazione:
    - **multinazionale**;
    - **nazionale**.
 
 Un **settore** è l'insieme di tutte le imprese che producono beni od offrono servizi considerati sostituibili (tra di loro) dal consumatore finale. Le imprese che appartengono ad uno stesso settore sono in competizione tra loro.
 
-Le tipologie di impresa sono descritte dai **codici ATECO**.
+Le tipologie di impresa sono descritte dai **codici ATECO** (ATività ECOnomiche), per l'italia, e dal **NACE** (statistical classification of economic activities), per l'Unione Europea.
 
 ## Forme giuridiche
 
 Un'impresa può assumere una di molte forme giuridiche: la forma giuridica assunta da un'impresa ne determina diritti, doveri, norme che si applicano eccetera.
 
-Le forme giuridiche dell'impresa si distinguono in **imprese individuali** (costituite da unìunica persona fisica) e **imprese collettive** (costituite da più persone).
+Le forme giuridiche dell'impresa si distinguono in **imprese individuali** (costituite da un'unica persona fisica) e **imprese collettive** (costituite da più persone).
+
+La forma giuridica di un'impresa può essere cambiata in qualsiasi momento.
 
 ### Impresa individuale
 
@@ -102,7 +137,7 @@ In un'impresa individuale, l'impresa coincide con l'imprenditore che risponde il
 
 Le **imprese familiari** sono un'estensione delle imprese individuali: in questo tipo di impresa si ha un imprenditore singolo che si avvale in modo continuativo delle prestazioni lavorative dei propri familiari.
 
-Le imprese individuali (che, tra l'altro, costituiscono la maggior parte delle imprese italiane) richiedono poca burocrazia, nessun versamendo del capitale, pochi obblighi e sono, in generale, veloci in termini di decisioni da prendere. Di contro, però, si ha che la responsabilità dell'imprenditore è illimitata e che le imposte crescono più velocemente del reddito.
+Le imprese individuali (che, tra l'altro, costituiscono la maggior parte delle imprese italiane) richiedono poca burocrazia, nessun versamento del capitale, pochi obblighi e sono, in generale, veloci in termini di decisioni da prendere. Di contro, però, si ha che la responsabilità dell'imprenditore è illimitata e che le imposte crescono più velocemente del reddito.
 
 ### Imprese collettive
 
@@ -111,14 +146,16 @@ Come già accennato, le società collettive, sono composte da un gruppo (almeno 
 Esistono tre tipi di imprese collettive:
 
 - **società di persone**: responsabilità solidale illimitata;
-- **sovcità di capitale**: responsabilità limitata ai conferimenti iniziali;
+- **società di capitale**: responsabilità limitata ai conferimenti iniziali;
 - **società cooperative**: responsabilità limitata ai conferimenti iniziali e scopo mutualistico.
 
 Ciascuna di queste tipologie comprende a sua volta diverse sotto-tipologie di imprese che verranno analizzate in seguito.
 
-### Società di persone
+#### Società di persone
 
-Le società di persone sono abbastanza semplici sia dal punto della gestione che da un punto di vista burocratico. Vista la scarsa presenza di gerarchie ben definite, i soci di una società di persone hanno spesso problemi di coordinamento e poca autonomia decisionale. Trattandosi di società a responsabilità, oltre che illimitata, anche solidale, se un socio non paga, gli altri devono farlo per lui.
+Le società di persone sono abbastanza semplici sia dal punto della gestione che da un punto di vista burocratico. Vista la scarsa presenza di gerarchie ben definite, i soci di una società di persone hanno spesso problemi di coordinamento e poca autonomia decisionale. Queste società non hanno bisogno di un capitale iniziale minimo.
+
+Queste società sono caratterizzate da una responsabilità illimitata e solidale dei soci: questo significa che, in caso di un socio che non adempi agli obblighi, gli altri soci devono rispondere con il proprio patrimonio personale.
 
 Le tipologie di società di persone riconosciute per legge sono:
 
@@ -126,7 +163,7 @@ Le tipologie di società di persone riconosciute per legge sono:
 - **società in nome collettivo** (s.n.c.): sia attività di impresa commerciale che non;
 - **società in accomandita semplice** (s.a.s.): i soci sono distinti in **accomandatari** (responsabilità illimitata) e **accomandanti** (responsabilità limitata).
 
-### Società di capitale
+#### Società di capitale
 
 Le società di capitale possono risultare molto più complesse e macchinose da gestire in quanto sono soggette a dover adempire a molti obblighi burocratici, fiscali, di trasparenza e di governance. Di contro, però, è possibile una maggiore autonomia decisionale in molti campi, le tasse sono spesso minori e la responsabilità di ogni socio è limitata al capitale conferito in partenza (salvo in casi di illecito).
 
@@ -137,13 +174,13 @@ Le tipologie di società di persone riconosciute per legge sono:
 - **società per azioni** (s.p.a.): il capitale sociale (che parte da 50000€) è diviso in quote quotabili in borsa;
 - **società in accomandità per azioni** (s.a.p.a): come la s.p.a. ma i soci si dividono in accomandatari ed accomandanti.
 
-### Società cooperative
+#### Società cooperative
 
 Lo scopo di queste società è quello di fornire ai soci servizi a condizioni più vantaggiose di quelle presenti sul mercato.
 
 Dovendo reinvestire tutti i profitti nell'attività imprenditoriale, godono di buone agevolazioni fiscali (che possono perdere in caso non vengano rispettati i requisiti di _società cooperativa_).
 
-# Organizzazione di un impresa
+## Organizzazione di un impresa
 
 L'impresa, di per sé, punta a massimizzare il profitto in maniera autonoma, egoista e razionale (teoria dell _homo economicus_). Il problema è che le persone di cui l'impresa si avvale non sono _homo economicus_ ma _persone umane_ che, magari, possono voler massimizzare anche il proprio tempo libero, oltre che ai loro guadagni.
 
@@ -195,7 +232,7 @@ Una mansione, per essere trasmessa ad un lavoratore, deve essere codificata: que
 
 La **formalizzazione** di una mansione descrive le modalità di svolgimento di una mansione, quali sono le possibili deciioni che il lavoratore può prendere in autonomia e come avviene il controllo da parte dei superiori.
 
-Riguardo l'autonomia decisionale, si può dire che è molto apprezzata dagli individui, che riduce i tempi di attesa dovuti all'attesa della risposta da parte del supervisore e che è necessaria in contesti di mansioni che richiedono conoscenze molto specifiche. 
+Riguardo l'autonomia decisionale, si può dire che è molto apprezzata dagli individui, che riduce i tempi di attesa dovuti all'attesa della risposta da parte del supervisore e che è necessaria in contesti di mansioni che richiedono conoscenze molto specifiche.
 
 Una maggiore autonomia decisionale assegnata agli individui, oltre che a portare diversi vantaggi, porta alla perdita di controllo da parte dell'organizzazione (il che va a braccetto con il fatto che, spesso, gli obiettivi di organizzazione e individuo non combacino).
 
@@ -281,7 +318,7 @@ $$
 \text{Totale Attività} \equiv \text{Totale Passività} + \text{Patrimonio Netto}
 $$
 
-Le attività sono riportate sulla base del _criterio di liquidità_ mentre le passività sono riportate secondo il _criterio di esigibilità_: entrambi questi criteri consistono nel riportare le varie voci secondo la loro capacità di trasformarsi in risorse monetarie liquide. 
+Le attività sono riportate sulla base del _criterio di liquidità_ mentre le passività sono riportate secondo il _criterio di esigibilità_: entrambi questi criteri consistono nel riportare le varie voci secondo la loro capacità di trasformarsi in risorse monetarie liquide.
 Per le attività l'ordine è: _attività non correnti_, _attività correnti_ e _attività cessate o destinate ad essere cedute_.
 Per le passività l'ordine è: _patrimonio netto_, _passività non correnti_, _passività correnti_ e _passività correlate ad attività cessate o destinate ad essere cedute_.
 
