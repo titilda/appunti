@@ -2100,7 +2100,7 @@ Il ViewModel è quello che fornisce i metodi per reagire agli input degli utenti
 E' disponibile un cheatsheet riassuntivo di alcuni degli argomenti trattati in questo documento.<br>
 <button id="cs-btn" onclick="location.href='cheatsheet/ids-cheatsheet2.html'">Ricevi CheatSheet</button>
 
-E' disponibile anche un [cheatsheet riassuntivo di JML](JML/JML_cheatsheet.md).<br>
+E' disponibile anche un [cheatsheet riassuntivo di JML](JML/JML_cheatsheet.html).<br>
 
 Ids Gritsmas
 

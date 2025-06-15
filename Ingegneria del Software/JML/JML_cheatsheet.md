@@ -1,8 +1,5 @@
 # JML (Java Modeling Language) Full Guide
 
-
----
-
 ## 1. Basic Annotations
 
 ```java
@@ -23,14 +20,12 @@ Allows multiple lines of annotations.
 
 Enables strict mode, which enforces stricter checks during verification.
 
----
-
 ## 2. Method Contracts
 
 JML supports **Design by Contract**. Contracts specify the behavior a method must follow:
 
 | Clause               | Syntax             | Description                                                                |
-| -------------------- | ------------------ | -------------------------------------------------------------------------- |
+|----------------------|--------------------|----------------------------------------------------------------------------|
 | Precondition         | `requires P;`      | Requires condition `P` to be true before the method is called.             |
 | Postcondition        | `ensures Q;`       | Guarantees that condition `Q` will hold after the method returns normally. |
 | Exceptional Behavior | `signals (E e) R;` | If exception `E` is thrown, condition `R` must hold.                       |
@@ -41,7 +36,7 @@ JML supports **Design by Contract**. Contracts specify the behavior a method mus
 ### Special Keywords
 
 | Keyword       | Meaning                                        |
-| ------------- | ---------------------------------------------- |
+|---------------|------------------------------------------------|
 | `\result`     | Represents the return value of a method.       |
 | `\old(expr)`  | Captures the value of `expr` at method entry.  |
 | `\nothing`    | Specifies that no memory location is modified. |
@@ -57,8 +52,6 @@ public int multiply(int a, int b) {
     return a * b;
 }
 ```
-
----
 
 ## 3. Class Specifications
 
@@ -98,8 +91,6 @@ Invariants checked during constructor:
 ```java
 //@ invariant initial_capacity > 0;
 ```
-
----
 
 ## 4. State Abstraction
 
@@ -143,12 +134,10 @@ Pure, spec-only helper:
 //@ represents items = \nonnullelements(data);
 ```
 
----
-
 ## 5. Special Operators
 
 | Operator                | Description                                 |
-| ----------------------- | ------------------------------------------- |
+|-------------------------|---------------------------------------------|
 | `\typeof(obj)`          | Gets runtime type of object.                |
 | `\type(Class)`          | Refers to class type.                       |
 | `\nonnullelements(arr)` | Ensures all elements in array are non-null. |
@@ -156,12 +145,10 @@ Pure, spec-only helper:
 | `\reach(field)`         | All objects reachable from a field.         |
 | `\fresh(obj)`           | Indicates object was newly created.         |
 
----
-
 ## 6. Quantifiers
 
 | Quantifier  | Syntax              | Meaning                                            |
-| ----------- | ------------------- | -------------------------------------------------- |
+|-------------|---------------------|----------------------------------------------------|
 | Universal   | `\forall T x; R; P` | For all `x` in range `R`, predicate `P` must hold. |
 | Existential | `\exists T x; R; P` | There exists an `x` in `R` such that `P` holds.    |
 | Minimum     | `\min T x; R; expr` | Finds the minimum `expr` over range `R`.           |
@@ -174,8 +161,6 @@ Pure, spec-only helper:
 //@ ensures (\exists int i; 0 <= i < arr.length; arr[i] == key);
 //@ ensures \result == (\sum int i; 0 <= i < n; i);
 ```
-
----
 
 ## 7. Loop Specifications
 
@@ -190,24 +175,20 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-* `loop_invariant`: Must hold before and after each iteration.
-* `decreases`: Ensures termination by showing a decreasing measure.
-* `assignable`: Lists writable locations in the loop.
-
----
+* `loop_invariant`: Must hold before and after each iteration
+* `decreases`: Ensures termination by showing a decreasing measure
+* `assignable`: Lists writable locations in the loop
 
 ## 8. Advanced Constructs
 
 | Feature       | Syntax             | Purpose                              |
-| ------------- | ------------------ | ------------------------------------ |
+|---------------|--------------------|---------------------------------------|
 | Assertion     | `//@ assert P;`    | Runtime assertion.                   |
 | Assumption    | `//@ assume P;`    | Assume `P` for verification.         |
 | Unreachable   | `//@ unreachable;` | Marks code as unreachable.           |
 | Spec Public   | `//@ spec_public`  | Exposes private field to spec tools. |
 | Helper Method | `//@ helper`       | Skips invariant checks.              |
 | Debug         | `//@ debug expr;`  | Prints expression in debug output.   |
-
----
 
 ## 9. Null Safety
 
@@ -220,8 +201,6 @@ for (int i = 0; i < n; i++) {
 ```
 
 JML lets you enforce or permit null references for safer code.
-
----
 
 ## 10. Common Patterns
 
@@ -248,8 +227,6 @@ JML lets you enforce or permit null references for safer code.
 //@ assignable obj.field, ClassName.*;
 ```
 
----
-
 ## 11. Tool Directives
 
 Directives used for tool configuration:
@@ -258,9 +235,6 @@ Directives used for tool configuration:
 //@ refine "MySpec.spec";
 //@ henceforth P;
 ```
-
-
----
 
 ## 12. Method Refinement
 
@@ -272,8 +246,6 @@ Use `also` to extend specifications in subclasses:
 //@ ensures \result >= 0;
 ```
 
----
-
 ## 13. Visibility and Abstraction
 
 Make abstract fields/specs public and bind to concrete fields:
@@ -284,18 +256,14 @@ Make abstract fields/specs public and bind to concrete fields:
 //@ spec_public data;
 ```
 
----
-
 ## 14. Behavioral Subtyping
 
 To follow behavioral subtyping:
 
-* Subclasses must **weaken preconditions** (require less).
-* Subclasses must **strengthen postconditions** (guarantee more).
+* Subclasses must **weaken preconditions** (require less)
+* Subclasses must **strengthen postconditions** (guarantee more)
 
 This ensures subtype objects can substitute supertype objects safely.
-
----
 
 ## 15. Full Class Example
 
@@ -327,12 +295,10 @@ public class BankAccount {
 }
 ```
 
----
-
 ## Quick Reference Summary
 
 | Concept            | Syntax                             |
-| ------------------ | ---------------------------------- |
+|--------------------|------------------------------------|
 | Pre-state value    | `\old(expr)`                       |
 | Return value       | `\result`                          |
 | Object creation    | `\fresh(obj)`                      |
@@ -344,4 +310,11 @@ public class BankAccount {
 | Visible invariants | `//@ public invariant condition;`  |
 | Exception handling | `signals (Exception e) condition;` |
 
----
+<style>
+/* JML Annotations */
+.sourceCode .co, 
+.sourceCode .cm { 
+  color: #22863a !important;
+  font-weight: bold !important;
+}
+</style>
