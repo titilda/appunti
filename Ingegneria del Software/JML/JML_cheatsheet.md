@@ -317,4 +317,14 @@ public class BankAccount {
   color: #22863a !important;
   font-weight: bold !important;
 }
+
+/* Keywords - Red */
+.sourceCode .kw { 
+  color: #d73a49 !important; 
+}
+
+/* Numbers */
+.sourceCode .dv { 
+  color: #005cc5 !important; 
+}
 </style>
