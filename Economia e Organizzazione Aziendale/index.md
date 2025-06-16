@@ -182,9 +182,17 @@ Dovendo reinvestire tutti i profitti nell'attività imprenditoriale, godono di b
 
 ## Organizzazione di un impresa
 
-L'impresa, di per sé, punta a massimizzare il profitto in maniera autonoma, egoista e razionale (teoria dell _homo economicus_). Il problema è che le persone di cui l'impresa si avvale non sono _homo economicus_ ma _persone umane_ che, magari, possono voler massimizzare anche il proprio tempo libero, oltre che ai loro guadagni.
+Nell'economia classica le persone sono descritte col concetto di **homo economicus** ovvero un individuo razionale che agisce in modo egoistico per massimizzare la propria ricchezza.
 
-E' detto **organizzazione** un insieme di individui con uno scopo comune, perseguibile tramite azioni individuali e collettive oportunamente definite e coordinate. Nella pratica, l'organizzazione di un'impresa consiste nell'assegnazione mansioni e nel loro coordinamento.
+Questa interpretazione è utile per formulare teorie generali, ma nella realtà le _persone umane_ svolgono attività economiche come mezzo, non come fine. Le persone hanno una razionalità limitata e agiscono per massimizzare il proprio benessere individuale, non solo quello materiale.
+
+E' detto **organizzazione** un insieme di individui con uno scopo comune, perseguibile tramite azioni individuali e collettive opportunamente definite e coordinate. Nella pratica, l'organizzazione di un'impresa consiste nell'assegnazione mansioni e nel loro coordinamento.
+
+L'organizzazione può essere vista in diverse prospettive:
+
+- **Manageriale**: l'organizzazione è vista come un'insieme di parti che interagiscono tra di loro (_unità organizzative_). Questa visione si focalizza su aspetti formali e oggettivi.
+- **Sociologica**: l'organizzazione è vista come un'ambiente sociale in cui le persone si realizzano e perseguono anche i propri scopi. Questa visione si focalizza sugli individui, le relazioni, etc.
+- **Politica**: l'organizzazione è vista come un mezzo per generare consenso ed esercitare potere. Questa visione si focalizza su meccanismi di potere e riduzione di conflitti.
 
 Le imprese hanno un proprio ciclo di vita che segue alcune fasi: le prime tre sono _sviluppo_, _crescita_ e _maturità_. A quest'ultima può seguire la fase di _rivitalizzazione_ oppure le fasi di _declino_ e _morte_.
 
@@ -194,26 +202,37 @@ Col crescere del numero di individui di un'organizzazione, crescono i problemi d
 
 Per tentare di contenere gli effetti negativi di questi problemi, il **vertice organizzativo** dell'organizzazione deve occuparsi di progettare sia la **macrostruttura** (quali sono le unità organizzative) che la **microstruttura** (quali sono le mansioni del singolo individuo).
 
-## Progettazione della microstruttura
+### Progettazione della microstruttura
 
-Un **compito** è un insieme di azioni collegate ed imprescindibili.
+Per avere un buon assetto organizzativo è necessario creare una condizione di efficacia dove:
 
-Una **mansione** è un insieme di compiti caratterizzanti una posizione individuale.
+- Esista un numero adeguato di persone assegnate alle attività da svolgere;
+- Le persone assegnate abbiano profili coerenti con le attività;
+- I compiti di ciascuna persona (**mansione**) siano definiti in maniera chiara ed inequivocabile;
+- Per ogni persona siano definiti in maniera chiara ed inequivocabile gli obiettivi da raggiungere e le risorse a disposizione.
 
-Una **posizione individuale** è la posizione di un undividuo all'interno dell'organizzazione a cui è associata una mansione (ogni posizione individuale è assegnata ad una sola persona ma la stessa mansione può essere assegnata a più persone).
+> Un **compito** è un insieme di azioni collegate ed imprescindibili.
+>
+> Una **mansione** è un insieme di compiti caratterizzanti una posizione individuale.
+>
+> Una **posizione individuale** è la posizione di un individuo all'interno dell'organizzazione a cui è associata una mansione (ogni posizione individuale è assegnata ad una sola persona ma la stessa mansione può essere assegnata a più persone).
+>
+> Un **ruolo** è composto dalle aspettative circa i comportamenti attesi da chi ricopre una data posizione individuale.
 
-Un **ruolo** è composto dalle aspettative circa i comportamenti attesi da chi ricopre una data posizione individuale.
+La progettazione della microstruttura consiste nel definire la posizione degli individui all'interno dell'organizzazione, ossia quello che fanno e come devono farlo.
 
-Una progettazione efficace
+Una delle attività fondamentali è quella del **disegno delle mansioni**: per ogni individuo, si deve decidere come assegnargli **autorità decisionale** e quanto deve essere **specializzato**.
 
-- assegna un numero adeguato di persone alle attività da svolgere;
-- fa in modo che le persone assegnate abbiano profili coerenti con le attività;
-- definisce in maniera chiara ed inequivocabile i compiti di ciascuna persona;
-- definisce in maniera chiara ed inequivocabile, per ogni persona, gli obiettivi da raggiungere e le risorse a disposizione.
+#### Specializzazione
 
-Una delle attività fondamentali per la progettazione della microstruttura di un'organizzazione è quella del **disegno delle mansioni**: per ogni individuo, si deve decidere come assegnargli autorità decisionale e quanto deve essere specializzato.
+La specializzazione consiste in quanto è specifica una mansione e in quanto un individuo è specializzato in quella mansione.
 
-L'alta specializzazione comporta i seguenti vantaggi:
+Esistono due tipi di specializzazioni:
+
+- **Specializzazione orizzontale**: riguarda il modo in cui i compiti sono distribuiti tra le persone;
+- **Specializzazione verticale**: riguarda la separazione tra progettazione/controllo e esecuzione introducendo una _gerarchia tra le posizioni individuali_.
+
+La specializzazione orizzontale comporta i seguenti vantaggi:
 
 - favoreggiamento dell'apprendimento;
 - riduzione dei costi di formazione;
@@ -226,77 +245,188 @@ Ma porta anche svantaggi:
 - perdita di competenze da parte del lavoratore;
 - aumento dei costi di coordinamento.
 
-Come già ampiamente osservato e doumentato fin dai tempi della catena di montaggio, un'eccessiva specializzazione porta i lavoratori a sentirsi frustrati e alienati: per risolvere ciò è necessario ridurre la specializzazione tramite **job enlargement** (aggiunta di compiti diversi alle mansioni specializzate), **job enrichment** (aggiunta di compiti più importanti con più autonomia decisionale) e **job rotation** (i lavoratori sono assegnati alle diverse mansioni a rotazione).
+Come già ampiamente osservato e documentato fin dai tempi della catena di montaggio, un'eccessiva specializzazione porta i lavoratori a sentirsi frustrati e alienati. Alcune tecniche per ridurre il senso di frustrazione sono:
 
-Una mansione, per essere trasmessa ad un lavoratore, deve essere codificata: questo può avvenire per forma scritta (tramite protocolli, procedure et similia) o per forma orale (lavoratore esperto effettua il _training_ di un lavoratore appena assunto).
+- **job enlargement**: aggiunta di compiti diversi alle mansioni specializzate;
+- **job enrichment**: aggiunta di compiti più importanti con più autonomia decisionale;
+- **job rotation**: i lavoratori sono assegnati alle diverse mansioni a rotazione.
 
-La **formalizzazione** di una mansione descrive le modalità di svolgimento di una mansione, quali sono le possibili deciioni che il lavoratore può prendere in autonomia e come avviene il controllo da parte dei superiori.
+Una mansione, per essere trasmessa ad un lavoratore, deve essere **codificata**: questo può avvenire per forma scritta (tramite protocolli, procedure et similia) o per forma orale (lavoratore esperto effettua il _training_ di un lavoratore appena assunto).
 
-Riguardo l'autonomia decisionale, si può dire che è molto apprezzata dagli individui, che riduce i tempi di attesa dovuti all'attesa della risposta da parte del supervisore e che è necessaria in contesti di mansioni che richiedono conoscenze molto specifiche.
+#### Formalizzazione
+
+La **formalizzazione** di una mansione descrive le modalità di svolgimento di una mansione. La formalizzazione ha l'obiettivo di velocizzare e standardizzare le decisioni/azioni portando:
+
+- **Controllo**: Riduce la discrezione degli individui e comportamenti indesiderati;
+- **Coordinamento**: Facilita il coordinamento tra le persone che svolgono la stessa mansione;
+- **Protezione dei lavoratori**: toglie l'arbitrio dei superiori e dei clienti.
+
+Solitamente solamente le mansioni operativi possono essere formalizzate facilmente, mentre quelle manageriali e professionali sono più difficili da formalizzare.
+
+#### Autonomia decisionale
+
+L'**autonomia decisionale** è la libertà di prendere decisioni in merito alla propria mansione senza dover chiedere il permesso al proprio superiore.
+
+L'obiettivo è velocizzare il processo decisionale rimuovendo i tempi dovuti all'attesa della risposta da parte del supervisore.
 
 Una maggiore autonomia decisionale assegnata agli individui, oltre che a portare diversi vantaggi, porta alla perdita di controllo da parte dell'organizzazione (il che va a braccetto con il fatto che, spesso, gli obiettivi di organizzazione e individuo non combacino).
 
-Per evitare la perdita di controllo pur mantenendo autonomi gli individui, si devono introdurre degli incentivi per spingere i lavoratori a compiere scelte adeguate per la persecuzione degli obiettivi dell'impresa.
+Per evitare la perdita di controllo pur mantenendo autonomi gli individui, si devono introdurre degli **incentivi** per spingere i lavoratori a compiere scelte adeguate per la persecuzione degli obiettivi dell'impresa.
 
 Ovviamente gli incentivi devono essere misurati in modo da non poterne abusare.
 
-Le motivazioni che spingono un invividuo a lavorare possono essere categorizzate in diversi modi: una prima distinzione può essere quella tra **motivazioni intrinseche** (ad es. si diverte) e **motivazioni estrinseche** (ad ed. ritorno economico).
+#### Motivazione
+
+Le motivazioni che spingono un individuo a lavorare possono essere categorizzate in diversi modi: una prima distinzione può essere quella tra **motivazioni intrinseche** (ad es. si diverte) e **motivazioni estrinseche** (ad ed. ritorno economico).
 
 Un'altro modo di categorizzare queste motivazioni è la **piramide di Maslow**: in questa piramide vengono categorizzati i bisogni che un individuo è motivato a soddisfare nei 5 livelli elencati di seguito da quelli alla base a quelli in cima (i primi due sono anche detti **bisogni primari** mentre gli altri sono anche detti **bisogni secondari**).
 
-1. Bisogni fisiologici;
-2. bisogni di sicurezza;
-3. bisogni di appartenenza;
-4. bisogni di stima;
-5. bisogni di autorealizzazione.
+1. Bisogni fisiologici: bisogni legati alla sopravvivenza come cibo, acqua, sonno, etc.;
+2. bisogni di sicurezza: sicurezza fisica, economica, salute, etc.;
+3. bisogni di appartenenza: sentirsi parte di un gruppo, avere relazioni sociali, etc.;
+4. bisogni di stima: legati alla percezione di se nella società, al riconoscimento e al rispetto da parte degli altri;
+5. bisogni di autorealizzazione: legati alla percezione di se rispetto alle proprie potenzialità.
 
 Quando un individuo ha soddisfatto i bisogni appartenenti ad un certo livello della piramide, non si sente più appagato e tenterà di soddisfare i bisogni del livello più in alto.
 
 I metodi per ricompensare, motivare e controllare i lavoratori dipendono dalla **cultura organizzativa** che consiste di tutte le norme sociali attuate all'interno dell'azienda.
 
-La cultura organizzativa di un azienda può assumere una di quattro diverse forme, ciascuna con i suoi obiettivi, vantaggi e svantaggi:
+Secondo il _framework dei valori concorrenti_, la cultura organizzativa può essere descritta da due indici:
 
-- burocratica;
-- comunitaria;
-- competitiva;
-- imprenditoriale.
+- **Focus dell'organizzazione**: quanto l'organizzazione si concentra sui dipendenti (interno) o sul mercato (esterno);
+- **Struttura dell'organizzazione**: quanto l'organizzazione è flessibile o stabile.
 
-## Progettazione della macrostruttura
+Questi due indici danno origine a quattro culture organizzative:
+
+- burocratica: ambiente formale e strutturato con procedure, gerarchie e regole ben definite. L'organizzazione si prende cura di te in cambio di fedeltà;
+- comunitaria: ambiente collaborativo e orientato al team, in cui le persone lavorano insieme per raggiungere obiettivi comuni;
+- competitiva: ambiente dinamico e orientato al mercato, in cui l'innovazione e la competitività sono al centro. L'organizzazione premia il successo individuale e il raggiungimento degli obiettivi;
+- imprenditoriale: ambiente flessibile e orientato al cambiamento, in cui l'innovazione e la creatività sono valorizzate. L'organizzazione incoraggia l'assunzione di rischi e la sperimentazione.
+
+### Progettazione della macrostruttura
 
 Mentre la microstruttura si occupa del posizionamento del singolo individuo, la macrostruttura si occupa delle interazioni tra individui e tra gruppi di individui.
 
 Tre sono i passi fondamentali per la progettazione della macrostruttura di un'organizzazione:
 
-1. creazione delle unità organizzative;
+1. creazione delle **unità organizzative** (UO), organizzati per mansioni e posizioni individuali;
 2. definizione delle competenze, mansioni, responsabilità, obiettivi e meccanismi di coordinamento con altre UO;
 3. formalizzazione e creazione dell'organigramma derivando le informazioni da rappresentare dai due punti precedenti.
 
-L'organigramma possiede due proprietà intrinseche che ne descrivono la complessità: l'**ampiezza del controllo** (la dimensione orizzontale) e la **profondità del controllo** (la dimensione verticale).
+L'organigramma possiede due proprietà intrinseche che ne descrivono la complessità:
+
+- **Ampiezza del controllo** (la dimensione orizzontale): rappresenta il numero di UO che rispondono ad una singola UO superiore;
+- **Profondità del controllo** (la dimensione verticale): rappresenta il numero di livelli gerarchici presenti nell'organigramma.
+
+L'aumento delle UO porta ad un aumento della complessità dell'organigramma e, di conseguenza, ad un aumento della difficoltà e dei costi di coordinamento tra le UO.
 
 LE UO nell'organigramma si distinguono tra **UO di linea** (che compongono l'albero principale dell'organigramma) e **UO di staff** (che fungono da supporto alle unità di linea sottostanti).
 
 Le UO possono essere distinte anche tra **permanenti** e **temporanee**.
 
-Le varie UO su di un organigramma possono essere raggruppate per **raggruppamento numerico** (squadre, turni, ecc.), per **input** (unità che usano le stesse risorse) e per **output** (unità dedite allo stesso mercato/cliente/area geografica).
+Le varie UO su di un organigramma possono essere raggruppate per:
+
+- **raggruppamento numerico**: dividendo gli individui in gruppi per lo svolgimento di una mansione comune;
+- **raggruppamento per input**: raggruppare mansioni che usano mezzi comuni:
+  - **raggruppamento per funzione**: raggruppare mansioni che svolgono la stessa funzione (ad es. marketing, vendite, produzione, etc.);
+  - **raggruppamento per competenze**: raggruppare mansioni che richiedono le stesse competenze (ad es. ingegneri, tecnici, etc.);
+- **raggruppamento per output**: raggruppare mansioni che producono lo stesso output;
+  - **raggruppamento per area geografica**: raggruppare mansioni che operano nella stessa area geografica;
+- **raggruppamento per cliente**: raggruppare mansioni che servono lo stesso tipo di cliente;
+- **raggruppamento per prodotto**: raggruppare mansioni che seguono lo stesso prodotto.
+
+I criteri di raggruppamento utilizzati definiscono la **struttura organizzativa** dell'impresa e possono essere combinati tra loro tra i diversi livelli gerarchici.
+
+#### Struttura Semplice
+
+La **struttura semplice** è una struttura organizzativa con un numero ridotto di UO e con un vertice organizzativo molto forte.
+In questa struttura, il vertice organizza e coordina tutte le attività dell'impresa e prende tutte le decisioni importanti. Le UO sono poche e _non sono specializzate_: ogni UO si occupa di più mansioni e le persone hanno una _scarsa autonomia decisionale_.
+
+Questa struttura è tipica delle piccole imprese e studi professionali.
+
+#### Struttura Funzionale
+
+Nella **struttura funzionale**, le unità organizzative (UO) di primo livello sono create raggruppando mansioni e individui in base agli input, ovvero ai compiti specifici di ciascuna funzione.
+
+Questa struttura è particolarmente adatta per imprese monoprodotto che operano in contesti stabili e poco diversificati in termini di tecnologie, prodotti e mercati. La sua diffusione è dovuta alla semplicità e all'efficacia in situazioni gestionali stabili, dove la ripetitività delle procedure è un elemento caratterizzante.
+
+**Vantaggi:**
+
+- **Efficienza nel coordinamento interno alle UO**: i manager possono allocare mansioni in base al carico di lavoro e alle competenze;
+- **Efficienza nella condivisione di informazioni** all'interno della stessa funzione;
+- **Riduzione dei costi**: grazie a economie di scala e specializzazione.
+
+**Svantaggi:**
+
+- **Scarsa attenzione a prodotti/clienti/mercati**: il focus è sulle attività della propria UO;
+- **Alti costi di coordinamento tra le UO**: le attività delle diverse UO sono interdipendenti;
+- **Lentezza decisionale**: bisogna di coordinazione tra varie UO.
+
+#### Struttura Divisionale
+
+La **struttura divisionale** è una struttura organizzativa in cui le unità organizzative (chiamate anche business unit o divisioni) di primo livello sono create in base agli output, ovvero ai prodotti, ai clienti o alle aree geografiche.
+
+Questa struttura è particolarmente adatta per imprese diversificate che operano in contesti dinamici e complessi, dove è necessario adattarsi rapidamente alle esigenze del mercato e dei clienti.
+
+**Vantaggi:**
+
+- **Autonomia decisionale**: le UO hanno una certa autonomia nelle decisioni dato che ogni divisione può essere vista come un'impresa a sé stante.
+
+**Svantaggi:**
+
+- **Inefficienza**: dato che ogni divisione è autonoma, si ha una duplicazione di funzioni e risorse tra le divisioni, perdendo così le economie di scala e la specializzazione;
+
+#### Struttura a Matrice
+
+La **struttura a matrice** è una struttura organizzativa che combina le caratteristiche della struttura funzionale e della struttura divisionale. In questa struttura, le unità organizzative di primo livello sono create sia in base agli input (funzioni) che agli output (prodotti, clienti o aree geografiche).
+
+Questa struttura è particolarmente adatta per imprese grandi che operano con molti input, output e con risorse da condividere.
+
+**Vantaggi:**
+
+- Perseguire più obiettivi contemporaneamente.
+
+**Svantaggi:**
+
+- **Complessità**: la struttura a matrice è complessa e richiede un alto livello di coordinamento tra le UO.
+
+#### Meccanismi di coordinamento
 
 Esistono diversi meccanismi di coordinamento tra le UO:
 
-- ruoli di collegamento;
-- manager integratori;
-- team interfunzionali;
-- sistemi di pianificazione e controllo;
-- sistemi informativi azientali.
+- ruoli di collegamento: individui che hanno il compito di coordinare le attività tra le UO;
+- manager integratori: individui che hanno il compito di coordinare le attività tra le UO e che hanno un ruolo di supervisione;
+- team interfunzionali: gruppi di lavoro composti da membri di diverse UO che collaborano per raggiungere obiettivi comuni;
+- sistemi di pianificazione e controllo: sistemi che consentono di standardizzare e coordinare i processi;
+- sistemi informativi aziendali: sistemi che distribuirono le informazioni a tutta la struttura.
 
-# Relazioni interorganizzative
+### Relazioni interorganizzative
 
-Le relazioni interorganizzative si classificano in base alla similitudine tra le organizzazioni e alla tipologia di rapporto (**competitività** vs. **cooperazione**).
+Le organizzazioni collaborano tra di loro per :
+
+- benefici economici;
+- innovazione;
+- status;
+- efficacia;
+- internazionalizzazione.
+
+Le relazioni interorganizzative si classificano in base alla **somiglianza** tra le organizzazioni e alla **tipologia di rapporto** (_competitività_ vs. _cooperazione_).
 
 Questa classificazione dà vita a quattro tipologie di relazioni:
 
-- **dipendenza dalle risorse** (competitività tra organizzazioni dissimili);
-- **ecologia delle popolazioni** (competitività tra organizzazioni simili);
-- **network collaborativo** (cooperazione tra organizzazioni dissimili);
-- **istituzionalismo** (cooperazione tra organizzazioni simili).
+- **dipendenza dalle risorse** (competitività tra organizzazioni dissimili): questa relazione porta diversi tipi di relazione:
+  - **Acquisizione/Fusione**: una organizzazione acquisisce un'altra organizzazione o le due si fondono;
+  - **Joint Venture**: due o più organizzazioni creano una nuova organizzazione per perseguire un obiettivo comune;
+  - **Alleanza strategica**: due o più organizzazioni collaborano per raggiungere obiettivi comuni senza creare una nuova organizzazione;
+  - **Catena di fornitura**: una organizzazione dipende da un'altra per le risorse necessarie alla propria attività;
+  - **Associazione di Categoria**: un gruppo di organizzazioni si unisce per rappresentare i propri interessi comuni, condividendo risorse ed esercitando pressione;
+  - **Consiglio di Amministrazione Concatenato**: un amministratore siede nei consigli di amministrazione di più organizzazioni, creando una rete di relazioni tra le stesse.
+- **ecologia delle popolazioni** (competitività tra organizzazioni simili): la sopravvivenza è determinata dall'ambiente e dal contesto;
+- **network collaborativo** (cooperazione tra organizzazioni dissimili): ha lo scopo di rendere le organizzazioni maggiormente concorrenziali, condividere risorse e dividendo i rischi;
+- **istituzionalismo** (cooperazione tra organizzazioni simili): le aziende cercano la coerenza tra i diversi servizi per compiacere gli attori esterni (_legittimità_).
+  - Adattamento mimetico: le organizzazioni imitano le pratiche di altre organizzazioni simili per ottenere legittimità;
+  - Adattamento coercitivo: le organizzazioni si conformano alle norme e alle aspettative del contesto in cui operano per ottenere legittimità;
+  - Adattamento normativo: le organizzazioni si adattano alle norme e alle regole del settore per ottenere legittimità.
 
 # Contabilità esterna, stato patrimoniale e conto economico
 
