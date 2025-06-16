@@ -552,7 +552,69 @@ di non distribuire agli azionisti;
 
 #### Conto Economico (CE)
 
-Il conto economico rappresenta la situazione economica dell'impresa durante l'esercizio e mostra i flussi di soldi in entrata ed uscita, l'utile, sostenuti durante l'esercizio (si azzera annualmente).
+Il conto economico rappresenta la situazione economica dell'impresa durante l'esercizio e mostra i flussi di soldi in entrata ed uscita, l'utile di esercizio, sostenuti durante l'esercizio (si azzera annualmente).
+
+Il conto economico è calcolato secondo il **criterio di competenza economica** e mostra i ricavi e i costi sostenuti durante l'esercizio.
+
+I **ricavi di competenza** rappresentano il valore dei beni venduti o dei servizi erogati durante l'esercizio, indipendentemente dall'incasso. Vengono registrati nel Conto Economico (CE) nell'anno di alienazione del bene o erogazione del servizio.
+
+> **Scenari per i Ricavi (secondo il principio di competenza):**
+>
+> 1. **Prodotto/servizio consegnato e pagato dal cliente:**
+>     - Si registra un Ricavo nel CE.
+>     - Aumenta la Cassa (Attività nello Stato Patrimoniale - SP).
+> 2. **Prodotto/servizio consegnato, ma non pagato dal cliente:**
+>     - Si registra un Ricavo nel CE.
+>     - Aumentano i Crediti Commerciali (Attività in SP).
+> 3. **Cliente ha pagato, ma prodotto/servizio non ancora consegnato:**
+>     - Non si registra un Ricavo nel CE.
+>     - Aumenta la Cassa (Attività in SP).
+>     - Aumentano gli Anticipi da Clienti (Passività in SP).
+
+I **costi di competenza** sono il valore delle risorse utilizzate per generare i ricavi dell'esercizio, indipendentemente dal pagamento. Vengono registrati nel CE nell'anno in cui contribuiscono alla produzione.
+
+> **Scenari per i Costi (secondo il principio di competenza):**
+>
+> 1. **Bene/servizio usufruito e pagato dall'impresa:**
+>     - Si registra un Costo nel CE.
+>     - Diminuisce la Cassa (Attività in SP).
+> 2. **Bene/servizio usufruito, ma non ancora pagato dall'impresa:**
+>     - Si registra un Costo nel CE.
+>     - Aumentano i Debiti Commerciali (Passività in SP).
+> 3. **Impresa ha pagato, ma bene/servizio non ancora usufruito:**
+>     - Non si registra un Costo nel CE.
+>     - Diminuisce la Cassa (Attività in SP).
+>     - Aumentano i Costi Anticipati (Attività in SP).
+
+Il conto economico può essere redatto secondo due modalità:
+
+- **Per natura**: i costi sono classificati in base alla loro natura (ad es. costi del personale, costi dei materiali, etc.);
+- **Per destinazione**: i costi sono classificati in base alla loro destinazione (ad es. costi di produzione, costi di vendita, etc.).
+
+Il conto economico solitamente ha la seguente struttura:
+
+| **Voce** | **Descrizione**     |
+|----------|---------------------|
+| + Ricavi |                     |
+| + Altri Proventi | ricavi dall'utilizzo di terzi dei beni aziendali |
+| = Totale Ricavi  |             |
+| - Acquisti di materie prime |  |
+| - Costi Personale |            |
+| - Costi Operativi |            |
+| - _Variazione_ rimanente | differenza algebrica tra il valore delle rimanenze finali e quelle iniziali |
+| = **EBITDA** | Utile operativo ante ammortamenti, interessi e tasse |
+| - Ammortamenti |               |
+| - Plusvalenze/minusvalenze | da realizzo di attività correnti (ricavo di una cessione) |
+| - Ripristini/svalutazioni | di valore di attività correnti (fair value) |
+| = **EBIT/MON** | Utile operativo, Margine Operativo Netto |
+| + Proventi finanziari |        |
+| - Oneri finanziari | interessi sui finanziamenti |
+| = Utile prima di imposte |     |
+| - Imposte sul reddito |        |
+| - Imposte sul reddito |        |
+| = **Utile dalle attività in funzione** |  |
+| +/- Utile (perdita) netto | dalle attività cessate |
+| = **Utile netto d'esercizio** | |
 
 #### Rendiconto Finanziario (schema di cash flow)
 
