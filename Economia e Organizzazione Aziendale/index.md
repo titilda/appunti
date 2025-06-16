@@ -428,19 +428,48 @@ Questa classificazione dà vita a quattro tipologie di relazioni:
   - Adattamento coercitivo: le organizzazioni si conformano alle norme e alle aspettative del contesto in cui operano per ottenere legittimità;
   - Adattamento normativo: le organizzazioni si adattano alle norme e alle regole del settore per ottenere legittimità.
 
-# Contabilità esterna, stato patrimoniale e conto economico
+## Contabilità esterna
 
 La **contabilità** è quel processo di raccolta di tutte le informazioni che consentono dare una valutazione dell'impresa.
 
-La **contabilità esterna** si occupa di tutte le informazioni pubbliche riguardo le interazioni dell'organizzazione con l'esterno. Queste informazioni devono essere raccolte ed esaminate seguendo criteri omogeneri definiti dalla legge. Il principale documento _output_ di questo processo è il **bilancio d'esercizio** (un **esercizio** è un anno contabile).
+La **contabilità esterna** si occupa di tutte le informazioni pubbliche riguardo le interazioni dell'organizzazione con l'esterno. Queste informazioni devono essere raccolte ed esaminate seguendo criteri omogenei definiti dalla legge.
 
-## Bilancio d'esercizio
+La contabilità esterna interessa soprattutto gli _shareholders_ e gli _stakeholders_.
 
-Il bilancio deve contenere informazioni sul **patrimonio** dell'impresa (nello **stato patrimoniale**), sull'**utile** dell'impresa (nel **conto economico**) e sulla **cassa** (nel **rendiconto finanziario**).
+### Bilancio d'esercizio
 
-Lo stato patrimoniale rappresenta un riassunto di tutti i possedimenti di un'impresa, sia in **attivo** (risorse a disposizione dell'impresa) che in **passivo** (diritti vantati da terzi sulle risorse dell'impresa).
+Il principale documento _output_ di questo processo è il **bilancio d'esercizio** (un **esercizio** è un anno contabile) che mostra la situazione economica, finanziaria e patrimoniale dell'impresa durante l'esercizio.
 
-Il passivo comprende anche il **patrimonio netto** ovvero il valore delle attività dell'impresa dopo aver dedotto tutte le passività.
+Il bilancio deve contenere informazioni sul
+
+- **patrimonio** dell'impresa (nello **stato patrimoniale**);
+- **utile** dell'impresa (nel **conto economico**);
+- **cassa** (nel **rendiconto finanziario**).
+
+Il bilancio è obbligatorio per legge e le aziende quotate in borsa devono renderlo pubblico.
+
+I _principi contabili_, stabiliti da IFRS/AIS, stabiliscono i fatti da registrare, le modalità di registrazione, i criteri di valutazione e di esposizione di bilancio.
+
+Il bilancio deve comunicare se l'impresa è:
+
+- In equilibrio _patrimoniale_: le attività sono pari alle passività;
+- In equilibrio _economico_: i ricavi sono pari ai costi;
+- In equilibrio _finanziario_: le entrate sono pari alle uscite.
+
+Le _transazioni_ possono avvenire in due modalità:
+
+- **Competenza Economica**: la transazione viene registrata nel bilancio quando il bene o servizio viene consegnato, indipendentemente dal pagamento;
+- **Logica di Cassa**: la transazione viene registrata nel bilancio quando il pagamento viene effettuato, indipendentemente dalla consegna del bene o servizio.
+
+#### Stato Patrimoniale (SP)
+
+Lo stato patrimoniale rappresenta un riassunto di tutti i possedimenti di un'impresa in un determinato istante.
+
+Lo stato patrimoniale è diviso in due sezioni principali:
+
+- **Attività**: tutte le risorse a disposizione dell'impresa per ottenere benefici futuri;
+- **Passività**: tutti i diritti vantati da terzi sulle risorse dell'impresa, obblighi verificati nel passato.
+  - **Patrimonio Netto**: il valore delle attività dell'impresa dopo aver dedotto tutte le passività.
 
 Vale sempre la formula
 
@@ -448,73 +477,83 @@ $$
 \text{Totale Attività} \equiv \text{Totale Passività} + \text{Patrimonio Netto}
 $$
 
-Le attività sono riportate sulla base del _criterio di liquidità_ mentre le passività sono riportate secondo il _criterio di esigibilità_: entrambi questi criteri consistono nel riportare le varie voci secondo la loro capacità di trasformarsi in risorse monetarie liquide.
-Per le attività l'ordine è: _attività non correnti_, _attività correnti_ e _attività cessate o destinate ad essere cedute_.
-Per le passività l'ordine è: _patrimonio netto_, _passività non correnti_, _passività correnti_ e _passività correlate ad attività cessate o destinate ad essere cedute_.
+Le _attività_ sono riportate sulla base del **criterio di liquidità**, mentre le _passività_ sono riportate secondo il **criterio di esigibilità**, ovvero la capacità di essere convertite in denaro o di essere pagate nel breve termine (esercizio).
 
-Di seguito viene riportato un riassunto di tutti i campi di un bilancio ordinati seguendo i vari criteri:
+Per le attività l'ordine è:
 
-- Attività
-  - Attività non correnti
-    - Attività materiali
-      - Immobili, impianti, macchinari di proprietà
-      - Beni in locazione finanziaria
-      - Investimenti immobiliari
-    - Attività immateriali
-      - Avviamento e attività immateriali a vita non definita
-      - Attività materiali a vita definita
-    - Altre attività non correnti
-      - Partecipazioni
-      - Titoli e crediti finanziari
-      - Crediti vari e altre attività non correnti
-    - Attività per imposte anticipate
-  - Attività correnti
-    - Rimanenze di magazzino
-    - Lavori in corso su ordinazione
-    - Crediti commerciali
-    - Titoli, crediti finanziari, altre attività finanziarie correnti e altre attività disponibili per la vendita
-    - Cassa e altre disponibilità liquide equivalenti
-  - Attività cessate o destinate ad essere ceduce
-    - Di natura finanziaria
-    - Di natura non finanziaria
-- Passività
-  - Patrimonio netto
-    - Capitale emesso
-    - Riserve
-      - Riserva da sovrapprezzo
-      - Riserva da rivalutazione
-      - Altre riserve
-    - Utili (e perdite) di esercizio
-    - Utili (e perdite) portate a nuovo
-  - Passività non correnti
-    - Passività finanziarie non correnti
-      - Obbligazioni in circolazione
-      - Debiti verso banche
-      - Altre attività finanziarie
-    - TFR e altri fondi relativi al personale
-    - Fondo imposte differite
-    - Fondo per rischi e oneri futuri
-    - Debiti vari e altre attività non correnti
-  - Passività correnti
-    - Passività finanziarie correnti
-      - Obbligazioni in circolazione
-      - Debiti verso banche
-      - Altre passività finanziarie
-    - Debiti commerciali
-    - Debiti per imposte
-    - Debiti vari e altre passività correnti
-  - Passività correlate ad attività cessate o destinate ad essere cessate
-    - Di natura finanziaria
-    - Di natura non finanziaria
+- **Attività non correnti**: utilità utilizzate oltre l'esercizio corrente;
+  - _Attività materiali_: risorse fisiche utilizzate per la produzione di beni o servizi.
+    - Immobili, impianti, macchinari di proprietà
+    - Beni in locazione finanziaria
+    - Investimenti immobiliari
+  - _Attività immateriali_: risorse non fisiche che portano benefici economici.
+    - Brevetti e Licenze
+    - Avviamento (goodwill): valore aggiunto di un'impresa acquistata che non può essere attribuito a beni specifici (Acquisto - Patrimonio Netto);
+  - _Altre attività non correnti_
+    - Partecipazioni
+    - Titoli e crediti finanziari
+    - Crediti vari e altre attività non correnti
+  - _Attività per imposte anticipate_
+- **Attività correnti**: utilità utilizzate entro l'esercizio corrente;
+  - Rimanenze di magazzino
+  - Lavori in corso su ordinazione
+  - Crediti commerciali
+  - Titoli, crediti finanziari, altre attività finanziarie correnti e altre attività disponibili per la vendita
+  - Cassa e altre disponibilità liquide equivalenti
+- **Attività cessate o destinate ad essere cedute** (Non sempre presente)
+  - Di natura finanziaria
+  - Di natura non finanziaria
 
-Le _attività a vita utile definita_ perdono valore col passare del tempo: l'**ammortamento** avviene a **quote costanti**, a **quote crescenti** o **secondo le quantità prodotte**.
+Le _attività a vita utile definita_ perdono valore col passare del tempo. Questa perdita di valore è detta **ammortamento** è può essere:
 
-Le _attività a vita utile non definita_, invece, possono subire sia una _svalutazione_ che una _valutazione_.
+- **a quote costanti**: si considera che il bene perda lo stesso valore ogni anno;
+- **a quote decrescenti**: si considera che il bene perda un valore sempre minore ogni anno;
+- **quantità prodotte**: si considera che il bene perda valore in base alla quantità di beni prodotti.
 
-Per le _rimanenze di magazzino_, il valore considerato è il minimo tra il costo (che può essere calcolato con il metodo _FIFO_ (si considerano venduti i pezzi prodotti precedentmente) o con il metodo del _costo medio_ (si considera il prezzo medio dei prodotti)) e il valore di realizzo.
+Le _attività a vita utile non definita_, invece, possono subire sia una _svalutazione_ che una _valutazione_ in base al criterio del **fair value** (valore equo) che rappresenta il prezzo di mercato di un bene o servizio in un mercato attivo.
+
+Per le _rimanenze di magazzino_, il valore considerato è il minimo tra il costo (che può essere calcolato con il metodo _FIFO_ (si considerano venduti i pezzi prodotti precedentemente) o con il metodo del _costo medio_ (si considera il prezzo medio dei prodotti) e il valore di realizzo.
+
+Per le passività l'ordine è:
+
+- **Patrimonio netto**: valore dei diritti sull'impresa da parte degli azionisti per il capitale investito;
+  - Capitale emesso: capitale conferito dagli azionisti all’impresa all’atto della
+sottoscrizione;
+  - Riserve
+    - Riserva da sovrapprezzo: capitale aggiunto dagli azionisti per aumenti di capitale a pagamento ((valore acquisto - valore nominale) * numero azioni);
+    - Riserva da rivalutazione: modifica da fair value;
+    - Altre riserve
+  - Utili (e perdite) di esercizio: risultato del conto economico dell'esercizio corrente;
+  - Utili (e perdite) portate a nuovo: somma di tutti gli utili che l’impresa ha deciso
+di non distribuire agli azionisti;
+- **Passività non correnti**: diritti vantati da terzi a lungo termine;
+  - Passività finanziarie: diritti vantati da terzi che hanno finanziato l'impresa (prevedono interesse);
+    - Obbligazioni in circolazione
+    - Debiti verso banche
+    - Altre attività finanziarie
+  - Debiti commerciali
+  - TFR e altri fondi relativi al personale
+  - Fondo imposte
+  - Fondo per rischi e oneri futuri
+  - Debiti vari e altre attività non correnti
+- **Passività correnti**: diritti vantati da terzi esigibili nell'esercizio;
+  - Passività finanziarie
+    - Obbligazioni in circolazione
+    - Debiti verso banche
+    - Altre passività finanziarie
+  - Debiti commerciali
+  - Debiti per imposte
+  - Debiti vari e altre passività correnti
+- **Passività correlate ad attività cessate o destinate ad essere cessate**
+  - Di natura finanziaria
+  - Di natura non finanziaria
 
 <!-- Mettere esempi di transazioni e i vari delta sul bilancio conseguenti -->
 
-Il **conto economico** è il documento che descrive tutti i flussi di soldi in entrata ed uscita e determina l'utile di esercizio.
+#### Conto Economico (CE)
 
-<!-- 3.1 contabilità esterna ecc : 121 -->
+Il conto economico rappresenta la situazione economica dell'impresa durante l'esercizio e mostra i flussi di soldi in entrata ed uscita, l'utile, sostenuti durante l'esercizio (si azzera annualmente).
+
+#### Rendiconto Finanziario (schema di cash flow)
+
+Il rendiconto finanziario è il documento che mostra i flussi di cassa dell'impresa durante l'esercizio, ossia le entrate e le uscite di denaro.
