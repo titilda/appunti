@@ -616,6 +616,113 @@ Il conto economico solitamente ha la seguente struttura:
 | +/- Utile (perdita) netto | dalle attività cessate |
 | = **Utile netto d'esercizio** | |
 
+##### Metodo della partita doppia
+
+Il metodo della **partita doppia** è un sistema di registrazione contabile che permette di tenere traccia delle transazioni economiche in modo da garantire l'equilibrio tra le attività e le passività.
+
+Questo metodo si basa sul principio:
+
+$$\text{Attività} = \text{Passività} + \text{Patrimonio Netto}$$
+
+Dove il patrimonio netto dell'esercizio è dato da:
+
+$$\text{Patrimonio Netto} = \text{Patrimonio netto}^{t - 1} +  \text{Utile d'Esercizio}$$
+
+e dal conto economico sappiamo che:
+
+$$\text{Utile d'Esercizio} = \text{Ricavi} - \text{Costi}$$
+
+Il componente fondamentale del metodo della partita è il **mastrino** (o _conto_): un registro contabile che contiene le informazioni relative ad una singola voce di stato patrimoniale o di conto economico.
+
+I mastrini sono divisi in due colonne:
+
+- **Dare**: la colonna in cui vengono registrate le entrate (aumentano le attività, diminuiscono le passività o costi di conto economico);
+- **Avere**: la colonna in cui vengono registrate le uscite (diminuiscono le attività, aumentano le passività o ricavi di conto economico).
+
+I manstrini di stato patrimoniale devono essere iniziati con il saldo iniziale dell'esercizio e aggiornati con le transazioni che avvengono durante l'esercizio. I mastrini di conto economico, invece, vengono azzerati all'inizio di ogni esercizio e aggiornati con le transazioni che avvengono durante l'esercizio.
+
+| Dare               | Avere              |
+|--------------------|--------------------|
+| + Attività         | - Attività         |
+| - Passività        | + Passività        |
+| - Patrimonio Netto | + Patrimonio Netto |
+| + Costi            | - Ricavi           |
+
+Ogni transazione viene contabilizzata in modo che la somma dei valori messi in dare sia pari alla somma dei valori in avere, quindi ogni transazione da origine a due o più mastrini.
+
 #### Rendiconto Finanziario (schema di cash flow)
 
 Il rendiconto finanziario è il documento che mostra i flussi di cassa dell'impresa durante l'esercizio, ossia le entrate e le uscite di denaro.
+
+Il rendiconto finanziario segue il principio di cassa, quindi sono segnate solo le variazioni di disponibilità liquide.
+
+Il Rendiconto Finanziario è strutturato in diverse sezioni basate sulla categoria dei flussi di cassa:
+
+- **Flusso di cassa netto della gestione operativa**: evidenzia i flussi di cassa generati dalle attività operative dell'impresa;
+- **Flusso di cassa netto per attività di investimento**: evidenzia gli investimenti e i disinvestimenti dell'impresa;
+- **Flusso di cassa netto per attività di finanziamento**: evidenzia i finanziamenti acquisiti e rimborsanti dall'impresa.
+
+La somma algebrica di questi tre flussi fornisce l'incremento o il decremento delle disponibilità liquide durante l'esercizio.
+
+| Voce                                                    | Formula       |
+|---------------------------------------------------------|---------------|
+| Flusso di cassa netto della gestione operativa          | A             |
+| Flusso di cassa netto per attività di investimento      | B             |
+| Flusso di cassa netto per attività di finanziamento     | C             |
+| **Incremento (decremento) delle disponibilità liquide** | D = A + B + C |
+| Disponibilità liquide all’inizio del periodo            | E             |
+| **Disponibilità liquide alla fine del periodo**         | F = D + E     |
+
+##### Flusso di cassa netto della gestione operativa
+
+La prima sezione del rendiconto finanziario è il flusso di cassa netto della gestione operativa, che rappresenta i flussi di cassa generati dalle **attività operative** (_operating activities_) dell'impresa.
+
+Queste includono i flussi di cassa derivanti dalla gestione operativa aziendale, ovvero l'insieme delle attività finalizzate alle attività principali dell'azienda. Sono strettamente legate alla gestione operativa del Conto Economico.
+
+Partendo dall'utile d'esercizio (CE), si rettificano i costi non monetari (come l'ammortamento) e le variazioni del capitale circolante netto operativo (differenza tra attività e passività correnti), ottenendo il flusso di cassa netto della gestione operativa.
+
+| Voce                                               | +/- |
+|----------------------------------------------------|-----|
+| Utili del Periodo                                  | +/- |
+| _Rettifiche costi non-cash_                        |     |
+| Ammortamenti                                       | +   |
+| Accantonamenti                                     | +   |
+| Plusvalenze (Minusvalenze) da attività NC          | +/- |
+| Ripristini (Svalutazione) da attività NC           | +/- |
+| Ripristini (Svalutazione) da attività NC           | +/- |
+| _Variazione capitale circolante netto_             |     |
+| Variazione crediti (finali - iniziali)             | -   |
+| Variazione rimanenze (finali - iniziali)           | -   |
+| Variazione debiti commerciali (finali - iniziali)  | +   |
+| Variazione debiti per imposte (finali - iniziali)  | +   |
+| **Flusso di cassa netto della gestione operativa** | =   |
+
+##### Flusso di cassa netto per attività di investimento
+
+Il flusso di cassa netto per attività di investimento rappresenta i flussi di cassa generati dalle **attività di investimento** (_investment activities_) dell'impresa.
+
+Queste includono i flussi di cassa derivanti dall'acquisizione e la cessione di immobilizzazioni materiali, immateriali e finanziarie. Queste attività sono strettamente collegate alle voci delle attività nello Stato Patrimoniale.
+
+| Voce                                                            | +/- |
+|-----------------------------------------------------------------|-----|
+| Pagamenti per acquistare attività                               | -   |
+| Entrate dalla vendita di attività                               | +   |
+| Pagamenti per l’acquisizione di partecipazioni in altre imprese | -   |
+| Incassi dalla vendita di partecipazioni in altre imprese        | +   |
+| **Flusso di cassa netto per attività di investimento**          | =   |
+
+##### Flusso di cassa netto per attività di finanziamento
+
+Il flusso di cassa netto per attività di finanziamento rappresenta i flussi di cassa generati dalle **attività di finanziamento** (_financing activities_) dell'impresa.
+
+Comprendono le variazioni dell'ammontare del patrimonio netto e/o del capitale di debito che derivano dalla politica di finanziamento dell'impresa (ad esempio, interessi, debiti, partecipazioni azionarie). Sono legate alle voci del Patrimonio Netto e delle Passività nello Stato Patrimoniale
+
+| Voce                                                       | +/- |
+|------------------------------------------------------------|-----|
+| Incassi derivanti dall’emissione di azioni                 | +   |
+| Rimborsi agli azionisti a seguito di riduzioni di capitale | -   |
+| Dividendi erogati                                          | -   |
+| Incassi derivanti dall’accensione di prestiti              | +   |
+| Rimborsi di prestiti                                       | -   |
+| **Flusso di cassa netto per attività di finanziamento**    | =   |
+
