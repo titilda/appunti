@@ -3,6 +3,7 @@ title: "Algoritmi e Principi dell'informatica (API)"
 author: 
 - "Niccolò Papini"
 - "Andrea Oggioni"
+- "Nadav Moscovici"
 ---
 # Definizioni iniziali
 
@@ -854,6 +855,24 @@ $\forall k \in \mathbb{N}, k \ge 1$ ($k$ fissato NON si può quantificare !!!)
 - $OddCard(P)= \exists Q(Odd(Q,P) \land \forall x (Last(x,P) \implies Q(x)) \land \exist x P(x))$ dice se $|P|$ è dispari.
 
 Vero sse $Q \subseteq P \ Q$ contiene la $I, II, V$ posizione di $P$.
+
+## Tabella dei Formalismi e Tipi di Chomsky
+
+| Formalismo                                             | Tipo Chomsky | Classe linguaggi             | Potenza      | Descrizione sintetica                                                        |     |     |     |     |
+| ------------------------------------------------------ | ------------ | ---------------------------- | ------------ | ---------------------------------------------------------------------------- | --- | --- | --- | --- |
+| **Espressioni regolari (RE)**                          | Tipo 3       | Regolari                     | 🔹 Minima     | Linguaggi descrivibili con unioni, concatenazioni, e star (es: `(a+b)*abb`). |     |     |     |     |
+| **Automatoni a stati finiti deterministici (DFA)**     | Tipo 3       | Regolari                     | 🔹 Minima     | Modello equivalente alle RE; riconosce solo ling. regolari.                  |     |     |     |     |
+| **Automatoni a stati finiti non deterministici (NFA)** | Tipo 3       | Regolari                     | 🔹 Minima     | Come DFA ma con nondeterminismo. Stessa potenza.                             |     |     |     |     |
+| **Formule logiche monadiche (MFO)**                    | Tipo 3       | Regolari                     | 🔹 Minima     | Linguaggi esprimibili con logica del primo ordine monadica.                  |     |     |     |     |
+| **Grammatiche libere da contesto (CFG)**               | Tipo 2       | Context-Free (CFL)           | 🔸 Intermedia | Possono descrivere linguaggi annidati (es: `a^n b^n`).                       |     |     |     |     |
+| **Pushdown Automata (PDA)**                            | Tipo 2       | Context-Free                 | 🔸 Intermedia | Modello con stack, equivalente alle CFG.                                     |     |     |     |     |
+| **Grammatiche dipendenti dal contesto (CSG)**          | Tipo 1       | Context-Sensitive (CSL)      | 🔶 Alta       | Ogni produzione non accorcia la stringa ($\alpha \leq \beta$).  |
+| **Lineari sensibili al contesto (LBA)**                | Tipo 1       | Context-Sensitive            | 🔶 Alta       | Turing Machine a memoria limitata alla lunghezza dell’input.                 |     |     |     |     |
+| **Grammatiche generali / non restrittive**             | Tipo 0       | Ricorsivamente enumerabili   | 🔺 Massima    | Nessuna restrizione sulle produzioni.                                        |     |     |     |     |
+| **Macchine di Turing (TM)**                            | Tipo 0       | Ricorsivamente enumerabili   | 🔺 Massima    | Qualsiasi linguaggio computabile.                                            |     |     |     |     |
+| **TM deterministica (DTM)**                            | Tipo 0       | Ricorsivi (decidibili)       | 🔺 Massima    | TM che termina sempre.                                                       |     |     |     |     |
+| **TM non deterministica (NTM)**                        | Tipo 0       | Ric. enumerabili (semi-dec.) | 🔺 Massima    | Può non terminare su input fuori dal linguaggio.                             |     |     |     |     |
+
 
 # Computabilità
 
