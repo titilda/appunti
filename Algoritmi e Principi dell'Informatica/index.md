@@ -856,7 +856,7 @@ $\forall k \in \mathbb{N}, k \ge 1$ ($k$ fissato NON si può quantificare !!!)
 
 Vero sse $Q \subseteq P \ Q$ contiene la $I, II, V$ posizione di $P$.
 
-## Tabella dei Formalismi e Tipi di Chomsky
+# Tabella dei Formalismi e Tipi di Chomsky
 
 | Formalismo                                             | Tipo Chomsky | Classe linguaggi             | Potenza      | Descrizione sintetica                                                        |     |     |     |     |
 | ------------------------------------------------------ | ------------ | ---------------------------- | ------------ | ---------------------------------------------------------------------------- | --- | --- | --- | --- |
