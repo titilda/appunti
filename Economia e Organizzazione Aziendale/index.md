@@ -841,3 +841,160 @@ Indica la capacità dell'impresa di autofinanziarsi a fronte del debito finanzia
 Si calcola come:
 
 $$\text{Indice di Copertura del Debito} = \frac{\text{Cash Flow Operativo}}{\text{Debiti Finanziari}}$$
+
+## Contabilità interna
+
+Il problema della contabilità esterna consiste nel fatto che fornisce informazioni sintetiche e poco tempestive.
+
+La **contabilità interna** si occupa di raccogliere informazioni più dettagliate e tempestive per supportare le decisioni aziendali.
+
+L'impresa deve definire degli **oggetti di costo**, ovvero le aree di attività che devono essere monitorate e analizzate per valutare la performance dell'impresa (unità organizzative o prodotti).
+
+### Classificazione dei Costi
+
+Il costo è un valore monetario che rappresenta il consumo di risorse per il raggiungimento di un obiettivo prefissato.
+
+I costi possono essere classificati in base a diversi criteri:
+
+- Costi diretti vs. indiretti
+  - **Diretti**: costi che possono essere direttamente attribuiti ad un oggetto di costo specifico (ad es. materie prime, manodopera diretta);
+  - **Indiretti**: costi che non possono essere direttamente attribuiti ad un oggetto di costo specifico e devono essere ripartiti tra più oggetti di costo (ad es. costi generali, affitti).
+- Costi di produzione vs. di periodo
+  - **Produzione**: costi sostenuti per la produzione di beni o servizi;
+    - **Costi di produzione diretti**: costi che possono essere direttamente attribuiti alla produzione di un singolo bene o servizio (ad es. materie prime, manodopera diretta);
+    - **Costi di produzione indiretti** (_Overhead_): costi che non possono essere direttamente attribuiti alla produzione di un singolo bene o servizio, ma associabili al processo di produzione (ad es. ammortamenti, energia);
+    - **Costi di Conversione**: costi sostenuti per trasformare le materie prime in prodotti finiti (Lavoro diretto + Overhead di produzione);
+  - **Periodo**: costi sostenuti per attività che non sono direttamente associabili alla produzione, ma che sono necessarie per il funzionamento dell'impresa (ad es. finanza, amministrazione).
+- Costi fissi vs. variabili
+  - **Fissi**: costi che non variano al variare del volume di produzione (ad es. affitti, stipendi);
+  - **Variabili**: costi che variano al variare del volume di produzione (ad es. materie prime, energia).
+- Costi evitabili vs. inevitabili
+  - **Evitabili**: costi che sono legati ad una decisione;
+  - **Inevitabili**: costi che non possono essere evitati, indipendentemente dalle decisioni prese.
+
+### Rilevazione dei Costi
+
+La **rilevazione dei costi** è il processo di raccolta e registrazione dei costi sostenuti dai vari _oggetti di costo_.
+
+I costi possono essere rilevati in diversi modi:
+
+- **Full Costing**: Questo metodo rileva e attribuisce tutti i tipi di costo, inclusi quelli di periodo, agli oggetti di costo con l'obiettivo è determinare il _costo pieno aziendale_;
+- **Absorption Costing**: Rileva tutti i costi di produzione, mirando a calcolare il _costo pieno industriale_.
+
+I costi vengono allocati in base ad un principio:
+
+- **Principio Causale**: i costi sono allocati agli oggetti di costo in base ad una relazione causa-effetto;
+- **Principio Proporzionale**: i costi sono allocati proporzionalmente rispetto ad una base di allocazione (ad es. ore di lavoro, metri quadrati, etc.).
+
+I principali metodi di rilevazione sono:
+
+#### Process Costing
+
+Il **Process Costing** è un metodo di rilevazione dei costi utilizzato per produzioni omogenee, con processi produttivi a flusso.
+
+Se l'invarianza di wip (work in progress) è invariata, è possibile calcolare il CPI come:
+
+$$\text{CPI} = (\text{C}_\text{MD} + \text{C}_\text{LD} + \text{C}_\text{OVH}) / \text{N}_\text{PF}$$
+
+Dove:
+
+- **C_MD**: Costi dei Materiali Diretti;
+- **C_LD**: Costi del Lavoro Diretto;
+- **C_OVH**: Costi Indiretti di Produzione (Overhead);
+- **N_PF**: Numero di Prodotti Finiti.
+
+Nel caso in cui ci fosse una variazione di semilavorati, bisogna calcolare:
+
+- **Grado di Completamento** ($\alpha$): frazione dei costi già sostenuti per i semilavorati rispetto al costo totale (calcolati linearmente);
+- **Unità Equivalenti** (UE): numero di unità che sarebbero state prodotte se tutte le risorse fossero state impiegate in beni finiti ($\text{UE} = \alpha * N_{\text{wip}}$).
+
+In caso di rimanenze è possibile rilevare i costi tramite due metodi:
+
+- **FIFO**: si ipotizza che le unità di prodotto finito vengano prodotte a partire da quelle in corso di lavorazione del periodo precedente;
+    1. **Calcolo delle Unità Equivalenti (UE):**
+
+       $$
+       \text{UE} = (\text{N}_{\text{PF}} - \alpha_1 \text{N}_{\text{WIP}_1}) + \alpha_2 \text{N}_{\text{WIP}_2}
+       $$
+
+    2. **Calcolo del Costo per Unità Equivalente (CPI):**
+
+       $$
+       \text{CPI} = \frac{C}{\text{UE}}
+       $$
+
+       Dove $C$ è il costo totale sostenuto nel periodo.
+
+    3. **Calcolo del valore dei prodotti finiti e dei WIP finali:**
+
+       - Valore dei WIP finali:
+       $$
+       C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
+       $$
+       - Valore dei prodotti finiti:
+       $$
+       C_{\text{PF}} = C + C_{\text{WIP}_1} - C_{\text{WIP}_2}
+       $$
+- **Costo Medio**: si calcola il costo medio ponderato delle unità prodotte, considerando tutte le unità in corso di lavorazione e quelle finite.
+- **Calcolo delle Unità Equivalenti (UE):**
+
+  $$
+  \text{UE} = \text{N}_{\text{PF}} + \alpha_2 \text{N}_{\text{WIP}_2}
+  $$
+
+- **Calcolo del Costo per Unità Equivalente (CPI):**
+
+  $$
+  \text{CPI} = \frac{C + C_{\text{WIP}_1}}{\text{UE}}
+  $$
+
+- **Calcolo del valore dei prodotti finiti e dei WIP finali:**
+
+  - Valore dei WIP finali:
+    $$
+    C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
+    $$
+  - Valore dei prodotti finiti:
+    $$
+    C_{\text{PF}} = \text{CPI} \times \text{N}_{\text{PF}}
+    $$
+
+#### Job Order Costing (JOC)
+
+Il **Job Order Costing (JOC)** è un metodo di rilevazione dei costi utilizzato per produzioni in cui l'output è quantificabile in _lotti_ e ciascun reparto si occupa di più lotti nel periodo.
+
+Utile quando i costi di materia prime e lavoro diretto sono preponderanti e attribuibili a singoli lotti.
+
+I costi indiretti di produzione (Overhead) non sono direttamente imputabili ai singoli lotti e sono allocati proporzionalmente ad una _base di allocazione_ (ba).
+
+1. Associare ad ongi lotto una base di allocazione ($\text{ba}_j$).
+2. Calcolo del coefficiente di allocazione (L):
+   $$
+   \text{CA} = \frac{\text{C}_\text{ovh}}{\text{Base di Allocazione Prevista}}
+   $$
+3. Calcolo del costo totale del lotto ($\text{C}_j$):
+   $$
+    \text{C}_j = \text{C}_\text{MD} + \text{C}_\text{LD} + \text{CA} \cdot \text{ba}_j
+    $$
+4. Calcolo del costo per unità del lotto ($\text{CPI}_j$):
+    $$
+    \text{CPI}_j = \frac{\text{C}_j}{\text{N}_{\text{PF}_j}}
+    $$
+
+#### Activity Based Costing (ABC)
+
+#### Confronto tra i metodi
+
+Di seguito sono riportate delle tabelle che confrontano i principali metodi di rilevazione dei costi (Process Costing, Job Order Costing - JOC, Activity Based Costing - ABC) in base ai criteri di allocazione dei costi e alle loro caratteristiche principali.
+
+| Metodo              | Materiali Diretti | Lavoro Diretto | Costi Indiretti |
+|---------------------|-------------------|----------------|-----------------|
+| **Process Costing** | Proporzionale     | Proporzionale  | Proporzionale   |
+| **JOC**             | Causale           | Causale        | Proporzionale   |
+| **ABC**             | Causale           | Causale        | Causale         |
+
+| Metodo              | Precisione | Onerosità  | Ambito tipico di applicazione |
+|---------------------|------------|------------|-------------------------------|
+| **Process Costing** | Bassa      | Bassa      | Processi a flusso             |
+| **JOC**             | Alta       | Alta       | MP+LD preponderanti           |
+| **ABC**             | Molto alta | Molto alta | OVH non proporzionali         |
