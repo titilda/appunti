@@ -726,3 +726,118 @@ Comprendono le variazioni dell'ammontare del patrimonio netto e/o del capitale d
 | Rimborsi di prestiti                                       | -   |
 | **Flusso di cassa netto per attività di finanziamento**    | =   |
 
+### Analisi del bilancio
+
+L'analisi di bilancio è il processo che valuta la situazione economica di un'azienda mediante indicatori numerici.
+
+Questi indicatori si dividono in tre categorie.
+
+#### Indici reddituali
+
+Gli indici reddituali misurano la capacità dell'impresa di generare utili.
+
+##### Return on Equity (ROE)
+
+Il **Return on Equity (ROE)** è un indicatore che misura la redditività del capitale fornito dagli azionisti.
+
+Un ROE elevato indica che l'impresa sta generando un buon ritorno sugli investimenti degli azionisti.
+
+Si calcola come:
+
+$$\text{ROE} = \frac{\text{Utile Netto}}{\text{Patrimonio Netto}} [\%]$$
+
+Dove:
+
+- **Utile Netto** è l'utile d'esercizio riportato nel conto economico;
+- **Patrimonio Netto** è riportato nello stato patrimoniale.
+
+##### Return on Investment (ROI)
+
+Il **Return on Investment (ROI)** è un indicatore che misura la redditività dell'attività primaria dell'impresa rispetto alle risorse complessive.
+
+Si calcola come:
+
+$$\text{ROI} = \frac{\text{EBIT}}{\text{Capitale Investito}} [\%]$$
+
+Dove:
+
+- **EBIT** è l'utile operativo, riportato nel conto economico;
+- **Capitale Investito** è la somma del patrimonio netto (E) e delle passività (D), riportato nello stato patrimoniale.
+
+##### Return on Debt (ROD)
+
+Il **Return on Debt (ROD)** è un indicatore che misura la redditività del capitale preso in prestito o il costo medio del capitale di debito.
+
+Si calcola come:
+
+$$\text{ROD} = \frac{\text{Oneri Finanziari}}{\text{Debiti Finanziari}} [\%]$$
+
+Dove:
+
+- **Oneri Finanziari** sono gli interessi pagati sui debiti finanziari, riportati nel conto economico;
+- **Debiti Finanziari** sono i debiti _finanziari_ correnti e non, riportati nelle passività dello stato patrimoniale.
+
+Se il ROI è maggiore del ROD, l'impresa sta generando un ritorno maggiore rispetto al costo del capitale preso in prestito, di conseguenza il debito crea valore aggiunto e conviene indebitarsi.
+
+##### Leva Finanziaria
+
+La **leva finanziaria** è un indicatore che misura il livello di indebitamento dell'impresa.
+
+Si calcola come:
+
+$$\text{D/E} = \frac{\text{Debiti}}{\text{Patrimonio Netto}}$$
+
+Dove:
+
+- **Debiti** sono il totale delle passività, riportate nello stato patrimoniale;
+- **Patrimonio Netto** è riportato nello stato patrimoniale.
+
+Se la leva finanziaria è maggiore di 1, significa che l'impresa ha più debiti che patrimonio netto, quindi maggiore è la leva finanziaria, maggiore è il rischio di insolvenza dell'impresa.
+
+#### Indici di liquidità
+
+Gli indici di liquidità misurano la capacità dell'impresa di far fronte ai propri impegni finanziari a breve termine.
+
+##### Rapport Corrente (RA)
+
+Il **Rapporto Corrente (RA)** è un indicatore che misura la capacità dell'impresa di coprire le passività correnti con le attività correnti.
+
+Si calcola come:
+
+$$\text{RA} = \frac{\text{Attività Correnti}}{\text{Passività Correnti}}$$
+
+Un RA maggiore di 1 indica che ha troppe risorse liquide e se investite potrebbero generare un ritorno maggiore.
+
+##### Test Acido (TA)
+
+Il **Test Acido (TA)** è un indicatore che misura la capacità dell'impresa di coprire le passività correnti con le attività correnti, escludendo le rimanenze di magazzino.
+
+Si calcola come:
+
+$$\text{TA} = \frac{\text{Attività Correnti} - \text{Rimanenze}}{\text{Passività Correnti}}$$
+
+Dove:
+
+- **Rimanenze** sono le scorte di magazzino, riportate nello stato patrimoniale.
+
+Il valore del Test Acido deve essere maggiore di 1 per indicare che l'impresa ha sufficienti attività liquide per coprire le passività correnti.
+
+#### Indici Patrimoniali
+
+Gli indici patrimoniali misurano la solidità patrimoniale dell'impresa e la solvibilità a lungo termine.
+
+##### Indice di Autonomia Finanziaria (?)
+
+Indica la capacità dell'impresa di aumentare il patrimonio netto senza contributi dai soci.
+
+Si calcola come:
+
+$$\text{Indice di Autonomia Finanziaria} = \frac{\text{Equity}}{\text{Capitale Sociale}}$$
+
+##### Indice di Copertura del Debito
+
+Indica la capacità dell'impresa di autofinanziarsi a fronte del debito finanziario.
+
+Si calcola come:
+
+$$\text{Indice di Copertura del Debito} = \frac{\text{Cash Flow Operativo}}{\text{Debiti Finanziari}}$$
