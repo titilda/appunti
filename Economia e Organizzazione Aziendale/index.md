@@ -1161,3 +1161,172 @@ Il **Payback Time (PT)** è il tempo necessario per recuperare l'investimento in
 Il Payback Time si calcola sommando i NCF (attualizzati e non) fino a raggiungere l'investimento iniziale.
 
 Un investimento è considerato accettabile se il Payback Time è inferiore al periodo di tempo stabilito dall'impresa ($T_{CUTOFF}$).
+
+## Il Mercato
+
+Il mercato è un luogo dove avvengono scambi di beni e servizi tra acquirenti e venditori.
+
+Secondo l'economia classica esistono due concetti fondamentali:
+
+- **Razionalità Economica**: gli attori economici hanno informazioni complete sul mercato e prendono decisioni razionali per massimizzare il loro benessere;
+- **Ottimo Paretiano**: una situazione in cui non è possibile migliorare la condizione di un attore economico senza peggiorare quella di un altro.
+
+### Domanda
+
+La domanda è data dai _consumatori_ e rappresenta la quantità di beni o servizi che i consumatori sono disposti ad acquistare a un certo prezzo.
+
+I consumatori mirano a massimizzare la propria **utilità**, ovvero il grado di soddisfazione che ottengono dal consumo di beni e servizi.
+
+La **funzione di utilità** descrive come varia il livello di soddisfazione del consumatore al variare delle quantità di beni e servizi consumati. Questa funzione ha:
+
+- Utilità monotona e crescente: più beni e servizi vengono consumati, maggiore è l'utilità;
+- Utilità marginale decrescente: l'utilità aggiuntiva derivante dal consumo di un'unità aggiuntiva di un bene o servizio diminuisce al crescere della quantità consumata.
+
+Il consumatore ha un **prezzo di riserva** (PR), ovvero il prezzo massimo che è disposto a pagare per un bene o servizio in base all'utilità che ne deriva.
+
+Il prezzo di riserva e la funzione di utilità portano alla **curva di domanda individuale di un bene** ed esprime il prezzo di riserva in base alla quantità. Questa funzione è decrescente (data la marginalità decrescente dell'utilità), quindi all'aumentare della quantità richiesta, il prezzo di riserva del singolo bene diminuisce.
+
+La curva di domanda origina il **Surplus del Consumatore**, che rappresenta la differenza tra il prezzo di riserva e il prezzo di mercato pagato per un bene o servizio.
+
+Questi valori derivano da:
+
+- Caratteristiche del consumatore:
+  - Gusti e necessità individuali;
+  - Reddito disponibile:
+    - **Beni Normali**: beni la cui domanda aumenta all'aumentare del reddito;
+    - **Beni Inferiori**: beni la cui domanda diminuisce all'aumentare del reddito;
+- Caratteristiche del bene:
+  - Prezzo e disponibilità di **Beni Sostituti**: beni che possono essere utilizzati al posto di un altro bene;
+  - Prezzo e disponibilità di **Beni Complementari**: beni che sono utilizzati insieme ad un altro bene;
+
+La **Domanda di Mercato** è la somma delle domande individuali di tutti i consumatori per un determinato bene o servizio. La curva di domanda di mercato è la somma orizzontale delle curve di domanda individuali.
+
+La domanda varia in base al:
+
+- Prezzo
+- Reddito
+- Prezzi dei beni sostituti e complementari
+
+La variazione della domanda in base ad uno di questi fattori porta all'**elasticità della domanda**, che misura la sensibilità della quantità domandata al variare di un fattore.
+
+L'elasticità in base al prezzo della domanda si calcola come:
+
+$$\epsilon_x = \lvert\frac{\Delta Q_x}{\Delta P_x} \cdot \frac{P_x}{Q_x}\rvert $$
+
+L'elasticità incrociata si calcola come:
+
+$$\epsilon_{xy} = \lvert\frac{\Delta Q_x}{\Delta P_y} \cdot \frac{P_y}{Q_x}\rvert $$
+
+L'elasticità del reddito si calcola come:
+
+$$\epsilon_m = \lvert\frac{\Delta Q_x}{\Delta M} \cdot \frac{M}{Q_x}\rvert $$
+
+L'elasticità della domanda può essere:
+
+- **Elastica**: $\epsilon > 1$ (la domanda varia più che proporzionalmente al variare del prezzo);
+- **Anelastica**: $\epsilon < 1$ (la domanda varia meno che proporzionalmente al variare del prezzo);
+
+### Offerta
+
+L'offerta è data dai _produttori_ e rappresenta la quantità di beni o servizi che i produttori sono disposti a vendere a un certo prezzo.
+
+L'obiettivo dei produttori è massimizzare il proprio **profitto**, ovvero la differenza tra i ricavi totali e i costi totali.
+
+$$\text{Profitto} = \text{RT}(q) - \text{CT}(q)$$
+
+Dove:
+
+- **RT(q)** è il ricavo totale in funzione della quantità prodotta (q);
+- **CT(q)** è il costo totale in funzione della quantità prodotta (q).
+
+Durante la produzione bisogna trovate la quantità ottimale da produrre, che massimizza il profitto. Questo dato è dato dalla differenza di ricavo/costo marginale.
+
+Il **Ricavo Marginale (RM)** è la variazione del ricavo totale derivante dalla vendita di un'unità aggiuntiva di prodotto.
+
+$$
+\text{RM} = \frac{\Delta \text{RT}}{\Delta q}
+$$
+
+Il **Costo Marginale (CM)** è la variazione del costo totale derivante dalla produzione di un'unità aggiuntiva di prodotto.
+
+$$
+\text{CM} = \frac{\Delta \text{CT}}{\Delta q}
+$$
+
+Per massimizzare il profitto, l'impresa deve decidere la quantità ottimale da produrre seguendo questa logica:
+
+- Se **RM > CM**: Produrre un'unità in più aumenta il profitto, quindi conviene espandere la produzione.
+- Se **RM < CM**: Produrre un'unità in più diminuisce il profitto, quindi conviene ridurre la produzione.
+
+L'impresa raggiunge il massimo profitto nel punto in cui il ricavo marginale è uguale al costo marginale dato che aumentare la produzione oltre questo punto comporterebbe un aumento dei costi senza un corrispondente aumento dei ricavi.
+
+$$
+\text{RM} = \text{CM}
+$$
+
+### Tipologie di Mercato
+
+I mercati possono essere classificati in base al numero di produttori e consumatori e alla presenza di barriere all'ingresso.
+
+Le tipologie di mercati sono distribuiti in un continuum che va da un estremo di concorrenza perfetta a un estremo di monopolio, con l'oligopolio come intermedi.
+
+#### Concorrenza Perfetta
+
+La concorrenza perfetta è un mercato ideale in cui:
+
+- Esiste un numero infinito di produttori;
+- I prodotti sono omogenei e indistinguibili tra loro;
+- I produttori e i consumatori hanno informazioni perfette sul mercato;
+- Non ci sono barriere all'ingresso o all'uscita dal mercato.
+
+In questo tipo di mercato, i produttori sono **price takers**, ovvero accettano il prezzo di mercato come dato e non possono influenzarlo dato che:
+
+- un prezzo superiore non venderebbe nulla;
+- un prezzo inferiore non soddisferebbe l'intero mercato.
+
+Dato che i produttori non possono influenzare il prezzo di mercato, l'azienda può solo decidere la quantità da produrre per massimizzare il profitto.
+
+$$CM(q) = RM(q) = P$$
+
+La condizione minima per la produzione è che il prezzo di mercato sia maggiore o uguale al costo medio di produzione:
+
+$$P \geq \frac{CM(q)}{q}$$
+
+Nel lungo periodo, le imprese entrano ed escono dal mercato in base alla redditività:
+
+- Se il prezzo di mercato è maggiore del costo medio di produzione, le imprese entrano nel mercato, aumentando l'offerta e facendo diminuire il prezzo fino a raggiungere l'equilibrio;
+- Se il prezzo di mercato è minore del costo medio di produzione, le imprese escono dal mercato, diminuendo l'offerta e facendo aumentare il prezzo fino a raggiungere l'equilibrio.
+
+Per le imprese la concorrenza non è desiderabile, in quanto porta le imprese al profitto nullo.
+
+Per i consumatori, la concorrenza perfetta è desiderabile, in quanto porta a prezzi più bassi e massimizza l'efficienza allocativa del mercato, e massimizza il surplus del consumatore.
+
+#### Monopolio
+
+Il monopolio è un mercato in cui esiste un solo produttore che controlla l'intero mercato.
+
+In questo tipo di mercato, il monopolista è un **price maker**, ovvero può influenzare il prezzo di mercato decidendo la quantità da produrre.
+
+Fissando un prezzo superiore ai costi marginali il monopolista è in grado di ottenere un profitto positivo.
+
+Il prezzo che massimizza il profitto si trova massimizzando il numero di persone che comprerebbero il prodotto per il prezzo fissato.
+
+Questo diminuisce il surplus del consumatore e aumenta il profitto del produttore, portando a una **perdita secca** (persone che avrebbero comprato il bene nella concorrenza perfetta).
+
+Il monopolio nasce da delle barriere all'ingresso nel mercato, che impediscono ad altri produttori di entrare e competere. Queste barriere possono essere:
+
+- **Barriere Strutturali**: barriere che dipendono da caratteristiche del mercato, come vantaggi di costo (economie di scala, accesso a risorse rare, etc.) o caratteristiche di domanda (gusti e preferenze dei consumatori);
+- **Barriere Istituzionali**: barriere imposte da leggi o regolamenti, come brevetti, licenze, concessioni, etc.;
+- **Barriere Strategiche**: barriere create dai produttori per impedire l'ingresso e l'uscita di concorrenti, come pratiche di prezzo predatorio, pubblicità aggressiva, etc.
+
+Lo stato per limitare il monopolio può:
+
+- Regolare i prezzi;
+- Imporre leggi antitrust per prevenire pratiche monopolistiche;
+- Trasformare monopoli privati in monopoli pubblici.
+
+Conoscere il prezzo di riserva dei consumatori permette al monopolista di massimizzare il profitto applicando una **discriminazione sui prezzi**.
+
+- **Discriminazione di primo grado**: il monopolista chiede a ogni consumatore il prezzo massimo che è disposto a pagare, ottenendo il massimo profitto possibile;
+- **Discriminazione di secondo grado**: il monopolista offre diverse opzioni di prezzo per lo stesso prodotto, in base a caratteristiche dei consumatori non osservabili direttamente;
+- **Discriminazione di terzo grado**: il monopolista divide i consumatori in gruppi in base a caratteristiche osservabili (ad es. età, etc.) e applica prezzi diversi per ciascun gruppo.
