@@ -1070,3 +1070,94 @@ Successivamente si esaminano i vincoli:
 - In presenza di _vincoli di risorse_ si calcola il **margine di contribuzione per unità di risorsa scarsa** ($m_i / \text{quantità risorsa utilizzata}$) per ogni prodotto e si produce il prodotto con il margine di contribuzione più alto fino ad esaurimento della risorsa;
 - In presenza di _vincoli contrattuali_ si soddisfa prima il vincolo per poi massimizzare il profitto;
 - In presenza di _vincoli di mercato_ si produce il prodotto con il margine di contribuzione più alto fino a raggiungere la domanda di mercato.
+
+## Valutazione degli Investimenti
+
+Un investimento è un'operazione economica che comporta l'impiego di risorse finanziarie per ottenere un ritorno economico futuro.
+
+Gli investimenti avere due tipologie di uscite di cassa:
+
+- **Conventional Cash Flow**: Uscite di cassa presenti solo all'inizio dell'investimento;
+- **Non-Conventional Cash Flow**: Uscite di cassa presenti anche durante l'investimento.
+
+Gli investimenti si valutano in base ad un caso base e si preferiscono le alternative che massimizzano il ritorno economico, soprattutto nel breve periodo.
+
+Esistono due tipologie di investimenti:
+
+- **Non Obbligatori**: investimenti che l'impresa può decidere di effettuare o meno, in questo caso si prende come caso base il non effettuare l'investimento;
+- **Obbligatori**: investimenti che l'impresa deve effettuare per continuare a operare, in questo caso si prende come caso base una delle opzioni.
+
+Come nell'analisi di make or buy si calcolano i costi e i ricavi differenziali tra le due alternative.
+
+Per prima cosa di calcolano le differenze nel _conto economico_ nei vari anni e successivamente si _rettificano_ tutte le uscite/entrate cash come ammortamenti, svalutazioni, plusvalenze/minusvalenze, etc.
+
+| Voce  | +/- |
+|-------|-----|
+| Ricavi Differenziali | +   |
+| Costi Operativi Differenziali | -   |
+| Ammortamenti Differenziali | -   |
+| Stipendi Differenziali | -   |
+| Plusvalenze/Minusvalenze | +/- |
+| **Utile Lordo Differenziale** | = |
+| Imposte Differenziali | + |
+| **Utile Netto Differenziale** | = |
+| Investimento Iniziale | - |
+| Rettificata Ammortamento | + |
+| Rettificata TFR | + |
+| Eroga TFR | - |
+| Rettificata Plus/Minus | +/- |
+| Vendite | + |
+| **NCF** | = |
+
+In questo calcolo si ignorano i **costi affondati**, ovvero i costi che non possono essere recuperati e che non influenzano la decisione di investimento.
+
+### Analisi degli investimenti
+
+Per analizzare gli investimenti di usano due tipologie di metodi:
+
+- **Discounted Cash Flow (DCF)**: metodi che considerano la distribuzione temporale dei flussi di cassa;
+- **Non DCF**: metodi che non considerano la distribuzione temporale dei flussi di cassa.
+
+I metodi DFC considerano _attualizzazione_ del capitale, ovvero fatto che il valore del denaro nel tempo, ovvero il fatto che un euro oggi vale più di un euro domani a causa del **costo opportunità del capitale** (k).
+
+Il costo opportunità del capitale è la remunerazione a cui i finanziatori (shareholders, banche, etc) del progetto rinunciano invece che investire in un progetto alternativo.
+
+#### Net Present Value (NPV)
+
+Il **Net Present Value (NPV)** è il valore attualizzato netto dei flussi di cassa futuri di un investimento, scontati al costo opportunità del capitale.
+
+$$NPV = \sum_{t=0}^{n} \frac{NCF_t}{(1 + k)^t}$$
+
+Dove:
+
+- **NCF_t** (Net Cash Flow) è il flusso di cassa netto atteso al tempo t;
+- **k** è il costo opportunità del capitale;
+- **n** è la durata dell'investimento in anni.
+
+Un NPV positivo indica che l'investimento è redditizio e dovrebbe essere accettato.
+
+#### Profitability Index (PI)
+
+Il **Profitability Index (PI)** è un indicatore che misura il valore attuale dei flussi di cassa futuri rispetto all'investimento iniziale.
+
+Si calcola come:
+
+$$PI = \frac{\sum_{t=1}^{n} \frac{NCF_t}{(1 + k)^t}}{NCF_0}$$
+
+Un investimento è considerato redditizio se il PI è maggiore di 1, indicando che il valore attuale dei flussi di cassa futuri è maggiore dell'investimento iniziale.
+
+#### Internal Rate of Return (IRR)
+
+L'**Internal Rate of Return (IRR)** (o Tasso Interno di Rendimento - TAR) è il tasso di sconto che rende il NPV dell'investimento pari a zero.
+
+$$\sum_{t=0}^{n} \frac{NCF_t}{(1 + IRR)^t} = 0$$
+
+Un IRR maggiore del costo opportunità del capitale (k) indica che l'investimento è redditizio.
+
+#### Payback Time (PT)
+
+Il **Payback Time (PT)** è il tempo necessario per recuperare l'investimento iniziale attraverso i flussi di cassa netti generati dall'investimento.
+
+Il Payback Time si calcola sommando i NCF (attualizzati e non) fino a raggiungere l'investimento iniziale.
+
+Un investimento è considerato accettabile se il Payback Time è inferiore al periodo di tempo stabilito dall'impresa ($T_{CUTOFF}$).
