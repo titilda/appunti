@@ -983,6 +983,12 @@ I costi indiretti di produzione (Overhead) non sono direttamente imputabili ai s
 
 #### Activity Based Costing (ABC)
 
+L'**Activity Based Costing (ABC)** è un metodo di rilevazione dei costi preciso che un coefficiente di allocazione per ogni attività, permettendo di allocare i costi indiretti in modo più accurato.
+
+1. Identificare le attività che generano costi indiretti e definire i _driver_ di costo (fattori che indicano l'impiego della risorsa al prodotto).
+2. Ripartire i costi al prodotto secondo il driver di ciascuna attività
+3. Calcolare il costo totale
+
 #### Confronto tra i metodi
 
 Di seguito sono riportate delle tabelle che confrontano i principali metodi di rilevazione dei costi (Process Costing, Job Order Costing - JOC, Activity Based Costing - ABC) in base ai criteri di allocazione dei costi e alle loro caratteristiche principali.
@@ -998,3 +1004,69 @@ Di seguito sono riportate delle tabelle che confrontano i principali metodi di r
 | **Process Costing** | Bassa      | Bassa      | Processi a flusso             |
 | **JOC**             | Alta       | Alta       | MP+LD preponderanti           |
 | **ABC**             | Molto alta | Molto alta | OVH non proporzionali         |
+
+### Decisioni di breve periodo
+
+Le decisioni di breve periodo sono decisioni che:
+
+- non coinvolgono una modifica strutturale delle risorse aziendali;
+- Hanno un impatto economico limitato e corrente all'esercizio;
+- Non influiscono la strategia dell'impresa.
+
+Nella scelta tra alcune alternative vengono considerati solo i costi e i ricavi che variano al variare della decisione, ovvero i **costi differenziali** e i **ricavi differenziali**.
+
+Per valutare una scelta bisogna capire quanto guadagno uno o più prodotti possono portare all'impresa. Per fare ciò si calcola il **margine di contribuzione** (MC), che è la differenza tra il prezzo di vendita e i costi variabili.
+
+$$m = p - cv$$
+
+Il margine totale viene calcolato moltiplicando il margine di contribuzione per il numero di unità vendute (Q).
+
+#### Make or Buy
+
+In caso di decisione di **Make or Buy**, l'impresa deve decidere se produrre internamente un bene o acquistarlo da un fornitore esterno.
+
+In questo caso si sceglie una delle alternative come caso base e si calcolano i costi differenziali tra le due alternative.
+
+Bisogna anche considerare i **costi opportunità**, ovvero i benefici al quale si rinuncia scegliendo una delle due alternative.
+
+#### Analisi di Break-Even
+
+L'**analisi di Break-Even** è un metodo per determinare il punto di pareggio, ovvero il livello di vendite necessario per coprire tutti i costi fissi o ottenere un certo profitto.
+
+Alcune ipotesi sono:
+
+- Il prezzo è costante rispetto al volume di vendita;
+- Non ci sono crediti o merci invendute;
+- I costi sono costanti rispetto al volume di vendita.
+
+Per calcolare il punto di break even si deve prima trovare il margine di contribuzione medio ($m_\text{medio}$):
+
+$$m_x = \text{prezzo} - C_\text{variabili}$$
+$$m_\text{medio} = \sum_{i=1}^{n} m_i * x_i$$
+
+Dove $x_i$ è la percentuale di unità vendute del prodotto $i$.
+
+Per trovare il punto di break even, o il profitto target, si deve:
+
+$$Q_\text{target} = \frac{C_\text{fissi} + P_\text{target}}{m_\text{medio}}$$
+
+Per avere un confronto con la quantità massima che l'azienda può produrre si calcola il **margine di sicurezza**:
+
+$$\text{Margine di Sicurezza} = \frac{Q_\text{max} - Q_\text{target}}{Q_\text{max}}$$
+
+#### Mix Produttivo
+
+Il mix produttivo è la combinazione di prodotti che l'impresa decide di produrre per massimizzare il profitto. Questo valore può essere influenzato da dei _vincoli_:
+
+- Consumo di risorse limitate (ad es. manodopera, materie prime);
+- Natura contrattuale (ad es. contratti di fornitura, ordini dei clienti);
+- Di mercato (ad es. domanda di mercato, concorrenza).
+
+Per prima cosa di calcolano i margini di contribuzione per ogni prodotto.
+
+Successivamente si esaminano i vincoli:
+
+- In _assenza di vincoli_ si produce il prodotto con il margine di contribuzione più alto;
+- In presenza di _vincoli di risorse_ si calcola il **margine di contribuzione per unità di risorsa scarsa** ($m_i / \text{quantità risorsa utilizzata}$) per ogni prodotto e si produce il prodotto con il margine di contribuzione più alto fino ad esaurimento della risorsa;
+- In presenza di _vincoli contrattuali_ si soddisfa prima il vincolo per poi massimizzare il profitto;
+- In presenza di _vincoli di mercato_ si produce il prodotto con il margine di contribuzione più alto fino a raggiungere la domanda di mercato.
