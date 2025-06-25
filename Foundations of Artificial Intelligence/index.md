@@ -623,7 +623,7 @@ def REVISE(csp, X_i, X_j)
 
 ```
 
-The complexity of the REVISE is $O(d^2), so the complexity of the AC-3 algorithm is $O(ed^3)$, where $e$ is the number of edges and $d$ is the maximum domain size.
+The complexity of the REVISE is $O(d^2)$, so the complexity of the AC-3 algorithm is $O(ed^3)$, where $e$ is the number of edges and $d$ is the maximum domain size.
 
 #### 4.1.3 Path Consistency
 
