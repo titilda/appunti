@@ -49,15 +49,15 @@ Nella realtà, l'impresa non può avere come unico obiettivo quello di massimizz
 
 Il lavoro dell'imprenditore e **rischioso**. Questo rischio è dato da diversi fattori:
 
-- **Tempo**: le decisioni vengono essere prese _nel presente_ e influenzeranno _il futuro_ senza però avere tutte le informazioni necessarie per prendere la miglior decisione (_Contesto di Incertezza_).
-- **Rigidità Strutturale**: la struttura dell'imprese è molto rigida, non si possono effettuare cambi, come assumere e licenziare dipendenti, ogni giorno in risposta alle variazioni del mercato.
+- **Tempo**: le decisioni vengono essere prese _nel presente_ e influenzeranno _il futuro_ senza però avere tutte le informazioni necessarie per prendere la miglior decisione (_Contesto di Incertezza_);
+- **Rigidità Strutturale**: la struttura dell'imprese è molto rigida, non si possono effettuare cambi, come assumere e licenziare dipendenti, ogni giorno in risposta alle variazioni del mercato;
 - **Contesto Dinamico**: il mercato cambia continuamente e le imprese devono essere in grado di adattarsi a questi cambiamenti (domanda, preferenze, tecnologie, etc).
 
 L'imprenditore si assume _il rischio d'impresa_ ovvero intasca i guadagni se l'impresa va bene e risponde delle perdite in caso contrario.
 
 La responsabilità dell'imprenditore (o dei soci) può essere:
 
-- **illimitata**: risponde con tutto il patrimonio personale, casa e mutande incluse.
+- **illimitata**: risponde con tutto il patrimonio personale, casa e mutande incluse;
 - **limitata**: risponde solo con i capitali conferiti.
 
 ### Ciclo di vita di un'impresa
@@ -98,13 +98,13 @@ Un'impresa è caratterizzata da diversi punti:
 2. Obiettivo:
    - **profit**: l'imprenditore vuole guadagnare;
    - **non profit**: lo scopo non sono i soldi ma qualcosa di socialmente rilevante.
-3. Dimensione
+3. Dimensione:
    - **grande**: &ge; 250 addetti e &gt; 50 mln € fatturato;
    - **medie**: 50-249 addetti e 10-50 mln € fatturato;
    - **piccole**: &lt; 50 addetti e &lt; 10 mln € fatturato;
    - **micro**: &lt; 10 addetti e &le; 2 mln € fatturato.
 4. Output:
-   - **beni materiali**
+   - **beni materiali**:
      - **imprese agricole**: produzione di beni con processi legati alla terra;
      - **imprese industriali e manifatturiere**: produzione di beni utilizzando trasformazioni tecniche;
    - **servizi**: trasporti, distribuzioni di acqua o energia, ristorazione, banche, eccetera.
@@ -121,7 +121,7 @@ Un'impresa è caratterizzata da diversi punti:
 
 Un **settore** è l'insieme di tutte le imprese che producono beni od offrono servizi considerati sostituibili (tra di loro) dal consumatore finale. Le imprese che appartengono ad uno stesso settore sono in competizione tra loro.
 
-Le tipologie di impresa sono descritte dai **codici ATECO** (ATività ECOnomiche), per l'italia, e dal **NACE** (statistical classification of economic activities), per l'Unione Europea.
+Le tipologie di impresa sono descritte dai **codici ATECO** (ATtività ECOnomiche), per l'Italia, e dal **NACE** (statistical classification of economic activities), per l'Unione Europea.
 
 ## Forme giuridiche
 
@@ -320,7 +320,7 @@ L'organigramma possiede due proprietà intrinseche che ne descrivono la compless
 
 L'aumento delle UO porta ad un aumento della complessità dell'organigramma e, di conseguenza, ad un aumento della difficoltà e dei costi di coordinamento tra le UO.
 
-LE UO nell'organigramma si distinguono tra **UO di linea** (che compongono l'albero principale dell'organigramma) e **UO di staff** (che fungono da supporto alle unità di linea sottostanti).
+Le UO nell'organigramma si distinguono tra **UO di linea** (che compongono l'albero principale dell'organigramma) e **UO di staff** (che fungono da supporto alle unità di linea sottostanti).
 
 Le UO possono essere distinte anche tra **permanenti** e **temporanee**.
 
@@ -360,7 +360,7 @@ Questa struttura è particolarmente adatta per imprese monoprodotto che operano 
 
 - **Scarsa attenzione a prodotti/clienti/mercati**: il focus è sulle attività della propria UO;
 - **Alti costi di coordinamento tra le UO**: le attività delle diverse UO sono interdipendenti;
-- **Lentezza decisionale**: bisogna di coordinazione tra varie UO.
+- **Lentezza decisionale**: necessità di coordinazione tra varie UO.
 
 #### Struttura Divisionale
 
@@ -601,7 +601,8 @@ Il conto economico solitamente ha la seguente struttura:
 | - Acquisti di materie prime |  |
 | - Costi Personale |            |
 | - Costi Operativi |            |
-| - _Variazione_ rimanente | differenza algebrica tra il valore delle rimanenze finali e quelle iniziali |
+| - Costi per lavori interni capitalizzati | |
+| - _Variazione_ rimanenze | differenza algebrica tra il valore delle rimanenze finali e quelle iniziali |
 | = **EBITDA** | Utile operativo ante ammortamenti, interessi e tasse |
 | - Ammortamenti |               |
 | - Plusvalenze/minusvalenze | da realizzo di attività correnti (ricavo di una cessione) |
@@ -610,7 +611,6 @@ Il conto economico solitamente ha la seguente struttura:
 | + Proventi finanziari |        |
 | - Oneri finanziari | interessi sui finanziamenti |
 | = Utile prima di imposte |     |
-| - Imposte sul reddito |        |
 | - Imposte sul reddito |        |
 | = **Utile dalle attività in funzione** |  |
 | +/- Utile (perdita) netto | dalle attività cessate |
@@ -639,16 +639,16 @@ I mastrini sono divisi in due colonne:
 - **Dare**: la colonna in cui vengono registrate le entrate (aumentano le attività, diminuiscono le passività o costi di conto economico);
 - **Avere**: la colonna in cui vengono registrate le uscite (diminuiscono le attività, aumentano le passività o ricavi di conto economico).
 
-I manstrini di stato patrimoniale devono essere iniziati con il saldo iniziale dell'esercizio e aggiornati con le transazioni che avvengono durante l'esercizio. I mastrini di conto economico, invece, vengono azzerati all'inizio di ogni esercizio e aggiornati con le transazioni che avvengono durante l'esercizio.
+I mastrini di stato patrimoniale devono essere iniziati con il saldo iniziale dell'esercizio e aggiornati con le transazioni che avvengono durante l'esercizio. I mastrini di conto economico, invece, vengono azzerati all'inizio di ogni esercizio e aggiornati con le transazioni che avvengono durante l'esercizio.
 
 | Dare               | Avere              |
 |--------------------|--------------------|
 | + Attività         | - Attività         |
 | - Passività        | + Passività        |
 | - Patrimonio Netto | + Patrimonio Netto |
-| + Costi            | - Ricavi           |
+| + Costi            | + Ricavi           |
 
-Ogni transazione viene contabilizzata in modo che la somma dei valori messi in dare sia pari alla somma dei valori in avere, quindi ogni transazione da origine a due o più mastrini.
+Ogni transazione viene contabilizzata in modo che la somma dei valori messi in dare sia pari alla somma dei valori in avere, quindi ogni transazione dà origine a due o più mastrini.
 
 #### Rendiconto Finanziario (schema di cash flow)
 
@@ -660,7 +660,7 @@ Il Rendiconto Finanziario è strutturato in diverse sezioni basate sulla categor
 
 - **Flusso di cassa netto della gestione operativa**: evidenzia i flussi di cassa generati dalle attività operative dell'impresa;
 - **Flusso di cassa netto per attività di investimento**: evidenzia gli investimenti e i disinvestimenti dell'impresa;
-- **Flusso di cassa netto per attività di finanziamento**: evidenzia i finanziamenti acquisiti e rimborsanti dall'impresa.
+- **Flusso di cassa netto per attività di finanziamento**: evidenzia i finanziamenti acquisiti e rimborsati dall'impresa.
 
 La somma algebrica di questi tre flussi fornisce l'incremento o il decremento delle disponibilità liquide durante l'esercizio.
 
@@ -688,7 +688,6 @@ Partendo dall'utile d'esercizio (CE), si rettificano i costi non monetari (come 
 | Ammortamenti                                       | +   |
 | Accantonamenti                                     | +   |
 | Plusvalenze (Minusvalenze) da attività NC          | +/- |
-| Ripristini (Svalutazione) da attività NC           | +/- |
 | Ripristini (Svalutazione) da attività NC           | +/- |
 | _Variazione capitale circolante netto_             |     |
 | Variazione crediti (finali - iniziali)             | -   |
@@ -798,7 +797,7 @@ Se la leva finanziaria è maggiore di 1, significa che l'impresa ha più debiti 
 
 Gli indici di liquidità misurano la capacità dell'impresa di far fronte ai propri impegni finanziari a breve termine.
 
-##### Rapport Corrente (RA)
+##### Rapporto Corrente (RA)
 
 Il **Rapporto Corrente (RA)** è un indicatore che misura la capacità dell'impresa di coprire le passività correnti con le attività correnti.
 
