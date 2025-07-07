@@ -959,55 +959,48 @@ Nel caso in cui ci fosse una variazione di semilavorati, bisogna calcolare:
 In caso di rimanenze è possibile rilevare i costi tramite due metodi:
 
 - **FIFO**: si ipotizza che le unità di prodotto finito vengano prodotte a partire da quelle in corso di lavorazione del periodo precedente;
-    1. **Calcolo delle Unità Equivalenti (UE):**
+  1. **Calcolo delle Unità Equivalenti (UE):**
+    $$
+    \text{UE} = (\text{N}_{\text{PF}} - \alpha_1 \text{N}_{\text{WIP}_1}) + \alpha_2 \text{N}_{\text{WIP}_2}
+    $$
 
-       $$
-       \text{UE} = (\text{N}_{\text{PF}} - \alpha_1 \text{N}_{\text{WIP}_1}) + \alpha_2 \text{N}_{\text{WIP}_2}
-       $$
+  2. **Calcolo del Costo per Unità Equivalente (CPI):**
+    $$
+    \text{CPI} = \frac{C}{\text{UE}}
+    $$
+    Dove $C$ è il costo totale sostenuto nel periodo.
 
-    2. **Calcolo del Costo per Unità Equivalente (CPI):**
-
-       $$
-       \text{CPI} = \frac{C}{\text{UE}}
-       $$
-
-       Dove $C$ è il costo totale sostenuto nel periodo.
-
-    3. **Calcolo del valore dei prodotti finiti e dei WIP finali:**
-
+  3. **Calcolo del valore dei prodotti finiti e dei WIP finali:**		
        - Valore dei WIP finali:
-       $$
-       C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
-       $$
+         $$
+         C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
+         $$
+
        - Valore dei prodotti finiti:
-       $$
-       C_{\text{PF}} = C + C_{\text{WIP}_1} - C_{\text{WIP}_2}
-       $$
+         $$
+         C_{\text{PF}} = C + C_{\text{WIP}_1} - C_{\text{WIP}_2}
+         $$
 
 - **Costo Medio**: si calcola il costo medio ponderato delle unità prodotte, considerando tutte le unità in corso di lavorazione e quelle finite.
-  
   1. **Calcolo delle Unità Equivalenti (UE):**
-
     $$
     \text{UE} = \text{N}_{\text{PF}} + \alpha_2 \text{N}_{\text{WIP}_2}
     $$
 
   2. **Calcolo del Costo per Unità Equivalente (CPI):**
-
     $$
     \text{CPI} = \frac{C + C_{\text{WIP}_1}}{\text{UE}}
     $$
 
-  2. **Calcolo del valore dei prodotti finiti e dei WIP finali:**
-
-    - Valore dei WIP finali:
-      $$
-      C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
-      $$
-    - Valore dei prodotti finiti:
-      $$
-      C_{\text{PF}} = \text{CPI} \times \text{N}_{\text{PF}}
-      $$
+  3. **Calcolo del valore dei prodotti finiti e dei WIP finali:**
+       - Valore dei WIP finali:
+         $$
+         C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
+         $$
+       - Valore dei prodotti finiti:
+         $$
+         C_{\text{PF}} = \text{CPI} \times \text{N}_{\text{PF}}
+         $$
 
 #### Job Order Costing (JOC)
 
