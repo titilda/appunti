@@ -739,11 +739,13 @@ Gli indici reddituali misurano la capacità dell'impresa di generare utili.
 
 Il **Return on Equity (ROE)** è un indicatore che misura la redditività del capitale fornito dagli azionisti.
 
-Un ROE elevato indica che l'impresa sta generando un buon ritorno sugli investimenti degli azionisti.
+Un ROE elevato indica che l'impresa sta generando un buon ritorno sugli investimenti degli azionisti. Un ROE che aumenta negli anni è indice di un miglioramento nella gestione.
 
 Si calcola come:
 
-$$\text{ROE} = \frac{\text{Utile Netto}}{\text{Patrimonio Netto}} [\%]$$
+$$
+\text{ROE} = \frac{\text{Utile Netto}}{\text{Patrimonio Netto}} [\%]
+$$
 
 Dove:
 
@@ -752,24 +754,55 @@ Dove:
 
 ##### Return on Investment (ROI)
 
-Il **Return on Investment (ROI)** è un indicatore che misura la redditività dell'attività primaria dell'impresa rispetto alle risorse complessive.
+Il **Return on Investment (ROI)** è un indicatore che misura la redditività della gestione operativa dell'impresa ovvero quanto bene è in grado di trasformare gli input in output.
 
 Si calcola come:
 
-$$\text{ROI} = \frac{\text{EBIT}}{\text{Capitale Investito}} [\%]$$
+$$
+\text{ROI} = \frac{\text{EBIT}}{\text{Capitale Investito}} [\%]
+$$
 
 Dove:
 
 - **EBIT** è l'utile operativo, riportato nel conto economico;
-- **Capitale Investito** è la somma del patrimonio netto (E) e delle passività (D), riportato nello stato patrimoniale.
+- **Capitale Investito** è la somma del patrimonio netto (E) e delle passività (D), riportato nello stato patrimoniale. Indica il valore complessivo dell'azienda, quello che compare da entrambi i lati dell'equazione fondamentale del bilancio.
+
+Il ROI può essere visto anche come prodotto tra il **Return on Sales** (ROS) e la **Rotazione dell'attivo** (RA).
+
+$$
+\text{ROS} = \frac{\text{EBIT}}{\text{Valore della produzione}}
+$$
+
+$$
+\text{RA} = \frac{\text{Valore della produzione}}{\text{Capitale investito}}
+$$
+
+Dove:
+
+- **Valore della produzione** è la somma di tutti i ricavi e proventi operativi con la variazione delle scorte di prodotti finiti.
+
+Il ROS misura la redditività operativa di ciascuna unità di prodotto realizzato. Il RA misura le capacità delle risorse dell'impresa di generare output di valore.
+
+Dal RA derivano altri due indici:
+
+$$
+\text{Rotazione delle scorte} = \frac{\text{Ricavi}}{\text{Valore rimanenze}}
+$$
+
+$$
+\text{Tempo medio incasso crediti} = \frac{\text{Crediti commerciali}}{\text{Ricavi}} \cdot 365
+$$
+
 
 ##### Return on Debt (ROD)
 
-Il **Return on Debt (ROD)** è un indicatore che misura la redditività del capitale preso in prestito o il costo medio del capitale di debito.
+Il **Return on Debt (ROD)** è un indicatore che misura il costo medio del capitale di debito.
 
 Si calcola come:
 
-$$\text{ROD} = \frac{\text{Oneri Finanziari}}{\text{Debiti Finanziari}} [\%]$$
+$$
+\text{ROD} = \frac{\text{Oneri Finanziari}}{\text{Debiti Finanziari}} [\%]
+$$
 
 Dove:
 
@@ -778,13 +811,17 @@ Dove:
 
 Se il ROI è maggiore del ROD, l'impresa sta generando un ritorno maggiore rispetto al costo del capitale preso in prestito, di conseguenza il debito crea valore aggiunto e conviene indebitarsi.
 
+_Nota: Esistono molte formule per calcoare il ROD. Nessuna di queste è quella riportata sopra in quanto questa misura semplicemente un costo invece che un ritorno. La considerazione sul confronto col ROI si mantiene vera se si calcola il ROI come descritto nel paragrafo precedente._
+
 ##### Leva Finanziaria
 
 La **leva finanziaria** è un indicatore che misura il livello di indebitamento dell'impresa.
 
 Si calcola come:
 
-$$\text{D/E} = \frac{\text{Debiti}}{\text{Patrimonio Netto}}$$
+$$
+\text{D/E} = \frac{\text{Debiti}}{\text{Patrimonio Netto}}
+$$
 
 Dove:
 
@@ -793,19 +830,25 @@ Dove:
 
 Se la leva finanziaria è maggiore di 1, significa che l'impresa ha più debiti che patrimonio netto, quindi maggiore è la leva finanziaria, maggiore è il rischio di insolvenza dell'impresa.
 
+La redditività degli azionisti cresce con l'aumentare della leva.
+
+Vale l'**identità della leva finanziaria**: $\text{ROE} = [\text{ROI} + \text{D/E} * (\text{ROI} - \text{ROD})]$.
+
 #### Indici di liquidità
 
 Gli indici di liquidità misurano la capacità dell'impresa di far fronte ai propri impegni finanziari a breve termine.
 
-##### Rapporto Corrente (RA)
+##### Rapporto Corrente (RC)
 
-Il **Rapporto Corrente (RA)** è un indicatore che misura la capacità dell'impresa di coprire le passività correnti con le attività correnti.
+Il **Rapporto Corrente (RC)** è un indicatore che misura la capacità dell'impresa di coprire le passività correnti con le attività correnti.
 
 Si calcola come:
 
-$$\text{RA} = \frac{\text{Attività Correnti}}{\text{Passività Correnti}}$$
+$$
+\text{RC} = \frac{\text{Attività Correnti}}{\text{Passività Correnti}}
+$$
 
-Un RA maggiore di 1 indica che ha troppe risorse liquide e se investite potrebbero generare un ritorno maggiore.
+Un RC molto maggiore di 1 indica che ha troppe risorse liquide e se investite potrebbero generare un ritorno maggiore.
 
 ##### Test Acido (TA)
 
@@ -825,13 +868,15 @@ Il valore del Test Acido deve essere maggiore di 1 per indicare che l'impresa ha
 
 Gli indici patrimoniali misurano la solidità patrimoniale dell'impresa e la solvibilità a lungo termine.
 
-##### Indice di Autonomia Finanziaria (?)
+##### Indice di Autonomia Finanziaria
 
 Indica la capacità dell'impresa di aumentare il patrimonio netto senza contributi dai soci.
 
 Si calcola come:
 
-$$\text{Indice di Autonomia Finanziaria} = \frac{\text{Equity}}{\text{Capitale Sociale}}$$
+$$
+\text{Indice di Autonomia Finanziaria} = \frac{\text{Equity}}{\text{Capitale Sociale}}
+$$
 
 ##### Indice di Copertura del Debito
 
@@ -839,7 +884,9 @@ Indica la capacità dell'impresa di autofinanziarsi a fronte del debito finanzia
 
 Si calcola come:
 
-$$\text{Indice di Copertura del Debito} = \frac{\text{Cash Flow Operativo}}{\text{Debiti Finanziari}}$$
+$$
+\text{Indice di Copertura del Debito} = \frac{\text{Cash Flow Operativo}}{\text{Debiti Finanziari}}
+$$
 
 ## Contabilità interna
 
