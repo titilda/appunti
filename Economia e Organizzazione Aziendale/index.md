@@ -925,7 +925,7 @@ La **rilevazione dei costi** è il processo di raccolta e registrazione dei cost
 I costi possono essere rilevati in diversi modi:
 
 - **Full Costing**: Questo metodo rileva e attribuisce tutti i tipi di costo, inclusi quelli di periodo, agli oggetti di costo con l'obiettivo è determinare il _costo pieno aziendale_;
-- **Absorption Costing**: Rileva tutti i costi di produzione, mirando a calcolare il _costo pieno industriale_.
+- **Absorption Costing**: Rileva tutti i costi di produzione, mirando a calcolare il _costo pieno industriale_ (CPI).
 
 I costi vengono allocati in base ad un principio:
 
@@ -940,14 +940,16 @@ Il **Process Costing** è un metodo di rilevazione dei costi utilizzato per prod
 
 Se l'invarianza di wip (work in progress) è invariata, è possibile calcolare il CPI come:
 
-$$\text{CPI} = (\text{C}_\text{MD} + \text{C}_\text{LD} + \text{C}_\text{OVH}) / \text{N}_\text{PF}$$
+$$
+\text{CPI} = \frac{\text{C}_\text{MD} + \text{C}_\text{LD} + \text{C}_\text{OVH}}{\text{N}_\text{PF}}
+$$
 
 Dove:
 
-- **C_MD**: Costi dei Materiali Diretti;
-- **C_LD**: Costi del Lavoro Diretto;
-- **C_OVH**: Costi Indiretti di Produzione (Overhead);
-- **N_PF**: Numero di Prodotti Finiti.
+- $C_{MD}$: Costi dei Materiali Diretti;
+- $C_{LD}$: Costi del Lavoro Diretto;
+- $C_{OVH}$: Costi Indiretti di Produzione (Overhead);
+- $N_{PF}$: Numero di Prodotti Finiti.
 
 Nel caso in cui ci fosse una variazione di semilavorati, bisogna calcolare:
 
@@ -981,29 +983,31 @@ In caso di rimanenze è possibile rilevare i costi tramite due metodi:
        $$
        C_{\text{PF}} = C + C_{\text{WIP}_1} - C_{\text{WIP}_2}
        $$
+
 - **Costo Medio**: si calcola il costo medio ponderato delle unità prodotte, considerando tutte le unità in corso di lavorazione e quelle finite.
-- **Calcolo delle Unità Equivalenti (UE):**
+  
+  1. **Calcolo delle Unità Equivalenti (UE):**
 
-  $$
-  \text{UE} = \text{N}_{\text{PF}} + \alpha_2 \text{N}_{\text{WIP}_2}
-  $$
-
-- **Calcolo del Costo per Unità Equivalente (CPI):**
-
-  $$
-  \text{CPI} = \frac{C + C_{\text{WIP}_1}}{\text{UE}}
-  $$
-
-- **Calcolo del valore dei prodotti finiti e dei WIP finali:**
-
-  - Valore dei WIP finali:
     $$
-    C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
+    \text{UE} = \text{N}_{\text{PF}} + \alpha_2 \text{N}_{\text{WIP}_2}
     $$
-  - Valore dei prodotti finiti:
+
+  2. **Calcolo del Costo per Unità Equivalente (CPI):**
+
     $$
-    C_{\text{PF}} = \text{CPI} \times \text{N}_{\text{PF}}
+    \text{CPI} = \frac{C + C_{\text{WIP}_1}}{\text{UE}}
     $$
+
+  2. **Calcolo del valore dei prodotti finiti e dei WIP finali:**
+
+    - Valore dei WIP finali:
+      $$
+      C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
+      $$
+    - Valore dei prodotti finiti:
+      $$
+      C_{\text{PF}} = \text{CPI} \times \text{N}_{\text{PF}}
+      $$
 
 #### Job Order Costing (JOC)
 
