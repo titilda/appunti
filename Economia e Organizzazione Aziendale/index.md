@@ -1254,20 +1254,26 @@ La variazione della domanda in base ad uno di questi fattori porta all'**elastic
 
 L'elasticità in base al prezzo della domanda si calcola come:
 
-$$\epsilon_x = \lvert\frac{\Delta Q_x}{\Delta P_x} \cdot \frac{P_x}{Q_x}\rvert $$
+$$
+\varepsilon_x = \left| \frac{\Delta Q_x}{\Delta P_x} \cdot \frac{P_x}{Q_x}\right|
+$$
 
 L'elasticità incrociata si calcola come:
 
-$$\epsilon_{xy} = \lvert\frac{\Delta Q_x}{\Delta P_y} \cdot \frac{P_y}{Q_x}\rvert $$
+$$
+\varepsilon_{xy} = \left| \frac{\Delta Q_x}{\Delta P_y} \cdot \frac{P_y}{Q_x}\right|
+$$
 
 L'elasticità del reddito si calcola come:
 
-$$\epsilon_m = \lvert\frac{\Delta Q_x}{\Delta M} \cdot \frac{M}{Q_x}\rvert $$
+$$
+\varepsilon_m = \left| \frac{\Delta Q_x}{\Delta M} \cdot \frac{M}{Q_x}\right|
+$$
 
 L'elasticità della domanda può essere:
 
-- **Elastica**: $\epsilon > 1$ (la domanda varia più che proporzionalmente al variare del prezzo);
-- **Anelastica**: $\epsilon < 1$ (la domanda varia meno che proporzionalmente al variare del prezzo);
+- **Elastica**: $\varepsilon > 1$ (la domanda varia più che proporzionalmente al variare del prezzo);
+- **Anelastica**: $\varepsilon < 1$ (la domanda varia meno che proporzionalmente al variare del prezzo);
 
 ### Offerta
 
