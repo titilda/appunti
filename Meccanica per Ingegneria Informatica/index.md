@@ -752,6 +752,31 @@ $\vec{C} = F d \vec{k}$
 
 $\vec{M}_O = (P_1 - O) \times \vec{F}_1 + (P_2 - O) \times \vec{F}_2 = (P_1 - O) \times \vec{F}_1 - (P_2 - O) \times \vec{F}_1 = [(P_1 - O) - (P_2 - O)] \times \vec{F}_1 = (P_1 - P_2) \times \vec{F}_1 \implies F d \vec{k}$
 
+## 3.3  Forze interne
+
+Forze che vengono analizzate unicamente quando si va ad osservare il singolo corpo e non compaiono quando si analizza il sistema nel suo intero
+
+![](assets/capitolo_tre/3.3_forze_interne/forze_interne_sistema.jpg)
+
+### Biella
+
+1. Cerniere agli estremi
+2. No forze/momenti concentrati
+
+### Azioni interne nelle travi
+
+![](assets/capitolo_tre/3.3_forze_interne/trave.jpg)
+
+Trave snella: una delle dimensioni è prevalente.
+
+Rompo la trave e vedo il vincolo d'incastro
+
+![](assets/capitolo_tre/3.3_forze_interne/forze_interne_trave.jpg)
+
+- **N**: azione assiale.
+- **T**: azione di taglio.
+- **M_f**: Momento flettente.
+
 # Capitolo Quattro: Centro di Massa
 
 ### Baricentro
