@@ -102,7 +102,7 @@
 				});
 			});
 
-			document.getElementsByClassName("callout").forEach((el) => {
+			document.querySelectorAll("callout").forEach((el) => {
 				el.classList.add("p-4");
 				el.classList.add("rounded-4");
 
@@ -121,7 +121,7 @@
 					<div class="mt-2">
 						${content}
 					</div>
-				`
+				`;
 			})
 
 			// Remove `<code>` put by pandoc befose running mermaid
