@@ -102,6 +102,28 @@
 				});
 			});
 
+			document.getElementsByClassName("callout").forEach((el) => {
+				el.classList.add("p-4");
+				el.classList.add("rounded-4");
+
+				let content = el.innerHTML;
+				let title = el.getAttribute("title")
+				let icon = "";
+
+				
+
+				if(el.classList.contains("callout-definition")) {
+					icon = "book";
+				}
+
+				el.innerHTML = `
+					<div><i class=bi bi-${icon}></i>&nbsp;<strong>${title}</strong><div>
+					<div class="mt-2">
+						${content}
+					</div>
+				`
+			})
+
 			// Remove `<code>` put by pandoc befose running mermaid
 			document.querySelectorAll("pre.mermaid").forEach((pre) => {
 				let code_el = pre.querySelector("code");

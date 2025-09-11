@@ -4,6 +4,6 @@ author:
 - "Andrea Oggioni"
 ---
 
-::::: {.callout .callout-definition title="Ottimo Globale"}
-    aaa
-:::::
+::: {.callout .callout-definition title="Ottimo Globale"}
+aaa
+:::
