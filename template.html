@@ -122,12 +122,14 @@
 					icon = "book";
 				}
 
-				el.innerHTML = `
-					<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${title}</strong><div>
-					<div class="mt-2">
-						${content}
-					</div>
-				`;
+				// Template literals interfere with pandoc templating engine
+				el.innerHTML = "<div><i class=\"bi bi-\""
+					+ icon
+					+ "></i>&nbsp;<strong>"
+					+ title
+					+ "</strong><div><div class=\"mt-2\">"
+					+ content
+					+ "</div>";
 			});
 
 			// Remove `<code>` put by pandoc befose running mermaid
