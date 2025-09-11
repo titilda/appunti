@@ -103,21 +103,19 @@
 			});
 
 			document.querySelectorAll(".callout").forEach((el) => {
-				console.log(el);
-
 				el.classList.add("p-4");
 				el.classList.add("rounded-4");
+				el.classList.add("mb-2");
 				
 				let content = el.innerHTML;
-				console.log(content)
 
 				let title = el.getAttribute("title");
-				console.log(title);
 
 				let icon = "";
 				let border_color = "";
 				let bg_color = "";
 
+				// Add callout entries here, TODO: find a better way to register entries
 				if(el.classList.contains("callout-definition")) {
 					icon = "book";
 					border_color = "cyan";
@@ -127,7 +125,7 @@
 				el.style.border = "1px solid " + border_color;
 				el.style.background = bg_color;
 
-				// Template literals interfere with pandoc templating engine
+				// Template literals break with pandoc templating engine
 				el.innerHTML = "<div><i class=\"bi bi-"
 					+ icon
 					+ "\"></i>&nbsp;<strong>"
