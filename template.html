@@ -103,34 +103,34 @@
 			});
 
 			document.querySelectorAll(".callout").forEach((el) => {
-				el.classList.add("p-4");
-				el.classList.add("rounded-4");
+				// el.classList.add("p-4");
+				// el.classList.add("rounded-4");
 
-				let callout_content = el.innerHTML;
-				let callout_title = el.getAttribute("title");
+				// let callout_content = el.innerHTML;
+				// let callout_title = el.getAttribute("title");
 
-				let icon = "";
-				let border_color = "";
-				let bg_color = "";
+				// let icon = "";
+				// let border_color = "";
+				// let bg_color = "";
 
-				if(el.classList.contains("callout-definition")) {
-					icon = "book";
-				}
+				// if(el.classList.contains("callout-definition")) {
+				// 	icon = "book";
+				// }
 
-				console.log(`
-					<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${callout_title}</strong><div>
-					<div class="mt-2">
-						${callout_content}
-					</div>
-				`);
+				// console.log(`
+				// 	<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${callout_title}</strong><div>
+				// 	<div class="mt-2">
+				// 		${callout_content}
+				// 	</div>
+				// `);
 
-				el.innerHTML = `
-					<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${callout_title}</strong><div>
-					<div class="mt-2">
-						${callout_content}
-					</div>
-				`;
-			})
+				// el.innerHTML = `
+				// 	<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${callout_title}</strong><div>
+				// 	<div class="mt-2">
+				// 		${callout_content}
+				// 	</div>
+				// `;
+			});
 
 			// Remove `<code>` put by pandoc befose running mermaid
 			document.querySelectorAll("pre.mermaid").forEach((pre) => {
