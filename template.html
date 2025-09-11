@@ -103,33 +103,33 @@
 			});
 
 			document.querySelectorAll(".callout").forEach((el) => {
-				// el.classList.add("p-4");
-				// el.classList.add("rounded-4");
+				console.log(el);
 
-				// let callout_content = el.innerHTML;
-				// let callout_title = el.getAttribute("title");
+				el.classList.add("p-4");
+				el.classList.add("rounded-4");
+				
+				console.log(content);
+				let content = el.innerHTML;
+				console.log(content)
 
-				// let icon = "";
-				// let border_color = "";
-				// let bg_color = "";
+				console.log(title);
+				let title = el.getAttribute("title");
+				console.log(title);
 
-				// if(el.classList.contains("callout-definition")) {
-				// 	icon = "book";
-				// }
+				let icon = "";
+				let border_color = "";
+				let bg_color = "";
 
-				// console.log(`
-				// 	<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${callout_title}</strong><div>
-				// 	<div class="mt-2">
-				// 		${callout_content}
-				// 	</div>
-				// `);
+				if(el.classList.contains("callout-definition")) {
+					icon = "book";
+				}
 
-				// el.innerHTML = `
-				// 	<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${callout_title}</strong><div>
-				// 	<div class="mt-2">
-				// 		${callout_content}
-				// 	</div>
-				// `;
+				el.innerHTML = `
+					<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${title}</strong><div>
+					<div class="mt-2">
+						${content}
+					</div>
+				`;
 			});
 
 			// Remove `<code>` put by pandoc befose running mermaid
