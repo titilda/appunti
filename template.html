@@ -106,8 +106,8 @@
 				el.classList.add("p-4");
 				el.classList.add("rounded-4");
 
-				let content = el.innerHTML;
-				let title = el.getAttribute("title");
+				let callout_content = el.innerHTML;
+				let callout_title = el.getAttribute("title");
 
 				let icon = "";
 				let border_color = "";
@@ -118,16 +118,16 @@
 				}
 
 				console.log(`
-					<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${title}</strong><div>
+					<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${callout_title}</strong><div>
 					<div class="mt-2">
-						${content}
+						${callout_content}
 					</div>
-				`)
+				`);
 
 				el.innerHTML = `
-					<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${title}</strong><div>
+					<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${callout_title}</strong><div>
 					<div class="mt-2">
-						${content}
+						${callout_content}
 					</div>
 				`;
 			})
