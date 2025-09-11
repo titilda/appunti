@@ -120,12 +120,17 @@
 
 				if(el.classList.contains("callout-definition")) {
 					icon = "book";
+					border_color = "cyan";
+					bg_color = "#a6ffef";
 				}
 
+				el.style.border = "1px solid " + border_color;
+				el.style.background = bg_color;
+
 				// Template literals interfere with pandoc templating engine
-				el.innerHTML = "<div><i class=\"bi bi-\""
+				el.innerHTML = "<div><i class=\"bi bi-"
 					+ icon
-					+ "></i>&nbsp;<strong>"
+					+ "\"></i>&nbsp;<strong>"
 					+ title
 					+ "</strong><div><div class=\"mt-2\">"
 					+ content
