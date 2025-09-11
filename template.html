@@ -109,18 +109,20 @@
 				let content = el.innerHTML;
 				let title = el.getAttribute("title");
 
-				alert(title);
-				alert(content);
-
 				let icon = "";
 				let border_color = "";
 				let bg_color = "";
 
-				
-
 				if(el.classList.contains("callout-definition")) {
 					icon = "book";
 				}
+
+				console.log(`
+					<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${title}</strong><div>
+					<div class="mt-2">
+						${content}
+					</div>
+				`)
 
 				el.innerHTML = `
 					<div><i class="bi bi-${icon}"></i>&nbsp;<strong>${title}</strong><div>
