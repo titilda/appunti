@@ -116,3 +116,80 @@ Siano $P$ un problema di minimo $\min \left\{f(x) : x \in X\right\}$ e $R$ un su
 1. Se $x^*$ è ottimo per $P$ allora $x^*$ è ammissibile per $\tilde x$ ma non è necessariamente ottimo per $R$.
 2. Se $x^*$ è ottimo per $R$ allora non è necessariamente ammissibile (e quindi nemmeno ottimo) per $P$.
 3. Se $x^*$ è ottimo per $R$ e ammissibile per $P$ allora $x^*$ non è necessariamente ottimo per $P$, a meno che non si abbia che anche $f(x^*) = \tilde f(x^*)$; in tal caso allora $x^*$ è anche ottimo per $P$.
+
+# Analisi convessa
+
+Sia dato un insieme di $m$ vettori $x^i \in \mathbb{R}^n \forall i \in M = \{ 1, \dots, m \}$, allora
+
+::: {.callout .callout-definition title="Definizione"}
+Dati $m$ scalari $\lambda_i \ \forall i \in M$, $\sum\limits_{i \in M} \lambda_iv^i \in \mathbb{R}$ è
+
+1. una **combinazione lineare** se $\lambda_i \in \mathbb{R} \forall i \in M$
+2. una **combinazione affine** se $\sum\limits_{i \in M} \lambda_i = 1$
+3. una **combinazione conica** se $\lambda_i \ge 0 \forall i \in M$
+4. una **combinazione convessa** se è sia affine che conica
+:::
+
+::: {.callout .callout-definition title="Span lineare"}
+Dati $m$ punti $x^1, x^2, \dots, x^m \in \mathbb{R}^n$, lo **span lineare** di $x^1, x^2, \dots, x^m$ è l'insieme di tutte le combinazioni lineari di $x^1, x^2, \dots, x^m$ costruite con coefficienti $\lambda_i \in \mathbb{R}$.
+:::
+
+::: {.callout .callout-definition title="Span affine"}
+Dati $m$ punti $x^1, x^2, \dots, x^m \in \mathbb{B}^n$, lo **span affine** di $x^1, x^2, \dots, x^m$ è l'insieme di tutte le combinazioni affini di $x^1, x^2, \dots, x^m$.
+:::
+
+Matematicamente, lo span affine di un insieme di punti $x^1, x^2, \dots, x^m$ può essere definito come
+
+$$
+\left\{ \sum_{i=1}^m \lambda_i x^i : \sum_{i=1}^m \lambda_i = 1 \right\}
+$$
+
+::: {.callout .callout-definition title="Inviluppo conico"}
+Dati $m$ punti $x^1, x^2, \dots, x^m \in \mathbb{R}^n$, l'**inviluppo conico** di $x^1, x^2, \dots, x^m$ è l'insieme di tutte le combinazioni coniche di $x^1, x^2, \dots, x^m$.
+:::
+
+Matematicamente, l'inviluppo conico di $x^1, x^2, \dots, x^m$ può essere descritto come
+
+$$
+\left\{ \sum_{i=1}^m \lambda_ix^i : \lambda_i \ge 0 \ \forall i = i \dots m \right\}
+$$
+
+e rappresenta la minima piramide con vertice nell'origine e base all'infinito che contiene tutti i punti dati.
+
+Intersecando lo span affine e l'inviluppo conico, si ottiene l'inviluppo complesso.
+
+::: {.callout .callout-definition title="Inviluppo complesso"}
+Dati $m$ punti $x^1, x^2, \dots, x^m \in \mathbb{R}^n$, l'**inviluppo convesso** di $x^1, x^2, \dots, x^m$ è l'insieme di tutte le combinazioni convesse di $x^1, x^2, \dots, x^m$.
+:::
+
+Matematicamente, l'inviluppo complesso di un insieme di punti $x^1, x^2, \dots, x^m$ può essere descritto dall'intersezione dell'insieme dhe descrive lo span affine con quello che descrive l'inviluppo conico:
+
+$$
+\left\{ \sum_{i=1}^m \lambda_ix^i : \lambda_i \ge 0 \ \forall i = 1, \dots, m, \ \sum_{i=1}^m \lambda_i = 1 \right\}
+$$
+
+Come si pu osservare trascinando i punti nell'embed qui sotto, l'inviluppo convesso di un insieme di punti è il minimo luogo convesso dello spazio che contiene tutti i punti dati (un po' come mettere un elastico $n$-dimesionale attorno ai punti dati).
+
+<iframe src="https://www.geogebra.org/calculator/cm5rvv7w/?embed" width="700" height="600" allowfullscreen style="border: 1px solid #e4e4e4;border-radius: 4px;" frameborder="0"></iframe>
+
+## Funzioni convesse
+
+::: {.callout .callout-definition title="Funzione concava"}
+Una funzione $f : \mathbb{R}^n \to \mathbb{R}$ è **convessa** se $\forall x',x'' \in \mathbb{R}^n,\forall \lambda \in [0,1]$ vale che $f(\underbrace{\lambda x' + (1 - \lambda)x''}_{\text{combinazione convessa}}) \le \lambda f(x') + (1-\lambda)f(x'')$.
+:::
+
+In generale, sia $\sum\limits_{i=1}^m \lambda_i x^i$ una combinazione convessa, allora una funzione è convessa se
+
+$$
+f\left(\sum_{i=1}^m \lambda_i x^i\right) \le \sum_{i=1}^m \lambda_i f(x^i)
+$$
+
+Le funzioni convesse godono di alcune proprietà (che possono essere dimostrate tutte con la definizione):
+
+1. La somma di funzioni convesse è a sua volta convessa.
+2. Il prodotto di uno scalare non negativo per una funzione convessa è a sua volta convesso.
+3. Il massimo tra funzioni convesse è a sua volta una funzione convessa.
+
+::: {.callout .callout-example title="Funzione convessa"}
+Una funzione $f$ è **concava** se e solo se $-f$ è convessa.
+:::
