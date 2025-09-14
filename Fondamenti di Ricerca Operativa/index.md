@@ -200,7 +200,7 @@ Una funzione lineare è sia concava che convessa.
 Una forma quadratica $x^TQx$ è convessa se $Q$ è semidefinita positiva.
 :::
 
-::: {.callout .callout-defintion title="Insieme convesso"}
+::: {.callout .callout-definition title="Insieme convesso"}
 Un insieme $S \sube \mathbb{R}^n$ è **convesso** se $\forall x', x'' \in S, \forall \lambda \in [0,1]$ vale che $\lambda x' + (1 - \lambda)x'' \in S$.
 :::
 
@@ -402,3 +402,144 @@ dove $e$ è una funzione nelle variabili di controllo.
 :::
 
 Anche nel caso di problemi di _min-abs_ la funzione da minimizzare non è lineare, dunque la si sostituisce con una variabile $y$ e, nei vincoli, si impone che $y \ge e$ e che $y \ge -e$. Questo procedimento è giustificato dal fatto che $|e| = \max\{e, -e\}$.
+
+# Complessità computazionale
+
+Ci sono varie categorie di problemi: alcuni esempi possono essere il problema dello zaino, il problema di ottimizzazione lineare, il sudoku e la ricerca del cammino minimo.
+
+Dato che questi problemi sono di categorie standard, è possibile definire una soluzione parametrica che si applica indiscriminatamente a tutti i problemi del tipo a cui si riferisce.
+
+::: {.callout .callout-definition title="Istanza di un problema"}
+Un'**istanza** di un problema è uno specifico problema di una certa categoria nel quale sono stati assegnati dei valori ai parametri.
+:::
+
+::: {.callout .callout-definition title="Algoritmo"}
+Un **algoritmo** è una sequenza di passi elementari tali per cui, dati i parametri di un'istanza di un problema, seguendoli è possibile arrivare in alla soluzione per il problema di cui sono stati dati i parametri.
+
+Una definizione più precisa di **algoritmo** è disponibile sotto.
+:::
+
+## Problemi facili e problemi difficili
+
+Per valutare quanto è facile o meno risolvere un problema con un determinato algoritmo, si può procedere in diversi modi:
+
+- si può misurare il tempo di esecuzione di un programma che implementa tale algoritmo (o cronometrarsi mentre lo si esegue a mano);
+- per una misura più oggettiva, si possono contare il numero di operazioni elementari necessarie per risolvere un'istanza di dimensione $n$ (in tal modo il risultato non cambia anche cambiando processore o utilizzando tecniche di parallelizzazione);
+
+Per il secondo punto, si utilizza una funzione nel dominio delle istanze che restituisce un numero naturale (il numero di passi elementari che servono per risolvere tale istanza).
+
+La complessità computazionale si occupa del _worst-case scenario_.
+
+::: {.callout .callout-definition title="Complessità computazionale"}
+Dato un problema $\Pi$ e un insieme di istanze di $\Pi$ di dimensione $n$, la **complessità computazionale** di tale problema è pari alla complessità del miglior algoritmo (ovvero quello che ci dà la minima complessità) $A$ che risolve tutte le istanze di $\Pi$ date.
+:::
+
+Se per un dato problema non è disponibile nessun algoritmo che possa risolvere in modo efficiente tale problema, allora esso è un problema difficile. Se esiste anche un solo algoritmo che consenta di risolvere tale problema in maniera efficiente, allora basta utilizzare tale algoritmo e posso dire che il problema è semplice.
+
+Tutti gli studi sull'analisi della complessità computazionale non sono stati fatti su problemi di ottimizzazione, bensì su problemi di riconoscimento.
+
+## Problemi di riconoscimento
+
+::: {.callout .callout-definition title="Problemi di riconoscimento"}
+Un problema è detto **di riconoscimento** o **di ammissibilità** se non si vuole minimizzare nulla ma solo sapere se esiste una soluzione.
+:::
+
+Un problema di riconoscimento $\Pi$ è definito da
+
+1. un insieme di istanze;
+2. una domanda la cui risposta è si/no.
+
+E' possibile trasformare un problema di ottimizzazione nel suo corrispondente problema di riconoscimento: dato il problema di ottimizzazione generico
+
+$$
+\begin{align}
+\min \qquad & f(x) \\
+\text{s.t.} \qquad & x \in X
+\end{align}
+$$
+
+il suo corrispondente problema di riconoscimento è "Data la tripla $(f, X, \beta)$, allora $\exists x \in X : f(x) \le \beta$?".
+
+L'analogo per un problema di massimizzazione è dato dall'utilizzo del $\ge$ al posto del $\le$.
+
+## Istanze di un problema di riconoscimento
+
+Siano dati un problema di riconoscimento $\Pi$ e i seguenti insiemi:
+
+- $D_\Pi$: l'insieme delle istanze di $\Pi$;
+- $Y_\Pi$: il sottoinsieme delle istanze di $\Pi$ con risposta affermativa.
+  
+Sia $\Sigma$ un insieme di simboli e $\Sigma^*$ l'insieme di tutte le stringhe sull'alfabeto $\Sigma$.
+
+::: {.callout .callout-definition title="Codifica"}
+Una codifica $e$ di un problema $\Pi$ è una funzione $e : D_\Pi \to \Sigma^*$.
+:::
+
+Dato un problema $\Pi$ ed una codifica $e$ allora è possibile partizionare l'insieme $\Sigma^*$ in tre sottoinsiemi:
+
+1. l'insieme delle stringhe $s = e(I) : I \not \in D_\Pi$ (ovvero l'insieme delle stringhe che possono essere interpretate come un'istanza non valida);
+2. l'insieme delle stringhe $s = e(I) : I \in D_\Pi - Y_\Pi$;
+3. l'insieme delle stringhe $s = e(I) : I \in Y_\Pi$.
+
+::: {.callout .callout-definition title="Linguaggio"}
+Un **linguaggio** $L(\Pi, e)$ è un insieme di stringhe $L(\Pi, e) = \{x \in \Sigma^* : e \text{ usa } \Sigma^*, x = e(I) \ \forall I \in Y_\Pi \}$.
+:::
+
+Una volta date tutte queste definizioni, è possibile dare una definizione più precisa di algoritmo.
+
+::: {.callout .callout-definition title="Algoritmo"}
+Un algoritmo $M$ che lavora con l'alfabeto $\Sigma$ accetta $x \in \Sigma^*$ se $M$ termina con risposta positiva quando eseguito su $x$.
+:::
+
+::: {.callout .callout-definition title="Linguaggio riconosciuto"}
+Il linguaggio $L_M$ riconosciuto da $M$ è definito come
+
+$$
+L_M = \{x \in \Sigma^* : M \text{ accetta } x\}
+$$
+:::
+
+::: {.callout .callout-definition title="Lunghezza di un'istanza"}
+La **lunghezza** (**lenght**) è una funzione indipendente dalla codifica che lega la codifica di un'istanza all'istanza vera e propria:
+
+$$
+\text{Lenght} : D_\pi \to \mathbb{Z}^+
+$$
+
+Tale funzione ha una relazione polinomiale, ovvero
+
+$$
+\exists p_1, p_2 \in \mathbb{R}[x] : \forall I \in D_\pi : x = e(I) \qquad \begin{cases}
+\text{Lenght}(I) \le p_1(|x|) \\
+|x| \le p_2(\text{Lenght(I)})
+\end{cases}
+$$
+:::
+
+## Funzioni di complessità
+
+::: {.callout .callout-definition title="Definizione"}
+Dato un algoritmo $M$ e $n \in \mathbb{Z}^+$
+
+$$
+T_M(n) = \max\left\{ m : \exists x \in \Sigma^* : |x| = n \text{ tale che $M$ applicato a $x$ termina in $m$ passi} \right\}
+$$
+
+in pratica, stiamo cercando l'istanza di un dato problema che fa impiegare più tempo all'algoritmo che lo risolve (worst-case scenario).
+:::
+
+Non è interessante il numero di passi che serve ad un algoritmo per risolvere un problema quanto il modo in cui questo numero varia al variare della lunghezza dell'istanza.
+
+::: {.callout .callout-definition title="Tempo polinomiale"}
+Un algoritmo è a **tempo polinomiale** se $\exists p : \mathbb{Z}^+ \to \mathbb{Z}^+$ tale che $T_M(n) \le p(n) \forall n \in \mathbb{Z}^+$.
+:::
+
+Non è interessante nemmeno la variazione precisa, basta il comportamento asintotico.
+
+::: {.callout .callout-definition title="Definizione"}
+$f : \mathbb{Z}^+ \to \mathbb{Z}^+ \in O(n)$ con $g : \mathbb{Z}^+ \to \mathbb{Z}^n$ se $\exists c \gt 0, n_0 \in \mathbb{Z}^+ : f(n) \le g(n) \ \forall n \ge n_0$.
+:::
+
+::: {.callout .callout-note title="Nota"}
+Anche complessità come $O(n \log n)$ sono considerate polinomiali in quanto $O(n \log n) \simeq O(n^{1+\varepsilon})$.
+:::

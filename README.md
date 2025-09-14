@@ -28,3 +28,22 @@ Per aggiungere tali metadati ad un file markdown, è sufficiente aggiungere le s
     - "Autore 1"
     - "Autore 2"
     ---
+
+E' possibile inserire riquadri colorati simili ai callout di Obsidian tramite l'utilizzo dei fenced divs:
+
+```md
+::: {.callout .callout-&lt;_type_&gt; title="Titolo del callout"}
+Contenuto
+:::
+```
+
+_type_ può assumere uno dei seguenti valori:
+
+- definition
+- example
+- note
+- property
+
+Nel caso in cui a _type_ venga assegnato un valore non previsto, il callout apparirà bianco con bordo nero e senza icona mentre un messaggio di errore verrà stampato nella console del browser.
+
+Per esempi dell'utilizzo dei callouts, vedere il riassunto di fondamenti di ricerca operativa nel quale ne è stato fatto abbondante uso.
