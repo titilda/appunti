@@ -124,6 +124,14 @@
 					icon = "list-ul";
 					border_color = "#b19cd7";
 					bg_color = "#c0afe2";
+				} else if(el.classList.contains("callout-note")) {
+					icon = "pen";
+					border_color = "#4949ff";
+					bg_color = "#bfbfff";
+				} else if(el.classList.contains("callout-property")) {
+					icon = "person-vcard";
+					border_color = "#ffd400";
+					bg_color = "#fff192";
 				} else {
 					console.log("Callout type not found: " + el.classList);
 				}
