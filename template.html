@@ -120,6 +120,12 @@
 					icon = "book";
 					border_color = "cyan";
 					bg_color = "#a6ffef";
+				} else if(el.classList.contains("callout-example")) {
+					icon = "list-ul";
+					border_color = "#b19cd7";
+					bg_color = "#c0afe2";
+				} else {
+					console.log("Callout type not found: " + el.classList);
 				}
 
 				el.style.border = "1px solid " + border_color;
