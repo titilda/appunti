@@ -543,3 +543,73 @@ $f : \mathbb{Z}^+ \to \mathbb{Z}^+ \in O(n)$ con $g : \mathbb{Z}^+ \to \mathbb{Z
 ::: {.callout .callout-note title="Nota"}
 Anche complessità come $O(n \log n)$ sono considerate polinomiali in quanto $O(n \log n) \simeq O(n^{1+\varepsilon})$.
 :::
+
+## P vs. NP
+
+Un problema è detto P se è risolvibile in tempo polinomiale mentre, un problema è detto NP (Non-deterministic Polynomial) se ammettono almeno un algoritmo non deterministico che lo risolve.
+
+In questo contesto un algoritmo non deterministico $M$ con $I \in D_\pi$ consiste nell'estrarre a caso una struttura $S$ per poi determinare in tempo polinomiale se $(S, I) \in Y_\pi$.
+
+Un problema P è _semplice_ mentre i NP sono _un po' meno semplici_, però hanno anche un vantaggio: esiste sempre un modo per verificare in tempo polinomiale se una data soluzione è soluzione di un problema o meno.
+
+Si possono dare definizioni di P e NP più formali:
+
+::: {.callout .callout-definition title="Definizione"}
+$$
+P = \{L : \exists \text{ algoritmo } M \text{ polinomiale} : L = L_M\}
+$$
+
+$$
+NP = \{L : \exists \text{ algoritmo } M \text{ polinomiale non deterministico} : L = L_M\}
+$$
+:::
+
+Esiste un algoritmo per risolvere i problemi NP: per ogni problema $\pi \in NP$, esiste un polinomio $p : \mathbb{Z}^+ \to \mathbb{Z}^+$ tale che esiste un algoritmo $M$ di complessità $O(2^{p(n)})$ per ogni $I \in D_\pi : |e(I)| = n$. Tale algoritmo consiste nel provare a forza bruta tutte le possibili soluzioni.
+
+::: {.callout .callout-note title="Nota"}
+$$
+P \sube NP
+$$
+:::
+
+::: {.callout .callout-example title="Esempio"}
+Problemi quali la fattorizzazione di $n$ interi e l'ottimizzazione lineare intera sono problemi NP.
+:::
+
+## Problemi difficili perchè nessuno li ha ancora risolti
+
+Si può ridurre un problema $\pi_1$ ad un problema $\pi_2$ se esiste un algoritmo che traduce un'istanza di $\pi_1$ in un'istanza di $\pi_2$ in un tempo polinomiale.
+
+::: {.callout .callout-definition title="Riduzione"}
+Dati $\pi_1, \pi_2$, si dice che "$\pi_1$ si riduce a $\pi_2$" ($\pi_1 \propto \pi_2$) se esiste un algoritmo $A : T_A(n) \in O(p(n))$ per un polinomio $p$ che, data un'istanza $I \in D_{\pi_1}$, ritorna un'istanza $I' \in D_{\pi_2}$.
+:::
+
+Da questo seguono alcune proprietà:
+
+- se $\pi_2 \in P$ e $\pi_1 \propto \pi_2$ allora $\pi_1 \in P$;
+- se $\pi_1 \propto \pi_2$ allora $\pi_2$ è difficile almeno quanto $\pi_1$ o, viceversa, $\pi_1$ è almeno facile quanto $\pi_2$.
+
+::: {.callout .callout-definition title="Problemi NP completi"}
+NPC è l'insieme di problemi $\pi$ tali che
+- $\pi \in NP$
+- $\forall \pi' \in NP \ \pi' \propto \pi$
+:::
+
+::: {.callout .callout-example title="Sat3"}
+Dato un insieme di $n$ variabili $y_1, y_2, \dots, y_n \in \{T, F\}$ ed un insieme di clausole $C_1, C_2, \dots, C_n$ definite come disgiunzione di 3 variabili (o, eventualmente, negazioni di esse), esiste un assegnamento di variabili tale che tutte le clausole siano vere?
+:::
+
+Il fatto che tale problema sia stato trovato ci dice che $NPC \ne \emptyset$.
+Dato che Sat3 è un problema NPC, tutti i problemi NP possono essere ridotti a Sat3 dunque, se si trovasse un algoritmo che risolve Sat3 in tempo polinomiale, avremmo dimostrato che $P = NP$.
+
+Per dimostrare che un determinato problema è NPC si deve prendere un altro NPC (ad esempio, Sat3) e ridurlo al problema sotto esame.
+
+::: {.callout .callout-theorem title="Teorema"}
+Il problema di ottimizzazione lineare intera (ILO) è NPC in quanto esiste un algoritmo che, in tempo polinomiale, trasforma un'istanza di Sat3 in un'istanza di ILO. Segue dimostrazione.
+
+L'algoritmo in questione è $A_2$.
+
+Data un'istanza Sat3 con $n$ variabili $y_1, y_2, \dots, y_n$ e $m$ clausole $C_1, C_2, \dots, C_n$, creo $n$ variabili booleane $x_1, x_2, \dots, x_n$ e traduco ciascuna clausola nel suo equivalente vincolo lineare come [[004 - Ottimizzazione lineare#^18cf9b|visto in questa tabella]] (a ciascuna $y_i$ associo $x_i$). La funzione obiettivo $c$ è inutile quindi pongo $c \equiv 0$.
+:::
+
+
