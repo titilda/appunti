@@ -201,3 +201,51 @@ $$
 \rho_{opt}(B) = \frac{K(A) - 1}{K(A) + 1}
 $$
 :::
+
+## Preconditioned Richardson Method
+
+It is known that badly conditioned matrices will make the specral radius $\rho$ close to $1$, slowing down the convergence. Starting from the base $Ax = b$ it is possible to compute the solution of an equivalent problem with a much lower condition number.
+
+Let $P^{-1}$ be a SPD matrix such that $K(P^{-1}A) \lt\lt K(A)$. Solving $Ax = b$ is equivalent to solving $P^{-\frac{1}{2}}AP^{-\frac{1}{2}}z = P^{-\frac{1}{2}}$ where $z = P^{\frac{1}{2}}z$.
+
+The update rule for the preconditioned version of the method is $x^{(k+1)} = x^{(k)} + \alpha P^{-1}r^{(k)}$. This means that the iteration matrix can be computed as $B = I - \alpha P^{-1}A$.
+
+::: {.callout .callout-note title="Convergence and Optimal values for the Preconditioned Richardson Methods"}
+The condition for convergence and the optimal values are computed in the same way for the non-preconditioned version of the method but replacing $A$ with $P^{-1}A$.
+
+The method converges if 
+$$
+0 \lt \alpha \lt \frac{2}{\lambda_{max}(P^{-1}A)}
+$$
+
+The optimal values are
+
+$$
+\begin{align*}
+  \alpha_{opt} &= \frac{2}{\lambda_{min}(P^{-1}A) + \lambda_{max}(P^{-1}A)} \\
+  \rho_{opt} &= \frac{K(P^{-1}A) - 1}{K(P^{-1}A) + 1}
+\end{align*}
+$$
+:::
+
+## The Gradient Method
+
+Let $\varPhi(y) = \frac{1}{2}y^TAy - y^Tb$. Mathematially, the minimization of $\varPhi(y)$ is equivalent to computing the solution of $Ax = b$ (this is because $\nabla\varPhi(y) = Ay = b$).
+
+As there is only one solution to $Ax = b$, then there will be only one minimum (and no maximum) and that point will coincide to the point where $\nabla\varPhi(x^{(k)}) = 0$ so the residual can just be expressed as $r^{(k)} = -\nabla\varPhi(x^{(k)})$ (the error is still $e^{(k)} = x - x^{(k)}$ and it is still unknown).
+
+In terms of implementation, the **Gradient Method** works exactly as the Richardson method (using the gradient in place of the residual).
+
+The new formula for the optimal $\alpha$ is
+
+$$
+\alpha_{opt} = \frac{\left(r^{(k)}\right)^Tr^{(k)}}{\left(r^{(k)}\right)^TAr^{(k)}}
+$$
+
+The error is bounded:
+
+$$
+\|e^{(k)}\|_A \le \left( \frac{K(A) - 1}{K(A) + 1} \right)^k \|e^{(0)}\|_A
+$$
+
+
