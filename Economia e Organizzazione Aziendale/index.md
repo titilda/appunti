@@ -5,8 +5,6 @@ author:
 - "Andrea Lunghi"
 ---
 
-_Nota: questa pagina è work in progress. I contenuti potrebbero variare rapidamente._
-
 ## Introduzione
 
 ### Definizione Giuridica

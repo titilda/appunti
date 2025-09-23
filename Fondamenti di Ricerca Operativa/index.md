@@ -745,3 +745,5 @@ La somma di insiemi convessi è convessa.
 ::: {.callout .callout-theorem title="Teorema"}
 Dato un poliedro $P$, allora $\exists V = \{v^1, v^2, \dots, v^n\} \subseteq \mathbb R^n, W = \{w^1, w^2, \dots, w^r\} \subseteq \mathbb R^n$ tali che $P = \text{conv}(V) + \text{cone}(W)$ dove $V$ è l'insieme dei vertici del poliedro, $W$ è un insieme di direzioni, $\text{conv}$ indica l'inviluppo convesso e $\text{cone}$ indica l'inviluppo conico.
 :::
+
+_To be continued._

@@ -111,4 +111,93 @@ while (stopping criteria is not met)
 end
 ```
 
+Consider the following decomposition of the matrix $A$:
 
+- $D$ is the matrix containing only the elements in the diagonal of A;
+- $-E$ is the lower triangular part of $A$ with all zeros on the diagonal;
+- $-F$ is the upper triangular part of $A$ with all zeros on the diagonal.
+
+The two most used iterative methods are the Jacobi methond and the Gauss-Seidel method.
+
+The iteration matrix of the Jacobi method can be expressed as $B_J = I - D^{-1}A$.
+
+The iteration matrix of the Gauss-Seidel method can be expressed as $B_{GS} = (D - E)^{-1} F$.
+
+Both methods are consistent.
+
+::: {.callout .callout-theorem title="Sufficient condition for convergence"}
+If $A$ is strictly diagonally dominant by rows then both methods converge.
+
+$A$ is strictly diagonally dominant by rows if
+
+$$
+|a_{ii}| \lt \sum_{j \ne i} |a_{ij}| \qquad i = 1, \dots, n
+$$
+:::
+
+The following theorem resumes three contitions that are sifficient to prove convergence in various cases.
+
+::: {.callout .callout-theorem title="Sufficient conditions for convergence"}
+- If $A$ is strictly diagonally dominant by columns, then both methods are convergent;
+- If $A$ is SPD then Gauss-Seidel is convergent;
+- If $A$ is tridiagonal then $\rho(B_J)^2 = \rho(B_{GS})$ (i.e. Gauss-Seidel converges two times faster than Jacobi).
+:::
+
+## Stopping criteria
+
+An iterative method never ends. It only converges to the solution so there needs to be a way to determine when to stop the computation.
+
+There are various possible stopping criteria: the molst used two are the "residual based" and the "increment based".
+
+The **residual based** method consists in stopping the computation when the residual is small enough:
+
+$$
+\begin{align}
+  \frac{\|x - x^{(k)}\|}{\|x\|} \le K(A) \frac{\|r^{(k)}\|}{\|b\|} &\implies \frac{\|r^{(k)}\|}{\|b\|} & \\
+  \frac{\|x - x^{(k)}\|}{\|x\|} \le K(P^{-1}A) \frac{\|z^{(k)}\|}{\|b\|} &\implies \frac{\|z^{(k)}\|}{\|b\|} &\qquad z^{(k)} = P^{-1}r^{(k)} \\
+\end{align}
+$$
+
+This method is suitable for small condition numbers.
+
+The **increment based** method consists in stopping the computation when the difference between two consecutive steps is small enough:
+
+$$
+\|x^{(k+1)} - x^{(k)}\| \le \varepsilon
+$$
+
+This method is suitable for small $\rho(B)$.
+
+## Stationary Richardson Method
+
+The **Stationary Richardson Method** is based on the idea that, given the current solution, you can use the residual to understand in which direction to move next.
+
+The update rule is as follows:
+
+$$
+x^{(k+1)} = x^{(k)} + \alpha(b - Ax^{(k)})
+$$
+
+The iteration matrix for this method is $B_\alpha = I - \alpha A$.
+
+The parameter $\alpha$ specifies how long is each step. This parameter does not change during the execution of the algorithm (hence the **stationary** part of the name).
+
+::: {.callout .callout-theorem title="Convergence and optimal $\alpha$ for the Stationary Richardson method"}
+Let $A$ be SPD. The stationary Richardson method converges if and only if
+
+$$
+0 \lt \alpha \lt \frac{2}{\lambda_{max}(A)}
+$$
+
+The value for $\alpha$ that guarantees the fastest convergence is
+
+$$
+\alpha_{opt} = \frac{2}{\lambda_{min}(A) + \lambda_{max}(A)}
+$$
+
+In such case, the specral radius of the iteration matrix is
+
+$$
+\rho_{opt}(B) = \frac{K(A) - 1}{K(A) + 1}
+$$
+:::
