@@ -13,8 +13,9 @@
         </div>
         <UFooter>
             <template #left>
-            <p class="text-muted text-sm">Copyright © {{ new Date().getFullYear() }}</p>
+                <p class="text-muted text-sm">Copyright © 2022 - {{ new Date().getFullYear() }} TiTilda, Tutti i diritti
+                    sulla riproduzione riservati</p>
             </template>
-      </UFooter>
+        </UFooter>
     </div>
 </template>
