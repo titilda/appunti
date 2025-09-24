@@ -6,17 +6,16 @@ export default defineContentConfig({
       type: "data",
       source: "subjects/*/*.yaml",
       schema: z.object({
-        title: z.string().optional(),
-        description: z.string().optional(),
-        color: z.string().optional(),
-        icon: z.string().optional(),
+        title: z.string(),
+        description: z.string(),
+        icon: z.string(),
       }),
     }),
     notes: defineCollection({
       type: "page",
       source: "subjects/**/*.md",
       schema: z.object({
-        authors: z.array(z.string()).optional(),
+        authors: z.array(z.string()),
       }),
     }),
   },
