@@ -10,26 +10,26 @@
             </template>
 
             <div v-if="notes && notes.length > 0" class="space-y-4">
-                <UCard v-for="note in notes" :key="note.path"
-                    :to="`/notes/${subjectSlug}/${note.path?.split('/').pop()?.replace('.md', '')}`"
-                    class="cursor-pointer hover:shadow-lg transition-shadow">
+                <NuxtLink v-for="note in notes" :key="note.id" :to="`/notes/${subjectSlug}/${note.slug}`" class="block">
+                    <UCard class="cursor-pointer hover:shadow-lg transition-shadow">
 
-                    <h3 class="text-lg font-semibold">
-                        {{ note.title }}
-                    </h3>
+                        <h3 class="text-lg font-semibold">
+                            {{ note.title }}
+                        </h3>
 
-                    <p class="text-sm text-slate-500 line-clamp-3">
-                        {{ note.description || 'No description available' }}
-                    </p>
+                        <p class="text-sm text-slate-500 line-clamp-3">
+                            {{ note.description || 'No description available' }}
+                        </p>
 
-                    <template #footer>
-                        <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                            <span>
-                                By {{ note.authors?.join(', ') }}
-                            </span>
-                        </div>
-                    </template>
-                </UCard>
+                        <template #footer>
+                            <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                                <span>
+                                    By {{ note.authors?.join(', ') }}
+                                </span>
+                            </div>
+                        </template>
+                    </UCard>
+                </NuxtLink>
             </div>
 
             <div v-else class="text-center py-12">
@@ -56,7 +56,6 @@ const { data: subject } = await useAsyncData(`subject-${subjectSlug}`, () =>
 const { data: notes } = await useAsyncData(`notes-${subjectSlug}`, () =>
     queryCollection('note').where("id", "LIKE", `note/${subjectSlug}/%`).all()
 )
-
 
 // Set page meta
 useHead({

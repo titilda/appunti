@@ -17,6 +17,7 @@ export default defineContentConfig({
       schema: z.object({
         title: z.string(),
         description: z.string().max(160),
+        slug: z.string(),
         authors: z.array(z.string()),
       }),
     }),

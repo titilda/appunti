@@ -16,7 +16,8 @@
 
         <!-- Grid View -->
         <div v-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <NuxtLink v-for="subject in subjects" :key="subject.id" :to="`/`" class="block group">
+            <NuxtLink v-for="subject in subjects" :key="subject.id" :to="`/notes/${subject.id.split('/')[1]}/`"
+                class="block group">
                 <UCard
                     class="h-full group-hover:bg-slate-200 dark:group-hover:bg-slate-800 transition-colors duration-300">
                     <div class="flex items-center">
@@ -34,7 +35,8 @@
 
         <!-- List View -->
         <div v-else class="space-y-3">
-            <NuxtLink v-for="subject in subjects" :key="subject.id" :to="`/`" class="block group">
+            <NuxtLink v-for="subject in subjects" :key="subject.id" :to="`/notes/${subject.id.split('/')[1]}/`"
+                class="block group">
                 <UCard class="group-hover:bg-slate-200 dark:group-hover:bg-slate-800 transition-colors duration-300">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
