@@ -4,17 +4,19 @@ export default defineContentConfig({
   collections: {
     subject: defineCollection({
       type: "data",
-      source: "subjects/*/*.yaml",
+      source: "*/*.yaml",
       schema: z.object({
         title: z.string(),
         description: z.string(),
         icon: z.string(),
       }),
     }),
-    notes: defineCollection({
+    note: defineCollection({
       type: "page",
-      source: "subjects/**/*.md",
+      source: "**/*.md",
       schema: z.object({
+        title: z.string(),
+        description: z.string().max(160),
         authors: z.array(z.string()),
       }),
     }),
