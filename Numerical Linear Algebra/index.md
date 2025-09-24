@@ -111,4 +111,141 @@ while (stopping criteria is not met)
 end
 ```
 
+Consider the following decomposition of the matrix $A$:
+
+- $D$ is the matrix containing only the elements in the diagonal of A;
+- $-E$ is the lower triangular part of $A$ with all zeros on the diagonal;
+- $-F$ is the upper triangular part of $A$ with all zeros on the diagonal.
+
+The two most used iterative methods are the Jacobi methond and the Gauss-Seidel method.
+
+The iteration matrix of the Jacobi method can be expressed as $B_J = I - D^{-1}A$.
+
+The iteration matrix of the Gauss-Seidel method can be expressed as $B_{GS} = (D - E)^{-1} F$.
+
+Both methods are consistent.
+
+::: {.callout .callout-theorem title="Sufficient condition for convergence"}
+If $A$ is strictly diagonally dominant by rows then both methods converge.
+
+$A$ is strictly diagonally dominant by rows if
+
+$$
+|a_{ii}| \lt \sum_{j \ne i} |a_{ij}| \qquad i = 1, \dots, n
+$$
+:::
+
+The following theorem resumes three contitions that are sifficient to prove convergence in various cases.
+
+::: {.callout .callout-theorem title="Sufficient conditions for convergence"}
+- If $A$ is strictly diagonally dominant by columns, then both methods are convergent;
+- If $A$ is SPD then Gauss-Seidel is convergent;
+- If $A$ is tridiagonal then $\rho(B_J)^2 = \rho(B_{GS})$ (i.e. Gauss-Seidel converges two times faster than Jacobi).
+:::
+
+## Stopping criteria
+
+An iterative method never ends. It only converges to the solution so there needs to be a way to determine when to stop the computation.
+
+There are various possible stopping criteria: the molst used two are the "residual based" and the "increment based".
+
+The **residual based** method consists in stopping the computation when the residual is small enough:
+
+$$
+\begin{align}
+  \frac{\|x - x^{(k)}\|}{\|x\|} \le K(A) \frac{\|r^{(k)}\|}{\|b\|} &\implies \frac{\|r^{(k)}\|}{\|b\|} & \\
+  \frac{\|x - x^{(k)}\|}{\|x\|} \le K(P^{-1}A) \frac{\|z^{(k)}\|}{\|b\|} &\implies \frac{\|z^{(k)}\|}{\|b\|} &\qquad z^{(k)} = P^{-1}r^{(k)} \\
+\end{align}
+$$
+
+This method is suitable for small condition numbers.
+
+The **increment based** method consists in stopping the computation when the difference between two consecutive steps is small enough:
+
+$$
+\|x^{(k+1)} - x^{(k)}\| \le \varepsilon
+$$
+
+This method is suitable for small $\rho(B)$.
+
+## Stationary Richardson Method
+
+The **Stationary Richardson Method** is based on the idea that, given the current solution, you can use the residual to understand in which direction to move next.
+
+The update rule is as follows:
+
+$$
+x^{(k+1)} = x^{(k)} + \alpha(b - Ax^{(k)})
+$$
+
+The iteration matrix for this method is $B_\alpha = I - \alpha A$.
+
+The parameter $\alpha$ specifies how long is each step. This parameter does not change during the execution of the algorithm (hence the **stationary** part of the name).
+
+::: {.callout .callout-theorem title="Convergence and optimal $\alpha$ for the Stationary Richardson method"}
+Let $A$ be SPD. The stationary Richardson method converges if and only if
+
+$$
+0 \lt \alpha \lt \frac{2}{\lambda_{max}(A)}
+$$
+
+The value for $\alpha$ that guarantees the fastest convergence is
+
+$$
+\alpha_{opt} = \frac{2}{\lambda_{min}(A) + \lambda_{max}(A)}
+$$
+
+In such case, the specral radius of the iteration matrix is
+
+$$
+\rho_{opt}(B) = \frac{K(A) - 1}{K(A) + 1}
+$$
+:::
+
+## Preconditioned Richardson Method
+
+It is known that badly conditioned matrices will make the specral radius $\rho$ close to $1$, slowing down the convergence. Starting from the base $Ax = b$ it is possible to compute the solution of an equivalent problem with a much lower condition number.
+
+Let $P^{-1}$ be a SPD matrix such that $K(P^{-1}A) \lt\lt K(A)$. Solving $Ax = b$ is equivalent to solving $P^{-\frac{1}{2}}AP^{-\frac{1}{2}}z = P^{-\frac{1}{2}}$ where $z = P^{\frac{1}{2}}z$.
+
+The update rule for the preconditioned version of the method is $x^{(k+1)} = x^{(k)} + \alpha P^{-1}r^{(k)}$. This means that the iteration matrix can be computed as $B = I - \alpha P^{-1}A$.
+
+::: {.callout .callout-note title="Convergence and Optimal values for the Preconditioned Richardson Methods"}
+The condition for convergence and the optimal values are computed in the same way for the non-preconditioned version of the method but replacing $A$ with $P^{-1}A$.
+
+The method converges if 
+$$
+0 \lt \alpha \lt \frac{2}{\lambda_{max}(P^{-1}A)}
+$$
+
+The optimal values are
+
+$$
+\begin{align*}
+  \alpha_{opt} &= \frac{2}{\lambda_{min}(P^{-1}A) + \lambda_{max}(P^{-1}A)} \\
+  \rho_{opt} &= \frac{K(P^{-1}A) - 1}{K(P^{-1}A) + 1}
+\end{align*}
+$$
+:::
+
+## The Gradient Method
+
+Let $\varPhi(y) = \frac{1}{2}y^TAy - y^Tb$. Mathematially, the minimization of $\varPhi(y)$ is equivalent to computing the solution of $Ax = b$ (this is because $\nabla\varPhi(y) = Ay = b$).
+
+As there is only one solution to $Ax = b$, then there will be only one minimum (and no maximum) and that point will coincide to the point where $\nabla\varPhi(x^{(k)}) = 0$ so the residual can just be expressed as $r^{(k)} = -\nabla\varPhi(x^{(k)})$ (the error is still $e^{(k)} = x - x^{(k)}$ and it is still unknown).
+
+In terms of implementation, the **Gradient Method** works exactly as the Richardson method (using the gradient in place of the residual).
+
+The new formula for the optimal $\alpha$ is
+
+$$
+\alpha_{opt} = \frac{\left(r^{(k)}\right)^Tr^{(k)}}{\left(r^{(k)}\right)^TAr^{(k)}}
+$$
+
+The error is bounded:
+
+$$
+\|e^{(k)}\|_A \le \left( \frac{K(A) - 1}{K(A) + 1} \right)^k \|e^{(0)}\|_A
+$$
+
 
