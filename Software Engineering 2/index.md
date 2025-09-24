@@ -59,3 +59,19 @@ Well-written requirements are essential for a successful project. They must be c
   - Good: "The system shall have a user satisfaction rating of at least 85% in user surveys."
 - **Achievable**: The requirement must be realistic and within the scope of what the software can accomplish on its own. It shouldn't depend on external, uncontrollable factors.
   - Bad: "The system depends on Adobe Acrobat to function."
+
+### Context
+
+RE is responsible to to define the **phenomena** (the observable events) that are relevant to the project.
+
+- **World**: This is the _real-world environment_ in which the machine operates. It includes events and properties that happen in the environment, not observable by the machine. Some phenomena could _goals_ (G) and _domains properties_ (D);
+  - Example: user thoughts, weather conditions, etc.;
+- **Machine**: This is the part of the system that is being developed. It's the software and hardware building. It includes events and properties that are observable by the machine;
+  - Example: internal states, computations, etc.;
+- **Shared Phenomena**: interaction between the world and the machine. Here reside the _requirements_ (R).
+  - _Machine controlled_: the machine perform an action that the world can observe (e.g., display a message);
+  - _World controlled_: the world can perform an action that the machine can observe (e.g., user inputs a command).
+
+A requirement is _complete_ iff it satisfy (logically entails) the goal in the context of the domain.
+
+$$\text{R and D} \models G$$
