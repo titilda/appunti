@@ -1,7 +1,11 @@
 <template>
     <UPage>
+        <template #left>
+            <UPageAside class="px-4">
+                <UContentNavigation :navigation="navigation" />
+            </UPageAside>
+        </template>
         <UPageSection>
-
             <template #title>
                 {{ note?.title || 'Topic Notes' }}
             </template>
@@ -68,6 +72,14 @@ const { data: notes } = await useAsyncData(`notes-${subjectSlug}`, () =>
 // Get current note
 const note = computed(() => {
     return notes.value?.find(n => n.slug === topicSlug) || null
+})
+
+const navigation = computed(() => {
+    return notes.value?.map(n => ({
+        title: n.title,
+        href: `/notes/${subjectSlug}/${n.slug}`,
+        active: n.slug === topicSlug
+    })) || []
 })
 
 // Get previous and next notes
