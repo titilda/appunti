@@ -1,11 +1,13 @@
 ---
 title: "Riassuntino di Ingegneria del software"
-author:
-- "Andrea Oggioni"
-- "Mattia Martinelli"
-- "Andrea Lunghi"
-- "Nadav Moscovici"
-- "El matador loco"
+description: "Riassunto del corso di Ingegneria del Software"
+authors:
+  - "Andrea Oggioni"
+  - "Mattia Martinelli"
+  - "Andrea Lunghi"
+  - "Nadav Moscovici"
+  - "El matador loco"
+slug: "ingegneria-del-software"
 ---
 
 # Ciclo di vita del Software
@@ -594,7 +596,7 @@ All'interno della definizione di `StrutturaDati` si potrà utilizzare il tipo ge
 ```java
 class StrutturaDati<T> {
     private T qualcosa;
-    
+
     public void add(T el) {
         // Codice specifico della struttura dati per aggiungere l'elemento nella struttura dati
     }
@@ -617,7 +619,7 @@ Di seguito una carrellata di definizioni che illustrano le potenzialità dei tip
 
 | Tipo Generico              | Significato                                                                                                                                                    |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<T>`                      | Qualsiasi oggetto di tipo `T` o che eredita da `T`                                                                                                            |
+| `<T>`                      | Qualsiasi oggetto di tipo `T` o che eredita da `T`                                                                                                             |
 | `<T extends U>`            | Qualsiasi oggetto che eredita da o estende `T`                                                                                                                 |
 | `<T extends U & V>`        | Qualsiasi oggetto che eredita da o estende contemporaneamente sia `U` che `V` (se una tra `U` e `V` è una classe, allora deve comparire in prima posizione)    |
 | `<T super U>`              | Qualsiasi oggetto di un tipo da cui `U` eredita                                                                                                                |
@@ -735,7 +737,7 @@ classDiagram
     class Error
     class Exception
     class RuntimeException
-    
+
     Throwable <|-- Error
     Throwable <|-- Exception
     Exception <|-- RuntimeException
@@ -843,7 +845,7 @@ class Persona implements Comparable<Persona> {
     }
 
     @Override
-    public int compareTo(Persona o) {        
+    public int compareTo(Persona o) {
         if(this.altezza < o.altezza) {
             return 1;
         } else if(this.altezza == o.altezza) {
@@ -1008,7 +1010,6 @@ Nella deep-`clone`, non è più necessario proseguire con la clonazione ricorsiv
 
 Per indicare che in un oggetto è disponibile il metodo clone (e, dunque, poterlo utilizzare come parametro dentro metodi che richiedono che un oggetto sia clonabile) si marca la dichiarazione della classe di tale oggetto come `implements Cloneable`.
 
-
 ### Iterabilità
 
 Si supponga di voler iterare su tutti gli oggetti contenuti in una collezione: come già visto, è possibile utilizzare un **enhanced for loop**:
@@ -1128,7 +1129,7 @@ for(int i = 10; i < 21; i++) {
 }
 
 persone.stream().parallel()                             // Utilizziamo uno stream parallelo
-    .filter(p -> p.getGiorno_di_nascita() % 2 == 0)     // Vengono mantenute solo le persone nate in un giorno pari 
+    .filter(p -> p.getGiorno_di_nascita() % 2 == 0)     // Vengono mantenute solo le persone nate in un giorno pari
     .mapToInt(p -> p.getAltezza())                      // Di ciascuna persona si prende l'altezza e la si mette in uno stream di interi
     .average()                                          // `IntStream` fornisce, tra le altre, la funzione `average`
     .ifPresentOrElse(System.out::println, () -> {       // Il valore ritornato da `average` è un `Optional`, più dettagli in seguito
@@ -1142,7 +1143,7 @@ Il tipo `Optional<T>` si usa per descrivere una variabile che potrebbe, o meno, 
 
 L'utilizzo principale di `Optional` è quello di eliminare i problemi dovuti a `null`: applicando una funzione ad un `Optional` verrà restituito un altro `Optional` che conterrà il risultato della funzione applicata al valore del vecchio optional (se pieno), altrimenti un `Optional` vuoto.
 
-Prettamente in termini di informatica teorica, `Optional` è una monade. Si rimanda alla relativa [pagina wikipedia](https://en.wikipedia.org/wiki/Monad_(functional_programming)) per ulteriori informazioni.
+Prettamente in termini di informatica teorica, `Optional` è una monade. Si rimanda alla relativa [pagina wikipedia](<https://en.wikipedia.org/wiki/Monad_(functional_programming)>) per ulteriori informazioni.
 
 ![Obligatory `Monad` meme](assets/monad.jpg)
 
@@ -1213,7 +1214,7 @@ Si supponga di avere due thread che devono entrambi incrementare una stessa vari
 ```java
 public class Program {
     private static int x = 0;
-    
+
 	public static void main(String[] args) {
 		new Thread(() -> {x++;}).start();
 		new Thread(() -> {x++;}).start();
@@ -1245,7 +1246,7 @@ class ClasseConSincronizzazioni {
     public synchronized void metodo2() {...}
 
     // Se si vuole sincronizzare su una variabile semplice, si istanzia un `Object` e si usa quello
-    
+
     private int variabile_semplice;
     private Object lock_variabile_semplice = new Object();
     public void metodo3() {
@@ -1264,7 +1265,7 @@ Se non si presta sufficiente attenzione, è possibile causare dei deadlock:
 class Deadlocked {
     private Object lock1 = new Object();
     private Object lock2 = new Object();
-    
+
     public void metodo1() {
         synchronized(lock1) {
             synchronized(lock2) {...}
@@ -1372,10 +1373,10 @@ public class ClasseConLockCorretti {
                 // E' necessario sbloccare i lock manualmente
                 if(gotFirstLock)
                     lock1.unlock();
-                
+
                 if(gotSecondLock)
                     lock2.unlock();
-             
+
                 // Si usa un `finally` per garantire che, qualunque cosa succeda, i lock vengano sbloccati
             }
         }
@@ -1433,7 +1434,7 @@ Per ulteriori informazioni è possibile consultare la relativa documentazione.
 
 ## JML
 
-**Java Modelling Language** (JML) è un linguaggio di specifica che permette di documentare il comportamento di un modulo software tramite delle opportune annotazioni scritte in un *linguaggio formale*. 
+**Java Modelling Language** (JML) è un linguaggio di specifica che permette di documentare il comportamento di un modulo software tramite delle opportune annotazioni scritte in un _linguaggio formale_.
 
 Utilizzare JML consente di poter descrivere in un modo formale i **contratti** dei metodi e di verificarli con un procedimento automatizzato.
 
@@ -1548,6 +1549,7 @@ Quando si estende una classe aggiungendo un metodo, se tale metodo può essere r
 E' bene non arrivare a troppi livelli di estensioni di classi: è meglio dipendere da astrazioni invece che da classi e metodi concreti.
 
 Esistono alcuni principi da rispettare:
+
 - _Interface Segregation Principle_: meglio spezzare le interfacce in interfacce piccole e specializzate invece che tenerne una grossa generalizzata;
 - _Reuse/Release Equivalency Principle_: solo componenti rilasciati e tracciati possono essere riutilizzati nel codice;
 - _Acyclic Dependencies Principle_: non ci possono essere cicli tra le dipendenze;
@@ -1604,7 +1606,7 @@ In JML, per specificare l'estensione della specifica si usa `@ also`:
 //@ requires (* precondizione originale *)
 //@ ensures (* postcondizione originale *)
 //@ also
-//@ requires (* estensione della precondizione *) 
+//@ requires (* estensione della precondizione *)
 //@ ensures (* estensione della postcondizione *)
 ```
 
@@ -1691,6 +1693,7 @@ sequenceDiagram
         end
     end
 ```
+
 <!--
 ### Communication diagrams
 -->
@@ -1717,7 +1720,7 @@ classDiagram
     class Cane
     class Gatto
     class Anatra
-    
+
     class TipoAlimentazione {
         <<enumeration>>
         ERBIVORO
@@ -1762,7 +1765,7 @@ Di seguito verranno esposti i principali design pattern.
 
 Quando una superclasse deve poter fare un'azione diversa a seconda del tipo della sottoclasse, non ha senso creare una condizione per ogni sottotipo: è molto meglio creare un metodo astratto da far reimplementare e poi chiamare quello.
 
-Il codice diventa da così 
+Il codice diventa da così
 
 ```java
 class Animale {
@@ -1962,7 +1965,7 @@ abstract class Command {
 }
 ```
 
-Data la classe precedente, ora il menù può essere composto da più istanze di `Command` ciascuna con il propio nome e la propria descrizione. Logicamente il menù dovrà fare in modo che quando si selezione un comando, venga chiamato il metodo `executeCommand` e che gli venga passato come parametro un `Context` ovvero il contesto nel quale tale comando dovrà operare (potrebbe essere il  documento aperto in caso di software di videoscrittura o la pagina web attualmente aperta nel caso di un browser).
+Data la classe precedente, ora il menù può essere composto da più istanze di `Command` ciascuna con il propio nome e la propria descrizione. Logicamente il menù dovrà fare in modo che quando si selezione un comando, venga chiamato il metodo `executeCommand` e che gli venga passato come parametro un `Context` ovvero il contesto nel quale tale comando dovrà operare (potrebbe essere il documento aperto in caso di software di videoscrittura o la pagina web attualmente aperta nel caso di un browser).
 
 ### Observer
 

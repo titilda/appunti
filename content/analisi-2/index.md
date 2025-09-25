@@ -1,9 +1,11 @@
 ---
 title: "Riassunto di Analisi II"
-author: 
-- "Alessandro Modica"
-- "Joele Andrea Ortore"
-- "Andrea Oggioni"
+description: "Riassunto completo del corso di Analisi Matematica II"
+authors:
+  - "Alessandro Modica"
+  - "Joele Andrea Ortore"
+  - "Andrea Oggioni"
+slug: "analisi-2"
 ---
 
 _Questa pagina è la seconda versione, per la prima versione, visitare [questa pagina](/Analisi%202/old.html)_.
@@ -123,15 +125,15 @@ Per risolvere un'equazione di Bernoulli, c'è un procedimento da seguire.
 
 Inizio cercando le soluzioni costanti:
 
--   $y(t) = 0$ è sempre soluzione.
--   Se sia $h$ che $k$ sono costanti, posso raccogliere $y(t)$e trovare un'altra soluzione costante:
-    $$
-    k \cdot y(t) + h \cdot y(t)^\alpha = 0 \\
-    y(t) \cdot (k + h \cdot y(t)^{\alpha - 1}) = 0 \\
-    k + h \cdot y(t)^{\alpha - 1} = 0 \\
-    y(t)^{\alpha - 1} = -\frac{k}{h} \\
-    y(t) = \left( -\frac{k}{h} \right)^{\frac{1}{\alpha - 1}}
-    $$
+- $y(t) = 0$ è sempre soluzione.
+- Se sia $h$ che $k$ sono costanti, posso raccogliere $y(t)$e trovare un'altra soluzione costante:
+  $$
+  k \cdot y(t) + h \cdot y(t)^\alpha = 0 \\
+  y(t) \cdot (k + h \cdot y(t)^{\alpha - 1}) = 0 \\
+  k + h \cdot y(t)^{\alpha - 1} = 0 \\
+  y(t)^{\alpha - 1} = -\frac{k}{h} \\
+  y(t) = \left( -\frac{k}{h} \right)^{\frac{1}{\alpha - 1}}
+  $$
 
 Procedo cercando le soluzioni non costanti dividendo da entrambi i lati per $y(t)^\alpha$:
 
@@ -201,7 +203,7 @@ dove $L$ è l'operatore definito come $Ly = ay'' + by' + cy$.
 
 In quanto kernel di un'applicazione lineare, $W$ è sottospazio vettoriale.
 
-Per dimostrare che $W$ ha dimensione 2, devo 
+Per dimostrare che $W$ ha dimensione 2, devo
 
 1.  Esibire due soluzioni linearmente indipendenti
 2.  Dimostrare che ogni altra soluzione si scrive come combinazione lineare delle due soluzioni trovate al punto precedente.
@@ -323,7 +325,7 @@ Con questa notazione, l'integrale generale del sistema omogeneo diventa $\underl
 
 ## 1.13 Risoluzione esplicita di sistemi con $A$ diagonalizzabile reale
 
-Se $A \in \mathcal{M}_\mathbb{R}(2)$ è diagonalizzabile reale ($A$ è diagonalizzabile reale $\iff$ esistono $n$ autovettori di $A$ che formano una base di $\mathbb{R}^n$ $\iff$ tutti gli autovalori sono regolari; se $A$ è simmetrica o ha $n$ autovalori reali distinti, allora è diagonalizzabile reale), detta $S$ la matrice ottenuta affiancando una base di $\mathbb{R}^n$, vale che 
+Se $A \in \mathcal{M}_\mathbb{R}(2)$ è diagonalizzabile reale ($A$ è diagonalizzabile reale $\iff$ esistono $n$ autovettori di $A$ che formano una base di $\mathbb{R}^n$ $\iff$ tutti gli autovalori sono regolari; se $A$ è simmetrica o ha $n$ autovalori reali distinti, allora è diagonalizzabile reale), detta $S$ la matrice ottenuta affiancando una base di $\mathbb{R}^n$, vale che
 
 $$
 S = (\underline v_1 | \dots | \underline v_n) \qquad S^{-1} \cdot A \cdot S = \Lambda \qquad \Lambda = \text{diag}(\lambda_1, \dots, \lambda_s) \qquad A = S \cdot \Lambda \cdot S^{-1}
@@ -334,6 +336,7 @@ Una matrice wronskiana relativa al sistema omogeneo è $W(t) = (e^{\lambda_1 t} 
 Eqivalentemente, l'integrale generale è $\underline y_0(t) = C_1 e^{\lambda_1 t} \underline v_1 + \dots + C_n e^{\lambda_n t} \underline v_n$ con $C_1, \dots, C_n \in \mathbb{R}$.
 
 <!-- NON cambiare il titolo: vi è una reference in fauto -->
+
 ## 1.14 Esponenziale di una matrice
 
 Sia $A \in \mathcal{M}_\mathbb{R}(n)$, la **matrice esponenziale** $e^A$ è definita dalla serie
@@ -404,7 +407,7 @@ $$
 
 # Capitolo Due: Serie di funzioni
 
-Siano $f_n : J \sube \mathbb{R} \to \mathbb{R}$ con $n=0, 1, \dots$, allora la **serie di funzioni di termine generale $f_n$**  è la successione delle somme parziali
+Siano $f_n : J \sube \mathbb{R} \to \mathbb{R}$ con $n=0, 1, \dots$, allora la **serie di funzioni di termine generale $f_n$** è la successione delle somme parziali
 
 $$
 \begin{align*}
@@ -447,7 +450,7 @@ Siano $f_n$ funzioni definite almeno in un intervallo $I \sube R$. Se le funzion
 
 ## 2.2 Teorema di integrabilità termine a termine
 
-Nelle stesse ipotesi del teorema precedente, per un qualunque intervallo $[c, d] \sub I$ chiuso e limitato, si ha che la funzione somma $f$ è integrabile e vale che 
+Nelle stesse ipotesi del teorema precedente, per un qualunque intervallo $[c, d] \sub I$ chiuso e limitato, si ha che la funzione somma $f$ è integrabile e vale che
 
 $$
 \int_c^d f(x) dx = \int_c^d \left( \sum_{n=0}^{+\infty} f_n(x) \right) dx = \sum_{n=0}^{+\infty} \int_c^d f_n(x) dx
@@ -511,7 +514,7 @@ La serie di potenze $\sum a_n(x - x_0)^n$ converge assolutamente in $\overline x
 
 Questa è una serie numerica a termini positivi per cui posso scegliere se applicare il criterio del rapporto o quello della radice.
 
-Se il criterio del rapporto è applicabile, la serie converge se 
+Se il criterio del rapporto è applicabile, la serie converge se
 
 $$
 \begin{align*}
@@ -579,7 +582,7 @@ Come in Analisi I, per le serie di potenze reali, vale il criterio di Leibniz: p
 
 # Capitolo Quattro: Serie di Taylor
 
-Una funzione è detta **analitica reale** se nell'intervallo non vuoto $(a, b)$ è somma di una serie di potenze in $(a, b)$, quindi se 
+Una funzione è detta **analitica reale** se nell'intervallo non vuoto $(a, b)$ è somma di una serie di potenze in $(a, b)$, quindi se
 
 $$
 \exists x_0 \in (a, b), \exists a_n \in \mathbb{R} : f = \sum_{n=0}^{+\infty} a_n(x - x_0)^n \quad \forall x \in (a, b)
@@ -637,10 +640,10 @@ dove gli $a_n$ e i $b_n$ sono detti **coefficienti di Fourier**.
 
 Per comprendere i successivi argomenti, è necessario avere famigliarità con le proprietà delle funzioni periodiche:
 
--   $f$ è periodica di periodo $T$ se $f(x) = f(x + T)$.
--   Se $f$ è periodica di periodo $T$ allora è periodica anche di periodo $kT$ con $k \in \mathbb{N}$.
--   Se $f$ è periodica di periodo $T$ ed è pari in $[-\frac{T}{2}, \frac{T}{2}]$ allora è pari in tutto $\mathbb{R}$.
--   Una funzione costante è periodica di qualsiasi periodo.
+- $f$ è periodica di periodo $T$ se $f(x) = f(x + T)$.
+- Se $f$ è periodica di periodo $T$ allora è periodica anche di periodo $kT$ con $k \in \mathbb{N}$.
+- Se $f$ è periodica di periodo $T$ ed è pari in $[-\frac{T}{2}, \frac{T}{2}]$ allora è pari in tutto $\mathbb{R}$.
+- Una funzione costante è periodica di qualsiasi periodo.
 
 Vengono dette **armoniche $n$-esime** le funzioni $\cos nx$ e $\sin nx$ che sono periodiche di periodo $\frac{2\pi}{n}$.
 
@@ -809,7 +812,7 @@ $$
 \lim_{m \to +\infty} \int_{-\pi}^{+\pi} \left( F_m(x) - f(x) \right)^2 dx = 0
 $$
 
-Ciò implica che 
+Ciò implica che
 
 $$
 \lim_{m \to +\infty} \int_{-\pi}^{+\pi} F_m(x)^2 dx = \int_{-\pi}^{+\pi} f(x)^2 dx
@@ -817,7 +820,7 @@ $$
 
 Tale formula in realtà vale per qualsiasi intervallo $[c, d]$ se la $f$ è periodica, in quanto se $[c, d] \sube [-\pi, +\pi]$ allora è ovvio, altrimenti si ragiona per periodicità.
 
-Si può dunque calcolare 
+Si può dunque calcolare
 
 $$
 \int_{-\pi}^{+\pi} F_m(x)^2 dx = \int_{-\pi}^{+\pi} \left( a_0 + \sum_{n=1}^{m} (a_n \cos(nx) + b_n \sin(nx)) \right)^2 dx = 2\pi a_0^2 + \pi \sum_{n=1}^{m} (a_n^2 + b_n^2)
@@ -831,7 +834,7 @@ $$
 
 ### Cenni alla forma esponenziale
 
-Conoscendo le formule di Eulero, 
+Conoscendo le formule di Eulero,
 
 $$
 \cos x = \frac{e^{ix} + e^{-ix}}{2} \qquad \sin x = \frac{e^{ix} - e^{-ix}}{2i}
@@ -872,7 +875,7 @@ Dati un insieme $E \sub \mathbb{R}^n$ e un punto $\underline x_0 \in \mathbb{R}^
 
 - $\underline x_0$ è **di frontiera** o **di bordo** per $E$ se $\forall r \gt 0$ vale che $B_r(\underline x_0) \cap E \ne \emptyset$ e che $B_r(\underline x_0) \cap E^C \ne \emptyset$.
 - $\underline x_0$ è **interno** ad $E$ se $\underline x_0 \in E$ e $\exists r \gt 0 : B_r(x_0) \sub E$.
-- $\underline x_0$ è *esterno* ad $E$ se $\underline x_0$ è interno a $E^C$.
+- $\underline x_0$ è _esterno_ ad $E$ se $\underline x_0$ è interno a $E^C$.
 
 Un insieme $E \sub \mathbb{R}^n$ si dice **aperto** se $\forall \underline x \in E$ si ha che $\underline x$ è punto interno. Lo stesso insieme è chiuso se $E^C$ è aperto.
 
@@ -1015,7 +1018,7 @@ I vari integrali, in caso di curva regolare a tratti, sono da intendersi come so
 
 Una curva $\underline r : I \to \mathbb{R}^3$ si dice **regolare a tratti** se è continua su $I$ e la curva è regolare su $I$ tranne che su un numero finito di punti. La lunghezza di una curva regolare a tratti è la somma delle lunghezze dei vari tratti.
 
-Siano $[a,b] \sub \mathbb{R}$ limitato, $\underline r : [a,b] \to \mathbb{R}$ curva regolare di sostegno $\gamma$, $f(\underline r(t))$ continua $\forall t \in [a,b]$, l'**integrale curvilineo** di $f$ lungo $\gamma$ è 
+Siano $[a,b] \sub \mathbb{R}$ limitato, $\underline r : [a,b] \to \mathbb{R}$ curva regolare di sostegno $\gamma$, $f(\underline r(t))$ continua $\forall t \in [a,b]$, l'**integrale curvilineo** di $f$ lungo $\gamma$ è
 
 $$
 \int_\gamma f ds = \int_a^b f(\underline r(t)) \|\underline r'(t)\| dt
@@ -1025,7 +1028,7 @@ $$
 
 Una **funzione di due variabili reali** $f : A \sube \mathbb{R}^2 \to \mathbb{R}$ è una relazione che associa ad ogni $(x, y) \in \mathbb{R}$ un unico valore reale $f(x, y) \in \mathbb{R}$.
 
-E' detto **insieme di livello** di $f$ al livello $k$ è 
+E' detto **insieme di livello** di $f$ al livello $k$ è
 
 $$
 I_k = \left\{ (x, y) \in A : f(x, y) = k \right\}
@@ -1036,7 +1039,7 @@ che è una curva piana.
 ## 6.1 Limite multivaraibile
 
 Siano $a \sube \mathbb{R}^2$ aperto, $x_0 \in A$, $f : A \backslash \{\underline x_0\} \to \mathbb{R}$.
-Diciamo che $f$ tende al limite $l \in \mathbb{R}$ per $\underline x \to \underline x_0$ e scriviamo che $\lim_{\underline x \to \underline x_0} f(x) = l$ se 
+Diciamo che $f$ tende al limite $l \in \mathbb{R}$ per $\underline x \to \underline x_0$ e scriviamo che $\lim_{\underline x \to \underline x_0} f(x) = l$ se
 
 $$
 \forall \varepsilon \gt 0 \ \exists \delta \gt 0 : \underline x \in B_\delta(\underline x_0) \backslash \{ \underline x_0 \} \implies |f(\underline x) - l| \lt \varepsilon
@@ -1168,7 +1171,7 @@ $$
 
 Come volevasi dimostrare.
 
-Siano $A \sube \mathbb{R}$, $\underline x_0 \in A$, $\underline x_0 = (x_0, y_0)$, $f : A \to \mathbb{R}$, $\underline v = (v_1, v_2)$ e $\|\underline v\| = 1$. La **derivata direzionale** di $f$ in $\underline x_0$ nella direzione $\underline v$ è 
+Siano $A \sube \mathbb{R}$, $\underline x_0 \in A$, $\underline x_0 = (x_0, y_0)$, $f : A \to \mathbb{R}$, $\underline v = (v_1, v_2)$ e $\|\underline v\| = 1$. La **derivata direzionale** di $f$ in $\underline x_0$ nella direzione $\underline v$ è
 
 $$
 \frac{\partial f}{\partial v} = \lim_{t \to 0} \frac{f(x_0 + tv_1, y_0 + tv_2) - f(x_0, y_0)}{t} = \lim_{t \to 0} \frac{f(\underline x_0 + t \underline v) - f(\underline x_0)}{t}
@@ -1180,7 +1183,7 @@ Il fatto che $f$ sia differenziabile in $\underline x_0$ implica che esistano tu
 
 ### Teorema della formula del gradiente
 
-Siano $A \sube \mathbb{R}$ aperto, $\underline x_0 = (x_0, y_0) \in A$, $f : A \to \mathbb{R}$ differenziabile in $\underline x_0$ allora $f$ ammette derivate direzionali in $\underline x_0$ lungo qualunque direzione $\underline v \in \mathbb{R}$ tale che $\|\underline v\| = 1$ e inoltre 
+Siano $A \sube \mathbb{R}$ aperto, $\underline x_0 = (x_0, y_0) \in A$, $f : A \to \mathbb{R}$ differenziabile in $\underline x_0$ allora $f$ ammette derivate direzionali in $\underline x_0$ lungo qualunque direzione $\underline v \in \mathbb{R}$ tale che $\|\underline v\| = 1$ e inoltre
 
 $$
 \frac{\partial f}{\partial \underline v} = \lang \nabla f(\underline x_0), \underline v \rang
@@ -1188,7 +1191,7 @@ $$
 
 #### Dimostrazione
 
-Devo dimostrare che se $f$ è differenziabile in $\underline x_0$ allora vale che 
+Devo dimostrare che se $f$ è differenziabile in $\underline x_0$ allora vale che
 
 $$
 \lim_{t \to 0} \frac{f(\underline x_0 + t \underline v) - f(\underline x_0)}{t} = \lang \nabla f(\underline x_0), \underline v \rang
@@ -1211,14 +1214,14 @@ Come volevasi dimostrare.
 
 E' importante notare che se la funzione non è definita per casi e non contiene radici o valori assoluti, se $f \in \mathcal{C}^1(\mathbb{R}^2)$, per il teorema del differenziale totale, la $f$ è differenziabile in $\mathbb{R}^2$ e quindi vale la formula del gradiente.
 
-Siano $\underline r$ una curva piana e $f$ differenziabile e regolare, ristretta alla curva $\underline r$. 
+Siano $\underline r$ una curva piana e $f$ differenziabile e regolare, ristretta alla curva $\underline r$.
 La **restrizione** di $f$ è la funzione $F(t) = (f \cdot \underline r)(t) = f(\underline r(t)) = f(r_1(t), r_2(t))$.
 
 Se f è differenziabile e $\underline r$ è regolare allora $F'(t) = \lang \nabla f(\underline r(t)), \underline r'(t) \rang = \lang \nabla f(r_1(t), r_2(t)), \begin{pmatrix} r_1'(t) \\ r_2'(t) \end{pmatrix} \rang$.
 
 chiamando $\underline v = \frac{\underline r'(t_0)}{\|\underline r'(t_0)\|}$ e $\underline x_0 = \underline r(t_0)$ allora $F'(t_0) = \lang \nabla f(\underline r(t_0)), \frac{\underline r'(t_0)}{\|\underline r'(t_0)\|} \rang \cdot \|\underline r'(t_0)\| = \|\underline r'(t_0)\| \frac{\partial f}{\partial \underline v} (\underline x_0)$ cioè $F'(t_0)$ è multiplo della derivata direzionale di $f$ nella direzione tangente alla curva in $\underline x_0$.
 
-La derivata direzionale di $f$ nella direzione tangente alla curva di livello è nulla: detto $\underline v$ il versore tangente alla curva di livello al livello $k = f(\underline x_0)$, nel punto $\underline x_0$ stesso, si ha che 
+La derivata direzionale di $f$ nella direzione tangente alla curva di livello è nulla: detto $\underline v$ il versore tangente alla curva di livello al livello $k = f(\underline x_0)$, nel punto $\underline x_0$ stesso, si ha che
 
 $$
 \frac{\partial f}{\partial \underline v} (\underline x_0) = \lang \nabla f(\underline x_0), \underline v \rang
@@ -1257,7 +1260,7 @@ $$
 Diciamo che f è **derivabile 2 volte** se tutte e quattro le derivate seconde esistono; in tal caso le organizziamo nella **matrice hessiana**:
 
 $$
-H_f(\underline x_0) = \begin{bmatrix} 
+H_f(\underline x_0) = \begin{bmatrix}
     \frac{\partial^2 f}{\partial x^2} = \frac{\partial}{x}\left(\frac{\partial f}{\partial x}\right) & \frac{\partial^2 f}{\partial y \partial x} = \frac{\partial}{\partial y} \left( \frac{\partial f}{\partial x} \right) \\
     \frac{\partial^2 f}{\partial x \partial y} = \frac{\partial}{\partial x} \left( \frac{\partial f}{\partial y} \right) & \frac{\partial^2 f}{\partial y^2} = \frac{\partial}{\partial y}\left( \frac{\partial f}{\partial y} \right)
 \end{bmatrix} = \begin{bmatrix}
@@ -1287,7 +1290,7 @@ Dalla forma quadratica indotta, si può ricavare la matrice $A = \begin{bmatrix}
 
 ## 7.1 Serie di Taylor al secondo ordine
 
-Sia $A \sube \mathbb{R}^2$, $f \in \mathcal{C}^2(A)$. $\forall \underline x_0 \in A$ vale che 
+Sia $A \sube \mathbb{R}^2$, $f \in \mathcal{C}^2(A)$. $\forall \underline x_0 \in A$ vale che
 
 $$
 f(\underline x_0 + \underline h) = f(\underline x_0) + \lang \nabla f(\underline x_0), \underline h \rang + \frac{1}{2} \lang \underline h, H_f(\underline x_0) \cdot \underline h \rang + \small o(\|\underline h\|^2)
@@ -1430,7 +1433,7 @@ Siano $A \sube \mathbb{R}^2$ aperto, $f,F \in \mathcal{C}^1(A)$. Si definisce **
 
 # Capitolo Otto: Integrali doppi
 
-$D \sube \mathbb{R}^2$ è detta **regione y-semplice** se è della forma 
+$D \sube \mathbb{R}^2$ è detta **regione y-semplice** se è della forma
 
 $$
 D = \{(x, y) \in \mathbb{R}^2 : x \in [a, b], g_1(x) \le y \le g_2(x)\}
@@ -1556,16 +1559,16 @@ J_T(r, \varphi, \theta) = \begin{bmatrix}
     \frac{\partial T_1}{\partial r} & \frac{\partial T_1}{\partial \varphi} & \frac{\partial T_1}{\partial \theta} \\
     \frac{\partial T_2}{\partial r} & \frac{\partial T_2}{\partial \varphi} & \frac{\partial T_2}{\partial \theta} \\
     \frac{\partial T_3}{\partial r} & \frac{\partial T_3}{\partial \varphi} & \frac{\partial T_3}{\partial \theta} \\
-\end{bmatrix} = \begin{bmatrix} 
+\end{bmatrix} = \begin{bmatrix}
     \sin \varphi \cos \theta & r \cos \varphi \cos \theta & -r \sin \varphi \sin \theta \\
     \sin \varphi \sin \theta & r \cos \varphi \sin \theta & r \sin \varphi \cos \theta \\
     \cos \varphi & -r \sin \varphi & 0
 \end{bmatrix} \\
 \begin{align*}
-    \det J_T(r, \varphi, \theta) &= \cos \varphi \det \begin{bmatrix} 
+    \det J_T(r, \varphi, \theta) &= \cos \varphi \det \begin{bmatrix}
         r \cos \varphi \cos \theta & -r \sin \varphi \sin \theta \\
         r \cos \varphi \sin \theta & r \sin \varphi \cos \theta \\
-    \end{bmatrix} + r \sin \varphi \det \begin{bmatrix} 
+    \end{bmatrix} + r \sin \varphi \det \begin{bmatrix}
         \sin \varphi \cos \theta & -r \sin \varphi \sin \theta \\
         \sin \varphi \sin \theta & r \sin \varphi \cos \theta \\
     \end{bmatrix} \\
@@ -1580,7 +1583,7 @@ $$
 
 ## 9.4 Massa e baricentro
 
-Sia $E \sube \mathbb{R}^3$ regione semplice che rappresenta un corpo rigido e $\rho(x, y, z) : E \to \mathbb{R}^+$ la funzione che rappresenta la densità di massa nel punto $(x, y, z)$, allora 
+Sia $E \sube \mathbb{R}^3$ regione semplice che rappresenta un corpo rigido e $\rho(x, y, z) : E \to \mathbb{R}^+$ la funzione che rappresenta la densità di massa nel punto $(x, y, z)$, allora
 
 $$
 \text{Massa}(E) = {\int\int\int}_E \rho(x, y, z) dxdydz
@@ -1607,7 +1610,7 @@ $$
 
 # Capitolo Dieci: Studio qualitativo EDO
 
-Sia $A \sube \mathbb{R}^2$, $f : A \to \mathbb{R}$ continua in $A$. Se in un intorno del punto $(t_0, y_0) \in A$, $\frac{\partial f}{\partial y}(t, y)$ esiste ed è continua allora il problema di Cauchy 
+Sia $A \sube \mathbb{R}^2$, $f : A \to \mathbb{R}$ continua in $A$. Se in un intorno del punto $(t_0, y_0) \in A$, $\frac{\partial f}{\partial y}(t, y)$ esiste ed è continua allora il problema di Cauchy
 
 $$
 \begin{cases}
@@ -1630,6 +1633,7 @@ Nel caso in cui valga il teorema di esistenza e unicità locale in tutti i punti
 2. se per una soluzione particolare $\overline y$ esiste $k \gt 0$ tale che $\overline y(t) \le k \quad \forall t$ nel dominio di definizione di $\overline y$ allora $\overline y$ è definita $\forall t \in [a, b]$.
 
 <!-- non cambiare titolo che vi è una reference in FAUTO -->
+
 ## 10.1 Studio qualitativo di EDO del primo ordine
 
 Lo studio qualitativo di una EDO consiste nel tracciare un gragfco approssimativo della sua soluzione anche senza saperla risolvere.

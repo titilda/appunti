@@ -1,8 +1,11 @@
 ---
 title: "Fondamenti di Elettronica (FdE)"
-author: 
-- "Niccolò Papini"
+description: "Appunti del corso di Fondamenti di Elettronica"
+authors:
+  - "Niccolò Papini"
+slug: "fondamenti-di-elettronica"
 ---
+
 # Introduzione
 
 Salve lettori, questa pagina è stata creata per riassumere o ampliare gli appunti che prendiamo a lezione, questi appunti possono servire per capire meglio l'argomento e non possono essere capiti completamente se non si seguono le lezioni. Se trovate errori o parti poco chiare vi prego di segnalarlo così provederemo a corregere. Buona lettura -NP
@@ -103,13 +106,13 @@ $KCL, KVL
     V_G=V_R+V_D
 \end{cases}$
 
-Legge di Ohm 
+Legge di Ohm
 $\begin{cases}
     V_R=RI_R\\
     I_D=I_S(e^{\frac{V_D}{V_{TH}}}-1)
 \end{cases}$
 
-Semplificando 
+Semplificando
 $\begin{cases}
     V_D=V_G-RI_D\\
     I_D=I_S(e^{\frac{V_G-RI_D}{V_{TH}}}-1)
@@ -137,7 +140,6 @@ V_D=V_G-0V \iff V_G=V_D$
 ![Grafico Modello Lineare](assets/Capitolo_Analisi_Circuitale/Modello_Lineare.jpg)
 
 ![Grafico Corrente-Tensione](assets/Capitolo_Analisi_Circuitale/Grafico_Corrente_Tensione.jpg)
-
 
 # Capitolo Tre: MOSFET
 
@@ -252,54 +254,53 @@ $I_{DS}^{SAT}= \frac{1}{2} \mu_n C_{ox} (V_{GS}-V_T)^2 (1+ \lambda V_{DS})$
 
 ![NMOS](assets/Capitolo_MOSFET/Circuito_NMOS.jpg)
 
-  -   SATURAZIONE
+- SATURAZIONE
 
-        $V_{GS}>V_T>0$
-        
-        $V_{DS}>V_{ov}$
+  $V_{GS}>V_T>0$
 
-        $I_{DS}^{SAT}= \frac{1}{2} \mu_n C_{ox} (V_{GS}-V_T)^2>0$
-  
-  -   OHMICA
-        
-        $V_{GS} > V_T$
+  $V_{DS}>V_{ov}$
 
-        $V_{DS} < V_{ov}$
+  $I_{DS}^{SAT}= \frac{1}{2} \mu_n C_{ox} (V_{GS}-V_T)^2>0$
 
-        $I_{DS} = \mu_n C_{ox} (V_{GS} - V_T - \frac{V_{DS}}{2}) V_{DS} > 0$
-  
-  -    INTERDIZIONE
+- OHMICA
 
-        $V_{GS} < V_T$
+  $V_{GS} > V_T$
 
-        $I_{DS} = 0$
+  $V_{DS} < V_{ov}$
+
+  $I_{DS} = \mu_n C_{ox} (V_{GS} - V_T - \frac{V_{DS}}{2}) V_{DS} > 0$
+
+- INTERDIZIONE
+
+  $V_{GS} < V_T$
+
+  $I_{DS} = 0$
 
 - PMOS
 
 ![PMOS](assets/Capitolo_MOSFET/Circuito_PMOS.jpg)
 
+- SATURAZIONE
 
-  - SATURAZIONE
+  $V_{GS} < V_T < 0$
 
-    $V_{GS} < V_T < 0$
+  $V_{DS} < V_{ov}$
 
-    $V_{DS} < V_{ov}$
+  $I_{DS}^{SAT}= - \frac{1}{2} \mu_p C_{ox} (V_{GS} - V_T)^2 < 0$
 
-    $I_{DS}^{SAT}= - \frac{1}{2} \mu_p C_{ox} (V_{GS} - V_T)^2 < 0$
+- OHMICA
 
-  - OHMICA 
+  $V_{GS}<V_T$
 
-    $V_{GS}<V_T$
+  $V_{DS} > V_{ov}$
 
-    $V_{DS} > V_{ov}$
+  $I_{DS} = - \mu_p C_{ox} (V_{GS} - V_T - \frac{V_{DS}}{2}) V_{DS} < 0$
 
-    $I_{DS} = - \mu_p C_{ox} (V_{GS} - V_T - \frac{V_{DS}}{2}) V_{DS} < 0$
+- INTERDIZIONE
 
-  - INTERDIZIONE
+  $V_{GS} < V_T$
 
-    $V_{GS} < V_T$
-
-    $I_{DS} = 0$
+  $I_{DS} = 0$
 
 ## 3.6 Curiosità finali
 
@@ -319,7 +320,6 @@ D'ora in avanti ci troveremo davanti svariate parole che indicano determinate ca
 - **Noise Margin:** Massima fluttuazione tollerabile sul livello logico.
 - **Tempo di propagazione:** Tempo che ci mettono i segnali ad arrivare nelle varie parti del circuito.
 - **Potenza dissipata:**
-
   - **Statica:** Devo davvero spiegarlo ?
   - **Dinamica:** Idem con patate.
 
@@ -338,14 +338,13 @@ Cambio formule:
 
 Per $K_n$ si intende $K_n = \frac{1}{2} \mu_n C_{ox}$ mentre con $K_p = \frac{1}{2} \mu_p C_{ox}$
 
-Per i PMOS in Ohmica si usa anche  $I_{SD} = 2 K_p (V_{SG} - |V_T| - \frac{V_{SD}}{2})V_{SD}$ e la satuta $I_{SD}^{SAT} = K_p (V_{SG} - |V_T|)^2$.
+Per i PMOS in Ohmica si usa anche $I_{SD} = 2 K_p (V_{SG} - |V_T| - \frac{V_{SD}}{2})V_{SD}$ e la satuta $I_{SD}^{SAT} = K_p (V_{SG} - |V_T|)^2$.
 
 Cambio rappresentazione:
 
 ![""](assets/Capitolo_CMOS/Rappresentazione_PMOS_e_NMOS.jpg)
 
 - NMOS PDN
-
   - Portano corrente tra $D$ ed $S$
 
 !["Porta PDN"](assets/Capitolo_CMOS/Porta_NMOS.jpg)
@@ -358,7 +357,6 @@ Per digitalizzarlo bisogna pilotare l'NMOS:
 Una rete di NMOS con PD si chiama PDN (Pull-down Network).
 
 - PMOS PUN
-
   - Spingono una corrente da $S$ a $D$
 
 ![""](assets/Capitolo_CMOS/Porta_PMOS.jpg)
@@ -388,12 +386,12 @@ In questo paragrafo parleremo di due porte logiche $NAND-2$ e $NOR-2$ analizzand
 
 $Y=\neg(AB)$
 
-|$A$|$B$|$Y$|
-|---|---|---|
-|0|0|1|
-|0|1|1|
-|1|0|1|
-|1|1|0|
+| $A$ | $B$ | $Y$ |
+| --- | --- | --- |
+| 0   | 0   | 1   |
+| 0   | 1   | 1   |
+| 1   | 0   | 1   |
+| 1   | 1   | 0   |
 
 !["Porta NAND-2"](assets/Capitolo_CMOS/Porta_NAND.jpg)
 
@@ -473,12 +471,12 @@ $t_{p,HL}^{10,11} = C \frac{V_{DD} - V_M}{\frac{K_1 K_2}{K_1+ K_2} (V_{DD} - V_T
 
 $Y = \neg (A+B)$
 
-|$A$|$B$|$Y$|
-|---|---|---|
-|0|0|1|
-|0|1|0|
-|1|0|0|
-|1|1|0|
+| $A$ | $B$ | $Y$ |
+| --- | --- | --- |
+| 0   | 0   | 1   |
+| 0   | 1   | 0   |
+| 1   | 0   | 0   |
+| 1   | 1   | 0   |
 
 !["Porta NOR-2"](assets/Capitolo_CMOS/Porta_NOR.jpg)
 
@@ -825,12 +823,12 @@ Questi bistabili vengono chiamati "bistebile, SR" (Set Reset).
 
 Mi rifiuto categoricamente di fare la tabella di verità della $NOR$ perchè si conosce. Vediamo però quella del bistabile.
 
-|$SR$|$Q_n$|$\neg Q_n$|
-|----|-----|----------|
-|$00$|$Q_{n-1}$|$\neg Q_{n-1}$|
-| $01$ | $0$ | $1$ |
-| $10$ | $1$ | $0$ |
-| $11$ | $0$ | $0$ |
+| $SR$ | $Q_n$     | $\neg Q_n$     |
+| ---- | --------- | -------------- |
+| $00$ | $Q_{n-1}$ | $\neg Q_{n-1}$ |
+| $01$ | $0$       | $1$            |
+| $10$ | $1$       | $0$            |
+| $11$ | $0$       | $0$            |
 
 N.B. lo stato "$11$" non viene usato.
 
@@ -838,12 +836,12 @@ Vediamo ora un "bistabile, $\neg (SR)$" con $NAND$ al posto di $NOR$.
 
 !["Bistabile, $\neg(SR)$"](assets/Capitolo_Memoria/Bistabile%20notSR.jpg)
 
-|$\neg(SR)$|$Q_n$|$\neg Q_n$|
-|----------|-----|----------|
-| $00$ | $1$ | $1$ |
-| $01$ | $1$ | $0$ |
-| $10$ | $0$ | $1$ |
-| $11$ | $Q_{n-1}$ | $\neg Q_{n-1}$ |
+| $\neg(SR)$ | $Q_n$     | $\neg Q_n$     |
+| ---------- | --------- | -------------- |
+| $00$       | $1$       | $1$            |
+| $01$       | $1$       | $0$            |
+| $10$       | $0$       | $1$            |
+| $11$       | $Q_{n-1}$ | $\neg Q_{n-1}$ |
 
 Ora vediamo un "Latch, SR" che è un bistabile con **Enable**.
 
@@ -870,14 +868,12 @@ Qui torniamo ad AXO, anche questo presente su appunti ;), con il "Master-Slave".
 Possiamo essere sensibili in tanti modi:
 
 - Campionare ingressi e scriverli sul medesimo fronte.
-
-    - Fronte di salita (rising edge).
-    - Fronte di discesa (falling edge).
+  - Fronte di salita (rising edge).
+  - Fronte di discesa (falling edge).
 
 - Campionare gli ingressi su un fronte (master) e scriverli sull'altro.
-
-    - Master Slave rise/fall.
-    - Master Slave fall/rise.
+  - Master Slave rise/fall.
+  - Master Slave fall/rise.
 
 Insomma ci sono tanti richiami ad AXO, quindi andiamo a qualcosa di nuovo.
 
@@ -925,14 +921,12 @@ Otteniamo quindi:
 Ad oggi le memorie sono matrici 2D, possono essere:
 
 - Volatili (RAM), se tolgo corrente perdo tutto.
-
-    - SRAM
-    - DRAM
+  - SRAM
+  - DRAM
 
 - Non volatili, se tolgo corrente non perdo nulla.
-
-    - ROM
-    - FLASH
+  - ROM
+  - FLASH
 
 ### SRAM
 
@@ -1228,7 +1222,7 @@ Si richia di creare poli instabili.
 
 ## 9.1 Le retroazioni ed Elettronica (una storia d'amore)
 
-Cosa è semplice fare in elettronica ? 
+Cosa è semplice fare in elettronica ?
 
 - Fare amplificatori a grande guadagno $\to A$.
 - Fare reti passive stabili $\to B$.
@@ -1458,7 +1452,7 @@ G_{LOOP}(s) = -\frac{R_1}{R_1 + R_2}\frac{1+sC_1R_2}{1+sC_1\frac{R_1R_2}{R_1 + R
 
 $G_A(s) = -\frac{R_2}{R_1 + R_2}\frac{1}{1 + sC_1\frac{R_1R_2}{R_1 + R_2}}\frac{A_{d,OL}}{1 + \tau s}$
 
-Sapendo che: 
+Sapendo che:
 
 - $R_1 < R_2$
 - $\frac{R_1R_2}{R_1 + R_2} = R_1 || R_2 < R_{1,2}$
@@ -1659,13 +1653,11 @@ f_i |_{MAX} < \frac{1}{2 \pi} \frac{1}{2^n} \frac{1}{T_{CONV|min}}$
 ![](assets/Capitolo_Acquisizione_Digitale/ADC_Flash.jpg)
 
 - Molticomparatori $(2^n - 1)$
-  
-    - Consuma tanta potenza.
-    - Matching difficile $(DNL, INL).$
+  - Consuma tanta potenza.
+  - Matching difficile $(DNL, INL).$
 
 - Velocità Elevata
-
-    - $T_{CONV} = T_{CLK}$
+  - $T_{CONV} = T_{CLK}$
 
 - Pochi bit (max $12$) ad altissima velocità (GHz) e consumo di potenza.
 
@@ -1674,14 +1666,12 @@ f_i |_{MAX} < \frac{1}{2 \pi} \frac{1}{2^n} \frac{1}{T_{CONV|min}}$
 ![](assets/Capitolo_Acquisizione_Digitale/ADC_a_Rampa_Digitale.jpg)
 
 - Semplice Logica
-
-    - Consumi bassi
-    - Usa molti bit
+  - Consumi bassi
+  - Usa molti bit
 
 - Tempo di conversione dipendente da $V$
-
-    - $T_{CONV} \frac{FSR}{LSB}T_{CLK}$
-    - $T_{CONV|MAX} = 2^n T_{CLK}$
+  - $T_{CONV} \frac{FSR}{LSB}T_{CLK}$
+  - $T_{CONV|MAX} = 2^n T_{CLK}$
 
 - DNL, INL, offset e Gain dipendenti solo dal DAC.
 - Contatore digitale da $0\text{X} 0...0$ a $0 \text{X} F...F.$
@@ -1700,16 +1690,13 @@ f_i |_{MAX} < \frac{1}{2 \pi} \frac{1}{2^n} \frac{1}{T_{CONV|min}}$
 **Logica SAR**
 
 - Partiamo dal $MSB$ di $d$,
-
-    - Se $V_{in} > V_{dac} \to 1$, else $\to 0$
+  - Se $V_{in} > V_{dac} \to 1$, else $\to 0$
 
 - Muoviamoci su $MSB - 1$ di $d$ ricordandoci il valore di $MSB$,
-
-    - Se $V_{in} > V_{dac} \to 1$, else $\to 0$
+  - Se $V_{in} > V_{dac} \to 1$, else $\to 0$
 
 - Così fino ad $LSB$
-
-    - Se $V_{in} > V_{dac} \to 1$, else $\to 0$
+  - Se $V_{in} > V_{dac} \to 1$, else $\to 0$
 
 Simile alla rampa digitale, il contatore è sostituito da una logica ad approssimazioni successive (**SAR**).
 
@@ -1723,15 +1710,13 @@ Simile alla rampa digitale, il contatore è sostituito da una logica ad approssi
 
 - Come l'ADC a rampa digitale ma il contatore + DAC è sostituito da una rampa analogica.
 - Un integratore ideale genera una rampa sul FSR:
-
-    - $V_{rmp} (t) = \frac{E}{RC} t$
+  - $V_{rmp} (t) = \frac{E}{RC} t$
 
 - Un clock alimenta un contatore che continua a contare.
 - Quando $V_{rmp} (t)$ supera $V:$
-
-    - Si ferma il conteggio.
-    - Il valore del conteggio rappresenta $d$ e viene posto in uscita.
-    - Viene resettata $V_{rmp} (t)$ per una nuova conversione.
+  - Si ferma il conteggio.
+  - Il valore del conteggio rappresenta $d$ e viene posto in uscita.
+  - Viene resettata $V_{rmp} (t)$ per una nuova conversione.
 
 ![](assets/Capitolo_Acquisizione_Digitale/Grafico_ADC_a_Rampa.jpg)
 
@@ -1750,14 +1735,12 @@ Simile alla rampa digitale, il contatore è sostituito da una logica ad approssi
 
 - Simile alla rampa singola.
 - Carichiamo $C(V_1)$ con $V_{in}$ usando una rampa $1,T_1:$
-
-    - $V_{rmp,1}(t) = - \frac{V_{in}}{RC} t$
-    - $T_1$ costante, scelto arbitrariamente.
-    - $V_{rmp,1} (T_1) = - \frac{V_{in}}{RC}T_1$.
+  - $V_{rmp,1}(t) = - \frac{V_{in}}{RC} t$
+  - $T_1$ costante, scelto arbitrariamente.
+  - $V_{rmp,1} (T_1) = - \frac{V_{in}}{RC}T_1$.
 
 - Scarichiamo $C(V_1)$ con la seconda rampa $2,T_2:$
-
-    - $V_{rmp,2}(t) = - \frac{-V_R}{RC} t = \frac{V_R}{RC} t$.
+  - $V_{rmp,2}(t) = - \frac{-V_R}{RC} t = \frac{V_R}{RC} t$.
 
 ![](assets/Capitolo_Acquisizione_Digitale/Grafico_ADC_a_Doppia_Rampa.jpg)
 
@@ -1842,7 +1825,7 @@ Considero $V_{in} \in [V_{in}^{min}, V_{in}^{MAX}]:$
 
 Con $V_{in} \in [V_{in}^{min},V_{in}^{MAX}]:$
 
-- $V_{SW}^{ON} < V_{in}^{min} + |V_{T,p}|$ scarica $C_H$ fino a  $V_{in}^{min}.$
+- $V_{SW}^{ON} < V_{in}^{min} + |V_{T,p}|$ scarica $C_H$ fino a $V_{in}^{min}.$
 - $V_{SW}^{OFF} > V_{in}^{MAX} - |V_{T,p}|$ per isolare $C_H$ indipendentemente da $V_{in} (t).$
 
 **Switch NMOS + PMOS**
@@ -1865,13 +1848,11 @@ PMOS ed NMOS caricano/scaricano $C_H:$
 - La $V_{SW}$ deve restare ON affinchè il transitorio non si carica completamente (pena decapitazione).
 - I MOS possono lavorare sia in ohmica che in saturazione.
 - Spesso si usano $V_{SW}^{ON/OFF} >>$ dei valori minimi:
-
-    - quindi $|V_{DS}| < |V_{OV}|$, MOS in Ohmica.
+  - quindi $|V_{DS}| < |V_{OV}|$, MOS in Ohmica.
 
 - Per $R_{CH}(V_{DS})$ si assume $R_{CH}(0)$ per semplicità:
-
-    - $R_{CH} (V_{DS}) = \frac{1}{2k(|V_{GS}| - |V_T| - |V_{DS}|)}$
-    - $R_{CH}(0) = \frac{1}{2k|V_{OV}|}$
+  - $R_{CH} (V_{DS}) = \frac{1}{2k(|V_{GS}| - |V_T| - |V_{DS}|)}$
+  - $R_{CH}(0) = \frac{1}{2k|V_{OV}|}$
 
 Teoricamente abbiamo:
 
@@ -1890,9 +1871,8 @@ Legenda:
 - $\varepsilon_{SMP}$ errore tollerato.
 - $V^0$ e $V^\infty$ tensione di partenza e arrivo di $V_{in,s}$ considerando $SW$ sempre ON.
 - Supponiamo di iniziare a $t_0 = 0:$
-
-    - $V_{in,s} (t) = V^0 + [V^\infty - V^0](1 - e^{-\frac{t}{\tau_{SMP}}})$
-    - $V_{in,s}(T_{SMP}^{min}) = V^\infty - \varepsilon_{SMP}$.
+  - $V_{in,s} (t) = V^0 + [V^\infty - V^0](1 - e^{-\frac{t}{\tau_{SMP}}})$
+  - $V_{in,s}(T_{SMP}^{min}) = V^\infty - \varepsilon_{SMP}$.
 
 ![](assets/Capitolo_Acquisizione_Digitale/Fase_di_Sample_Dettaglio.jpg)
 
@@ -1900,10 +1880,9 @@ Legenda:
 
 - $V^0 = 0$.
 - Considero $0 \to FSR.$
-
-    - $V_{in,s} (t) = FSR(1 - e^{-\frac{t}{\tau_{SMP}}})$
-    - $V_{in,s} (T_{SMP}^{min}) = FSR - \varepsilon_{SMP}$
-    - $T_{SMP}^{min} = \tau_{SMP} ln(\frac{FSR}{\varepsilon_{SMP}}) \xrightarrow{\varepsilon_{SMP} = LSB} \tau_{SMP} ln (\frac{FSR}{LSB}) = \tau_{SMP} \cdot n \cdot ln(2)$
+  - $V_{in,s} (t) = FSR(1 - e^{-\frac{t}{\tau_{SMP}}})$
+  - $V_{in,s} (T_{SMP}^{min}) = FSR - \varepsilon_{SMP}$
+  - $T_{SMP}^{min} = \tau_{SMP} ln(\frac{FSR}{\varepsilon_{SMP}}) \xrightarrow{\varepsilon_{SMP} = LSB} \tau_{SMP} ln (\frac{FSR}{LSB}) = \tau_{SMP} \cdot n \cdot ln(2)$
 
 ### Fase di Hold
 
@@ -1982,19 +1961,16 @@ Quando $SW$ si ON/OFFA, le capacità parassite tra $SW$ e $C_H$ iniettano $\Delt
 
 - $\Delta V = \Delta V_{SW} \cdot \frac{C_{par}}{C_{par} + C_H}$
 - Passando da $HOLD \to SAMPLE$
-
-    - $V_{in}$ connesso a $V_{in,s}$, quindi $\Delta V$ rimossa.
+  - $V_{in}$ connesso a $V_{in,s}$, quindi $\Delta V$ rimossa.
 
 - Passando da $SAMPLE \to HOLD$
-
-    - $\Delta V$ diventa un $\varepsilon$.
-    - Di $\Delta V_{SW}$ bisognerebbe considerare solo la parte di $SW$ spenta.
-    - $\Delta V = \Delta V_{SW}^{OFF} \cdot \frac{C_{par}}{C_{par} + C_H}$
+  - $\Delta V$ diventa un $\varepsilon$.
+  - Di $\Delta V_{SW}$ bisognerebbe considerare solo la parte di $SW$ spenta.
+  - $\Delta V = \Delta V_{SW}^{OFF} \cdot \frac{C_{par}}{C_{par} + C_H}$
 
 - $\Delta V <^! LSB$ quello impone limiti su:
-
-    - parassiti, se fissata $C_H$ e $\Delta V_{SW}.$
-    - su $C_H$ se fissati i parassiti e $\Delta V_{SW}.$
+  - parassiti, se fissata $C_H$ e $\Delta V_{SW}.$
+  - su $C_H$ se fissati i parassiti e $\Delta V_{SW}.$
 
 ![](assets/Capitolo_Acquisizione_Digitale/Charge_Injection.jpg)
 
@@ -2005,8 +1981,7 @@ $T_{ACQ} = T_{SMP} + T_{HLD}$
 - $T_{SMP}^{min} + T_{CONV} < T_{ACQ} < T_{SMP}^{min} + T_{HLD}^{MAX}$
 - $f_c = \frac{1}{T_{ACQ}}$
 - Per il Teorema di Nyquist Shannon non si ha aliasing fino a:
-
-    - $f_{MAX} \geq \frac{f_c}{2}$
+  - $f_{MAX} \geq \frac{f_c}{2}$
 
 ## 10.5 Finale
 

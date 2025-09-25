@@ -1,10 +1,12 @@
 ---
 title: "Riassunto estremamente sintetico di Informazione e Stima"
-author:
-- "Andrea Oggioni"
-- "Niccolò Papini"
-- "Alessandro Modica"
-- "Emanuel Mihali"
+description: "Riassunto sintetico del corso di Informazione e Stima"
+authors:
+  - "Andrea Oggioni"
+  - "Niccolò Papini"
+  - "Alessandro Modica"
+  - "Emanuel Mihali"
+slug: "informazione-e-stima"
 ---
 
 # Introduzione
@@ -146,7 +148,7 @@ $$
 Per descrivere le distribuzioni di probabilità binomiali viste [sopra](#probabilita_binomiali) esistono le variabili aleatorie **binomiali**:
 
 $$
-X \sim \text{Bin}(n, p) \iff P_X(k) = \begin{cases} 
+X \sim \text{Bin}(n, p) \iff P_X(k) = \begin{cases}
     {n \choose k} p^k (1-p)^{n-k} & k = 0, 1, 2, \dots \\
     0 & \text{Altrimenti}
 \end{cases}
@@ -212,7 +214,7 @@ Per la **legge della perdita di memoria**, che vale solo per le variabili aleato
 
 In poche parole, il numero di tentativi fallimentari già fatti non va a influenzare il valore atteso.
 
-Vale la legge dell'**aspettativa totale**: sia $\{A_1, A_2, \dots, A_n\}$ una partizione di $\Omega$ e $X \sube \Omega$, allora 
+Vale la legge dell'**aspettativa totale**: sia $\{A_1, A_2, \dots, A_n\}$ una partizione di $\Omega$ e $X \sube \Omega$, allora
 
 $$
 E[X] = \sum_{i=1}^n P(A_i) \cdot E[X | A_i]
@@ -329,7 +331,7 @@ $$
 F_X(x) = \int_{-\infty}^{x} f_X(x) dx
 $$
 
-E' intuitivo come segua che 
+E' intuitivo come segua che
 
 $$
 \lim_{x \to \infty} F_X(x) = 1
@@ -398,7 +400,7 @@ F_X(x) = \int_{\mathbb{R}} f_{X,Y}(x, y) dy \\
 F_Y(y) = \int_{\mathbb{R}} f_{X,Y}(x, y) dx
 $$
 
-Due variabili aleatorie continue sono **indipendenti** ($X \perp Y$) se 
+Due variabili aleatorie continue sono **indipendenti** ($X \perp Y$) se
 
 $$
 f_{X,Y}(x, y) = f_X(x) \cdot f_Y(y) \qquad \forall (x, y) \in \mathbb{R}^2
@@ -418,13 +420,13 @@ $$
 
 $P_X$ viene detta **legge a priori**, $P_{Y|X}$ viene detta **legge di causa-effetto** (o **di verosimiglianza**) e $P_{X|Y}$ viene detta **legge a posteriori**.
 
-E' possibile combinare più variabili aleatorie in una funzione deterministica di esse: siano $f_{X,Y}(x, y)$ la pdf combinata di $X$ e $Y$ e $Z = g(X, Y)$ una funzione deterministica delle due variabili aleatorie precedenti. Vale che 
+E' possibile combinare più variabili aleatorie in una funzione deterministica di esse: siano $f_{X,Y}(x, y)$ la pdf combinata di $X$ e $Y$ e $Z = g(X, Y)$ una funzione deterministica delle due variabili aleatorie precedenti. Vale che
 
 $$
 E[Z] = {\int\int}_{\mathbb{R}^2} g(x, y) \cdot f_{X,Y}(x, y) dxdy
 $$
 
-Se $Y = \alpha X + \beta$ (quindi $Y$ è una trasformazione lineare di $X$) e $f_X$ è la pdf di $X$, allora 
+Se $Y = \alpha X + \beta$ (quindi $Y$ è una trasformazione lineare di $X$) e $f_X$ è la pdf di $X$, allora
 
 $$
 f_Y(y) = f_X\left(\frac{y - \beta}{\alpha}\right)\frac{1}{|\alpha|}
@@ -462,7 +464,7 @@ $$
 Cov[X, Y] = E[(X - E[X]) \cdot (Y - E[Y])] = E[X \cdot Y] - E[X] \cdot E[Y]
 $$
 
-E' utile notare che 
+E' utile notare che
 
 - $Cov[X, X] = Var[X]$
 - $E[X] = 0 \lor E[Y] = 0 \implies Cov[X, Y] = E[X \cdot Y]$
@@ -554,7 +556,7 @@ La **disuguaglianza di Chebyshev** (che è derivata da quella di Markov) afferma
 
 # Capitolo Otto: Convergenza in probabilità
 
-Sia $\{A_k\}$ una successione di variabili aleatorie ed $a$ un numero. Si dice che $\{A_k\}$ **converge in probabilità** ad $a$ ($A_k \overset{P}{\to} a$) se 
+Sia $\{A_k\}$ una successione di variabili aleatorie ed $a$ un numero. Si dice che $\{A_k\}$ **converge in probabilità** ad $a$ ($A_k \overset{P}{\to} a$) se
 
 $$
 \lim_{k \to \infty} P(|A_k - a| \gt \varepsilon) = 0 \qquad \forall \varepsilon \gt 0
@@ -617,7 +619,7 @@ Per diminuire $n$ è possibile abbassare l'accuratezza (ottenendo un vantaggio q
 
 Se $Z_n$ è la media campionaria $n$ variabili aleatorie $X_i$ indipendenti e identicamente distribuite con varianza finita, allora $F_{Z_n}(c) \overset{n \to \infty}{\to} \Phi(c)$. Questo teorema vale per qualsiasi distribuzione di probabilità delle $X_i$.
 
-E' possibile applicare il CLT al problema del songaggista, ottenendo che la condizione da imporre per ottenere $n$ è 
+E' possibile applicare il CLT al problema del songaggista, ottenendo che la condizione da imporre per ottenere $n$ è
 
 $$
 2 \left( 1 - \Phi\left(l_a \sqrt{4n}\right) \right) \le 1 - l_f
@@ -824,7 +826,7 @@ $$
 
 Logicamente, si deve scegliere $f_Y$ in modo tale da avere $P_Y(A) \gg P_X(A)$.
 
-La varianza dell'errore di stima è 
+La varianza dell'errore di stima è
 
 $$
 \frac{1}{n} \left\{ E \left[ \mathbf{1}(X \in A) \frac{f_X(X)}{f_Y(X)} \right] - P_X(A)^2 \right\}
@@ -893,7 +895,7 @@ $$
 \sum_{i = 1}^n \lambda_i \log x_i \le \log \left[ \sum_{i=1}^n \lambda_i x_i \right]
 $$
 
-da cui segue che 
+da cui segue che
 
 $$
 \begin{cases}
@@ -994,19 +996,19 @@ Sappiamo come comportarci con i processi di Poisson , se dobbiamo calcolare la p
 Ma cosa succederebbe se la T fosse una variabile aleatoria?
 La legge degli arrivi smetterebbe di essere di tipo Poisson, a quale legge dobbiamo fare riferimento quindi? E soprattutto come la ricaviamo?
 
-**METODO CLASSICO**: 
-Questo procedimento fa uso della possibilità di discretizzare un processo di Poisson per poter ricavare informazioni utili sull'ordine e la probabilità di determinate combinazioni di "<b>*arrivi*</b>".
+**METODO CLASSICO**:
+Questo procedimento fa uso della possibilità di discretizzare un processo di Poisson per poter ricavare informazioni utili sull'ordine e la probabilità di determinate combinazioni di "<b>_arrivi_</b>".
 
 <b>La situazione è la seguente:</b>
 $$P \sim Poisson( \lambda)$$
 $$T \sim Exp(v)$$
 
-In questo caso la varibile aleatoria esponenziale è un caso *conveniente* che può essere interpretato come il tempo ad un singolo arrivo di un altro processo di Poisson con parametro $v$.
+In questo caso la varibile aleatoria esponenziale è un caso _conveniente_ che può essere interpretato come il tempo ad un singolo arrivo di un altro processo di Poisson con parametro $v$.
 Procediamo quindi ad effettuare un [Merge](#processi-di-poisson) dei due processi da ciò otteniamo il processo:
 $$M \sim Poisson(v+\lambda)$$
 Una volta fatto ciò procediamo a discretizzare la situazione corrente:
 
-Sappiamo che in un certo intervallo  $t \sim Exp(v)$ avverrà un evento del processo 1 ( quello di parametro $v$) mentre avverranno un certo quantitativo di eventi del processo 2 (quello di parametro $\lambda$) , sappiamo che quando dobbiamo dicretizzare un processo di Poisson che abbiamo creato attraverso un merge, dobbiamo considerare la probabilità che l'evento sia un arrivo di tipo 1 o di tipo 2 come il parametro del processo in questione sul parametro del processo Merge:
+Sappiamo che in un certo intervallo $t \sim Exp(v)$ avverrà un evento del processo 1 ( quello di parametro $v$) mentre avverranno un certo quantitativo di eventi del processo 2 (quello di parametro $\lambda$) , sappiamo che quando dobbiamo dicretizzare un processo di Poisson che abbiamo creato attraverso un merge, dobbiamo considerare la probabilità che l'evento sia un arrivo di tipo 1 o di tipo 2 come il parametro del processo in questione sul parametro del processo Merge:
 
 $$P(Evento_1)=\left( \frac{v}{v+ \lambda} \right)$$
 $$P(Evento_2)=\left( \frac{\lambda}{v+ \lambda}\right)$$
@@ -1030,11 +1032,11 @@ $$T \sim Exp(v)$$
 Devo trovare la ddp degli arrivi nell'intervallo <b>[0,T]</b>
 Dal [teorema delle probabilità totali](#probabilita_totali) applicato a v.a. continue sappiamo che:
 
-$$ f_X(y)=\int_{-\infty}^\infty f_{X|Y}(x|y) f_Y(y) dy$$
+$$ f*X(y)=\int*{-\infty}^\infty f\_{X|Y}(x|y) f_Y(y) dy$$
 
 Quindi per trovare la legge dei k arrivi in t tempo scriveremo:
 
-$$ f_P(p)=\int_{0}^\infty \frac{(\lambda t)^k}{k!} e^{-\lambda t}  *ve^{-vt}dt$$
+$$ f*P(p)=\int*{0}^\infty \frac{(\lambda t)^k}{k!} e^{-\lambda t} \*ve^{-vt}dt$$
 
 Facile no? Provate a risolverlo.
 
@@ -1044,14 +1046,16 @@ Se pensate di non riuscire a risolverlo , tranquilli, significa semplicemente ch
 
 Riscriviamo meglio questo orrore : **tiriamo fuori le costanti:**
 
-$$ f_P(p)=C *\int_{0}^\infty t^k e^{-(\lambda+v) t} dt$$
+$$ f*P(p)=C \*\int*{0}^\infty t^k e^{-(\lambda+v) t} dt$$
 
 La situzione non sembra essere molto migliorata , ma la struttura di questo integrale ci permette di ricondurci ad una funzione molto particolare:
 
-## Capitolo Extra 2: Introduciamo la funzione $\Gamma(K)$ 
+## Capitolo Extra 2: Introduciamo la funzione $\Gamma(K)$
+
 La funzione $\Gamma(K)$ è particolarmente utile :
-* è una funzione ricorsiva: $ K* \Gamma(K) =\Gamma(K+1)$.
-* la sua applicazione è immediata una volta individuata.
+
+- è una funzione ricorsiva: $ K\* \Gamma(K) =\Gamma(K+1)$.
+- la sua applicazione è immediata una volta individuata.
 
 La sua struttura è la seguente:
 
@@ -1062,20 +1066,19 @@ $$\Gamma(K)=\int_{0}^\infty t^{K-1}*e^{-t} dt $$
 Se non fosse che la funzione $\Gamma(K)$ è spesso nota con un altra struttura, questa:
 $$\Gamma(K)=(K-1)!$$
 
-con un pò di ritocco tramite sostituzione di $(\lambda+v)t=u $  il nostro integrale diventa:
+con un pò di ritocco tramite sostituzione di $(\lambda+v)t=u $ il nostro integrale diventa:
 
-$$ f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*\int_{0}^\infty u^k e^{-u} du$$
+$$ f*P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*\int*{0}^\infty u^k e^{-u} du$$
 
 che è quindi:
 
-$$ f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*\Gamma(k+1)$$
+$$ f_P(p)=C _\frac{1}{(\lambda+v)^{k+1}}_\Gamma(k+1)$$
 $$ f_P(p)=C *\frac{1}{(\lambda+v)^{k+1}}*k!$$
 
 Sostituiamo la $C$ con il suo valore originale:
-$$ f_P(p)= \frac{(\lambda )^k}{k!}*v*\frac{1}{(\lambda+v)^{k+1}}*k!$$
+$$ f_P(p)= \frac{(\lambda )^k}{k!}_v_\frac{1}{(\lambda+v)^{k+1}}\*k!$$
 Semplifichiamo il tutto:
 $$ f_P(p)= \left( \frac{v}{\lambda+v}\right) \left( \frac{\lambda}{\lambda+v}\right)^k$$
 
 Questa è la legge degli arrivi che stavamo cercando.
 Non abbiamo discretizzato né fatto nessun ragionamento sui processi , ma risolto un "**semplice**" integrale.
-

@@ -1,15 +1,18 @@
 ---
 title: "Algoritmi e Principi dell'informatica (API)"
-author: 
-- "Niccolò Papini"
-- "Andrea Oggioni"
-- "Nadav Moscovici"
+description: "Appunti del corso di Algoritmi e Principi dell'Informatica"
+authors:
+  - "Niccolò Papini"
+  - "Andrea Oggioni"
+  - "Nadav Moscovici"
+slug: "algoritmi-e-principi-dell-informatica"
 ---
+
 # Definizioni iniziali
 
 ## Lunghezza di una stringa
 
-La **lunghezza** di una stringa è il numero di simboli contenuti in una stringa (anche detta 
+La **lunghezza** di una stringa è il numero di simboli contenuti in una stringa (anche detta
 cardinalità e si indica con $|x|$).
 
 La stringa **vuota** è la stringa che ha zero elementi ($|\varepsilon| = 0$).
@@ -110,7 +113,7 @@ Gli FSA sono rappresentati tramite una tupla $\lang Q, A, \delta, q_0, F \rang$:
 - $q_0 \in Q$ **stato iniziale**
 - $F \subseteq Q$ insieme **stati finali**
 
-Per far sì  che gli FSA riconoscano un linguaggio è necessario:
+Per far sì che gli FSA riconoscano un linguaggio è necessario:
 
 - Sapere le condizioni iniziali del sistema
 - Sapere gli stati finali ammisibili
@@ -174,7 +177,7 @@ Operazioni:
 - Unione ( $\bigcup$ )
 - Complemento ( $^c$ )
 
-Sono operazioni **CHIUSE** negli FSA. 
+Sono operazioni **CHIUSE** negli FSA.
 
 ## PDA (PushDown Automata)
 
@@ -194,7 +197,6 @@ Un PDA è una tupla $\lang Q, I, \Gamma, \delta, q_0, Z_0, F \rang$:
 - $q_o \in Q$ è lo stato iniziale
 - $Z_0 \in \Gamma$ simbolo iniziale di pila
 - $F \subseteq Q$ insieme stati finiti
-
 
 Esempio PDA:
 
@@ -284,7 +286,7 @@ Le TM usano i nastri come memorie:
 - Non distruttivi
 - Scorrevoli in entrambi i sensi
 
-I nastri sono sequenze infinite di celle con "Blank" (segnato come "$\cancel{b}$", "_" o "$-$").
+I nastri sono sequenze infinite di celle con "Blank" (segnato come "$\cancel{b}$", "\_" o "$-$").
 
 ##### Mosse
 
@@ -319,7 +321,7 @@ c = \lang q, x \uparrow iy, \alpha_1 \uparrow A_1 \beta_1, \dots, \alpha_k \upar
 $$
 
 - $q \in Q$
-- $x, y \in I^*$,  $i \in I$
+- $x, y \in I^*$, $i \in I$
 - $\alpha_r, \beta_r \in \Gamma^*$, $A_r \in \Gamma \forall r \quad 1 \le r \le k$
 - $\uparrow \notin I \cup \Gamma$
 
@@ -480,6 +482,7 @@ Diverse modalità :
 ND **NON** aggiunge potere alle TM
 
 ### PDA non deterministici (NPDA)
+
 L e $\varepsilon$-mosse avevano il seguente vincolo:
 
 $\delta(q, \varepsilon, A) \not ={\bot}\implies\delta(q, i, A) = \bot; \forall i \in$ I
@@ -490,9 +493,9 @@ Un NPDA è una tupla $\lang Q, I, \Gamma, \delta, q_0, Z_0, F \rang$
 
 - $\lang Q, I, \Gamma, q_0, Z_0, F \rang$ come nel PDA
 - $\delta$ è la funzione di transazione definita come:
-$$
-\delta \colon Q \times (I \bigcup \{\varepsilon\}\times \Gamma \to \mathcal{P_F}(Q \times \Gamma^*))
-$$
+  $$
+  \delta \colon Q \times (I \bigcup \{\varepsilon\}\times \Gamma \to \mathcal{P_F}(Q \times \Gamma^*))
+  $$
 
 $\mathcal{P_F}$ indica i sottoinsiemi finiti di $Q \times \Gamma^*$
 
@@ -529,7 +532,6 @@ NPDA chiusi rispetto unione.
 | Complemento        | SI  | SI   | NO   | NO  |
 | Concanetazione     | SI  | NO   | SI   | SI  |
 | Stella di Klenee   | SI  | NO   | SI   | SI  |
-
 
 # Grammatiche
 
@@ -576,7 +578,7 @@ Esistono 4 tipi di grammatiche
 | 3    | Regolari                     | (Destre) $A \to \alpha, A \to aB (A \to \varepsilon) con A,B \in V_N, a \in V_T$                                                                                                          | FSA                                                                      |
 | 2    | Context-free                 | $A \to B, A \in V_N$                                                                                                                                                                      | NPDA                                                                     |
 | 1    | Context-sensitive e monotone | $S \to \varepsilon, \alpha A \beta \to \alpha \gamma \beta$ con $A \in V_N, \alpha, \beta, \gamma \in V^+$ (ora monotone) $\alpha \to \beta$ con $\vert \alpha \vert = \vert \beta \vert$ | Automi lineari (NTM usano uno spazio di memoria proporzionale all'input) |
-| 0    | Generali o non ristrette     | $P \subseteq V_N^+ \times V^+$                                                                                                                                                            | TM |
+| 0    | Generali o non ristrette     | $P \subseteq V_N^+ \times V^+$                                                                                                                                                            | TM                                                                       |
 
 ### Reazioni di derivazione immediata
 
@@ -612,7 +614,6 @@ Il linguaggio generato da $G$ è l'insieme di tutte le stringhe:
 
 ES. (Context-Free)
 
-
 $G_2 = \lang \{S\}, \{a, b\}, \{S \to a Sb | ab\}, S \rang \\
 S \to aSb |ab = S \to aSb, S \to ab$
 
@@ -623,7 +624,6 @@ $S \implies ab$
 $S \implies aSb \implies aabb $
 
 $S \implies aSb \implies aaSbb \implies aaabbb$
-
 
 Generalizzo $L(G_2) = \{a^nb^n|n> 0\}$
 
@@ -699,7 +699,7 @@ $RG = RE$.
 
 ### RE POSIX (Linux/Unix)
 
-Caratteri meta: ( ) . [ ] ^ \ $ * + | { }
+Caratteri meta: ( ) . [ ] ^ \ $ \* + | { }
 
 N.B. "." indica qualunque carattere, **NON** concatenazione.
 
@@ -709,7 +709,7 @@ $[\^\ \alpha]$ negazione: qualunque carattere non in $\alpha$.
 
 ^ e \$ indicano $\varepsilon$ corrispettivamente all'inizio e alla fine della riga.
 
-*, +, |, (, ) uguali a sempre.
+\*, +, |, (, ) uguali a sempre.
 
 \ "escape" (\ $ indica il simbolo $).
 
@@ -777,7 +777,6 @@ Esempio
 
 $L_4 = \{x \in \{a,b\}^* |numero\ di\ 'a'\ uguale\ al\ numero\ di \ 'b'\}$
 
-
 - $\#(x,a)$ arietà 2, conta il numero di occorenze del simbolo $'a'$ nella stringa $x$
 
 In FOL: $\forall x (x \in L_4 \longleftrightarrow \# (x,a)= \# (x,b))$
@@ -797,9 +796,9 @@ In FOL: $\forall x (x \in L_4 \longleftrightarrow \# (x,a)= \# (x,b))$
 - Può avere lo stesso potere degli FSA basta permettere di quantificare sui predicati monadici
 - Ammettiamo formule del tipo $\exist x(\phi), x$ è una variabile il cui dominio è l'insieme dei predicati monadici
 - Assegnamento delle variabili del $II$ ordine (insieme $v_2$) è una funzione $v_2 : V_2 \to ([0..|w|-1])$
+  - $w, v_1, v_2 \vDash X(x) \ sse\ v_1(x) \in v_2 (x)$
+  - $w, v_1, v_2 \vDash \exist X (\phi) \ sse \ w, v_1, v_2' \vDash \phi \ per \ qualche \ v_2' \ con \ v_2'(Y); Y\not ={x}$
 
-    - $w, v_1, v_2 \vDash X(x) \ sse\ v_1(x) \in v_2 (x)$
-    - $w, v_1, v_2 \vDash \exist X (\phi) \ sse \ w, v_1, v_2' \vDash \phi \ per \ qualche \ v_2' \ con \ v_2'(Y); Y\not ={x}$
 - La formula descrive il linguaggio $L_p$
 
 $\exist P (\forall x (\neg P(0) \land (\neg P(x) \Longleftrightarrow P(x+1))\land a(x)\land (last(x) \implies P(x))))$
@@ -827,10 +826,9 @@ Struttura generale (**notazione di Hoare**)
 $P$ deve essere tale che se $Pre$ vale prima dell'esecuzione, allora $Post$ vale dopo l'esecuzione.
 
 - $Pre$ e $Post$ possono essere definiti in diversi modi
-
-    - Linguaggio naturale
-    - Linguaggi per le asserzioni
-    - Linguaggi ad-hoc
+  - Linguaggio naturale
+  - Linguaggi per le asserzioni
+  - Linguaggi ad-hoc
 
 $\to$ FOL può essere usata per questo scopo.
 
@@ -858,21 +856,20 @@ Vero sse $Q \subseteq P \ Q$ contiene la $I, II, V$ posizione di $P$.
 
 # Tabella dei Formalismi e Tipi di Chomsky
 
-| Formalismo                                             | Tipo Chomsky | Classe linguaggi             | Potenza      | Descrizione sintetica                                                        |     |     |     |     |
-| ------------------------------------------------------ | ------------ | ---------------------------- | ------------ | ---------------------------------------------------------------------------- | --- | --- | --- | --- |
+| Formalismo                                             | Tipo Chomsky | Classe linguaggi             | Potenza       | Descrizione sintetica                                                        |     |     |     |     |
+| ------------------------------------------------------ | ------------ | ---------------------------- | ------------- | ---------------------------------------------------------------------------- | --- | --- | --- | --- |
 | **Espressioni regolari (RE)**                          | Tipo 3       | Regolari                     | 🔹 Minima     | Linguaggi descrivibili con unioni, concatenazioni, e star (es: `(a+b)*abb`). |     |     |     |     |
 | **Automatoni a stati finiti deterministici (DFA)**     | Tipo 3       | Regolari                     | 🔹 Minima     | Modello equivalente alle RE; riconosce solo ling. regolari.                  |     |     |     |     |
 | **Automatoni a stati finiti non deterministici (NFA)** | Tipo 3       | Regolari                     | 🔹 Minima     | Come DFA ma con nondeterminismo. Stessa potenza.                             |     |     |     |     |
 | **Formule logiche monadiche (MFO)**                    | Tipo 3       | Regolari                     | 🔹 Minima     | Linguaggi esprimibili con logica del primo ordine monadica.                  |     |     |     |     |
 | **Grammatiche libere da contesto (CFG)**               | Tipo 2       | Context-Free (CFL)           | 🔸 Intermedia | Possono descrivere linguaggi annidati (es: `a^n b^n`).                       |     |     |     |     |
 | **Pushdown Automata (PDA)**                            | Tipo 2       | Context-Free                 | 🔸 Intermedia | Modello con stack, equivalente alle CFG.                                     |     |     |     |     |
-| **Grammatiche dipendenti dal contesto (CSG)**          | Tipo 1       | Context-Sensitive (CSL)      | 🔶 Alta       | Ogni produzione non accorcia la stringa ($\alpha \leq \beta$).  |
+| **Grammatiche dipendenti dal contesto (CSG)**          | Tipo 1       | Context-Sensitive (CSL)      | 🔶 Alta       | Ogni produzione non accorcia la stringa ($\alpha \leq \beta$).               |
 | **Lineari sensibili al contesto (LBA)**                | Tipo 1       | Context-Sensitive            | 🔶 Alta       | Turing Machine a memoria limitata alla lunghezza dell’input.                 |     |     |     |     |
 | **Grammatiche generali / non restrittive**             | Tipo 0       | Ricorsivamente enumerabili   | 🔺 Massima    | Nessuna restrizione sulle produzioni.                                        |     |     |     |     |
 | **Macchine di Turing (TM)**                            | Tipo 0       | Ricorsivamente enumerabili   | 🔺 Massima    | Qualsiasi linguaggio computabile.                                            |     |     |     |     |
 | **TM deterministica (DTM)**                            | Tipo 0       | Ricorsivi (decidibili)       | 🔺 Massima    | TM che termina sempre.                                                       |     |     |     |     |
 | **TM non deterministica (NTM)**                        | Tipo 0       | Ric. enumerabili (semi-dec.) | 🔺 Massima    | Può non terminare su input fuori dal linguaggio.                             |     |     |     |     |
-
 
 # Computabilità
 
@@ -973,7 +970,7 @@ $\alef_0$ si legge "alef con zero"
 
 #### Il "problema dell'arresto" (halting problem)
 
-- Costruisco un programma 
+- Costruisco un programma
 - Gli do dei dati in ingresso
 - So che in generale il programma potrebbe non terminare la propria esecuzione
 
@@ -981,7 +978,7 @@ In termini di TM:
 
 $g(y,x) =1\  se\ f_y(x) \not ={\bot}, g(y,x)=0\ se \ f_y(x)=\bot$
 
-C'è TM che calcola $g?$ 
+C'è TM che calcola $g?$
 
 No
 
@@ -1070,12 +1067,12 @@ Dato $F=\{g\}$, per Rice non è decidibile se una generica TM calcoli $g$ o meno
 
 #### Teorema di Rice (variante)
 
-Sia $S \subseteq \mathbb{N}$ tale che 
+Sia $S \subseteq \mathbb{N}$ tale che
 
 1. $S \not = \empty$
 2. $S \not = \mathbb{N}$
 3. se $s \in S$ e la TM n-esima è equivalente alla TM m-esima allora $m \in S$
-($S$ è l'insieme di tutte e sole le codifiche di certe  TM/prog/funz. computabili)
+   ($S$ è l'insieme di tutte e sole le codifiche di certe TM/prog/funz. computabili)
 
 Allora $S$ non è decidibile.
 
@@ -1098,6 +1095,7 @@ Un problema $P'$ è **ridotto** a un problema $P$ se un algoritmo per risolvere 
 
 - $P$ è risolvibile
 - C'è un algoritmo che, per ogni data istanza di $P'$
+
 1. Determina una corrispondente istanza di $P$
 2. Costruisce algoritmicamente la soluzione dell'istanza di $P'$ dalla soluzione dell'sistanza di $P$
 
@@ -1109,7 +1107,7 @@ Siano $A,B \subseteq \mathbb{N}$ e $f: \mathbb{N} \to \mathbb{N}$, $f$ è una ri
 2. se $n \in A$ allora $f(a) \in B$
 3. se $n \not \in A$ allora $f(a) \not \in B$
 
-##### Teorema 
+##### Teorema
 
 Se $A$ **non** è ricorsivo allora $B$ **non** è ricorsivo.
 
@@ -1144,14 +1142,11 @@ $M$ è deterministica $\implies$ computazione unica sull'ingresso $x$
 
 Complessità spaziale
 
-
 $S_M(x) = \Sigma _{j=1}^k max_{i \in \{0,...,r\}} (|a_{ij}|)$
-
 
 Somma della quantità massime occupate
 
 $\forall x: \dfrac{S_M (x)}{k} \le T_M (x)$
-
 
 Notazione
 
@@ -1185,7 +1180,6 @@ $f(n) \in \Omicron(g(n)) \land g(n) \in \Omicron(h(n)) \implies f(n) \in \Omicro
 
 $f(n) \in \Omega(g(n)) \land g(n) \in \Omega(h(n)) \implies f(n) \in \Omega(h(n))$
 
-
 Riflessività
 
 $f(n) \in \Theta(f(n))$
@@ -1193,7 +1187,6 @@ $f(n) \in \Theta(f(n))$
 $f(n) \in \Omicron(f(n))$
 
 $f(n) \in \Omega(f(n))$
-
 
 Simmetria: $f(n) \in \Theta(g(n)) \iff g(n) \in \Theta(f(n))$
 
@@ -1219,7 +1212,7 @@ Se $L$ è accettato da una TM $M$ a $k$ nastri in $T_M(n), \forall c \in \reals^
 
 ## Macchina RAM
 
-La macchina RAM è dotata di un nastro di lettura 
+La macchina RAM è dotata di un nastro di lettura
 $In$ e uno di scrittura $Out$ come la TM.
 
 È dotata di una memoria con accesso a indirizzamento diretto $N[n], n \in \natnums$ al posto dei nastri di memoria: l'accesso non necessita di scorrimento delle celle.
@@ -1249,7 +1242,6 @@ $x=2;$
 $for (int i=0; i<n; i++)\ x=x*x;$
 
 $write(x);$
-
 
 Complessità temporale: $T_{RAM} (n)= k_1+k_2+nk_3+k_4= \Theta (n)$
 
@@ -1323,7 +1315,6 @@ $\begin{cases}
     D(n) + aT(n/b)+ C(n)
 \end{cases}$
 
-
 $a$ si divide in sottoinsiemi di dimensione $1/b$ ognuno.
 
 $D(n)$ costo di dividere il problema, $C(n)$ costo di ricombinare i sottoproblemi e $T(n)$ è il costo per risolvere il problema totale.
@@ -1337,7 +1328,6 @@ $T(n)= \begin{cases}
 \end{cases}
 \\
 a=b=c=2, D(n)= \Theta(1), C(n)=\Theta(n)$
-
 
 **Teorema dell'esperto (master theorem) $\implies$ NON COPRE TUTTI I CASI**
 
@@ -1385,7 +1375,7 @@ $f(n)=n(2-cos(n))=\Omega (n)>n^{log_ba}=\Theta (1)$
 
 Un **heap binario** è un albero quasi completo
 
-Un **max heap** è  un heap tale che $\forall$ nodo $x$ dell'albero, il valore contenuto nel padre di $x$ è $\ge$ del contenuto di $x$.
+Un **max heap** è un heap tale che $\forall$ nodo $x$ dell'albero, il valore contenuto nel padre di $x$ è $\ge$ del contenuto di $x$.
 
 **Complessità di MAX-HEAPIFY**
 
@@ -1680,9 +1670,11 @@ si parte da $h'(k)$ e poi $h'(k)+1$, fino a $m-1$
 genera solo $m$ sequenze di ispezioni distinte.
 
 Soffre del fenomeno dell'**addensamento**(clustering) **primario**
-  -   lunghe celle occupate consecutivamente che aumentano il tempo medio di ricerca
+
+- lunghe celle occupate consecutivamente che aumentano il tempo medio di ricerca
 
 Esempio
+
 $$
 h(k,i)=(h'(k)+i)\ mod\ m
 \\
@@ -1742,7 +1734,6 @@ $s.right=NIL$ se è quello destro.
 ![Nodo ed albero](assets/Alberi%20Binari/Nodo.jpg)
 
 Ogni padre ha al massimo 2 figli.
-
 
 ### Binary Search Tree
 
@@ -1838,7 +1829,7 @@ Diverse tecniche per mantenere un albero bilanciato:
 - alberi rosso-neri (red-black)
 - alberi AVL (Adelson-Velskii e Landis)
 - Altri
- 
+
 L'altezza attesa di un albero costruito inserendo le chiavi in ordine casuale con distribuzione uniforme è $\Omicron(log(n))$
 
 ### Alberi R-B
@@ -1918,7 +1909,7 @@ Per com'è fatto viene eliminato un nodo $(y)$ con al più un figlio diverso da 
 
 Se invece $y$ è nero si può aver violato delle proprietà:
 
-- 1(radice rossa, se $y$ è  la radice e $x$ è rosso)
+- 1(radice rossa, se $y$ è la radice e $x$ è rosso)
 - 3(due rossi consecutivi se $y.p$ e $x$ sono rossi)
 - 5 (i cammini con $y$ hanno un nero in meno)
 
@@ -1985,6 +1976,7 @@ graph TD;
     E-->D;
     E-->E;
 ```
+
 ![Matrice di adiacenza e Lista di adiacenza per l garfo orientato qui sopra](assets/Grafi/Matrice%20e%20Lista%20Orientato.jpg)
 
 #### DIiensione delle rappresentazioni dei grafi
@@ -2152,7 +2144,7 @@ Esempio tabella
 
 ![](assets/Argomenti%20Avanzati/Aste.png)
 
-Se asta lunga 4 posso vederlo: $[4](9);[1,3](9);[2,2](10);[3,1](9);[1,1,2](7);[1,2,1](7);[2,1,1](7);[1,1,1](4)$ 
+Se asta lunga 4 posso vederlo: $[4](9);[1,3](9);[2,2](10);[3,1](9);[1,1,2](7);[1,2,1](7);[2,1,1](7);[1,1,1](4)$
 
 taglio ottimale:$[2,2]$
 
@@ -2172,7 +2164,7 @@ Procedura ricorsiva di questa espressione ha costo temporale: $T(n)=c+\Sigma_{j=
 
 ### Algoritmi golosi
 
-A volte non serve  provare tutte le soluzioni basta dimostrare che sia una quella ottimale, ciò è chiamato algoritmo goloso (greedy).
+A volte non serve provare tutte le soluzioni basta dimostrare che sia una quella ottimale, ciò è chiamato algoritmo goloso (greedy).
 
 In generale gli algoritmi golosi si muovono per ottimi locali (soluzioni).
 
@@ -2235,8 +2227,6 @@ Qubit può non solo trovarsi a $0$ e $1$, ma anche in sovrapposizione tra i due 
 **Supremazia quantistica:** risolve problemi difficili molto più efficiente che con i computer classici.
 
 I computer quantistici possono risolvere efficientemente i problemi $NP-$difficili? No.
-
-
 
 # Algoritmi
 

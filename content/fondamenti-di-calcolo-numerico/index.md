@@ -1,7 +1,9 @@
 ---
 title: "Riassunto di Fondamenti di Calcolo Numerico"
-author:
-- "Andrea Oggioni"
+description: "Riassunto del corso di Fondamenti di Calcolo Numerico"
+authors:
+  - "Andrea Oggioni"
+slug: "fondamenti-di-calcolo-numerico"
 ---
 
 # Introduzione
@@ -181,7 +183,7 @@ La procedura completa per la risoluzione di un sistema lineare è quindi codific
 
 ## Metodi iterativi
 
-Mentre i metodi diretti terminano restituendo una soluzione, questi non sono adatti per sistemi eccessivamente grossi o sparsi. Per queste tipologie di sistemi si usano i metodi iterativi. Questi metodi generano una successione infinita di soluzioni $x^{(k)}$ sempre più precise. 
+Mentre i metodi diretti terminano restituendo una soluzione, questi non sono adatti per sistemi eccessivamente grossi o sparsi. Per queste tipologie di sistemi si usano i metodi iterativi. Questi metodi generano una successione infinita di soluzioni $x^{(k)}$ sempre più precise.
 E' compito dell'utilizzatore di questi metodi decidere quale criterio utilizzare per determinare il momento di fermare l'algoritmo.
 
 A differenza dei metodi diretti, i metodi iterativi sono soggetti ad errore anche in aritmetica esatta.
@@ -298,11 +300,12 @@ $$
 \alpha_{opt} = \frac{2}{\lambda_{min}(A) + \lambda_{max}(A)}
 $$
 
-Ne segue che, con $\alpha$ ottimale, 
+Ne segue che, con $\alpha$ ottimale,
 
 $$
 \rho_{opt} = \frac{K(A) - 1}{K(A) + 1}
 $$
+
 E' possibile aumentare ulteriormente la velocità di convergenza moltiplicando la matrice $A$ per l'inverso di una matrice di **precondizionamento** invertibile $P$.
 
 Il sistema da risolvere diventa dunque $P^{-1}Ax = P^{-1}b$ e nelle formule tutte le occorrenze di $A$ vengono sostituite con $P^{-1}A$.
@@ -443,6 +446,7 @@ $$
 $$
 
 <!-- NOTA: in base a cosa $f'(\alpha) \ne 0$??? -->
+
 Se $\alpha$ è una radice allora $f(\alpha) = 0$ e $f'(\alpha) \ne 0$ di conseguenza
 
 $$
@@ -527,7 +531,7 @@ $$
 
 Si supponga di voler trovare $x : f(x) = \underline 0$: il metodo di Newton può essere applicato, con alcune piccole modifiche anche alla risoluzione di questo problema.
 
-Ogni iterazione è composta da 
+Ogni iterazione è composta da
 
 1. La risoluzione del sistema $J(x^{(k)})\delta x^{(k)} = -f(x^{(k)})$
 2. Il calcolo di $x^{(k+1)} = x^{(k)} + \delta x^{(k)}$.
@@ -599,7 +603,7 @@ $$
 \varphi_k(x) = \prod_{j = 0, j \ne k}^n \frac{x - x_j}{x_k - x_j} = \frac{(x - x_0)(x - x_1) \dots (x - x_{k-1})(x - x_{k+1}) \dots (x - x_n)}{(x_k - x_0)(x_k - x_1) \dots (x_k - x_{k-1})(x_k - x_{k+1}) \dots (x_k - x_n)}
 $$
 
-Valutando il polinomio di Lagrange in $x_i$ si ottiene che 
+Valutando il polinomio di Lagrange in $x_i$ si ottiene che
 
 $$
 \varphi_k(x_i) = \begin{cases}
@@ -608,7 +612,7 @@ $$
 \end{cases}
 $$
 
-Sfruttando questa interessante proprietà, si può riscrivere il polinomio interpolatore del paragrafo precedente come 
+Sfruttando questa interessante proprietà, si può riscrivere il polinomio interpolatore del paragrafo precedente come
 
 $$
 p(x) = \sum_{j=0}^n y_j \varphi_j(x)
@@ -850,7 +854,7 @@ $$
 D^+y(t_n) = \frac{y(t_{n+1}) - y(t_n)}{h} \simeq f(t_n, y(t_n))
 $$
 
-da cui 
+da cui
 
 $$
 \frac{u_{n+1} - u_n}{h} = f(t_n, u_n)
@@ -1131,6 +1135,7 @@ dove $a_i$ è la $i$-esima colonna di $A$.
 ### Norma
 
 Sia $x \in \mathbb{R}^n$, allora la norma-$k$ di tale vettore è data da
+
 $$
 \| x \|_k = \left( \sum_{i=1}^n x_n^k \right)^{\frac{1}{k}}
 $$
@@ -1142,6 +1147,7 @@ Alcune norme utili sono le seguenti:
 - $\|\cdot\|_\infty$: il massimo tra i membri del vettore presi in valore assoluto.
 
 Sia $A$ una matrice quadrata, allora la norma-$A$ del vettore $x$ definito sopra è
+
 $$
 \|x\|_A = \sqrt{x^TAx}
 $$
@@ -1172,7 +1178,7 @@ $$
 \end{cases}
 $$
 
-con $t_0$ e  $y_0$ dati e $f : I \times \mathbb{R}^n \to \mathbb{R}^n$.
+con $t_0$ e $y_0$ dati e $f : I \times \mathbb{R}^n \to \mathbb{R}^n$.
 
 Sia $f$ continua e limitata rispetto ad entrambi gli argomenti e lipschitziana rispetto al secondo, allora la soluzione $y$ esiste ed è unica ed inoltre $y \in \mathcal{C}^1(I)$.
 

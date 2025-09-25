@@ -1,7 +1,9 @@
 ---
 title: "Numerical linear algebra Summary"
-author: 
-- "Andrea Oggioni"
+description: "Riassunto del corso di Numerical Linear Algebra"
+authors:
+  - "Andrea Oggioni"
+slug: "numerical-linear-algebra"
 ---
 
 # Introduction
@@ -88,7 +90,7 @@ An iterative method is consistent if $x = Bx + f$. This means that once the solu
 
 From this property it is possible to deduce a relation between $B$ and $f$: $f = (I - B)x = (I - B)A^{-1}b$.
 
-An iterative method is convegent if the error (the difference between the caomputed solution at a given step and the real solution) goes asimptotically at zero. 
+An iterative method is convegent if the error (the difference between the caomputed solution at a given step and the real solution) goes asimptotically at zero.
 
 Let $e^{(k+1)} = x - x^{(k+1)}$ be the error at the $(k+1)^{th}$ step then $\|e^{(k+1)}\| \le \|B\| \|e^{(k)}\|$.
 
@@ -110,5 +112,3 @@ while (stopping criteria is not met)
   x(k+1) = B * x(k) + f
 end
 ```
-
-

@@ -1,7 +1,9 @@
 ---
 title: "Riassuntino di Logica e Algebra"
-author:
-- "Andrea Oggioni"
+description: "Riassunto del corso di Logica e Algebra"
+authors:
+  - "Andrea Oggioni"
+slug: "logica-e-algebra"
 ---
 
 # Capitolo Uno: Relazioni
@@ -92,14 +94,14 @@ In pratica una relazione è simmetrica se contiene la propria inversa.
 
 - Nel grafo di adiacenza, si nota la simmetricità se tutte le frecce sono o doppie frecce o autoanelli (un autoanello conta come doppia freccia).
 - Nella matrice di adiacenza, si nota la simmetricità se la matrice è simmetrica ($R \text{ è simmetrica} \iff R \sube R^{-1} \iff R = R^{-1}$).
-  
+
 ### Antisimmetricità
 
 $R$ è antisimmetrica se $(a R b) \cap (b R a) \implies a = b$.
 
 - Nel grafo di adiacenza, si nota l'antisimmetricità se le uniche doppie frecce che compaiono sono autoanelli.
 - Nella matrice di adiacenza, si nota l'antisimmetricità se $R \cap R^{-1} \sube I_A$.
-  
+
 ### Transitività
 
 $R$ è transitiva se $(a R b) \cap (b R c) \implies a R c$.
@@ -196,7 +198,7 @@ Neanche i minimali e massimali esistono per forza, però possono non essere unic
 
 In pratica, i minimali e massimali si un insieme sono quelli che sono "più in alto" o "più in basso" degli altri o sono direttamente non confrontabili.
 
-Sia $B \sube A$ allora 
+Sia $B \sube A$ allora
 
 - $m \in A$ è detto **minorante di $B$** se $m \le b \forall b \in B$
 - $M \in A$ è detto **maggiorante di $B$** se $b \le M \forall b \in B$
@@ -244,7 +246,7 @@ Se $f$ è una funzione qualunque (non necessariamente suriettiva) e $g$ è surie
 
 Se una funzione è sia iniettiva che suriettiva allora è **binuivoca** o **biiettiva**.
 
-Nel grafo di adiacenza, si nota la biunivocità se da ogni 
+Nel grafo di adiacenza, si nota la biunivocità se da ogni
 
 Nella matrice di adiacenza, si nota la biunivocità se in ogni riga e in ogni colonna compare esattamente un "1". (Il singolo "1" sulle righe verifica la biunivocità mentre il singolo "1" sulle colonne verifica il fatto che la relazione è una funzione).
 
@@ -305,7 +307,7 @@ La sintassi della logica è composta da
 - Connettivi logici: $\neg, \cap, \cup, \implies, \iff$
 - Simboli ausiliari: $(,)$
 - Altri simboli: $\top, \bot$
-  
+
 Le formule ben formate sono come segue:
 
 - Ogni lettera enunciativa è una f.b.f.
@@ -412,7 +414,7 @@ Una formula $\mathscr A$ si deduce sintatticamente da un insieme $\Gamma$ di f.b
 ## 4.1 Teoria $\mathcal L$
 
 - Alfabeto: unione di
-  - $\{A, B, \dots\}$  insieme al più numerabile di lettere enunciative
+  - $\{A, B, \dots\}$ insieme al più numerabile di lettere enunciative
   - $\{\neg, \implies\}$
   - $\{(, )\}$
 - f.b.f.:
@@ -426,7 +428,7 @@ Una formula $\mathscr A$ si deduce sintatticamente da un insieme $\Gamma$ di f.b
 - Regole di inferenza:
   - MP - Modus Ponens: se $\mathscr A$ e $\mathscr A \implies \mathscr B$ allora $\mathscr B$
 
-### Esempio: dimostrazione di  $\vdash_\mathcal L \mathscr A \implies \mathscr A$
+### Esempio: dimostrazione di $\vdash_\mathcal L \mathscr A \implies \mathscr A$
 
 1.  $\mathscr A \implies ((\mathscr A \implies \mathscr A) \implies \mathscr A) \quad A1$
 2.  $\mathscr A \implies (\mathscr A \implies \mathscr A) \quad A1$
@@ -677,7 +679,7 @@ Le operazioni di $\Omega$ possono avere alcune proprietà
 
 1. P. commutativa: $\forall a,b \in A \quad a \star b = b \star a$
 2. P. associativa: $\forall a,b,c \in A \quad (a \star b) \star c = a \star (b \star c)$
-3. Elemento neutro: 
+3. Elemento neutro:
    $$
    \begin{align*}
     e \in A :& \quad \forall a \in A \quad a \star e = e \star a = a \\
@@ -704,10 +706,10 @@ Le operazioni di $\Omega$ possono avere alcune proprietà
    $$
 7. Sia $\star$ associativa, $e \in A$, $a \in A$ abbia inverso, allora le equazioni $a \star x = c$ e $x \star a = c$ hanno una e una sola soluzione che si ottiene componendo a sinistra e a destra con gli inversi destro e sinistro.
 8. Sia $\star$ associativa, $e \in A$, $a \in A$ abbia inverso allora
-  $$
-  a \star c = a \star b \implies c = b \\
-  b \star a = c \star a \implies b = c
-  $$
+   $$
+   a \star c = a \star b \implies c = b \\
+   b \star a = c \star a \implies b = c
+   $$
 9. Sia $\star$ associativa, $e \in A$, $a,b \in A$ abbiano inversi, rispettivamente, $a^{-1}$ e $b^{-1}$, allora $(a \star b)^{-1} = b^{-1} \star a^{-1}$.
 
 ## 6.2 Lista di strutture algebriche
@@ -937,4 +939,3 @@ Per il significato dei vari assiomi, vedere la [tabella riassuntiva degli assiom
 | A11    | $\forall x (\mathscr A_1^2(f_1^2(x, e), x) \cap \mathscr A_1^2(f_1^2(e, x), x) \cap \mathscr A_1^2(f_1^2(x, f_1^1(x)), e) \cap \mathscr A_1^2(f_1^2(f_1^1(x), x), e))$                   |                                                    |
 | A12    | $\forall x \forall y (\mathscr A_1^2(f_1^2(x, y), f_1^2(y, x)))$                                                                                                                         |                                                    |
 | A13    | $\forall x \forall y \forall z (\mathscr A_1^2(f_2^2(f_2^2(x, y), z), f_2^2(x, f_2^2(y, z))))$                                                                                           |                                                    |
-

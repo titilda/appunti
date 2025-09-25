@@ -1,7 +1,9 @@
 ---
 title: "Riassunto di Fondamenti di Automatica"
-author:
-- "Andrea Oggioni"
+description: "Riassunto del corso di Fondamenti di Automatica"
+authors:
+  - "Andrea Oggioni"
+slug: "fondamenti-di-automatica"
 ---
 
 # Capitolo Uno: Classificazione di sistemi
@@ -17,7 +19,7 @@ $$
 mentre è detto a **tempo discreto** se è della forma
 
 $$
-x(k + 1) = f(x(k), u(k), k) \quad y(k) = g(x(k), u(k), k) \qquad k \in \mathbb{N} 
+x(k + 1) = f(x(k), u(k), k) \quad y(k) = g(x(k), u(k), k) \qquad k \in \mathbb{N}
 $$
 
 _D'ora in poi, si considereranno equivalenti le notazioni $\frac{dx(t)}{dt}$ e $\dot x(t)$_
@@ -88,7 +90,7 @@ x(t) = T^{-1}z(t) \\
 y(t) = Cx(t) + Du(t) = CT^{-1}z(t) + Du(t)
 $$
 
-da cui segue che 
+da cui segue che
 
 $$
 \begin{cases}
@@ -104,6 +106,7 @@ Ottenere la matrice $T$ è un semplice esercizio di algebra lineare: se $A$ è d
 ### Risoluzione di casi particolari
 
 #### Sistemi con matrice $A$ diagonale
+
 Se si vuole studiare il movimento libero di un sistema con $A$ diagonale, è sufficiente calcolare $x(t) = e^{At}x_0$ con $t_0 = 0$.
 
 #### Sistemi con matrice $A$ triangolare
@@ -121,7 +124,7 @@ Se si vuole studiare il movimento libero di un sistema con matrice $A$ triangola
    il vettore di stato e la sua derivata e $A = [a_{ij}]$ la matrice $A$.
 2. Si calcoli $x_n(t) = e^{a_{nn}t}x_n(0)$
 3. $\dot x_{n-1}$ dipende da $x_{n-1}$ e da $x_n$ dunque si tratta $x_n$ come ingresso virtuale e si calcola $x_{n-1}$ con la formula di Lagrange.
-4. In generale, si procede a ritroso, calcolando una variabile per volta con la formula di Lagrange e considerando tutte le altre variabili di stato da cui dipende come ingresso virtuale. 
+4. In generale, si procede a ritroso, calcolando una variabile per volta con la formula di Lagrange e considerando tutte le altre variabili di stato da cui dipende come ingresso virtuale.
 
 #### sistemi con matrice $A$ diagonalizzabile
 
@@ -146,7 +149,7 @@ $$
 x(t) = T^{-1}z(t) = \underbrace{T^{-1}e^{\text{diag}(\lambda_1, \lambda_2, \dots, \lambda_n)}T}_{e^{At}}x(0)
 $$
 
-da cui segue che il movimento libero per un sistema LTI con matrice $A$ diagonalizzabile è 
+da cui segue che il movimento libero per un sistema LTI con matrice $A$ diagonalizzabile è
 
 $$
 x(t) = T^{-1} \text{diag}(e^{\lambda_1 t}, e^{\lambda_2 t}, \dots, e^{\lambda_n t}) x_0
@@ -206,6 +209,7 @@ Un sistema LTI è **asintoticamente stabile** se $\Re(\lambda_i) \lt 0 \ \forall
 Un sistema LTI è **instabile** se $\exists \lambda_i : Re(\lambda_i) \gt 0 \lor \Re(\lambda_i) = 0 \land \lambda_i$ non è regolare.
 
 Sia
+
 $$
 \varphi(\lambda) = \varphi_0 \lambda^n + \varphi_1 \lambda^{n-1} + \dots + \varphi_{n-1} \lambda + \varphi_n = \varphi_0 \prod_{i=1}^n (\lambda - \lambda_i)
 $$
@@ -225,7 +229,7 @@ Si dis-ignorino tutte le righe ignorate:
 - se tutti gli elementi della prima colonna hanno lo stesso segno allora il sistema è asintoticamente stabile
 - se, percorrendo la prima colonna dall'alto verso il basso, si incontrano dei cambiamenti di segno, il sistema è instabile e il numero di cambiamenti di segno corrisponde al numero di autovalori con parte reale positiva
 - se c'è uno zero nella prima colonna, vuol dire che ci sono autovalori puramente immaginari e non è possibile distinguere se il sistema in questione sia semplicemente stabile o instabile con blocchi di Jordan
-  
+
 ## 2.2 Sistemi nonlineari, tempo-invarianti
 
 Si vuole studiare il movimento dello stato di un sistema nonlineare vicino ai punti di equilibrio:
@@ -259,7 +263,7 @@ $$
 \overline x = f(\overline x, \overline u) \quad \overline y = g(\overline x, \overline u)
 $$
 
-Noti lo stato al tempo $k = 0$ ($x(0) = x_0$) e $u(k)$ allora 
+Noti lo stato al tempo $k = 0$ ($x(0) = x_0$) e $u(k)$ allora
 
 $$
 x(k) = A^k x(0) + \sum_{i=0}^{k-1} A^{k-i-1}Bu(i) \\
@@ -426,7 +430,7 @@ Per una tabella con una buona dose di trasformate, vedere l'[appendice](#tabella
 
 <a id="teoremi"></a>
 
-Vale il **teorema del valore iniziale**: se $g \ge 1$ allora 
+Vale il **teorema del valore iniziale**: se $g \ge 1$ allora
 
 $$
 \lim_{t \to 0} = \lim_{s \to +\infty} sF(s)
@@ -483,7 +487,7 @@ Se $U(s) = \mathcal{L}\{\text{Imp}(t)\}$ allora $Y(s) = G(s) \cdot U(s) = G(s) \
 
 ## 5.2 Caratterizzazione della funzione di trasferimento
 
-La funzione di trasferimento può essere scritta in **forma poli-zeri** 
+La funzione di trasferimento può essere scritta in **forma poli-zeri**
 
 $$
 G(s) = \frac{\rho \prod_i(s - z_i)\prod_i(s^2 + 2 \zeta \alpha_{ni} s + \alpha_{ni}^2)}{s^g \prod_i(s - p_i) \prod_i(s^2 + 2 \xi \omega_{ni}s+\omega_{ni}^2)}
@@ -571,7 +575,7 @@ I parametri della riposta sono i seguenti:
 | ---------- | ------------------------ | --------------------------------------------------- |
 | $y_\infty$ | $\mu$                    | Valore finale                                       |
 | $T_S$      | $2.2 \tau$               | Tempo di salita: dal $10\%$ al $90\%$ di $y_\infty$ |
-| $T_r$      | $0.7 \tau$               | Tempo di risposta: da $0$ al $50\%$   di $y_\infty$ |
+| $T_r$      | $0.7 \tau$               | Tempo di risposta: da $0$ al $50\%$ di $y_\infty$   |
 | $T_{5\%}$  | $3 \tau$                 | Tempo di assestamento al $5\%$                      |
 | $T_{1\%}$  | $4.6 \tau \simeq 5 \tau$ | Tempo di assestamento all'$1\%$                     |
 
@@ -626,11 +630,11 @@ e vale che
 | ---------- | ----------- | --------------------------------------------------- |
 | $y_\infty$ | $\mu$       | Valore finale                                       |
 | $T_S$      | $3.36 \tau$ | Tempo di salita: dal $10\%$ al $90\%$ di $y_\infty$ |
-| $T_r$      | $1.68 \tau$ | Tempo di risposta: da $0$ al $50\%$   di $y_\infty$ |
+| $T_r$      | $1.68 \tau$ | Tempo di risposta: da $0$ al $50\%$ di $y_\infty$   |
 | $T_{5\%}$  | $4.74 \tau$ | Tempo di assestamento al $5\%$                      |
 | $T_{1\%}$  | $6.64 \tau$ | Tempo di assestamento all'$1\%$                     |
 
-In questo caso, l'antitrasformata è pari a 
+In questo caso, l'antitrasformata è pari a
 
 $$
 y(t) = \mathcal{L}^{-1} \left\{ \frac{r_1}{s} + \frac{r_2}{s - p} + \frac{r_3}{(s - p)^2} \right\} = \text{Sca}(t) + e^{-\frac{t}{\tau}} + te^{-\frac{t}{\tau}}
@@ -644,7 +648,7 @@ $$
 G(s) = \frac{\mu \omega_n^2}{s^2 + e \xi \omega_n s + \omega_n^2} \qquad 0 \lt \xi \lt 1
 $$
 
-con i poli posizionati in 
+con i poli posizionati in
 
 $$
 p_{1,2} = - \xi \omega_n \pm j \omega_n \sqrt{1 - \xi^2} = -\sigma \pm j \omega_d
@@ -709,7 +713,7 @@ $$
 G(s) = \frac{\mu \omega_n^2(Ts + 1)}{s^2 + 2 \xi \omega_n s + \omega_n^2}
 $$
 
-da cui 
+da cui
 
 $$
 y(t) = \mathcal{L}^{-1} \left\{ \frac{\mu \omega_n^2}{s^2 + 2 \xi \omega_n s + \omega_n^2} \cdot \frac{1}{s} + \frac{\mu \omega_n^2 T}{s^2 + 2 \xi \omega_n s + \omega_n^2} \right\}
@@ -837,7 +841,7 @@ Per il diagramma di Bode della fase il procedimento è simile ma con meno compli
 
 Anche qui, per tenere rendere il grafico più realistico, si deve tenere conto dello smorzamento $\xi$: più si avvicina a $0$ più il cambiamento è squadrato.
 
-Il diagramma della fase di un sistema ritardo puro è 
+Il diagramma della fase di un sistema ritardo puro è
 
 ### Diagrammi a fase minima
 
@@ -972,7 +976,7 @@ ed è garantito che il sistema è asintoticamente stabile se $k \gt -1$.
 
 Il **criterio di Nyquist** permette di determinare la stabilità del sistema retroazionato analizzando solamente la risposta in frequenza della funzione in anello aperto.
 
-Per il criterio, un sistema negativamente retroazionato è asintoticamente stabile se e solo se il numero di giri del diagramma di Nyquist attorno a $-1$  è uguale al numero di poli instabili di $L$ (poli con parte reale positiva).
+Per il criterio, un sistema negativamente retroazionato è asintoticamente stabile se e solo se il numero di giri del diagramma di Nyquist attorno a $-1$ è uguale al numero di poli instabili di $L$ (poli con parte reale positiva).
 
 Per tracciare il diagramma di Nyquist, come prima cosa si traccia su un piano complesso il **percorso di Nyquist**. Tale percorso comincia dall'origine, procede verso l'alto sull'asse immaginario fino a $j \infty$, compie un semicerchio di raggio infinito sul primo e quarto quadrante, fino ad arrivare a $-j \infty$ e poi procede di nuovo verso l'alto fino ad arrivare di nuovo all'origine.
 
@@ -1024,7 +1028,7 @@ E' desiderabile che l'errore a regime $e_\infty$ tenda a zero e che lo sforzo $u
 
 Definire le prestazioni statiche significa scegliere il grado del sistema in base al comportamento dell'uscita e dell'errore desitarati.
 
-E' possibile calcolare 
+E' possibile calcolare
 
 | Grado   | $i = 1$ (Scalino)   | $i = 2$ (Rampa) | $i = 3$ (Parabola) |
 | ------- | ------------------- | --------------- | ------------------ |
@@ -1131,7 +1135,7 @@ $$
 
 ### Controllore PI
 
-Dal fatto che 
+Dal fatto che
 
 $$
 u_{PI}(t) = k_P e(t) + k_I \int_0^t e(\tau) d\tau \\

@@ -1,10 +1,12 @@
 ---
 title: "Riassuntino di Misure"
-author:
-- "Andrea Oggioni"
-- "Alessio Perini"
-- "Joele Andrea Ortore"
-- "Alexandru Nechita"
+description: "Riassunto del corso di Misure"
+authors:
+  - "Andrea Oggioni"
+  - "Alessio Perini"
+  - "Joele Andrea Ortore"
+  - "Alexandru Nechita"
+slug: "misure"
 ---
 
 # Riassuntino di Misure
@@ -134,7 +136,6 @@ Sia $\Delta x$ l'errore massimo e quindi anche la base della PDF. L'altezza è $
 $$
 \sigma = \frac{\Delta x}{\sqrt {24}}
 $$
-
 
 ### 2.4 Derivate dalle precedenti
 
@@ -365,7 +366,7 @@ Riferibilità
 
 ### 7.2 Unità di misura del nuovo Sistema Internazionale
 
-Secondo 
+Secondo
 : L'intervallo di tempo che contiene 9192631770 periodi della radiazione emessa da un atomo di cesio imperturbato che decade tra due livelli iperfini dello stato fondamentale.
 
 Metro
@@ -384,7 +385,7 @@ Mole
 : La quantità di sostanza che contiene esattamente $6.02214129 \cdot 10^{23}$ (pari al numero di Avogadro) entità elementari.
 
 Candela
-: L'intensità luminosa in una data direzione di una sorgente che emette radiazione monocromatica alla frequenza di $540 \cdot 10^{12} Hz$ con intensità radiante di $\frac{1}{683} W$ 
+: L'intensità luminosa in una data direzione di una sorgente che emette radiazione monocromatica alla frequenza di $540 \cdot 10^{12} Hz$ con intensità radiante di $\frac{1}{683} W$
 
 ### 7.3 Taratura e messa in punto
 

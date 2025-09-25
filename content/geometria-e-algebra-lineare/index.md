@@ -1,6 +1,9 @@
 ---
 title: "Elenco Teoremi con relative dimostrazioni per esame GAL"
-author: "Andrea Oggioni"
+description: "Elenco di teoremi con dimostrazioni per l'esame di Geometria e Algebra Lineare"
+authors:
+  - "Andrea Oggioni"
+slug: "geometria-e-algebra-lineare"
 ---
 
 # Elenco Teoremi con relative dimostrazioni per esame GAL
@@ -51,18 +54,18 @@ Sia $A \in \mathcal{M}_{\mathbb{K}}(n, n)$ allora le seguenti affermazioni sono 
 
 Mostriamo $4. \implies 1. \implies 2. \implies 3. \implies 4.$ e poi $4. \iff 5.$.
 
--   $4. \implies 1.$: Poiche $A$ ha un'inversa sinistra, allora $\exists A' : A' \cdot A = \mathbb{I}_n$. 
-    Cosidero ora il sistema lineare $A \cdot \underline{x} = \underline{0}$ allora $A' \cdot (A \cdot \underline{x}) = A' \cdot \underline{0} = 0$ che implica $(A' \cdot A) \cdot \underline{x} = \underline{0} \implies \underline{x} = \underline{0}$ da cui $\ker(A) = \{\underline{0}\}$
--   $1. \implies 2.$: Se $\ker(A) = \{\underline{0}\}$ allora $A \cdot \underline{x} = \underline{0}$ ammette un'unica soluzione e per il teorema di Rouchè-Capelli allora $r(A) = n$
--   $2. \implies 3.$: $\underline{e}_i$ l'i-esimo vettore della base canonica di $\mathbb{K}^n$, allora per il teorema di Rouchè-Capelli, il sistema $A\cdot \underline{x} = \underline{e}_i$ ammette un'unica soluzione $\underline{c}_i \in \mathbb{K}^n : A \cdot \underline{c}_i = \underline{e}_i \forall i = 1, \dotsc, n$.
-    Posto $C = [\underline{c}_1 | \dotsc | \underline{c}_n]$ allora $A \cdot C = [A \cdot \underline{c}_1 | \dotsc | A \cdot \underline{c}_n] = [\underline{e}_1 | \underline{e}_n] = \mathbb{I}_m$, di conseguenza $C$ è l'inversa destra di $A$ e $C$ è invertibile a sinistra.
-    Per quanto già visto, siccome $C$ è invertibile a sinistra, allora ammette anche un'inversa destra che chiamiamo $A'$.
-    Allora $C \cdot A' = \mathbb{I}_n \implies A' = A$ che implica che $A$ è invertibile.
--   $3. \implies 4.$: è ovvio
+- $4. \implies 1.$: Poiche $A$ ha un'inversa sinistra, allora $\exists A' : A' \cdot A = \mathbb{I}_n$.
+  Cosidero ora il sistema lineare $A \cdot \underline{x} = \underline{0}$ allora $A' \cdot (A \cdot \underline{x}) = A' \cdot \underline{0} = 0$ che implica $(A' \cdot A) \cdot \underline{x} = \underline{0} \implies \underline{x} = \underline{0}$ da cui $\ker(A) = \{\underline{0}\}$
+- $1. \implies 2.$: Se $\ker(A) = \{\underline{0}\}$ allora $A \cdot \underline{x} = \underline{0}$ ammette un'unica soluzione e per il teorema di Rouchè-Capelli allora $r(A) = n$
+- $2. \implies 3.$: $\underline{e}_i$ l'i-esimo vettore della base canonica di $\mathbb{K}^n$, allora per il teorema di Rouchè-Capelli, il sistema $A\cdot \underline{x} = \underline{e}_i$ ammette un'unica soluzione $\underline{c}_i \in \mathbb{K}^n : A \cdot \underline{c}_i = \underline{e}_i \forall i = 1, \dotsc, n$.
+  Posto $C = [\underline{c}_1 | \dotsc | \underline{c}_n]$ allora $A \cdot C = [A \cdot \underline{c}_1 | \dotsc | A \cdot \underline{c}_n] = [\underline{e}_1 | \underline{e}_n] = \mathbb{I}_m$, di conseguenza $C$ è l'inversa destra di $A$ e $C$ è invertibile a sinistra.
+  Per quanto già visto, siccome $C$ è invertibile a sinistra, allora ammette anche un'inversa destra che chiamiamo $A'$.
+  Allora $C \cdot A' = \mathbb{I}_n \implies A' = A$ che implica che $A$ è invertibile.
+- $3. \implies 4.$: è ovvio
 
--   $4. \implies 5.$: Già vista precedentemente nel punto $2. \implies 3.$.
--   $5. \implies 4.$ Sia $A'$ l'inversa destra di A allora $A \cdot A' = \mathbb{I}$.
-    Di conseguenza, $A'$ ammette un'inversa sinistra e un'inversa destra $A''$, allora $A' \cdot A'' = \mathbb{I}_n \implies A = A''$ quindi $A \cdot A' = A' \cdot A = \mathbb{I}_n$ e, di conseguenza, $A$ è invertibile
+- $4. \implies 5.$: Già vista precedentemente nel punto $2. \implies 3.$.
+- $5. \implies 4.$ Sia $A'$ l'inversa destra di A allora $A \cdot A' = \mathbb{I}$.
+  Di conseguenza, $A'$ ammette un'inversa sinistra e un'inversa destra $A''$, allora $A' \cdot A'' = \mathbb{I}_n \implies A = A''$ quindi $A \cdot A' = A' \cdot A = \mathbb{I}_n$ e, di conseguenza, $A$ è invertibile
 
 #### Note
 
@@ -193,7 +196,7 @@ Se $V$ è un insieme di generatori su $\mathbb{K}$ che ammette un insimeme di ge
     \end{align*}
     $$
     Sia $\{ \underline{w}_1, \dots, \underline{w}_n \} \sube V$ ove $n > m$. Poichè $\mathcal{P}$ è suriettiva $\exists \underline{z}_1, \dots, \underline{z}_n \in \mathbb{K}^m : \mathcal{P}(\underline{z}_i) = \underline{w}_i$.
-    Per il primo caso esistono $t_1, \dots, t_n$ non tutti nulli tali che $t_1 \underline{z}_1 + \dots + t \underline{z}_n = \underline{0}$ quindi 
+    Per il primo caso esistono $t_1, \dots, t_n$ non tutti nulli tali che $t_1 \underline{z}_1 + \dots + t \underline{z}_n = \underline{0}$ quindi
     $$
     \begin{align*}
       \underline{0} = \mathcal{P}(t_1 \underline{z}_1 + \dots + t_n \underline{z}_n) &= t_1 \mathcal{P}(\underline{z}_1) + \dots + t_n \mathcal{P}(\underline{z}_n) \\
@@ -211,12 +214,14 @@ Nella seconda parte, utilizzando il fatto che la mappa di parametrizzazione è s
 ### 1.10 La dimensione è la cardinalità della base (lez. 9 pag. 6)
 
 Sia $V$ uno spazio vettoriale su $\mathbb{K}$, allora valgono le seguenti implicazioni:
+
 1.  Se $V$ ha una base di cardinalità $n$ allora $\dim(V) = n$
 2.  Se $\dim(V) = n < +\infty$ allora esiste una base $B \sub V$ che ha cardinalità $n$ ed ogni altra base ha cardinalità $n$
 
 #### Dimostrazione
 
 Sia $\mathcal{B} = \{ \underline{b}_1, \dots, \underline{b}_n \}$ una base per $V$ allora:
+
 1.  $\{ \underline{b}_1, \dots, \underline{b}_n \}$ è inearmente indipendente quindi per la definizione di dimensione: $\dim(V) \ge n$
 2.  $\{ \underline{b}_1, \dots, \underline{b}_n \}$ è un insieme di generatori quindi per il lemma fondamentale: $\dim(V) \le n$
 
@@ -283,13 +288,13 @@ $$
 ove
 
 $$
-A = 
+A =
 \begin{bmatrix}
   a_{11} & a_{12} & \dotsm & a_{1n} \\
   a_{21} & a_{22} & \dotsm & a_{2n} \\
   \vdots & \vdots & \ddots & \vdots \\
   a_{m1} & a_{m2} & \dotsm & a_{mn}
-\end{bmatrix} = 
+\end{bmatrix} =
 \left[ X_C(\mathscr{L}(\underline{{b}_i})) | \dots | X_C(\mathscr{L}(\underline{b}_n)) \right]
 $$
 
@@ -390,7 +395,7 @@ Caso $r = 2$
 
 Siano $\underline{v}_1, \underline{v}_2$ autovettori rlativi a $\lambda_1, \lambda_2$.
 Supponiamo per assurdo che esista una loro combinazione lineare uguale al vettore nullo: $\tau_1 \underline{v}_1 + \tau_2 \underline{v}_2 = \underline{0} \quad \tau_1 \ne 0, \tau_2 \ne 0$ allora $\underline{v}_1 = -\frac{\tau_2}{\tau_1} \underline{v}_2$.
-Applichiamo $A$ ad entrambi i membri della precedente equazione: 
+Applichiamo $A$ ad entrambi i membri della precedente equazione:
 
 $$
 A \cdot \underline{v}_1 = \lambda_1 \underline{v}_1 = -\lambda_1 \frac{\tau_2}{\tau_1}\underline{v}_1 \\
@@ -429,7 +434,7 @@ Osservo che se $M = mg(\lambda_1) + \dots + mg(\lambda_r) = n$ allora $n = mg(\l
 $$
 \begin{cases}
   ma(\lambda_1) + \dots + ma(\lambda_r) = n \\
-  ma(\lambda_i) = mg(\lambda_i) & \forall i = 1, \dots, r 
+  ma(\lambda_i) = mg(\lambda_i) & \forall i = 1, \dots, r
 \end{cases}
 $$
 
@@ -438,6 +443,7 @@ Viceversa, se $ma(\lambda_1) + \dots + ma(\lambda_r) = n$ e $ma(\lambda_i) = mg(
 ### 1.17 Invarianti per similitudine (lez. 16 pag. 9)
 
 Siano $a, B \in \mathcal{M}_\mathbb{K}(n, n)$ matrici simili allora
+
 1.  le due matric hanno stesso polinomio caratteristico, la stessa traccia, lo stesso determinante e gli stessi autovalori con la stessa molteplicità algebrica
 2.  le due matrici hanno lo stesso rango
 3.  le due matrici hanno gli stessi autivalori con le stesse molteplicità
@@ -490,7 +496,7 @@ $$
   &= \lang \underline{v}_H, \underline{v}_H - \underline{v}'_H \rang - \lang \underline{v}'_H, \underline{v}_H - \underline{v}'_H \rang \\
   &= \lang \underbrace{\underline{v}_H}_{\in H}, \underbrace{\underline{v}_H - \underline{v}}_{\perp H} \rang + \lang \underbrace{\underline{v}_H}_{\in H}, \underbrace{\underline{v} - \underline{v}'_H}_{\perp H} \rang - \lang \underbrace{\underline{v}'_H}_{\in H}, \underbrace{\underline{v}_H - \underline{v}}_{\perp H} \rang - \lang \underbrace{\underline{v}'_H}_{\in H}, \underbrace{\underline{v} - \underline{v}'_H}_{\perp H} \rang \\
   &= 0 \implies \| \underline{v}_H - \underline{v}'_H \| ^2 = 0 \implies \underline{v}_H - \underline{v}'_H = \underline{0} \implies \underline{v}_H = \underline{v}'_H
-\end{align*} 
+\end{align*}
 $$
 
 Infine domostro le proprietà di minima distanza.
@@ -523,6 +529,7 @@ $\| \underline{v} + \underline{w} \|^2 = \| \underline{v} \|^2 + \| \underline{w
 ### 1.21 Matrici ortogonali rappresentano isometrie (lez. 19 pag. 6)
 
 Sia $U \in \mathcal{M}_\mathbb{R}(n, n)$ allora le seguenti condizioni sono equivalenti:
+
 1. $U$ è ortogonale: $U^T \cdot U = \mathbb{I}_n$
 2. $U$ preserva la norma euclidea: $\| U \cdot \underline{x} \| = \| \underline{x} \|$
 3. $U$ preserva il prodotto scalare standard di $\mathbb{R}^n$: $\lang U \underline{x}, U \underline{y} \rang = \lang \underline{x}, \underline{y} \rang \quad \forall \underline{x}, \underline{y} \in \mathbb{R}^n$
@@ -559,6 +566,7 @@ Sia $V$ uno spazio euclideo di dimensione finita e sia $\mathcal{B}$ una base or
 Sia $\mathcal{B} = \{ \underline{q}_1, \dots, \underline{q}_n \}$ una base ortonormale di $V$. Siano $\underline{v}, \underline{w} \in V$ e $\underline{x}, \underline{y} \in \mathbb{R}^n$ le coordinate di $\underline{v}$ e $\underline{w}$ rispetto a $\mathcal{B}$.
 Ricordiamo che $\lang \underline{v}, \underline{w} \rang = \lang X_\mathcal{B}(\underline{v}), X_\mathcal{B}(\underline{w}) \rang_{\mathbb{R}^n} = \lang \underline{x}, \underline{y} \rang _{\mathbb{R}^n}$.
 Dunque, posto $A = \mathcal{M}_\mathcal{B}^\mathcal{B}(\mathscr{L})$, si ha che:
+
 $$
 \begin{align*}
   & \lang \mathscr{L}(\underline{v}), \underline{w} \rang = \underline{v}, \mathscr{L}(\underline{w}) & \forall \underline{v}, \underline{w} \in V \\
@@ -588,7 +596,7 @@ Sia $H = (Span(\underline{q}_1))^\perp$. Dimostriamo che possiamo restringere $\
 Dobbiamo dimostrare che se $\underline{v} \perp \underline{q}_1$ allora $\mathscr{L}(\underline{v}) \perp \underline{q}_1$.
 Si ha che $\lang \mathscr{L}(\underline{v}), \underline{q}_1 \rang = \lang \underline{v}, \mathscr{L}(\underline{q}_1) \rang = \lambda_1 \lang \underline{v}, \underline{q}_1 \rang = 0$.
 Quindi, per ipotesi induttiva, essendo $\mathscr{L}$ un endomorfismo di $H$ e $\dim(H) = n - 1$, esiste una base ortonormale di $H$ formata da autovettori di $\mathscr{L}$: $\{ \underline{q}_2, \dots, \underline{q}_n \}$.
-Siccome $H = (Span(\underline{q}_1))^\perp$, si ha che $\{ \underline{q}_1, \underline{q}_2, \dots, \underline{q}_n \}$  una base ortonormale di V formata da autovettori di $\mathscr{L}$.
+Siccome $H = (Span(\underline{q}_1))^\perp$, si ha che $\{ \underline{q}_1, \underline{q}_2, \dots, \underline{q}_n \}$ una base ortonormale di V formata da autovettori di $\mathscr{L}$.
 
 Se $A \in \mathcal{M}_\mathbb{R}(n, n)$ è una matrice simmetrica allora $\mathscr{L}_A \colon \mathbb{R}^n \to \mathbb{R}^n$ ($\underline{x} \mapsto A \cdot \underline{x}$) è un endomorfismo simmetrico (infatti $A$ è la matrice rappresentativa di $\mathscr{L}_A$ rispetto alla base canonica $\mathcal{E}_n = \{ \underline{e}_1, \dots, \underline{e}_n \}$ che è base ortonormale di $\mathbb{R}^n$).
 Dunque per quanto abbiamo appena visto, esiste una base ortonormale di $\mathbb{R}^n$ formata da autovettori di $A$: $\{ \underline{q}_1, \dots, \underline{q}_n \}$.
@@ -599,6 +607,7 @@ Dunque $U^TAU = diag(\lambda_1, \dots, \lambda_n)$ e quindi $A$ è ortogonalment
 ### 1.24 Autovalori e segno do una forma quadratica reale (lez. 21 pag. 9)
 
 Sia $A \in \mathcal{M}_\mathbb{R}(n, n)$ simmetrica e $q(\underline{x}) = \underline{x}^T \cdot A \cdot \underline{x}$ $\forall \underline{x} \in \mathbb{R}^n$. Allora:
+
 1. Se $\underline{v}$ è autovettore di $A$ allora $q(\underline{v}) = \lambda \| \underline{v} \| ^2$
 2. Se $\lambda_{min}$ e $\lambda_{max}$ sono gli autovalori minimo e massimo di $A$ allora $\lambda_{min} \| \underline{x} \|^2 \le q(\underline{x}) \le \lambda_{max} \| \underline{x} \|^2$
 
@@ -606,23 +615,25 @@ Sia $A \in \mathcal{M}_\mathbb{R}(n, n)$ simmetrica e $q(\underline{x}) = \under
 
 1. $q(\underline{v}) = \underline{v}^T \cdot A \cdot \underline{v} = \underline{v}^T \cdot (\lambda \underline{v}) = \lambda \cdot \underline{v}^T \cdot \underline{v} = \lambda \| \underline{v} \|^2$
 2. Per il teorema spettrale esiste $U \in \mathcal{M}_\mathbb{R}(n, n)$ ortogonale tale che $U^TAU = diag(\lambda_1, \dots, \lambda_n) = D \implies A = UDU^T$.
-  Si ha che: $q(\underline{x}) = \underline{x}^T \cdot A \cdot \underline{x} = \underline{x}^T \cdot UDU^T \cdot \underline{x} = (U^T \underline{x})^T \cdot D \cdot U^T \underline{x}$.
-  Posto $\underline{y} = U^T \underline{x}$, si ha che:
-  $$
-  \lambda_{min} \| \underline{y} \|^2 \le \underline{y}^T D \underline{y} = \lambda_1 y_1^2 + \dots + \lambda_n y_n^2 \le \| \lambda_{max}\underline{y} \|^2 \\
-  \Downarrow \underline{y} = U^T \cdot \underline{x} \\
-  \lambda_{min} \| U^T \cdot \underline{x} \| ^2 \le q(\underline{x}) = (U^T \cdot \underline{x}) D (U^T \cdot \underline{x}) \le \lambda_{max} \| U^T \cdot \underline{x} \| ^2 \\
-  \Downarrow U \text{ è ortogonale} \\
-  \lambda_{min} \| \underline{x} \| ^2 \le q(\underline{x}) \le \lambda_{max} \| \underline{x} \|^2
-  $$
+   Si ha che: $q(\underline{x}) = \underline{x}^T \cdot A \cdot \underline{x} = \underline{x}^T \cdot UDU^T \cdot \underline{x} = (U^T \underline{x})^T \cdot D \cdot U^T \underline{x}$.
+   Posto $\underline{y} = U^T \underline{x}$, si ha che:
+   $$
+   \lambda_{min} \| \underline{y} \|^2 \le \underline{y}^T D \underline{y} = \lambda_1 y_1^2 + \dots + \lambda_n y_n^2 \le \| \lambda_{max}\underline{y} \|^2 \\
+   \Downarrow \underline{y} = U^T \cdot \underline{x} \\
+   \lambda_{min} \| U^T \cdot \underline{x} \| ^2 \le q(\underline{x}) = (U^T \cdot \underline{x}) D (U^T \cdot \underline{x}) \le \lambda_{max} \| U^T \cdot \underline{x} \| ^2 \\
+   \Downarrow U \text{ è ortogonale} \\
+   \lambda_{min} \| \underline{x} \| ^2 \le q(\underline{x}) \le \lambda_{max} \| \underline{x} \|^2
+   $$
 
 ### 1.25 Forma canonica di un polinomio di secondo grado (lez. 23 pag. 1)
 
 Dato un polinomio di secondo grado $q(\underline{x}) = \underline{x}^T \cdot A \cdot \underline{x} + 2 \cdot \underline{b}^T \cdot \underline{x} + c$ ove $A \in \mathcal{M}_\mathbb{R}(n, n)$ è simmetrica, $\underline{b} \in \mathbb{R}^n$ e $c \in \mathbb{R}$, data una rototransalzione $F(\underline{y}) = Q \cdot \underline{y} + \underline{v}$, ove $Q \in \mathcal{M}_\mathbb{R}(n, n)$ è ortogonale con $\det(Q) = 1$ e $\underline{v} \in \mathbb{R}^n$, posto $\tilde{q}(\underline{y}) = q(F(\underline{y})) = \underline{y}^T \cdot \tilde{A} \cdot \underline{y} + 2 \cdot \tilde{\underline{b}} \cdot \underline{y} + c$ si ha che
+
 1. gli autovalori e il rango di $A$ e $\tilde{A}$ sono uguali
 2. il rango e il determinante di $B$ e $\tilde{B}$ sono uguali
 
 Inoltre, sia $r$ il rango di A e siano $\lambda_1, \dots, \lambda_r$ gli autovalori non nulli di $A$, si ha che
+
 1. se $r(B) = r$ allora esiste una rototranslazione $F(\underline{y}) = Q \underline{y} + \underline{v}$ tali che $\tilde{q}(\underline{y}) = q(F(\underline{y})) = \lambda_1 y_1^2 + \dots + \lambda_r y_r^2$
 2. se $r(B) = r + 1$ allora esiste una rototranslazione $F(\underline{y}) = Q \underline{y} + \underline{v}$ tale che $\tilde{q}(\underline{y}) = q(F(\underline{y})) = \lambda_1 y_1^2 + \dots + \lambda_r y_r^2 + \tilde{c}$ con $\tilde{c} \ne 0$
 3. se $r(B) = r + 2$ allora esiste una rototranslazione $F(\underline{y}) = Q \underline{y} + \underline{v}$ tale che $\tilde{q}(\underline{y}) = q(F(\underline{y})) = \lambda_1 y_1^2 + \dots + \lambda_r y_r^2 + 2py_{r+1}$ con $p \ne 0$
@@ -633,6 +644,7 @@ Inoltre, sia $r$ il rango di A e siano $\lambda_1, \dots, \lambda_r$ gli autoval
 
 Poichè $\tilde{A} = Q^TAQ$ ove $Q$ è una matrice ortogonale allora $\tilde{A}$ è simile ad $A$ e quindi ha lo stesso rango e gli stessi autovalori di $A$.
 Poichè $\tilde{B} = F^TBF$ ove
+
 $$
 F = \left[\begin{array}{c|c}
   Q & \underline{v} \\
@@ -640,6 +652,7 @@ F = \left[\begin{array}{c|c}
   \underline{0}^T & 1
 \end{array} \right] \in \mathcal{M}_\mathbb{R}(n+1, n+1)
 $$
+
 è invertibile e $\det(F) = \det(Q) = 1$ si ha che $\tilde{B}$ e $B$ hanno lo stesso rango (ma non è detto che abbiano gli stessi autovalori) e $\det(\tilde{B}) = \det(B)$.
 
 > Seconda parte
@@ -655,6 +668,7 @@ Per il teorema spettrale esiste $Q \in \mathcal{M}_\mathbb{R}(n, n)$ ortogonale 
 Posto $\tilde{q}(\underline{y}) = q_1(Q \cdot \underline{y}) = \underline{y}^T Q^TAQ \underline{y} + \underline{b}^T \cdot \underline{w} + c = \lambda_1 y_1^2 + \dots + \lambda_r y_r^2 + \underbrace{\underline{b}^T \cdot \underline{w} + c}_{= \tilde{c}}$
 La rototranslaione per trasformare $q(\underline{x})$ in forma canonica è $F(\underline{y}) = Q \underline{y} + \underline{w}$ ove $\underline{w}$ è una soluzione di $A \underline{x} = - \underline{b}$.
 Osserviamo che
+
 $$
 \tilde{B} =
 \left[
@@ -673,6 +687,7 @@ $$
   \end{array}
 \right]
 $$
+
 e quindi $r(\tilde{B}) = r(B) = r$ se e solo se $\tilde{c} = 0$ e $r(\tilde{B}) = r(B) = r + 1$ se e solo se $\tilde{c} \ne 0$.
 
 Secondo caso.
@@ -684,21 +699,26 @@ Consideriamo la translazione $\underline{x} = \underline{y}' + \underline{w}$.
 Allora si ha che $q_1(\underline{y}') = q(\underline{y}' + \underline{w}) = (\underline{y}')^T \cdot A \cdot \underline{y}' + 2 (\underbrace{\overbrace{A \cdot \underline{w}}^{= -\underline{b}_H}+ \underline{b}}_{= \underline{b}_{H ^ \perp}})^T \cdot \underline{y}' + \underbrace{\underline{w}^TA\underline{w} + 2 \underline{b}^T \cdot \underline{w} + c}_{= \tilde{c}} = (\underline{y}')^T \cdot A \cdot \underline{y}' + 2 \underline{b}_{H^\perp}^T \cdot \underline{y}' + \tilde{c}$.
 Essendo $A$ simmetrica $H^\perp = (Col(A))^\perp = \ker(A^T) = \ker(A)$ quindi $\underline{b}_{H^\perp}$ è la proiezione ortogonale di $\underline{b}$ su $\ker(A)$.
 Essendo $\underline{b}_{H^\perp} \in \ker(A)$, $\underline{b}_{H^\perp}$ è un autovettore riferito all'autovalore nullo.
-Posto 
+Posto
+
 $$
 \underline{b}_1 = \frac{\underline{b}_{h^\perp}}{\| \underline{b}_{h^\perp} \| }
 $$
+
 completiamo $\underline{b_1}$ ad una base ortonormale di autovettori di $A$: $\{ \underbrace{\underline{q}_1, \dots, \underline{q}_r}_{\text{Autovettori riferiti a } \lambda_1, \dots, \lambda_r}, \underbrace{\underline{b}_1, \dots, \underline{b}_{n-r}}_{\text{Autovettori riferiti a } 0} \}$ e poniamo $Q = \left[ \begin{array}{c|c|c|c|c|c} \underline{q}_1 & \dots & \underline{q}_r & \underline{b}_1 & \dots & \underline{b}_{n - r}\end{array} \right]$.
 Allora $Q^TAQ = diag(\lambda_1, \dots, \lambda_r, 0, \dots, 0)$.consideriamo la rototranslazione $\underline{y}' = Q \underline{z}$, si ha che $q_2(\underline{z}) = q_1(Q \cdot \underline{z}) = \underline{z}^T Q^T A Q \underline{z} + 2 \underline{b}_{H^\perp}^T \cdot Q \cdot \underline{z} + \tilde{c} = \lambda_1 z_1^2 + \dots + \lambda_r z_r^2 + 2 \| \underline{b}_{H^\perp} \| \cdot z_{r+1} + \tilde{c}$.
 Infine, ponendo $z_1 = y_1, \dots, z_r = y_r, z_{r+1} = y_{r+1}-\frac{\tilde{c}}{2 \| \underline{b}_{H^\perp} \| }, z_{r+2} = y_{r+2}, \dots, z_n = y_n$, otteniamo $\tilde{q}(y) = q_2(y_1, \dots, y_r, y_{r+1} - \frac{\tilde{c}}{2 \| \underline{b}_{H^\perp} \| }, y_{r+2}, \dots, y_n) = \lambda_1 y_1^2 + \dots + \lambda_r y_r^2 + 2 \| \underline{b}_{h^\perp} \| y_{r+1}$.
-La rototranslazione è data da 
+La rototranslazione è data da
+
 $$
 F(\underline{y}) = Q \cdot \underline{y} - \frac{\tilde{c}}{2 \| \underline{b}_{H^\perp} \|^2}\underline{b}_{H^\perp} + \underline{w}
 $$
+
 ove $w$ è una soluzione di $A \underline{x} = - \underline{b}_H$ e $\tilde{c} = \underline{w}^T A \underline{w} + 2 \underline{b}^T \cdot \underline{w} + c$.
 In questo caso
+
 $$
-\left[ 
+\left[
   \begin{array}{ccccccc|c}
     \lambda_1 &         &           &         &         &         &         & 0       \\
               & \ddots  &           &         &         &         &         & \vdots  \\
@@ -712,4 +732,5 @@ $$
   \end{array}
 \right]
 $$
+
 e quindi $r(\tilde{B}) = r(B) = r + 2$

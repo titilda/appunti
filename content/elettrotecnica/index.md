@@ -1,6 +1,9 @@
 ---
 title: "Riassunto di Elettrotecnica"
-author: "Andrea Oggioni"
+description: "Riassunto del corso di Elettrotecnica"
+authors:
+  - "Andrea Oggioni"
+slug: "elettrotecnica"
 ---
 
 # Teoria
@@ -74,7 +77,7 @@ Per doppi bipoli propri controlati in "non corrente" basta sostituire le $i$ con
 
 ### 2.1 Risoluzione di equazioni differenziali
 
-All'inizio sappiamo che 
+All'inizio sappiamo che
 
 $$
 \begin{cases}
@@ -197,7 +200,7 @@ $$
 Q_c = Q_2 - Q_1 = P_1(\tan \varphi_2 - \varphi_1) \simeq -4 \, kVAr
 $$
 
-Sappiamo che 
+Sappiamo che
 
 $$
 \hat A = \frac{1}{2} \overline V (\overline i)^* = \frac{1}{2} Z |\overline i|^2 = \frac{1}{2} \frac{|\overline V^2|}{Z^*}
@@ -219,7 +222,7 @@ $$
 - \oint_\gamma \vec E \cdot d \vec l = \frac{d}{dt} \int_S \vec B \cdot \hat n \cdot dS
 $$
 
-A sinistra dell'uguale si ha la circuitazione del campo  elettrico $\vec E$ in un percorso $\gamma$. Il verso di percorrenza di questo percorso influenza la direzione del versore normale $\hat n$ (sostanzialmente è la somma delle tensioni prese per il verso di percorrenza scelto).
+A sinistra dell'uguale si ha la circuitazione del campo elettrico $\vec E$ in un percorso $\gamma$. Il verso di percorrenza di questo percorso influenza la direzione del versore normale $\hat n$ (sostanzialmente è la somma delle tensioni prese per il verso di percorrenza scelto).
 
 A destra dell'uguale si ha la derivata del flusso magnetico (che si misura in Weber: $1 \, W_b = 1 \, Tm^2$).
 
@@ -245,7 +248,7 @@ $$
 B = \frac{\mu i}{2 \pi r}
 $$
 
-ove $i$ è la corrente che passa nel filo e $r$  la distanza dal filo a cui si vuole calcolare il $B$.
+ove $i$ è la corrente che passa nel filo e $r$ la distanza dal filo a cui si vuole calcolare il $B$.
 
 Nel vuoto $\mu_0 = 4 \cdot 10^{-7} \, H/m$
 
@@ -300,7 +303,7 @@ Per entrambe vale la proprietà (molto importante) che $V_a(t) + V_b(t) + V_c(t)
 
 I generatori di tensione possono essere configurati a stella o a triangolo:
 
-![Configurazione a stella: è evidenziato il cosiddetto \"Centro stella\"][tensioni_stella]
+![Configurazione a stella: è evidenziato il cosiddetto "Centro stella"][tensioni_stella]
 
 ![Configurazione a triangolo][tensioni_triangolo]
 

@@ -1,7 +1,9 @@
 ---
 title: "Riassunto di Fondamenti di Ricerca Operativa"
-author: 
-- "Andrea Oggioni"
+description: "Riassunto del corso di Fondamenti di Ricerca Operativa"
+authors:
+  - "Andrea Oggioni"
+slug: "fondamenti-di-ricerca-operativa"
 ---
 
 # Introduzione
@@ -99,13 +101,14 @@ $$
 \begin{align*}
 \min & \qquad \tilde f(x) \\
 \text{s.t.} & \qquad x \in \tilde X
-\end{align*} 
+\end{align*}
 $$
 
 tale che
+
 1. $\tilde X \supseteq X$
 2. $\forall x \in X \quad \tilde f(x) \le f(x)$
-:::
+   :::
 
 La definizione è analoga per problemi di massimo se nella seconda condizione si usa $\ge$.
 
@@ -128,7 +131,7 @@ Dati $m$ scalari $\lambda_i \ \forall i \in M$, $\sum\limits_{i \in M} \lambda_i
 2. una **combinazione affine** se $\sum\limits_{i \in M} \lambda_i = 1$
 3. una **combinazione conica** se $\lambda_i \ge 0 \forall i \in M$
 4. una **combinazione convessa** se è sia affine che conica
-:::
+   :::
 
 ::: {.callout .callout-definition title="Span lineare"}
 Dati $m$ punti $x^1, x^2, \dots, x^m \in \mathbb{R}^n$, lo **span lineare** di $x^1, x^2, \dots, x^m$ è l'insieme di tutte le combinazioni lineari di $x^1, x^2, \dots, x^m$ costruite con coefficienti $\lambda_i \in \mathbb{R}$.
@@ -283,7 +286,7 @@ Siano dati un problema di riconoscimento $\Pi$ e i seguenti insiemi:
 
 - $D_\Pi$: l'insieme delle istanze di $\Pi$;
 - $Y_\Pi$: il sottoinsieme delle istanze di $\Pi$ con risposta affermativa.
-  
+
 Sia $\Sigma$ un insieme di simboli e $\Sigma^*$ l'insieme di tutte le stringhe sull'alfabeto $\Sigma$.
 
 ::: {.callout .callout-definition title="Codifica"}
@@ -312,6 +315,7 @@ Il linguaggio $L_M$ riconosciuto da $M$ è definito come
 $$
 L_M = \{x \in \Sigma^* : M \text{ accetta } x\}
 $$
+
 :::
 
 ::: {.callout .callout-definition title="Lunghezza di un'istanza"}
@@ -329,6 +333,7 @@ $$
 |x| \le p_2(\text{Lenght(I)})
 \end{cases}
 $$
+
 :::
 
 ## Funzioni di complessità
@@ -370,6 +375,7 @@ Un problema P è _semplice_ mentre i NP sono _un po' meno semplici_, però hanno
 Si possono dare definizioni di P e NP più formali:
 
 ::: {.callout .callout-definition title="Definizione"}
+
 $$
 P = \{L : \exists \text{ algoritmo } M \text{ polinomiale} : L = L_M\}
 $$
@@ -377,14 +383,17 @@ $$
 $$
 NP = \{L : \exists \text{ algoritmo } M \text{ polinomiale non deterministico} : L = L_M\}
 $$
+
 :::
 
 Esiste un algoritmo per risolvere i problemi NP: per ogni problema $\pi \in NP$, esiste un polinomio $p : \mathbb{Z}^+ \to \mathbb{Z}^+$ tale che esiste un algoritmo $M$ di complessità $O(2^{p(n)})$ per ogni $I \in D_\pi : |e(I)| = n$. Tale algoritmo consiste nel provare a forza bruta tutte le possibili soluzioni.
 
 ::: {.callout .callout-note title="Nota"}
+
 $$
 P \sube NP
 $$
+
 :::
 
 ::: {.callout .callout-example title="Esempio"}
@@ -406,9 +415,10 @@ Da questo seguono alcune proprietà:
 
 ::: {.callout .callout-definition title="Problemi NP completi"}
 NPC è l'insieme di problemi $\pi$ tali che
+
 - $\pi \in NP$
 - $\forall \pi' \in NP \ \pi' \propto \pi$
-:::
+  :::
 
 ::: {.callout .callout-example title="Sat3"}
 Dato un insieme di $n$ variabili $y_1, y_2, \dots, y_n \in \{T, F\}$ ed un insieme di clausole $C_1, C_2, \dots, C_n$ definite come disgiunzione di 3 variabili (o, eventualmente, negazioni di esse), esiste un assegnamento di variabili tale che tutte le clausole siano vere?
@@ -502,7 +512,7 @@ Immaginiamo che alcuni oggetti siano inutili se rubati da soli e che dunque vada
 3. Se vengono rubati gli oggetti 4 e 6 assieme, allora deve essere rubato anche l'oggetto 5;
 4. Se vengono rubati gli oggetti 1 e 3 assieme, allora non deve essere rubato l'oggetto 8;
 5. Viene rubato l'oggetto 4 se e solo se viene rubato l'oggetto 7.
-:::
+   :::
 
 Tutti i vincoli sulle variabili booleane sono esprimibili in maniera abbastanza intuitiva e standard (tranne qualche caso): solitamente basta sostituire il "$\implies$" con il "$\le$" e le "$x_i = 0$" con $(1 - x_i)$ e lavorare un po' con le proprietà della logica per arrivare ad una funzione lineare utilizzabile nei vincoli. Segue tabella con esempi di conversioni.
 
@@ -565,6 +575,7 @@ E' possibile spegnere vincoli nella loro interezza seguendo la stessa logica.
 Si vuole attivare il vincolo $3x_1 + 4x_2 - 7x_3 \le 11$ solo nel caso in cui $y_1 = 1$ (con $x_1 \in [1, 3], x_2 \in \{0, 1\}, x_3 \in [-2, 6]$).
 
 Nel "caso peggiore" l'espressione vale 27 dunque si può scrivere che
+
 $$
 \begin{align}
 	3x_1 + 4x_2 - 7x_3 &\le \begin{cases}
@@ -574,6 +585,7 @@ $$
 	&= 27 - 16y_1
 \end{align}
 $$
+
 :::
 
 ### Ottimizzazione di problemi min-max, max-min e min-abs
@@ -615,19 +627,23 @@ Anche nel caso di problemi di _min-abs_ la funzione da minimizzare non è linear
 ## Forma standard e forma generale
 
 Sia dato un problema di ottimizzazione lineare generico come il seguente:
+
 $$
 \begin{align*}
 \max & \qquad \sum_{j=1}^n c_jx_j\\
 \text{s.t.} & \qquad \sum_{j=1}^n a_{ij} x_j \le b_i \qquad \forall i = 1 \dots m
 \end{align*}
 $$
+
 Lo stesso problema è esprimibile in in modo vettoriale:
+
 $$
 \begin{align*}
 \max & \qquad c^Tx \\
 \text{s.t.} & \qquad Ax \le b \qquad
 \end{align*}
 $$
+
 dove $A = (a_{ij})$ con $i = 1 \dots m$ e $j = 1 \dots n$, $c = (c_1, c_2, \dots, c_n)^T$ e $b = (b_1, b_2, \dots, b_m)^T$.
 
 Da ciò deriva che tutte le soluzioni ammissibili per il problema generico sono $x^* : Ax^* \le b$ mentre $x^* \in \mathbb{R}^n$ è ottimo se $Ax^* \le b$ e se $\not \exists \overline x : A \overline x \le b \land c^T\overline x \gt c^Tx^*$.
@@ -640,6 +656,7 @@ Ci possono essere più soluzioni ottime, tutte che portano la funzione obiettivo
 :::
 
 Un problema in forma standard è espresso come:
+
 $$
 \begin{align*}
 \min & \qquad c^Tx \\
@@ -647,15 +664,18 @@ $$
 & \qquad x \ge 0
 \end{align*}
 $$
+
 Il primo vincolo restituisce un sottospazio affine mentre il secondo restituisce un cono.
 
 Un problema espresso in forma generale è espresso come:
+
 $$
 \begin{align*}
 \max & \qquad c^Tx \\
 \text{s.t.} & \qquad Ax \le b \qquad
 \end{align*}
 $$
+
 L'insieme ammissibile di un qualsiasi problema di ottimizzazione lineare è un poliedro.
 
 Le dimensioni degli oggetti in questione sono $A \in \mathcal M_\mathbb{R}(m, n) b \in \mathbb{R}^m, c \in \mathbb{R}^n$.
@@ -736,6 +756,7 @@ Dati due insiemi $A, B \subseteq \mathbb R^n$, la **somma di insiemi** $A+B$ è 
 $$
 C = \left\{ x \in \mathbb R^n : \left( \exists x' \in A, x'' \in B : x = x' + x'' \right) \right\}
 $$
+
 :::
 
 ::: {.callout .callout-note title="Nota"}

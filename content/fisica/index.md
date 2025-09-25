@@ -1,7 +1,9 @@
 ---
 title: "Riassuntino di Fisica"
-author:
-- "Andrea Oggioni"
+description: "Riassunto del corso di Fisica Generale"
+authors:
+  - "Andrea Oggioni"
+slug: "fisica"
 ---
 
 # Capitolo Uno: Cinematica
@@ -118,7 +120,7 @@ $$
 \end{cases}
 $$
 
-ove $R$ indica il raggio della circonferenza e 
+ove $R$ indica il raggio della circonferenza e
 
 $$
 \theta(t) = \theta_0 + \omega_0 t + \frac 12 \alpha t^2
@@ -160,7 +162,7 @@ Il moto armonico è un tipo di moto periodico.
 
 ## 1.7 Moto periodico
 
-Un moto è periodico se 
+Un moto è periodico se
 
 $$
 \begin{cases}
@@ -244,7 +246,7 @@ Questo principio si chiama così perchè descrive l'inerzia di un corpo a cambia
 
 Questo principio è valido solo in un sistema di riferimento inerziale.
 
-### 2 - 
+### 2 -
 
 > Un corpo puntiforme soggetto ad interazioni subisce un' accelerazione.
 
@@ -329,6 +331,7 @@ E' responsabile del decadimento $\beta$, ha un raggio d'azione dell'ordine di $1
 E' responsabile per la stabilità del nucleo ed è la più forte attualmente conosciuta (all'interno del suo raggio d'azione che è dell'ordine di $10^{-15}m$).
 
 In particolare è quella forza che mantiene assieme i quark:
+
 - quark diversi: viene mediata da scambio di _pioni_ e attrae tra loro protoni e neutroni
 - quark uguali: viene mediata da scambio di _gluoni_ e tiene interi i protoni
 
@@ -356,7 +359,7 @@ Nel caso della terra si ha che
 E' utile sapere che la massa della Terra è $M_t = 5.98 \cdot 10^24 kg$ e che il suo raggio è $r_T = 6371 km$, in questo modo si può calcolare l'accelerazione di gravità terrestre.
 
 $$
-g = -\gamma \frac{M_T}{r_T^2} = -6.67 \frac{N \cdot m^2}{kg^2} \cdot 10^{-11} \frac{5.98 \cdot 10^{24} kg}{(6.37 \cdot 10^6)^2 m^2} \simeq 9.81 \frac{m}{s^2} 
+g = -\gamma \frac{M_T}{r_T^2} = -6.67 \frac{N \cdot m^2}{kg^2} \cdot 10^{-11} \frac{5.98 \cdot 10^{24} kg}{(6.37 \cdot 10^6)^2 m^2} \simeq 9.81 \frac{m}{s^2}
 $$
 
 ## 4.2 Densità
@@ -446,6 +449,7 @@ Se il piano è liscio, $\mu_s = \mu_d = 0$.
 ## 4.6 Forza di Lorentz
 
 La forza di Lorentz è la forza subita dalle particelle cariche (di carica $q$) che si trovano in un campo elettrico o magnetico:
+
 - Se il campo è un campo magnetico e $\vec B$ è il vettore di induzione magnetica, $\vec F_{\mathscr L} = q(\vec v \times \vec B)$
 - Se il campo è un campo elettrico ed $\vec E$ è il vettore campo elettrico, $\vec F_{\mathscr L} = q \vec E$.
 
@@ -516,6 +520,7 @@ Di conseguenza
 $$
 \mathscr L = \int \delta L = \int dE_k = \Delta E_k
 $$
+
 ## 5.2 Forze conservative
 
 Per comprendere le forze conservative, è necessario conoscere il significato di _gradiente_ e _rotore_.
@@ -587,7 +592,7 @@ ove $E_p(r) = \gamma \frac{m_1 m_2}{r} + c$ e $c = 0 \implies E_p(r \to \infty) 
 
 ### Esempi di forze non conservative
 
-La forza di attrito radente non è conservativa: se si parla di attrito statico, non c'è movimento e pertanto il lavoro si annulla mentre se si parla di attrito dinamico allora 
+La forza di attrito radente non è conservativa: se si parla di attrito statico, non c'è movimento e pertanto il lavoro si annulla mentre se si parla di attrito dinamico allora
 
 $$
 \mathscr L_{AB}^\gamma = {\int_A^B}_\gamma \vec F \cdot d \vec r = {\int_A^B}_\gamma -\mu_d |\vec N| \hat u_v \cdot d \vec r
@@ -693,7 +698,7 @@ $$
 \frac{d \vec L_{(O)}}{dt} = \frac{d}{dt}(\vec r \times m \vec v) = \frac{d \vec r}{dt} \times m \vec v + \vec r \times m \frac{d \vec v}{dt} = \vec v \times m \vec v + \vec r \times m \vec a = 0 + \vec r \times \vec F = \vec \tau_{(O)}
 $$
 
-da cui 
+da cui
 
 $$
 \frac{d \vec L_{(O)}}{dt} = \vec \tau_{(O)}
@@ -705,7 +710,7 @@ $$
 \vec L_{(O')}= \vec r' \times m \vec v \qquad \vec \tau_{(O')} = \frac{d \vec L_{(O')}}{dt} + \vec v_O' \times m \vec v
 $$
 
-In caso di moto circolare uniforme, $v = \omega r$ quindi 
+In caso di moto circolare uniforme, $v = \omega r$ quindi
 
 $$
 \vec L_{(O)} = RmR \omega \hat u_z = mR^2 \vec \omega
@@ -791,7 +796,7 @@ Il flusso di un vettore può essere inteso come la quantità di vettore che pass
 
 ![Notare come la superficie non sia perpendicolare al vettore $\vec E$ ma sia invece perpendicolare alla direzione $\hat n$ (chiameremo l'angolo tra i due $\theta$).][EsempioFlussoDiUnVettore]
 
-Il flusso del vettore $E$ che passa attraverso un infinitesimo della superficie $S$ è 
+Il flusso del vettore $E$ che passa attraverso un infinitesimo della superficie $S$ è
 
 $$
 d \varphi = \vec E \cdot d \vec S = \vec E \cdot \hat n \, dS = E \,dS\cos \theta
@@ -806,7 +811,7 @@ $$
 ## 7.7 Teorema di Gauss
 
 Normalmente, computare un calcolo del genere è estremamente difficile con una superficie generica ma non con una sfera.
-Il flusso di potenziale gravitazionale $\varphi_S (\mathscr{\vec G})$ attraverso una sfera di raggio $r$ e centrata sulla  massa puntiforme $M$ è:
+Il flusso di potenziale gravitazionale $\varphi_S (\mathscr{\vec G})$ attraverso una sfera di raggio $r$ e centrata sulla massa puntiforme $M$ è:
 
 $$
 \varphi_S(\mathscr{\vec G}) = \int_S -\frac{\gamma M}{r^2} \hat u_r \cdot d \vec S = \int_S -\frac{\gamma M}{r^2} (\hat u_r \cdot \hat u_r) \,dS = -\gamma \frac{M}{r^2} \int_S dS = -\gamma \frac{M}{r^2} 4 \pi r^2 = -\gamma 4 \pi M
@@ -882,9 +887,11 @@ Similmente a quanto detto [in questo paragrafo](#energia-potenziale-gravitaziona
 
 [EsempioGradiente]: https://upload.wikimedia.org/wikipedia/commons/5/54/Campo_el%C3%A9ctrico_de_una_carga_puntual_negativa.svg?uselang=it
 [EsempioReazioneVincolare]: assets/reazione_vincolare.png
+
 <!-- IMMAGINE NON CORRETTAMENTE ATTRIBUITA, SISTEMARE
 [EsempioForzaCentraleASimmetriaSferica]: http://www.openfisica.com/fisica_ipertesto/openfisica3/immagini/orbite.jpg
 -->
+
 [EsempioTrasformismoDellEnergia]: https://i.imgur.com/kyBYfRh.png
 [EsempioMomentoVettore]: https://upload.wikimedia.org/wikipedia/commons/2/21/MomentoForza.svg
 [EsempioFlussoDiUnVettore]: assets/flusso_vettore.png

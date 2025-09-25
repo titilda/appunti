@@ -1,7 +1,9 @@
 ---
 title: "Basi di Dati"
-author:
-- "Andrea Lunghi"
+description: "Appunti del corso di Basi di Dati"
+authors:
+  - "Andrea Lunghi"
+slug: "basi-di-dati"
 ---
 
 # Basi di Dati
@@ -10,57 +12,57 @@ author:
 
 ### 1.1 Algebra Relazionale
 
-L'algebra relazionale è un *linguaggio procedurale*, ovvero descrive la procedura da attuare per ottenere il risultato desiderato.
+L'algebra relazionale è un _linguaggio procedurale_, ovvero descrive la procedura da attuare per ottenere il risultato desiderato.
 
 #### Operatori Algebra Relazionale
 
 Gli operatori principali dell'algebra relazionale sono:
 
 - **Selezione**: operatore unario che seleziona le righe di $R$ che soddisfano la condizione.
-$$\sigma_{\text{predicato}}R$$
+  $$\sigma_{\text{predicato}}R$$
 - **Proiezione**: operatore unario che seleziona le colonne di $R$ indicate.
-$$\pi_{\text{attributi}}R$$
+  $$\pi_{\text{attributi}}R$$
 - **Ridenominazione**: operatore unario che cambia i nomi degli attributi.
-$$\rho_{\text{[nomi nuovi]←[nomi vecchi]}}R$$
+  $$\rho_{\text{[nomi nuovi]←[nomi vecchi]}}R$$
 - **Unione**: operatore binario che restituisce l'unione di due relazioni dello stesso schema.
-$$R\cup S$$
+  $$R\cup S$$
 - **Differenza**: operatore binario che restituisce la differenza tra due relazioni dello stesso schema.
-$$R-S$$
+  $$R-S$$
 - **Prodotto cartesiano**: operatore binario che restituisce il prodotto cartesiano tra due relazioni con tutti gli attributi di R e S.
-$$R\times S$$
+  $$R\times S$$
 
 Da queste operazioni si possono derivare altre operazioni più complesse come:
 
 - **Intersezione**: operatore binario che restituisce l'intersezione tra due relazioni dello stesso schema.
-$$R\cap S = R - (R-S)$$
+  $$R\cap S = R - (R-S)$$
 - **Join**: operatore binario che restituisce il join (concatenazione) tra due relazioni.
-$$R\bowtie_{\text{predicato}} S$$
+  $$R\bowtie_{\text{predicato}} S$$
   - **Join naturale**: join in cui il predicato è l'uguaglianza tra gli attributi con lo stesso nome.
-  $$R\bowtie S$$
+    $$R\bowtie S$$
   - **Semi-join**: join in cui vengono restituiti solo gli attributi di $R$.
-  $$R\ltimes_{\text{predicato}} S$$
+    $$R\ltimes_{\text{predicato}} S$$
 
 #### Ottimizzazione delle Interrogazioni
 
 Per ottimizzare le interrogazioni si possono seguire i seguenti passi:
 
 1. **Eliminazione dei Prodotti Cartesiani**: sostituire i prodotti cartesiani con i join.
-$$\sigma_{\text{P}}(R\times S) \Rightarrow (R\bowtie_{\text{P}} S)$$
+   $$\sigma_{\text{P}}(R\times S) \Rightarrow (R\bowtie_{\text{P}} S)$$
 2. **Push della Selezione**: spostare le selezioni il più in basso possibile per ridurre il numero di tuple.
-$$\sigma_{\text{P}}(R\bowtie_{\text{Q}} S) \Rightarrow ((\sigma_{\text{P}}R)\bowtie_{\text{Q}} S)$$
+   $$\sigma_{\text{P}}(R\bowtie_{\text{Q}} S) \Rightarrow ((\sigma_{\text{P}}R)\bowtie_{\text{Q}} S)$$
 3. **Push della Proiezione**: spostare le proiezioni il più in basso possibile per ridurre il numero di attributi.
-$$\pi_{\text{A}}(R\bowtie_{\text{P}} S) \Rightarrow ((\pi_{\text{A}}R)\bowtie_{\text{P}} S)$$
+   $$\pi_{\text{A}}(R\bowtie_{\text{P}} S) \Rightarrow ((\pi_{\text{A}}R)\bowtie_{\text{P}} S)$$
 4. **Idempotenza**: è possibile scomporre i predicati delle operazioni di selezione e proiezione.
-$$\sigma_{\text{P}}(\sigma_{\text{Q}}R) \Rightarrow \sigma_{\text{P}\land\text{Q}}R$$
-$$\pi_{\text{A}}(\pi_{\text{A}\cap\text{B}}R) \Rightarrow \pi_{A}R$$
+   $$\sigma_{\text{P}}(\sigma_{\text{Q}}R) \Rightarrow \sigma_{\text{P}\land\text{Q}}R$$
+   $$\pi_{\text{A}}(\pi_{\text{A}\cap\text{B}}R) \Rightarrow \pi_{A}R$$
 5. **Distributività**: è possibile distribuire le operazioni di join rispetto alle unioni.
-$$R\bowtie_{\text{P}}(S\cup T) \Rightarrow (R\bowtie_{\text{P}}S)\cup(R\bowtie_{\text{P}}T)$$
+   $$R\bowtie_{\text{P}}(S\cup T) \Rightarrow (R\bowtie_{\text{P}}S)\cup(R\bowtie_{\text{P}}T)$$
 
-Uno dei principi base è quello di *minimizzare* la dimensione dei risultati intermedi
+Uno dei principi base è quello di _minimizzare_ la dimensione dei risultati intermedi
 
 ### 1.2 Calcolo Relazionale
 
-Il calcolo relazionale è un *linguaggio dichiarativo*, ovvero descrive il risultato desiderato senza specificare la procedura.
+Il calcolo relazionale è un _linguaggio dichiarativo_, ovvero descrive il risultato desiderato senza specificare la procedura.
 
 Le interrogazioni sono della forma:
 
@@ -88,14 +90,14 @@ Tramite questi operatori si possono costruire i seguenti operatori:
 
 ### 1.3 Datalog
 
-Datalog è un linguaggio dichiarativo basato su *prolog*.
+Datalog è un linguaggio dichiarativo basato su _prolog_.
 Datalog ha un potere espressivo maggiore rispetto al calcolo relazionale, in quanto permette di definire regole ricorsive.
 
-Si basa sull'idea di creare delle regole che definiscono delle *viste*. Le regole sono composte da un *head* (LHS) e un *body* (RHS) e sono della formula:
+Si basa sull'idea di creare delle regole che definiscono delle _viste_. Le regole sono composte da un _head_ (LHS) e un _body_ (RHS) e sono della formula:
 
 $$p\ \text{:-} \ p_1,\ p_2$$
 
-dove ogni $p$ è un *letterale* ed è un istanza di un predicato composto da:
+dove ogni $p$ è un _letterale_ ed è un istanza di un predicato composto da:
 
 - un nome
 - una lista di argomenti
@@ -106,7 +108,7 @@ dove ogni $p$ è un *letterale* ed è un istanza di un predicato composto da:
 Le regole sono interpretate come implicazioni logiche.
 
 - LHS è vero se RHS è vero.
-- RHS è vero se, per ogni letterale, le variabili sono *unificabili*, ovvero possono essere sostituite con valori tali che la formula sia vera.
+- RHS è vero se, per ogni letterale, le variabili sono _unificabili_, ovvero possono essere sostituite con valori tali che la formula sia vera.
 
 Un esempio di regola è:
 
@@ -126,16 +128,16 @@ $$\text{?-}\ \text{Padre}(\text{'Andrea'}, \text{'Marco'})$$
 Gli operatori principali di Datalog sono:
 
 - **Selezione**:
-$$\text{P}(X,\_,\_)\ \text{:-}\ \text{R}(X, \_, \text{'M'}), X > 10$$
+  $$\text{P}(X,\_,\_)\ \text{:-}\ \text{R}(X, \_, \text{'M'}), X > 10$$
 - **Proiezione**: è possibile proiettare solo gli argomenti che si vogliono mantenere
-$$\text{P}(X)\ \text{:-}\ \text{R}(X, \_, \_)$$
+  $$\text{P}(X)\ \text{:-}\ \text{R}(X, \_, \_)$$
 - **Join**: usa due letterali sulla stessa vista separati da virgola
-$$\text{P}(X, Y)\ \text{:-}\ \text{R}(X, \_, \text{'M'}), \ \text{S}(X,Y)$$
+  $$\text{P}(X, Y)\ \text{:-}\ \text{R}(X, \_, \text{'M'}), \ \text{S}(X,Y)$$
 - **Unione**: usare due regole separate sulla stessa vista
-$$\text{P}(X, Y)\ \text{:-}\ \text{R}(X, Y)$$
-$$\text{P}(X, Y)\ \text{:-}\ \text{S}(X, Y)$$
+  $$\text{P}(X, Y)\ \text{:-}\ \text{R}(X, Y)$$
+  $$\text{P}(X, Y)\ \text{:-}\ \text{S}(X, Y)$$
 - **Differenza**: da usare assieme ad un predicato positivo per evitare di avere risultati infiniti (unsafe).
-$$\text{P}(X, Y)\ \text{:-}\ \text{R}(X, Y), \neg \text{S}(X, Y)$$
+  $$\text{P}(X, Y)\ \text{:-}\ \text{R}(X, Y), \neg \text{S}(X, Y)$$
 
 In datalog è possibile definire regole ricorsive, ma bisogna definire un'inizio prima del passo induttivo.
 

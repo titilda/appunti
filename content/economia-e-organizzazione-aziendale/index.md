@@ -1,8 +1,10 @@
 ---
 title: "Riassunto di Economia ed Organizzazione Aziendale"
-author: 
-- "Andrea Oggioni"
-- "Andrea Lunghi"
+description: "Riassunto del corso di Economia ed Organizzazione Aziendale"
+authors:
+  - "Andrea Oggioni"
+  - "Andrea Lunghi"
+slug: "economia-e-organizzazione-aziendale"
 ---
 
 _Nota: questa pagina è work in progress. I contenuti potrebbero variare rapidamente._
@@ -518,14 +520,14 @@ Per le passività l'ordine è:
 
 - **Patrimonio netto**: valore dei diritti sull'impresa da parte degli azionisti per il capitale investito;
   - Capitale emesso: capitale conferito dagli azionisti all’impresa all’atto della
-sottoscrizione;
+    sottoscrizione;
   - Riserve
-    - Riserva da sovrapprezzo: capitale aggiunto dagli azionisti per aumenti di capitale a pagamento ((valore acquisto - valore nominale) * numero azioni);
+    - Riserva da sovrapprezzo: capitale aggiunto dagli azionisti per aumenti di capitale a pagamento ((valore acquisto - valore nominale) \* numero azioni);
     - Riserva da rivalutazione: modifica da fair value;
     - Altre riserve
   - Utili (e perdite) di esercizio: risultato del conto economico dell'esercizio corrente;
   - Utili (e perdite) portate a nuovo: somma di tutti gli utili che l’impresa ha deciso
-di non distribuire agli azionisti;
+    di non distribuire agli azionisti;
 - **Passività non correnti**: diritti vantati da terzi a lungo termine;
   - Passività finanziarie: diritti vantati da terzi che hanno finanziato l'impresa (prevedono interesse);
     - Obbligazioni in circolazione
@@ -561,30 +563,30 @@ I **ricavi di competenza** rappresentano il valore dei beni venduti o dei serviz
 > **Scenari per i Ricavi (secondo il principio di competenza):**
 >
 > 1. **Prodotto/servizio consegnato e pagato dal cliente:**
->     - Si registra un Ricavo nel CE.
->     - Aumenta la Cassa (Attività nello Stato Patrimoniale - SP).
+>    - Si registra un Ricavo nel CE.
+>    - Aumenta la Cassa (Attività nello Stato Patrimoniale - SP).
 > 2. **Prodotto/servizio consegnato, ma non pagato dal cliente:**
->     - Si registra un Ricavo nel CE.
->     - Aumentano i Crediti Commerciali (Attività in SP).
+>    - Si registra un Ricavo nel CE.
+>    - Aumentano i Crediti Commerciali (Attività in SP).
 > 3. **Cliente ha pagato, ma prodotto/servizio non ancora consegnato:**
->     - Non si registra un Ricavo nel CE.
->     - Aumenta la Cassa (Attività in SP).
->     - Aumentano gli Anticipi da Clienti (Passività in SP).
+>    - Non si registra un Ricavo nel CE.
+>    - Aumenta la Cassa (Attività in SP).
+>    - Aumentano gli Anticipi da Clienti (Passività in SP).
 
 I **costi di competenza** sono il valore delle risorse utilizzate per generare i ricavi dell'esercizio, indipendentemente dal pagamento. Vengono registrati nel CE nell'anno in cui contribuiscono alla produzione.
 
 > **Scenari per i Costi (secondo il principio di competenza):**
 >
 > 1. **Bene/servizio usufruito e pagato dall'impresa:**
->     - Si registra un Costo nel CE.
->     - Diminuisce la Cassa (Attività in SP).
+>    - Si registra un Costo nel CE.
+>    - Diminuisce la Cassa (Attività in SP).
 > 2. **Bene/servizio usufruito, ma non ancora pagato dall'impresa:**
->     - Si registra un Costo nel CE.
->     - Aumentano i Debiti Commerciali (Passività in SP).
+>    - Si registra un Costo nel CE.
+>    - Aumentano i Debiti Commerciali (Passività in SP).
 > 3. **Impresa ha pagato, ma bene/servizio non ancora usufruito:**
->     - Non si registra un Costo nel CE.
->     - Diminuisce la Cassa (Attività in SP).
->     - Aumentano i Costi Anticipati (Attività in SP).
+>    - Non si registra un Costo nel CE.
+>    - Diminuisce la Cassa (Attività in SP).
+>    - Aumentano i Costi Anticipati (Attività in SP).
 
 Il conto economico può essere redatto secondo due modalità:
 
@@ -593,28 +595,28 @@ Il conto economico può essere redatto secondo due modalità:
 
 Il conto economico solitamente ha la seguente struttura:
 
-| **Voce** | **Descrizione**     |
-|----------|---------------------|
-| + Ricavi |                     |
-| + Altri Proventi | ricavi dall'utilizzo di terzi dei beni aziendali |
-| = Totale Ricavi  |             |
-| - Acquisti di materie prime |  |
-| - Costi Personale |            |
-| - Costi Operativi |            |
-| - Costi per lavori interni capitalizzati | |
-| - _Variazione_ rimanenze | differenza algebrica tra il valore delle rimanenze finali e quelle iniziali |
-| = **EBITDA** | Utile operativo ante ammortamenti, interessi e tasse |
-| - Ammortamenti |               |
-| - Plusvalenze/minusvalenze | da realizzo di attività correnti (ricavo di una cessione) |
-| - Ripristini/svalutazioni | di valore di attività correnti (fair value) |
-| = **EBIT/MON** | Utile operativo, Margine Operativo Netto |
-| + Proventi finanziari |        |
-| - Oneri finanziari | interessi sui finanziamenti |
-| = Utile prima di imposte |     |
-| - Imposte sul reddito |        |
-| = **Utile dalle attività in funzione** |  |
-| +/- Utile (perdita) netto | dalle attività cessate |
-| = **Utile netto d'esercizio** | |
+| **Voce**                                 | **Descrizione**                                                             |
+| ---------------------------------------- | --------------------------------------------------------------------------- |
+| + Ricavi                                 |                                                                             |
+| + Altri Proventi                         | ricavi dall'utilizzo di terzi dei beni aziendali                            |
+| = Totale Ricavi                          |                                                                             |
+| - Acquisti di materie prime              |                                                                             |
+| - Costi Personale                        |                                                                             |
+| - Costi Operativi                        |                                                                             |
+| - Costi per lavori interni capitalizzati |                                                                             |
+| - _Variazione_ rimanenze                 | differenza algebrica tra il valore delle rimanenze finali e quelle iniziali |
+| = **EBITDA**                             | Utile operativo ante ammortamenti, interessi e tasse                        |
+| - Ammortamenti                           |                                                                             |
+| - Plusvalenze/minusvalenze               | da realizzo di attività correnti (ricavo di una cessione)                   |
+| - Ripristini/svalutazioni                | di valore di attività correnti (fair value)                                 |
+| = **EBIT/MON**                           | Utile operativo, Margine Operativo Netto                                    |
+| + Proventi finanziari                    |                                                                             |
+| - Oneri finanziari                       | interessi sui finanziamenti                                                 |
+| = Utile prima di imposte                 |                                                                             |
+| - Imposte sul reddito                    |                                                                             |
+| = **Utile dalle attività in funzione**   |                                                                             |
+| +/- Utile (perdita) netto                | dalle attività cessate                                                      |
+| = **Utile netto d'esercizio**            |                                                                             |
 
 ##### Metodo della partita doppia
 
@@ -642,7 +644,7 @@ I mastrini sono divisi in due colonne:
 I mastrini di stato patrimoniale devono essere iniziati con il saldo iniziale dell'esercizio e aggiornati con le transazioni che avvengono durante l'esercizio. I mastrini di conto economico, invece, vengono azzerati all'inizio di ogni esercizio e aggiornati con le transazioni che avvengono durante l'esercizio.
 
 | Dare               | Avere              |
-|--------------------|--------------------|
+| ------------------ | ------------------ |
 | + Attività         | - Attività         |
 | - Passività        | + Passività        |
 | - Patrimonio Netto | + Patrimonio Netto |
@@ -665,7 +667,7 @@ Il Rendiconto Finanziario è strutturato in diverse sezioni basate sulla categor
 La somma algebrica di questi tre flussi fornisce l'incremento o il decremento delle disponibilità liquide durante l'esercizio.
 
 | Voce                                                    | Formula       |
-|---------------------------------------------------------|---------------|
+| ------------------------------------------------------- | ------------- |
 | Flusso di cassa netto della gestione operativa          | A             |
 | Flusso di cassa netto per attività di investimento      | B             |
 | Flusso di cassa netto per attività di finanziamento     | C             |
@@ -682,7 +684,7 @@ Queste includono i flussi di cassa derivanti dalla gestione operativa aziendale,
 Partendo dall'utile d'esercizio (CE), si rettificano i costi non monetari (come l'ammortamento) e le variazioni del capitale circolante netto operativo (differenza tra attività e passività correnti), ottenendo il flusso di cassa netto della gestione operativa.
 
 | Voce                                               | +/- |
-|----------------------------------------------------|-----|
+| -------------------------------------------------- | --- |
 | Utili del Periodo                                  | +/- |
 | _Rettifiche costi non-cash_                        |     |
 | Ammortamenti                                       | +   |
@@ -703,7 +705,7 @@ Il flusso di cassa netto per attività di investimento rappresenta i flussi di c
 Queste includono i flussi di cassa derivanti dall'acquisizione e la cessione di immobilizzazioni materiali, immateriali e finanziarie. Queste attività sono strettamente collegate alle voci delle attività nello Stato Patrimoniale.
 
 | Voce                                                            | +/- |
-|-----------------------------------------------------------------|-----|
+| --------------------------------------------------------------- | --- |
 | Pagamenti per acquistare attività                               | -   |
 | Entrate dalla vendita di attività                               | +   |
 | Pagamenti per l’acquisizione di partecipazioni in altre imprese | -   |
@@ -717,7 +719,7 @@ Il flusso di cassa netto per attività di finanziamento rappresenta i flussi di 
 Comprendono le variazioni dell'ammontare del patrimonio netto e/o del capitale di debito che derivano dalla politica di finanziamento dell'impresa (ad esempio, interessi, debiti, partecipazioni azionarie). Sono legate alle voci del Patrimonio Netto e delle Passività nello Stato Patrimoniale
 
 | Voce                                                       | +/- |
-|------------------------------------------------------------|-----|
+| ---------------------------------------------------------- | --- |
 | Incassi derivanti dall’emissione di azioni                 | +   |
 | Rimborsi agli azionisti a seguito di riduzioni di capitale | -   |
 | Dividendi erogati                                          | -   |
@@ -792,7 +794,6 @@ $$
 $$
 \text{Tempo medio incasso crediti} = \frac{\text{Crediti commerciali}}{\text{Ricavi}} \cdot 365
 $$
-
 
 ##### Return on Debt (ROD)
 
@@ -960,47 +961,53 @@ In caso di rimanenze è possibile rilevare i costi tramite due metodi:
 
 - **FIFO**: si ipotizza che le unità di prodotto finito vengano prodotte a partire da quelle in corso di lavorazione del periodo precedente;
   1. **Calcolo delle Unità Equivalenti (UE):**
-    $$
-    \text{UE} = (\text{N}_{\text{PF}} - \alpha_1 \text{N}_{\text{WIP}_1}) + \alpha_2 \text{N}_{\text{WIP}_2}
-    $$
+
+     $$
+     \text{UE} = (\text{N}_{\text{PF}} - \alpha_1 \text{N}_{\text{WIP}_1}) + \alpha_2 \text{N}_{\text{WIP}_2}
+     $$
 
   2. **Calcolo del Costo per Unità Equivalente (CPI):**
-    $$
-    \text{CPI} = \frac{C}{\text{UE}}
-    $$
-    Dove $C$ è il costo totale sostenuto nel periodo.
 
-  3. **Calcolo del valore dei prodotti finiti e dei WIP finali:**		
-       - Valore dei WIP finali:
-         $$
-         C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
-         $$
+     $$
+     \text{CPI} = \frac{C}{\text{UE}}
+     $$
 
-       - Valore dei prodotti finiti:
-         $$
-         C_{\text{PF}} = C + C_{\text{WIP}_1} - C_{\text{WIP}_2}
-         $$
+     Dove $C$ è il costo totale sostenuto nel periodo.
+
+  3. **Calcolo del valore dei prodotti finiti e dei WIP finali:**
+     - Valore dei WIP finali:
+
+       $$
+       C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
+       $$
+
+     - Valore dei prodotti finiti:
+       $$
+       C_{\text{PF}} = C + C_{\text{WIP}_1} - C_{\text{WIP}_2}
+       $$
 
 - **Costo Medio**: si calcola il costo medio ponderato delle unità prodotte, considerando tutte le unità in corso di lavorazione e quelle finite.
   1. **Calcolo delle Unità Equivalenti (UE):**
-    $$
-    \text{UE} = \text{N}_{\text{PF}} + \alpha_2 \text{N}_{\text{WIP}_2}
-    $$
+
+     $$
+     \text{UE} = \text{N}_{\text{PF}} + \alpha_2 \text{N}_{\text{WIP}_2}
+     $$
 
   2. **Calcolo del Costo per Unità Equivalente (CPI):**
-    $$
-    \text{CPI} = \frac{C + C_{\text{WIP}_1}}{\text{UE}}
-    $$
+
+     $$
+     \text{CPI} = \frac{C + C_{\text{WIP}_1}}{\text{UE}}
+     $$
 
   3. **Calcolo del valore dei prodotti finiti e dei WIP finali:**
-       - Valore dei WIP finali:
-         $$
-         C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
-         $$
-       - Valore dei prodotti finiti:
-         $$
-         C_{\text{PF}} = \text{CPI} \times \text{N}_{\text{PF}}
-         $$
+     - Valore dei WIP finali:
+       $$
+       C_{\text{WIP}_2} = \text{CPI} \times \alpha_2 \text{N}_{\text{WIP}_2}
+       $$
+     - Valore dei prodotti finiti:
+       $$
+       C_{\text{PF}} = \text{CPI} \times \text{N}_{\text{PF}}
+       $$
 
 #### Job Order Costing (JOC)
 
@@ -1018,11 +1025,11 @@ I costi indiretti di produzione (Overhead) non sono direttamente imputabili ai s
 3. Calcolo del costo totale del lotto ($\text{C}_j$):
    $$
     \text{C}_j = \text{C}_\text{MD} + \text{C}_\text{LD} + \text{CA} \cdot \text{ba}_j
-    $$
+   $$
 4. Calcolo del costo per unità del lotto ($\text{CPI}_j$):
-    $$
-    \text{CPI}_j = \frac{\text{C}_j}{\text{N}_{\text{PF}_j}}
-    $$
+   $$
+   \text{CPI}_j = \frac{\text{C}_j}{\text{N}_{\text{PF}_j}}
+   $$
 
 #### Activity Based Costing (ABC)
 
@@ -1037,13 +1044,13 @@ L'**Activity Based Costing (ABC)** è un metodo di rilevazione dei costi preciso
 Di seguito sono riportate delle tabelle che confrontano i principali metodi di rilevazione dei costi (Process Costing, Job Order Costing - JOC, Activity Based Costing - ABC) in base ai criteri di allocazione dei costi e alle loro caratteristiche principali.
 
 | Metodo              | Materiali Diretti | Lavoro Diretto | Costi Indiretti |
-|---------------------|-------------------|----------------|-----------------|
+| ------------------- | ----------------- | -------------- | --------------- |
 | **Process Costing** | Proporzionale     | Proporzionale  | Proporzionale   |
 | **JOC**             | Causale           | Causale        | Proporzionale   |
 | **ABC**             | Causale           | Causale        | Causale         |
 
 | Metodo              | Precisione | Onerosità  | Ambito tipico di applicazione |
-|---------------------|------------|------------|-------------------------------|
+| ------------------- | ---------- | ---------- | ----------------------------- |
 | **Process Costing** | Bassa      | Bassa      | Processi a flusso             |
 | **JOC**             | Alta       | Alta       | MP+LD preponderanti           |
 | **ABC**             | Molto alta | Molto alta | OVH non proporzionali         |
@@ -1134,23 +1141,23 @@ Come nell'analisi di make or buy si calcolano i costi e i ricavi differenziali t
 
 Per prima cosa di calcolano le differenze nel _conto economico_ nei vari anni e successivamente si _rettificano_ tutte le uscite/entrate cash come ammortamenti, svalutazioni, plusvalenze/minusvalenze, etc.
 
-| Voce  | +/- |
-|-------|-----|
-| Ricavi Differenziali | +   |
+| Voce                          | +/- |
+| ----------------------------- | --- |
+| Ricavi Differenziali          | +   |
 | Costi Operativi Differenziali | -   |
-| Ammortamenti Differenziali | -   |
-| Stipendi Differenziali | -   |
-| Plusvalenze/Minusvalenze | +/- |
-| **Utile Lordo Differenziale** | = |
-| Imposte Differenziali | + |
-| **Utile Netto Differenziale** | = |
-| Investimento Iniziale | - |
-| Rettificata Ammortamento | + |
-| Rettificata TFR | + |
-| Eroga TFR | - |
-| Rettificata Plus/Minus | +/- |
-| Vendite | + |
-| **NCF** | = |
+| Ammortamenti Differenziali    | -   |
+| Stipendi Differenziali        | -   |
+| Plusvalenze/Minusvalenze      | +/- |
+| **Utile Lordo Differenziale** | =   |
+| Imposte Differenziali         | +   |
+| **Utile Netto Differenziale** | =   |
+| Investimento Iniziale         | -   |
+| Rettificata Ammortamento      | +   |
+| Rettificata TFR               | +   |
+| Eroga TFR                     | -   |
+| Rettificata Plus/Minus        | +/- |
+| Vendite                       | +   |
+| **NCF**                       | =   |
 
 In questo calcolo si ignorano i **costi affondati**, ovvero i costi che non possono essere recuperati e che non influenzano la decisione di investimento.
 

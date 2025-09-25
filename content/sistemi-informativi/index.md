@@ -1,7 +1,9 @@
 ---
 title: "Sistemi Informativi"
-author:
-- "Andrea Lunghi"
+description: "Appunti del corso di Sistemi Informativi"
+authors:
+  - "Andrea Lunghi"
+slug: "sistemi-informativi"
 ---
 
 # Sistemi Informativi
@@ -11,10 +13,10 @@ author:
 I dati sono sempre più importanti all'interno del sistema informativo aziendale.
 Secondo la **Piramide DIKW** è possibile dividere i dati e le informazioni in:
 
-- **Data**: Il *dato* rappresenta la base della piramide. Esso rappresenta un elemento che descrive la realtà. Associato al dato c'è un tipo (numerico, stringa, etc) o un'unità di misura. Singolarmente il dato è poco utile (es. ci sono 32 gradi).
-- **Information**: L'*informazione* è l'interpretazione di un singolo (o un insieme) di dati. Unendo diversi dati è possibile definire un contesto (es. a dicembre ci sono 32 gradi in aula).
-- **Knowledge**: La *conoscenza* è ottenibile integrando l'informazione con l'esperienza. (es. se a dicembre ci sono 32 gradi in aula, c'è qualcosa che non va)
-- **Wisdom**: La *saggezza* è applicare l'esperienza alla conoscenza per guidare all'azione più adatta al momento. (es. se a dicembre ci sono 32 gradi in aula, spegnere il riscaldamento).
+- **Data**: Il _dato_ rappresenta la base della piramide. Esso rappresenta un elemento che descrive la realtà. Associato al dato c'è un tipo (numerico, stringa, etc) o un'unità di misura. Singolarmente il dato è poco utile (es. ci sono 32 gradi).
+- **Information**: L'_informazione_ è l'interpretazione di un singolo (o un insieme) di dati. Unendo diversi dati è possibile definire un contesto (es. a dicembre ci sono 32 gradi in aula).
+- **Knowledge**: La _conoscenza_ è ottenibile integrando l'informazione con l'esperienza. (es. se a dicembre ci sono 32 gradi in aula, c'è qualcosa che non va)
+- **Wisdom**: La _saggezza_ è applicare l'esperienza alla conoscenza per guidare all'azione più adatta al momento. (es. se a dicembre ci sono 32 gradi in aula, spegnere il riscaldamento).
 
 !["Piramide DIKW"](assets/Piramide%20DIKW.png)
 
@@ -86,13 +88,13 @@ I sistemi informativi sono divisi in:
 - **Sistemi Decisionali**: Sono sistemi a supporto delle attività decisionali e strategiche che sfruttano i dati per identificare informazioni utili.
 
 I dati sono classificabili in base al livello (operativo/controllo/strategico).
-I dati *operativi* sono ben strutturati, e in alti volume e provenienti dall'interno.
-Andando verso il livello *strategico* i dati diventano sempre più aggregati, il formato potrebbe essere meno strutturato e potrebbero provenire anche da fonti esterne.
+I dati _operativi_ sono ben strutturati, e in alti volume e provenienti dall'interno.
+Andando verso il livello _strategico_ i dati diventano sempre più aggregati, il formato potrebbe essere meno strutturato e potrebbero provenire anche da fonti esterne.
 
 ### 3.1 Base di Dati
 
 I sistemi informativi sono applicazioni che interagiscono con basi di dati.
-Le interazioni solitamente avvengono con le *transazioni*.
+Le interazioni solitamente avvengono con le _transazioni_.
 
 A seconda delle operazioni i sistemi si identificano come OLTP e OLAP.
 
@@ -105,7 +107,7 @@ I sistemi **OLTP** (OnLine Transaction Processing) sono sistemi che trattano ope
 I sistemi **OLAP** (OnLine Analytical Processing) sono sistemi che trattano grandi quantità di dati storici che si basano su poche transazioni complesse che aggregano diversi dati e hanno bisogno di molto tempo per essere processate.
 Questi sistemi sono utilizzati per l'elaborazioni di dati a livello di pianificazione e strategico.
 
-Un modello OLAP è rappresentato da un *Modello Multidimensionale* e le informazioni sono rappresentata da un *ipercubo*, formato da n *dimensioni* dove ogni dimensione permette di fare un'analisi.
+Un modello OLAP è rappresentato da un _Modello Multidimensionale_ e le informazioni sono rappresentata da un _ipercubo_, formato da n _dimensioni_ dove ogni dimensione permette di fare un'analisi.
 Gli elementi di una base di dati multidimensionali sono:
 
 - **Fatto**: elemento dell'ipercubo ottenuto specificando il valore per ogni dimensione
@@ -131,18 +133,18 @@ Altre caratteristiche del DW sono:
 
 ### 3.2 Organizzazione e IT
 
-Le scelte all'interno dell'azienda possono avere impatto sulle scelte tecnologiche (*Requirements Pull*) e derivano spesso dall'esigenza di nuove funzionalità o migliorare le funzionalità attuali.
-In altri casi i cambiamenti delle nuove tecnologie possono portare a scelte nuove organizzative (*Technology Push*).
+Le scelte all'interno dell'azienda possono avere impatto sulle scelte tecnologiche (_Requirements Pull_) e derivano spesso dall'esigenza di nuove funzionalità o migliorare le funzionalità attuali.
+In altri casi i cambiamenti delle nuove tecnologie possono portare a scelte nuove organizzative (_Technology Push_).
 
 ## Capitolo Quattro: Enterprise Architecture (EA)
 
-L'*Enterprise Architecture* è usato per analizzare e descrivere lo stato attuale e futuro di un'azienda.
+L'_Enterprise Architecture_ è usato per analizzare e descrivere lo stato attuale e futuro di un'azienda.
 L'EA fornisce una panoramica dei processi, dei sistemi, delle tecnologie e delle capacità dell'azienda.
 
 ### 4.1 Framework di Zachman
 
 Questa architettura viene descritta dal **Framework di Zachman** che utilizza una matrice per descrivere l'EA.
-Zachman utilizza le colonne per definire gli *Aspetti* da analizzare:
+Zachman utilizza le colonne per definire gli _Aspetti_ da analizzare:
 
 - **Dati** (Cosa): rappresentano i dati che l'organizzazione ha bisogno per operare.
 - **Funzioni** (Come): analizza le funzioni che l'azienda esegue per condurre il business.
@@ -150,7 +152,7 @@ Zachman utilizza le colonne per definire gli *Aspetti* da analizzare:
 - **Tempo** (Quando): indica gli elementi significativi del business.
 - **Motivazione** (Perché): gli obiettivi dell'azienda.
 
-Le righe invece indicano i *Punti di Vista* che possono interessare gli stakeholder. Ogni riga introduce quindi dei vincoli sul sistema.
+Le righe invece indicano i _Punti di Vista_ che possono interessare gli stakeholder. Ogni riga introduce quindi dei vincoli sul sistema.
 
 - **Scopo** (Contestuale): interessa chi si occupa di pianificazione e rappresenta ad alto livello il sistema in base alla dimensione, forma, relazione e obiettivi.
 - **Modello dell'Azienda** (Modello Contestuale): interessa il proprietario del sistema e offre una prospettiva orientata al business.
@@ -158,7 +160,7 @@ Le righe invece indicano i *Punti di Vista* che possono interessare gli stakehol
 - **Modello Tecnologico** (Modello Fisico): interessa chi deve realizzare il sistema e deve tradurre il progetto logico in fisico.
 - **Rappresentazione Dettagliata**: raccoglie le specifiche per i programmatori per la realizzazione effettiva del sistema.
 
-L'intersezione tra le righe e le colonne sono definite *Viste* e forniscono le informazioni su un particolare aspetto in base ad un punto di vista.
+L'intersezione tra le righe e le colonne sono definite _Viste_ e forniscono le informazioni su un particolare aspetto in base ad un punto di vista.
 
 ## Capitolo Cinque: Elementi Tecnologici
 
@@ -167,7 +169,7 @@ Le tecnologie si possono dividere in tre livelli:
 ### 5.1 Livello Applicativo
 
 A livello applicativo le tecnologie supportano i processi operazionali e informazionali.
-L'insieme delle tecnologie a livello applicativo viene detto *portafoglio applicativo* ed è costituito da:
+L'insieme delle tecnologie a livello applicativo viene detto _portafoglio applicativo_ ed è costituito da:
 
 - **Data Warehouse** (DW): archivio che contiene i dati di un'organizzazione in un modello multidimensionale.
 - **Business Intelligence** (BI): insieme di moduli per la raccolta e l'analisi delle informazioni della situazione aziendale.
@@ -177,13 +179,13 @@ L'insieme delle tecnologie a livello applicativo viene detto *portafoglio applic
 - **Advanced Planning and Scheduling** (APS): Applicazioni usate in ambito manifatturiero per gestire le materie prime e la capacità produttive.
 - **Manufacturing Execution System** (MES): Sistemi usati in ambito manifatturiero per tracciare e documentare il processo produttivo.
 
-Le applicazioni sono strutturate in livelli logici detti *layer*:
+Le applicazioni sono strutturate in livelli logici detti _layer_:
 
 - **Presentazione** (P): gestisce la logica legata alle interfacce grafiche e all'interazione con l'utente (front-end).
 - **Applicativo** (A): gestisce le funzionalità dell'applicazione (back-end).
 - **Accesso ai Dati** (D): gestisce le informazioni, tramite db o sistemi legacy.
 
-Data la complessità della realizzazione (*make*) di applicazioni si predilige l'acquisto (*buy*), soprattutto di applicazioni come ERP e CMS.
+Data la complessità della realizzazione (_make_) di applicazioni si predilige l'acquisto (_buy_), soprattutto di applicazioni come ERP e CMS.
 
 #### ERP
 
@@ -196,7 +198,7 @@ Le proprietà che contraddistinguono gli ERP sono:
 
 I moduli possono essere poi divisi in tre categorie:
 
-- **Sistemi Istituzionali**: moduli orizzontali (*intersettoriali*).
+- **Sistemi Istituzionali**: moduli orizzontali (_intersettoriali_).
 - **Moduli Settoriali**: moduli verticali specifici per un contesto aziendale.
 - **Moduli Direzionali**: moduli orizzontali che elaborano i dati per dare una visione di insieme delle attività.
 
@@ -209,21 +211,21 @@ Il CRM ha tre componenti principali:
 
 - **CRM Operativo**: è un modulo che si occupa dell'interazione dei clienti con l'azienda ed è formato da alcuni moduli:
   - **Marketing**: la strategia aziendale si baso soprattutto sulla fidelizzazione dei clienti attuali, questo è realizzabile tramite una buona campagna dedicata delle campagne marketing e sui dati a disposizione. Alcuni sistemi per fare ciò sono:
-    - *Generazione Liste Clienti*: liste di clienti adatti a ricevere alcune comunicazioni di marketing.
-    - *Gestione Campagne*: moduli progettati per l'automatizzazione delle attività e i processi di marketing
-    - *Cross-Selling* e *Up-selling*: queste strategie si basano sull'aumento dei prodotti acquistati dall'utente e dall'aumento del del valore della singola vendita.
+    - _Generazione Liste Clienti_: liste di clienti adatti a ricevere alcune comunicazioni di marketing.
+    - _Gestione Campagne_: moduli progettati per l'automatizzazione delle attività e i processi di marketing
+    - _Cross-Selling_ e _Up-selling_: queste strategie si basano sull'aumento dei prodotti acquistati dall'utente e dall'aumento del del valore della singola vendita.
   - **Automazione Vendite**: sono moduli che permettono:
-    - *Gestione Vendite*: modulo che si occupa della selezione dei contatti, supportare l'agente nella stesura dell'offerta
-    - *Gestione Contatti*: gestisce i dati dei clienti permettendo di salvare anche informazioni aggiuntive che possono migliorare il rapporto con il cliente.
-    - *Gestione Opportunità*: modulo che si occupa di trovare nuovi clienti o organizzazioni per vendite future.
+    - _Gestione Vendite_: modulo che si occupa della selezione dei contatti, supportare l'agente nella stesura dell'offerta
+    - _Gestione Contatti_: gestisce i dati dei clienti permettendo di salvare anche informazioni aggiuntive che possono migliorare il rapporto con il cliente.
+    - _Gestione Opportunità_: modulo che si occupa di trovare nuovi clienti o organizzazioni per vendite future.
   - **Servizi ai Clienti**: sono servizi che si occupano di curare la relazione post-vendita per migliorarne i rapporti. Alcuni sotto-moduli sono:
-    - *Contact Center*: gestiscono le chiamate *inbound* (clienti chiamano azienda) e *outbound* (azienda chiama i clienti). Il CRM registra tutte le interazioni e fornisce funzionalità per la gestione della chiamata.
-    - *Web Based Self Service*: permette ai clienti di usare il web per trovare le soluzioni ai problemi e contattare l'azienda.
-    - *Call Scripting*: una base di dati messa a disposizione degli operatori con le soluzioni ai problemi dei clienti.
+    - _Contact Center_: gestiscono le chiamate _inbound_ (clienti chiamano azienda) e _outbound_ (azienda chiama i clienti). Il CRM registra tutte le interazioni e fornisce funzionalità per la gestione della chiamata.
+    - _Web Based Self Service_: permette ai clienti di usare il web per trovare le soluzioni ai problemi e contattare l'azienda.
+    - _Call Scripting_: una base di dati messa a disposizione degli operatori con le soluzioni ai problemi dei clienti.
 - **CRM Analitico**: usa i dati provenienti dal CRM Operativo per analizzare le preferenze, i comportamenti dei clienti ed estrarre pattern significativi a supporto del processo decisionale tramite il CRM Operativo. Le sue finalità principali sono:
-  - *Reporting*: capire chi sono i clienti, le loro caratteristiche e preferenze.
-  - *Analysis*: segmenta i clienti in categorie.
-  - *Predicting*: predice le azioni e i desideri dei clienti.
+  - _Reporting_: capire chi sono i clienti, le loro caratteristiche e preferenze.
+  - _Analysis_: segmenta i clienti in categorie.
+  - _Predicting_: predice le azioni e i desideri dei clienti.
 - **CRM Collaborativo**: si occupa di calcolare alcuni indici rilevanti per l'intera azienda e condividere tali informazioni.
 
 ### 5.2 Livello di Piattaforma
@@ -253,11 +255,11 @@ Alcuni strumenti di supporto alle decisioni sono:
 
 I dati a supporto delle attività strategiche e decisionali si caratterizzano per:
 
-- *Obiettivo*: servono per prendere decisioni
-- *Utenti*: sono utilizzati solo dai manager di alto livello
-- *Orizzonte temporale*: sono utilizzati soprattutto dati storici relazionati a quelli presenti
-- *Livello di Dettaglio*: sono dati aggregati a presi dai dati operazionali o da fonti esterne
-- *Accesso*: l'accesso è in sola lettura
+- _Obiettivo_: servono per prendere decisioni
+- _Utenti_: sono utilizzati solo dai manager di alto livello
+- _Orizzonte temporale_: sono utilizzati soprattutto dati storici relazionati a quelli presenti
+- _Livello di Dettaglio_: sono dati aggregati a presi dai dati operazionali o da fonti esterne
+- _Accesso_: l'accesso è in sola lettura
 
 ### 6.1 Data Warehouse
 
@@ -272,7 +274,7 @@ A livello intermedio può esistere una base di dati intermedia detta **Staging A
 
 In fine si trovano i **Data Mart** ovvero dei piccoli data warehouse tematici che contengono un estratto/vista delle informazioni del data warehouse. Questa divisione dei dati viene svolta in quanto il data warehouse può essere molto grande e i data contenuti non interessano a tutti gli utenti
 
-Durante il processo **ETL** di *estrazione*, vengono definiti quali e come (aggregare, copiare, etc) devono essere estratti i dati. L'estrazione può essere *statica* se vengono considerati tutti i dati dei sorgenti; *Incrementale* se vengono presi in considerazione solo i dati creati a partire dall'ultimo aggiornamento.
+Durante il processo **ETL** di _estrazione_, vengono definiti quali e come (aggregare, copiare, etc) devono essere estratti i dati. L'estrazione può essere _statica_ se vengono considerati tutti i dati dei sorgenti; _Incrementale_ se vengono presi in considerazione solo i dati creati a partire dall'ultimo aggiornamento.
 I dati possono subire alcune trasformazioni come:
 
 - **Data Cleaning**: i dati possono contenere errori che devono essere corretti. Questa fase risolve i problemi relativi alla qualità dei dati
@@ -294,8 +296,8 @@ Le operazioni ETL sono documentate da **Metadati** che raccolgono:
 
 I Data Warehouse vengono rappresentati tramite il **Dimensional Fact Model** (DFM) dove:
 
-- Il *fatto* è rappresentato da un rettangolo che contiene le misure
-- Le *dimensioni* sono rappresentate da cerchi etichettati e collegati ai fatti. Possono essere semplici attributi o gerarchie.
+- Il _fatto_ è rappresentato da un rettangolo che contiene le misure
+- Le _dimensioni_ sono rappresentate da cerchi etichettati e collegati ai fatti. Possono essere semplici attributi o gerarchie.
 
 #### Modello Logico
 
@@ -308,7 +310,7 @@ Definito il modello concettuale esso deve essere memorizzato in un DBMS. Alcuni 
 Per mappare la base multidimensionale è necessario definire le tabelle.
 Per fare ciò esistono due approcci:
 
-- **Schema a Stella**: viene utilizzata una *tabella dei fatti* per memorizzare gli attributi corrispondenti alle misure del fatto ed ad ogni riga corrisponde un fatto; viene utilizzata la *tabella delle dimensioni*, per ogni dimensione, associa al fatto gli attributi relativi alla gerarchia.
+- **Schema a Stella**: viene utilizzata una _tabella dei fatti_ per memorizzare gli attributi corrispondenti alle misure del fatto ed ad ogni riga corrisponde un fatto; viene utilizzata la _tabella delle dimensioni_, per ogni dimensione, associa al fatto gli attributi relativi alla gerarchia.
 - **Schema a Fiocco di Neve**: ad ogni dimensione vengono associate più tabelle che permettono di conservare le dipendenze funzionali.
 
 #### Operazioni
@@ -322,7 +324,7 @@ I Data Warehouse comprende un'insieme di tecniche per analizzare i dati:
 
 ### 6.2 Data Mining
 
-Il *Data Mining* è una tecnica che permette di riconoscere ed estrarre in modo automatico informazioni utili dai dati.
+Il _Data Mining_ è una tecnica che permette di riconoscere ed estrarre in modo automatico informazioni utili dai dati.
 
 Il Data Mining si basa sulle seguenti fasi:
 
@@ -361,7 +363,7 @@ L'estrazione di informazioni dai dati può avvenire tramite:
 
 ### 6.3 Process Discovery
 
-Il *Process Discovery* è una tecnica che permette di estrarre i processi da un insieme di dati, solitamente da un log di eventi.
+Il _Process Discovery_ è una tecnica che permette di estrarre i processi da un insieme di dati, solitamente da un log di eventi.
 
 Le relazioni che possono esistere tra gli eventi sono:
 
@@ -382,7 +384,7 @@ E' importante che tra i vari moduli ci sia un buon flusso informativo perché
 
 - Informazioni rilevanti per più funzioni necessiterebbero della duplicazione di tali dati, generando un problema nella gestione e incongruenze in caso di modifica
 - Si evita lo scambio di informazioni diretto tra operatori umani limitando il rischio di errore
-- Una struttura a *silos* (Siloed applications, applicazioni che non comunicano) influenza la struttura aziendale che vede una mancanza di collaborazione
+- Una struttura a _silos_ (Siloed applications, applicazioni che non comunicano) influenza la struttura aziendale che vede una mancanza di collaborazione
 
 Spesso il sistema informativo aziendale deve comunicare con sistemi di aziende esterne. E' probabile che questi sistemi siano differenti, bisogna quindi trovare tecniche per collaborare efficacemente.
 
@@ -397,8 +399,8 @@ Per garantire incongruenze tra dati è essenziale che sia presente un'unica sorg
 Una prima soluzione potrebbe essere quella di utilizzare un'unica base di dati comune dove ogni operazione è immediatamente visibile agli altri applicativi.
 Questa soluzione risulta essere radicale in quanto potrebbe essere necessario ripensare interamente il sistema attuale.
 
-Una soluzione più flessibile consiste nell'introdurre un *middleware* che garantisce la congruenza tra i dati presenti in diversi database in caso di duplicazione.
-Il *middleware* si occupa anche di uniformare il **formato** e la **semantica** dei dati provenienti da db differenti.
+Una soluzione più flessibile consiste nell'introdurre un _middleware_ che garantisce la congruenza tra i dati presenti in diversi database in caso di duplicazione.
+Il _middleware_ si occupa anche di uniformare il **formato** e la **semantica** dei dati provenienti da db differenti.
 
 I problemi che si originano dall'integrazione dei dati sono:
 
@@ -429,7 +431,7 @@ Questa soluzione risulta poco scalabile in quanto, per ogni applicazione, sono p
 
 #### Architettura Hub-and-Spoke
 
-Questo modello di basa sull'introduzione di un **hub** centrale a cui vengono collegati i vari sistemi tramite *adattatori* (**spoke**).
+Questo modello di basa sull'introduzione di un **hub** centrale a cui vengono collegati i vari sistemi tramite _adattatori_ (**spoke**).
 In questo modo il collegamento tra i vari moduli viene gestito da un componente apposito. Questo permette di astrarre la comunicazione che non deve essere sviluppata ad-hoc per ogni componente.
 
 Questo modello permette di coordinare il flusso di informazioni, indirizzando le richieste ed effettuando eventuali trasformazioni tra i dati.
@@ -445,7 +447,7 @@ E' possibile definire processi di integrazione tramite componenti di automazione
 
 #### Architettura a Servizi
 
-Questa architettura si basa sul paradigma dell'*architettura orientata ai servizi* (SOA) che prevede la realizzazione delle funzionalità in maniera modulare interrogabili tramite il protocollo HTTP.
+Questa architettura si basa sul paradigma dell'_architettura orientata ai servizi_ (SOA) che prevede la realizzazione delle funzionalità in maniera modulare interrogabili tramite il protocollo HTTP.
 
 Questa architettura permette di essere invocata sia internamente che esternamente all'azienda.
 
@@ -458,15 +460,15 @@ Questo paradigma facilita l'integrazione dato che ciascun componente definisce l
 
 Sevizi diversi possono essere usati in maniera congiunta da una singola applicazione. Bisogna poter quindi comporre un servizio più complesso a partire da servizi atomici.
 
-Per comporre un servizio si usa una *service orchestration* che determina una sequenza di invocazione per i servizi.
+Per comporre un servizio si usa una _service orchestration_ che determina una sequenza di invocazione per i servizi.
 
 ## Capitolo Otto: Tecnologie livello Architettura Fisica
 
-Le architetture fisiche si dividono solitamente in *centralizzate* e *distribuite*.
+Le architetture fisiche si dividono solitamente in _centralizzate_ e _distribuite_.
 
 In un'**architettura centralizzata**, tutti i componenti (dita e le applicazioni) sono localizzati in un unico nodo di elaborazione.
 
-Questa era una delle prime soluzioni e presentava solo pochi *terminali* che interagivano con il software installato sul *mainframe*.
+Questa era una delle prime soluzioni e presentava solo pochi _terminali_ che interagivano con il software installato sul _mainframe_.
 
 L'avvento dei personal computer, del modello client/server e delle reti di comunicazione ha portato alla nascita delle **architetture distribuite**.
 
@@ -477,7 +479,7 @@ Un'architettura si dice distribuita quando una delle seguenti condizioni è veri
 
 ### 8.1 Applicazioni Distribuite
 
-Nei sistemi distribuiti i livelli logici (*layer*) sono distribuiti su una o più macchine detti livelli (*tier*).
+Nei sistemi distribuiti i livelli logici (_layer_) sono distribuiti su una o più macchine detti livelli (_tier_).
 A seconda di come avviene la distribuzione dei layer sui tier si possono avere diverse architetture:
 
 #### Architettura Single Tiered
@@ -516,11 +518,11 @@ Esistono due tipologie di scalabilità:
 - **Scalabilità Verticale** (scale-up): consiste nell'aggiungere risorse (CPU, RAM, etc) ad un singolo nodo di elaborazione. Questa soluzione è abbastanza semplice da realizzare, ma ha dei limiti in termini di prestazioni a causa dei limiti fisici.
 - **Scalabilità Orizzontale** (scale-out): consiste nell'aggiungere nuovi nodi di elaborazione per distribuire il carico. Questa soluzione necessita l'introduzione di un sistema di load balancing per distribuire il carico di lavoro tra le diverse macchine.
 
-In ambito web si tende a parlare di *elasticità* del sistema piuttosto che di scalabilità. Un sistema è elastico se è in grado di adattarsi automaticamente alle variazioni di carico.
+In ambito web si tende a parlare di _elasticità_ del sistema piuttosto che di scalabilità. Un sistema è elastico se è in grado di adattarsi automaticamente alle variazioni di carico.
 
 #### Server Farm
 
-Una *server farm* è un insieme di server che condividono un carico di lavoro. Questa soluzione permette di distribuire il carico di lavoro tra i vari server (scale-out).
+Una _server farm_ è un insieme di server che condividono un carico di lavoro. Questa soluzione permette di distribuire il carico di lavoro tra i vari server (scale-out).
 
 Le server farm possono essere realizzate secondo due principi:
 
@@ -531,21 +533,21 @@ Le server farm possono essere realizzate secondo due principi:
 
 ### 8.3 Virtualizzazione
 
-La *virtualizzazione* è una tecnica che permette di creare una versione virtuale di un sistema operativo. Questo permette di:
+La _virtualizzazione_ è una tecnica che permette di creare una versione virtuale di un sistema operativo. Questo permette di:
 
 - Disaccoppiare le risorse fisiche dalle applicazioni
 - Frazionare una risorsa fisica in più risorse virtuali
 - Creare un ambiente di isolato
 
-Le risorse virtuali sono dette *macchine virtuali* (VM) e sono gestite da un software detto *hypervisor*.
+Le risorse virtuali sono dette _macchine virtuali_ (VM) e sono gestite da un software detto _hypervisor_.
 
 Questa tecnica permette di avere all'interno della medesima macchina fisica più macchine virtuali, ognuna con la propria applicazione.
 
 ### 8.4 Cloud Computing
 
-Il *Cloud Computing* è un modello che permette l'accesso a risorse informatiche tramite internet, senza la necessità di possedere fisicamente le risorse.
+Il _Cloud Computing_ è un modello che permette l'accesso a risorse informatiche tramite internet, senza la necessità di possedere fisicamente le risorse.
 
-Le risorse sono offerte da un *cloud provider* che si occupa della gestione delle risorse, e della manutenzione, che vengono fornite on-demand (solo quando servono).
+Le risorse sono offerte da un _cloud provider_ che si occupa della gestione delle risorse, e della manutenzione, che vengono fornite on-demand (solo quando servono).
 
 Il cloud computing si basa su cinque **caratteristiche**:
 
@@ -574,7 +576,7 @@ Il cloud computing si basa su quattro modelli di **deployment**:
 La sicurezza nei sistemi informativi è l'insieme delle misure atte a proteggere i seguenti requisiti:
 
 - **Integrità**: il sistema deve impedire l'alterazione delle informazioni, sia da parte di utenti e processi non autorizzati, sia da eventi accidentali
-- **Autenticità**: il sistema deve garantire che le informazioni siano autentiche e che l'utente sia chi dice di essere. Per fare ciò bisogna avere un sistema di *autenticazione*. Ogni *agente* (entità in grado di intraprendere azioni col sistema) deve essere identificato prima di poter interagire col sistema.
+- **Autenticità**: il sistema deve garantire che le informazioni siano autentiche e che l'utente sia chi dice di essere. Per fare ciò bisogna avere un sistema di _autenticazione_. Ogni _agente_ (entità in grado di intraprendere azioni col sistema) deve essere identificato prima di poter interagire col sistema.
 - **Riservatezza**: nessun utente non autorizzato deve poter accedere alle informazioni che non è autorizzato a conoscere.
 - **Disponibilità**: il sistema deve rendere disponibili agli utenti abilitati, le informazioni e le risorse alle quali hanno accesso.
 - **Non Ripudio**: il sistema deve garantire che un utente non possa negare di aver compiuto un'azione.
@@ -587,10 +589,10 @@ Le minacce alla sicurezza possono essere di vario tipo:
 - **Logiche**: sottrazione o alterazione delle informazioni o risorse
 - **Accidentali**: errori di configurazione del software, malfunzionamenti, etc
 
-Le minacce logiche nascono dalla presenza di *vulnerabilità* nel sistema. Una vulnerabilità è una debolezza del sistema che può essere sfruttata da un attaccante per compromettere la sicurezza del sistema.
-Le vulnerabilità vengono sfruttate da *exploit*, ovvero tecniche che sfruttano le vulnerabilità per compiere azioni non autorizzate.
+Le minacce logiche nascono dalla presenza di _vulnerabilità_ nel sistema. Una vulnerabilità è una debolezza del sistema che può essere sfruttata da un attaccante per compromettere la sicurezza del sistema.
+Le vulnerabilità vengono sfruttate da _exploit_, ovvero tecniche che sfruttano le vulnerabilità per compiere azioni non autorizzate.
 
-Gli *attacchi* sono azioni che colpiscono le basi di dati, infrastrutture, le reti o dispositivi tramite atti malevoli finalizzati al furto. alterazione o distruzione di elementi, violando le regole d'accesso.
+Gli _attacchi_ sono azioni che colpiscono le basi di dati, infrastrutture, le reti o dispositivi tramite atti malevoli finalizzati al furto. alterazione o distruzione di elementi, violando le regole d'accesso.
 
 Gli attacchi più comuni a livello di rete sono:
 
@@ -617,8 +619,8 @@ E' necessario adottare misure per difendersi da queste minacce che possono esser
 
 Crittografare significa codificare un messaggio in modo che solo il destinatario possa leggerlo.
 
-I meccanismi si crittografia sa basano sulla presenza di un algoritmo (*funzione crittografica*) e una chiave.
-La segretezza della chiava è fondamentale per garantire la sicurezza del messaggio e deve essere scelta tra un vasto numero di combinazioni (*spazio delle chiavi*) e deve essere cambiata periodicamente (One Time Password OTP).
+I meccanismi si crittografia sa basano sulla presenza di un algoritmo (_funzione crittografica_) e una chiave.
+La segretezza della chiava è fondamentale per garantire la sicurezza del messaggio e deve essere scelta tra un vasto numero di combinazioni (_spazio delle chiavi_) e deve essere cambiata periodicamente (One Time Password OTP).
 
 La sicurezza dipende dalla lunghezza della chiave e dall'ampiezza dei possibili valori della chiave.
 
@@ -713,7 +715,7 @@ Lo svantaggio della cifratura asimmetrica è la lentezza computazionale. Per ovv
 
 ### 9.3 Integrità e Funzione di Hash
 
-La *funzione di hash* è una funzione che mappa un input di lunghezza arbitraria in un output di lunghezza fissa chiamato *fingerprint*, *hash* o *digest*.
+La _funzione di hash_ è una funzione che mappa un input di lunghezza arbitraria in un output di lunghezza fissa chiamato _fingerprint_, _hash_ o _digest_.
 
 La funzione di hash deve avere le seguenti proprietà:
 
@@ -744,7 +746,7 @@ graph TD
 
 #### Firma Digitale
 
-La *firma digitale* è un meccanismo che permette di garantire l'autenticità e l'integrità di un messaggio.
+La _firma digitale_ è un meccanismo che permette di garantire l'autenticità e l'integrità di un messaggio.
 
 Per creare una firma digitale, il mittente calcola l'hash del messaggio e lo cifra con la propria chiave privata. Il destinatario decifra la firma con la chiave pubblica del mittente e confronta l'hash del messaggio con l'hash ricevuto.
 
@@ -776,7 +778,7 @@ La crittografia necessita di un sistema di gestione delle chiavi che permetta di
 La **Generazione delle Chiavi** viene svolto da chi svolgerà le operazioni crittografiche, o in casi particolari da un ente certificatore.
 
 Lo **Scambio delle chiavi** è un'operazione delicata che deve essere svolta in maniera sicura, soprattutto nella crittografia simmetrica. Una tecnica utilizzata è OOB (Out Of Band) dove la chiave viene scambiata tramite un canale diverso da quello utilizzato per la comunicazione. Altrimenti si può utilizzare la crittografia asimmetrica per scambiare la chiave simmetrica.
-Nel caso delle chiavi pubbliche, queste vengono distribuite e identificata tramite un *certificato* rilasciato da un ente certificatore.
+Nel caso delle chiavi pubbliche, queste vengono distribuite e identificata tramite un _certificato_ rilasciato da un ente certificatore.
 
 I sistemi che si occupano della generazione e della gestione delle chiavi sono dette PKI (Public Key Infrastructure) e si occupano di:
 
@@ -805,24 +807,24 @@ Spesso il secondo fattore è un token generato da un'applicazione o inviato tram
 
 #### Autorizzazione
 
-Dopo aver autenticato un agente, è necessario verificare se l'agente ha l'autorizzazione per svolgere delle funzioni elementari (*read*, *write* e *execute*) su delle date risorse.
+Dopo aver autenticato un agente, è necessario verificare se l'agente ha l'autorizzazione per svolgere delle funzioni elementari (_read_, _write_ e _execute_) su delle date risorse.
 
 Il controllo alle funzioni può essere relativo a diverse risorse come il sistema operativo o un DBMS.
 
 - **Autorizzatori**: al momento della creazione di una risorsa di diventa owner ed è possibile assegnare diritti di accesso ad altri utenti.
-In un DBMS il controllo si basa su delle *regole d'accesso* che sono formate da:
+  In un DBMS il controllo si basa su delle _regole d'accesso_ che sono formate da:
 - **Soggetti**: utenti o gruppi di utenti
 - **Oggetti**: risorse a cui si vuole accedere. Queste possono essere tabelle, viste, procedure, etc
 - **Diritti**: operazioni che si possono svolgere sulla risorsa (esempio: CRUD - Create, Read, Update, Delete)
 
-Le creazioni di queste regole crea la *politica di sicurezza* di un sistema.
+Le creazioni di queste regole crea la _politica di sicurezza_ di un sistema.
 Queste politiche possono essere i due tipi:
 
 - Sistema Chiuso: l'accesso è permesso solo a chi ha un'autorizzazione esplicita
 - Sistema Aperto: sono permessi tutti gli accessi tranne quelli esplicitamente vietati
 
-Le regole d'accesso vengono definite con un *modello a componenti* che si basa su tre componenti: *subject*, *object* e *right*.
-Questo modello è stato esteso con i *constrains* che rappresentano dei vincoli d'accesso dipendente dal contenuto.
+Le regole d'accesso vengono definite con un _modello a componenti_ che si basa su tre componenti: _subject_, _object_ e _right_.
+Questo modello è stato esteso con i _constrains_ che rappresentano dei vincoli d'accesso dipendente dal contenuto.
 
 ```plaintext
 (subject, object, right, constrain)
@@ -836,22 +838,22 @@ Il primo tipo è detto **Discretionary Access Control** (DAC) dove l'accesso è 
 
 Per garantire che queste regole vengano rispettate in un DBMS si possono effettuare due tecniche:
 
-- *Viste*: dare l'accesso ad un ruolo solo ad una vista modificata e non alla tabella originale
-- *Query modification*: dando ad un ruolo l'accesso solo ad una tipologia di query, quando si effettua una query il DBMS modifica la query in modo da rispettare le regole d'accesso
+- _Viste_: dare l'accesso ad un ruolo solo ad una vista modificata e non alla tabella originale
+- _Query modification_: dando ad un ruolo l'accesso solo ad una tipologia di query, quando si effettua una query il DBMS modifica la query in modo da rispettare le regole d'accesso
 
-Il secondo tipo è detto **Mandatory Access Control** (MAC) dove l'accesso è basato su regole di sicurezza definite da un'amministrazione centrale. Questo modello di politica assegna un *livello di sensitività* a ciascuna risorsa e a ciascun utente un *livello di clearance*.
+Il secondo tipo è detto **Mandatory Access Control** (MAC) dove l'accesso è basato su regole di sicurezza definite da un'amministrazione centrale. Questo modello di politica assegna un _livello di sensitività_ a ciascuna risorsa e a ciascun utente un _livello di clearance_.
 
-Vengono poi definite delle *Security Class* (SC) in base ad una componente gerarchica, che definisce il livello di sensitività delle risorse, e un insieme di categorie che indicano l'area di appartenenza del dato.
+Vengono poi definite delle _Security Class_ (SC) in base ad una componente gerarchica, che definisce il livello di sensitività delle risorse, e un insieme di categorie che indicano l'area di appartenenza del dato.
 
 I meccanismi di sicurezza si basano su due principi:
 
-- *No-Read-Up*: un soggetto può leggere solo risorse con un livello di sensitività inferiore o uguale al proprio livello di clearance
-- *No-Write-Down*: un soggetto può scrivere solo risorse con un livello di sensitività superiore o uguale al proprio livello di clearance
+- _No-Read-Up_: un soggetto può leggere solo risorse con un livello di sensitività inferiore o uguale al proprio livello di clearance
+- _No-Write-Down_: un soggetto può scrivere solo risorse con un livello di sensitività superiore o uguale al proprio livello di clearance
 
-Nei sistemi MAC si realizzano tabelle multi-livello dove ad ogni riga o attributo è associato un attributo detto *Tuple Classification* (TC) che indica il livello di sensitività della tupla.
+Nei sistemi MAC si realizzano tabelle multi-livello dove ad ogni riga o attributo è associato un attributo detto _Tuple Classification_ (TC) che indica il livello di sensitività della tupla.
 
 | field1_name | field1_classification | field2_name | field2_classification | tuple_classification |
-|-------------|-----------------------|-------------|-----------------------|----------------------|
+| ----------- | --------------------- | ----------- | --------------------- | -------------------- |
 | value       | S                     | value       | S                     | S                    |
 | value       | TS                    | value       | S                     | TS                   |
 |             |                       |             |                       |                      |
@@ -863,11 +865,11 @@ Quando si prova ad effettuare l'accesso ad una risorsa il cui livello di sensiti
 
 ### 9.5 Cybersecurity
 
-La *cybersecurity* è l'insieme delle misure fisiche, logiche e organizzative atte a proteggere i sistemi informativi da attacchi.
+La _cybersecurity_ è l'insieme delle misure fisiche, logiche e organizzative atte a proteggere i sistemi informativi da attacchi.
 
-Un approccio per proteggersi dagli attacchi è utilizzare una politica di tipo *Zero Trust* che consiste nel limitare l'accesso alle risorse solo se strettamente necessario.
+Un approccio per proteggersi dagli attacchi è utilizzare una politica di tipo _Zero Trust_ che consiste nel limitare l'accesso alle risorse solo se strettamente necessario.
 
-Con l'avvento del *cloud computing* e del *BYOD* (Bring Your Own Device) non esistono dei *perimetri di rete* e dei dispositivi affidabili di default ed è necessario proteggere i dati e le risorse da attacchi provenienti da dispositivi esterni.
+Con l'avvento del _cloud computing_ e del _BYOD_ (Bring Your Own Device) non esistono dei _perimetri di rete_ e dei dispositivi affidabili di default ed è necessario proteggere i dati e le risorse da attacchi provenienti da dispositivi esterni.
 
 L'approccio Zero Trust si basa su tre principi:
 
@@ -883,7 +885,7 @@ Il sistema effettua anche dei operazioni di analisi, filtraggio e registrazione 
 
 #### Firewall
 
-Il *firewall* è un dispositivo di rete che permette di filtrare il traffico in ingresso e in uscita da una rete. L'adozione di un firewall deve seguire re regole di sicurezza:
+Il _firewall_ è un dispositivo di rete che permette di filtrare il traffico in ingresso e in uscita da una rete. L'adozione di un firewall deve seguire re regole di sicurezza:
 
 - Il firewall deve essere l'unico punto di accesso tra la rete interna (intranet) e la rete esterna (internet)
 - Il firewall deve essere configurato in modo da permettere solo il traffico necessario ed autorizzato
@@ -891,14 +893,14 @@ Il *firewall* è un dispositivo di rete che permette di filtrare il traffico in 
 
 I componenti principali di un firewall sono:
 
-- **Screening Router**: filtra i pacchetti in base alla loro intestazione (*Packet filtering*) o al loro contenuto (*packet inspection*). Si basa su una tabella di regole che definisce quali pacchetti devono essere bloccati e quali devono essere inoltrati.
-- **Application Gateway**: filtra il traffico in base al livello applicativo (esempio: HTTP, FTP) tramite un *proxy*. Il proxy si interpone tra il client e il server e permette di analizzare il traffico in maniera più approfondita.
+- **Screening Router**: filtra i pacchetti in base alla loro intestazione (_Packet filtering_) o al loro contenuto (_packet inspection_). Si basa su una tabella di regole che definisce quali pacchetti devono essere bloccati e quali devono essere inoltrati.
+- **Application Gateway**: filtra il traffico in base al livello applicativo (esempio: HTTP, FTP) tramite un _proxy_. Il proxy si interpone tra il client e il server e permette di analizzare il traffico in maniera più approfondita.
 
-I firewall possono essere usati per creare delle *DMZ* (Demilitarized Zone) che è una zona intermedia tra la rete interna e la rete esterna. Questa zona contiene i servizi che devono essere accessibili dall'esterno, ma che non devono avere accesso alla rete interna.
+I firewall possono essere usati per creare delle _DMZ_ (Demilitarized Zone) che è una zona intermedia tra la rete interna e la rete esterna. Questa zona contiene i servizi che devono essere accessibili dall'esterno, ma che non devono avere accesso alla rete interna.
 
 #### Intrusion Detection System (IDS)
 
-L'*Intrusion Detection System* (IDS) è un sistema che permette di rilevare intrusioni monitorando gli eventi in un sistema o in una rete.
+L'_Intrusion Detection System_ (IDS) è un sistema che permette di rilevare intrusioni monitorando gli eventi in un sistema o in una rete.
 
 Questi dispositivi possono interagire con il firewall per bloccare una connessione da un indirizzo IP sospetto.
 
@@ -960,15 +962,15 @@ La pianificazione comprende due fasi:
 
 #### Pianificazione strategica
 
-La *pianificazione strategica* si basa sull'acquisizione di conoscenza del contesto e dello stato attuale dell'azienda. Questa fase si basa su due attività:
+La _pianificazione strategica_ si basa sull'acquisizione di conoscenza del contesto e dello stato attuale dell'azienda. Questa fase si basa su due attività:
 
 - l'analisi delle opportunità di sviluppo: analizzare le tecnologie, strategie e processi, delineando i possibili sviluppi del sistema
 - l'analisi dei fabbisogni informativi: analizzare i bisogni informativi dell'azienda e definire i requisiti del sistema, definendo gli scambi informativi necessari e la modellazione delle informazioni
 
-Questa fase è supportata dall'identificazione dei *business driver*, ovvero i fattori che influenzano il business e che devono essere presi in considerazione nella progettazione del sistema.
+Questa fase è supportata dall'identificazione dei _business driver_, ovvero i fattori che influenzano il business e che devono essere presi in considerazione nella progettazione del sistema.
 Questi fattori sono solitamente misurabili mediante i **KPI** (Key Performance Indicator).
 
-I KPI sono utili per misurare l'efficacia e l'efficienza del sistema informativo in base a tre variabili: *input*, *output atteso* e *output effettivo*.
+I KPI sono utili per misurare l'efficacia e l'efficienza del sistema informativo in base a tre variabili: _input_, _output atteso_ e _output effettivo_.
 
 ```mermaid
 graph TD
@@ -980,13 +982,13 @@ graph TD
 I business driver sono solitamente divisi in due categorie:
 
 - **Efficacia**: definisce se l'azienda è stata in grado di raggiungere l'output atteso $$Efficacia = OutputEffettivo / OutputAtteso$$ A questo indicatore si aggiungono:
-  - **Reach**: obiettivi che allargano *geograficamente*, *temporalmente* o *modalità* (canali) l'azienda
+  - **Reach**: obiettivi che allargano _geograficamente_, _temporalmente_ o _modalità_ (canali) l'azienda
   - **Richness**: obiettivi che migliorano l'intensità della comunicazione con le parti con cui interagisce (es. clienti, fornitori)
 - **Efficienza**: definisce se l'azienda è stata in grado di raggiungere l'output effettivo con il minor input possibile $$Efficienza = OutputEffettivo / Input$$
 
 #### Studio di Fattibilità
 
-Lo *studio di fattibilità* è un'analisi preliminare che permette di valutare la fattibilità di un progetto.
+Lo _studio di fattibilità_ è un'analisi preliminare che permette di valutare la fattibilità di un progetto.
 
 Questa fase si basa su tre fasi principali:
 
@@ -1003,30 +1005,29 @@ In fine ci si concentra sui vincoli da rispettare definiti da: costo, tempo e qu
 La progettazione della soluzione si basa su tre fasi:
 
 1. **Identificazione delle soluzioni**: in base alle specifiche e ai vincoli si definiscono delle soluzioni informatiche in grado di soddisfarli. Queste soluzioni possono portare a svolgere due tipologie di analisi:
-    - *Make or Buy*: decidere se sviluppare internamente il sistema (make) o acquistare un sistema già pronto (buy). Sviluppare il proprio sistema permette di avere un sistema su misura, ma richiede tempo e risorse. Acquistare un sistema già pronto (COTS - Commercial Of-The-Shelf) permette di avere un sistema funzionante in tempi brevi, ma potrebbe non soddisfare tutte le esigenze.
-    - *Sourcing*: decidere se affidare lo sviluppo del sistema ad un'azienda esterna (Outsourcing) o svilupparlo internamente (in-house). è possibile anche adottare una soluzione mista che si divide in 6 livelli:
-      0. **In-House**: tutto lo sviluppo è svolto internamente
-      1. **Servizi Condivisi**: l'organizzazione è supportata da un'azienda IT che lavora in collaborazione diretta con l'azienda
-      2. **Supporto Esterno**: l'azienda si gestiscono internamente i sistemi, ma si appoggia ad aziende esterne per la supporto
-      3. **Consorzio**: un gruppo di aziende si unisce per sviluppare un sistema comune dividendo i costi
-      4. **Outsourcing Selettivo**: l'azienda si appoggia ad aziende esterne per lo sviluppo di alcune parti del sistema (solitamente non core)
-      5. **Outsourcing Completo**: l'intera gestione del sistema è affidata ad aziende esterne
+   - _Make or Buy_: decidere se sviluppare internamente il sistema (make) o acquistare un sistema già pronto (buy). Sviluppare il proprio sistema permette di avere un sistema su misura, ma richiede tempo e risorse. Acquistare un sistema già pronto (COTS - Commercial Of-The-Shelf) permette di avere un sistema funzionante in tempi brevi, ma potrebbe non soddisfare tutte le esigenze.
+   - _Sourcing_: decidere se affidare lo sviluppo del sistema ad un'azienda esterna (Outsourcing) o svilupparlo internamente (in-house). è possibile anche adottare una soluzione mista che si divide in 6 livelli: 0. **In-House**: tutto lo sviluppo è svolto internamente
+     1. **Servizi Condivisi**: l'organizzazione è supportata da un'azienda IT che lavora in collaborazione diretta con l'azienda
+     2. **Supporto Esterno**: l'azienda si gestiscono internamente i sistemi, ma si appoggia ad aziende esterne per la supporto
+     3. **Consorzio**: un gruppo di aziende si unisce per sviluppare un sistema comune dividendo i costi
+     4. **Outsourcing Selettivo**: l'azienda si appoggia ad aziende esterne per lo sviluppo di alcune parti del sistema (solitamente non core)
+     5. **Outsourcing Completo**: l'intera gestione del sistema è affidata ad aziende esterne
 2. **Analisi di Fattibilità Tecnica**: si descrivono le possibili soluzioni per le esigenze definite. Le soluzioni vengono valutate in base a diversi criteri:
-    - **Disponibilità**: valutare se la soluzione è realizzabile (o acquistabile) nei tempi previsti
-    - **Maturità tecnologico**: valutare se lo stato di vita della tecnologia che si vuole adottare
-    - **Affidabilità**: valutare l'esposizione ai guasti della soluzione individuata
-    - **Sicurezza**: valutare la vulnerabilità della soluzione individuata
-    - **Scalabilità**: valutare la capacità della soluzione di adattarsi a nuove esigenze e quanto costerebbe in termini di risorse
-    - **Integrazione**: valutare la capacità della soluzione di integrarsi con i sistemi esistenti
+   - **Disponibilità**: valutare se la soluzione è realizzabile (o acquistabile) nei tempi previsti
+   - **Maturità tecnologico**: valutare se lo stato di vita della tecnologia che si vuole adottare
+   - **Affidabilità**: valutare l'esposizione ai guasti della soluzione individuata
+   - **Sicurezza**: valutare la vulnerabilità della soluzione individuata
+   - **Scalabilità**: valutare la capacità della soluzione di adattarsi a nuove esigenze e quanto costerebbe in termini di risorse
+   - **Integrazione**: valutare la capacità della soluzione di integrarsi con i sistemi esistenti
 3. **Valutazione degli Impatti Organizzativi**: valutare l'impatto che l'introduzione del nuovo sistema avrà sull'organizzazione.
 
 ##### Valutazione di Convenienza Economica
 
 Le soluzioni proposte devono essere convenienti dal punto di vista economico, ovvero il costo della soluzione deve essere inferiore al beneficio che si otterrà.
 
-I *costi* devono essere contabilizzati in maniera precisa.
+I _costi_ devono essere contabilizzati in maniera precisa.
 
-I *benefici* devono essere tangibili e diretti, quindi monetizzabili. Alcuni benefici possono essere una riduzione dei costi operativi, un aumento della produttività, un aumento dei ricavi, etc.
+I _benefici_ devono essere tangibili e diretti, quindi monetizzabili. Alcuni benefici possono essere una riduzione dei costi operativi, un aumento della produttività, un aumento dei ricavi, etc.
 
 ### 10.2 Ciclo di Vita del Sistema Informativo
 
@@ -1034,7 +1035,7 @@ Una volta scelto effettuato lo studio di fattibilità e scelta la soluzione, si 
 
 #### Ciclo di Sviluppo con strategia Make
 
-Il ciclo di sviluppo di un sistema informativo con strategia *make* si basa su un approccio iterativo basato su diverse fasi:
+Il ciclo di sviluppo di un sistema informativo con strategia _make_ si basa su un approccio iterativo basato su diverse fasi:
 
 - Pianificazione
 - Raccolta e Analisi dei requisiti
@@ -1067,15 +1068,15 @@ In questo caso la difficoltà principale consiste nel selezionare il sistema pi�
 Bisogna quindi individuare diversi indicatori:
 
 - **Indicatori Funzionali**: valutano la capacità del sistema di soddisfare le esigenze dell'azienda
-  - *Grado di Completezza* (o copertura funzionale): metrica che misura il rapporto tra le funzionalità offerte dal sistema e le funzionalità richieste
-  - *Personalizzazione*: capacità del sistema di adattarsi alle esigenze dell'azienda, questo può essere solo basato sulla parametrizzazione o richiedere modifiche al codice
+  - _Grado di Completezza_ (o copertura funzionale): metrica che misura il rapporto tra le funzionalità offerte dal sistema e le funzionalità richieste
+  - _Personalizzazione_: capacità del sistema di adattarsi alle esigenze dell'azienda, questo può essere solo basato sulla parametrizzazione o richiedere modifiche al codice
 - **Indicatori Architetturali**: aspetti tecnologici del sistema
-  - *Scalabilità*: capacità del sistema di adattarsi al crescere del carico di lavoro
-  - *Interoperabilità*: capacità del sistema di interagire con altri sistemi
-  - *Sicurezza*: sicurezza in termini di regolazione degli accessi, protocolli di sicurezza, etc
+  - _Scalabilità_: capacità del sistema di adattarsi al crescere del carico di lavoro
+  - _Interoperabilità_: capacità del sistema di interagire con altri sistemi
+  - _Sicurezza_: sicurezza in termini di regolazione degli accessi, protocolli di sicurezza, etc
 - **Costi**: valutare il costo di acquisto e di manutenzione del sistema. Questi cosi comprendono le licenze, consulenza, hardware, sviluppo, formazione, etc
 
-Bisogna effettuare anche una valutazione sul venditore della soluzione presa in esame valutando fattori come la *credibilità* e la *capacità* del venditore.
+Bisogna effettuare anche una valutazione sul venditore della soluzione presa in esame valutando fattori come la _credibilità_ e la _capacità_ del venditore.
 Questi parametri vengono valutati in base all'esperienza, la presenza e la reputazione del venditore.
 
 ## Domande

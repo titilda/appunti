@@ -1,6 +1,9 @@
 ---
 title: "Riassunto di Analisi I"
-author: "Andrea Oggioni"
+description: "Riassunto completo del corso di Analisi Matematica I"
+authors:
+  - "Andrea Oggioni"
+slug: "analisi-1"
 ---
 
 # Riassunto di Analisi I
@@ -49,13 +52,13 @@ Serve per dimostrare proposizioni _per induzione_ e si attua in due step [data u
 
 Per esempio, voglio dimostrare che: $\sum_{k=0}^n k = \frac{n(n+1)}{2}$
 
-Prima dimostro che la preposizione è vera con n = 0: 
+Prima dimostro che la preposizione è vera con n = 0:
 
 $$
 P(0): \sum_{k=0}^0 k = \frac{0(0+1)}{2} = 0
 $$
 
-Poi, supponendo che sia vera per n, la dimostro per n+1: 
+Poi, supponendo che sia vera per n, la dimostro per n+1:
 
 $$
 P(n+1): \sum_{k=0}^{n+1} k = \sum_{k=0}^n k + (n+1) = \frac{n(n+1)}{2} + (n+1) = \frac{n(n+1) + 2(n+1)}{2} = \frac{(n+1)(n+2)}{2} = \frac{(n+1)((n+1)+1)}{2}
@@ -153,7 +156,7 @@ Se $A \subset R$ allora
 - $x_0 \text{ viene detto di frontiera se } \forall \delta \in (x_0 - \delta, x_0 + \delta) \text{ cadono sia punti interni che punti esterni di A}$
 - $x_0 \text{ viene detto isolato se } \exist \delta : (x_0 - \delta, x_0 + \delta) \cap A = \{x_0\}$
 
-Questo significa che se abbiamo un insieme $A = [1, 3) \cup {5}$ allora 
+Questo significa che se abbiamo un insieme $A = [1, 3) \cup {5}$ allora
 
 |  X =  |             caratteristica              |
 | :---: | :-------------------------------------: |
@@ -233,10 +236,12 @@ Se un insieme è infinito, però non è sempre facile dire quanti elementi conti
 Entrambi hanno infiniti elementi, ma il tipo di infinito è diverso: esistono infiniti numerabili e infiniti non numerabili.
 Se posso associare a ogni elemento di un insieme un numero naturale, allora l'insieme è numerabile, altimenti non lo è.
 N, Z, e Q sono numerabili, infatti posso associare ad ogni loro un numero naturale:
+
 $$
 N: \{(0, 0), (1, 1), (2, 2), (3, 3), \dots\} \\
 Z: \{(0, 0), (1, 1), (2, -1), (3, 2), (4, -2), \dots\} \\
 $$
+
 Per Q, la faccenda è un po' più complicata, ma basta seguire il concetto illustrato nella seguente immagine:
 ![](https://www.competenzamatematica.it/wp-content/uploads/2019/12/Schermata-2019-12-28-alle-11.00.25-300x270.png)
 In questo modo, per ogni elemento di Q, posso associare un numero naturale.
@@ -278,7 +283,7 @@ Siccome $(0, 1)$ non è numerabile ed è possibile associare ad ogni elemento di
 
 I numeri complessi numeri basati sull'esistenza del numero $i$ chiamato anche **Unità Immaginaria**.
 
-$$ 
+$$
 i^2 = -1 \\
 i = sqrt(-1) \\
 $$
@@ -318,11 +323,15 @@ r = sqrt(a^2 + b^2) \\
 \end{cases}
 $$
 
-  - Nota: si può fare ad'occhio , senza memorizzare tutte le condizioni di $\theta$: se sta tra il III e IV quadrante, basta callcolare $arctan(\frac{b}{a})$ e aggiungere $\pi$. Per i casi particolari (assi e origine) è ovvio.
+- Nota: si può fare ad'occhio , senza memorizzare tutte le condizioni di $\theta$: se sta tra il III e IV quadrante, basta callcolare $arctan(\frac{b}{a})$ e aggiungere $\pi$. Per i casi particolari (assi e origine) è ovvio.
+
 2. Da trigonometrica/esponenziale a algebrica:
-  - Basta calcolare $cos(\theta)$ e $sin(\theta)$ e moltiplicare per $r$.
+
+- Basta calcolare $cos(\theta)$ e $sin(\theta)$ e moltiplicare per $r$.
+
 3. Da algebrica/trigonometrica a esponenziale:
-  - Basta calcolare $r$ e $\theta$ come nella forma trigonometrica e scriverli nella forma $r \times e^{i\theta}$
+
+- Basta calcolare $r$ e $\theta$ come nella forma trigonometrica e scriverli nella forma $r \times e^{i\theta}$
 
 Le varie forme servono per gestire meglio i calcoli. Di seguito formule per le varie operazioni con le varie forme (e, dove utile, anche la descrizione di cosa succede al grafico)
 
@@ -401,8 +410,9 @@ $$
 Di seguito il disegno delle radici di $-4$: [Geogebra](https://www.geogebra.org/calculator/uxmcb4dr)
 
 Note:
-  - Se $r = 0$ allora è solo l'origine, non serve combinarlo con i vari theta
-  - Se $r < 0$ allora lo scarto
+
+- Se $r = 0$ allora è solo l'origine, non serve combinarlo con i vari theta
+- Se $r < 0$ allora lo scarto
 
 #### Elevazione ad un numero complesso
 
@@ -435,7 +445,7 @@ $$
 W_n^n = \left( \sqrt{1 + \frac{2x}{n} + \frac{x^2 + y^2}{n^2}} \right)^n \left( \cos \left( n \arctan{\frac{y}{n + x}} \right) + i \sin \left( n \arctan{\frac{y}{n + x}} \right) \right) \\
 $$
 
-Quindi 
+Quindi
 
 $$
 \begin{align*}
@@ -448,6 +458,7 @@ e^Z = \lim_{n \to \infty} W_n^n &= \lim_{n \to \infty} \left[ \left( \sqrt{1 + \
 $$
 
 Di seguito alcuni esempi:
+
 - $e^{i \theta} = \cos \theta + i \sin \theta$
 - $e^{3 + 2i} = e^3 \left( \cos 2 + i \sin 2 \right) = e^3 \cos 2 + e^3 i \sin 2$
 
@@ -470,6 +481,7 @@ $$
 
 La scrittura precisa e pignola è la seguente: $\left\{ a_n \right\}_0^{+\infty}$
 Esempi:
+
 - $a_n = \frac{1}{n} \implies 1, \frac{1}{2}, \frac{1}{3}, \dots$
 - $b_n = s^n \implies 1, 2, 4, \dots$
 - $c_n = \left( -1 \right)^n \implies 1, -1, 1, \dots$
@@ -482,6 +494,7 @@ Per le monotone decrescenti, strettamente crescenti e strettamente decrescenti v
 ### 2.2 Successioni limitate
 
 Legati alle successioni ci sono alcuni numeri notevoli:
+
 - $\sup \left\{ a_n \right\}$: il minimo dei maggioranti della successione
 - $\inf \left\{ a_n \right\}$: il massimo dei minoranti della successione
 - $\max \left\{ a_n \right\}$: il massimo della successione
@@ -503,7 +516,7 @@ $$
 \lim_{n \to \infty} a_n = L, \quad L \in \R  \iff \forall \char"1D4B0 \left( L \right) \text{ definitivamente } a_n \in \char"1D4B0 \left( L \right)
 $$
 
-In italiano: esite un intorno di $L$  che contiene infiniti valori di $a_n$.
+In italiano: esite un intorno di $L$ che contiene infiniti valori di $a_n$.
 
 ### 2.4 Regolarità di una successione
 
@@ -559,7 +572,7 @@ Data una successione $a_n \to l$: allora
 #### Dimostrazione
 
 $$
-\forall \varepsilon > 0, def. \, \left| a_n - l \right| < \varepsilon \implies l - \varepsilon < a_n < l +\varepsilon 
+\forall \varepsilon > 0, def. \, \left| a_n - l \right| < \varepsilon \implies l - \varepsilon < a_n < l +\varepsilon
 \implies a_n > l - \varepsilon > 0 \implies \text {Se $l < 0$ allora $a_n < 0$} \\
 $$
 
@@ -586,6 +599,7 @@ Siccome $a_n < b_n < c_n$ allora anche $l - \varepsilon < b_n < l + \varepsilon$
 ### 2.9 Algebra dei limiti
 
 Se $a_n \to a$ e $b_n \to b$ allora
+
 - $a_n \pm b_n \to a \pm b$
 - $(a_n \times b_n) \to (a \times b)$
 - $\frac{a_n}{b_n} \to \frac{a}{b} \qquad \left( \text{Con } b \ne 0, b_n \ne 0\right)$
@@ -667,9 +681,9 @@ $\alpha$ è l'ordine di infinito.
 
 Di seguito una lista di infiniti e infinitesimi campioni:
 
-|         &nbsp;         |   $x \to 0$   | $x \to \pm \infty$ |    $x \to x_0$     |
-| :--------------------: | :-----------: | :----------------: | :----------------: |
-| Infinitesimo campione: |      $x$      |   $\frac{1}{x}$    |     $x - x_0$      |
+|         &nbsp;         |   $x \to 0$   | $x \to \pm \infty$ |     $x \to x_0$     |
+| :--------------------: | :-----------: | :----------------: | :-----------------: |
+| Infinitesimo campione: |      $x$      |   $\frac{1}{x}$    |      $x - x_0$      |
 |   Infinito campione:   | $\frac{1}{x}$ |        $x$         | $\frac{1}{x - x_0}$ |
 
 Da notare che tra infinitesimo campione e infinito campione, sono uno il reciproco dell'altro.
@@ -732,7 +746,8 @@ Ci sono alcune serie più famose e comuni di altre.
 
 Una serie geometrica è una serie della forma $S = \sum_{n = k}^\infty q^n$ e il loro valore di convergenza/divergenza si calcola con la seguente formula:
 
-$$ S = \begin{cases}
+$$
+S = \begin{cases}
   \frac{q^k}{1 - q} & \text{se } |q| < 1 & \text{(converge)} \\
   + \infty & \text{se } q \ge 1 & \text{(diverge)} \\
   \nexists & \text{se } q \le 1 & \text{(irregolare)} \\
@@ -749,7 +764,7 @@ $$
 \sum_{n = M}^\infty q^n = q^M + q^{M+1} + q^{M+2} + \dots = q^M \times \left( 1 + q^1 + q^2 + \dots \right) = q^M \times \sum_{n = 0}^{\infty} q^n = q^M \times \frac{1}{1 - q} = \frac{q^M}{1 - q}
 $$
 
-L'equivalenza 
+L'equivalenza
 
 $$
 \sum_{n = 0}^\infty q^n = \frac{q}{1 - q}
@@ -791,8 +806,8 @@ $$
 Le serie armoniche sono le serie nella forma
 
 $$
-S = \sum_{n = 1}^\infty \frac{1}{n^\alpha} = 
-\begin{cases} 
+S = \sum_{n = 1}^\infty \frac{1}{n^\alpha} =
+\begin{cases}
   \text{converge} & \text{se } \alpha > 1 \\
   \text{diverge} & \text{se } \alpha \le 1 \\
 \end{cases}
@@ -809,7 +824,7 @@ Se $\sum a_n$ converge allora $a_n \to 0$
 #### Dimostrazione
 
 Supponiamo esista finito il $\lim S_k = S$ (quindi che la serie converga ad $S$).
-Allora 
+Allora
 
 $$
 S_{k+1} - S_k = \sum_{n = 0}^{k + 1} a_n - \sum_{n = 0}^k a_n = a_{k+1} \\
@@ -832,6 +847,7 @@ Ci sono vari criteri a cui affidarsi per capire se una serie converge o diverge.
 #### Criterio del confronto asintotico
 
 Data una serie $\sum a_n$, se si riesce a ricondurre $a_n$ alla forma
+
 $$
 a_n \sim d\frac{k}{n^\alpha \times [\ln n]^\beta}
 $$
@@ -849,6 +865,7 @@ $$
 #### Criterio del confronto
 
 Data una serie $\sum b_n$, e altre due serie $a_n$ e $c_n$ tali che $a_n < b_n < c_n$ allora:
+
 1.  Se $c_n$ converge anche $b_n$ converge
 2.  Se $a_n$ diverge anche $b_n$ diverge
 
@@ -857,7 +874,7 @@ Data una serie $\sum b_n$, e altre due serie $a_n$ e $c_n$ tali che $a_n < b_n <
 Data una serie $\sum a_n$ allora si calcola
 
 $$
-\lim_{n \to \infty} \sqrt[n]{a_n} = 
+\lim_{n \to \infty} \sqrt[n]{a_n} =
 \begin{cases}
   > 1 & \text{diverge} \\
   < 1 & \text{converge} \\
@@ -881,7 +898,7 @@ $$
 Data una serie $\sum a_n$ allora si calcola
 
 $$
-\lim_{n \to \infty} \frac{a_{n+1}{a_n}} = 
+\lim_{n \to \infty} \frac{a_{n+1}{a_n}} =
 \begin{cases}
   > 1 & \text{diverge} \\
   < 1 & \text{converge} \\
@@ -891,7 +908,7 @@ $$
 
 ##### Dimostrazione
 
-Ricapitolando, se \frac{a_{n+1}}{a_n} \to l < 1$ allora la serie diverge, altrimenti se $\frac{a_{n+1}}{a_n} \to l < 1$ converge.
+Ricapitolando, se \frac{a*{n+1}}{a_n} \to l < 1$ allora la serie diverge, altrimenti se $\frac{a*{n+1}}{a_n} \to l < 1$ converge.
 In questo secondo caso,
 
 $$
@@ -967,7 +984,7 @@ $$
 $$
 
 $$
-\begin{align*}  
+\begin{align*}
   &\implies 2x = \frac{e^{2y}-1}{e^y} \\
   \end{align*} \\
 $$
@@ -1084,6 +1101,7 @@ y = f\left( \left| x \right| \right) \qquad \text{Il grafico di I° e IV° viene
 $$
 
 ### 4.6 Limiti di funzioni
+
 I limiti delle funzioni sono molto simili ai lititi per le successioni: asintotici, teoremi e proprietà varie che valgono sia per le successioni valgono anche per le funzioni.
 Di seguito le definizioni di limite di una funzione.
 
@@ -1159,6 +1177,7 @@ $$
 ##### Corollario
 
 Dato $h(x) \to 0$ con $x \to x^*$ allora
+
 - $\exists \char"1D4B0(x^*) : \left| g(x) \right| \le h(x) \implies g(x) \to 0$
 - $\exists \char"1D4B0(x^*) : g(x) \text{ è limitata } \implies g(x) \times h(x) \to 0$
 
@@ -1301,7 +1320,7 @@ da cui concludiamo che:
 
 #### Teorema
 
-Se $I$ è un intervallo qualsiasi e $f \in \mathcal{C}(I)$ allora $f$ è invertibile  $\iff$ $f$ è strettamente monotona.
+Se $I$ è un intervallo qualsiasi e $f \in \mathcal{C}(I)$ allora $f$ è invertibile $\iff$ $f$ è strettamente monotona.
 
 ##### Dimostrazione
 
@@ -1324,6 +1343,7 @@ Funzionano esattamente come con le successioni
 ### 4.8 Asintotici
 
 #### Asintoto verticale
+
 Se
 
 $$
@@ -1356,6 +1376,7 @@ allora l'asintoto obliquo esiste ed è $y = mx + q$.
 Con $x \to \infty$, $f(x) \sim mx$
 
 ### 4.9 o-piccoli e algebra degli stessi
+
 $o(\square) =$ qualcosa di trascurabile rispetto a $\square$.
 Per $x \to x^*$, $f(x) \sim g(x) \iff f(x) = g(x) + o(g(x))$
 Per $x \to 0$ se $f(x) = o(x^\alpha)$ allora
@@ -1538,16 +1559,16 @@ $$
 
 Per evitare di calcolare sempre il rapporto incrementale, esistono delle forme generiche che possono essere riciclate per derivare velocemente quasi tutto.
 
-| Funzione   | Derivata                      |
-| ---------- | ----------------------------- |
-| $k$        | $0$ (*1)                      |
-| $x^\alpha$ | $\alpha x ^{\alpha - 1}$ (*2) |
-| $e^x$      | $e^x$ (*3)                    |
-| $\sin x$   | $\cos x$ (*4)                 |
+| Funzione   | Derivata                       |
+| ---------- | ------------------------------ |
+| $k$        | $0$ (\*1)                      |
+| $x^\alpha$ | $\alpha x ^{\alpha - 1}$ (\*2) |
+| $e^x$      | $e^x$ (\*3)                    |
+| $\sin x$   | $\cos x$ (\*4)                 |
 
 Seguono dimostrazioni e note.
 
-(*1): 
+(\*1):
 
 $$
 \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h} = \lim_{h \to 0} \frac{k - k}{h} = 0
@@ -1555,19 +1576,19 @@ $$
 
 _(La forma di indecisione non c'è in questo caso perchè la frazione è "sicuramente zero"/"molto vicino a zero")_
 
-(*2): _Se $x_0 = 0$ e $\alpha > 0$ allora il limite del rapporto incrementale è pari al limite di $h^{\alpha - 1}$ che diverge per $\alpha < 1$_.
+(\*2): _Se $x_0 = 0$ e $\alpha > 0$ allora il limite del rapporto incrementale è pari al limite di $h^{\alpha - 1}$ che diverge per $\alpha < 1$_.
 
 $$
 \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h} = \lim_{h \to 0} \frac{(x_0 + h) ^ \alpha - x_0^\alpha}{h} = x_0^\alpha  \cdot \lim_{h \to 0} \frac{(1 + \frac{h}{x_0}) ^ \alpha - 1}{h} = x_0^\alpha \cdot \lim_{h \to 0} \frac{\alpha \cdot \frac{\cancel{h}}{x_0}}{\cancel{h}} = \alpha \cdot \frac{x_0^\alpha}{x_0} = \alpha \cdot x_0^{\alpha - 1}
 $$
 
-(3*): _$e$ è quel numero che sappiamo esistere solo grazie al teorema di monotonia_
+(3\*): _$e$ è quel numero che sappiamo esistere solo grazie al teorema di monotonia_
 
 $$
 \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h} = \lim_{h \to 0} \frac{e^{x_0} \cdot e^h - e^{x_0}}{h} = e^{x_0} \cdot \lim_{h \to 0} \frac{e^h - 1}{h} = e^{x_0}
 $$
 
-(4*):
+(4\*):
 
 $$
 \begin{align*}
@@ -1579,7 +1600,7 @@ $$
 \end{align*}
 $$
 
-_Il fatto che $\lim_{x \to 0} \frac{\sin x}{x} = 1$ si può dimostrare con l'Hopital che però richiede che sia dimostrato che $[\sin x]' = \cos x$, ma quest'ultimo fatto si può dimostrare con il fatto che $\lim_{x \to 0} \frac{\sin x}{x} = 1$ quindi serve la dimostrazione senza derivate (quella della "torta") per evitare di cadere nella definizione circolare e autoreferenziale ("l'Hopital ha ragione perchè $[\sin x]' = \cos x$ ma $[\sin x]' = \cos x$ è vero perchè l'Hopital ha ragione")._
+_Il fatto che $\lim_{x \to 0} \frac{\sin x}{x} = 1$ si può dimostrare con l'Hopital che però richiede che sia dimostrato che $[\sin x]' = \cos x$, ma quest'ultimo fatto si può dimostrare con il fatto che $\lim_{x \to 0} \frac{\sin x}{x} = 1$ quindi serve la dimostrazione senza derivate (quella della "torta") per evitare di cadere nella definizione circolare e autoreferenziale ("l'Hopital ha ragione perchè $[\sin x]' = \cos x$ ma $[\sin x]' = \cos x$ è vero perchè l'Hopital ha ragione").\_
 
 ### 6.5 Derivate elementari ma più in particolare
 
@@ -1615,7 +1636,7 @@ Siano $f, g : (a, b) \to \mathbb{R}$, $x_0 \in (a, b)$ e $f, g$ derivabili in $x
 
 $$
 \begin{align*}
-  \lim_{h \to 0} \frac{[f + g](x_0 + h) - [f + g](x_0)}{h} 
+  \lim_{h \to 0} \frac{[f + g](x_0 + h) - [f + g](x_0)}{h}
   &= \lim_{h \to 0} \left[ \frac{1}{h} \cdot [f(x_0+h) + g(x_0 + h) - f(x_0) - g(x_0)] \right] \\
   &= \lim_{h \to 0} \left[ \frac{1}{h} \cdot [f(x_0 + h) - f(x_0) + g(x_0 + h) - g(x_0)] \right] \\
   &= \lim_{h \to 0} \left[ \frac{f(x_0 + h) - f(x_0)}{h} + \frac{g(x_0 + h) - g(x_0)}{h} \right] \\
@@ -1751,25 +1772,25 @@ Se $I$ è un intervallo qualsiasi, $I \sube \mathbb{R}$ e $f \colon I \to \mathb
 _Verrà dimostrata solo la crescenza, la decrescenza è analoga._
 
 - $\implies$) $f$ crescente $\iff x_1 < x_2 \implies f(x_1) \le f(x_2) \quad x_1, x_2 \in I$
-  
+
   $$
   f'_+(x_0) = \lim_{h \to 0^+} \frac{f(x_0 + h) - f(x_0)}{h} = \frac ++ = + \\
   f'_-(x_0) = \lim_{h \to 0^-} \frac{f(x_0 + h) - f(x_0)}{h} = \frac ++ = +
   $$
 
   Per il teorema di permanenza del segno allora $f'(x_0) > 0$
+
 - $\impliedby$) $f'(x_0) > 0 \quad \forall x \in I$ allora $\forall x_1, x_2 \in I \quad x_1 < x_2$,
-  
+
   $$
   \frac{f(x_2) - f(x_1)}{x_2 - x_1} \implies f(x_2) - f(x_1) = f'(c)(x_2 - x_1)
   $$
 
   Questo perchè $f$ è contnua da $x_1$ a $x_2$ (infatti $(x_1, x_2) \sube I$) ed è derivabile per lo stesso motivo.
   Per il teorema di Lagrange, $\exists c \in [x_1, x_2] \colon \frac{f(x_2) - f(x_1)}{x_2 - x_1} = f'(c)$ quindi
-
   - $f'(c) > 0$ per ipotesi (infatti $f'(x) > 0$)
   - $x_2 - x_1 > 0$
-  
+
   da cui $f(x_2) - f(x_1) \ge 0 \implies f$ è crescente
 
 ### 6.12 Teorema del tappabuchi
@@ -1805,7 +1826,7 @@ _In generale, una curva è convessa se sta sotto il segmento ed è concava se st
 Se $f$ è concava o convessa in $I$ allora si può dimostrare che $f$ è continua in $I$ salvo al più agli estremi.
 
 - $f$ convessa $\iff f'$ crescente $\iff f'' > 0$ (se derivabile 2 volte)
-- $f$ concava $\iff f'$ decrescente $\iff f'' < 0$ (se derivabile 2 volte) 
+- $f$ concava $\iff f'$ decrescente $\iff f'' < 0$ (se derivabile 2 volte)
 
 - Se $f'' > 0$ e $f' = 0$ ho un massimo
 - Se $f'' < 0$ e $f' = 0$ ho un minimo
@@ -1948,7 +1969,7 @@ Se $f$ è integrabile su $[a, b]$ allora si dice che $f \in \mathcal{R}[a, b]$
 2.  Se $f \in \mathcal{C}(a, b]$ ed esiste finito $\lim_{x \to a^+} f(x)$ allora $f \in \mathcal{R}[a, b]$
 3.  Se $f$ monotona su $[a, b]$ allora $f \in \mathcal{R}[a, b]$
 4.  Se $f$ ha discontinuità in $x_0 \in (a, b)$ allora $f \in \mathcal{R}[a, b]$
-5.  Se $f \in \mathcal{C}[a, b]$ e $g \in \mathcal{C}[b, c]$ e 
+5.  Se $f \in \mathcal{C}[a, b]$ e $g \in \mathcal{C}[b, c]$ e
     $$
     h(x) = \begin{cases}
       f(x) \quad & a \le x < b \\
@@ -1968,13 +1989,13 @@ Funziona allo stesso modo col volume del solido ottenuto ruotando la curva attor
 
 #### Linearità
 
-Se $f, g \in \mathcal{R}[a, b]$ allora $(\alpha f + \beta g) \in \mathcal{R}[a, b]$ e 
+Se $f, g \in \mathcal{R}[a, b]$ allora $(\alpha f + \beta g) \in \mathcal{R}[a, b]$ e
 
 $$
 \int_a^b \left[ \alpha f(x) + \beta g(x) \right] \, dx = \alpha \int_a^b f(x) \, dx + \beta \int_a^b g(x) \, dx
 $$
 
-infatti 
+infatti
 
 $$
 \frac{b - a}{n} \sum [\alpha f(t_i) + \beta g(t_i)]
@@ -1984,7 +2005,7 @@ converge.
 
 #### Additività
 
-Se $f \in \mathcal{R}[a, b]$ e $f \in \mathcal{R}[b, c]$ allora $f \in \mathcal{R}[a, c]$ e 
+Se $f \in \mathcal{R}[a, b]$ e $f \in \mathcal{R}[b, c]$ allora $f \in \mathcal{R}[a, c]$ e
 
 $$
 \int_a^b f(x) \, dx + \int_b^c f(x)\, dx = \int_a^c f(x) \, dx \\
@@ -2009,7 +2030,7 @@ $$
 
 ### 8.4 Media integrale
 
-Se $f \in \mathcal{R}[a, b]$ la media integrale di $f$ su $[a, b]$ è 
+Se $f \in \mathcal{R}[a, b]$ la media integrale di $f$ su $[a, b]$ è
 
 $$
 M_f = \frac{1}{b - a} \int_a^b f(x) \, dx
@@ -2057,7 +2078,7 @@ $$
 
 $$
 \begin{align*}
-  G(b) - G(a) = G(x_n) - G(x_0) 
+  G(b) - G(a) = G(x_n) - G(x_0)
   &= (G(x_n) - G(x_{n - 1})) + (G(x_{n - 1}) - G(x_{n - 2})) + \dots + (G(x_1) - G(x_0)) \\
   &= \sum_{i = 1}^n [G(x_i) + G(x_{i - 1})] = \sum_{i = 1}^{n} G(t_i)(x_i - x_{i - 1}) \underset{n \to \infty}{\longrightarrow} \int_a^b f(x) \, dx
 \end{align*}
@@ -2177,7 +2198,7 @@ $$
 
 Nel primo passaggio ho trovato che il limite del numeratore del rapporto incrementale è pari all'integrale (che poi ho visto essere limitata).
 
-Nella seconda parte noto che il rapporto incrementale è scrivibile sotto forma 
+Nella seconda parte noto che il rapporto incrementale è scrivibile sotto forma
 
 #### E se la $x$ nell'integrale fosse $f(x)$?
 
@@ -2197,7 +2218,7 @@ Sia $F(x) = \int_{a(x)}^{b(x)} g(t) \, dt$ e $G$ primitiva di $g$ allora
 
 $$
 \begin{align*}
-  F(x) &= \int_{a(x)}^{b(x)} g(t) \, dt 
+  F(x) &= \int_{a(x)}^{b(x)} g(t) \, dt
   = [G(x)]_{a(x)}^{b(x)}
   = G(b(x)) - G(a(x)) \\
   \implies F'(x) &= G'(b(x)) \cdot b'(x) - G'(a(x)) \cdot a'(x) \\
@@ -2243,7 +2264,7 @@ Siano $f(x), g(x) > 0$ e $f(x) \le g(x) \quad \forall x \in [a, b]$ allora
 
 - se $\int f(x)$ diverge allora anche $\int g(x)$ diverge
 - se $\int g(x)$ converge allora anche $\int f(x)$ converge
-  
+
 #### Criterio del confronoto asintotico
 
 Siano $f(x), g(x) > 0$ e $f(x) \underset{x \to \infty}{\sim} g(x)$ allora entrambi gli integrali hanno lo stesso carattere (entrambi convergono o entrambi divergono)

@@ -1,8 +1,11 @@
 ---
 title: "Meccanica"
-author: 
-- "Niccolò Papini"
+description: "Appunti del corso di Meccanica per Ingegneria Informatica"
+authors:
+  - "Niccolò Papini"
+slug: "meccanica-per-ingegneria-informatica"
 ---
+
 # Introduzione
 
 Salve lettori, questa pagina è stata creata per riassumere o ampliare gli appunti che prendiamo a lezione, questi appunti possono servire per capire meglio l'argomento e non possono essere capiti completamente se non si seguono le lezioni. Se trovate errori o parti poco chiare vi prego di segnalarlo così provederemo a corregere. Buona lettura -NP
@@ -20,10 +23,12 @@ Nella cinematica del punto la cosa fondamentale da fare è:
 
 ![](assets/Capitolo_Uno/Cinematica_del_punto/Traiettoria.jpg)
 
-$$ \begin{cases}
+$$
+\begin{cases}
 y = f(x) \text{traiettoria} \\
 s = s(t) \text{legge oraria}
-\end{cases} $$
+\end{cases}
+$$
 
 L'ascissa curvilinea descrive lo spostamento nel tempo, o la $\color{red}{legge \ oraria}$
 
@@ -191,7 +196,7 @@ $\vec{w} = \dot{\theta} \vec{k} = w \vec{k} = w \overline{AB}$
 
 $\vec{V_B} = \vec{V_A} + \vec{w} \times (B - A) = \vec{V_A} + \vec{V_B}$
 
-### Accelerazione 
+### Accelerazione
 
 $\vec{a_B} = \vec{a_A} + \ddot{\theta}\overline{AB} e^{i(\theta + \frac{\pi}{2})} - \overline{AB} \dot{\theta^2}e^{i\theta}$
 
@@ -409,10 +414,10 @@ $n_v = 2*2 + 3*1 = 7 \implies n = 6 - 7 = 0$gdl, $n_v > n_0$
 - $n_v = n_0 \implies$ **Isostatica.**
 - $n_v > n_0 \implies$ **Iperstatica.**
 
- Anche il meccanismo si può identificare in due sottoclassi:
+Anche il meccanismo si può identificare in due sottoclassi:
 
- - Catena cinematica aperta: Ogni corpo (telaio incluso) è sempre connesso al corpo che lo precede o al corpo che lo segue.
- - Catena cinematica chiusa: Ogni corpo (telaio incluso) è sempre connesso al corpo che lo precede e al corpo che lo segue.
+- Catena cinematica aperta: Ogni corpo (telaio incluso) è sempre connesso al corpo che lo precede o al corpo che lo segue.
+- Catena cinematica chiusa: Ogni corpo (telaio incluso) è sempre connesso al corpo che lo precede e al corpo che lo segue.
 
 Su una catena chiusa ho un **equazione di chiusura,** derivandola rispetto al tempo posso avere: posizione, velocità e accelerazione di ogni corpo.
 
@@ -426,7 +431,7 @@ $(B - O) = (A - O) + (B - A)$
 
 N.B. Qui **NON** abbiamo alcuna equazone di chiusura perchè non ho corpi che chiudono il meccanismo.
 
-Qui procederemo con la solita procedura per trovare *posizione, velocità e accelerazione* quindi se non si vuole rivedere tutta la procedura skippate direttamente ai capitoli desiderati e avrete la formula.
+Qui procederemo con la solita procedura per trovare _posizione, velocità e accelerazione_ quindi se non si vuole rivedere tutta la procedura skippate direttamente ai capitoli desiderati e avrete la formula.
 
 Intato guardiamo tutto con la forma più elegante e bella che sia mai stata inventata, la forma complessa: $(B - O) = ae^{i\alpha} + be^{i(\alpha + \beta)}$
 
@@ -582,7 +587,7 @@ $\begin{cases}
 
 $sin (\beta) = - \frac{a}{b} sin (\alpha) = - \lambda sin (\alpha)$
 
-$cos^2(\beta) + sin^2(\beta) = 1 \implies cos (\beta) = + \sqrt{1 - \lambda^2 sin^2 (\alpha)}$ 
+$cos^2(\beta) + sin^2(\beta) = 1 \implies cos (\beta) = + \sqrt{1 - \lambda^2 sin^2 (\alpha)}$
 
 La radice dovrebbe avere $+$ e $-$ davanti ma essendo il coseno solo positivo il $-$ non lo consideriamo.
 
@@ -722,7 +727,7 @@ $T = \frac{F}{sin (\theta)} = 2F$
 
 **Condizione necessaria e sufficiente per l'equilibrio statico del corpo rigido:** La codizione NeS affinchè un corpo rigido si possa definire in equilibrio è che:
 
-1. La risultate delle forze attive e reattive, $\vec{R}$,  si annulli. $\vec{R} = 0 \implies \Sigma_{i = 1}^n \vec{F}_i = \vec{0}$
+1. La risultate delle forze attive e reattive, $\vec{R}$, si annulli. $\vec{R} = 0 \implies \Sigma_{i = 1}^n \vec{F}_i = \vec{0}$
 2. La risultate dei momenti di tutte le forze, $\vec{M}_O$, si annulli su in generico polo $O$. $\vec{M}_O = \vec{0} \implies \Sigma_{i = 1}^n (P_i - O) \times \vec{F}_i + \Sigma_{j = 1}^m \vec{C}_j = \vec{0}$.
 
 Con $\Sigma_{i = 1}^n (P_i - O) \times \vec{F}_i$ che indica il **momento di $F_i$** e $\Sigma_{j = 1}^m \vec{C}_j$ che indica le **coppie**.
@@ -752,7 +757,7 @@ $\vec{C} = F d \vec{k}$
 
 $\vec{M}_O = (P_1 - O) \times \vec{F}_1 + (P_2 - O) \times \vec{F}_2 = (P_1 - O) \times \vec{F}_1 - (P_2 - O) \times \vec{F}_1 = [(P_1 - O) - (P_2 - O)] \times \vec{F}_1 = (P_1 - P_2) \times \vec{F}_1 \implies F d \vec{k}$
 
-## 3.3  Forze interne
+## 3.3 Forze interne
 
 Forze che vengono analizzate unicamente quando si va ad osservare il singolo corpo e non compaiono quando si analizza il sistema nel suo intero
 
@@ -890,7 +895,8 @@ da qui capiamo che $J_G = m r_G^2$
 
 ![](assets/capitolo_quattro/4.1_momento_d_inerzia/corona.jpg)
 
-Sapendo che: 
+Sapendo che:
+
 - $A = \pi (R_e^2 - R_i^2)$
 - $V = Ah$
 - $m=\rho V$
@@ -955,7 +961,7 @@ indica la resistenza del corpo a muoversi, quindi quanta forza deve applicare a 
 
 $\Sigma_i \vec{F}_i + \vec{F}_{in} = \vec{0}$
 
-con: 
+con:
 
 - $\Sigma_i \vec{F}_i :$ Forze attive e reattive.
 
@@ -1052,13 +1058,13 @@ $\begin{cases}
   \vec{M_o} = 0 \implies M - J_G \ddot{\alpha} - mg \frac{l}{2} sin(\alpha) - m \ddot{\alpha} \frac{l^2}{4} = 0
  \end{cases}$
 
- $M = \ddot{\alpha} (J_G + m \frac{l^2}{4}) + m g \frac{l}{2} sin(\alpha) = 16,7 Nm$
+$M = \ddot{\alpha} (J_G + m \frac{l^2}{4}) + m g \frac{l}{2} sin(\alpha) = 16,7 Nm$
 
- $H_o = m (\ddot{\alpha} \frac{l}{2} cos(\alpha) - \dot{\alpha^2} \frac{l}{2} sin(\alpha)) = -10,9 N$
+$H_o = m (\ddot{\alpha} \frac{l}{2} cos(\alpha) - \dot{\alpha^2} \frac{l}{2} sin(\alpha)) = -10,9 N$
 
- $V_o = m (g + \dot{\alpha^2} \frac{l}{2} cos(\alpha) + \ddot{\alpha} \frac{l}{2} sin(\alpha)) = 83,7N$
+$V_o = m (g + \dot{\alpha^2} \frac{l}{2} cos(\alpha) + \ddot{\alpha} \frac{l}{2} sin(\alpha)) = 83,7N$
 
- ### Sistema corpi rigidi
+### Sistema corpi rigidi
 
 $\begin{cases}
   \vec{R_J} = \vec{0} \implies \Sigma_i \vec{F}_{i,J} + \vec{F}_{in,J} = 0\\
@@ -1154,7 +1160,7 @@ Nel caso dell'attrito noi sappiamo che se rispetta Coulomb allora l'attrito è s
 
 Con Coulomb $\implies |\vec{T}_1| = T = f_d N$
 
-da fisica sappiamo che: 
+da fisica sappiamo che:
 
 $f_d < f_s$
 
@@ -1529,7 +1535,6 @@ $P_1 = (C_m - J_m \dot{w}_m)w_m$
 Ora per gestire questi casi abbiamo 2 modi, uno veloce e uno potenzialmente triste:
 
 1. $\dot{w}_m$ noto $\implies$ conosco dunque $P_1:$
-
    - $P_1 > 0$ moto diretto
    - $P_1 < 0$ moto retrogrado
 
