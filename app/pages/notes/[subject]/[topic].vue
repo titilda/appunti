@@ -1,8 +1,8 @@
 <template>
     <UPage>
         <template #left>
-            <UPageAside class="px-4">
-                <UContentNavigation :navigation="navigation" />
+            <UPageAside>
+                <UContentNavigation :navigation="navigation" class="pl-4 pt-8" />
             </UPageAside>
         </template>
         <UPageSection>
@@ -56,6 +56,11 @@
                 </div>
             </UContainer>
         </UPageSection>
+        <template #right>
+            <UPageAside class="pr-4">
+                <UContentToc :title="note?.title" highlight :links="note?.body?.toc?.links" />
+            </UPageAside>
+        </template>
     </UPage>
 </template>
 
