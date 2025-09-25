@@ -12,4 +12,21 @@ export default defineNuxtConfig({
   },
 
   modules: ["@nuxt/content", "@nuxt/eslint", "@nuxt/image", "@nuxt/ui"],
+
+  content: {
+    build: {
+      markdown: {
+        remarkPlugins: {
+          "remark-math": {},
+        },
+        rehypePlugins: {
+          "rehype-katex": {
+            options: {
+              output: "mathml",
+            },
+          },
+        },
+      },
+    },
+  },
 });
