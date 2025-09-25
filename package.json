@@ -28,6 +28,7 @@
     "@iconify-json/heroicons": "^1.2.3",
     "@tailwindcss/typography": "^0.5.19",
     "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0"
+    "remark-math": "^6.0.0",
+    "sharp": "^0.34.4"
   }
 }
