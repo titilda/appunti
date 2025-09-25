@@ -13,6 +13,8 @@ export default defineNuxtConfig({
 
   modules: ["@nuxt/content", "@nuxt/eslint", "@nuxt/image", "@nuxt/ui"],
 
+  plugins: ["~/plugins/mermaid.client.ts"],
+
   content: {
     build: {
       markdown: {
