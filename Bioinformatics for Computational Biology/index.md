@@ -1,5 +1,5 @@
 ---
-title: "Bioinformatics Algorithms"
+title: "Bioinformatics for Computational Biology"
 author:
     - "Niccolò Papini"
 ---
