@@ -140,3 +140,68 @@ Testing if a schedule is conflict-serializable is done by checking if a _conflic
 2. Than create an arch between the transactions if there is a conflict
 
 Topologically sorting the graph allows to find the equivalent serial schedule of the graph.
+
+### Concurrency Control
+
+Since transactions arrive in real-time, the scheduler must dynamically decide the **execution order**, which might not match the **arrival order**.
+
+Concurrency control can be implemented with two techniques:
+
+- Pessimistic: assume conflicts will occur and use locks to prevent access to resources.
+- Optimistic: assume conflicts will not occur and use timestamps to decide the order of execution.
+
+#### Pessimistic concurrency control
+
+Pessimistic concurrency control assumes that conflicts will occur and takes steps to prevent them. This is done by using locks to control access to resources.
+
+There are two types of locks:
+
+- Read (Shared - S): Reading is not a real problem so more processes can read at the same time without problems. This uses a counter (semaphore). This will block writing operations.
+- Write (Exclusive - X): This blocks read and write as the transaction might abort.
+
+The lock system is implemented with a **Lock Table**, an hash table, where each resource (table, index, row, or column) has a queue of transactions that are holding or waiting for the lock.
+
+##### Two-phase Locking (2PL)
+
+This is not enough to avoid anomalies as after releasing a lock another transaction might access the resource, creating anomalies.
+
+Need to implement the **Two-phase Locking** (2PL) that separate the locking strategy into three phases.
+
+1. _Growing phase_: the transaction acquires locks without releasing any.
+2. _Plateau_: the transaction has obtained all the locks it needs and is neither acquiring nor releasing any locks.
+3. _Shrinking phase_: the transaction releases locks without obtaining any new ones.
+
+After the last phase the transaction must end with a commit or an abort.
+
+This scheduling strategy generate a new serializable class called **2PL** that is a subset of CSR.
+
+This class avoid anomalies related to synchronization, removing the _a-posteriori_ hypothesis.
+
+##### Strict Two-phase Locking (Strict 2PL)
+
+To avoid anomalies related to abort (dirty reads) we need to implement the **Strict 2PL** that release the locks only after a end-transaction statement.
+
+This introduce _long duration lock_ that will decrease performance, but remove the _commit-only_ hypothesis.
+
+##### Predicate Locking
+
+To avoid _phantom anomalies_, where a range query returns different results when re-executed, the locking must be extended to future data.
+
+This is done by introducing a **predicate lock** that lock an _access path_ defined by the WHERE clause, preventing other transactions from inserting, modifying or deleting data that would satisfy the predicate.
+
+##### SQL
+
+SQL introduce some isolation level for _read_ operations:
+
+- **Read Uncommitted**: doesn't use read lock and ignore locks from other transactions;
+- **Read Committed** (default): release read lock after reading, but read other transaction locks;
+- **Repeatable Lock**: use long duration lock;
+- **Serializable**: use predicate locks.
+
+A greater isolation level reduce the amount of anomalies, but introduce delays and deadlocks/starvation.
+
+To avoid waiting problems you could some kill mechanism:
+
+- Timeout
+- Deadlock prevention: heuristics
+- Deadlock detection: inspect the wait-for graph
