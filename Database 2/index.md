@@ -75,3 +75,68 @@ This anomaly occurs when a transaction $T_1$ reads a set of records that satisfy
 > 1. $r_1(\sigma_{x>5}(R))$: $T_1$ reads the set of records where x > 5
 > 2. $w_2(\text{insert }(x=6))$: $T_2$ inserts a new record with x = 6
 > 3. $r_1(\sigma_{x>5}(R))$: $T_1$ reads the set of records again and gets a different result
+
+### Scheduling
+
+The DBMS should be able to to **schedule** the operations of the transactions in a way that preserves the order of operations inside each transaction.
+
+The operations performed by a transaction $T_n$ on a data item $x$ are:
+
+- Read: $r_n(x)$
+- Write: $w_n(x)$
+
+The transactions can be scheduled in three ways:
+
+- **Serial**: all the operations of a transaction are executed before the operations of another transaction begin. It guarantees correctness but is inefficient as it doesn't exploit parallelism.
+- **Interleaved**: the operations of multiple transactions are mixed together, but the order of operations within each transaction is preserved. This can lead to anomalies if not managed properly.
+
+Assuming we have n transactions $T_1, T_2, \ldots, T_n$ where each transaction $T_i$ has $k_i$ operations, the number of distinct schedules (that respect the sequence of the operations) is:
+
+$$N_D = \dfrac{(\sum_{i=1}^n{k_i})!}{\prod_{i=1}^n{k_i!}}$$
+
+Within this only a fraction is serial:
+
+$$N_S = n!$$
+
+#### Serializable Schedule
+
+From all the possible schedule there are schedules that might encounter an issue due to the concurrency.
+
+We need to identify the **serializable schedules** that are the one that leave the database in the same state as _some_ serial schedule transaction.
+
+> Some assumptions are:
+>
+> - the transaction doesn't abort.
+> - the observation is a-posteriori
+
+#### View-Serializable Schedules (VSR)
+
+Two transactions are **view-equivalents** if they have the same:
+
+1. operations:
+2. reads operations (read the same data);
+3. final writes operations from the same transactions and the same data.
+
+A schedule is **view-serializable** if it's view-equivalents to a serial schedule and by being equivalent to a serial schedule there are no concurrency issue (within the assumptions).
+
+One way to find a serial schedule would be to enumerate all the possible serial schedule (factorial), making it computational intensive and not functional.
+
+To find a solution in a polynomial time we need to add some restriction to find a computable solution.
+
+#### Conflict Serializable Schedules (CSR)
+
+A conflict occurs if two different transactions perform operations on the same data and at least one of the operations is a write.
+
+- Read-Write conflict (R-W, W-R): This leads to _dirty read_ and _non-repeatable read_ anomalies.
+- Write-Write conflict (W-W): This leads to _lost update_ anomalies.
+
+Two schedules are **conflict-equivalent** (CSR) if all the conflicting pairs occurs in the same order. A schedule is **conflict-serializable** if it is conflict-equivalent to a serial schedule.
+
+CSR is a subset of VSR ($CSR \subseteq VSR$).
+
+Testing if a schedule is conflict-serializable is done by checking if a _conflict-graph_ is acyclic.
+
+1. Given a schedule group the operation by the resource used.
+2. Than create an arch between the transactions if there is a conflict
+
+Topologically sorting the graph allows to find the equivalent serial schedule of the graph.
