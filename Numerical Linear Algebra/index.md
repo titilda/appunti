@@ -298,7 +298,7 @@ $\nu$ always exists.
 $\mathscr{K}_\nu(A, y)$ is the smallest $A$-invariant subspace that contains $y$.
 
 $$
-\nu(y, A) = \min\{s | A^{-1}y \in \mathscr_s(A, y)\}
+\nu(y, A) = \min\{s | A^{-1}y \in \mathscr{K}_s(A, y)\}
 $$
 :::
 
