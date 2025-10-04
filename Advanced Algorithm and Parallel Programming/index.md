@@ -1,0 +1,68 @@
+---
+title: Advanced Algorithm and Parallel Programming (AAPP)
+author:
+  - "Andrea Lunghi"
+---
+
+## Random Access Machine (RAM)
+
+The _random access memory_ is a theoretical model of computation that is used to analyze sequential algorithms.
+
+- **Infinity Memory**: the machine has an infinite amount of memory cells;
+- **Arbitrary Integer Size**: each memory cell can store an integer of arbitrary size;
+- **Uniform Cost Model**: each basic operation (arithmetic, memory access, etc.) takes exactly one time unit.
+
+### RAM Complexity Analysis
+
+The complexity of an algorithm is measured by:
+
+- **Time complexity** ($T(n)$): number of steps to complete the algorithm with input size $n$.
+- **Space complexity** ($S(n)$): number of memory cells used during the execution of the algorithm with input size $n$.
+
+## Parallel Random Access Machine (PRAM)
+
+The _parallel random access machine_ is a theoretical model of computation that is used to analyze parallel algorithms.
+
+$$M' = \langle M, X, Y, A \rangle$$
+
+- $M$: is a set of RAM machines (processors) with the ability to recognize its own index;
+- $X$: is a set of input cells shared by all the processors;
+- $Y$: is a set of output cells shared by all the processors;
+- $A$: is a set of shared memory cells.
+
+Each time step, each processor can simultaneously perform:
+
+- Read from shared memory ($A, X$);
+- Perform an internal computation;
+- Write to shared memory ($A, Y$).
+
+### PRAM Classification
+
+PRAMs are classified on how they handle concurrent access to the shared memory.
+
+Read from the shared memory can happen in two ways:
+
+- **Exclusive Read** (ER): All processors can read _distinct_ memory cells at the same time.
+- **Concurrent Read** (CR): Two or more processors can access the _same_ memory cell at the same time.
+
+Write in the shared memory can happen in two ways:
+
+- **Exclusive Write** (EW): All processors can write in _distinct_ memory cells at the same time.
+- **Concurrent Write** (CW): Two or more processors can access the _same_ memory cell at the same time.
+  - **Priority**: each processor has a priority level. The highest is the one allow to write.
+  - **Common**: all processors must write the same value.
+  - **Random**: one of the processors is chosen randomly to write.
+
+The classification is done by combining the two types of access.
+
+#### PRAM Complexity
+
+The complexity of a PRAM algorithm is measured by:
+
+| Metric              | Symbol          | Formula                                             | Context / Meaning                                                                                                                          |
+| :------------------ | :-------------- | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Elapsed Time**    | $T_p(n)$        | -                                                   | The number of steps (time) to complete the algorithm of size $n$ using $p$ processors.                                                     |
+| **Sequential Time** | $T^*(n)$        | -                                                   | The time complexity of the **best known sequential algorithm** for the same problem. $\mathbf{T^*(n) \neq T_1(n)}$.                        |
+| **Speedup**         | $SU_p(n)$       | $\frac{T^*(n)}{T_p(n)}$                             | Measures how much **faster** the parallel algorithm is compared to the best sequential one. Ideally, $SU_p(n) \approx p$ (linear speedup). |
+| **Efficiency**      | $E_p(n)$        | $\frac{SU_p(n)}{p} = \frac{T^*(n)}{p \cdot T_p(n)}$ | Measures the **average utilization** of the $p$ processors. $0 \leq E_p(n) \leq 1$. An efficiency close to 1 is considered **optimal**.    |
+| **Cost / Work**     | $C_p(n) = W(n)$ | $p \cdot T_p(n)$                                    | The total number of operations performed by **all** $p$ processors during the execution.                                                   |
