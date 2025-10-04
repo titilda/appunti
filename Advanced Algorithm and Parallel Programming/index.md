@@ -55,7 +55,7 @@ Write in the shared memory can happen in two ways:
 
 The classification is done by combining the two types of access.
 
-#### PRAM Complexity
+### PRAM Complexity
 
 The complexity of a PRAM algorithm is measured by:
 
@@ -66,3 +66,53 @@ The complexity of a PRAM algorithm is measured by:
 | **Speedup**         | $SU_p(n)$       | $\frac{T^*(n)}{T_p(n)}$                             | Measures how much **faster** the parallel algorithm is compared to the best sequential one. Ideally, $SU_p(n) \approx p$ (linear speedup). |
 | **Efficiency**      | $E_p(n)$        | $\frac{SU_p(n)}{p} = \frac{T^*(n)}{p \cdot T_p(n)}$ | Measures the **average utilization** of the $p$ processors. $0 \leq E_p(n) \leq 1$. An efficiency close to 1 is considered **optimal**.    |
 | **Cost / Work**     | $C_p(n) = W(n)$ | $p \cdot T_p(n)$                                    | The total number of operations performed by **all** $p$ processors during the execution.                                                   |
+
+### Scaling
+
+The scaling is the ability of an algorithm to efficiently use an increasing number of processors.
+
+The scaling is the relationship between three parameters:
+
+- Problem Size ($n$): the size of the input data;
+- Number of Processors ($p$): the number of processors used in the computation;
+- Time ($T$): the time taken to complete the computation.
+
+The scaling is classified in two types:
+
+#### Strong Scaling
+
+In strong scaling the problem size ($n$) is kept constant while the number of processors ($p$) is increased. The goal is to reduce the time ($T$) taken to complete the computation.
+
+To analyze strong scaling, we use **Amdahl's Law**:
+
+$$SU_p(n) = \frac{1}{(1 - f) + \frac{f}{p}}$$
+
+- $f$: fraction of the algorithm that can be parallelized;
+- $1 - f$: fraction of the algorithm that is sequential (cannot be parallelized).
+
+Due to the sequential part, there is a limit to the speedup that can be achieved by adding more processors.
+
+$$\lim_{p \to \infty} SU_p(n) = \frac{1}{1 - f}$$
+
+This means that even with an infinite number of processors, the speedup is limited by the sequential portion of the algorithm.
+
+Ideally, for strong scaling, we want:
+
+$$T \propto \frac{1}{p}$$
+
+#### Weak Scaling
+
+In weak scaling, the problem size ($n$) is increased proportionally with the number of processors ($p$), keeping the workload per processor constant. The goal is to maintain a constant time ($T$) as both $n$ and $p$ increase.
+
+To analyze weak scaling, we use **Gustafson's Law**:
+
+$$SU_p(n) = s + P \cdot (1 - s)$$
+
+- $s$: fraction of the algorithm that is sequential (cannot be parallelized);
+- $1 - s$: fraction of the algorithm that can be parallelized.
+
+This law suggests that as we increase the number of processors, the speedup can grow linearly with $p$, assuming the parallelizable portion is significant.
+
+Ideally, for weak scaling, we want:
+
+$$T \propto P$$
