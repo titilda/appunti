@@ -161,6 +161,78 @@ This type of scaling is often analyzed using Amdahl's law.
 This type of scaling is often analyzed using Gustafson's law.
 :::
 
-Gustafson's law assumptions better fit the reality because, currently, there is an almost infinite amount of data that can be processed in countless ways just to produce and extract even more data. As computing power, nowdays, is relatively cheap, it is almost always possible to add more processors to get faster results. 
+Gustafson's law assumptions better fit the reality because, currently, there is an almost infinite amount of data that can be processed in countless ways just to produce and extract even more data. As computing power, nowdays, is relatively cheap, it is almost always possible to add more processors to get faster results.
+
+# Computer architectures
+
+A **computer program** is just a list of elementary instructions that are executed by the processor. A single instruction may take more than one clock cycle to be completely executed (expecially common in CISC processors) or, in some processors, multiple instructions ae executed at the same time (e.g. in Sony PlayStation2 EmotionEngine's Vector Units or in XDNA NPUs Compute Tiles). It may even happen that different parts of the CPU handle different phases of the execution of different instructions at the same time (pipelining). Instructions (and data) are stored in memory.
+
+## Processor architecture
+
+Nowdays, CPUs are really complex machines: you can have a _quick_ look at the evolution and the complete specification for almost every Intel CPU from the 1978 up to the present days in [this _handy_ 5198-pages-long manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+
+If you are interested, a good amount of documentation about the aforementioned Compute Tiles is availabe [here](https://docs.amd.com/r/en-US/am020-versal-aie-ml) (although at the time of writing I could not find the instruction set reference).
+
+A processor is generally composed by three functional blocks:
+
+- **Fetch/Decode Unit (FDU)**: determines what the processor must do;
+- **Arithmetic Logic Unit (ALU)**: actually executes the instructions;
+- **Execution Context (EC)**: contains the register files, the CPU FSM and all the state that has to be preserved on the CPU.
+
+Let's consider the simplest possible single-cycle CPU.
+
+A **single-cycle CPU** is the simplest kind of processor and it executes a single instruction per clock cycle (one clock cycle is the same as one machine cycle).
+
+Single-cycle CPUs are usually used for educational puproses only as they are less complex than other types of cpu but are also slower (this is because the clock speed must be lowered to give the slowest critical path enough slack time). In this section we do not care about splitting instructions in simpler steps for performance, we only consider parallelization.
+
+Single-cycle CPUs are usually paired with pipelines because it is almost impossible to read from memory, perform a computation step and then write back to memory all in a single cycle.
+
+The **Program Counter (PC)** register contains the address in memory of the next instruction to execute.
+
+How can the performance of the simple CPU be improved? Hardware designers can choose between plenty of different parallelization strategies.
+
+### Superscalar processors
+
+If an instruction $A$ uses the results of another instruction $B$, then $A$ is dependent on $B$ (this is called **data dependency**) so the processor cannot execute $A$ before or while executing $B$. This dependency is obviously a transitive property.
+
+It may happen that there is no dependency between two (or more)instructions so that they can be executed simoultaneously: this is exactly what superscalar processors do.
+
+Superscalar processors are composed of multiple FDUs, multiple ALUs (which all work on the same execution context) and an **Out-of-order** control logic that finds independent instuctions and feeds them into the different FDUs.
+
+It is possible that there is a long chain of dependent instructions: in that case, only one FDU and one ALU are occupied while the others are left waiting.
+
+### Multicore processors
+
+Plain superscalar processors used lots of silicon to make a single instruction stream run fast: big caches, out-of-order execution units, branch predictors and pre-fetchers would occupy a large die area compared to the actual processing power.
+
+What if, instead of using silicon to make _smarter_ processors, it was used to make _more_ processors, maybe on a single die? Meet **Multicore processors**.
+
+Multicore processors are, as the name implies, composed by multiple independent processor cores on a single die. Each core may be simpler and slower than a full-featured superscalar processor but there is a big potential for speedup and the entire chip is easier to design and manufacture in general.
+
+Of course, if one does not exploit the existence of multiple cores, silicon can be considered wasted and performance will be pretty bad.
+
+#### Hyper threading
+
+To exploit multicore processors, the programmer must create multiple threads that will run in parallel but what happens if the programmer creates more threads than the ones that are available in hardware? Multicore systems often come with a scheduling system that manages the execution of the threads, possibly interleaving them if the available hardware threads are not sufficient.
+
+The process of pausing one thread, saving its state and loading another thread is called **context switch** and it does consume time. To try save some of the time used to switch between different threads, multiple Execution Contexts (hardware threads) are placed on a single core to reduce the need to access memory to save the state of a thread.
+
+If the hardware threads are not sufficient, context switch will still need to access the memory.
+
+The first Intel CPU to support hyper threading was the **Pentium 4 HT** (where _HT_ stands exactly for Hyper Threading). The complete datasheet for the Pentium 4 HT can be found [here](https://download.intel.com/design/Pentium4/datashts/30056103.pdf). For more information on the HT technology, please refer to the [same _handy_ manual as before](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+
+### SIMD Processors
+
+**SIMD** is an acronym that stands for **Same Instructions Multiple Data**. SIMD processors are able to apply the same transformation to entire vectors of data. For this reason, SIMD instructions can also be called _vector instructions_.
+
+In the silicon, SIMD instructions are implemented by placing multiple ALUs in the same core.
+
+The **number of lanes** describes how many elements can be processed at the same time: as an example, to perform the elementwise sum of two vectors of 16 `int32_t`s values, you will need 16 32-bit lanes.
+
+Depending on the architecture, ALUs can be combined to process bigger data: instead of the 16 32-bit lanes from the example above, it may be possible to use the same ALUs to compute the elementwise sum between two vectors of 32 `int16_t`s (32 lanes) or between two vectors of 8 `int64_t`s (8 lanes).
+
+Intel's interpretation of SIMD instructions is composed of AVX (Advanced Vector eXtension) instructions.
+
+## Memory access
 
 _To be continued_
