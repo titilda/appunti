@@ -173,6 +173,8 @@ Nowdays, CPUs are really complex machines: you can have a _quick_ look at the ev
 
 If you are interested, a good amount of documentation about the aforementioned Compute Tiles is availabe [here](https://docs.amd.com/r/en-US/am020-versal-aie-ml) (although at the time of writing I could not find the instruction set reference).
 
+In the following paragraphs we will discuss about all the techniques used by hardware designers to get the most out of the silicon. While the techniques are presented separately, it is really common to find a combination of multiple of them actually being used in real processors.
+
 A processor is generally composed by three functional blocks:
 
 - **Fetch/Decode Unit (FDU)**: determines what the processor must do;
@@ -211,7 +213,7 @@ Multicore processors are, as the name implies, composed by multiple independent 
 
 Of course, if one does not exploit the existence of multiple cores, silicon can be considered wasted and performance will be pretty bad.
 
-#### Hyper threading
+#### Multithreading
 
 To exploit multicore processors, the programmer must create multiple threads that will run in parallel but what happens if the programmer creates more threads than the ones that are available in hardware? Multicore systems often come with a scheduling system that manages the execution of the threads, possibly interleaving them if the available hardware threads are not sufficient.
 
@@ -219,7 +221,7 @@ The process of pausing one thread, saving its state and loading another thread i
 
 If the hardware threads are not sufficient, context switch will still need to access the memory.
 
-The first Intel CPU to support hyper threading was the **Pentium 4 HT** (where _HT_ stands exactly for Hyper Threading). The complete datasheet for the Pentium 4 HT can be found [here](https://download.intel.com/design/Pentium4/datashts/30056103.pdf). For more information on the HT technology, please refer to the [same _handy_ manual as before](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+Multithreading also helps masking the issues caused by the memory latency as described in [this section](#multithreading-to-mask-latencies).
 
 ### SIMD Processors
 
@@ -233,6 +235,52 @@ Depending on the architecture, ALUs can be combined to process bigger data: inst
 
 Intel's interpretation of SIMD instructions is composed of AVX (Advanced Vector eXtension) instructions.
 
+#### Conditional execution
+
+It is possible that not all the elements in a vector need to be processed in the same way: branching (i.e. `if-else`) is used. In this case, the condition is applied to each element in the vector and a mask is produced containing the result of the comparisons.
+
+After the mask has been produced, all the branches are executed and, according to the mask, each result can be saved or discarded.
+
+This means that it may happen that not all the results are used so the ALU work is wasted. This decreases efficiency by a lot.
+
+**Coherency** is the property of a program where the same instruction sequence applies to all the elements to be processed (i.e. if all the elements are processed by the same code path). Coherency is necessary only if all the threads must eecute the same instruction at the same time (like in CUDA).
+
 ## Memory access
+
+We have quickly discussed how parallelism can be achieved in a single processor but instructions and data is stored in memory: the most powerful processor cannot do anything if the memory is slow.
+
+The memory is just an array of bytes indexed with incremental addresses.
+
+Memories require time to read/save a value: that time is called **Memory access latency**. [Here](https://www.alldatasheet.com/datasheet-pdf/download/152881/ETC1/HY6116AP.html) you can find the datasheet (which also includes timing information) for a very old memory chip: it is simple enough to be understood without any special knowledge.
+
+High memory latencies forces the processor to remain idle (_stalls_) waiting for the requested data/instructions. Hardware developers adopt multiple strategies (or a combination of them) to minimize this problem:
+
+- caches (developers may place fast caches close to the processor);
+- prefetching (branch prediction logic also try to prefetch instructions and data that will probably be used in the future so that the processor does not need to wait for them);
+- same-core multithreading (while one thread is waiting for data, another uses the ALUs; programs with more arithmetic per memory access needs less threads to hide the latency).
+
+While those strategies are extensively used in basically any system, there exist also some exotic architectures that are designed explicitly to not make use of any of them: XDNA NPUs are an an example.
+
+In XDNA NPUs, each Compute Tile have plenty of vector registers and a dedicated L1 memory containing instructions and data. Each tile can read/write directly from/to the neighbor tiles' memories. Compute Tiles are grouped in columns, each column has also a big Memory Tile (L2 memory). Communication between tiles is scheduled at compile time and is synchronized using hardware locks. There is no caching or prefetching: data is always where it is expected to be and execution time is always predictable (no cache misses).
+
+### Multithreading to mask latencies
+
+A multi threaded processor can hide the memory latencies by performing arithmetic from other threads while one thread is waiting for the memory. Programs that needs to do more arithmetic operations per memory access need fewer threads to completely mask stalls due to memory latency.
+
+As said before, to implement hardware support for multithreading, multiple Execution Contexts must be placed in the processor. There are two main types of multithreading that can be implemented in hardware: _Interleaved multithreading_ and _Simultaneous multithreading_.
+
+#### Interleaved multithreading
+
+With **Interleaved multithreading**, at the beginning of each time interval, the core decides what thread to run, giving it access to all the ALUs.
+
+Interleaved multithreading can be **coarse** (context switch happens only on long stalls, loke memory stalls) of **fine** (constext switch may happen up to every clock cycle, maximum efficiency).
+
+#### Simultaneous multithreading (SMT)
+
+With **Simultaneous multithreading**, at the beginning of each time interval, the core assigns the ALUs to instructions from different threads (e.g. Intel Hyper threading).
+
+The first Intel CPU to support hyper threading was the **Pentium 4 HT** (where _HT_ stands exactly for Hyper Threading). The complete datasheet for the Pentium 4 HT can be found [here](https://download.intel.com/design/Pentium4/datashts/30056103.pdf). For more information on the HT technology, please refer to the [same _handy_ manual as before](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+
+With SMT, threads run when there are resources assigned to them.
 
 _To be continued_
