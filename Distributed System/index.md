@@ -135,3 +135,44 @@ The server performs the computation and returns only the result to the client (_
 ##### Mobile Agent
 
 A process, including both its code and its complete execution state (data, program counter, stack), is suspended, migrated to a new machine, and then resumed (_Strong Mobility_).
+
+### Interactions
+
+The behavior of distributed system is determined by a **distributed algorithm**: an algorithm executed collaboratively across multiple, independent machines. Due to the distribution, the algorithm must handle _communication_, _synchronization_, and _fault tolerance_.
+
+A critical component of the performance and behavior of a distributed algorithm is the **time**: speed of the processes, the performance of the communication channel, and the _clock drift_ (the time difference between the different machines) rates between machines.
+
+There are two types of distributed systems based on time:
+
+- **Asynchronous**: there are _no bounds_ for the time components. This is the most realistic model, but it's hard to design algorithms for it.
+- **Synchronous**: each component has a _known bound_ for the time. This is an idealized model that is easier to design algorithms for.
+
+> **Pepperland Example**
+>
+> There are two generals on top of two hills. They need to sync who will lead an assault and when to start it. They can communicate on a reliable channel.
+>
+> To choose the leader they could both choose a random number, the bigger on win.
+>
+> In a async system is impossible to choose a time to charge as there is no bound on the time. One general could send a message to the other, but there is no guarantee that the message will arrive in a specific time. The other general could wait for the message, but there is no guarantee that it will arrive. The only solution is to charge immediately, but this could lead to a failure if the other general doesn't charge at the same time.
+
+### Failures
+
+In a distributed system, the key advantage is that failures are partial (one component fails, not the whole system), and the goal is to mask these failures from the client, achieving fault tolerance.
+
+There are different types of failures:
+
+- **Omission Failure**: A component simply fails to perform an action it was supposed to:
+  - _Process_: A process crash or halt and doesn't execute any operation and become _silent_;
+  - _channel_: A message is lost and never received (or never sent).
+- **Byzantine Failures** (Arbitrary failure): These are hard to detect, if there is an error it might be detected with an omission
+  - _Process_: The process executes an incorrect or unintended program. (e.g. memory failure that change the stack pointer, or compromised by a virus).
+  - _channel_: Messages are corrupted, duplicated, fabricated.
+- **Timing Failure**: Are only relevant in synchronous systems and happens when the time bound are violated.
+
+#### Failure Detection
+
+To detect a failure, a process can send a _heartbeat_ message to another process. If the message is not received within a certain time, the process is considered failed.
+
+In an asynchronous system, it's impossible to distinguish between a slow process and a failed process. To mitigate this, a _timeout_ can be used, but it can lead to false positives.
+
+The same happens for unreliable channels, where a message can be lost or delayed, making hard to distinguish between a failed process and a lost message.
