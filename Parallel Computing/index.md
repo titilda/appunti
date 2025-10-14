@@ -167,6 +167,12 @@ Gustafson's law assumptions better fit the reality because, currently, there is 
 
 A **computer program** is just a list of elementary instructions that are executed by the processor. A single instruction may take more than one clock cycle to be completely executed (expecially common in CISC processors) or, in some processors, multiple instructions ae executed at the same time (e.g. in Sony PlayStation2 EmotionEngine's Vector Units or in XDNA NPUs Compute Tiles). It may even happen that different parts of the CPU handle different phases of the execution of different instructions at the same time (pipelining). Instructions (and data) are stored in memory.
 
+As we will see in the following sections, the three key point to make an application that will efficiently make use of all the resources provided, are:
+
+1. have enough data to feed into the parallel processors;
+2. group similar elaborations with SIMD;
+3. create more threads than the ones that could be supported by the hardware to mask latencies.
+
 ## Processor architecture
 
 Nowdays, CPUs are really complex machines: you can have a _quick_ look at the evolution and the complete specification for almost every Intel CPU from the 1978 up to the present days in [this _handy_ 5198-pages-long manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
@@ -279,8 +285,20 @@ Interleaved multithreading can be **coarse** (context switch happens only on lon
 
 With **Simultaneous multithreading**, at the beginning of each time interval, the core assigns the ALUs to instructions from different threads (e.g. Intel Hyper threading).
 
-The first Intel CPU to support hyper threading was the **Pentium 4 HT** (where _HT_ stands exactly for Hyper Threading). The complete datasheet for the Pentium 4 HT can be found [here](https://download.intel.com/design/Pentium4/datashts/30056103.pdf). For more information on the HT technology, please refer to the [same _handy_ manual as before](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).
+![The first Intel CPU to support hyper threading was the **Pentium 4 HT** (where _HT_ stands exactly for Hyper Threading). The complete datasheet for the Pentium 4 HT can be found [here](https://download.intel.com/design/Pentium4/datashts/30056103.pdf). For more information on the HT technology, please refer to the [same _handy_ manual as before](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).](assets/pentium4ht.png)
 
 With SMT, threads run when there are resources assigned to them.
+
+### Memory bandwidth
+
+The term **Memory Bandwidth** refers to the rate at which the memory can feed data into the processor. It is measured in transfer units per unit of time. Another important paramenter is the **Latency** that is the time it is spent by the CPU while waiting for an answer from the memory.
+
+If a given computation is simple enough (or if the processor is powerful enough or if the memory is slow enough), the computation is called **Bandwidth Limited**. This means that the memory is not able to feed data into the processor fast enough to keep it occupied all the time.
+
+To overcome this problem, the programmer musst write the parallel program in such a way that memory access is infrequent and well planned. With powerful processors, arithmetic computation is free compared to memory access so computing the same value every time it needs to be used may be (and usually is) faster than computing it once and retrieving it every time from memory.
+
+## Communication between threads
+
+There are three main ways in which threads can communicate, each one with their advantages and disadvantages: **Shared Memory**, **Message passing** and **Data Parallel**.
 
 _To be continued_
