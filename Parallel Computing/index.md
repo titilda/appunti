@@ -285,7 +285,7 @@ Interleaved multithreading can be **coarse** (context switch happens only on lon
 
 With **Simultaneous multithreading**, at the beginning of each time interval, the core assigns the ALUs to instructions from different threads (e.g. Intel Hyper threading).
 
-![The first Intel CPU to support hyper threading was the **Pentium 4 HT** (where _HT_ stands exactly for Hyper Threading). The complete datasheet for the Pentium 4 HT can be found [here](https://download.intel.com/design/Pentium4/datashts/30056103.pdf). For more information on the HT technology, please refer to the [same _handy_ manual as before](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html).](assets/pentium4ht.png)
+![The first Intel CPU to support hyper threading was the **Pentium 4 HT** (where _HT_ stands exactly for Hyper Threading). The complete datasheet for the Pentium 4 HT can be found [here](https://download.intel.com/design/Pentium4/datashts/30056103.pdf). For more information on the HT technology, please refer to the [same _handy_ manual as before](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html). Photo from Author.](assets/pentium4ht.png)
 
 With SMT, threads run when there are resources assigned to them.
 
@@ -299,6 +299,103 @@ To overcome this problem, the programmer musst write the parallel program in suc
 
 ## Communication between threads
 
-There are three main ways in which threads can communicate, each one with their advantages and disadvantages: **Shared Memory**, **Message passing** and **Data Parallel**.
+There are three main ways in which threads can communicate (a.k.a. **Programming Model**s), each one with their advantages and disadvantages: **Shared Memory**, **Message Passing** and **Data Parallel**.
+
+With shared memory, all the threads can access the same memory space: every thread can _peek_ and _poke_ at every cell location at any time. The threads must be synchronized using **locks** and **atomic instructions** to prevent data races.
+
+In hardware, the shared memory model is implemented using some sort of interconnect that can assume the form of a **shared bus**, a **crossbar** or a **multistage network**.
+
+With message passing, threads communicate using only `send` and `receive` primitives. Message passing is simpler than shared memory and it is widely used to connect the multiple machines in a cluster.
+
+The data parallel model is very similar to SIMD: it consists in using a set of primitive (`map`, `reduce`, `scan`, `shift`, `gather`, `scatter`, `filter`, ...) that applies the same operation on all the elements of a collection.
+
+## GPU Architecture
+
+GPUs were once designed and used to actually process graphics. Graphics were (and still are) processed by shaders and undergo lots of parallelizable operations (mostly matrix-vector multiplications and pixel-wise operations). In 2004, someone at Stanford noticed that telling GPUs something on the line of "_Heyyy, those are pixels, don't worry. Can you process those pixels for me, please?_" while feeding actual data to be processed into the GPU would actually work. Three years later, in 2007, the guy down below decided that selling GPUs built specifically to be used as a general purpose processor without any workaround would also be a good idea. Boy was he right!
+
+![Jen-Hsun Huang, CEO at NVIDIA. Image from Wikipedia.](https://upload.wikimedia.org/wikipedia/commons/0/05/JensenHuangSC18.jpg)
+
+In this section, we'll analyze only CUDA compatible architectures (i.e. 99% NVIDIA GPUs, 1% brands that you'll ever hear once in the news announced as _The company that will single handedly stop NVIDIA domination_ before them ending up forever _into the shadow realm_).
+
+The first CUDA compatible (read that as "specifically built not only for graphics") GPU were the one built following the **Tesla** Architecture.
+
+![G210-205-A2 - One of the Tesla processor mounted on an NVIDIA GT210. Photo by author.](assets/tesla.jpg)
+
+CUDA compatible GPUs are built following a hierarchical structure: hardware-wise, each graphic processor is composed by multiple **Streaming Multiprocessor**s (SMs).
+
+One SM is composed of a **Warp Selector** (combined with an  FDU), multiple rows of a number of **Functional Units** (that are, more or less, ALUs) (each row having a dedicated **Load/Store Unit** (LSU) and an optional **Tensor Core Unit**), a number of **warp**s and an L1 memory serving both as cache and as shared memory.
+
+A warp is a big register file containing the execution context and all the registers needed by all the threads of a group (usually 32). Registers are really scarce: if a thread needs more registers than the ones available, **register spilling** will happen and performance will worsen noticeably.
+
+All threads shares the same global memory (the _VRAM_) but accessing it is orders of magnitude slower than using cache, registers or shared memory.
+
+A hierarchical structure is followed also thread-wise: threads are grouped into **block**s (in a one-, two-, or even three-dimensional fashion). The **grid** contains all the blocks (also in a one-, two-, or even three-dimensional fashion). Threads in a block are split in warps (that correspond to the _hardware_ warps).
+
+Each thread in a warp shares the same PC register so they all execute the same instruction at the same time (control divergence may occour and it is handled as described in [this paragraph](#conditional-execution)).
+
+Each SM is capable of running one warp at a time (except for newer GPUs that has multiple SM (called _sub cores_) in each SM). As long as there is enough space in the execution context storage and in the shared memory, multiple blocks can be assigned to a single SM. Whenever a block is complete, the resources are assigned to another block.
+
+Each thread in the same block can also access the same shared memory (placed in the L1 memory). Threads in the same block can wait for each other using the `__syncthreads()` primitive (usually used after writes in shared memory to make sure that all the threads have written their result before it can be read, it makes a thread stay idle until all the threads have reached their next `__syncthreads()`).
+
+To achieve a "wait for all blocks" effect, the kernel must be split into multiple ones (that will be called in sequence): the cuts have to be placed wherever synchronization between blocks is required (synchronization happens using writes to the global memory).
+
+Atomic operations may be used to achieve atomic operations both on shared and global memory.
+
+Each block can be scheduled to run in no particular order, the same is true for the warps in a given block.
+
+The skeleton of a CUDA application consists of **host code** and **device code**. The former one usually allocates memory on the GPU, writes data on it, calls the kernels and retrieves the results, while the latter contains the kernels and other functions called by them. Both host and device code may live peacefully in the same file.
+
+GPU kernels are declared using the `__global__` attribute while functions called only by the kernels are declared using `__device__`.
+
+The programmer may choose how many threads and blocks to spawn in the GPU. The geometry of the grid should reflect the geometry of the problem to solve.
+
+::: {.callout .callout-example title="Grid geometry"}
+We know from before that blocks in the grid may be positioned with up to a three dimensional fashion. The same is true for threads in a block.
+
+The best way to use this multi-dimensionality is to instantiate threads and blocks to "cover" the input data.
+
+Take as an example the problem to process an image. A good way to exploit the multi-dimensionality of a grid is to make each thread process a single pixel.
+
+The blocks should be placed bi-dimensionally into the grid so that a single block will process a chunk of the image.
+
+Threads should be placed bi-dimensionally into each block so that each thread will compute a single pixel of the chunk covered by the block.
+:::
+
+Each thread knows its offset inside the block, the offset of its block inside the grid and the dimensions of the block(thus making it possible to compute its offset inside the grid). This information is contained into the `threadIdx`, `blockDim` and `blockIdx` structs.
+
+A barebone CUDA kernel looks like this:
+
+```cpp
+__global__ void kernel(/* parameters */) {
+    __shared__ int shared_memory[...];  // Declare shared memory area
+    int thread_id = threadIdx.x + threadIdx.y * blockDim.x + threadIdx.x * blockDim.y * blockDim.x;  // Thread ID inside a block
+
+    // Out of bounds checks are omitted here
+
+    // Read data from global memory
+
+    shared_memory[...] = ...;  // Writes to shared memory
+    
+    __syncthreads();
+
+    // Perform some other computation
+
+    // Write results to global memory
+}
+```
+
+and it is launced like this
+
+```cpp
+// Malloc and write data to GPU global memory
+
+dim3 blocks(...);
+dim3 threadsPerBlock(...);
+kernel<<<blocks, threadPerBlock>>>(/* parameters */)
+
+// Read results from GPU global memory
+```
+
+<!-- TODO: memory and data locality -->
 
 _To be continued_
