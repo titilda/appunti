@@ -285,7 +285,7 @@ Interleaved multithreading can be **coarse** (context switch happens only on lon
 
 With **Simultaneous multithreading**, at the beginning of each time interval, the core assigns the ALUs to instructions from different threads (e.g. Intel Hyper threading).
 
-![The first Intel CPU to support hyper threading was the **Pentium 4 HT** (where _HT_ stands exactly for Hyper Threading). The complete datasheet for the Pentium 4 HT can be found [here](https://download.intel.com/design/Pentium4/datashts/30056103.pdf). For more information on the HT technology, please refer to the [same _handy_ manual as before](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html). Photo from Author.](assets/pentium4ht.png)
+![The first Intel CPU to support hyper threading was the **Pentium 4 HT** (where _HT_ stands exactly for Hyper Threading). The complete datasheet for the Pentium 4 HT can be found [here](https://download.intel.com/design/Pentium4/datashts/30056103.pdf). For more information on the HT technology, please refer to the [same _handy_ manual as before](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html). Photo from author.](assets/pentium4ht.png)
 
 With SMT, threads run when there are resources assigned to them.
 
@@ -319,7 +319,7 @@ In this section, we'll analyze only CUDA compatible architectures (i.e. 99% NVID
 
 The first CUDA compatible (read that as "specifically built not only for graphics") GPU were the one built following the **Tesla** Architecture.
 
-![G210-205-A2 - One of the Tesla processor mounted on an NVIDIA GT210. Photo by author.](assets/tesla.jpg)
+![G210-205-A2 - One example of a Tesla processor mounted on an NVIDIA GT210. Photo by author.](assets/tesla.jpg)
 
 CUDA compatible GPUs are built following a hierarchical structure: hardware-wise, each graphic processor is composed by multiple **Streaming Multiprocessor**s (SMs).
 
