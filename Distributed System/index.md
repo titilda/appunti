@@ -228,3 +228,17 @@ This is done through two logics:
 - **Directory Service**: in system like _DCE RPC_, there is a directory service that store the mapping between the service name and the host/port.
 
 To conserve resources the server can be **Dynamically Activated** the server once a request arrive.
+
+#### Inter-Process communication (IPC)
+
+When two distinct process are on the same machine, it would be possible to use RPC to communicate, but it would be inefficient.
+
+Using a Lightweight RPC that use a shared memory accessible from the middleware.
+
+### Remote Method Invocation (RMI)
+
+**Remote Method Invocation** (RMI) is the object-oriented counterpart to RPC. It allows a process to invoke a method on a remote object residing in another process.
+
+The communication is done through method calls on remote objects (**Stub**) that acts as if they were local. This is done because it's not possible to pass objects by value between two different machines that might use different programming languages.
+
+In java RMI, as both the client and the server use the same language, it's possible to pass objects, but the code must be available or downloaded dynamically.
