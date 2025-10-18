@@ -564,7 +564,7 @@ A **Solution in the least square sense** for an overdetermined system is a vecto
 In other words, the solution in the least square sense for an overdetermined system is the one which minimized the error.This is a generalization of the previous concept of _solution_: for a _not-underdeterminate-nor-overdeterminate_ system, this definition still works and corresponds to the exact solution.
 :::
 
-An exact solution for a rectangular system $Ax = b$ can be found only if $b \in \operatorname{Range}(A)$. In general, the solution in the least square sense for a rectangular system can be found by imposing $\nabla\Phi(y) = 0$.
+An exact solution for a rectangular system $Ax = b$ can be found only if $b \in \operatorname{Range}(A)$. In general, the solution in the least square sense for a rectangular system can be found by imposing $\nabla\Phi(y) = 0$ (since there may be multiple solutions that satisfy this condition, we want the one that also minimized its norm).
 
 The rectangular system can be "squared" to get an equivalent system with the same solution:
 
@@ -597,6 +597,21 @@ $$
 $$
 :::
 
+## Singular Value Decomposition (SVD)
+
+If $A$ is full rank then the problem is **well posed** and the solution can be computed with the help of QR factorization. If $A$ is not full rank then if $x^*$ is a solution, $x^* + z$ (where $z \in \ker(A)$) is also a solution.
+
+SVD is the Swiss Knife of matrix decomposition and it is basically a miracle backed by a theorem proof. The main problem is that SVD is really expensive. SVD is based on the following two theorems.
+
+::: {.callout .callout-theorem title="Singular value decomposition"}
+Let $A \in \mathbb{R}^{m \times n}$ and suppose we know how to factorize $A = U \Sigma V^T$ then $x^* = A^\dagger b$ where $A^\dagger \overset{\Delta}{=} V \Sigma^\dagger U^T$ (called **pseudoinverse** of $A$) with $\Sigma^\dagger$ that follows from $\Sigma$.
+:::
+
+::: {.callout .callout-theorem title="Singular value decomposition"}
+Let $A \in \mathbb{R}^{m \times n}$ then there exists two orthogonal matrices $U$ ($m \times m$) and $V$ ($n \times n$) such that $\Sigma = U^T A V$ is diagonal with elements $\sigma_1, \sigma_2, \dots, \sigma_p, 0, \dots, 0$ (with $p = \min(m, n)$ and $\sigma_1 \ge \sigma_2 \ge \dots \ge \sigma_p$). $\sigma_i$ are called **singular values** of $A$.
+:::
+
+<!-- P4:25 -->
 
 
 _To be continued._
