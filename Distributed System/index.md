@@ -176,3 +176,55 @@ To detect a failure, a process can send a _heartbeat_ message to another process
 In an asynchronous system, it's impossible to distinguish between a slow process and a failed process. To mitigate this, a _timeout_ can be used, but it can lead to false positives.
 
 The same happens for unreliable channels, where a message can be lost or delayed, making hard to distinguish between a failed process and a lost message.
+
+## Communication
+
+Communication protocols define how processes in a distributed system exchange information.
+
+These protocols are primarily classified along two dimensions:
+
+- Time dependency: The client and server must be active at the same time (_Transient_) or not (_Persistent_);
+- Synchronization: The sender waits for the message to be sent, received, or processed (_Synchronous_) or not (_Asynchronous_).
+
+### Remote Procedure Call (RPC)
+
+**Remote Procedure Call** (RPC) is a communication abstraction that allows a program to execute a procedure or function in a different machine as if it were a local call (_Location Transparency_).
+
+The RPC is build upon a middleware layer that hides the network communication.
+
+This is done using a proxy called **Stub** that is responsible to:
+
+- Serialize structured data into a stream of bytes;
+- Marshall the data into a specific representation for the network;
+- Deserialize and unmarshall the data on the other side.
+
+The stubs are defined with an **Interface Definition Language** (IDL) that is language independent, allowing to have different languages between the caller and the callee.
+
+#### RPC Communication
+
+The communication is done by passing parameters to the remote procedure.
+
+The standard method is to pass parameters by value, as there is no shared memory between the two machines.
+
+If there is a need to pass parameters by reference, it's possible to simulate it using the _copy/restore_ method: the value is passed by value, but when the function ends, the return value of the parameters is cloned in the caller.
+
+The RPC communication is typically _synchronous_ (blocking), to mimic the local procedure call behavior, but it can be also:
+
+- _Asynchronous_: for void procedures, where the client doesn't wait for the server to process the request;
+- _Deferred_: the client receive a **Future** object and than continue execution and only wait for the result when it's needed.
+
+The communication can be optimize with two strategies:
+
+- **Batching**: wait for multiple requests to create a single package to improve bandwidth;
+- **Queuing**: store requests by the middleware and wait to send them if the destination is unreachable, improving resilience and persistency.
+
+#### RPC Middleware
+
+The client needs to locate the server that provide the requested service.
+
+This is done through two logics:
+
+- **PortMap**: in system like _Sun RPC_, each server register the services it provide with a portmap daemon that store the mapping between the service UUID and the host/port;
+- **Directory Service**: in system like _DCE RPC_, there is a directory service that store the mapping between the service name and the host/port.
+
+To conserve resources the server can be **Dynamically Activated** the server once a request arrive.
