@@ -477,7 +477,7 @@ It is possible to use the shift with the non inverted power method to find the e
 
 QR factorization is used when _all_ the eigenpairs are needed. The _full_ QR factorization consists in finding two matrices $Q \in \mathbb{R}^{m \times m}$ and $R \in \mathbb{R}^{m \times n}$ such that $Q$ is orthogonal and $R$ is upper trapeziodal.
 
-Once the two matrices are found, one can chop them to obtain $\hat Q \in \mathbb{R}^{m \times n}$ (obtained chopping the rightmost columns) and $\hat R \in \mathbb{R}?{n \times n}$ (obtained by chopping the lowest rows).
+Once the two matrices are found, one can chop them to obtain $\hat Q \in \mathbb{R}^{m \times n}$ (obtained chopping the rightmost columns) and $\hat R \in \mathbb{R}^{n \times n}$ (obtained by chopping the lowest rows): this is called **reduced QR factorization**.
 
 It holds that
 
@@ -551,5 +551,52 @@ $$
 Assuming that all the eigenvalues in modulo are isolated, then $A$ converges to an upper triangular matrix. The convergence speed increases with the "isolatedness" of the eigenvalues in modulo.
 
 The QR algorithm requires $O(n^3)$ operations per iteration. This number can decrease reducing $A$ to a similar Hessenberg matrix ($O(n^2)$) or by using shifts and deflations.
+
+# Overdetermined linear systems
+
+An **overdetermined system** can be expressed as $Ax = b$ where $A \in \mathbb{R}^{m \times n}$, $x \in \mathbb{R}^n$, $b \in \mathbb{R}^m$ and $m \gt \gt n$.
+
+In the case of overdetermined systems, in general a solution in the _conventional_ sense does not exists so we need to extend the concept of _solution_ to the _least square sense_.
+
+::: {.callout .callout-definition title="Solution in the leas square sense"}
+A **Solution in the least square sense** for an overdetermined system is a vector $x^* \in \mathbb{R}^n$ such that $\Phi(x^*) = \min_{y \in \mathbb{R}^n} \Phi(y)$ where $\Phi(y) = \|Ay - b\|_2^2$.
+
+In other words, the solution in the least square sense for an overdetermined system is the one which minimized the error.This is a generalization of the previous concept of _solution_: for a _not-underdeterminate-nor-overdeterminate_ system, this definition still works and corresponds to the exact solution.
+:::
+
+An exact solution for a rectangular system $Ax = b$ can be found only if $b \in \operatorname{Range}(A)$. In general, the solution in the least square sense for a rectangular system can be found by imposing $\nabla\Phi(y) = 0$.
+
+The rectangular system can be "squared" to get an equivalent system with the same solution:
+
+$$
+\Phi(y) = \|Ay - b\|_2^2 = (Ay - b)^T(Ay - b) = y^T A^T A y - 2y^T Ab + b^T b \\
+\nabla \Phi(y) = 2A^T A y - 2A^T b \overset{!}{=} 0
+$$
+
+From this, it follows that the solution in the least square sense for the initial system is also the exact solution for $A^T Ax = A^T b$ (system of normal equations) except that $K_2(A^T A) = [K_2(A)]^2$ so this is practically useless.
+
+We already briefly discussed about the reduced QR factorization: said factorization can also be used instead of the system of normal equations to approximate the solution in the least square sense.
+
+::: {.callout .callout-theorem title="Theorem"}
+Let $A \in \mathbb{R}^{m \times n}$ with $m \gt n$ and full-rank. Then the unique solution in the least square sense $x^*$ of $Ax^* = b$ is given by $$x^* = \hat R^{-1} \hat Q^T b$ (tat's easy to solve ar $\hat R$ is upper triangular) where $\hat Q$ and $\hat R$ comes from the reduced QR factorization of $A$. It is also true that $\Phi(x^*) = \sum\limits_{i = n+1}^{m}\left[(Q^Tb)_i\right]^2$.
+
+Proof follows.
+
+Assume $A$ is full rank. Since $A$ is full rank, there exists its QR decomposition. Since $Q$ is an orthogonal matrix, it preserves the scalar product (i.e. $\|Qz\|_2^2 = \|Q^Tz\|_2^2 = \|z\|_2^2$).
+
+This means that
+
+$$
+\|Ax = b\|_2^2 = \|Q^t(Ax - b)\|_2^2 = \|Q^T(QRx - b)\|_2^2 = \|Rx - Q^Tb\|_2^2
+$$
+
+Since $R$ is upper trapezoidal
+
+$$
+\|Ax - b\|_2^2 = \|Rx - Q^Tb\|_2^2 = \|\hat Rx  -\hat Q^Tb\|_2^2 + \sum_{i=n+1}^m \left[ (Q^Tb)_i \right]^2
+$$
+:::
+
+
 
 _To be continued._
