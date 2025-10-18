@@ -475,6 +475,81 @@ It is possible to use the shift with the non inverted power method to find the e
 
 ## QR factorization
 
-QR factorization is used when _all_ the eigenpairs are needed.
+QR factorization is used when _all_ the eigenpairs are needed. The _full_ QR factorization consists in finding two matrices $Q \in \mathbb{R}^{m \times m}$ and $R \in \mathbb{R}^{m \times n}$ such that $Q$ is orthogonal and $R$ is upper trapeziodal.
+
+Once the two matrices are found, one can chop them to obtain $\hat Q \in \mathbb{R}^{m \times n}$ (obtained chopping the rightmost columns) and $\hat R \in \mathbb{R}?{n \times n}$ (obtained by chopping the lowest rows).
+
+It holds that
+
+$$
+A = QR = \hat Q \hat R
+$$
+
+The QR algorithm is based on the **Gram-Schmidt orthogonalization**: let $A = [a_1 | a_2 | \dots | a_n]$, then
+
+- $$
+  w_j = a_j - \sum\limits_{k=1}^{j-1} \left(\overline q_k^Ta_j\right)q_k \quad
+  q_j = \frac{w_j}{\|w_j\|} \qquad \forall j
+  $$
+- $$
+  r_{ij} = \begin{cases}
+    \overline q_i^T a_j & i \ne j \\
+    \left\| a_j - \sum_{i=1}^{j-1}r_{ij} qi \right\| & i = j
+  \end{cases}
+  $$
+
+The existance and uniqueness of the QR factorization are guaranteed by the Gram-Schmidt algorithm.
+
+This algorithm become unstable very quickly due to rounding errors: to stop it from exploding, the $r$ update rule is modified as follows.
+
+$$
+r_{ij} = \begin{cases}
+  \overline q_i^T w_j & i \ne j \\
+  \|w_j\| & i = j
+\end{cases}
+$$
+
+To use the **QR algorithm** to actually compute all the eigenvalues, the Schur decomposition must be introduced.
+
+Let $A \in \mathbb{C}^{n \times n}$, then there exists a unitary matrix $U \in \mathbb{C}^{n \times n}$ such that $U^HAU = T$ where $T$ is upper triangulas and contains the eigenvalues of $A$ in its diagonal. This decomposition is called **Schur Decomposition**. The vectors $u_i$ that composes the $U$ matrix are called **Schur vectors**.
+
+From $U^HAU = T$ it follows that
+
+$$
+Au_k = \lambda_k u_k + \sum_{i=1}^{k-1} t_{ik} u_i \iff Au_k \in \operatorname{span}(u_1, u_2, \dots, u_k)
+$$
+
+This important property means that
+
+- $u_1$ is an eigenvector of $A$;
+- the first $k$ Schur vectors form an invariant subspace for $A$;
+- the Schur decomposition is not unique.
+
+Now that we know what the Schur decomposition is, we can now intriduce the basic **QR Algorithm**: an iterative method to find the Schur decomposition for a complex square matrix $A$.
+
+The update rule for the basic QR algorithm is as follows:
+
+$$
+Q^{(k)}, R^{(k)} \gets QR(A^{(k-1)}) \\
+A^{(k)} \gets R^{(k)} Q^{(k)} \\
+U^{(k)} = U^{(k-1)}Q^{(k)}
+$$
+
+After the _stopping criteria_ decides that it is time to stop, the algorithm returns $T = A^{(k)}$ and $U = U^{(k)}$ such that $A = UTU^H$.
+
+From the algorithm is follows that $A^(k)$ and $A^{(k-1)}$ are similar. **This relation is transitive**: from the algorithm we know that $A^{(k-1)} = Q^{(k)} R^{(k)}$ but $Q$ is orthogonal so $R^{(k)} = [Q^{(k)}]^H A^{(k)}$ but we also know that $A^{(k)} = R^{(k)} Q^{(k)}$ so
+
+$$
+\begin{align*}
+  A^{(k)} &= [Q^{(k)}]^H A^{(k-1)} Q^{(k)} \\
+  &= [Q^{(k)}]^H [Q^{(k-1)}]^H A^{(k-2)} Q^{(k-1)} Q^{(k)} \\
+  &= \dots \\
+  &= [Q^{(k)}]^H \dots [Q^{(1)}]^H A^{(0)} Q^{(1)} \dots Q^{(k)}
+\end{align*}
+$$
+
+Assuming that all the eigenvalues in modulo are isolated, then $A$ converges to an upper triangular matrix. The convergence speed increases with the "isolatedness" of the eigenvalues in modulo.
+
+The QR algorithm requires $O(n^3)$ operations per iteration. This number can decrease reducing $A$ to a similar Hessenberg matrix ($O(n^2)$) or by using shifts and deflations.
 
 _To be continued._
