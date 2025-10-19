@@ -611,7 +611,20 @@ Let $A \in \mathbb{R}^{m \times n}$ and suppose we know how to factorize $A = U 
 Let $A \in \mathbb{R}^{m \times n}$ then there exists two orthogonal matrices $U$ ($m \times m$) and $V$ ($n \times n$) such that $\Sigma = U^T A V$ is diagonal with elements $\sigma_1, \sigma_2, \dots, \sigma_p, 0, \dots, 0$ (with $p = \min(m, n)$ and $\sigma_1 \ge \sigma_2 \ge \dots \ge \sigma_p$). $\sigma_i$ are called **singular values** of $A$.
 :::
 
-<!-- P4:25 -->
+From the previous theorem, we know that $A = U \Sigma V^T \implies U^T A U = \Sigma \implies UU^T A VV^T = U \Sigma V^T$ and that $A^T = V \Sigma^T U^T$. From this we can deduce the first important property of the SVD: $\sigma_i = \sqrt{\lambda_i(A^T A)}$. This is because
 
+$$
+A^T A = V \Sigma U^T U \Sigma^T V^T = V (\Sigma^T \Sigma) V^T \implies \lambda_i(A^T A) = \lambda_i(V \Sigma^T \Sigma V^T) = \lambda_i(\Sigma^T \Sigma) = \left( \sigma_i(A) \right)^2
+$$
+
+::: {.callout .callout-note title="Complex SVD"} 
+The SVD works even with complex matrices using the Hermitian Transpose instead of the normal transpose operator.
+:::
+
+::: {.callout .callout-definition title="Pseudoinverse"}
+Let $A \in \mathbb{R}^{m \times n}$ with $U^T A V = \Sigma$ then the **pseudoinverse** of $A$ is $A^\dagger = V \Sigma^\dagger U^T$ where $\Sigma^\dagger = \operatorname{diag}\left( \frac{1}{\sigma_1}, \frac{1}{\sigma_2}, \dots, \frac{1}{\sigma_p}, 0, \dots, 0 \right)$
+
+Note that if $A$ is invertible then $A^{-1} = A^\dagger$.
+:::
 
 _To be continued._
