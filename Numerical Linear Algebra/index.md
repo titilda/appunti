@@ -627,4 +627,51 @@ Let $A \in \mathbb{R}^{m \times n}$ with $U^T A V = \Sigma$ then the **pseudoinv
 Note that if $A$ is invertible then $A^{-1} = A^\dagger$.
 :::
 
+# Multigrid Methods
+
+Let $A$ be a square matrix coming from the discretization of a partial differential equations. The size of the matrix comes directly from the number of tiles in which we split the system during the discretization.
+
+In this case, **multigrid method**s can be applied to get an approximation of the solution in the discrete points efficiently.
+
+Multigrid methods are scalable: the number of iterations required to solve the system _does not_ depend on the size of the system.
+
+We denote as $A_hx_h = b_h$ the system to solve at each iteration, where $h$ is the size of the discretization interval.
+
+For said system, we use $h$ as a subscript also for the exact solution, the error and the residue: $e_h^{(k)} = x_h - x_h^{(k)}$, $r_h^{(k)} = b_h - A_hx_h^{(k)}$, $A_he_h^{(k)} = r_h^{(k)}$.
+
+As thhe matrix $A_h$ comes from the discretization of a partial differential equation, we know that the error can be represented as a sum of sinusoidal components of different frequencies: iterative methods are usually really good at reducing high frequency components but are also really bad at reducong the low frequency ones. This means that after the first iterations, the decay speed of the error will start to decrease noticeably.
+
+Multigrids methods try to solve this problem by exploiting the fact that, changing the _sampling rate_ (read as "changing the $h$ subscript"), lower frequencies become high.
+
+A single multigrid iteration (denoted by $x_h^{(k+1)} = MG(x_h^{(k)}, b_h, \nu_1, \nu_2)$) is generally composed by 8 steps:
+
+1. Perform $\nu_1$ iteration of whathever iterative method is available on $A_h x_h = b_h$ using $x^{(k)}$ as the initial guess (**pre-smoothing step**); the obtained solution is put into $y_h^{(\nu_1)}$.
+2. Compute $r_h^{(\nu_1)} = b_h - A_h x_h^{(\nu_1)}$ (**fine grid residual**).
+3. Compute $r_{2h}^{(\nu_1)} = I_{h}^{2h}r_h^{(\nu_1)}$ (**restriction** of the fine grid resitual to a coarser grid one).
+4. Solve $A_{2h}e_{2h} = r_{2h}^{(\nu_1)}$ (direct solvers could also be used here as this is realistically a small system).
+5. Compute $e_h = I_{2h}^h e_h^{(\nu_1)}$ (**interpolation** of the coarse grid residual to a finer grid one).
+6. Compute $y_h^{(\nu_1 + 1)} = y_h^{(\nu_1)} + e_h$.
+7. Perform $\nu_2$ iterations of whatever iterative method is available on $A_h x_h = b_h$ using $y^{(\nu_1 + 1)}$ as the initial guess (**post-smoothing step**). The obtained solution is put into $y^{(\nu_1 + 1 + \nu_2)}$.
+8. Return $x_h^{(k+1)} \gets y_h^{(\nu_1 + 1 + \nu_2)}$
+
+Usually, no more than three pre/post-smoothing steps are necessary.
+
+Three things must be explained in order to understand the eight steps above: how to compute $A_{2h}$ and what are $I_{h}^{2h}$ and $I_{2h}^{h}$.
+
+The operator $I_h^{2h}$ is called **restriction operator** and operates on $I_{h}^{2h} : \mathscr{T}_h \to \mathscr{T}_{2h}$ where $\mathscr{T}_h$ denotes a grid with $h$-wide discretization intervals. This operator maps a vector of elements to another vector with less elements, increasing the discretization interval to make the new vector _occupy the same space_ as the old one. This operator can be seen as a vector _sampling_ operator.
+
+$I_{2h}^h$ is the exact opposite of the restriction operator and it is called **interpolation operator**. It operates on $I_{2h}^{h} : \mathscr{T}_{2h} \to \mathscr{T}_h$ and it just interpolates values on the old vector to fill-in the blanks in the longer new one.
+
+It is now possible to define how to compute $A_{2h}$: let $I_{h}^{2h} = c(I_{2h}^{h})^T$ (with $c \in \mathbb{R}$ that is used to _tame_ the operator in order to achieve consistency), then $A_{2h} = I_{h}^{2h} A_h I_{2h}^{h}$ (**Galerkin conditioning**).
+
+The above algorithm is used for the so-called **two grid scheme** where only 2 different granularities are used for the grid (the initial finer one and the other coarser one). It is possible to etend the algorithm to support  multiple levels of granularity by adding a parameter $j$ used to select the number of levels of granularity to traverse and modifying step 4 to "If $j$ is the coarsest level then solve $A_{2h} e_{2h} = r_{2h}^{(\nu_1)}$ otherwise compute $e_{2h} = MG(0, r_{2h}^{(\nu_1)}, \nu_1, \nu_2, j-1)$."
+
+With the modification just described, we obtain the **V-cycle** iteration scheme. By employing more complex logic in the recursion, we can get to **F-cycle** and **W-cycle**.
+
+No tail call optimization can be applied here: the entire state of each recursion call must be stored in memory: the storage cost is proportional to $\frac{2n^d}{1 - 2^{-d}}$, this means that, in storage terms, multigrids methods increase in efficiency with the dimensionality of the problem.
+
+Computationally-wise, V-cycle cost scales like $2^d$.
+
+Multigrid methods always converge.
+
 _To be continued._
