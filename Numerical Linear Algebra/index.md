@@ -14,6 +14,8 @@ The main objective on the **Numerical Linear Algebra** is to solve linear system
 
 To better understand this summary, it may be helpsul to read [Foncamenti di Calcolo Numerico](/Fondamenti%20di%20Calcolo%20Numerico/index.html), [Logica e Algebra](/Logica%20e%20Algebra/index.html) and [Geometria e Algebra Lineare](/Geometria%20e%20Algebra%20Lineare/index.html).
 
+To have hands-on practice on the topics of this subject, it it suggested to play around with MATLAB/Octave, Eigen and LIS. A rudimental LIS cheatsheet is avaliable [here](./lis.html).
+
 ## Notation and matrix overview
 
 In this course, everything belongs to the real space ($\mathbb{R}$, $\mathbb{R}^n$) unless otherwise specified.
