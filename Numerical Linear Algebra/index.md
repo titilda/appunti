@@ -674,4 +674,68 @@ Computationally-wise, V-cycle cost scales like $2^d$.
 
 Multigrid methods always converge.
 
+# Algebraic multigrid methods
+
+**Algebraic multigrid methods** are very similar to the normal multigrid methods except that we do not rely on the fact that we know the geometry of the problem. While with normal multigrid methods we use different-sized grids obtained by changing the _sampling rate_ of the function to sample, with purely algebraic methods, we go coarser and finer using pure math.
+
+The same three operations as in the normal method version needs to be redefined, the algorithm is the same.
+
+The coarsening of the $A$ matrix exploits the fact that (a) the matrix is usualy sparse (not a requirement, thought) and that (b) the matrix can be viewed as a wheighted adjancency matrix of a non directed graph (matrix is symmetric).
+
+::: {.callout .callout-definition title="Strong connection"}
+Given a treshold $\theta \in (0, 1)$, we say that two vertices $i$ and $j$ are **strongly connected** to each other if
+
+$$
+-a_{i,j} \ge \theta \max_{k \ne i}(-a_{i,k})
+$$
+:::
+
+Let $S_i$ be the set of vertices the $i$-th vector is connected to, the with $S$ is denoted the **strenght matrix** and contains the $S_i$ vector at the $i$-th row.
+
+The procedure to determine the coarser matrix is based on the classification of each vertex between _coarse_ and _fine_ using the $S$ matrix.
+
+The algorithm is articulated in 4 points:
+
+1. Choose a non categorized vertex $i$: this vertex is assigned to the C (coarse) category.
+2. All vertices strongly connected to $i$ are assigned to the F (fine) category.
+3. Choose another non categorized vertex that will be assigned to the C category, all the strongly connected vertices connected to it will be assigned to the F category.
+4. Procedure is repeated until all vertices are cetagorized.
+
+The "how to choose a vertex" depends on the algorithm used (e.g. C-AMG).
+
+For each vertex $i$, let:
+
+- $N_i = \left{ j \ne i : a_{i,j} \ne 0 \right}$: the set of vertices connected to $i$;
+- $C$, $F$: the set of categorized vertices as per above algorithm;
+- $C_i = C \cap N_i$: the set of C vertices strongly connected to $i$;
+- $C_i^S = C \cap S_i$;
+- $F_i^S = F \cap N_i$: the set of F vertices strongly connected to $i$;
+- $N_i^W = N_i \backslash (C_i^S \cup F_i^S)$: all vertices weakly connected to $i$;
+
+For what concerns the interpolation, all we want is a smooth error. This means that we want that
+
+$$
+Ae = 0 \iff a_{i,i}e_i + \sum_{j \in N_i} a_{i,j} e_j \simeq 0 \qquad i \in F
+$$
+
+We want to choose some weights $w_{i,j}$ such that
+
+$$
+e_i \simeq \sum_{j \in C} w_{i,j}e_j \qquad i \in F
+$$
+
+We can write the equations above as
+
+$$
+a_{i,i}e_i + \alpha \sum_{j \in C_i^S} a_{i,j}e_j = 0 \quad \alpha = \frac{\sum_{j \in N_i} a_{i,j}}{\sum_{j \in C_i^S} a_{i,j}}
+$$
+
+therefore
+
+$$
+w_{i,j} = \alpha \frac{s_{i,j}}{a_{i,i}} \qquad i \in F, j \in C_i^S
+$$
+
+The interpolation is not straightforward and standard, there are multiple variation of it but they wont be described here.
+
 _To be continued._
