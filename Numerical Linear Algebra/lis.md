@@ -14,9 +14,10 @@ All the executables used in this document are obtained from the compilation of t
 
 The following table lists all the executable and their respective sources:
 
-| Executable | Source |
-| ---------- | ------ |
-| `test1`    | `test1.c` |
+| Executable | Source     |
+| ---------- | ---------- |
+| `test1`    | `test1.c`  |
+| `etest1`   | `etest1.c` |
 
 To compile the sources, the following command was used:
 
@@ -41,6 +42,30 @@ Multiple optional options can be passed to the executable:
 | ------------------------------------- | -------------------------------------------------------------- |
 | `-i jacobi|gs|cg|bicgstab|gmres|bicg` | Selects the method used to solve the system                    |
 | `-tol <tolerance>`                    | Sets the tolerance for the iterative method                    |
-| `-maxiter`                            | Sets the maximum number of iterations for the iterative method |
-| `-restart`                            |                                                                |
-| `-p jacobi|sainv|ilu`                                  | Selects a preconditioner |
+| `-maxiter <number>`                   | Sets the maximum number of iterations for the iterative method |
+| `-restart <number>`                   |                                                                |
+| `-p jacobi|sainv|ilu|ssor|ilut`       | Selects a preconditioner                                       |
+| `-ilu_fill <number>`                  |                                                                |
+| `-ssor_omega <number>`                |                                                                |
+
+# Eigenproblem solution
+
+The `etest1` executable is used to solve eigenproblems. It can be tuned with various parameters.
+
+Syntax: `./etest1 INPUT_FILE EVEC_FILE HISTORY_FILE [OPTIONS]` where
+
+- `INPUT_FILE` is the input matrix in MTX format;
+- `EVEC_FILE` is the file in which the eigenvectors are written;
+- `HISTORY_FILE` is the file to which all the intermediate solution approximation are written.
+
+Multiple options can be passed to the executable:
+
+| Option                     | Description                                                                                            |
+| -------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `-e pi|ii|cr|rqi|si|li|ai` | Selects the eigensolver                                                                                |
+| `-i`, `-p`                 | Options for the linear solver used by the method. Same options as here [here](#linear-system-solution) |
+| `-emaxiter <number>`       |                                                                                                        |
+| `-etol <number>`           |                                                                                                        |
+| `-shift <number>`          |                                                                                                        |
+| `-ie cg|ii|rqi`            |                                                                                                        |
+| `-ss <number>`             |                                                                                                        |
