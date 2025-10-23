@@ -152,3 +152,35 @@ The Monte Carlo algorithms can be further classified based on the nature of thei
 
 - **One-sided error**: The algorithm may produce incorrect results in only one direction (e.g., false positives or false negatives).
 - **Two-sided error**: The algorithm may produce incorrect results in both directions (e.g., both false positives and false negatives).
+
+## Mincut
+
+Given an undirected graph $G = (V, E)$ with $n = |V|$ and $m = |E|$, a cut is a partition of the vertices $V$ into two non-empty sets $(S, V \setminus S)$. The size of the cut is the number of edges crossing the partition (edges between $S$ and $V \setminus S$). The Mincut problem is to find a cut of the minimum size.
+
+### Karger's Contraction Algorithm
+
+The Karger's algorithm is a randomized approach to find the Mincut.
+
+The main idea is to randomly select two nodes and contract them into a single node, merging their edges. Edge between the two nodes are removed.
+
+This process is repeated until only two nodes remain. The edges between these two nodes represent a cut in the original graph.
+
+The solution might not be the best, but is feasible, the probability to find the best solution is ${Pr}\ge \frac{1}{\binom n2}$ with a complexity of $O(n^2)$.
+
+It's possible to repeat $l$ times the algorithm, keeping all the results and choosing the best one, increasing the probability to find the best solution to $1 - (1 - \frac{1}{\binom n2})^{l\binom n2}$.
+
+Choosing $l = c\log(n)$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l \cdot \log(n))$.
+
+### Karger-Stein Algorithm
+
+Stein used a telescopic approach to improve the Karger algorithm as contracting edges from the mincut is less probable when the graph is big.
+
+If the graph has less than 6 nodes a deterministic algorithm is used to find the mincut as the constants are high for small graphs.
+
+If the graph has more than 6 nodes, the algorithm contract the graph to two graphs with number of vertices equal to $\frac{n}{\sqrt{2}}$ (with a probability of not having contracted the min cut of $\frac{1}{2}$).
+
+Then it duplicate the graph and contract both of them.
+
+Then it recurses on both graphs and returns the best result.
+
+This have a total complexity of $O(n^2\log^3(n))$.
