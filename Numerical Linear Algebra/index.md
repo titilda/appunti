@@ -740,4 +740,66 @@ $$
 
 The interpolation is not straightforward and standard, there are multiple variation of it but they wont be described here.
 
+# Domain decomposition methods
+
+Domain decomposition methods rely on the fact that we know the geometry of the EDO problem (even more that the multigrid methods).
+
+Suppose you have a partial EDO $Lu = f$. Partition the domain into two partially overlapping subdomain $\Omega_1$ and $\Omega_2$ with boundaries $\Gamma_1$ and $\Gamma_2$ respectively.
+
+The equivalent of the Gauss-Seidel method to solve said EDO is an iteratice method whose iterative step looks like 
+
+$$
+\begin{cases}
+  Lu_1^{\left( k + \frac{1}{2} \right)} = f & \text{in } \Omega_1 \\
+  u_1^{(\left( k + \frac{1}{2} \right))} = g & \text{in } \partial\Omega_1\backslash \Gamma_1 \\
+  u_1^{\left( k + \frac{1}{2} \right)} = u_2^{(k)} & \text{in } \Gamma_1
+\end{cases} \qquad \begin{cases}
+  Lu_2^{(k+1)} = f & \text{in } \Omega_2 \\
+  u_2^{(k+1)} = g & \text{in } \partial\Omega_2\backslash\Gamma_2 \\
+  u_2^{(k+1)} = u_1^{\left( k + \frac{1}{2} \right)} & \text{in } \Gamma_2
+\end{cases} \\
+u^{(k+1)} = \begin{cases}
+  u_1^{\left( k + \frac{1}{2} \right)} & \text{in } \Omega_1\backslash\Omega_2 \\
+  u_2^{(k+1)} & \text{in } \Omega_2
+\end{cases}
+$$
+
+The previously described algorithm (the **alternating Schwarz method**) is not inherently parallelizable: modifying it to use the previous solution (as with the jacobi) slowd down convergenge but the aglorithm become inherently massively parallelizable (one processor per subdomain).
+
+## Discretized Schwarz methods
+
+The discretization of a PDE returns a system $Ax = b$ with $A$ SDP. Let $S_i$ be the set of all the indices of the grid points belonging to $\Omega_i$ (subdomains may be overlapped so $\Omega_i \cap \Omega_{i+1} \ne \empty$).
+
+There exist $R_i \in \mathbb{R}^{n_i \times n}$ matrices (**restriction matrices**) that can extract the $S_i$ points from $A$ and $b$. for those matrices, it holds that
+
+$$
+v_i = R_i v \qquad \forall v \\
+A_i = R_1 A R_1^T \qquad \forall A
+$$
+
+The iteration step of the method (for a two-splits decomposition) is composed as follows
+
+$$
+x^{\left(k + \frac{1}{2}\right)} = x^{(k)} + R_1^T A_1^{-1} R_1 (b - Ax^{(k)}) \\
+x^{(k+1)} = x^{\left( k + \frac{1}{2} \right)} + R_2^T A_2^{-1} R_2 (b - Ax^{\left( k + \frac{1}{2} \right)})
+$$
+
+In each iteration, the error is updates ad follows
+
+$$
+e^{(k+1)} = (I - R_2^TA_2^{-1}R_2A)(I - R_1^TA_1^{-2}R_1A)e{(k)}
+$$
+
+To achieve massive parallelizability you can modify the iteration step (**adaptive Schwarz method**):
+
+$$
+x^{\left( x + \frac{1}{2} \right)} = x^{(k)} + R_1^T A_1^{-1} R_1 (b - Ax^{(k)}) \\
+x^{(k+1)} = x^{\left( k + \frac{1}{2} \right)} + R_2^T A_2^{-1} R_2 (b - Ax^{(k)}) \\
+e^{(k+1)} = (R_2^T A_2^{-1} R_2 + R_1^T A_1^{-1} R_1) A e^{(k)}
+$$
+
+By substitution we obtain that $x^{(k+1)} = x^{(k)} + P^{-1}r^{(k)}$ which is just a preconditioned richardson iteration.
+
+<!-- P7:11 -->
+
 _To be continued._
