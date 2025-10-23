@@ -116,3 +116,71 @@ This law suggests that as we increase the number of processors, the speedup can 
 Ideally, for weak scaling, we want:
 
 $$T \propto P$$
+
+## Randomized Algorithm
+
+A **Randomized Algorithm** is an algorithm that incorporates random choices into its logic. This introduces an element of chance into the execution path, even for a fixed input.
+
+While the performance of a _deterministic algorithm_ can vary based on the input (e.g., Insertion Sort is $O(n)$ on sorted input, $O(n^2)$ worst-case), a randomized algorithm uses randomness to work with a high probability on an average-case performance level, rather than being vulnerable to a worst-case scenario.
+
+Some randomization techniques are:
+
+- _Randomizing Input Order_: Pre-processing the input randomly to prevent worst-case arrangements (e.g., randomly shuffling an array before processing).
+- _Random Selection (Pivots/Candidates)_: Randomly selecting key elements (e.g., selecting a random pivot in Quicksort). This ensures that the pivot is likely to be good, minimizing the probability of a consistently bad partition.
+- _Random Number Generation_: Using random numbers to make decisions during the algorithm's execution (e.g., randomized algorithms for primality testing).
+- _Randomized Deterministic Algorithm_: Randomly choosing among several deterministic algorithms to solve the same problem, which can help avoid worst-case scenarios associated with any single algorithm.
+
+### Types of Randomized Algorithms
+
+Randomized algorithms are generally divided into two main categories based on what they guarantee: the **correctness of the output** or the **running time**.
+
+### Las Vegas
+
+**Las Vegas algorithms** always provide the **correct solution**, but the running _time is random_.
+
+They keep iterating until a solution is reached and are efficient if the average case is polynomial.
+
+### Monte Carlo
+
+**Monte Carlo algorithms** have a _fixed_, or _bound_, running time but may produce **incorrect results** with a certain probability.
+
+They are efficient if the complexity is polynomial in the worst case and the probability of error is low.
+
+These algorithms are often used for decision problems, where the output is either "yes" or "no".
+
+The Monte Carlo algorithms can be further classified based on the nature of their errors:
+
+- **One-sided error**: The algorithm may produce incorrect results in only one direction (e.g., false positives or false negatives).
+- **Two-sided error**: The algorithm may produce incorrect results in both directions (e.g., both false positives and false negatives).
+
+## Mincut
+
+Given an undirected graph $G = (V, E)$ with $n = |V|$ and $m = |E|$, a cut is a partition of the vertices $V$ into two non-empty sets $(S, V \setminus S)$. The size of the cut is the number of edges crossing the partition (edges between $S$ and $V \setminus S$). The Mincut problem is to find a cut of the minimum size.
+
+### Karger's Contraction Algorithm
+
+The Karger's algorithm is a randomized approach to find the Mincut.
+
+The main idea is to randomly select two nodes and contract them into a single node, merging their edges. Edge between the two nodes are removed.
+
+This process is repeated until only two nodes remain. The edges between these two nodes represent a cut in the original graph.
+
+The solution might not be the best, but is feasible, the probability to find the best solution is ${Pr}\ge \frac{1}{\binom n2}$ with a complexity of $O(n^2)$.
+
+It's possible to repeat $l$ times the algorithm, keeping all the results and choosing the best one, increasing the probability to find the best solution to $1 - (1 - \frac{1}{\binom n2})^{l\binom n2}$.
+
+Choosing $l = c\log(n)$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l \cdot \log(n))$.
+
+### Karger-Stein Algorithm
+
+Stein used a telescopic approach to improve the Karger algorithm as contracting edges from the mincut is less probable when the graph is big.
+
+If the graph has less than 6 nodes a deterministic algorithm is used to find the mincut as the constants are high for small graphs.
+
+If the graph has more than 6 nodes, the algorithm contract the graph to two graphs with number of vertices equal to $\frac{n}{\sqrt{2}}$ (with a probability of not having contracted the min cut of $\frac{1}{2}$).
+
+Then it duplicate the graph and contract both of them.
+
+Then it recurses on both graphs and returns the best result.
+
+This have a total complexity of $O(n^2\log^3(n))$.
