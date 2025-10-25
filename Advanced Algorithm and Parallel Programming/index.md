@@ -169,7 +169,7 @@ The solution might not be the best, but is feasible, the probability to find the
 
 It's possible to repeat $l$ times the algorithm, keeping all the results and choosing the best one, increasing the probability to find the best solution to $1 - (1 - \frac{1}{\binom n2})^{l\binom n2}$.
 
-Choosing $l = c\log(n)$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l \cdot \log(n))$.
+Choosing $l = c \log n$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l \cdot \log n)$.
 
 ### Karger-Stein Algorithm
 
@@ -183,4 +183,94 @@ Then it duplicate the graph and contract both of them.
 
 Then it recurses on both graphs and returns the best result.
 
-This have a total complexity of $O(n^2\log^3(n))$.
+This have a total complexity of $O(n^2 \log n)$, this algorithm can be run $l$ times with a complexity of $O(n^2 \log n \cdot l)$.
+
+## Sorting
+
+### Quicksort
+
+The quicksort is an efficient _in-place_ algorithm, based on the _divide and conquer_ paradigm.
+
+- _divide_ (partition): Select a pivot element and rearrange the array such that all elements less than the pivot are to its left, and all elements greater than the pivot are to its right. The pivot is then in its final sorted position;
+- _conquer_: Recursively sort the two sub-arrays (left and right of the pivot);
+- _combine_: The combination step is trivial (zero time), as the sub-arrays are sorted in place.
+
+```plaintext
+quicksort(array A, int low, int high):
+    if low < high:
+        pivotIndex = partition(A, low, high)
+        quicksort(A, low, pivotIndex - 1)
+        quicksort(A, pivotIndex + 1, high)
+
+partition(array A, int low, int high):
+    pivot = A[low]              // Choose the first element as pivot
+    i = low + 1                 // i is the boundary of the 'less than pivot' region
+
+    for j from low + 1 to high:
+        if A[j] < pivot:        // Element belongs to 'less than pivot' region
+            swap A[i] and A[j]
+            i = i + 1
+
+    swap A[low] and A[i]        // Place pivot in its final position
+
+    return i
+```
+
+The partition completes in $O(n)$ time, as it requires a single pass through the array to rearrange the elements around the pivot.
+
+The worst-case scenario occurs when the pivot selection consistently results in unbalanced partitions, leading to a time complexity of $O(n^2)$. This can happen if the array is already sorted or reverse sorted and the first or last element is always chosen as the pivot.
+
+The best-case and average-case time complexity of quicksort is $O(n \log n)$, which occurs when the pivot divides the array into two roughly equal halves at each recursive step.
+
+#### Randomized Quicksort
+
+The choice of the pivot is crucial for the performance of the algorithm. A poor choice can lead to unbalanced partitions, resulting in suboptimal performance.
+
+To mitigate the probability to find the worst scenario, it's possible to randomize the pivot, instead of taking always the first one. This make the probability to get any configuration of partition $\frac{1}{n}$.
+
+### Decision Tree
+
+The Decision Tree model is used to prove the theoretical lower bound for any comparison-based sorting algorithm.
+
+- Each internal node represents a comparison between two elements;
+- Each branch represents the outcome of the comparison (less than, greater than);
+- Each leaf node represents a possible permutation ($n!$) of the input array.
+
+The minimum number of comparisons required to sort $n$ elements is at least the height $h$ of the decision tree. A binary tree of height $h$ has at most $2^h$ leaves ($n! \leq 2^h$).
+
+$$h \geq \log_2(n!) \approx n \log_2(n)$$
+
+This establishes that any comparison-based sorting algorithm must make at least $\Omega(n \log n)$ comparisons in the worst case.
+
+### Counting Sort
+
+The **Counting Sort** is a non-comparison based sorting algorithm that is _stable_ (preserves the relative order of equal elements).
+
+The algorithm is based on 3 main steps:
+
+1. Count the occurrences of each unique element of the input array in an auxiliary array $C$ of size $k$ (where $k$ is the range of the input values);
+2. Modify the auxiliary array $C$ such that $C[x]$ stores the final position of the element $x$ in the sorted output array, this is done by summing the counts of all previous elements (`C[x] = C[x] + C[x - 1]`);
+3. Iterate backwards through the input array $A$, placing each element in its correct position in the output array based on the values in $C[A[i]]$, and decrementing the count in $C[A[i]]$ for each placed element.
+
+The complexity is $O(n + k)$, where:
+
+- $n$ is the number of elements in the input array;
+- $k$ is the range of the input values.
+
+### Radix Sort
+
+Radix Sort is an algorithm that sorts numbers by processing individual digits (or bits) from least significant to most significant, using the counting sort to sort the digits.
+
+Chosen the amount of bits to consider $r$, the algorithm processes the input array $A$ in multiple passes, each time sorting the array based on a specific digit (or group of bits).
+
+The number of passes required is $\lceil \frac{b}{r} \rceil$, where $b$ is the number of bits in the largest number.
+
+The size of the auxiliary array is fixed to $2^r$.
+
+A bigger base decreases the amount of iteration, but increases the size of the auxiliary array.
+
+The complexity is $O(\frac{b}{r} (n + 2^r))$.
+
+An ideal r is $\ln(n)$ that gives a complexity of $\theta(\frac{b \cdot n}{ \log n})$.
+
+During the last phase there is low caching as the accessed positions are almost random.
