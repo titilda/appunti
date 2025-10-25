@@ -274,3 +274,29 @@ The complexity is $O(\frac{b}{r} (n + 2^r))$.
 An ideal r is $\ln(n)$ that gives a complexity of $\theta(\frac{b \cdot n}{ \log n})$.
 
 During the last phase there is low caching as the accessed positions are almost random.
+
+## Order Statistics
+
+The **Order Statistics** problem is to find the $i$-th smallest element in an unsorted array of $n$ elements.
+
+### Randomized divide and conquer
+
+This algorithm is based on the quicksort partitioning method.
+
+A random pivot is selected and the array is partitioned in two sub-arrays.
+
+If the index of the pivot is equal to the searched one, the pivot is returned, otherwise if the index is greater the algorithm recurses on the left sub-array, otherwise on the right one.
+
+The average complexity is $\Theta(n)$, but the worst case is $O(n^2)$ when the pivot is always the smallest or the biggest element.
+
+### Deterministic divide and conquer
+
+This algorithm use a more complex method to select the pivot and guarantee a worst case of $O(n)$.
+
+1. Divide the $n$ elements into $\lfloor \frac{n}{5} \rfloor$ groups of 5, with at most 4 elements remaining;
+2. Find the median of each group (by sorting the group and selecting the middle element) with a constant complexity of $O(1)$ per group, as the size is fixed;
+3. Take all the medians and choose the median $x$ of these medians;
+4. Partition the original array around $x$;
+5. if the index of $x$ is equal to the searched one, return $x$, otherwise if the index is greater recurse on the left sub-array, otherwise on the right one.
+
+Dividing in groups of 5 ensure that at least half of the medians are greater than $x$ and at least half are smaller than $x$, this guarantee that at least $30\%$ of the elements are greater than $x$ and at least $30\%$ are smaller than $x$.
