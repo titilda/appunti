@@ -14,7 +14,7 @@ The main objective on the **Numerical Linear Algebra** is to solve linear system
 
 To better understand this summary, it may be helpsul to read [Foncamenti di Calcolo Numerico](/Fondamenti%20di%20Calcolo%20Numerico/index.html), [Logica e Algebra](/Logica%20e%20Algebra/index.html) and [Geometria e Algebra Lineare](/Geometria%20e%20Algebra%20Lineare/index.html).
 
-To have hands-on practice on the topics of this subject, it it suggested to play around with MATLAB/Octave, Eigen and LIS. A rudimental LIS cheatsheet is avaliable [here](./lis.html).
+To have hands-on practice on the topics of this subject, it it suggested to play around with MATLAB/Octave, Eigen and LIS. A rudimental LIS cheatsheet is avaliable [here](./lis.html). A rudimental "Eigen by examples" is available [here](./eigen.html).
 
 ## Notation and matrix overview
 
@@ -197,7 +197,7 @@ $$
 \alpha_{opt} = \frac{2}{\lambda_{min}(A) + \lambda_{max}(A)}
 $$
 
-In such case, the specral radius of the iteration matrix is
+In such case, the spectral radius of the iteration matrix is
 
 $$
 \rho_{opt}(B) = \frac{K(A) - 1}{K(A) + 1}
@@ -206,7 +206,7 @@ $$
 
 ## Preconditioned Richardson Method
 
-It is known that badly conditioned matrices will make the specral radius $\rho$ close to $1$, slowing down the convergence. Starting from the base $Ax = b$ it is possible to compute the solution of an equivalent problem with a much lower condition number.
+It is known that badly conditioned matrices will make the spectral radius $\rho$ close to $1$, slowing down the convergence. Starting from the base $Ax = b$ it is possible to compute the solution of an equivalent problem with a much lower condition number.
 
 Let $P^{-1}$ be a SPD matrix such that $K(P^{-1}A) \lt\lt K(A)$. Solving $Ax = b$ is equivalent to solving $P^{-\frac{1}{2}}AP^{-\frac{1}{2}}z = P^{-\frac{1}{2}}$ where $z = P^{\frac{1}{2}}z$.
 
@@ -232,13 +232,13 @@ $$
 
 ## The Gradient Method
 
-Let $\varPhi(y) = \frac{1}{2}y^TAy - y^Tb$. Mathematially, the minimization of $\varPhi(y)$ is equivalent to computing the solution of $Ax = b$ (this is because $\nabla\varPhi(y) = Ay = b$).
+Let $A \in \mathbb{R}^{n \times n}$ SPD and $\varPhi(y) = \frac{1}{2}y^TAy - y^Tb$. Mathematially, the minimization of $\varPhi(y)$ is equivalent to computing the solution of $Ax = b$ (this is because $\nabla\varPhi(y) = Ay = b$).
 
 As there is only one solution to $Ax = b$, then there will be only one minimum (and no maximum) and that point will coincide to the point where $\nabla\varPhi(x^{(k)}) = 0$ so the residual can just be expressed as $r^{(k)} = -\nabla\varPhi(x^{(k)})$ (the error is still $e^{(k)} = x - x^{(k)}$ and it is still unknown).
 
 In terms of implementation, the **Gradient Method** works exactly as the Richardson method (using the gradient in place of the residual).
 
-The new formula for the optimal $\alpha$ is
+The new formula for the optimal $\alpha$ is opbtained by imposing that $\frac{\partial \Phi(x^{(k)})}{\partial \alpha_k} \overset{!}{=} 0$:
 
 $$
 \alpha_{opt} = \frac{\left(r^{(k)}\right)^Tr^{(k)}}{\left(r^{(k)}\right)^TAr^{(k)}}
@@ -250,9 +250,21 @@ $$
 \|e^{(k)}\|_A \le \left( \frac{K(A) - 1}{K(A) + 1} \right)^k \|e^{(0)}\|_A
 $$
 
+Each iteration is composed by three steps (compute $\alpha$, update the solution, update the residual):
+
+$$
+\begin{align*}
+  \alpha_k &\gets \frac{\left( r^{(k)} \right)r^{(k)}}{\left( r^{(k)} \right) A r^{(k)}} \\
+  x^{(k+1)} &\gets x^{(k)} + \alpha_k r^{(k)} \\
+  r^{(k+1)} &\gets (I - \alpha_k A) r^{(k)}
+\end{align*}
+$$
+
+where $x^{(0)}$ can be chosen at random and $r^{(0)} = b - Ax^{(0)}$.
+
 ## The Conjugate Gradient method
 
-It can be shown that, with the gradient method, two consecutive update directions are orthogonal. The conjugate gradient method works by choosing an update direction that is orthogonal not only to the previus one bu to all the previous ones.
+It can be shown that, with the gradient method, two consecutive update directions are orthogonal. The conjugate gradient method works by choosing an update direction that is orthogonal not only to the previus one but to all the previous ones.
 
 ::: {.callout .callout-theorem title="Conjugate Gradient convergence"}
 In exact arithmetic the method converges in exactly $n$ iterations.
@@ -264,11 +276,59 @@ $$
 $$
 :::
 
+The algorithm is an extension of the algorithm used with the normal gradient method (compute $alpha$, update solution, update residual, update update direction):
+
+$$
+\begin{align*}
+  a_k &\gets \frac{\left( d^{(k)} r^{(k)} \right)}{\left( d^{(k)} \right) A d^{(k)}} \\
+  x^{(k+1)} &\gets x^{(k)} + \alpha_k d^{(k)} \\
+  r^{(k+1)} &\gets r^{(k)} - \alpha_k A d^{(k)} \\
+  \beta_k &\gets \frac{\left( Ad^{(k)} \right)^T r^{(k+1)}}{\left( Ad^{(k)} \right)^T d^{(k)}} \\
+  d^{(k+1)} &\gets r^{(k+1)} - \beta_k d^{(k)}
+\end{align*}
+$$
+
+where $x^{(0)}$ can be chosen at random and $r^{(0)} = d^{(0)} = b - Ax^{(0)}$.
+
 ## Preconditioned gradient methods
 
-In the same way as the othe preconditioned methods, convergence speed can be improved also with the gradient method.
+As like with the other iterative methods, preconditioned variants exist also for the gradient and conjugate gradient methods.
 
-Error is bounded as in the other preconditioned methods.
+The preconditioner matrix must be SPD. The original system must be rewritten in order to include the preconditioner:
+
+$$
+\begin{align*}
+  Ax &= b \\
+  P^{-\frac{1}{2}} A x &= P^{-\frac{1}{2}} b \\
+  \underbrace{P^{-\frac{1}{2}} A P^{-\frac{1}{2}}}_{\hat A} \underbrace{P^{\frac{1}{2}} x}_{\hat x} &= \underbrace{P^{-\frac{1}{2}} b}_{\hat b} \\
+  \hat A \hat x &= \hat b
+\end{align*}
+$$
+
+Once the preconditioned system is solved, we need to get back to the original solution: $x = P^{-\frac{1}{2}} \hat x$
+
+Note that $\hat A$ can also be written as $P^{-1} A$.
+
+$P$ is a good preconditioner when it leads to faster convergence speed:
+
+$$
+\frac{K(P^{-1} A) - 1}{K(P^{-1} A) + 1} \lt \frac{K(A) - 1}{K(A) + 1} \qquad \frac{\sqrt{K(P^{-1} A)} - 1}{\sqrt{K(P^{-1} A)} + 1} \lt \frac{\sqrt{K(A)} - 1}{\sqrt{K(A)} + 1}
+$$
+
+It is not possible to invert $P$ so the algorithm must be modified to take into account the preconditioning:
+
+$$
+\begin{align*}
+  \alpha_k &\gets \frac{\left( z^{(k)} \right)^T r^{(k)}}{\left( A d^{(k)} \right)^T d^{(k)}} \\
+  x^{(k+1)} &\gets x^{(k)} + \alpha_k d^{(k)} \\
+  r^{(k+1)} &\gets r^{(k)} - \alpha_k A d^{(k)} \\
+  z^{(k+1)} &\gets \operatorname{solve}(P, r^{(k+1)}) \\
+  \beta_k &\gets \frac{\left( A d^{(k)} \right)^T z^{(k+1)}}{\left( A d^{(k)} \right) d^{(k)}} \\
+  d^{(k+1)} &\gets z^{(k+1)} - \beta_k d^{(k)}
+\end{align*}
+$$
+
+with the initial guess $x^{(0)}$ chosen at random and $d^{(0)} = r^{(0)} = b - Ax^{(0)}$. <!-- What is z^0 then??? -->
 
 ## Krylov-space methods
 
