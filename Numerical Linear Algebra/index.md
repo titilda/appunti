@@ -451,9 +451,11 @@ The **power method** is an iterative method used to extract the bigger (in modul
 Each iteration of the power method can be expressed as
 
 $$
-y^{(k+1)} \gets Ax^{(k)} \\
-x^{(k+1)} \gets \frac{y^{(k+1)}}{\|y^{(k+1)}\|} \\
-\nu^{(k+1)} \gets [x^{(k+1)}]^Hax^{(k+1)}
+\begin{align*}
+  y^{(k+1)} &\gets Ax^{(k)} \\
+  x^{(k+1)} &\gets \frac{y^{(k+1)}}{\|y^{(k+1)}\|} \\
+  \nu^{(k+1)} &\gets [x^{(k+1)}]^H A x^{(k+1)}
+\end{align*}
 $$
 
 The initial guess $x^{(0)}$ can be any vector with unitary norm.
@@ -462,21 +464,40 @@ The idea behind this method comes from the "stretching" interpretation above: wi
 
 If $A$ is diagonalisable with $v_1, v_2, \dots, v_n$ as eigenvectors, then the eigenvectors form a base for $\mathbb{C}^n$. Let $x^{(0)} : \|x^{(0)}\| = 1$ be the initial guess, then $x^{(0)} = \sum_i a_i v_i$.
 
-Assuming that $|\lambda_1| \gt |\lambda_2| \ge \dots \ge |\lambda_n|$ (note that the first $\gt$ is not a $\ge$) If we multiply the initial guess by $A$ then
+Assuming that $|\lambda_1| \gt |\lambda_2| \ge \dots \ge |\lambda_n|$ (note that the first $\gt$ is not a $\ge$) If we multiply the initial guess by $A$ then (normalization has not taken into account here)
 
 $$
-y = Ax^{(0)} = \sum_i \alpha_i A v_i = \sum_i \alpha_i \lambda_i v_i = \alpha_1 \lambda_1 \left( v_1 + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1} \frac{\lambda_i}{\lambda_1} v_i \right)
+y^{(1)} = Ax^{(0)} = \sum_{i=1}^n \alpha_i A v_i = \sum_{i=1}^n \alpha_i \lambda_i v_i = \alpha_1 \lambda_1 \left( v_1 + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1} \frac{\lambda_i}{\lambda_1} v_i \right) \\
+\begin{align*}
+  y^{(2)} &= Ax^{(1)} = A \alpha_1 \lambda_1\left( v_1 + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1} \frac{\lambda_i}{\lambda_1} v_i \right) \\
+  &= \alpha_1 \lambda_1 \left( A v_1 + A \sum_{i=2}^n \frac{\alpha_i}{\alpha_1} \frac{\lambda_i}{\lambda_1} v_i \right) \\
+  &= \alpha_1 \lambda_1 \left( \lambda_1 v_1 + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1} \frac{\lambda_i}{\lambda_1} \lambda_i v_i \right) \\
+  &= \alpha_1 \lambda_1^2 \left( v_1 + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1} \left( \frac{\lambda_i}{\lambda_1} \right)^2 v_i \right)
+\end{align*}
 $$
 
-Performing multiple left multiplications by $A$, the result become
+Performing multiple left multiplications by $A$, the result become (normalization has not been taken into account here)
 
 $$
-Ax^{(k)} = \alpha_1 \lambda_1^k \left( v_1 + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1} \left( \frac{\lambda_i}{\lambda_1} \right)^k v_i \right) \underset{k \to \infty}{\longrightarrow} \alpha_1 \lambda_1 v_1
+Ax^{(k)} = \alpha_1 \lambda_1^k \left( v_1 + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1} \left( \frac{\lambda_i}{\lambda_1} \right)^k v_i \right) \underset{k \to \infty}{\longrightarrow} \alpha_1 \lambda_1^k v_1
 $$
 
 hence, the dominant eigenvalue will dominate over all the other.
 
-If $\lambda_1$ is not isolated, all sorts of things may happen and nothig is guaranteed.
+Normalization is performed every step in the algoritm to prevent numbers from exploding.
+
+In the algorithm, $\nu$ contains the eigenvalue associated with the eigenvector:
+
+$$
+\begin{align*}
+  \nu^{(k+1)} &= \frac{\left(Ax^{(k)} \right)^H}{\|Ax^{(k)}\|} \cdot A \cdot \frac{\left(Ax^{(k)} \right)^H}{\|Ax^{(k)}\|} \\
+  &= \frac{\left(\alpha_1 \lambda_1^k v_1\right)^H}{\|\alpha_1 \lambda_1^k v_1\|} \cdot A \cdot \frac{\alpha_1 \lambda_1^k v_1}{\|\alpha_1 \lambda_1^k v_1\|} \\
+  &= \frac{\alpha_1 \lambda_1^k v_1^H}{\alpha_1 \lambda_1^k \|v_1\|} \cdot A \cdot \frac{\alpha_1 \lambda_1^k v_1}{\alpha_1 \lambda_1 \|v_1\|} \\
+  &= \frac{v^H A v}{v^H v}
+\end{align*}
+$$
+
+If $\lambda_1$ is not isolated, all sorts of things may happen and nothing is guaranteed.
 
 ## Deflation methods
 
