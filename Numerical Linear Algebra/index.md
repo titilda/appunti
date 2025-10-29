@@ -404,6 +404,8 @@ This method is prone to explosive divergence so a variation (the _stabilized_ on
 
 ### GMRES
 
+**GMRES** is another modification of the gradient method that does not require a symmetric matrix.
+
 If $A_S = \frac{A + A^T}{2}$ is SPD, then
 
 $$
@@ -415,6 +417,8 @@ If $A$ is SPD, then
 $$
 \|r^{(0)}\|_2 \le \left[ \frac{K_2(A)^2 - 1}{K_2(A)^2} \right]\|r^{(0)}\|_2
 $$
+
+GMRES method (and Krylov subspace methods in general) can be restarted after a given number of iterations using as initial guess the current approximation. This is because each iteration adds some state to preserve in memory and in can quickly grow enough to become difficult to manage. When convergence is very slow, using a low restart value may speed up the process.
 
 ## Preconditioning techniques
 
@@ -661,7 +665,7 @@ From this, it follows that the solution in the least square sense for the initia
 We already briefly discussed about the reduced QR factorization: said factorization can also be used instead of the system of normal equations to approximate the solution in the least square sense.
 
 ::: {.callout .callout-theorem title="Theorem"}
-Let $A \in \mathbb{R}^{m \times n}$ with $m \gt n$ and full-rank. Then the unique solution in the least square sense $x^*$ of $Ax^* = b$ is given by $$x^* = \hat R^{-1} \hat Q^T b$ (tat's easy to solve ar $\hat R$ is upper triangular) where $\hat Q$ and $\hat R$ comes from the reduced QR factorization of $A$. It is also true that $\Phi(x^*) = \sum\limits_{i = n+1}^{m}\left[(Q^Tb)_i\right]^2$.
+Let $A \in \mathbb{R}^{m \times n}$ with $m \gt n$ and full-rank. Then the unique solution in the least square sense $x^*$ of $Ax^* = b$ is given by $$x^* = \hat R^{-1} \hat Q^T b$ (that's easy to solve ar $\hat R$ is upper triangular) where $\hat Q$ and $\hat R$ comes from the reduced QR factorization of $A$. It is also true that $\Phi(x^*) = \sum\limits_{i = n+1}^{m}\left[(Q^Tb)_i\right]^2$.
 
 Proof follows.
 
@@ -879,8 +883,77 @@ x^{(k+1)} = x^{\left( k + \frac{1}{2} \right)} + R_2^T A_2^{-1} R_2 (b - Ax^{(k)
 e^{(k+1)} = (R_2^T A_2^{-1} R_2 + R_1^T A_1^{-1} R_1) A e^{(k)}
 $$
 
-By substitution we obtain that $x^{(k+1)} = x^{(k)} + P^{-1}r^{(k)}$ which is just a preconditioned richardson iteration.
+By substitution we obtain that $x^{(k+1)} = x^{(k)} + P^{-1}r^{(k)}$ which is just a preconditioned Richardson iteration. The preconditioner is called **additive Schwarz preconditioner** and it consists in
 
-<!-- P7:11 -->
+$$
+P^{-1} = R_1^T A_1^{-1} R_1 + R_2^T A_2^{-1} R_2
+$$
+
+::: {.callout .callout-note title="USability of ADDS preconditioner with conjugated gradient"}
+As the ADDS preconditioner is symmetric, it can be used with the conjugated gradient method.
+:::
+
+To achieve massive degrees of parallelism, the two-domains algorithm must be applied recursively. The general form of the preconditioner matrix for $p$ subdomains is
+
+$$
+P_{ad}^{-1} = \sum_{i=1}^p R_i^T A_i R_i
+$$
+
+Obviously, one cannot process two subdomains that are connected at the same time.
+
+Domain decomposition problems suffers from weak scalability: adding processors (without changing the amount of data to be processed) will be less and less effective.
+
+# Direct methods for linear systems
+
+Direct methods consists in the factorization of the matrix into other matrices that are easier to deal with. For example we can use **LU factorization** or **Cholesky factorization**.
+
+## LU factorization
+
+Let $A \in \mathbb{R}^{n \times n}$. Finding its **LU factorization** means finding a unitary lower triangular matrix $L$ and an upper triangular matrix $U$ such that $A = LU$.
+
+::: {.callout .callout-theorem title="Existance and uniqueness of LU factorization"}
+If $A$ is invertible then it admits a LU factorization if and only if itsleading principal minors are non zero.
+:::
+
+::: {.callout .callout-definition title="Principal minors"}
+The principal minors of a matrix $A$ are defined as $\det(A_{p,i})$ where $A_{p,i}$ is obtained considering only the first $i$ rows and columns of $A$.
+:::
+
+The LU algorithm consists in applying Gauss moves to the matrix $A$ obtaining a sequence of matrices $A^{(i)}$ where at each step the correct Gauss moves are applied to $A^{(k)}$ to make each element under the diagonal in the $k+1$-th row zero. The result of this is the $U$ matrix. The same gauss moves must be applied to the $b$ vector to make sure that we end up with an equivalent system.
+
+The $L$ matrix can be computed like $l_{ik} = \frac{a_{ik}^{(k)}}{a_{kk}^{(k)}}$ for each step $k = 1, 2, \dots, n-1$ for each $i = k+1, k+2, \dots, n$.
+
+After computing the LU factorization, the system can be rewritten as
+
+$$
+\begin{cases}
+  Ux = y \\
+  Ly = b
+\end{cases}
+$$
+
+::: {.callout .callout-note title="Sufficient conditions for LU factorization"}
+A LU factorization for a matrix $A$ exists for sure if $A$ is strictly diagonally dominant or if $A$ is SPD.
+:::
+
+If $A$ is SPD then it is more conveniennt to use the **Cholesky factorization**: a type of factorization that produces a unique upper triangular matrix $R$ such that $A ? R^T R$.
+
+The computational cost for both factorizations is in the order of $O(n^3)$ but while LU cost grows like $\frac{2}{3}n^3$, Cholesky cost grows like $\frac{1}{3}n^3$.
+
+## Pivoting
+
+We have seen that the matrix $L$ is computed with fractions. This means that a division by zero may happen. Not only, to reduce the error due to floating point approximation, it is always better to have divisions by bigger number whenever possible.
+
+Pivoting consists in swapping rows and/or columns of the matrix $A$ to obtain a _better version_.
+
+Row-swaps must be performed by a permutation matrix $P$ while column-swaps must be performed by $Q$.
+
+The system can be now rewritten as $PAQ\ Q^{-1}x = Pb$. The LU factorization is then computed on $PAQ$.
+
+## Fill-in
+
+**Fill-in** is a phenomenon that reduces sparsity in the $L$ and $U$ matrices. To prevent fill-in, the rows and columns of $A$ must be reordered.
+
+
 
 _To be continued._

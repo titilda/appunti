@@ -32,7 +32,7 @@ The `test1` executable is used to solve linear systems. It includes multiple ite
 Syntax: `./test1 INPUT_FILE RHS_SETTINGS SOLUTION_FILE HISTORY_FILE [OPTIONS]` where
 
 - `INPUT_FILE` is the $A$ matrix as in $Ax = b$ stored in **matrix market format** (mtx);
-- `RHS_SETTINGS` is the $b$ of the system: it can be a number (to set all the entries in the vectors to that number) or a file containing the vector in mtx format;
+- `RHS_SETTINGS` is the $b$ of the system: it can be a number ($1$ to set $b = (1, 1, \dots, 1)$, $2$ to set $b = A \times (1, 1, \dots, 1)$) or a file containing the vector in mtx format;
 - `SOLUTION_FILE` is the file to which the solution is written;
 - `HISTORY_FILE` is the file to which all the intermediate solution approximation are written.
 
@@ -43,10 +43,16 @@ Multiple optional options can be passed to the executable:
 | `-i jacobi|gs|cg|bicgstab|gmres|bicg` | Selects the method used to solve the system                    |
 | `-tol <tolerance>`                    | Sets the tolerance for the iterative method                    |
 | `-maxiter <number>`                   | Sets the maximum number of iterations for the iterative method |
-| `-restart <number>`                   |                                                                |
+| `-restart <number>`                   | Restart parameter for GMRES                                    |
 | `-p jacobi|sainv|ilu|ssor|ilut`       | Selects a preconditioner                                       |
 | `-ilu_fill <number>`                  |                                                                |
 | `-ssor_omega <number>`                |                                                                |
+
+## Examples
+
+```sh
+
+```
 
 # Eigenproblem solution
 
