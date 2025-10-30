@@ -954,6 +954,58 @@ The system can be now rewritten as $PAQ\ Q^{-1}x = Pb$. The LU factorization is 
 
 **Fill-in** is a phenomenon that reduces sparsity in the $L$ and $U$ matrices. To prevent fill-in, the rows and columns of $A$ must be reordered.
 
+## Direct methods for sparse linear systems
 
+Sparse systems are really convenient because they require a small amount of memory except that tryng to perform any kind of operation on them will crunch their sparsity like there is no tomorrow.
 
-_To be continued._
+Permutation can be applied on sparse matrices as well except that finding a good permutation matrix that will considerably reduce fill in is an NP-hard problem (a _good enough_ matrix can be found without too much effort though).
+
+The general idea behind the methods to which this section is about is
+
+1. **symbolic phase**;
+   1. determine $P$ and $Q$;
+   2. prepare the elimination three for Gaussian elimination;
+   3. allocate hardware resources;
+2. factorization;
+   1. gaussian elimination;
+   2. optional modification of $P$ and $Q$ for improved stability;
+3. solve by substitution.
+
+It is always good to perform the **symbolic phase** because it is fast and makes factorization more efficient (also, when problems come from PDEs, the $A$ matrices are usually really similar and a good choice for $P$ and $Q$ matrices has probably already been discovered).
+
+## Fill-in reduction techniques
+
+::: {.callout .callout-definition title="Fill-in minimization problem"}
+Given a matrix $A$, find a row and a column permutation $P$ and $Q$ (with $Q = P^T$ for Cholesky) such that the fill-in in the factorization of $PAQ$ is minimized.
+:::
+
+As already mentioned, this problem belongs to the NP-hard category.
+
+There are multiple approaces to the solution of this problem:
+
+- symmetric minimum degree;
+- unsymmetric minumum degree;
+- Nested dissection;
+- others...
+
+As with the algebraic multigrid methods, matrices can be seen as a representation for a graph. Here, a matrix can represent both a **directed graph** (intuitively) and a **bipartite graph** (that contains $2n$ vertices, one for each row and one for each column of $A$; there is an edge between the left $i$-th vertex and the right $j$-th vertex if $a_{ij} \ne 0$).
+
+Let $A$ be SPD, given an oriented grapgh $G(A) = (V, E)$, then it is possible to define $G^+(A) = (V, E^+)$ as a graph with the same vertices of $G(A)$ and edges $(i, j)$ if there is a path from $i$ to $j$ in $G(A)$ going through lower numbered vertices.
+
+::: {.callout .callout-note title="Note"}
+For cholesky, it holds that
+
+$$
+G(R + R^T) = G^+(A)
+$$
+
+The same holds for LU:
+
+$$
+G(L + U) = G^+(A)
+$$
+
+(ignoring cancellations due to the matrix sum).
+:::
+
+Multiple implementation of parallel algorithms exist and use this definition to speedup computation reducing fill-in.
