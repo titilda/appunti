@@ -426,3 +426,55 @@ The complexity to find an element is equivalent $N_\text{skip} + \frac{N_\text{n
 During the insertion the element is added to the base list, then it is promoted to the upper list with a probability of $1/2$. This process is repeated until a fail.
 
 With this method the expected number of levels is $\log n$, and the expected search complexity is $O(2 \cdot \log n) \equiv O(\log n)$.
+
+## Dynamic Programming
+
+**Dynamic Programming** is an algorithmic technique for solving complex problems by breaking them down into simpler subproblems.
+
+It is based on two main principles:
+
+- **Optimal Substructure**: An optimal solution to a problem contains the optimal solution to any subproblem.
+- **Overlapping Subproblems**: The recursive solution to the problem involves solving the same subproblems repeatedly.
+
+Dynamic programming can be implemented using two main approaches:
+
+- **Memoization**: is a top-down approach that starts with the original problem and recursively breaks it down into subproblems, storing the results of solved subproblems in a table to avoid redundant computations.
+- **Tabulation**: is a bottom-up approach that starts with the smallest subproblems and iteratively builds up solutions to larger subproblems, storing the results in a table.
+
+Tabulation is generally more efficient, as it avoids the overhead of recursive calls, but memoization can be easier to implement and doesn't need to solve all subproblems if not necessary.
+
+### LCS Algorithm
+
+The **LCS** problem finds the longest subsequence (a sequence that can be derived from another sequence by deleting some or no elements without changing the order of the remaining elements) common to two input sequences, $X$ of length $m$ and $Y$ of length $n$.
+
+The basic idea is to check if all the possible sequences are present in the other sequence. This has a $O(n)$ to search $2^n$ subsequences.
+
+A better approach is use the optimal substructure property of the problem: If the longest common subsequence of $X$ and $Y$ is $Z$, then $Z$ without its last element must be the LCS of the prefixes of $X$ and $Y$.
+
+Starting from the last elements of both sequences:
+
+- if the elements are equal, they are part of the LCS, and we move to the previous elements in both sequences;
+- if the elements are not equal, we recurse by moving back in either sequence and taking the maximum LCS found.
+
+```plaintext
+table[m, n] // memoization table
+
+function LCS(X, Y, m, n):
+    if m == 0 or n == 0:
+        return 0
+
+    if table[m, n] is defined: // check memoization to avoid recomputation
+        return table[m, n]
+
+    if X[m-1] == Y[n-1]:
+        table[m, n] = 1 + LCS(X, Y, m-1, n-1)
+    else:
+        table[m, n] = max(LCS(X, Y, m, n-1),
+                          LCS(X, Y, m-1, n))
+
+    return table[m, n]
+```
+
+This allows to have a complexity of $O(m \cdot n)$ in time and space, where $m$ and $n$ are the lengths of the two sequences.
+
+Than it's possible to reconstruct the LCS by backtracking the table from `table[m, n]` to `table[0, 0]`.
