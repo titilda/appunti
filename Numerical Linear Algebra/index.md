@@ -346,7 +346,7 @@ $$
 $$
 :::
 
-Since $r^{(k+1)} = r^{(k)} - Ar^{(k)}$ then $r^{(k)} = p_{k-1}(A)r^{(0)}$ where $p_r(z) = (1 - z)^r$. This means that $x^{(k)} = x^{(0)} + p_{k-1}(A)r^{(0)}$.
+Since $r^{(k+1)} = r^{(k)} - Ar^{(k)}$ then $r^{(k)} = p_k(A)r^{(0)}$ where $p_r(z) = (1 - z)^r$. This means that $x^{(k)} = x^{(0)} + p_{k-1}(A)r^{(0)}$.
 
 ::: {.callout .callout-definition title="Grade of $y$ with respect to $A$"}
 The **grade of $y$ with respect to $A$** is defined as a positive integer $\nu = \nu(y, A)$ such that
@@ -394,7 +394,7 @@ Krylov-space solvers can be used when $A$ is not symmetrical. The two main metho
 
 ### BiConjugate Gradient method
 
-The BiConjucate Gradient method exploits the **shadow residuals** and the **shadow directions** obtained by solving the sistem obtained by transposing both sides:
+The **BiConjucate Gradient** method exploits the **shadow residuals** and the **shadow directions** obtained by solving the sistem obtained by transposing both sides:
 
 $$
 Ax = b \mapsto [Ax]^T = b^T \iff x^Ta^T = b^T \iff \hat x \hat A = \hat b
@@ -443,7 +443,7 @@ $$
 ::: {.callout .callout-definition title="Similar matrices"}
 Two matrices are said to be **similar** if they have the exact same eigenvalues with the exact same multiplicities.
 
-An equivalent definition is that two matrices $A$ and $B$ are similar if $\exists T : B ? T^{-1} A T$.
+An equivalent definition is that two matrices $A$ and $B$ are similar if $\exists T : B = T^{-1} A T$.
 
 A matrix is diagonalisable if it's similar to a diagonal matrix.
 :::
