@@ -546,3 +546,63 @@ Since BDDs are highly shared and manipulated through pointers, memory management
 - **Mark and Sweep**: When memory runs low, the system starts from all external root pointers (the BDDs currently in use).
   - **Mark**: Traverse the BDDs recursively, marking every reachable node.
   - **Sweep**: Iterate through all nodes in the memory space; any node not marked is unreachable and is reclaimed (deleted).
+
+## Amortized Analysis
+
+**Amortized Analysis** is a technique used to analyze the cost of a sequence of operations, where a single operation may be expensive, but that expensive operation happens rarely. The goal is to determine the average cost per operation in the worst-case sequence.
+
+An example is with a collection which size increase along with the insertions.
+
+Each time there is overflow need to create a new memory and copy all the values with a complexity of $O(n)$, but this happen only $\log n$ times across $n$ insertions.
+
+The analysis can be performed with three methods:
+
+### Aggregate method
+
+This method calculate the total cost of a sequence of operations and then divide it by the number of operations to get the average cost per operation.
+
+| i    | 1   | 2     | 3     | 4   | 5     |
+| ---- | --- | ----- | ----- | --- | ----- |
+| size | 1   | 2     | 4     | 4   | 8     |
+| $c$  | 1   | 1(+1) | 1(+2) | 1   | 1(+4) |
+
+The total cost for $n$ insertions is $\sum_{i=1}^n c_i \leq n + \sum_{j=0}^{\lfloor \log n \rfloor} 2^j \leq n + 2n = 3n$, so the average cost per insertion is $\frac{3n}{n} = 3 \equiv O(1)$.
+
+### Accounting Method
+
+This method assign to each operation a _amortized cost_ that might be different from the actual cost ($\sum_{i=1}^n c_i \leq \sum_{i=1}^n \hat{c}_i$).
+
+- if $\hat{c}_i < c_i$, the operation is expensive and use stored _credit_ from previous operations;
+- if $\hat{c}_i > c_i$, the operation is cheap and store the extra cost as _credit_ for future operations.
+
+The credit must be non-negative at any time.
+
+The amortized cost is an upper bound on the actual cost, so the complexity would be $O(\hat{c})$.
+
+| i         | 1   | 2     | 3     | 4   | 5     |
+| --------- | --- | ----- | ----- | --- | ----- |
+| size      | 1   | 2     | 4     | 4   | 8     |
+| $c$       | 1   | 1(+1) | 1(+2) | 1   | 1(+4) |
+| $\hat{c}$ | 2   | 3     | 3     | 3   | 3     |
+| credit    | 1   | 2     | 2     | 5   | 2     |
+
+### Potential Energy
+
+This method is similar to the accounting method, but instead of storing credit with each object, it uses a _potential function_ $\phi$ to represent the stored energy in the entire data structure $D_i$.
+
+- The initial potential is $\phi(D_0) = 0$;
+- The potential is always non-negative $\phi(D_i) \geq 0$ for all $i \geq 0$;
+- The amortized cost of the $i$-th operation is defined as: $\hat{c}_i = c_i + \Delta(\phi(D_i))$.
+
+$\Delta(\phi(D_i)) = \phi(D_i) - \phi(D_{i-1})$ and represent the _potential difference_.
+
+- $\Delta(\phi(D_i)) > 0$, than $\hat{c}_i > c_i$ and the operation stores energy in the data structure;
+- $\Delta(\phi(D_i)) < 0$, than $\hat{c}_i < c_i$ and the operation uses stored energy.
+
+The total amortized cost over a sequence of $n$ operations is:
+
+$$\sum_{i=1}^n \hat{c}_i = \sum_{i=1}^n c_i + \phi(D_n) - \phi(D_0) \geq \sum_{i=1}^n c_i$$
+
+To determine the complexity must find the function that bounds the amortized cost.
+
+> The formula of the potential energy in the case would be $2i - 2^{\log n}$
