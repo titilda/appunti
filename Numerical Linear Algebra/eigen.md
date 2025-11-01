@@ -100,7 +100,7 @@ void saveLISVector(const VectorXd& v, const std::string& filename) {
     os << v.size() << "\n";
 
     for (int i = 0; i < v.size(); i++) {
-        os << std::format("{} {}\n", i, v(i));
+        os << std::format("{} {}\n", i + 1, v(i));
     }
 
     os.close();
