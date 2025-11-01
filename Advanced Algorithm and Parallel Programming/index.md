@@ -606,3 +606,28 @@ $$\sum_{i=1}^n \hat{c}_i = \sum_{i=1}^n c_i + \phi(D_n) - \phi(D_0) \geq \sum_{i
 To determine the complexity must find the function that bounds the amortized cost.
 
 > The formula of the potential energy in the case would be $2i - 2^{\log n}$
+
+## Competitive Analysis
+
+**Competitive Analysis** is used to evaluate the performance of **online algorithms**, which make decisions based on partial information without knowledge of future inputs, compared to an **optimal offline algorithm** that has complete knowledge of the input sequence.
+
+An online algorithm $A$ is considered $\alpha$-competitive if its performance is within a factor of $\alpha$ of the optimal offline algorithm for all possible input sequences.
+
+$$C_A = \alpha C_A^{opt} + k$$
+
+- $C_A$: cost incurred by the online algorithm $A$;
+- $C_A^{opt}$: cost incurred by the optimal offline algorithm;
+- $\alpha$: competitive ratio (a constant factor);
+- $k$: an additive constant (independent of the input size).
+
+### Self Organizing List
+
+**Self Organizing Lists** are data structure that reorder elements based on the access frequency of the items to minimize the access time for frequently accessed elements.
+
+This can be done by storing a access counter to each element and sort based on that, but that is inefficient in an online scenario.
+
+A better approach is done by using a simple heuristic called **Move-to-Front** that moves the most recently accessed element to the front of the linked-list.
+
+The potential function is calculates as $\phi(L_i) = 2 \cdot \text{\# inversions}$, where an inversion is a pair of elements that are out of order compared to the optimal list. Each movement create/destroy 1 inversion.
+
+The amortized cost of the $i$-th operation is: $\hat{c}_i = c_i + \Delta \phi(L_i) = 4c_i$, making the algorithm 4-competitive. Using a linked list the cost of the transposition is free, allowing to be 2-competitive.
