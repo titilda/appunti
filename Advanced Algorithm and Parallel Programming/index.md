@@ -50,7 +50,7 @@ Write in the shared memory can happen in two ways:
 - **Exclusive Write** (EW): All processors can write in _distinct_ memory cells at the same time.
 - **Concurrent Write** (CW): Two or more processors can access the _same_ memory cell at the same time.
   - **Priority**: each processor has a priority level. The highest is the one allow to write.
-  - **Common**: all processors must write the same value.
+  - **Common**: all processors must write the same value (If not, the behavior is undefined).
   - **Random**: one of the processors is chosen randomly to write.
 
 The classification is done by combining the two types of access.
@@ -64,8 +64,46 @@ The complexity of a PRAM algorithm is measured by:
 | **Elapsed Time**    | $T_p(n)$        | -                                                   | The number of steps (time) to complete the algorithm of size $n$ using $p$ processors.                                                     |
 | **Sequential Time** | $T^*(n)$        | -                                                   | The time complexity of the **best known sequential algorithm** for the same problem. $\mathbf{T^*(n) \neq T_1(n)}$.                        |
 | **Speedup**         | $SU_p(n)$       | $\frac{T^*(n)}{T_p(n)}$                             | Measures how much **faster** the parallel algorithm is compared to the best sequential one. Ideally, $SU_p(n) \approx p$ (linear speedup). |
-| **Efficiency**      | $E_p(n)$        | $\frac{SU_p(n)}{p} = \frac{T^*(n)}{p \cdot T_p(n)}$ | Measures the **average utilization** of the $p$ processors. $0 \leq E_p(n) \leq 1$. An efficiency close to 1 is considered **optimal**.    |
-| **Cost / Work**     | $C_p(n) = W(n)$ | $p \cdot T_p(n)$                                    | The total number of operations performed by **all** $p$ processors during the execution.                                                   |
+| **Efficiency**      | $E_p(n)$        | $\frac{SU_p(n)}{p} = \frac{T_1(n)}{p \cdot T_p(n)}$ | Measures the **average utilization** of the $p$ processors. $0 \leq E_p(n) \leq 1$. An efficiency close to 1 is considered **optimal**.    |
+| **Cost**     | $C_p(n)$ | $p \cdot T_p(n)$                                    | Amount of time of the algorithm multiplied by the number of processors used                                                  |
+| **Work**     | $W(n)$ |                                    | The total number of operations performed by **all** $p$ processors during the execution. ($W \leq C$) |
+
+### Examples
+
+#### Vector Sum
+
+The sum of a vector on a sequential RAM is done in $O(n)$ time, as each element must be read and added to the total sum.
+
+In a PRAM with $n$ processors, the vector sum can be performed in $O(\log n)$ time.
+
+The algorithm works by performing pairwise sums in parallel:
+
+1. In the first step, each pair of adjacent elements is summed by a separate processor, resulting in $n/2$ sums.
+2. In the second step, the sums are paired again and summed, resulting in $n/4$ sums.
+3. This process continues until only one sum remains.
+
+#### Matrix-Vector Multiplication
+
+The matrix-vector multiplication on a sequential RAM takes $O(n^2)$ time, as each row of the matrix must be multiplied by the vector.
+
+A PRAM with $n^2$ processors can perform the matrix-vector multiplication in $O(\log n)$ time, as all the multiplications can be done in parallel, followed by a sum the results for each row.
+
+The efficiency of this algorithm is $E_p(n) = \frac{n^2 / \log n}{n^2} = \frac{1}{\log n}$.
+
+#### Matrix-Matrix Multiplication
+
+In a sequential RAM, the matrix-matrix multiplication takes $O(n^3)$ time, as each element of the resulting matrix must be computed by summing the products of the corresponding row and column.
+
+A PRAM with $n^3$ processors can perform the matrix-matrix multiplication in $O(\log n)$ time, as all the multiplications can be done in parallel, followed by a sum the results for each row.
+
+The efficiency of this algorithm is $E_p(n) = \frac{n^3 / \log n}{n^3} = \frac{1}{\log n}$, which decreases as the size of the input increases.
+
+#### Logical Functions
+
+Logical functions can be evaluated in parallel using a PRAM Common Concurrent Write models.
+
+- `AND` operation with $n$ elements can be performed in $O(1)$ time with $n$ processors by having each processor read one element, initialize a shared variable to `1`, and if any processor reads a `0`, it writes `0` to the shared variable.
+- `OR` operation with $n$ elements can be performed in $O(1)$ time with $n$ processors by having each processor read one element, initialize a shared variable to `0`, and if any processor reads a `1`, it writes `1` to the shared variable.
 
 ### Scaling
 
@@ -169,7 +207,7 @@ The solution might not be the best, but is feasible, the probability to find the
 
 It's possible to repeat $l$ times the algorithm, keeping all the results and choosing the best one, increasing the probability to find the best solution to $1 - (1 - \frac{1}{\binom n2})^{l\binom n2}$.
 
-Choosing $l = c \log n$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l \cdot \log n)$.
+Choosing $l = c \log n$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l \cdot \log n)$ (The optimal $l$ is $O(n^2 \log n)$).
 
 ### Karger-Stein Algorithm
 
@@ -183,7 +221,7 @@ Then it duplicate the graph and contract both of them.
 
 Then it recurses on both graphs and returns the best result.
 
-This have a total complexity of $O(n^2 \log n)$, this algorithm can be run $l$ times with a complexity of $O(n^2 \log n \cdot l)$.
+This have a total complexity of $O(n^2 \log n)$, this algorithm can be run $l$ times with a complexity of $O(n^2 \log n \cdot l)$ (the optimal $l$ is $O(\log^2 n)$).
 
 ## Sorting
 
@@ -259,7 +297,7 @@ The complexity is $O(n + k)$, where:
 
 ### Radix Sort
 
-Radix Sort is an algorithm that sorts numbers by processing individual digits (or bits) from least significant to most significant, using the counting sort to sort the digits.
+Radix Sort is an algorithm that sorts numbers by processing individual digits (or bits) from least significant to most significant, using the counting sort to sort the digits (the counting is used because it allows for stable sorting of the digits).
 
 Chosen the amount of bits to consider $r$, the algorithm processes the input array $A$ in multiple passes, each time sorting the array based on a specific digit (or group of bits).
 
@@ -395,7 +433,7 @@ It's possible to use randomized data structures to improve the performance of th
 The **Treap** (tree + heap) is a randomized collection that maintains two properties:
 
 - **Binary Search Tree Property**: The keys are organized in a binary search tree structure: for any given node, all elements in the left subtree are less than the node, and all elements in the right subtree are greater;
-- **Heap Property**: The priorities are organized in a max-heap structure: for any given node, the priority of the node is greater than the priorities of its children.
+- **Heap Property**: The priorities are organized in a min-heap structure: for any given node, the priority of the node is less than the priorities of its children.
 
 Each node contains a key and a priority. The keys are unique, while the priorities are assigned randomly when the node is created with a uniform distribution [0, 1). When two priorities are equal a new bit is added until there is a difference.
 
@@ -411,7 +449,7 @@ The height of the treaps has an expected depth of $1.39 \dot  \log n$.
 
 The search complexity is based on the height of the tree, so it's $O(\log n)$ in average, like the binary search tree.
 
-Splitting a treap is done by inserting a new node with priority +$\infty$ and key equal to the split key, then the left and right subtree of this node are the two resulting treaps.
+Splitting a treap is done by inserting a new node with priority $-\infty$ and key equal to the split key, then the left and right subtree of this node are the two resulting treaps.
 
 ### Skip List
 
@@ -519,6 +557,8 @@ $$\text{ITE}(f, g, h) = fg + \overline{f}h$$
 The unique table is used to store each node only once in the BDD.
 
 Before creating a new node, the unique table is checked to see if a node with the same triple $(v, g, h)$ already exists. If it does, the existing node is reused; otherwise, a new node is created and added to the unique table.
+
+This ensures that the BDD remains reduced (canonic), as identical subtrees are merged automatically.
 
 ##### Computed Table
 
