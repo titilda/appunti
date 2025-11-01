@@ -478,3 +478,71 @@ function LCS(X, Y, m, n):
 This allows to have a complexity of $O(m \cdot n)$ in time and space, where $m$ and $n$ are the lengths of the two sequences.
 
 Than it's possible to reconstruct the LCS by backtracking the table from `table[m, n]` to `table[0, 0]`.
+
+### BDD
+
+It's possible to represent logical functions with truth tables, but for functions with many variables this become unfeasible.
+
+A clever way is to use **binary decision diagrams** (BDD), a compressed tree representation that can perform operation without decompressing it.
+
+- _Node_: represent a variable of the function;
+- _Edge_: represent the two possible values of the variable (0 or 1);
+- _Leaf_: represent the result of the function (0 or 1).
+
+To find the evaluation of the function for a given input, start from the root node and follow the edges according to the values of the variables until reaching a leaf node that contains the result.
+
+#### Reduced and Ordered BDD
+
+BDDs must be in canonical form to be useful, this is done by applying two rules:
+
+- **Ordered Binary Decision Diagram** (OBDD): variables must appear in the same order on all paths from the root to the leaves. The order impact the size of the BDD.
+- **Reduced Binary Decision Diagram** (RBDD): minimize the BDD by:
+  - Merge identical subtrees (the subtree represent the same subfunction);
+  - Remove nodes whose children are the same (both point to the same node).
+
+#### BDD Implementation
+
+##### ITE Operator
+
+Each node can be represented with the triple $f = (v, g, h)$, where $v$ is the value of the node, $g$ is the right pointer, and $h$ is the left pointer.
+
+The **ITE** (if-then-else) operator is used to implement logical operations between BDDs.
+
+$$\text{ITE}(f, g, h) = fg + \overline{f}h$$
+
+- $f$ is the condition;
+- $g$ is the value if $f$ is true;
+- $h$ is the value if $f$ is false.
+
+##### Unique Table
+
+The unique table is used to store each node only once in the BDD.
+
+Before creating a new node, the unique table is checked to see if a node with the same triple $(v, g, h)$ already exists. If it does, the existing node is reused; otherwise, a new node is created and added to the unique table.
+
+##### Computed Table
+
+The computed table is used to store the results of operations between two BDDs to avoid re-computation.
+
+When two BDDs are combined using the ITE operator, the computed table is checked to see if the result of the operation has already been computed. If it has, the existing result is reused; otherwise, the operation is performed, and the result is stored in the computed table.
+
+#### BDD Inversion
+
+It's possible to store the inverted value of a BDD without creating a new BDD by using _complement edges_.
+
+A complement edge is a special type of edge that indicates that the value of the subtree it points to should be inverted.
+
+This is implemented by using the least significant bit of the pointer to indicate if the edge is a complement edge (1) or a normal edge (0).
+
+When traversing the BDD, if a complement edge is encountered, the value of the subtree is inverted.
+
+This is possible because the addresses of nodes are aligned to 4 bytes, so the two least significant bits are always 0.
+
+#### Reordering and Garbage Collection
+
+Since BDDs are highly shared and manipulated through pointers, memory management is necessary:
+
+- **Reference Counting**: A counter is associated with each node, tracking how many other nodes or external variables point to it. When the counter hits zero, the node is safely deleted.
+- **Mark and Sweep**: When memory runs low, the system starts from all external root pointers (the BDDs currently in use).
+  - **Mark**: Traverse the BDDs recursively, marking every reachable node.
+  - **Sweep**: Iterate through all nodes in the memory space; any node not marked is unreachable and is reclaimed (deleted).
