@@ -262,7 +262,7 @@ $$
 
 where $x^{(0)}$ can be chosen at random and $r^{(0)} = b - Ax^{(0)}$.
 
-## The Conjugate Gradient method
+## Conjugate Gradient method
 
 It can be shown that, with the gradient method, two consecutive update directions are orthogonal. The conjugate gradient method works by choosing an update direction that is orthogonal not only to the previus one but to all the previous ones.
 
@@ -289,6 +289,8 @@ $$
 $$
 
 where $x^{(0)}$ can be chosen at random and $r^{(0)} = d^{(0)} = b - Ax^{(0)}$.
+
+A variant of this method, the **Conjugate Gradient Squared method** is used to sompute the solution for a non-symmetric system (computing the solution of $A^TA x = A^T b$, which has a condition number that is the square of the condition number of $A$). This also works with [rectangular system](#overdetermined-linear-systems).
 
 ## Preconditioned gradient methods
 
@@ -418,13 +420,82 @@ $$
 \|r^{(0)}\|_2 \le \left[ \frac{K_2(A)^2 - 1}{K_2(A)^2} \right]\|r^{(0)}\|_2
 $$
 
-GMRES method (and Krylov subspace methods in general) can be restarted after a given number of iterations using as initial guess the current approximation. This is because each iteration adds some state to preserve in memory and in can quickly grow enough to become difficult to manage. When convergence is very slow, using a low restart value may speed up the process.
+GMRES method (and Krylov subspace methods in general) can be restarted after a given number of iterations using as initial guess the current approximation. This is because each iteration adds some state to preserve in memory and in can quickly grow enough to become difficult to manage. When convergence is very slow, using a low restart value may speed up the process. In general, a lower restart value will make the method run for more iteration but can still result in a lower total execution time.
 
 ## Preconditioning techniques
 
-_Coming soon_
+There are multiple preconditioners available that may help in finding a good preconditioner in specific cases. Unless otherwise specified, we assume that $A = D + U + L$ where $D$ is the diagonal part of $A$, $U$ is the upper triangular part and $L$ is the lower triangular part.
 
-<!-- TODO: 06/10/25 -->
+The idea of a preconditioner $P^{-1}$ is that it should be as similar as the inverse of $A$ as possible so that $P^{-1}A \simeq I$. To be effective, it should also be easy to compute and should make $\rho(I - P^{-1} A)$ small.
+
+### Symmetric Gauss-Seidel preconditioner
+
+$$
+P^{-1} = (D + U)^{-1} - (D + U)^{-1} L (D + L)^{-1} = (D + U)^{-1} D (D + L)
+$$
+
+Let $\tilde L = D + L$ and $\tilde U = D^{-1}(D + U)$ then if
+
+$$
+P = \tilde L \tilde U
+$$
+
+then it holds that the same preconditioner can be written as
+
+$$
+P^{-1} = \tilde U^{-1} \tilde L^{-1}
+$$
+
+### SSOR preconditioner
+
+If $A$ is symmetric then $U = L^T$. The **SSOR** preconditioner is like the symmetric Gauss-Seidel one but with a weighted diagonal.
+
+$$
+P^{-1} = \frac{\omega}{2 - \omega} \left( \frac{D}{\omega} + L^T \right)^{-1} D \left( \frac{A}{\omega} D + L \right)
+$$
+
+where $0 \lt \omega \lt 2$ is a given parameter.
+
+### ILU
+
+The **General Iterative ILU** consists in an approximate computation of $\tilde L$ and $\tilde U$ through an iterative method. Starting with $U_0 = L_0 = 0$, the update procedure is as follows:
+
+$$
+\begin{align*}
+  R &\gets A - L_0 U_0 \\
+  D &\gets \operatorname{diag}(R) \\
+  U_0 &\gets \operatorname{triu}(R) \\
+  L_0 &\gets \operatorname(tril)(R) D^{-1}
+\end{align*}
+$$
+
+After enoug iteration, the incomplete LU factorization of $A$ is given by
+
+$$
+\tilde L = L_0 + I \qquad \tilde U = U_0 + D
+$$
+
+so
+
+$$
+P = U^{-1} L^{-1}
+$$
+
+The number of iterations is denoted with $k$. When $k = 0$ then ILU is the equivalent of a symmetric Gauss-Seidel preconditioner.
+
+There exists also the **ILU with Treshold** (ILUT) preconditioner in which the complete LU factorization is computed and then only values larger that a given treshold $\varepsilon$ are memorized.
+
+### SAINV
+
+The **Symmetric Approximate INVerse** consists in the computation of an approximation of $A$:
+
+$$
+P^{-1} = \argmin_{P^{-1} S \sub \mathbb{R}^{n \times n}} \left\| I - P^{-1} A \right\|_F
+$$
+
+where the $F$ denotes the Frobenius norm.
+
+Obviously, it is not possible to obtain the perfect $P^{-1}$ but obtaining a $P^{-1}$ that makes the norm small enough is easy (once a good $S$ set is decided).
 
 # Eigenvalue problems
 

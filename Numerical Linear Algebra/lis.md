@@ -45,7 +45,7 @@ Multiple optional options can be passed to the executable:
 | `-maxiter <number>`                   | Sets the maximum number of iterations for the iterative method |
 | `-restart <number>`                   | Restart parameter for GMRES                                    |
 | `-p jacobi|sainv|ilu|ssor|ilut`       | Selects a preconditioner                                       |
-| `-ilu_fill <number>`                  |                                                                |
+| `-ilu_fill <number>`                  | Treshold for ILU                                               |
 | `-ssor_omega <number>`                |                                                                |
 
 ## Examples
