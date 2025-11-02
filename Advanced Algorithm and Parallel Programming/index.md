@@ -6,7 +6,7 @@ author:
 
 ## Random Access Machine (RAM)
 
-The _random access memory_ is a theoretical model of computation that is used to analyze sequential algorithms.
+The _random access machine_ is a theoretical model of computation that is used to analyze sequential algorithms.
 
 - **Infinity Memory**: the machine has an infinite amount of memory cells;
 - **Arbitrary Integer Size**: each memory cell can store an integer of arbitrary size;
