@@ -205,9 +205,9 @@ This process is repeated until only two nodes remain. The edges between these tw
 
 The solution might not be the best, but is feasible, the probability to find the best solution is ${Pr}\ge \frac{1}{\binom n2}$ with a complexity of $O(n^2)$.
 
-It's possible to repeat $l$ times the algorithm, keeping all the results and choosing the best one, increasing the probability to find the best solution to $1 - (1 - \frac{1}{\binom n2})^{l\binom n2}$.
+It's possible to repeat $l \cdot \binom n2$ times the algorithm, keeping all the results and choosing the best one, increasing the probability to find the best solution to $1 - (1 - \frac{1}{\binom n2})^{l\binom n2}$.
 
-Choosing $l = c \log n$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l \cdot \log n)$ (The optimal $l$ is $O(n^2 \log n)$).
+Choosing $l = c \log n$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l\binom n2 \cdot \log n)$ (The optimal $l$ is $O(n^4 \log n)$).
 
 ### Karger-Stein Algorithm
 
