@@ -478,7 +478,7 @@ $$
 so
 
 $$
-P = U^{-1} L^{-1}
+P = \tilde U^{-1} \tilde L^{-1}
 $$
 
 The number of iterations is denoted with $k$. When $k = 0$ then ILU is the equivalent of a symmetric Gauss-Seidel preconditioner.
@@ -490,7 +490,7 @@ There exists also the **ILU with Treshold** (ILUT) preconditioner in which the c
 The **Symmetric Approximate INVerse** consists in the computation of an approximation of $A$:
 
 $$
-P^{-1} = \argmin_{P^{-1} S \sub \mathbb{R}^{n \times n}} \left\| I - P^{-1} A \right\|_F
+P^{-1} = \argmin_{P^{-1} \in S \sub \mathbb{R}^{n \times n}} \left\| I - P^{-1} A \right\|_F
 $$
 
 where the $F$ denotes the Frobenius norm.
@@ -688,14 +688,16 @@ Now that we know what the Schur decomposition is, we can now intriduce the basic
 The update rule for the basic QR algorithm is as follows:
 
 $$
-Q^{(k)}, R^{(k)} \gets QR(A^{(k-1)}) \\
-A^{(k)} \gets R^{(k)} Q^{(k)} \\
-U^{(k)} = U^{(k-1)}Q^{(k)}
+\begin{align*}
+  Q^{(k)}, R^{(k)} &\gets QR(A^{(k-1)}) \\
+  A^{(k)} &\gets R^{(k)} Q^{(k)} \\
+  U^{(k)} &\gets U^{(k-1)}Q^{(k)}
+\end{align*}
 $$
 
 After the _stopping criteria_ decides that it is time to stop, the algorithm returns $T = A^{(k)}$ and $U = U^{(k)}$ such that $A = UTU^H$.
 
-From the algorithm is follows that $A^(k)$ and $A^{(k-1)}$ are similar. **This relation is transitive**: from the algorithm we know that $A^{(k-1)} = Q^{(k)} R^{(k)}$ but $Q$ is orthogonal so $R^{(k)} = [Q^{(k)}]^H A^{(k)}$ but we also know that $A^{(k)} = R^{(k)} Q^{(k)}$ so
+From the algorithm is follows that $A^{(k)}$ and $A^{(k-1)}$ are similar. **This relation is transitive**: from the algorithm we know that $A^{(k-1)} = Q^{(k)} R^{(k)}$ but $Q$ is orthogonal so $R^{(k)} = [Q^{(k)}]^H A^{(k)}$ but we also know that $A^{(k)} = R^{(k)} Q^{(k)}$ so
 
 $$
 \begin{align*}

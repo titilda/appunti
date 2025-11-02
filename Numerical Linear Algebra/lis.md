@@ -44,9 +44,12 @@ Multiple optional options can be passed to the executable:
 | `-tol <tolerance>`                    | Sets the tolerance for the iterative method                    |
 | `-maxiter <number>`                   | Sets the maximum number of iterations for the iterative method |
 | `-restart <number>`                   | Restart parameter for GMRES                                    |
-| `-p jacobi|sainv|ilu|ssor|ilut`       | Selects a preconditioner                                       |
+| `-p jacobi|sainv|ilu|ssor|ilut|saamg` | Selects a preconditioner                                       |
 | `-ilu_fill <number>`                  | Treshold for ILU                                               |
 | `-ssor_omega <number>`                |                                                                |
+| `-adds true`                          | Enables Additive Schwarz                                       |
+| `-adds_iter <number>`                 | Sets additive Schwarz iterations                               |
+| `-saamg_unsym true|false`             | Tells saamg to use or not the symmetric version                |
 
 ## Examples
 
