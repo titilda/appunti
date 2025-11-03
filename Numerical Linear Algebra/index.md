@@ -976,6 +976,8 @@ Obviously, one cannot process two subdomains that are connected at the same time
 
 Domain decomposition problems suffers from weak scalability: adding processors (without changing the amount of data to be processed) will be less and less effective.
 
+It is possible to increase the ADDS parameter: if ADDS works, the most likely increasing the parametere wil make it work better but the overhead to compute the preconditioner at each iteration increases.
+
 # Direct methods for linear systems
 
 Direct methods consists in the factorization of the matrix into other matrices that are easier to deal with. For example we can use **LU factorization** or **Cholesky factorization**.
