@@ -12,7 +12,7 @@ In this file there will be first an overview of the notation and the basics prer
 
 The main objective on the **Numerical Linear Algebra** is to solve linear systems in the form of $Ax = b$ in the fastest and most precise way possible. This is because the calculation of $x = A^{-1}b$ is really slow and may introduce a lot of error, expecially during the calculation of $A^{-1}$.
 
-To better understand this summary, it may be helpsul to read [Foncamenti di Calcolo Numerico](/Fondamenti%20di%20Calcolo%20Numerico/index.html), [Logica e Algebra](/Logica%20e%20Algebra/index.html) and [Geometria e Algebra Lineare](/Geometria%20e%20Algebra%20Lineare/index.html).
+To better understand this summary, it may be helpful to read [Fondamenti di Calcolo Numerico](/Fondamenti%20di%20Calcolo%20Numerico/index.html), [Logica e Algebra](/Logica%20e%20Algebra/index.html) and [Geometria e Algebra Lineare](/Geometria%20e%20Algebra%20Lineare/index.html).
 
 To have hands-on practice on the topics of this subject, it it suggested to play around with MATLAB/Octave, Eigen and LIS. A rudimental LIS cheatsheet is avaliable [here](./lis.html). A rudimental "Eigen by examples" is available [here](./eigen.html).
 
@@ -32,7 +32,7 @@ A matrix $A \in A \in \mathbb{R}^{n \times n}$ is nilpotent if $\exists k \in \m
 
 If $\exists x \in \mathbb{R}^n : x \ne 0, Ax = 0$ then $A$ is not invertible.
 
-A matrix $A \in A \in \mathbb{R}^{n \times n}$ is orthogonal if $A^T = A^-1$.
+A matrix $A \in A \in \mathbb{R}^{n \times n}$ is orthogonal if $A^T = A^{-1}$.
 
 A matrix $U$ is an **unitary** upper triangular matrix if it is upper triangular and has only ones on the diagonal. The definition is analog for the unitary lower triangular matrix.
 
@@ -105,7 +105,7 @@ A consistent iterative method converges if and only if $\rho(B) \lt 1$.
 
 We know that $\rho(B) \ge \|B\|$ so $\exists \|\cdot\| : \|B\| \lt 1 \implies \rho(B) \lt 1$ and the theorem is applicable.
 
-An iterative method can always be implemented using the followinfg pseudocode struture
+An iterative method can always be implemented using the following pseudocode structure
 
 ```
 while (stopping criteria is not met)
@@ -137,7 +137,7 @@ $$
 $$
 :::
 
-The following theorem resumes three contitions that are sifficient to prove convergence in various cases.
+The following theorem resumes three contitions that are sufficient to prove convergence in various cases.
 
 ::: {.callout .callout-theorem title="Sufficient conditions for convergence"}
 - If $A$ is strictly diagonally dominant by columns, then both methods are convergent;
@@ -396,7 +396,7 @@ Krylov-space solvers can be used when $A$ is not symmetrical. The two main metho
 
 ### BiConjugate Gradient method
 
-The **BiConjucate Gradient** method exploits the **shadow residuals** and the **shadow directions** obtained by solving the sistem obtained by transposing both sides:
+The **BiConjucate Gradient** method exploits the **shadow residuals** and the **shadow directions** obtained solving the sistem obtained transposing both sides:
 
 $$
 Ax = b \mapsto [Ax]^T = b^T \iff x^Ta^T = b^T \iff \hat x \hat A = \hat b
@@ -465,7 +465,7 @@ $$
   R &\gets A - L_0 U_0 \\
   D &\gets \operatorname{diag}(R) \\
   U_0 &\gets \operatorname{triu}(R) \\
-  L_0 &\gets \operatorname(tril)(R) D^{-1}
+  L_0 &\gets \operatorname{tril}(R) D^{-1}
 \end{align*}
 $$
 
@@ -557,7 +557,7 @@ $$
 Ax^{(k)} = \alpha_1 \lambda_1^k \left( v_1 + \sum_{i=2}^n \frac{\alpha_i}{\alpha_1} \left( \frac{\lambda_i}{\lambda_1} \right)^k v_i \right) \underset{k \to \infty}{\longrightarrow} \alpha_1 \lambda_1^k v_1
 $$
 
-hence, the dominant eigenvalue will dominate over all the other.
+hence, the dominant eigenvalue will dominate over all the others.
 
 Normalization is performed every step in the algoritm to prevent numbers from exploding.
 
@@ -635,7 +635,7 @@ It is possible to use the shift with the non inverted power method to find the e
 
 QR factorization is used when _all_ the eigenpairs are needed. The _full_ QR factorization consists in finding two matrices $Q \in \mathbb{R}^{m \times m}$ and $R \in \mathbb{R}^{m \times n}$ such that $Q$ is orthogonal and $R$ is upper trapeziodal.
 
-Once the two matrices are found, one can chop them to obtain $\hat Q \in \mathbb{R}^{m \times n}$ (obtained chopping the rightmost columns) and $\hat R \in \mathbb{R}^{n \times n}$ (obtained by chopping the lowest rows): this is called **reduced QR factorization**.
+Once the two matrices are found, one can chop them to obtain $\hat Q \in \mathbb{R}^{m \times n}$ (obtained chopping the rightmost columns) and $\hat R \in \mathbb{R}^{n \times n}$ (obtained chopping the lowest rows): this is called **reduced QR factorization**.
 
 It holds that
 
@@ -652,7 +652,7 @@ The QR algorithm is based on the **Gram-Schmidt orthogonalization**: let $A = [a
 - $$
   r_{ij} = \begin{cases}
     \overline q_i^T a_j & i \ne j \\
-    \left\| a_j - \sum_{i=1}^{j-1}r_{ij} qi \right\| & i = j
+    \left\| a_j - \sum\limits_{i=1}^{j-1}r_{ij} qi \right\| & i = j
   \end{cases}
   $$
 
@@ -669,7 +669,7 @@ $$
 
 To use the **QR algorithm** to actually compute all the eigenvalues, the Schur decomposition must be introduced.
 
-Let $A \in \mathbb{C}^{n \times n}$, then there exists a unitary matrix $U \in \mathbb{C}^{n \times n}$ such that $U^HAU = T$ where $T$ is upper triangulas and contains the eigenvalues of $A$ in its diagonal. This decomposition is called **Schur Decomposition**. The vectors $u_i$ that composes the $U$ matrix are called **Schur vectors**.
+Let $A \in \mathbb{C}^{n \times n}$, then there exists a unitary matrix $U \in \mathbb{C}^{n \times n}$ such that $U^HAU = T$ where $T$ is upper triangular and contains the eigenvalues of $A$ in its diagonal. This decomposition is called **Schur Decomposition**. The vectors $u_i$ that composes the $U$ matrix are called **Schur vectors**.
 
 From $U^HAU = T$ it follows that
 
@@ -747,7 +747,7 @@ Assume $A$ is full rank. Since $A$ is full rank, there exists its QR decompositi
 This means that
 
 $$
-\|Ax = b\|_2^2 = \|Q^t(Ax - b)\|_2^2 = \|Q^T(QRx - b)\|_2^2 = \|Rx - Q^Tb\|_2^2
+\|Ax - b\|_2^2 = \|Q^T(Ax - b)\|_2^2 = \|Q^T(QRx - b)\|_2^2 = \|Rx - Q^Tb\|_2^2
 $$
 
 Since $R$ is upper trapezoidal
@@ -836,7 +836,7 @@ Multigrid methods always converge.
 
 # Algebraic multigrid methods
 
-**Algebraic multigrid methods** are very similar to the normal multigrid methods except that we do not rely on the fact that we know the geometry of the problem. While with normal multigrid methods we use different-sized grids obtained by changing the _sampling rate_ of the function to sample, with purely algebraic methods, we go coarser and finer using pure math.
+**Algebraic multigrid methods** are very similar to the normal multigrid methods except that we do not rely on the fact that we know the geometry of the problem. While with normal multigrid methods we use different-sized grids obtained changing the _sampling rate_ of the function to sample, with purely algebraic methods, we go coarser and finer using pure math.
 
 The same three operations as in the normal method version needs to be redefined, the algorithm is the same.
 
@@ -865,7 +865,7 @@ The "how to choose a vertex" depends on the algorithm used (e.g. C-AMG).
 
 For each vertex $i$, let:
 
-- $N_i = \left{ j \ne i : a_{i,j} \ne 0 \right}$: the set of vertices connected to $i$;
+- $N_i = \left\{ j \ne i : a_{i,j} \ne 0 \right\}$: the set of vertices connected to $i$;
 - $C$, $F$: the set of categorized vertices as per above algorithm;
 - $C_i = C \cap N_i$: the set of C vertices strongly connected to $i$;
 - $C_i^S = C \cap S_i$;
@@ -909,7 +909,7 @@ The equivalent of the Gauss-Seidel method to solve said EDO is an iteratice meth
 $$
 \begin{cases}
   Lu_1^{\left( k + \frac{1}{2} \right)} = f & \text{in } \Omega_1 \\
-  u_1^{(\left( k + \frac{1}{2} \right))} = g & \text{in } \partial\Omega_1\backslash \Gamma_1 \\
+  u_1^{\left( k + \frac{1}{2} \right)} = g & \text{in } \partial\Omega_1\backslash \Gamma_1 \\
   u_1^{\left( k + \frac{1}{2} \right)} = u_2^{(k)} & \text{in } \Gamma_1
 \end{cases} \qquad \begin{cases}
   Lu_2^{(k+1)} = f & \text{in } \Omega_2 \\
@@ -976,7 +976,7 @@ Obviously, one cannot process two subdomains that are connected at the same time
 
 Domain decomposition problems suffers from weak scalability: adding processors (without changing the amount of data to be processed) will be less and less effective.
 
-It is possible to increase the ADDS parameter: if ADDS works, the most likely increasing the parametere wil make it work better but the overhead to compute the preconditioner at each iteration increases.
+It is possible to increase the ADDS parameter: if ADDS works, then, most likely, increasing the parameter will make it work better, but the overhead to compute the preconditioner at each iteration will increase.
 
 # Direct methods for linear systems
 
@@ -1011,7 +1011,7 @@ $$
 A LU factorization for a matrix $A$ exists for sure if $A$ is strictly diagonally dominant or if $A$ is SPD.
 :::
 
-If $A$ is SPD then it is more conveniennt to use the **Cholesky factorization**: a type of factorization that produces a unique upper triangular matrix $R$ such that $A ? R^T R$.
+If $A$ is SPD then it is more conveniennt to use the **Cholesky factorization**: a type of factorization that produces a unique upper triangular matrix $R$ such that $A = R^T R$.
 
 The computational cost for both factorizations is in the order of $O(n^3)$ but while LU cost grows like $\frac{2}{3}n^3$, Cholesky cost grows like $\frac{1}{3}n^3$.
 
