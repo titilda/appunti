@@ -73,10 +73,10 @@ Multiple options can be passed to the executable:
 | -------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `-e pi|ii|cr|rqi|si|li|ai` | Selects the eigensolver                                                                                |
 | `-i`, `-p`                 | Options for the linear solver used by the method. Same options as here [here](#linear-system-solution) |
-| `-emaxiter <number>`       |                                                                                                        |
-| `-etol <number>`           |                                                                                                        |
-| `-shift <number>`          |                                                                                                        |
-| `-ie cg|ii|rqi`            |                                                                                                        |
-| `-ss <number>`             |                                                                                                        |
+| `-emaxiter <number>`       | Sets the maximum number of iterations for the eigensolver                                              |
+| `-etol <number>`           | Sets the tolerance for the eigensolver                                                                 |
+| `-shift <number>`          | Sets the shift value for the inverse power method                                                      |
+| `-ie cg|ii|rqi`            | Sets the method for the error correction |
+| `-ss <number>`             | Sets the number of eigenvalues to approximate                                                          |
 
 _Work in progress_
