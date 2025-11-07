@@ -6,7 +6,7 @@ author:
 
 # Introduction
 
-This course is the continuation of [Foncamenti di Calcolo Numerico](/Fondamenti%20di%20Calcolo%20Numerico/index.html). The needed concept from that subject will be revised when needed.
+This course is the continuation of [Fondamenti di Calcolo Numerico](/Fondamenti%20di%20Calcolo%20Numerico/index.html). The needed concept from that subject will be revised when needed.
 
 In this file there will be first an overview of the notation and the basics prerequisites on matrices and then the main topics.
 
