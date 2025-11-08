@@ -310,3 +310,38 @@ Paths can be optimized if some are a subset of others.
   - **Per-Source Routing** (PSR): each broker store a routing table with $<source, \text{next hop}, \text{event type}>$.
   - **Improved Per-Source Forwarding** (iPSF): an optimized version of PSR that aggregate indistinguishable sources.
   - **Per-Receiver Forwarding** (PRF): each broker store all the events that a specific broker is interested in and in another table the next hop to reach that broker.
+
+### Stream Oriented communication
+
+**Stream-Oriented Communication** involves transmitting a continuous, _ordered_ sequence of data from a source to a sink. This model is essential for multimedia and real-time applications where the timing of the data arrival is often as critical as its content.
+
+#### Timing Constraints
+
+In streaming, the correctness of the communication is heavily impacted by time, leading to three classifications based on timing guarantees:
+
+- **Asynchronous**: Data are transmitted without any timing constraint;
+- **Synchronous**: there is a max delay between the sending and receiving of data;
+- **Isochronous**: there is a min and a max time constraint between the sending and receiving of data, limiting the delay variation (_jitter_).
+
+#### Quality of Service (QoS)
+
+The network doesn't guarantee the _Quality of the service_. Some metrics that need management:
+
+- Bit Rate: The guaranteed data rate.
+- Latency/Delay: Time to set up the connection and receive data.
+- Jitter: The variance in delay ($\Delta D$) between consecutive data units.
+
+Streaming is implemented using UDP instead of TCP. This is because, for real-time data, a retransmitted packet is useless, as it arrives too late for playback. UDP's speed and lack of automatic retransmission make it suitable.
+
+The QoS are managed client and server side using different techniques:
+
+- **Buffering**: the client stores incoming data in a buffer and the playback starts only after is filled after a threshold, dynamically adjusted based on network conditions. This is done to smooth out jitter;
+- **Forward Error Connection**: if the application enters in an invalid state, it will go to the next valid state, instead of asking back the missing one. Missing data are concealed using interpolation or extrapolation techniques;
+- **Interleaving data**: data are not sent sequentially. A single network packet contains non-consecutive fragments of multiple frames. If the packet is lost, only some non-consecutive frames are lost, which can be concealed more easily;
+
+#### Multiple Streams Synchronization
+
+Is possible that multiple streams need to be synchronized (e.g., audio and video). This can be done:
+
+- **Client-side**: The client uses timestamps to synchronize streams during playback. Each stream includes timing information, allowing the client to align data from different streams.
+- **Server-side**: The server merges streams before transmission.
