@@ -407,3 +407,108 @@ In this model, each directory node maintains information about its children and 
 Once resolved, the address is returned along the path, and intermediate nodes can cache the result for future queries to improve performance.
 
 This approach excels in local domains, where queries are confined to nearby branches, reducing global network traffic. However, it can suffer from bottlenecks at higher-level nodes if not balanced properly.
+
+### Structured Naming
+
+**Structured Naming** organizes system entities into a **Name Space**, a logical structure. Unlike flat naming, the name itself carries information about the entity's position within the structure.
+
+A name space is a labeled, graph composed of:
+
+- **Leaf Nodes**: Represent the actual named entities (hosts, files, services).
+- **Directory Nodes**: Nodes that contain references (links) to other nodes (both leaf and directory) within the name space.
+
+An entity is uniquely identified by a **Path Name**, a sequence of directory node labels that traces a route from the root to the leaf node.
+
+Inside the name space, there can be:
+
+- **Hard Links**: Leaf nodes can be reached by multiple paths, making the name space a general graph.
+- **Symbolic Links**: A special type of leaf that store the path to another node.
+
+An example of structured name is the filesystem.
+
+```mermaid
+graph TD
+  A[root] --> B[home]
+  A --> C[etc]
+  A --> D[var]
+  B --> E[user1]
+  B --> F[user2]
+  E --> G[documents]
+  E --> H[pictures]
+  G --> I[file1.txt]
+  G --> J[file2.txt]
+  H --> K[image1.jpg]
+  F --> L[downloads]
+  L --> M[app.exe]
+
+```
+
+#### Partitioning
+
+Thanks to the structured nature of the name space, it's possible to partition the name space into layers. Each host can know only part of the names.
+
+- _Global Level_: Manages the root of the name space and points to a few highly stable, high-level directory nodes (e.g., top-level domains like `.com`, `.org`). Resolution is worldwide;
+- _Administrational Level_: Managed by large organizations (e.g., network service providers or universities). It manages many regional or organization-specific nodes;
+- _Managerial Level_: low level directory within a single administration. It manages the majority of department nodes.
+
+#### Resolution
+
+The resolution can happen with two methods:
+
+- **Iterative**: The client queries the root, which replies with the address of the next server (a referral). The client then contacts that next server, repeating until the leaf is reached. This method increases the number of messages for the client but reduces the load on the name server.
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant Root Server
+  participant Intermediate Server
+  participant Leaf Server
+
+  Client->>Root Server: Query for name resolution
+  Root Server-->>Client: Referral to Intermediate Server
+  Client->>Intermediate Server: Query for name resolution
+  Intermediate Server-->>Client: Referral to Leaf Server
+  Client->>Leaf Server: Query for name resolution
+  Leaf Server-->>Client: Resolved address
+```
+
+- **Recursive**: The client contacts the root node that will contact the next node on behalf of the client. This continues until the leaf is reached. This method reduces the number of messages and allow caching but increases the load on the name server.
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant Root Server
+  participant Intermediate Server
+  participant Leaf Server
+
+  Client->>Root Server: Query for name resolution
+  Root Server->>Intermediate Server: Query for name resolution
+  Intermediate Server->>Leaf Server: Query for name resolution
+  Leaf Server-->>Intermediate Server: Resolved address
+  Intermediate Server-->>Root Server: Resolved address
+  Root Server-->>Client: Resolved address
+```
+
+Higher-level directory nodes change infrequently, so their resolution results can be cached for long durations (high TTL). Lower-level nodes must update immediately for system changes, requiring short TTLs.
+
+Root servers are heavily mirrored worldwide and often share the same IP address. **IP Anycast** routes a request to the nearest operational server, distributing the load and improving global response time.
+
+#### Structured vs flat name
+
+- Structured name are easier to manage and scale as the name space can be partitioned among multiple nodes. Each node is responsible for a small part of the name space, reducing the load on each node. Caching works well due to locality and stability.
+- Flat name are good for small system as in a worldwide system the amount of names is huge and each node should store all the names.
+
+#### DNS
+
+An example of distributed name system is the **DNS**.
+
+The DNS nodes could be of different types:
+
+- **A** (Address record): Maps a domain name (host name) to an IPv4 address.
+- **AAAA** (Address record): Maps a domain name to an IPv6 address.
+- **NS** (Name Server record): Specifies the authoritative name server for a given domain/zone. Used in recursive resolution.
+- **MX** (Mail Exchange record): Specifies the mail server responsible for accepting email messages for the domain.
+- **CNAME** (Canonical Name record): Creates an alias from one domain name to another (the canonical name).
+- **TXT** (Text record): Holds arbitrary, human-readable text information. Often used for verification and security records (e.g., SPF, DKIM).
+
+The DNS doesn't work well with mobility.
