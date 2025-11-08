@@ -345,3 +345,65 @@ Is possible that multiple streams need to be synchronized (e.g., audio and video
 
 - **Client-side**: The client uses timestamps to synchronize streams during playback. Each stream includes timing information, allowing the client to align data from different streams.
 - **Server-side**: The server merges streams before transmission.
+
+## Naming
+
+In a distributed system, **naming** is the mechanism used to reference and locate system entities, which can range from physical hosts, files, and services to users and abstract processes.
+
+Names can be _human-friendly_ (e.g., "www.example.com") or _machine-friendly_ (e.g., IP addresses).
+
+A name can also be _global_ (unique across the entire system) or _local_ (unique within a specific context or domain).
+
+The **address** is the actual location of the entity in the network (e.g., an IP address) and it can be mutable and change over time.
+
+An entity must be identified by an immutable _Identifier_ and a using a **name resolution** to convert that name to an address.
+
+Name resolution can be performed in different ways:
+
+### Flat Naming
+
+A name is **flat** if it is a simple sequence of characters that contains no structural or topological information about the entity's location.
+
+#### Simple Solution
+
+This method is suitable only for small-scale, local area environments where network traffic is manageable.
+
+To locate an entity with a specific name, a request is broadcasted to all hosts on the local network segment. The host that recognizes the name responds with its address.
+
+An example is ARP, that broadcasts a request to find the MAC address associated with an IP address.
+
+#### Home Based
+
+This strategy handle **mobility** by having a fixed home address for each entity.
+
+When an entity moves to a new location, it registers its new address with its home server.
+
+When another entity wants to communicate with it, it first contacts the home server that return a **Forwarding Pointer** (the current address) allowing direct communication.
+
+This adds an extra step (the trip to the Home Host) to every connection setup, increasing latency
+
+#### Distributed Hash Table
+
+**DHTs** create a scalable, decentralized system for mapping flat names (keys) to addresses (values) across thousands of nodes.
+
+Each node in the DHT is assigned a unique identifier (ID) from the same address space as the keys. Than the key space is partitioned among the nodes based on the hash of the key (the first node with the id greater than the key is responsible for that key).
+
+The nodes form an _overlay network_, organized as a logical ring.
+
+Finding the node responsible for a key can be done with different strategies:
+
+- **Chord**: each node knows only its successor and predecessor. To find a key the request is forwarded to the successor until the node is found. This is inefficient as it requires $O(N)$ hops in the worst case.
+- **Chord finger table**: each node maintains a finger table with $O(log N)$ entries, each pointing to a node at a distance of $2^i$ from itself. This allows to find the key in $O(log N)$ hops.
+
+#### Hierarchical
+
+Hierarchical distribution organizes names into a tree-like structure, where each subtree represents a directory and entities (such as files or services) are leaves.
+
+In this model, each directory node maintains information about its children and parent. When resolving a name, the process follows these steps:
+
+- If a node knows of a child that knows the address of the requested entity, it forwards the request directly to that child.
+- If not, it forwards the request to its parent node, which repeats the process until the root or a node with the information is reached.
+
+Once resolved, the address is returned along the path, and intermediate nodes can cache the result for future queries to improve performance.
+
+This approach excels in local domains, where queries are confined to nearby branches, reducing global network traffic. However, it can suffer from bottlenecks at higher-level nodes if not balanced properly.
