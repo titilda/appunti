@@ -539,3 +539,31 @@ The DNS nodes could be of different types:
 - **TXT** (Text record): Holds arbitrary, human-readable text information. Often used for verification and security records (e.g., SPF, DKIM).
 
 The DNS doesn't work well with mobility.
+
+### Attribute Based Naming
+
+**Attribute-Based Naming** allows entities to be located using a set of descriptive attributes (properties) instead of, or in addition to, their fixed names.
+
+This approach is essential for large, complex systems where users often search for entities based on their characteristics. These systems are commonly referred to as **Directory Services** and are implemented using DBMS technologies.
+
+The entire collection of entities and attributes is called the **Directory Information Base** (DIB).
+
+The entities are organized in a hierarchical structure known as the **Directory Information Tree** (DIT), similar to structured naming.
+
+It's possible to perform two operations:
+
+- _Lookups_: finds a single record when the full, unique set of attributes is provided.
+- _Search_: finds all records that match a given set of attribute predicates.
+
+#### LDAP
+
+An example of attribute based naming system is **LDAP** (Lightweight Directory Access Protocol) where each entity is identified by a _Distinguished Name_ (DN).
+
+An example is: `cn=John Smith,ou=Engineering,o=ExampleCorp,c=US`
+
+Where:
+
+- `cn` (Common Name): The name of the individual (e.g., John Smith).
+- `ou` (Organizational Unit): The department or unit within the organization (e.g., Engineering).
+- `o` (Organization): The name of the organization (e.g., ExampleCorp).
+- `c` (Country): The country code (e.g., US for the United States).
