@@ -242,3 +242,71 @@ Using a Lightweight RPC that use a shared memory accessible from the middleware.
 The communication is done through method calls on remote objects (**Stub**) that acts as if they were local. This is done because it's not possible to pass objects by value between two different machines that might use different programming languages.
 
 In java RMI, as both the client and the server use the same language, it's possible to pass objects, but the code must be available or downloaded dynamically.
+
+### Message Oriented Communication (MOC)
+
+**Message Oriented Communication** is a foundational style in distributed systems, where interaction is based on the asynchronous exchange of discrete, self-contained messages. It is generally a one-way interaction, often based on events.
+
+#### Basic Message Passing
+
+The most fundamental form of MOC uses low-level **socket programming**, relying on the _Operating System_ primitives for communication.
+
+- **Transmission Control Protocol** (TCP) Sockets: Provide a connection-oriented, reliable communication channel between two processes (point-to-point).
+- **User Datagram Protocol** (UDP) Sockets: Provide a connectionless, unreliable connection. A single socket can receive messages from multiple clients. They support broadcast and multicast addressing.
+
+#### Message Passing Interface (MPI)
+
+**Message Passing Interface** (MPI) is a library that provides a rich set of primitives to manage communication in parallel and distributed systems.
+
+It allows to control the _synchronization level_ of the communication and avoids explicit serialization of data.
+
+Messages can be sent in broadcast or scattered between multiple processes to perform parallel computation.
+
+#### Message Queueing
+
+**Message Queueing** is a system that introduces a persistent storage between the client and the server (queue) to store messages.
+
+This allows to **decouple** the client and the server in _time_ and _space_.
+
+The client _push_ messages in the queue and the server _pop_ messages from the queue asynchronously and they act as peers.
+
+Inside the system there could be multiple queues identified by a name that can be statically or dynamically created.
+
+This decoupling allows to scale the system easily by adding more servers to process the incoming messages.
+
+In the system there could be managers that act as relay between multiple queues to create complex topologies, increasing the fault tolerance.
+
+#### Publish-Subscribe
+
+The **publish-subscribe** model is an event-driven architecture where _publishers_ generate events/messages without knowing who the receivers are, and _subscribers_ express interest in events without knowing who published them.
+
+This allows to decouple the event with the space but the communication is _transient_ as only online subscribers will receive the messages.
+
+A component can subscribe based on:
+
+- **subject-based** (topic-based): Subscribers express interest in a predefined category or topic (e.g., subscribing to the "Stock Market/Technology" topic). This is efficient for the dispatcher to process but less expressive.
+- **content-based**: Subscribers provide a predicate (a condition) over the content of the message (e.g., subscribing to "Stock Market/Technology where Price $> 100$ AND Volume $> 1M$"). This is more expressive but significantly more expensive for the dispatcher to process.
+
+The core component of this architecture is the **Event Dispatcher** (broker) that manage the subscriptions and the notifications.
+
+A **Complex Event Processing** system is often layered on top of the dispatcher. It analyzes streams of incoming simple events to detect patterns, correlations, or anomalies, and then generates a single, higher-level complex event (e.g., detecting "Fire" from simple events like "Smoke detected" and "High Temperature reading").
+
+#### Distributed Publish-Subscribe
+
+To overcome the Event Dispatcher bottleneck, a distributed architecture is organized into a _network_ of message brokers and the message is forwarded across the network using different strategies.
+
+For **acyclic** graphs:
+
+- **Message Forwarding**: Each broker only knows its local subscribers. When an event arrives, the broker forwards it to all neighboring brokers and all local subscribers. With this strategy the subscription is cheap as the subscription is stored locally, but the message need to be flood.
+- **Subscription Forwarding**: Subscriptions are forwarded up the network hierarchy or to neighbors. Each broker maintains a routing table showing which neighbors have expressed interest in a given subscription. In this way the message is sent only to the interested brokers, reducing the amount of message, but increasing the subscription cost.
+- **Hierarchical Forwarding**: Brokers are organized into a hierarchy with a single Root Broker. Subscriptions flow up to the root. Messages flow up to the point where a common interested path is found, then travel down to the subscribers. Good locality and efficient event forwarding, but high load and centralization risk on the root broker.
+
+Paths can be optimized if some are a subset of others.
+
+**Cyclic** topologies are more _fault-tolerant_ but introduce the problem of _message loops_ (flooding) and uncertainty about delivery paths.
+
+- **Distributed Hash Table** (DHT): Each broker is assigned an ID. Events are hashed to find the successor node (node with an ID greater or equal). The message is routed towards this successor, and routing information is collected along the way to guide the message to actual subscribers.
+- **Content-Based Routing**: each broker store a routing table to forward the message based on the content of the message, creating a spanning tree.
+  - **Per-Source Routing** (PSR): each broker store a routing table with $<source, \text{next hop}, \text{event type}>$.
+  - **Improved Per-Source Forwarding** (iPSF): an optimized version of PSR that aggregate indistinguishable sources.
+  - **Per-Receiver Forwarding** (PRF): each broker store all the events that a specific broker is interested in and in another table the next hop to reach that broker.
