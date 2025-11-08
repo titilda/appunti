@@ -270,6 +270,12 @@ This allows to **decouple** the client and the server in _time_ and _space_.
 
 The client _push_ messages in the queue and the server _pop_ messages from the queue asynchronously and they act as peers.
 
+```mermaid
+graph TD
+  A[Client] -->|Pushes Message| B[Message Queue]
+  B -->|Pops Message| C[Server]
+```
+
 Inside the system there could be multiple queues identified by a name that can be statically or dynamically created.
 
 This decoupling allows to scale the system easily by adding more servers to process the incoming messages.
@@ -281,6 +287,15 @@ In the system there could be managers that act as relay between multiple queues 
 The **publish-subscribe** model is an event-driven architecture where _publishers_ generate events/messages without knowing who the receivers are, and _subscribers_ express interest in events without knowing who published them.
 
 This allows to decouple the event with the space but the communication is _transient_ as only online subscribers will receive the messages.
+
+```mermaid
+graph TD
+  A[Publisher] -->|Publishes Event| B[Event Broker]
+  B -->|Notifies| C[Subscriber 1]
+  B -->|Notifies| D[Subscriber 2]
+  B -->|Notifies| E[Subscriber 3]
+  F[Publisher 2] -->|Publishes Event| B
+```
 
 A component can subscribe based on:
 
@@ -374,13 +389,25 @@ An example is ARP, that broadcasts a request to find the MAC address associated 
 
 #### Home Based
 
-This strategy handle **mobility** by having a fixed home address for each entity.
+This strategy handles **mobility** by having a fixed home address for each entity.
 
 When an entity moves to a new location, it registers its new address with its home server.
 
-When another entity wants to communicate with it, it first contacts the home server that return a **Forwarding Pointer** (the current address) allowing direct communication.
+When another entity wants to communicate with it, it first contacts the home server that returns a **Forwarding Pointer** (the current address) allowing direct communication.
 
-This adds an extra step (the trip to the Home Host) to every connection setup, increasing latency
+This adds an extra step (the trip to the Home Host) to every connection setup, increasing latency.
+
+```mermaid
+sequenceDiagram
+  participant EntityA as Entity A
+  participant HomeServer as Home Server
+  participant EntityB as Entity B
+
+  EntityA->>HomeServer: Register new address (after moving)
+  EntityB->>HomeServer: Query for Entity A's address
+  HomeServer-->>EntityB: Return forwarding pointer (current address)
+  EntityB->>EntityA: Communicate directly using forwarding pointer
+```
 
 #### Distributed Hash Table
 
