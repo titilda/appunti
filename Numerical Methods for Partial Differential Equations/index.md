@@ -82,10 +82,12 @@ flowchart LR
     id1[Strong problem]
     id2[Weak problem]
     id3[Galerkin problem]
-    id4[Discretized problem]
+    id4[Algebraic problem]
 
     id1-->id2-->id3-->id4
 ```
+
+### Getting to the algebraic problem
 
 The **strong problem** is the problem as it was defined before:
 
@@ -133,11 +135,69 @@ $$
 
 $a$ is a [bilinear form](#forms) and $F$ is a [linear functional](#functionals).
 
-As the weak problem must be solved $\forall v \in V$, it has infinitely many solutions. We do not like that.
+As the weak problem must be solved $\forall v \in V$, it has infinitely many solutions. We do not like that, so we restrict the space in which the solution lies to a smaller, finite dimension one.
+
+Let $V_h \sub V$ be a finite-dimension function space, then the problem can be rewritten in the **Galerkin form**
+
+$$
+\text{Find $u_h \in V_h$ s.t. } a(u_h, v_h) = F(v_h) \qquad \forall v_h \in V_h
+$$
+
+Since $V_h$ has a finite number of dimensions, then it admits a basis $\{\varphi_j\}_{j=1}^{N_h}$ such that
+
+$$
+u_h(x) = \sum_{j=1}^{N_h} u_j \varphi_j(x)
+$$
+
+By exploiting the linearity of $a$ and $F$, then the problem can be rewritten again as multiple simpler equations, one for each element of the basis:
+
+$$
+a\left( \sum_{j=1}^{N_h} u_j \varphi_j, \varphi_i \right) = F(\varphi_i) \iff \sum_{j=1}^{N_h} u_j a(\varphi_j, \varphi_i) = F(\varphi_i) \qquad \forall i = 1, 2, \dots, N_h
+$$
+
+This can also be rewritten as $A \vec u = \vec F$ (**algebraic form**). The algebraic form is a _simple_ (and, usually, [megachonk](https://www.reddit.com/r/Chonkers/)) linear system so you can [have](/Fondamenti%20di%20Calcolo%20Numerico/index.html) [fun](/Numerical%20Linear%20Algebra/index.html) solving it.
+
+### Construction of $V_h$
+
+Let
+
+$$
+\begin{align*}
+  \mathscr{T}_h &= \left\{ k_j : \bigcup_{i=1}^{N_h} k_i = \Omega, k_i \cap k_j = \empty \ \forall i, j \in 1, 2, \dots, N_h, i \ne j \right\} \\
+  X_h &= \left\{ v_h \in \Omega \to \mathbb{R} \middle| v \in \mathcal{C}^0(\Omega), {v_h}\big|_{k_j} \in \mathbb{P}^g(k_j)\ \forall j \right\}
+\end{align*}
+$$
+
+We split $\Omega$ in $N_h$ $h$-wide elements.
+
+We want $v_h \in V_h$ to be a _piecewise polynomial_ (i.e. continuous in each element) of degree $g$ on $\Omega$ such that $v_h(\Gamma_D) = 0$:
+
+$$
+V_h = \left\{ v_h \in X_h : v_h(\Gamma_D) = 0 \right \}
+$$
+
+The basis of $V_h$ can be expressed as
+
+$$
+\varphi_h \in X_h : \varphi_j(x_i) = \delta_{ij} = \begin{cases}
+  0 & i \ne j \\
+  1 & \text{otherwise}
+\end{cases}
+$$
+
+Therefore
+
+$$
+v_h(x) = \sum_{j=1}^{N_h} v_j \varphi_j(x) \implies v_h(x_i) = v_i
+$$
+
+The error in the discretization is bounded: $\|u - u_h\| \le C \cdot h$.
+
+_To be continued_
 
 ## Multidimensional elliptic PDEs
 
-_To be continued_
+_TODO_
 
 # Appendix
 
@@ -208,6 +268,30 @@ The integral is to be considered a _Lebesgue_ integral.
 
 If $u, v \in L^2$ then $u' \cdot v' \in L^1$.
 
+$L^2$ is an Hilbert space where
+
+$$
+\lang f, g \rang_{L^2(\Omega)} = \int_\Omega f(x)g(x) \, d\Omega \\
+\|f\|_{L^2(\Omega)} = \sqrt{\lang f, f \rang_{L^2(\Omega)}}
+$$
+
 ## Forms
 
+A **form** $a$ is a relation $a : V \times V \to \mathbb R$ (where $V$ is a function space).
+
+A form $a$ is called **bilinear** if
+
+$$
+a(\lambda u + \mu w, v) = \lambda a(u, v) + \mu a(w, v) \\
+a(u, \lambda w + \mu v) = \lambda a(u, w) + \mu a(u, v)
+$$
+
+A form $a$ is called **coercive** if
+
+$$
+\exists \alpha \gt 0 : a(v, v) \gt \alpha \|v\|_V^2
+$$
+
 ## Functionals
+
+_TODO_
