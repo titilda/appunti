@@ -620,3 +620,67 @@ In a distributed system, each node performs the mark-and-sweep algorithm locally
 - When a proxy is marked grey, it sends a message to the node where the actual object resides to mark it grey.
 - Once the proxy receives the ack, it marks itself as _black_ (visited).
 - After the marking phase, each node sweeps through its objects and deletes those that are still white (unreachable).
+
+## Synchronization
+
+**Synchronization** is essential for ordering events and coordinating actions across multiple nodes. Each node relies on an imperfect _local physical clock_ (a quartz crystal oscillator) which inevitably suffers from **clock drift** (a deviation from the true time, about 1 second every 11.6 days).
+
+To manage this, clocks must be periodically synchronized to ensure consistency across the distributed system, by:
+
+- Sync against a single clock with an accurate time
+- Sync among themselves.
+
+When a clock correction is needed, simply jumping the time backward can cause major issues. To avoid this it should maintain **monotonicity** by slowing down or speeding up the clock until it reaches the correct time.
+
+### Physical Clock
+
+#### Global Positioning System (GPS)
+
+GPS provides an accurate way to synchronize clocks across the globe.
+
+Each GPS satellite uses atomic clock to count time and they are sync with each other. They periodically broadcast their current timestamp.
+
+A receiver on the ground should receive the timestamp from at least 4 satellites to calculate its position and the current time.
+
+Since the signal travel at the speed of light, the receiver can calculate the time it took for the signal to arrive and adjust its clock accordingly with a precision of a few nanoseconds, even with a position error of 10 meters.
+
+#### Cristian's Algorithm
+
+In a network there is a time server that provide the right time and clients can request it periodically.
+
+The client send a request at time $T_0$ and receive the response at time $T_1$ with the server time $T_s$ inside.
+
+Then the client set its clock to $T_s + \frac{(T_1 - T_0)}{2}$, this is done to adjust the time considering the transmission delay.
+
+This approach assumes that the network delay is symmetric and the processing time on the server is negligible or known.
+
+#### Berkeley's Algorithm
+
+This algorithm is used when there is no accurate time server and all the machines need to sync among themselves (_agreement_).
+
+A master node periodically polls all the other nodes for their current time and calculates the average time.
+
+With this average time, the master node calculates the offset for each node (including itself) and sends the offset to each node. Each node adjusts its clock by the received offset.
+
+#### Network Time Protocol (NTP)
+
+NTP is the internet standard for clock synchronization.
+
+It uses a hierarchical system of time sources, with _stratum 0_ being high-precision timekeeping devices (like atomic clocks), _stratum 1_ being directly connected to stratum 0 devices, and so on.
+
+Each stratum synchronizes with the stratum above it, reducing the precision as the stratum increases.
+
+The synchronization can be done in broadcast, with procedure-call or symmetric mode.
+
+NTP uses four timestamps collected over two pairs of messages to accurately calculate the _offset_ (the difference between clocks) and the _delay_ (round-trip time), minimizing the impact of asymmetric latency:
+
+- Client records send time ($T_1$).
+- Server records receive time ($T_2$).
+- Server records reply send time ($T_3$).
+- Client records reply receive time ($T_4$).
+
+The offset ($\theta$) and delay ($\delta$) are calculated as:
+
+$$\theta = \frac{(T_2 - T_1) + (T_3 - T_4)}{2}$$
+
+$$\delta = (T_4 - T_1) - (T_3 - T_2)$$
