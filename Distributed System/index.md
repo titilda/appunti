@@ -634,6 +634,8 @@ When a clock correction is needed, simply jumping the time backward can cause ma
 
 ### Physical Clock
 
+Physical clocks provide a way to measure real-world time, but due to clock drift, they need to be synchronized periodically.
+
 #### Global Positioning System (GPS)
 
 GPS provides an accurate way to synchronize clocks across the globe.
@@ -684,3 +686,53 @@ The offset ($\theta$) and delay ($\delta$) are calculated as:
 $$\theta = \frac{(T_2 - T_1) + (T_3 - T_4)}{2}$$
 
 $$\delta = (T_4 - T_1) - (T_3 - T_2)$$
+
+### Logical Clock
+
+In a distributed system, there is no global clock to order events and physical clocks are unreliable. To solve this problem, logical clocks are used to provide a partial ordering of events based on their causality.
+
+They rely on the **happened-before** relation ($\rightarrow$):
+
+- If two events occur in the same process, the one that happens first happened before the other (e.g., $e \rightarrow e'$ if $e$ occurs before $e'$ in the same process);
+- If an event $e$ is the sending of a message by one process and $e'$ is the event of receiving that message by another process, then $e \rightarrow e'$;
+- The relation is **transitive**: if $e \rightarrow e'$ and $e' \rightarrow e''$, then $e \rightarrow e''$.
+- If neither $e \rightarrow e'$ nor $e' \rightarrow e$, then the events are **concurrent** ($e || e'$).
+
+This relation creates a partial ordering of events in the distributed system. Partial ordering means that not all events can be compared; some events may be concurrent and have no defined order.
+
+#### Scalar Clock
+
+**Scalar Clocks** (or Lamport Timestamps) are the simplest logical clocks.
+
+Each process maintains a local scalar clock $L_i$ that starts at 0.
+
+When an event $e$ occurs, it is assigned a timestamp $L(e)$ based on the local clock and the clock is increased.
+
+When a process receives an event from another process, it sets its own clock to: $max(current, received) + 1$.
+
+To have a global clock, need to add the id of the process to the clock (clock.id).
+
+To force an order between multiple processes (in a reliable FIFO channel) is possible to:
+
+- Send a message in broadcast with the timestamp;
+- Once the message is received, send an ack to all the processes and store the message in a queue ordered by the timestamp;
+- A message is processed only when all the acks are received.
+
+#### Vector Clock
+
+**Vector Clocks** solve the limitation of scalar clocks by using a vector of integers to capture the full causality history. This allows them to correctly capture both causality and concurrency.
+
+Each process $P_i$ maintains a vector $V_i$ of size $N$ (the total number of processes) where:
+
+- $V_i[i]$: is the number of events that have occurred at $P_i$;
+- $V_i[j]$: is the amount of events that the process $P_i$ knows about $P_j$.
+
+This create an ordering:
+
+- $V = V'$: all the values are the same
+- $V \leq V'$: all the V value are less than V'
+- $V||V'$: neither $V \leq V'$ nor $V' \leq V$
+
+This guarantees that $e→e' \Leftrightarrow V(e)→V(e')$
+
+Messages are sent with the vector clock. When receiving a message, if $\forall j: V_m[j] > V_k[j] + 1$ there are missing messages. For this property it's possible to work with unreliable or non-FIFO channels.
