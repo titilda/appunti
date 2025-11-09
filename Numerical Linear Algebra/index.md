@@ -330,7 +330,7 @@ $$
 \end{align*}
 $$
 
-with the initial guess $x^{(0)}$ chosen at random and $d^{(0)} = r^{(0)} = b - Ax^{(0)}$. <!-- What is z^0 then??? -->
+with the initial guess $x^{(0)}$ chosen at random and $d^{(0)} = r^{(0)} = b - Ax^{(0)}$ and $z^{(0)}$ such that $P^{-1}z^{(0)} = r^{(0)}$.
 
 ## Krylov-space methods
 
