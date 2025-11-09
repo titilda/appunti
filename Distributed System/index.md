@@ -567,3 +567,56 @@ Where:
 - `ou` (Organizational Unit): The department or unit within the organization (e.g., Engineering).
 - `o` (Organization): The name of the organization (e.g., ExampleCorp).
 - `c` (Country): The country code (e.g., US for the United States).
+
+### Remove Unreferenced Entities
+
+**Distributed Garbage Collection** is the process of automatically identifying and reclaiming memory or resources occupied by remote objects (skeletons) that are no longer referenced by any active proxy in the distributed system.
+
+#### Reference count
+
+Each remote object's skeleton maintains a counter representing the total number of active proxies (clients) that hold a reference to it. When the count reaches zero, the object is eligible for collection.
+
+Some problems are:
+
+- _Cyclic Unreachable Garbage_: If two remote objects reference each other but are unreachable from any root variable, their counters will never reach zero;
+- _Race Conditions_: If a proxy sends a reference to another proxy and then disconnects before the second proxy creates the link, the reference count may reach zero prematurely.
+
+To fix the _race condition_ the proxy $A$ should send a message to the skeleton $O$ to notify the transfer of the reference to proxy $B$. Than $O$ should send an ack to $B$ to confirm the transfer.
+
+#### Weighted Reference Counting
+
+To reduce the number of messages needed to manage the reference count, a weighted reference counting scheme can be used.
+
+Each skeleton starts with a total weight (e.g., 256). When a proxy connects to the skeleton, it receives half of the current weight.
+
+When a proxy disconnects, it returns its weight back to the skeleton.
+
+When a proxy sends a reference to another proxy, it sends half of its current weight along with the reference.
+
+This remove the problem of increasing the amount of messages, but limit the maximum amount of proxies that can link to a skeleton.
+
+#### Reference Listing
+
+The skeleton maintains a complete list of all proxies that currently hold a reference.
+
+When a proxy disconnects, it sends a message to the skeleton to remove itself from the list.
+
+The skeleton can periodically check the liveness of each proxy in the list (e.g., sending heartbeat messages). If a proxy is found to be unresponsive, it is removed from the list.
+
+When the list becomes empty, the skeleton can be safely collected.
+
+This approach is robust against non-reliable channels, but the still is the problem of race conditions when transferring references.
+
+#### distribute mark-and-sweep
+
+To detect disconnected entities from the root, a mark-and-sweep algorithm can be used.
+
+in a centralized system, the garbage collector starts from the root and marks all reachable objects. Then it sweeps through all objects and deletes those that are unmarked.
+
+In a distributed system, each node performs the mark-and-sweep algorithm locally. The process involves:
+
+- At the start, each node is marked as _white_ (unvisited).
+- An object, and all the proxies, in a node are marked as _grey_ if it is reachable from the root.
+- When a proxy is marked grey, it sends a message to the node where the actual object resides to mark it grey.
+- Once the proxy receives the ack, it marks itself as _black_ (visited).
+- After the marking phase, each node sweeps through its objects and deletes those that are still white (unreachable).
