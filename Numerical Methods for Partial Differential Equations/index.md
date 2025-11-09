@@ -64,7 +64,7 @@ A problem can be a **Dirichlet problem** (if it has only Dirichlet conditions), 
 $L$ is a differential operator called **elliptic operator** and it is defined as a sum of three terms (in order, the **diffusion** term, the **advection/convection/transport** term and the **reaction** term):
 
 $$
-Lu \overset{\Delta}{=} -\operatorname{div}(\mu \nabla u) + \vec b \nabla u + \sigma u
+Lu \overset{\Delta}{=} -\operatorname{div}(\mu \nabla u) + \vec{b} \nabla u + \sigma u
 $$
 
 For this reason $L$ is also called **advection/diffusion/reaction** (ADR) operator.
@@ -155,7 +155,7 @@ $$
 a\left( \sum_{j=1}^{N_h} u_j \varphi_j, \varphi_i \right) = F(\varphi_i) \iff \sum_{j=1}^{N_h} u_j a(\varphi_j, \varphi_i) = F(\varphi_i) \qquad \forall i = 1, 2, \dots, N_h
 $$
 
-This can also be rewritten as $A \vec u = \vec F$ (**algebraic form**). The algebraic form is a _simple_ (and, usually, [megachonk](https://www.reddit.com/r/Chonkers/)) linear system so you can [have](/Fondamenti%20di%20Calcolo%20Numerico/index.html) [fun](/Numerical%20Linear%20Algebra/index.html) solving it.
+This can also be rewritten as $A \vec{u} = \vec{F}$ (**algebraic form**). The algebraic form is a _simple_ (and, usually, [megachonk](https://www.reddit.com/r/Chonkers/)) linear system so you can [have](/Fondamenti%20di%20Calcolo%20Numerico/index.html) [fun](/Numerical%20Linear%20Algebra/index.html) solving it.
 
 ### Construction of $V_h$
 
@@ -213,10 +213,10 @@ where $n$ is the normal direction of $v$ in each point.
 
 ## Divergence
 
-Let $\vec w \in \mathbb{R}^d, d \in \mathbb{N}^+$ then the **divergence operator** applied to $\vec w$ is defined as
+Let $\vec{w} \in \mathbb{R}^d, d \in \mathbb{N}^+$ then the **divergence operator** applied to $\vec{w}$ is defined as
 
 $$
-\operatorname{div}(\vec w) = \sum_{i = 1}^d \frac{\partial w_d}{\partial x_d}
+\operatorname{div}(\vec{w}) = \sum_{i = 1}^d \frac{\partial w_d}{\partial x_d}
 $$
 
 ## Gradient
@@ -232,7 +232,7 @@ $$
 \end{bmatrix} \in \mathbb{R}^d
 $$
 
-Let $\vec x \in \Omega$ then $\nabla v(\vec x)$ gives the direction of steepest ascent. If $\nabla v(\vec x) = 0$ then $\vec x$ can be either a local maximum, a local minimum or a saddle point.
+Let $\vec{x} \in \Omega$ then $\nabla v(\vec{x})$ gives the direction of steepest ascent. If $\nabla v(\vec{x}) = 0$ then $\vec{x}$ can be either a local maximum, a local minimum or a saddle point.
 
 ## Laplacian
 
