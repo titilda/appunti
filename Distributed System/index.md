@@ -776,3 +776,38 @@ Once a process $P_j$ receives the request of $P_i$ it will act as follows:
   - If $L_i > L_j$, it will wait until it finishes and sends an ack.
 
 A process can enter the critical section only after receiving an ack from all the other processes.
+
+This approach needs $2(N-1)$ messages per critical section entry making it inefficient for large systems.
+
+### Leader election
+
+Many distributed algorithm need a coordinator node to manage the execution. The coordinator is called **leader** and should be acknowledged by all the processes.
+
+Typically all the nodes are distinguished by a unique id known by all the nodes.
+
+When a node detect the crash of the leader it should start a leader election algorithm to choose a new leader, that should be the node with the greater id.
+
+To do so the link must be reliable and should be possible to detect crashes (must introduce a bound on transmission time (problems: clock drift, transmission time, etc)).
+
+#### Bully Election
+
+When a node $P$ detect the crash of the leader it sends an _election message_ to all the nodes with a greater ID, starting its election.
+
+If a node $P'$ receive the election message and its id is greater than $P$ it will reply to $P$ with a message to stop $P$ election and start its own election.
+
+If the node $P$ doesn't receive any reply it means that it's the node with the greater id and it will send a _coordinator message_ to all the nodes to inform them that it's the new leader.
+
+When a node come back online it will start an election to check if it's the node with the greater id.
+
+#### Ring Based Election
+
+Nodes are organized in a logical ring topology.
+
+When a node detect the crash of the leader it will send an _election message_ to it's successor.
+
+When a node receive the election message it will check the id inside:
+
+- If its ID is not present it will add its own id and forward the message to its successor;
+- If its ID is present it means that the message completed the ring, so it will change the message to a _coordinator message_ and forward it to its successor.
+
+When a node receive the coordinator message it will update the leader id with the one with the greater id in the message.
