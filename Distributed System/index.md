@@ -736,3 +736,43 @@ This create an ordering:
 This guarantees that $e→e' \Leftrightarrow V(e)→V(e')$
 
 Messages are sent with the vector clock. When receiving a message, if $\forall j: V_m[j] > V_k[j] + 1$ there are missing messages. For this property it's possible to work with unreliable or non-FIFO channels.
+
+### Mutual Exclusion
+
+**Mutual Exclusion** is a concurrency control mechanism that ensures that in a distributed system, a shared resource is accessed by at most one process at any given time, preventing interference and maintaining system consistency.
+
+There are three properties that must be guaranteed:
+
+- **Safety property**: At most one process is accessing the resource at any moment.
+- **Liveness Property**: Every request to enter the critical section will eventually succeed (no deadlocks or starvation).
+- **Order** (optional): The entry to the critical section is granted in the order the requests were made.
+
+#### Mutual Exclusion with Centralized server
+
+Having a central server that handle the resource help coordination is the simplest approach.
+
+Each process that wants to access the resource send a request to the server. The server maintain a queue of requests and grant access to one process at a time.
+
+This is a simple approach but the server is a single point of failure and a bottleneck.
+
+#### Mutual Exclusion with Token ring
+
+Processes are organized into a logical ring topology, where each process $P_i$ knows its successor $P_{i+1}$.
+
+A single token circulates continuously around the ring. When a process wants to enter the critical section, it waits for the token to arrive. Once it receives the token, it enters the critical section, performs its operations, and then passes the token to its successor in the ring.
+
+This approach can be inefficient as the token must circulate even when no process needs access, leading to unnecessary delays. If the token is lost, a recovery mechanism is needed to regenerate it to avoid deadlocks.
+
+#### Mutual Exclusion with Scalar Clock
+
+When a process wants to access the resource it sends a request message to all the other processes with its current scalar clock.
+
+Once a process $P_j$ receives the request of $P_i$ it will act as follows:
+
+- Not interested: if $P_j$ doesn't need the resource, it sends an ack;
+- Holding the resource: if $P_j$ holds the resource, it will wait until it finishes and sends an ack;
+- Wanting the resource: if $P_j$ also wants the resource, it compares the timestamps:
+  - If $L_i < L_j$ (the request of $P_i$ happened before $P_j$), it sends an ack;
+  - If $L_i > L_j$, it will wait until it finishes and sends an ack.
+
+A process can enter the critical section only after receiving an ack from all the other processes.
