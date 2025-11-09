@@ -1,0 +1,213 @@
+---
+title: "Numerical Methods for Partial Differential Equations Summary"
+author: 
+- "Andrea Oggioni"
+---
+
+# Introduction
+
+A **Partial Differential Equation** (from now on, PDE) is an equation where both functions and their partial derivatives may appear.
+
+PDEs are almost always used to study and predict physical phenomena: they usually consists of multiple variables and a close solution almost never exists, so we need to use computer to perform all the calculations.
+
+Assume you want to study some physical phenomena, you cannot feed it directly into the computer: first you have to create a mathematical model of the phenomenon, deriving the euqtions that describe it (_modelling phase_), then you have to discretize the model so that it can be treated with numerical methods, obtaining an algebraic system (_discretization phase_) and only then you can feed it into the computer (_computation phase_).
+
+Each of those three phases introduces an error: let $u_{ph}$ be the real solution (what you can observe in the real world), $u_m$ be the error introduced in the modelling phase, $u_n$ the error introduced in the discretization phase and $u_c$ the error introduced by the finite-precision computation, then
+
+$$
+\|u_{ph} - u_c\| \le \underbrace{\|u_{ph} - u_m\|}_\text{modelling error} + \underbrace{\|u_m - u_n\|}_\text{numerical error} + \underbrace{\|u_n - u_c\|}_\text{computation error}
+$$
+
+$u_c$ is the solution we effectively get out of all the simulation.
+
+In this document we assume that there is no modelling error.
+
+There exist three types of PDEs: **elliptic**, **parabolic** and **hyperbolic**. While the first type only depends on _space_, the other two depend also on _time_. Hyperbolic PDEs will not be considered in this document.
+
+First, an overview about PDEs will be given and then, numerical methods for the approximation of their solution will be analyzed.
+
+# Elliptic PDEs
+
+A general elliptic PDE can be expressed as
+
+$$
+\begin{cases}
+  Lu = f & \text{in } \Omega \\
+  \text{Boundary conditions} & \text{in } \partial\Omega
+\end{cases}
+$$
+
+where $\Omega \sub \mathbb{R}^d, d \in \mathbb{N}^+$ is called the **domain** of the PDE and $\partial\Omega$ is the **boundary** of $\Omega$, $f : \Omega \to \mathbb{R}$ is a given function and $u : \Omega \to \mathbb{R}$ is the unknown function.
+
+Tipically, the boundary condition can be **Dirichlet conditions** and **Neumann conditions**:
+
+$$
+\begin{cases}
+  u = g & \text{in } \Gamma_D \sube \partial\Omega \\
+  \frac{\partial u}{\partial n} = q & \text{in } \Gamma_N \sube \partial\Omega %% Maybe the q should be a \phi TODO: check
+\end{cases}
+$$
+
+where $g : \Gamma_D \to \mathbb{R}$ is called **Dirichlet data** and $q : \Gamma_N \to \mathbb{R}$ is called **Neumann data**. $\frac{\partial}{\partial n}$ denotes the **normal derivative** (see [appendix](#normal-derivative)).
+
+$\Gamma_D$ is called **Dirichlet boundary**, $\Gamma_D$ is called **Neumann boundary**. They form a partition of $\partial\Omega$:
+
+$$
+\begin{cases}
+  \Gamma_D \cup \Gamma_N = \partial\Omega \\
+  \Gamma_D \cap \Gamma_N = \empty
+\end{cases}
+$$
+
+A problem can be a **Dirichlet problem** (if it has only Dirichlet conditions), **Neuman problem** (if it has only Neumann conditions) or **mixed problem**.
+
+$L$ is a differential operator called **elliptic operator** and it is defined as a sum of three terms (in order, the **diffusion** term, the **advection/convection/transport** term and the **reaction** term):
+
+$$
+Lu \overset{\Delta}{=} -\operatorname{div}(\mu \nabla u) + \vec b \nabla u + \sigma u
+$$
+
+For this reason $L$ is also called **advection/diffusion/reaction** (ADR) operator.
+
+See [appendix](#divergence) for an explanation of the various symbols.
+
+If $\mu$ is constant then $-\operatorname{div}(\mu \nabla u) = -\mu \Delta u$.
+
+## Monodimensional elliptic PDEs
+
+In order to solve an elliptic PDE, the problem needs to be _massaged_ to get to something that can be treated with computers.
+
+```mermaid
+flowchart LR
+    id1[Strong problem]
+    id2[Weak problem]
+    id3[Galerkin problem]
+    id4[Discretized problem]
+
+    id1-->id2-->id3-->id4
+```
+
+The **strong problem** is the problem as it was defined before:
+
+$$
+\text{Find $u$ s.t.} \begin{cases}
+  Lu := -(\mu u')' + b u' + \sigma u = f & \text{on } \Omega \\
+  \text{Boundary conditions}
+\end{cases}
+$$
+
+where all the derivatives are [weak derivatives](#distributional-derivative).
+
+The strong problem always has one unique solution.
+
+In order to get to the **weak problem** we have to multiply both sides of the PDE by $v \in V$ and then integrate them on $\Omega$:
+
+$$
+\begin{align}
+  \int_\Omega -(\mu u')' v + b u' v + \sigma u v &= \int_\Omega f v \\
+  \int_\Omega \left( (\mu u')' v' + b u' v + \sigma u v \right) - \left[ \mu u' v \right]_{\partial\Gamma} &=\int_\Omega f v
+\end{align}
+$$
+
+where $V$ is defined as follows:
+
+$$
+V = \left\{ v : \Omega \to \mathbb R \middle| v \in L^2(\Omega), v' \in L^2(\Omega), v(\Gamma_D) = 0 \right\}
+$$
+
+where $L^2$ is the set of [square-integrable functions](#square-integrable-functions).
+
+The term in the square brackets has to be evaluated immediately: it is $0$ on the Dirichlet boundaries and a real number in the Neumann boundaries. The terms that comes out from the evaluation in the Neumann boundaries ($\sum \gamma v(x_D)$) must be moved to the right hand side of the equation.
+
+The weak problem is then written as follows:
+
+$$
+\text{Find $u \in V$ s.t. } \underbrace{\int_\Omega (\mu u' v' + b u v' + \sigma u v) dx}_{a(u, v)} = \underbrace{\int_Omega f v \, dx+ \sum \gamma v(x_D)}_{F(v)} \qquad \forall v \in V 
+$$
+
+that is equivalent to
+
+$$
+\text{Find $u \in V$ s.t. } a(u, v) = F(v) \qquad \forall v \in V
+$$
+
+$a$ is a [bilinear form](#forms) and $F$ is a [linear functional](#functionals).
+
+As the weak problem must be solved $\forall v \in V$, it has infinitely many solutions. We do not like that.
+
+## Multidimensional elliptic PDEs
+
+_To be continued_
+
+# Appendix
+
+## Normal derivative
+
+Let $v : \Omega \sub \mathbb{R}^d \to \mathbb{R}$, then the **normal derivative** of $v$ is defined as
+
+$$
+\frac{\partial v}{\partial n} = \nabla v \cdot n
+$$
+
+where $n$ is the normal direction of $v$ in each point.
+
+## Divergence
+
+Let $\vec w \in \mathbb{R}^d, d \in \mathbb{N}^+$ then the **divergence operator** applied to $\vec w$ is defined as
+
+$$
+\operatorname{div}(\vec w) = \sum_{i = 1}^d \frac{\partial w_d}{\partial x_d}
+$$
+
+## Gradient
+
+Let $v : \Omega \sub \mathbb{R}^d \to \mathbb{R}, d \in\mathbb{N}^+$, then the **gradient** of $v$ is defined as
+
+$$
+\nabla v = \begin{bmatrix}
+  \frac{\partial v}{\partial x_1} \\
+  \frac{\partial v}{\partial x_2} \\
+  \vdots \\
+  \frac{\partial v}{\partial x_d} \\
+\end{bmatrix} \in \mathbb{R}^d
+$$
+
+Let $\vec x \in \Omega$ then $\nabla v(\vec x)$ gives the direction of steepest ascent. If $\nabla v(\vec x) = 0$ then $\vec x$ can be either a local maximum, a local minimum or a saddle point.
+
+## Laplacian
+
+Let $v : \Omega \sub \mathbb{R}^d \to \mathbb{R}, d \in \mathbb{N}^+$, then the **laplacian** of $v$ is defined as
+
+$$
+\Delta v = \sum_{i = 1}^d \frac{\partial^2 v}{\partial x_i^2}
+$$
+
+## Distributional derivative
+
+Let $v : \mathbb{R}^n \to \mathbb{R}$, then $D$ is the **distributional derivative** of $v$ if
+
+$$
+\int_{-\infty}^{+\infty} Dv \cdot w \, dx = -\int_{-\infty}^{+\infty} v \frac{dw}{dx} \, dx \qquad \forall w \in \mathcal{C}^\infty(\mathbb{R}) \text{ s.t. } w : \mathbb{R} \to \mathbb{R}, \lim_{x \to \pm \infty}w(x) = 0
+$$
+
+If $v \in \mathcal{C}^1$ then the distributional derivative is the same as the conventional derivative.
+
+Intuitively, in the case of jump discontinuities, the distributional derivative is a piecewise derivative where at each discontinuity point $\bar x$, we can choose either $v(\bar x) = v(\bar x^-)$ or $v(\bar x) = v(\bar x^+)$.
+
+Distributional derivatives are also called **weak derivatives**.
+
+## Square-integrable functions
+
+The **space of square-integrable functions** $L^2$ on $\Omega \sub \mathbb{R}^n$ is defined as
+
+$$
+L^2(\Omega) = \left\{ f : \Omega \to \mathbb{R} \middle| \int_\Omega f(x)^2 \, d\Omega \lt +\infty \right\}
+$$
+
+The integral is to be considered a _Lebesgue_ integral.
+
+If $u, v \in L^2$ then $u' \cdot v' \in L^1$.
+
+## Forms
+
+## Functionals
