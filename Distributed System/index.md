@@ -811,3 +811,48 @@ When a node receive the election message it will check the id inside:
 - If its ID is present it means that the message completed the ring, so it will change the message to a _coordinator message_ and forward it to its successor.
 
 When a node receive the coordinator message it will update the leader id with the one with the greater id in the message.
+
+### Collecting Global State
+
+It's important to collect the global state of a distributed system to perform tasks like checkpointing, debugging, and detecting deadlocks. Since there is no global clock, it's impossible to take a snapshot of all the processes at the same time.
+
+A **Distributed snapshot** represent the state of all the processes and communication channels at a specific point in time.
+
+The snapshot must be **consistent**, meaning that it accurately reflects the state of the system without contradictions (e.g. $P1$ saves its state than sends a message to $P2$, and $P2$ receives the message before saving its own state).
+
+The conceptual tool representing the global state is the **cut**. The cut is a line that intersect all the processes at a specific point in time.
+
+A cut is consistent if for any event $e$ that is included in the cut, all events that happened before $e$ are also included in the cut.
+
+#### Distributed Snapshot
+
+The **Chandy-Lamport Distributed Snapshot Algorithm** is the standard, method for recording a globally consistent state, assuming communication links are FIFO and reliable.
+
+The algorithm uses a special marker message to indicate the start of the snapshot process.
+
+Any process $P_i$ can initiate the snapshot by atomically executing the following steps:
+
+- Records its internal state;
+- For every one of its outgoing channels , $P_i$ sends a Marker;
+- Starts recording the state of every incoming channel to $P_i$.
+
+Once a process $P_j$ receives a Marker on an incoming channel, it will:
+
+- If it's the first Marker received, it records its internal state, sends a Marker on all its outgoing channels, and starts recording the state of all its incoming channels (except the one on which the Marker was received);
+- If it's not the first Marker received, it stops recording the state of the incoming channel on which the Marker was received. The recorded state of that channel is the sequence of messages received on that channel before the Marker.
+
+Once a process has received a Marker on all its incoming channels, it completes its part of the snapshot that could be sent to a collector.
+
+It's possible to start multiple snapshot by distinguishing the snapshot with an id.
+
+#### Termination detection
+
+The **Dijkstra-Scholten algorithm** is used to detect the termination of a diffusing computation, a computation where all activity starts from a single initiator and spreads by message passing.
+
+The algorithm organizes processes into a tree structure rooted at the initiator.
+
+When a process $P_i$ sends a message to initialize the processing to another process $P_j$, if $P_j$ is not already part of the tree, it sets $P_i$ as its parent.
+
+Once a child terminates and there are no children left, it informs the parent to remove it from the children list.
+
+When the root process has no children and is passive, it declares the computation terminated.
