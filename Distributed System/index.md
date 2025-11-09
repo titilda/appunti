@@ -242,3 +242,328 @@ Using a Lightweight RPC that use a shared memory accessible from the middleware.
 The communication is done through method calls on remote objects (**Stub**) that acts as if they were local. This is done because it's not possible to pass objects by value between two different machines that might use different programming languages.
 
 In java RMI, as both the client and the server use the same language, it's possible to pass objects, but the code must be available or downloaded dynamically.
+
+### Message Oriented Communication (MOC)
+
+**Message Oriented Communication** is a foundational style in distributed systems, where interaction is based on the asynchronous exchange of discrete, self-contained messages. It is generally a one-way interaction, often based on events.
+
+#### Basic Message Passing
+
+The most fundamental form of MOC uses low-level **socket programming**, relying on the _Operating System_ primitives for communication.
+
+- **Transmission Control Protocol** (TCP) Sockets: Provide a connection-oriented, reliable communication channel between two processes (point-to-point).
+- **User Datagram Protocol** (UDP) Sockets: Provide a connectionless, unreliable connection. A single socket can receive messages from multiple clients. They support broadcast and multicast addressing.
+
+#### Message Passing Interface (MPI)
+
+**Message Passing Interface** (MPI) is a library that provides a rich set of primitives to manage communication in parallel and distributed systems.
+
+It allows to control the _synchronization level_ of the communication and avoids explicit serialization of data.
+
+Messages can be sent in broadcast or scattered between multiple processes to perform parallel computation.
+
+#### Message Queueing
+
+**Message Queueing** is a system that introduces a persistent storage between the client and the server (queue) to store messages.
+
+This allows to **decouple** the client and the server in _time_ and _space_.
+
+The client _push_ messages in the queue and the server _pop_ messages from the queue asynchronously and they act as peers.
+
+```mermaid
+graph TD
+  A[Client] -->|Pushes Message| B[Message Queue]
+  B -->|Pops Message| C[Server]
+```
+
+Inside the system there could be multiple queues identified by a name that can be statically or dynamically created.
+
+This decoupling allows to scale the system easily by adding more servers to process the incoming messages.
+
+In the system there could be managers that act as relay between multiple queues to create complex topologies, increasing the fault tolerance.
+
+#### Publish-Subscribe
+
+The **publish-subscribe** model is an event-driven architecture where _publishers_ generate events/messages without knowing who the receivers are, and _subscribers_ express interest in events without knowing who published them.
+
+This allows to decouple the event with the space but the communication is _transient_ as only online subscribers will receive the messages.
+
+```mermaid
+graph TD
+  A[Publisher] -->|Publishes Event| B[Event Broker]
+  B -->|Notifies| C[Subscriber 1]
+  B -->|Notifies| D[Subscriber 2]
+  B -->|Notifies| E[Subscriber 3]
+  F[Publisher 2] -->|Publishes Event| B
+```
+
+A component can subscribe based on:
+
+- **subject-based** (topic-based): Subscribers express interest in a predefined category or topic (e.g., subscribing to the "Stock Market/Technology" topic). This is efficient for the dispatcher to process but less expressive.
+- **content-based**: Subscribers provide a predicate (a condition) over the content of the message (e.g., subscribing to "Stock Market/Technology where Price $> 100$ AND Volume $> 1M$"). This is more expressive but significantly more expensive for the dispatcher to process.
+
+The core component of this architecture is the **Event Dispatcher** (broker) that manage the subscriptions and the notifications.
+
+A **Complex Event Processing** system is often layered on top of the dispatcher. It analyzes streams of incoming simple events to detect patterns, correlations, or anomalies, and then generates a single, higher-level complex event (e.g., detecting "Fire" from simple events like "Smoke detected" and "High Temperature reading").
+
+#### Distributed Publish-Subscribe
+
+To overcome the Event Dispatcher bottleneck, a distributed architecture is organized into a _network_ of message brokers and the message is forwarded across the network using different strategies.
+
+For **acyclic** graphs:
+
+- **Message Forwarding**: Each broker only knows its local subscribers. When an event arrives, the broker forwards it to all neighboring brokers and all local subscribers. With this strategy the subscription is cheap as the subscription is stored locally, but the message need to be flood.
+- **Subscription Forwarding**: Subscriptions are forwarded up the network hierarchy or to neighbors. Each broker maintains a routing table showing which neighbors have expressed interest in a given subscription. In this way the message is sent only to the interested brokers, reducing the amount of message, but increasing the subscription cost.
+- **Hierarchical Forwarding**: Brokers are organized into a hierarchy with a single Root Broker. Subscriptions flow up to the root. Messages flow up to the point where a common interested path is found, then travel down to the subscribers. Good locality and efficient event forwarding, but high load and centralization risk on the root broker.
+
+Paths can be optimized if some are a subset of others.
+
+**Cyclic** topologies are more _fault-tolerant_ but introduce the problem of _message loops_ (flooding) and uncertainty about delivery paths.
+
+- **Distributed Hash Table** (DHT): Each broker is assigned an ID. Events are hashed to find the successor node (node with an ID greater or equal). The message is routed towards this successor, and routing information is collected along the way to guide the message to actual subscribers.
+- **Content-Based Routing**: each broker store a routing table to forward the message based on the content of the message, creating a spanning tree.
+  - **Per-Source Routing** (PSR): each broker store a routing table with $<source, \text{next hop}, \text{event type}>$.
+  - **Improved Per-Source Forwarding** (iPSF): an optimized version of PSR that aggregate indistinguishable sources.
+  - **Per-Receiver Forwarding** (PRF): each broker store all the events that a specific broker is interested in and in another table the next hop to reach that broker.
+
+### Stream Oriented communication
+
+**Stream-Oriented Communication** involves transmitting a continuous, _ordered_ sequence of data from a source to a sink. This model is essential for multimedia and real-time applications where the timing of the data arrival is often as critical as its content.
+
+#### Timing Constraints
+
+In streaming, the correctness of the communication is heavily impacted by time, leading to three classifications based on timing guarantees:
+
+- **Asynchronous**: Data are transmitted without any timing constraint;
+- **Synchronous**: there is a max delay between the sending and receiving of data;
+- **Isochronous**: there is a min and a max time constraint between the sending and receiving of data, limiting the delay variation (_jitter_).
+
+#### Quality of Service (QoS)
+
+The network doesn't guarantee the _Quality of the service_. Some metrics that need management:
+
+- Bit Rate: The guaranteed data rate.
+- Latency/Delay: Time to set up the connection and receive data.
+- Jitter: The variance in delay ($\Delta D$) between consecutive data units.
+
+Streaming is implemented using UDP instead of TCP. This is because, for real-time data, a retransmitted packet is useless, as it arrives too late for playback. UDP's speed and lack of automatic retransmission make it suitable.
+
+The QoS are managed client and server side using different techniques:
+
+- **Buffering**: the client stores incoming data in a buffer and the playback starts only after is filled after a threshold, dynamically adjusted based on network conditions. This is done to smooth out jitter;
+- **Forward Error Connection**: if the application enters in an invalid state, it will go to the next valid state, instead of asking back the missing one. Missing data are concealed using interpolation or extrapolation techniques;
+- **Interleaving data**: data are not sent sequentially. A single network packet contains non-consecutive fragments of multiple frames. If the packet is lost, only some non-consecutive frames are lost, which can be concealed more easily;
+
+#### Multiple Streams Synchronization
+
+Is possible that multiple streams need to be synchronized (e.g., audio and video). This can be done:
+
+- **Client-side**: The client uses timestamps to synchronize streams during playback. Each stream includes timing information, allowing the client to align data from different streams.
+- **Server-side**: The server merges streams before transmission.
+
+## Naming
+
+In a distributed system, **naming** is the mechanism used to reference and locate system entities, which can range from physical hosts, files, and services to users and abstract processes.
+
+Names can be _human-friendly_ (e.g., "www.example.com") or _machine-friendly_ (e.g., IP addresses).
+
+A name can also be _global_ (unique across the entire system) or _local_ (unique within a specific context or domain).
+
+The **address** is the actual location of the entity in the network (e.g., an IP address) and it can be mutable and change over time.
+
+An entity must be identified by an immutable _Identifier_ and a using a **name resolution** to convert that name to an address.
+
+Name resolution can be performed in different ways:
+
+### Flat Naming
+
+A name is **flat** if it is a simple sequence of characters that contains no structural or topological information about the entity's location.
+
+#### Simple Solution
+
+This method is suitable only for small-scale, local area environments where network traffic is manageable.
+
+To locate an entity with a specific name, a request is broadcasted to all hosts on the local network segment. The host that recognizes the name responds with its address.
+
+An example is ARP, that broadcasts a request to find the MAC address associated with an IP address.
+
+#### Home Based
+
+This strategy handles **mobility** by having a fixed home address for each entity.
+
+When an entity moves to a new location, it registers its new address with its home server.
+
+When another entity wants to communicate with it, it first contacts the home server that returns a **Forwarding Pointer** (the current address) allowing direct communication.
+
+This adds an extra step (the trip to the Home Host) to every connection setup, increasing latency.
+
+```mermaid
+sequenceDiagram
+  participant EntityA as Entity A
+  participant HomeServer as Home Server
+  participant EntityB as Entity B
+
+  EntityA->>HomeServer: Register new address (after moving)
+  EntityB->>HomeServer: Query for Entity A's address
+  HomeServer-->>EntityB: Return forwarding pointer (current address)
+  EntityB->>EntityA: Communicate directly using forwarding pointer
+```
+
+#### Distributed Hash Table
+
+**DHTs** create a scalable, decentralized system for mapping flat names (keys) to addresses (values) across thousands of nodes.
+
+Each node in the DHT is assigned a unique identifier (ID) from the same address space as the keys. Than the key space is partitioned among the nodes based on the hash of the key (the first node with the id greater than the key is responsible for that key).
+
+The nodes form an _overlay network_, organized as a logical ring.
+
+Finding the node responsible for a key can be done with different strategies:
+
+- **Chord**: each node knows only its successor and predecessor. To find a key the request is forwarded to the successor until the node is found. This is inefficient as it requires $O(N)$ hops in the worst case.
+- **Chord finger table**: each node maintains a finger table with $O(log N)$ entries, each pointing to a node at a distance of $2^i$ from itself. This allows to find the key in $O(log N)$ hops.
+
+#### Hierarchical
+
+Hierarchical distribution organizes names into a tree-like structure, where each subtree represents a directory and entities (such as files or services) are leaves.
+
+In this model, each directory node maintains information about its children and parent. When resolving a name, the process follows these steps:
+
+- If a node knows of a child that knows the address of the requested entity, it forwards the request directly to that child.
+- If not, it forwards the request to its parent node, which repeats the process until the root or a node with the information is reached.
+
+Once resolved, the address is returned along the path, and intermediate nodes can cache the result for future queries to improve performance.
+
+This approach excels in local domains, where queries are confined to nearby branches, reducing global network traffic. However, it can suffer from bottlenecks at higher-level nodes if not balanced properly.
+
+### Structured Naming
+
+**Structured Naming** organizes system entities into a **Name Space**, a logical structure. Unlike flat naming, the name itself carries information about the entity's position within the structure.
+
+A name space is a labeled, graph composed of:
+
+- **Leaf Nodes**: Represent the actual named entities (hosts, files, services).
+- **Directory Nodes**: Nodes that contain references (links) to other nodes (both leaf and directory) within the name space.
+
+An entity is uniquely identified by a **Path Name**, a sequence of directory node labels that traces a route from the root to the leaf node.
+
+Inside the name space, there can be:
+
+- **Hard Links**: Leaf nodes can be reached by multiple paths, making the name space a general graph.
+- **Symbolic Links**: A special type of leaf that store the path to another node.
+
+An example of structured name is the filesystem.
+
+```mermaid
+graph TD
+  A[root] --> B[home]
+  A --> C[etc]
+  A --> D[var]
+  B --> E[user1]
+  B --> F[user2]
+  E --> G[documents]
+  E --> H[pictures]
+  G --> I[file1.txt]
+  G --> J[file2.txt]
+  H --> K[image1.jpg]
+  F --> L[downloads]
+  L --> M[app.exe]
+
+```
+
+#### Partitioning
+
+Thanks to the structured nature of the name space, it's possible to partition the name space into layers. Each host can know only part of the names.
+
+- _Global Level_: Manages the root of the name space and points to a few highly stable, high-level directory nodes (e.g., top-level domains like `.com`, `.org`). Resolution is worldwide;
+- _Administrational Level_: Managed by large organizations (e.g., network service providers or universities). It manages many regional or organization-specific nodes;
+- _Managerial Level_: low level directory within a single administration. It manages the majority of department nodes.
+
+#### Resolution
+
+The resolution can happen with two methods:
+
+- **Iterative**: The client queries the root, which replies with the address of the next server (a referral). The client then contacts that next server, repeating until the leaf is reached. This method increases the number of messages for the client but reduces the load on the name server.
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant Root Server
+  participant Intermediate Server
+  participant Leaf Server
+
+  Client->>Root Server: Query for name resolution
+  Root Server-->>Client: Referral to Intermediate Server
+  Client->>Intermediate Server: Query for name resolution
+  Intermediate Server-->>Client: Referral to Leaf Server
+  Client->>Leaf Server: Query for name resolution
+  Leaf Server-->>Client: Resolved address
+```
+
+- **Recursive**: The client contacts the root node that will contact the next node on behalf of the client. This continues until the leaf is reached. This method reduces the number of messages and allow caching but increases the load on the name server.
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant Root Server
+  participant Intermediate Server
+  participant Leaf Server
+
+  Client->>Root Server: Query for name resolution
+  Root Server->>Intermediate Server: Query for name resolution
+  Intermediate Server->>Leaf Server: Query for name resolution
+  Leaf Server-->>Intermediate Server: Resolved address
+  Intermediate Server-->>Root Server: Resolved address
+  Root Server-->>Client: Resolved address
+```
+
+Higher-level directory nodes change infrequently, so their resolution results can be cached for long durations (high TTL). Lower-level nodes must update immediately for system changes, requiring short TTLs.
+
+Root servers are heavily mirrored worldwide and often share the same IP address. **IP Anycast** routes a request to the nearest operational server, distributing the load and improving global response time.
+
+#### Structured vs flat name
+
+- Structured name are easier to manage and scale as the name space can be partitioned among multiple nodes. Each node is responsible for a small part of the name space, reducing the load on each node. Caching works well due to locality and stability.
+- Flat name are good for small system as in a worldwide system the amount of names is huge and each node should store all the names.
+
+#### DNS
+
+An example of distributed name system is the **DNS**.
+
+The DNS nodes could be of different types:
+
+- **A** (Address record): Maps a domain name (host name) to an IPv4 address.
+- **AAAA** (Address record): Maps a domain name to an IPv6 address.
+- **NS** (Name Server record): Specifies the authoritative name server for a given domain/zone. Used in recursive resolution.
+- **MX** (Mail Exchange record): Specifies the mail server responsible for accepting email messages for the domain.
+- **CNAME** (Canonical Name record): Creates an alias from one domain name to another (the canonical name).
+- **TXT** (Text record): Holds arbitrary, human-readable text information. Often used for verification and security records (e.g., SPF, DKIM).
+
+The DNS doesn't work well with mobility.
+
+### Attribute Based Naming
+
+**Attribute-Based Naming** allows entities to be located using a set of descriptive attributes (properties) instead of, or in addition to, their fixed names.
+
+This approach is essential for large, complex systems where users often search for entities based on their characteristics. These systems are commonly referred to as **Directory Services** and are implemented using DBMS technologies.
+
+The entire collection of entities and attributes is called the **Directory Information Base** (DIB).
+
+The entities are organized in a hierarchical structure known as the **Directory Information Tree** (DIT), similar to structured naming.
+
+It's possible to perform two operations:
+
+- _Lookups_: finds a single record when the full, unique set of attributes is provided.
+- _Search_: finds all records that match a given set of attribute predicates.
+
+#### LDAP
+
+An example of attribute based naming system is **LDAP** (Lightweight Directory Access Protocol) where each entity is identified by a _Distinguished Name_ (DN).
+
+An example is: `cn=John Smith,ou=Engineering,o=ExampleCorp,c=US`
+
+Where:
+
+- `cn` (Common Name): The name of the individual (e.g., John Smith).
+- `ou` (Organizational Unit): The department or unit within the organization (e.g., Engineering).
+- `o` (Organization): The name of the organization (e.g., ExampleCorp).
+- `c` (Country): The country code (e.g., US for the United States).
