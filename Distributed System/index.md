@@ -985,3 +985,89 @@ When a client process (which initiated a remote computation) crashes, the server
 - **Reincarnation**: When the client reboots, it broadcasts an epoch number (a unique ID for its current session) to all servers. Any server running a computation associated with an older, lower epoch number is instructed to immediately kill that process.
 - **Gentle Reincarnation**: Similar to reincarnation, but the server only kills old computations if the client that owns them cannot be located or authenticated.
 - **Expiration**: The client is granted a fixed time for the remote computation. The client must renew this lease periodically. If the client crashes it waits for the time to expire, and the server can then safely terminate the orphaned computation.
+
+### Protection against failure
+
+#### Process Resilience
+
+**Process Resilience** is achieved through **redundancy**, ensuring that the failure of a single process does not halt the computation. This involves executing the computation across multiple processes so that a backup can take over upon failure.
+
+This can be done with two methods:
+
+- **Flat Group**: All processes are peers and the client contacts one of them, and the state is shared and synchronized among all members.
+- **Hierarchical Group**: A single _Coordinator_ interacts with the client and synchronizes several _Workers_.
+
+To guarantee that a system can tolerate up to $k$ process failures ($k$-resilience), a minimum number of replicas is required, depending on the failure type:
+
+- Omission failure: $k + 1$ processes, as at least one process must be up;
+- Byzantine failure: $2k + 1$ processes, as the majority must agree on the same value (consensus problem).
+
+The **consensus problem** requires that all non-faulty processes to agree on a single data value proposed by one or more processes.
+
+The solution must satisfy three properties:
+
+- _Agreement_: All non-faulty processes must agree on the same final value.
+- _Validity_: If all non-faulty processes start with the same initial value, that must be the decided value.
+- _Termination_: All non-faulty processes must eventually reach a decision.
+
+##### FloodSet Algorithm
+
+The **FloodSet Algorithm** is a method to achieve consensus in a synchronous distributed system with omission failures.
+
+1. Each process has a set of proposed values. In each round, every process sends its current set of values to all other processes.
+2. Upon receiving sets from other processes, each process updates its own set by taking the union of all received sets.
+
+To guarantee a $k$-resilience, these processes are repeated for $k + 1$ rounds to guarantee that every non-faulty process receives every value.
+
+To solve consensus with $k$ Byzantine failures, the number of processes must be at least $N = 3k + 1$.
+
+With asynchronous systems it's impossible to reach an agreement with even one failure.
+
+### Reliable Group Communication
+
+A multicast communication is _reliable_ if:
+
+- The group should have a fixed size (members are known);
+- If a message is sent to the group, all the members should receive it;
+
+Since network channels can lose or duplicate messages, reliability is enforced using acknowledgement strategies:
+
+- **Positive Acknowledgement** (ACK): when receiving a packet, it send an ack, but it create a lot of traffic (ack implosion);
+- **Negative Acknowledgement** (NACK): The receiver sends an ACK only if a message is missed (e.g., detecting a jump in sequence numbers), but require the sender to keep track of all sent messages.
+
+To scale and reduce the amount of NACK, it's possible to use:
+
+- Timeouts: when a jump is detected, a random timeout is started;
+- Suppression: the first process that expire the timeout sends the NACK in broadcast, the others cancel their timeout.
+- Hierarchical NACK: for very large groups, processes can be divided into a tree-like hierarchy. Local coordinators handle NACK and retransmission requests within their subgroup.
+
+#### Virtual Synchrony
+
+The ideal behavior is to have a **close Synchrony** an instantaneous and reliable communication, such that:
+
+- Any message should be received in the same order by all the processes;
+- A message should be sent to all or none nodes.
+
+This is physically impossible if there are process failures. Need to simulate with **Virtual synchrony**.
+
+Virtual synchrony ensures that all non-faulty processes in a group see the same sequence of events (messages and membership changes) in the same order.
+
+The system operates in sequential views, where a view is the current set of active, correct members. Virtual Synchrony ensures that messages sent within one view are only delivered to members of that view.
+
+This could be implemented by:
+
+- **Failure Detection**: A process detects a change in membership (e.g., another process fails or joins) and multicasts a view change message.
+- **Flush Phase**: All processes stop originating new messages. They multicast all their unstable messages (messages not yet acknowledged by all current members) and send a _flush_ message.
+- **Unstable Message Transfer**: All unstable messages are reliably delivered to all surviving members of the old view.
+- **View Update**: Once all flush messages are received and unstable messages are delivered, all processes atomically switch to the new view (the new set of active members) and resume normal communication.
+
+### Message Ordering
+
+Messages can be received in three ways:
+
+- Unordered: No guarantees about the order of message delivery.
+- FIFO: Messages sent by the same sender are received in the order they were sent. Messages from different senders are unordered.
+- Casually-ordered: The messages have a causality relationship and are received in order.
+- Totally-ordered: All the messages are received in the same order by all the nodes.
+
+All the types can be implemented with a total order and are called **Atomic**.
