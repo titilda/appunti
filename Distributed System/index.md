@@ -856,3 +856,112 @@ When a process $P_i$ sends a message to initialize the processing to another pro
 Once a child terminates and there are no children left, it informs the parent to remove it from the children list.
 
 When the root process has no children and is passive, it declares the computation terminated.
+
+### Distributed Transaction
+
+A **Transaction** is a sequence of operations (read and write) that transforms resources from one consistent state to another. In a distributed system, a Distributed Transaction is a single logical transaction whose operations are executed across multiple, independent nodes.
+
+Look at [Database 2](../Database%202/index.md#transaction) for more information about transactions in a single node.
+
+There are three types of transactions:
+
+- _flat_: The standard transaction that once committed cannot be undone;
+- _nested_: Structured as a tree of sub-transactions that can be committed or aborted (even after committing) independently from the parent transaction;
+- _distributed_: There is a single transaction that distributes operations across multiple nodes.
+
+To achieve atomicity:
+
+- **Private Workspace**: Changes are made in a private, temporary copy of the data. On commit, the pointers to the old data pages are atomically redirected to the new pages. On abort, the private copy is simply discarded.
+- **Write-ahead Log**: Changes are written directly to the database, but a record of the change is stored in a sequential log before the disk write occurs. On abort, the log is read backward, and the changes are reverted.
+
+Concurrency is managed by components across the distributed nodes:
+
+- **Transaction Manager** (TM): Acts as the coordinator for a single transaction across all nodes.
+- **Scheduler** (Concurrency Control Manager): Present at each node, it determines the order in which local operations are executed, ensuring serializability (the final outcome is equivalent to some serial execution - [Database 2](../Database%202/index.md#scheduling)).
+- **Data Manager** (DM): Present at each node, it manages the physical data and performs the actual read/write operations.
+
+#### Two-Phase Locking (2PL)
+
+This algorithm guarantees serializability by requiring transactions to acquire locks on data items before access.
+
+The transaction has two phases:
+
+- _Growing phase_: The transaction can only acquire locks; it cannot release any;
+- _Shrinking phase_: The transaction can only release locks; it cannot acquire any new ones.
+  - _Strict 2PL_: Locks are held until the transaction commits or aborts.
+
+For more information about 2PL look at [Database 2](../Database%202/index.md#two-phase-locking-2pl).
+
+This can be implemented with:
+
+- **Centralized 2PL**: A single lock manager controls all locks across all nodes.
+- **Primary**: Each physical data item has a designated _master scheduler_ responsible for its locks, located on the same node.
+- **Distributed**: Data can be replicated across multiple nodes, and each node manages locks for its local copies.
+
+#### Timestamp
+
+This algorithm avoids deadlocks by giving each transaction $T$ a unique timestamp ($ts(T)$ - scalar clock) at its start.
+
+Each record has a timestamp of the latest transaction that performed a read $\text{ts}_\text{read}$ and a write $\text{ts}_\text{write}$ on that record.
+
+- A read operation is performed if: $\text{ts} > \text{ts}_\text{write}(x)$.
+- A write operation is performed if: $\text{ts} > \text {ts}_\text{read}(x)$ and $\text{ts} > \text{ts}_\text{write}(x)$.
+
+otherwise the operation, and transaction, is aborted.
+
+For more information about timestamp look at [Database 2](../Database%202/index.md#optimistic-concurrency-control).
+
+### Deadlock
+
+Deadlocks occur when a set of transactions is cyclically waiting for resources held by others.
+
+Deadlock can be handled in different ways:
+
+- Ignore the problem
+- Detection and recovery
+- Prevent: the system is build in a way that it's impossible to have a deadlock
+
+#### Detection
+
+Each machine maintain a local _wait-for graph_ (WFG) representing the dependencies between the local transactions.
+
+##### Centralized Detection
+
+The simplest way is to have a centralized node that collect the global WFG and check for cycles periodically.
+
+Collection can be done in different ways:
+
+- When a transaction is created or updated, the local WFG is sent to the coordinator.
+- Periodically the nodes sends a diff to the coordinator.
+- The coordinator requests for the updated WFG.
+
+##### Distributed Detection
+
+In case of distributed system without a coordinator it use the **Chandy-Misra-Hass**.
+
+When a transaction $T_i$ gets blocked waiting for a resource held by $T_j$, $T_i$ initiates detection by sending a Probe Message to $T_j$.
+
+$T_j$ forwards the message to the transaction holding the resource it needs, and so on.
+
+Once the message is received by the initiator, it's possible to detect a loop and resolve it by:
+
+- Kill itself;
+- Kill the process with the higher id.
+
+#### Prevention
+
+Prevention ensures that the WFG can never contain a cycle. This is often done using transaction timestamps to define a priority among transactions.
+
+There are two main methods:
+
+##### Wait-Die
+
+If an older transaction $T_i$ requests a resource held by a younger transaction $T_j$, $T_i$ waits for $T_j$ to release the resource.
+
+If a younger transaction $T_i$ requests a resource held by an older transaction $T_j$, $T_i$ is aborted (dies) and restarted with the same timestamp.
+
+##### Wound-Wait
+
+If an older transaction $T_i$ requests a resource held by a younger transaction $T_j$, $T_j$ is aborted (wounded) and $T_i$ acquires the resource.
+
+If a younger transaction $T_i$ requests a resource held by an older transaction $T_j$, $T_i$ waits for $T_j$ to release the resource.
