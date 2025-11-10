@@ -155,28 +155,6 @@ There are two types of distributed systems based on time:
 >
 > In a async system is impossible to choose a time to charge as there is no bound on the time. One general could send a message to the other, but there is no guarantee that the message will arrive in a specific time. The other general could wait for the message, but there is no guarantee that it will arrive. The only solution is to charge immediately, but this could lead to a failure if the other general doesn't charge at the same time.
 
-### Failures
-
-In a distributed system, the key advantage is that failures are partial (one component fails, not the whole system), and the goal is to mask these failures from the client, achieving fault tolerance.
-
-There are different types of failures:
-
-- **Omission Failure**: A component simply fails to perform an action it was supposed to:
-  - _Process_: A process crash or halt and doesn't execute any operation and become _silent_;
-  - _channel_: A message is lost and never received (or never sent).
-- **Byzantine Failures** (Arbitrary failure): These are hard to detect, if there is an error it might be detected with an omission
-  - _Process_: The process executes an incorrect or unintended program. (e.g. memory failure that change the stack pointer, or compromised by a virus).
-  - _channel_: Messages are corrupted, duplicated, fabricated.
-- **Timing Failure**: Are only relevant in synchronous systems and happens when the time bound are violated.
-
-#### Failure Detection
-
-To detect a failure, a process can send a _heartbeat_ message to another process. If the message is not received within a certain time, the process is considered failed.
-
-In an asynchronous system, it's impossible to distinguish between a slow process and a failed process. To mitigate this, a _timeout_ can be used, but it can lead to false positives.
-
-The same happens for unreliable channels, where a message can be lost or delayed, making hard to distinguish between a failed process and a lost message.
-
 ## Communication
 
 Communication protocols define how processes in a distributed system exchange information.
@@ -965,3 +943,45 @@ If a younger transaction $T_i$ requests a resource held by an older transaction 
 If an older transaction $T_i$ requests a resource held by a younger transaction $T_j$, $T_j$ is aborted (wounded) and $T_i$ acquires the resource.
 
 If a younger transaction $T_i$ requests a resource held by an older transaction $T_j$, $T_i$ waits for $T_j$ to release the resource.
+
+## Fault Tolerance
+
+Fault Tolerance is the ability of a system to continue operating without interruption despite the failure of one or more of its components (a partial failure). The goal is to mask these failures from the client, ensuring the system remains dependable:
+
+- Available: The probability that the system is ready for use when needed;
+- Reliable: The ability of the system to run continuously without failures over a given period;
+- Safe: The property that the system will not cause anything bad to happen;
+- Maintainable: The ease and speed with which a failed system can be fixed.
+
+### Failure Classification
+
+There are different types of failures:
+
+- **Omission Failure**: A component simply fails to perform an action it was supposed to:
+  - _Process_: A process crash or halt and doesn't execute any operation and become _silent_;
+  - _channel_: A message is lost and never received (or never sent).
+- **Byzantine Failures** (Arbitrary failure): These are hard to detect, if there is an error it might be detected with an omission
+  - _Process_: The process executes an incorrect or unintended program. (e.g. memory failure that change the stack pointer, or compromised by a virus).
+  - _channel_: Messages are corrupted, duplicated, fabricated.
+- **Timing Failure**: Are only relevant in synchronous systems and happens when the time bound are violated.
+
+### Failure Detection
+
+In a synchronous system, it's possible to detect a failure by setting a time bound on message delivery and process execution. In asynchronous system, it's impossible distinguish between a slow process/channel, a failed process, and unreliable communication.
+
+To mitigate false positive, and confirm failures, it's possible to use _heartbeats messages_ that are sent after a certain inactivity period and the ack indicate that the process is alive.
+
+**Fault tolerance** is fundamentally achieved through redundancy:
+
+- **Information Redundancy**: Adding extra bits to data to allow for error detection and correction (e.g., Hamming Codes, parity bits).
+- **Time Redundancy**: Repeating an action if it fails or if the result is suspected to be incorrect (e.g., resend of a lost message after not receiving an acknowledgment).
+- **Physical Redundancy**: Using multiple hardware or software components to perform the same task (e.g., replicating data, running operations multiple times).
+
+#### Client Failure
+
+When a client process (which initiated a remote computation) crashes, the server process performing the work is left without a node for the result. This process is called an **Orphan** Computation.
+
+- **Extermination**: The client sends an explicit kill message to the server upon recovery, naming the specific process to terminate.
+- **Reincarnation**: When the client reboots, it broadcasts an epoch number (a unique ID for its current session) to all servers. Any server running a computation associated with an older, lower epoch number is instructed to immediately kill that process.
+- **Gentle Reincarnation**: Similar to reincarnation, but the server only kills old computations if the client that owns them cannot be located or authenticated.
+- **Expiration**: The client is granted a fixed time for the remote computation. The client must renew this lease periodically. If the client crashes it waits for the time to expire, and the server can then safely terminate the orphaned computation.
