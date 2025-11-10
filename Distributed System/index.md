@@ -1071,3 +1071,57 @@ Messages can be received in three ways:
 - Totally-ordered: All the messages are received in the same order by all the nodes.
 
 All the types can be implemented with a total order and are called **Atomic**.
+
+### Recover Technique
+
+After a failure a process need to be taken back to a correct state:
+
+- **Backward Recovery**: Restoring the system to a previous correct state saved before the failure occurred.
+- **Forward Recovery**: Transitioning the system to a new correct state using specialized error-correction code.
+
+Backward recovery is done with two techniques: _Checkpointing_ and _Logging_.
+
+#### Checkpointing
+
+Checkpointing is the act of periodically saving the internal state of a process to stable storage. The primary challenge is ensuring that the collection of local checkpoints and messages in transit forms a Consistent Global State (a consistent cut).
+
+##### Uncoordinated Checkpoints
+
+In this approach, processes take checkpoints independently, making the protocol simple during normal execution but complex during recovery.
+
+Since checkpoints are independent, the system must track causal dependencies introduced by message exchange (A message $m$ sent after Checkpoint $C_i$ by $P_{\text{sender}}$ and received before Checkpoint $C_j$ by $P_{\text{receiver}}$ means $C_j$ depends on $C_i$).
+
+A single process failure and rollback can force other processes to roll back to earlier checkpoints to maintain consistency,
+
+The recovery can happen with two algorithms:
+
+- **Rollback-Dependency Graph**: Dependency between messages are transformed between relationship to the next checkpoint of the receiver and the sender, the failure of a process is propagated following the relationships, those are marked as failed and discarded, the current state (in memory) counts like a state;
+- **Checkpoint-Dependency Graph**: Dependencies between messages are transformed into relationship between the next checkpoint of the receiver and the before of the sender, all the checkpoints of the _recovery line_ should not be able to directly reach each other.
+
+##### Coordinated Checkpoint
+
+This method introduce synchronization between the processes to take a global consistent checkpoint.
+
+- The coordinator process send a **CHKP-REQ** message to all the processes;
+- Each process, upon receiving the request, takes a local checkpoint and sends an ack to the coordinator;
+- Once the coordinator receives all the acks, it sends a **CHKP-DONE** message to all the processes to resume normal computation.
+
+#### Logging
+
+This is possible only when the system is _piecewise deterministic_ (the execution can be reproduced).
+
+All events are recorded to a stable log. After a crash, a process rolls back to a checkpoint and replays the log, ensuring the execution follows the same path up to the crash point.
+
+A message is unstable if it is recorded only in volatile memory and could be lost in a crash. A message is stable if it has been written to persistent storage.
+
+Foreach usable message there two types of relationship:
+
+- $P_{DEP}$: A process whose state depends on an unstable message;
+- $P_{COPY}$: A process (often the sender) that holds a log of the unstable message.
+
+A process $P_{\text{DEP}}$ becomes an _orphan_ if all processes that hold a COPY of the unstable message crash. When this happens, $P_{\text{DEP}}$ must be rolled back to a state before the dependency was created.
+
+Logging protocols are classified based on how they handle the logging of messages:
+
+- **Pessimistic Logging**: Ensures that no orphan processes are created by making sure that messages cannot be sent if there are unstable messages in the system (The process is a $P_{COPY}$). This often involves synchronous logging, which can introduce performance overhead.
+- **Optimistic Logging**: Messages are sent before they are logged to stable storage. This can improve performance but may lead to the creation of orphan processes, which must be handled during recovery.
