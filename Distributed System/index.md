@@ -1125,3 +1125,155 @@ Logging protocols are classified based on how they handle the logging of message
 
 - **Pessimistic Logging**: Ensures that no orphan processes are created by making sure that messages cannot be sent if there are unstable messages in the system (The process is a $P_{COPY}$). This often involves synchronous logging, which can introduce performance overhead.
 - **Optimistic Logging**: Messages are sent before they are logged to stable storage. This can improve performance but may lead to the creation of orphan processes, which must be handled during recovery.
+
+## Distributed Agreement
+
+### Commits
+
+**Atomic Commit** ensure that a distributed transaction is either fully committed or fully aborted across all participating nodes, maintaining the atomicity property of transactions.
+
+In consensus, nodes must agree on a single value, while in atomic commit, all nodes must vote to commit, otherwise the transaction is aborted.
+
+#### Two Phase Commit (2PC)
+
+The **Two Phase Commit** protocol is based on the election of a coordinator (that can be or not a participant of the transaction).
+
+The client, during the transaction, communicate with all the participant nodes, once the transaction is over, the client sends a commit message to the coordinator that starts the 2PC:
+
+1. The coordinator sends a `prepare` message to all the participants;
+2. Each participant votes to `commit` or `abort` and sends the vote to the coordinator;
+3. The coordinator collects all the votes and decides to `global-commit` if all the votes are `commit`, otherwise it decides to `global-abort`;
+4. The coordinator sends the global decision to all the participants;
+5. Each participant performs the action and sends an ack to the coordinator;
+
+```mermaid
+stateDiagram-v2
+
+  c_init: Init
+  c_wait: Wait
+  c_commit: Commit
+  c_abort: Abort
+
+  state coordinator {
+    [*] --> c_init
+    c_init --> c_wait: receive commit request
+    c_wait --> c_commit: all votes are commit
+    c_wait --> c_abort: at least one vote is abort
+  }
+
+  p_init: Init
+  p_ready: Ready
+  p_commit: Commit
+  p_abort: Abort
+
+  state participant {
+    [*] --> p_init
+    p_init --> p_ready: receive prepare
+    p_ready --> p_commit: receive global-commit
+    p_ready --> p_abort: receive global-abort
+    p_init --> p_abort: receive global-abort
+  }
+```
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant Coordinator
+  participant Participant1
+  participant Participant2
+
+  Client->>Coordinator: Commit Request
+  Coordinator->>Participant1: Prepare
+  Coordinator->>Participant2: Prepare
+  Participant1-->>Coordinator: Vote Commit
+  alt All votes are Commit
+    Participant2-->>Coordinator: Vote Commit
+    Coordinator->>Participant1: Global Commit
+    Coordinator->>Participant2: Global Commit
+  else At least one vote is Abort
+    Participant2-->>Coordinator: Vote Abort
+    Coordinator->>Participant1: Global Abort
+    Coordinator->>Participant2: Global Abort
+  end
+  Participant1-->>Coordinator: Ack
+  Participant2-->>Coordinator: Ack
+  Coordinator-->>Client: Transaction result
+```
+
+To detect failure, and make the system synchronous, a timeout is introduced.
+
+After the coordinator send the `prepare` message, it starts a timeout waiting for all the votes. If of at least one participant fails to respond, the coordinator will abort the transaction.
+
+If the coordinator fails the participant can choose:
+
+- If the participant is in the `init` state, it will _abort_;
+- If the participant is in the `ready` state, it can:
+  - wait for the coordinator to recover and send the global decision;
+  - if a timeout expire, ask other participants for their state:
+    - If at least one is in the `init` state, the coordinator didn't complete the prepare phase, so it will _abort_;
+    - If at least one has received the `global-action` before the coordinator failed, it will commit or abort based on that;
+    - If all the others are in the `ready`, it cannot decide and need to wait;
+
+This protocol is **Safe** as it doesn't leads to an incorrect state, but it doesn't preserve **liveness** as the failure of the coordinator can block the participants indefinitely.
+
+#### Three Phase Commit (3PC)
+
+**3PC** improves the 2PC protocol by separating the commit into two phases `pre-commit` and `commit` to avoid blocking in case of coordinator failure.
+
+```mermaid
+stateDiagram-v2
+
+  c_init: Init
+  c_wait: Wait
+  c_pre_commit: Pre Commit
+  c_commit: Commit
+  c_abort: Abort
+
+  state coordinator {
+    [*] --> c_init
+    c_init --> c_wait: receive commit request
+    c_wait --> c_pre_commit: all votes are commit, send pre-commit
+    c_pre_commit --> c_commit: receive acks from all participants, send global-commit
+    c_wait --> c_abort: at least one vote is abort
+  }
+
+  p_init: Init
+  p_ready: Ready
+  p_pre_commit: Pre Commit
+  p_commit: Commit
+  p_abort: Abort
+
+  state participant {
+    [*] --> p_init
+    p_init --> p_ready: receive prepare
+    p_ready --> p_pre_commit: receive pre-commit
+    p_pre_commit --> p_commit: receive global-commit
+    p_ready --> p_abort: receive global-abort
+    p_init --> p_abort: receive global-abort
+  }
+```
+
+If a participant fails during the `init` or `wait` state, the transaction is aborted as the coordinator cannot reach a decision.
+
+If a participant fails during the `pre-commit` state, the coordinator already knows that all the participants voted to commit, so it can send the `global-commit` message and wait for it to recover.
+
+If the coordinator fails, the participant can choose:
+
+- If in the `init` state, it will _abort_;
+- If in the `ready` state, it contact other participants:
+  - If at least one is in the `init` state, it will _abort_;
+  - If at least one is in the `commit` or `pre-commit` state, it will _commit_;
+  - If at least one is in the `abort` state, it will _abort_;
+  - If all the others are in the `ready` state, it will _abort_;
+
+This protocol preserve liveness and safety, but it increase the time needed and expensive.
+
+#### CAP Theorem
+
+A distributed system where these is replication of data, can have only two of these properties:
+
+- Consistency (C): all replicas see the same data at the same time;
+- Availability (A): every request receives a response, without guarantee that it contains the most recent write;
+- Partition Tolerance (P): The system continues to operate despite network partitions that split the system into isolated groups.
+
+If there is a partition (P) the system cannot have perfect C and A.
