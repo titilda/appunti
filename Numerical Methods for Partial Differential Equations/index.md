@@ -44,7 +44,7 @@ Tipically, the boundary condition can be **Dirichlet conditions** and **Neumann 
 $$
 \begin{cases}
   u = g & \text{in } \Gamma_D \sube \partial\Omega \\
-  \frac{\partial u}{\partial n} = q & \text{in } \Gamma_N \sube \partial\Omega %% Maybe the q should be a \phi TODO: check
+  \frac{\partial u}{\partial n} = q & \text{in } \Gamma_N \sube \partial\Omega
 \end{cases}
 $$
 
@@ -197,7 +197,58 @@ _To be continued_
 
 ## Multidimensional elliptic PDEs
 
-_TODO_
+Multidimensional PDEs are just like monodimensional PDEs, but multidimensional: 
+
+$$
+\begin{cases}
+  Lu := -\operatorname{div}(\mu \nabla u) + \vec{b} \nabla u + \sigma v \\
+  u = 0 & \text{on } \Gamma_D \\
+  \mu \frac{\partial u}{\partial n} = \phi & \text{on } \Gamma_N
+\end{cases}
+$$
+
+Integrals become multidimensional, derivatives become gradients and the integration by parts is performed through the **Green formula**:
+
+$$
+-\int_{\Omega} \operatorname{div}(\mu \nabla u) v= \int_{\Omega} mu \nabla u \nabla v - \int_{\partial\Omega} \mu \underbrace{\nabla u \vec{n}}_{\frac{\partial u}{\partial n}} v
+$$
+
+_Massaging the problem_ (if you get this joke, you are authorised to open the source of this file and to add your name in the comment below this paragraph) as in the monodimensional case and using the Green formula instead of the integration by parts, we can write that
+
+<!--
+Add your name here:
+- 
+-->
+
+$$
+\begin{align*}
+  a(u, v) &= \int_{\Omega} \mu \nabla u \nabla v  \int_{\Omega} \vec{b} \nabla u v + \int_{\Omega} \sigma u v \\
+  F(v) &= \int_{\Omega} fv + \int_{\partial\Omega} \mu \frac{\partial u}{\partial n} v \\
+  &= \int_{\Omega} fv + \underbrace{\int_{\Gamma_D} \mu \frac{\partial u}{\partial n} v}_{=0} + \int_{\Gamma_N} \underbrace{\mu \frac{\partial u}{\partial n}}_{\psi} v \\
+  &= \int_{\Omega} fv + \int_{\Gamma_N} \psi v
+\end{align*}
+$$
+
+Continuing with the _massage_ we can get to the weak form, to the Galerkin approximation and finally, to the algebraic system.
+
+The construction of $V_h$ follows the same logic: the definitions are the same as in the monodimensional case with $\Omega$ as the domain. It is notable that $X_h \sub H'(\Omega)$ and $V_h \sub H'_{\Gamma_D}$ where
+
+$$
+V \equiv H'_{\Gamma_D}(\Omega) = \left\{ v \in H'(\Omega), v|_{\Gamma_D} = 0 \right\} \\
+H'(\Omega) = \left\{ v : \Omega \to  \mathbb{R}, v \in L^2(\Omega), \frac{\partial v}{\partial x_j} \in L^2(\Omega) \ \forall j = 1, 2, \dots, n \right\}
+$$
+
+## Lax-Milgram lemma
+
+<!-- TODO: V' definitions and such -->
+
+::: {.callout .callout-theorem title="Lax-Milgram lemma"}
+Assume that $V$ is an Hilbers space with norm $\|\cdot\|$, $F$ is a linear functional on $V$ (i.e. $F \in V'$ and bounded), $a$ is a bilinear, continuous and coercive form (i.e. $\exists u \gt 0 : |a(u, v)| \le u \|u\|\|v\|\ \forall u, v \in V$, $\exists \alpha \gt 0 : a(v, v) \ge \alpha \|v\|^2\ \forall v \in V$).
+
+Then there exists a unique solution $u$ to the weak problem that is also bounded (i.e. $\|u\| \lt \frac{1}{\alpha}\|F\|_{V'}$)
+:::
+
+<!-- TODO: corollary -->
 
 # Appendix
 
@@ -295,3 +346,13 @@ $$
 ## Functionals
 
 _TODO_
+
+## Cauchy-Schwarz inequality
+
+Let $u, v \in V$, then
+
+$$
+\left|\int_\Omega uv\right| \le \|u\|_{L^2(\Omega)} \|v\|_{L^2(\Omega)} \\
+\left|\int_\Omega u'v'\right| \le \|u'\|_{L^2(\Omega)} \|v'\|_{L^2(\Omega)} \\
+\left|\int_\Omega u'v\right| \le \|u'\|_{L^2(\Omega)} \|v'\|_{L^2(\Omega)} \\
+$$
