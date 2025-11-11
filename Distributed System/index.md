@@ -1277,3 +1277,70 @@ A distributed system where these is replication of data, can have only two of th
 - Partition Tolerance (P): The system continues to operate despite network partitions that split the system into isolated groups.
 
 If there is a partition (P) the system cannot have perfect C and A.
+
+### Replicated State Machines
+
+The **Replicated State Machine** approach is a primary method for achieving _fault tolerance_ in distributed systems. It structures the system as a collection of identical, deterministic servers (nodes) that maintain the same internal state.
+
+The key idea is that if all nodes start in the same initial state and execute the exact **same sequence** of operations in the exact **same order**, they will end up in the exact same final state. This makes the entire collection of nodes appear to the client as a single, highly available machine.
+
+The nodes can change the state machine iff all the replication agree on the state.
+
+Under the assumption of crash failures (no Byzantine behavior) and deterministic processes,it guarantee:
+
+- Safety (Consistency): All non-faulty nodes execute the same sequence of operations, guaranteeing linearizability (the outcome is equivalent to a serial execution on a single machine).
+- Liveness (Availability): The system remains operational as long as a majority of nodes are non-faulty and communicating.
+
+#### Raft
+
+**Raft** is a consensus algorithm designed to be easier to understand and implement than its predecessor, _Paxos_.
+
+Raft uses a **leader** that is responsible for:
+
+- Receives commands from the client;
+- Store the commands on its log, assigning an unique index;
+- Propagate _Append Entries_ ($<index, term>$) messages to all the followers to replicate the log;
+- Once the majority of followers acknowledge to have a consistent log, it commits the command and respond to the client;
+- Notify the followers of the commit.
+
+The leader periodically sends to all the nodes, requests from the client or keep alive messages.
+
+When a client send a command to a follower, it redirect the client to the leader.
+
+##### Leader Election
+
+Raft defines three states for a node: **Follower**, **Candidate**, and **Leader**.
+
+Raft divides time into numbered, sequential **Terms**. Each Term begins with an election, and if successful, one Leader serves for the rest of that Term.
+
+All the nodes start as **followers**. If a follower doesn't receive any message from the leader within a timeout, it becomes a **candidate**, increasing the **term** and starting an election.
+
+The candidate will send a message to all the nodes requesting votes.
+
+A node will vote for the first candidate, with an up-to-date log, that request the vote in a term, and it will reset its timeout.
+
+If a candidate receives votes from the majority of the nodes, it becomes the **leader** for that term.
+
+##### Consistency Check
+
+When the leader sends _Append Entries_ messages it includes the entry that precede the new one. The nodes must agree with the append entry, otherwise it rejects the request and the leader resend with the previous log, until a consistency is found than it will update its log.
+
+##### Raft Architecture
+
+The structure is typically to have the majority nearby to decrease the delay for the round trip time. There should be other nodes for disaster recovery but that are not necessary for the computation.
+
+To have a k-fault tolerant system, there should be at least $2k + 1$ nodes, while for byzantine failure there should be at least $3k + 1$ nodes.
+
+### Blockchain
+
+A **Blockchain** is a distributed, decentralized, and immutable ledger (log) that utilizes cryptographic primitives and a consensus mechanism (like Proof-of-Work) to achieve Byzantine Fault Tolerance (BFT) without knowing the number of nodes or trusting any single entity.
+
+To add a new block (commit a set of transactions), nodes (miners) must compete to solve a difficult, cryptographic puzzle (mining).
+
+The problem requires significant computational force to find a solution. The difficulty automatically adjusts to maintain a target commit frequency which is kept low to increase security.
+
+Once a solution is found, the miner broadcasts the new block to the network. Other nodes verify the block's validity (simple process) and add it to their local copy of the blockchain.
+
+The puzzle links the current transaction data with the cryptographic hash of the previous block, making the chain immutable and securing the history of the ledger.
+
+The longest valid chain is considered the authoritative version of the blockchain, ensuring consistency across the distributed network.
