@@ -1475,3 +1475,40 @@ This is the strongest consistency model, as it guarantees real-time ordering of 
 All write operation are handled by a single leader, but when it propagate the changes, the replicas lock the resource, preventing reading the new value until the update is complete across all the replicas.
 
 Once the leader receive all the ack from the replica, it send an unlock to all the replica.
+
+### Client Centric Consistency Model
+
+A **client centric model** guarantees some properties from the point of view of a single client, regardless of the replica it is connected to.
+
+Client models can have four properties that must apply regardless of the replica:
+
+- **Monotonic reads**: When a client reads the value of $x$, any successive read operation will return the same value $x$, or more recent values.
+- **Monotonic Writes**: A write operation by a client on a data item $x$ is completed before any successive write operation by that client on $x$.
+- **Read your writes**: After a write operation by a client, any successive read operation by that client will return the value of that write or a more recent value.
+- **Writes follow Reads**: A write operation by a client on a data item $x$ following a read operation on $x$ by that client is completed on the same or a more recent value of $x$.
+
+Each operation has an unique ID that the client stores, the server are stateless.
+
+When connecting to a replica, the client send the id of the last operation performed by him. If the replica didn't already receive that operation, the replica wait to respond until receiving the latest data.
+
+Guarantee this properties allows to have a _casual consistency_, moving some of the complexity from the server to the client.
+
+### Design Strategies
+
+Designing a distributed system with replicated data involves making strategic choices that balance fault tolerance, performance, and consistency.
+
+#### Replica placement
+
+The placement of replicas can significantly impact the system's performance and fault tolerance. Some common strategies include:
+
+- **Permanent replica**: The replicas are statically configured;
+- **Server-initiated replicas**: The server decides where and when to place the replicas based on load, location, etc.;
+- **Client-initiated replicas**: A copy of the data is maintained directly on the client machine, like cache.
+
+#### Update Propagation
+
+When a write operation occurs on a primary replica, the system must decide what information to send to the other replicas to synchronize their states. The choices include:
+
+- **Propagate the modified data**: If #reads >> #writes, than in case of update propagate the new value (push-based);
+- **Propagate notification**: If #write >> #reads, in case of update propagate only a notification to notify the nodes that the data has changed; When a read is performed, the node fetch the new value on-demand (pull-based);
+- **Propagate the operation**: If the data structure is append-only or commutative, propagate only the operation to be performed, reducing the overhead (might cause side-effects if the operation is not idempotent).
