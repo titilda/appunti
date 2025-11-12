@@ -234,21 +234,173 @@ Continuing with the _massage_ we can get to the weak form, to the Galerkin appro
 The construction of $V_h$ follows the same logic: the definitions are the same as in the monodimensional case with $\Omega$ as the domain. It is notable that $X_h \sub H'(\Omega)$ and $V_h \sub H'_{\Gamma_D}$ where
 
 $$
-V \equiv H'_{\Gamma_D}(\Omega) = \left\{ v \in H'(\Omega), v|_{\Gamma_D} = 0 \right\} \\
-H'(\Omega) = \left\{ v : \Omega \to  \mathbb{R}, v \in L^2(\Omega), \frac{\partial v}{\partial x_j} \in L^2(\Omega) \ \forall j = 1, 2, \dots, n \right\}
+V \equiv H^1_{\Gamma_D}(\Omega) = \left\{ v \in H'(\Omega), v|_{\Gamma_D} = 0 \right\} \\
+H^1(\Omega) = \left\{ v : \Omega \to  \mathbb{R}, v \in L^2(\Omega), \frac{\partial v}{\partial x_j} \in L^2(\Omega) \ \forall j = 1, 2, \dots, n \right\}
 $$
 
 ## Lax-Milgram lemma
 
-<!-- TODO: V' definitions and such -->
-
 ::: {.callout .callout-theorem title="Lax-Milgram lemma"}
-Assume that $V$ is an Hilbers space with norm $\|\cdot\|$, $F$ is a linear functional on $V$ (i.e. $F \in V'$ and bounded), $a$ is a bilinear, continuous and coercive form (i.e. $\exists u \gt 0 : |a(u, v)| \le u \|u\|\|v\|\ \forall u, v \in V$, $\exists \alpha \gt 0 : a(v, v) \ge \alpha \|v\|^2\ \forall v \in V$).
+Assume that $V$ is an Hilbert space with norm $\|\cdot\|$, $F$ is a linear functional on $V$ (i.e. $F \in V'$ and bounded), $a$ is a bilinear, continuous and coercive form (i.e. $\exists u \gt 0 : |a(u, v)| \le u \|u\|\|v\|\ \forall u, v \in V$, $\exists \alpha \gt 0 : a(v, v) \ge \alpha \|v\|^2\ \forall v \in V$).
 
 Then there exists a unique solution $u$ to the weak problem that is also bounded (i.e. $\|u\| \lt \frac{1}{\alpha}\|F\|_{V'}$)
 :::
 
-<!-- TODO: corollary -->
+In the previous lemma, $V'$ is the dual space of $V$ and is defined as
+
+$$
+V' = \left\{ F : V \to \mathbb{R} : F \text{ is linear, bounded and } \|F\|_{V'} = \frac{|F(v)|}{\|v\|_V} \le C \right\}
+$$
+
+::: {.callout .callout-property title="Corollary"}
+If the assumptions of the Lax-Milgram lemma are satosfied, then the Galerkin problem has a unique solution and is bounded independently of $h$ (the solution is **stable**):
+
+$$
+\|u_h\| \lt \frac{1}{\alpha}\|F\|_{V'}
+$$
+
+Moreover, the resulting linear alegraic system will be nonsingular.
+:::
+
+We will not proove the Lax-Milgram lemma but we will only see the conditions a specific problem must satisfy to satisfy the assumptions of the lemma.
+
+::: {.callout .callout-example title="Lax-Milgram lemma assumptions, 1D case"}
+Assume we have to proove that the Lax-Milgram lemma applies to this problem (homogeneous mixed problem):
+
+$$
+a(u, v) = \int_a^b \mu u' v' + b u' v + \sigma u v \\
+F(v) = \int fv + \gamma v(1) \\
+\Omega = {x \in \mathbb{R} : a \le x \le b}, a = 0, b = 1
+$$
+
+The Lax-Milgram lemma requires that
+
+1. $V$ is an Hilbert space
+2. $a$ is bilinear
+3. $a$ is continuous
+4. $a$ is coercive
+5. $F$ is linear
+6. $F$ is bounded
+
+For what concerns point (1), we take for granted that $V$ is an Hilbert space. We have to choose one of two norms to use in the proofs. We can either choose the **complete norm**
+
+$$
+\|v\| = \sqrt{\|v\|^2_{L^2}(0, 1) + \|v'\|_{L^2(0, 1)}}
+$$
+
+or the **reduced norm**
+
+$$
+|v| = \sqrt{\|v'\|_{L^2(0, 1)}}
+$$
+
+The reduced norm can be used only with a non-empty Dirichlet boundary. For this proof, we chose to use the complete norm.
+
+Proving (2) and (5) is trivial.
+
+We will now prove (3). By definition, $a$ is continuous if $\exists M \gt 0 : |a(u, v)| \le M \|u\| \|v\| \ \forall u, v \in V$.
+
+$$
+|a(u, v)| \le \left| \int_a^b \mu u' v' \right| + \left| \int_a^b b u' v \right| + \left| \int_a^b \sigma u v \right| = (*)
+$$
+
+We can write that
+
+$$
+\left| \int_a^b \mu u' v' \right| \le \underbrace{\max_{x} |\mu(x)|}_{\mu_{max}} \int_a^b |u' v'| \le \mu_{max} \|u'\|_{L^2(a, b)} \|v'\|_{L^2(a, b)} \\
+\left| \int_a^b b u' v \right| \le \underbrace{\max_x |b(x)|}_{b_{max}} \int_a^b |u'v| \le b_{max} \|u'\|_{L^2(a, b)} \|v'\|_{L^2(a, b)} \\
+\left| \int_a^b \sigma u v \right| \le \underbrace{\max_x |\sigma(x)|}_{\sigma_{max}} \int_a^b |u v| \le \sigma_{max} \|u\|_{L^2(a, b)} \|v\|_{L^2(a, b)}
+$$
+
+Knowing that $\|v\|_{L^2} \lt \|v\|$ and that $\|v'\|_{L^2} \lt \|v\|$, we can conclude that
+
+$$
+\begin{align*}
+  (*) &\le \mu_{max} \|u'\|_{L^2(a, b)} \|v'\|_{L^2(a, b)} + b_{max} \|u'\|_{L^2(a, b)} \|v'\|_{L^2(a, b)} + \sigma_{max} \|u\|_{L^2(a, b)} \|v\|_{L^2(a, b)} \\
+  &\le \mu_{max} \|u\| \|v\| + b_{max} \|u\| \|v\| + \sigma_{max} \|u\| \|v\| \\
+  &= \underbrace{(\mu_{max} + b_{max} + \sigma_{max})}_{M} \|u\| \|v\| \\
+  &= M \|u\| \|v\|
+\end{align*}
+$$
+
+Assuming that $\mu$, $b$ and $\sigma$ are bounded from above, we can say that $a$ is continuous.
+
+We will now prove (4).  By definition, $a$ is coercive if $\exists \alpha : a(v, v) \ge \alpha \|v\|^2$.
+
+We know that $a(v, v) = \int_a^b \mu(v')^2 + \int_a^b b v' v + \int_a^b \sigma v^2$.
+
+Assume that $\mu \gt 0$ then
+
+$$
+\int_a^b \mu (v')^2 \ge \mu_{min} \int_a^b (v')^2 = \mu_{min} \|v'\|_{L^2(a, b)}^2
+$$
+
+Assume that $b(1) \gt 0$ then
+
+$$
+\int_a^b b v' v = \int_a^b b \frac{1}{2} (v^2)' = \frac{1}{2} \int_a^b b (v^2)' = -\frac{1}{2} \int_a^b b v^2 + \underbrace{\frac{1}{2} [b v^2]_a^b}_{\gt 0} \ge -\frac{1}{2} \int_a^b b' v^2
+$$
+
+Assume $\delta = \sigma - \frac{1}{2}b' \ge 0$ then
+
+$$
+\begin{align*}
+  a(v, v) &= \mu_{min} \|v'\|_{L^2(a, b)}^2 \int_a^b (\sigma - \frac{1}{2}b') v^2 \\
+  &\ge \mu_{min} \|v'\|_{L^2(a, b)} + \delta \int_a^b v^2 \\
+  &= \mu_{min} \|v'\|_{L^2(a, b)}^2 + \delta \|v\|_{L^2(a, b)}^2 \\
+  &\ge \underbrace{\min(\mu_{min}, \delta)}_{\alpha \gt 0} \cdot (\|v'\|_{L^2(a, b)} + \|v\|_{L^2(a, b)}^2) \\
+  &= \alpha\|v\|^2
+\end{align*}
+$$
+
+We will now prove (6). Since $\|1\|_{L^2(a, b)} = \sqrt{\int_a^b 1^2 dx} = \sqrt{b - a}$ then
+
+$$
+v(b) = v(a) + \int_a^b v'(x) dx \implies |v(b)| = \cancel{|v(a)|} \int_a^b v'(x) \cdot 1 dx \le \|v'\|_{L^2(a, b)} \|1\|_{L^2(a, b)} = \|v'\|_{L^2(a, b)} \sqrt{b - a} \le \sqrt{b - a} \|v\|
+$$
+
+this means that
+
+$$
+\begin{align*}
+  |F(v)| &= \left|\int_a^b fv + \gamma v(b) \right| \\
+  &\le \left| \int_a^b fv \right| + |\gamma v(1)| \\
+  &\le \|f\|_{L^2(a, b)} \|v\|_{L^2(a, b)} + |\gamma| |v(b)| \\
+  &\le (\|f\|_{L^2(a, b)} + |\gamma|) \|v\| \\
+  &= \alpha \|v\|
+\end{align*}
+$$
+
+We can now conclude that
+
+$$
+\|F\|_{V'} = \sup_{v \in V} \frac{F(v)}{\|v\|} \le \alpha
+$$
+
+Since $f$ and $\gamma$ are given, the problem is said to be **bounded by the data**.
+
+Since the assumptions of the Lax-Milgram lemma are satisfied, then we can say that there exists a unique solution for $a(u, v) = F(v) \ \forall v \in V$ that is also bounded.
+:::
+
+The Lax-Milgram lemma also holds with multidimensional domains.
+
+If we take $u = v$ then
+
+$$
+\alpha \|u\|^2 \le a(u, u) = F(u) = \int fu + \gamma u(b) \le \|f\|_{L^2(a, b)} \|u\|_{L^2(a, b)} + |\gamma| \|u\| \le (\|f\|_{L^2(a, b)} + |\gamma|)\|u\|
+$$
+
+therefore
+
+$$
+\|u\| \le \frac{1}{\alpha} (\|F\|_{L^2(a, b)} + |\gamma|)
+$$
+
+This means that the solution is bounded independently on the value of $h$ (**stability** property).
+
+# Practical numerical solution
+
+_TODO_
 
 # Appendix
 
