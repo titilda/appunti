@@ -1344,3 +1344,56 @@ Once a solution is found, the miner broadcasts the new block to the network. Oth
 The puzzle links the current transaction data with the cryptographic hash of the previous block, making the chain immutable and securing the history of the ledger.
 
 The longest valid chain is considered the authoritative version of the blockchain, ensuring consistency across the distributed network.
+
+## Replication
+
+**Replication** is the strategy of storing copies of data on multiple machines (replicas) in a distributed system.
+
+Replication provides several key benefits:
+
+- **Fault Tolerance/Reliability**: If one replica fails, others can continue serving the data, preventing system downtime.
+- **Caching/Latency/Location Awareness**: Placing replicas geographically closer to clients reduces network latency and improves local responsiveness.
+- **Load Balancing/Throughput**: Distributing requests across multiple replicas reduces the load on any single machine, increasing the overall throughput and performance of the system.
+
+Most replication challenges consist of managing write conflicts (when two clients try to update the same data item simultaneously).
+
+A **Consistency Model** is a contract between the processes and data store:
+
+- Strict guarantees simplify the development but have high costs;
+- weaker guarantees reduce the cost but increase the difficult of the development.
+
+Some example of models are:
+
+- **Guarantees on content**: there is a max delta between the version stored on the nodes (e.g. you could sell 32 out of 30 articles);
+- **Guarantees on staleness**: define a maximum acceptable time gap between an update and its propagation to all replicas. (e.g. web cache);
+- **Guarantees on the order of updates**: Constrains how concurrent write operations are resolved and ordered across replicas.
+
+### Single Leader Consistency Protocols
+
+A single replica is designated as the **Leader**, which is the only node responsible for all write operations. Followers handle read operations and receive updates from the Leader.
+
+This protocol avoid conflicts as all the writes-write (read-write can still happen) are concentrated into a single node.
+
+The updates from the leader to the followers can be done in different ways:
+
+- **Synchronous**: The Leader waits for all replicas to acknowledge the write before responding to the client (Highest consistency, highest latency);
+- **Asynchronous**: The Leader responds to the client immediately after writing locally. Propagation happens in the background (Lowest latency, weaker consistency);
+- **Semi-Synchronous**: The Leader waits for a majority of replicas to acknowledge the write.
+
+It's possible to partition the protocol and give a leader for each partition to distribute the load.
+
+### Multi Leader Protocol
+
+In this protocol there are multiple leaders that can handle write operations.
+
+In this case the write-write conflict can happen, but the application should be able to easily handle them.
+
+The workload is balanced between multiple nodes.
+
+### Leaderless Protocol
+
+In this protocol there is no leader, all the nodes can handle read and write operations.
+
+The client, or a proxy, is responsible for contacting multiple replicas to perform read and write operations.
+
+This protocol use _quorum_ based techniques to ensure consistency.
