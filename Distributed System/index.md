@@ -1397,3 +1397,81 @@ In this protocol there is no leader, all the nodes can handle read and write ope
 The client, or a proxy, is responsible for contacting multiple replicas to perform read and write operations.
 
 This protocol use _quorum_ based techniques to ensure consistency.
+
+### Data-Centric Consistency Model
+
+Data-Centric Consistency Models define the rules for how updates to replicated data are ordered and observed by all client processes. These models represent a critical trade-off: stronger consistency (simpler programming) comes at the cost of higher latency and lower availability.
+
+Based on the strength of the consistency guarantees, data-centric models can be classified into several categories:
+
+#### Eventual Consistency
+
+The **Eventual Consistency** model doesn't guarantee anything about the order of the operations, it only guarantees the execution of the operations.
+
+This is good for _read-heavy_ systems with few concurrent updates or there are almost no concurrent updates, on append-only data structures, or if the application is commutative semantic allowing to send operations instead of values.
+
+This is very easy to implement and with almost no overhead.
+
+#### FIFO Consistency
+
+The **First-In-First-Out (FIFO)** consistency model ensures that write operations done by a single process are perceived in the same order by all the other processes. Write operations from other processes can happen at any time.
+
+This can be easily implemented by tagging each write operation with a unique scalar clock for each process.
+
+When a replica receives a write operation, it checks the sequence number to ensure that writes from the same process are applied in the correct order. If a write operation arrives out of order, the replica can buffer it until the missing operations are received.
+
+An example is a chat application messages sent by a user should be displayed in the order they were sent.
+
+#### Causal Consistency
+
+The **Causal Consistency** model ensures that all processes observe causally related write operations in the same order.
+
+If a process $P_1$ performs a write operation $W_1$ and then another process $P_2$ reads the value written by $W_1$ and performs a write operation $W_2$, then all processes must observe $W_1$ before $W_2$.
+
+This can be implemented by tracking the causal relationships between operations using vector clocks. A write operation is only applied at a replica if all causally preceding operations have been applied.
+
+To work correctly, the clients must be sticky to a single replica, otherwise it can happen that a client read a value that doesn't include its previous write.
+
+#### Sequential Consistency
+
+The **Sequential Consistency** model ensures that the results of operations are consistent with some sequential order of execution across all processes.
+
+Sequential consistency is expensive, even programming languages (java, c++, etc), doesn't support sequential consistency (value can be different inside core's cache) as cache coherence is expensive, but can be forced with synchronization.
+
+The read operation can interleave with each other.
+
+This can be solved using two, non-highly available, protocols:
+
+##### Sequential Consistency with Single Leader
+
+Assumption: no failure, fifo network, processes are sticky (processes communicate with the same replica)
+
+All writes go to a Leader, which totally orders them and propagates changes to all the replicas.
+
+##### Sequential Consistency without Leaders
+
+Uses a quorum system to force a consistent global ordering.
+
+There are some fixed value for the amount of nodes to contact for reading (NR) and the amount of nodes to contact for writing (NW). The amount should follow these rules:
+
+- $\text{NR} + \text{NW} > N$ (avoids read-write conflicts)
+- $\text{NW} > \frac{N}{2}$ (avoids write-write conflicts)
+
+In this way, reading from NR promise that at least one of the has the newer value, identifiable by the timestamp.
+
+If the $\text{NW}$ is less than half of the total nodes, that, as the time is scalar, can happen that some have the same time, but different values.
+
+The consistency can be maintained by two protocols:
+
+- **Read-Repair**: the client, once receiving all the reads, if some have older value it sends the new value;
+- **Anti-entropy**: nodes periodically exchange data about changes.
+
+#### Linearizability
+
+The **Linearizability** model ensures that all operations appear to occur instantaneously at some point between their invocation and their response.
+
+This is the strongest consistency model, as it guarantees real-time ordering of operations.
+
+All write operation are handled by a single leader, but when it propagate the changes, the replicas lock the resource, preventing reading the new value until the update is complete across all the replicas.
+
+Once the leader receive all the ack from the replica, it send an unlock to all the replica.
