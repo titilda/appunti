@@ -9,7 +9,7 @@ A linear programming problem is an optimization problem where:
 - **The objective function** $\mathscr{F} : X \to R $  is linear , where X is the feasible region.
 - **The feasible region**  has linear constraints.
 
-> A solution $\underline{x}^* \in R^n  $ is said to be **optimal** if  $ f(\underline{x}^*) $ beats $f(\underline{x}), \forall \underline{x} \in X $.
+> A solution $\underline{x}^* \in R^n$ is said to be **optimal** if  $f(\underline{x}^*)$ beats $f(\underline{x}), \forall \underline{x} \in X$.
 
 ### Traditional representations:
 
@@ -34,7 +34,7 @@ $$
 <h3>Matrix form </h3>
 <div style="text-align: center;">
 
-$ min \quad z = [c_1 \dots c_n] 
+$min \quad z = [c_1 \dots c_n] 
 \begin{bmatrix}
 x_1 \\
 \vdots\\
