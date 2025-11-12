@@ -41,7 +41,34 @@ $$
 
 <div style="flex:1; padding-left:10px;">
 <h3>Using python's MIP library:</h3>
-code goes here
-</div>
 
-</div>
+```python 
+    import mip
+    from mip import CONTINUOUS
+    
+    # these are our parameters
+    I = [0, 1, 2, 3, 4] # Products
+    P = [2, 3, 4, 5, 6] # Prices
+    C = [3, 6, 7, 9, 10] # Costs
+    Cmax = 3000 # Max total cost
+    Qmax = 400 # Max total amount of product
+    
+    
+    model=mip.Model()
+    x = [model.add_var(name=f"x_{i+1}", lb=0 ,var_type=CONTINUOUS) for i in I]
+    
+    # Objective function
+    model.objective = mip.maximize(mip.xsum(P[i] * x[i] for i in I))
+    
+    # Constraints
+    
+    # Maximum production cost
+    model.add_constr(mip.xsum(x[i]*C[i] for i in I) <= 3000)
+    
+    # Maximum quantity produced
+    model.add_constr(mip.xsum(x[i] for i in I)<= 400)
+    
+    model.optimize()
+    for i in model.vars:
+    print(i.name,i.x)
+```
