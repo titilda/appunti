@@ -1585,3 +1585,40 @@ The disadvantages are:
 
 - **Fault Tolerance**: Since intermediate data is not persisted, recovering from a failure requires checkpointing the internal state of the tasks and rolling back the entire graph to that consistent snapshot;
 - **Resource Inflexibility**: Resources are allocated statically. Changing the capacity (scaling up or down) generally requires stopping and restarting the entire streaming job.
+
+### Stream Processing
+
+In stream processing, data is treated as a continuous flow rather than a static dataset. This model is characterized by low-latency requirements.
+
+Since a data stream is theoretically infinite, processing is done over finite segments called **windows**. A window isolates a portion of the stream and defines when a computation should be performed.
+
+The window can be defined in two ways:
+
+- **Count-based**: A window closes once a specific number of elements is reached;
+- **Time-based**: window closes once a specific time interval has elapsed.
+
+Some parameter are:
+
+- **size**: The total amount of data enclosed by the window;
+- **slide**: How often a new window is started.
+
+The relationship between the window's size and its slide determines the window type:
+
+- **Tumbling Windows**: Occur when size equals slide, resulting in non-overlapping, contiguous windows.
+- **Sliding Windows**: Occur when slide is less than size resulting in overlapping windows.
+
+#### Stream Time
+
+The time of the data is important and can vary between the generation of the data and the processing time leading to:
+
+- **Event Time**: The time when the event actually occurred, recorded by the data source.
+- **Processing Time**: The time when the event is processed by the system.
+
+When using event time, there is a need to handle out-of-order data (data that arrives late). This can be done by keeping the window open until a _watermark_ (a message that indicates no more events with a timestamp earlier than the watermark will arrive) is reached.
+
+#### Stream Implementation
+
+Using Dataflow it's possible to implement stream with both scheduling and pipeline.
+
+- **Scheduling**: The stream is divided into micro-batches that are processed sequentially. Each micro-batch is treated as a bounded dataset, allowing the use of batch processing techniques. This approach introduces some latency.
+- **Pipeline**: Uses _Stateful Operators_ that maintain internal state across multiple events to achieve a windowed computation.
