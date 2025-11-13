@@ -1512,3 +1512,35 @@ When a write operation occurs on a primary replica, the system must decide what 
 - **Propagate the modified data**: If #reads >> #writes, than in case of update propagate the new value (push-based);
 - **Propagate notification**: If #write >> #reads, in case of update propagate only a notification to notify the nodes that the data has changed; When a read is performed, the node fetch the new value on-demand (pull-based);
 - **Propagate the operation**: If the data structure is append-only or commutative, propagate only the operation to be performed, reducing the overhead (might cause side-effects if the operation is not idempotent).
+
+## Distributed Data Processing
+
+Distributed Data Processing enables the efficient processing of large volumes of data (that cannot be stored on a single node) by partitioning the data and distributing the computation across distributed nodes.
+
+It's also possible to separate a problem into multiple sub-problems and use the output as input for the next problem.
+
+### Map Reduce
+
+**Map-Reduce** is a programming model for processing large data sets in a distributed system, developed by Google.
+
+The model has a **master** node that coordinates the work and multiple **worker** nodes that perform the tasks.
+
+There are two types of tasks:
+
+- **Map**: Takes as input a $<key, value>$ pair and executes a function to produce a set of $<key, value>$ pairs;
+- **Reduce**: Takes as input a key and a list of values associated with that key, and merges them to produce a smaller set of values.
+
+1. The input data, typically stored in a distributed file system with a pagination of 64MB, is split into $M$ partitions.
+2. The master handle the _scheduling_, assigns each partition to a free worker node (based on data locality) to perform the map task.
+3. Each worker processes its assigned partition, producing intermediate $<key, value>$ pairs.
+4. The intermediate data is grouped by key.
+5. The master assigns reduce tasks to worker nodes, each responsible for processing a subset of the keys.
+6. Each reduce worker processes its assigned keys and their associated values, producing the final output.
+
+#### Map-Reduce Fault Tolerance
+
+Since both _Map_ and _Reduce_ operations are deterministic and stateless (they only rely on input data), failure recovery is simple: if a Worker fails, the Master simply re-assigns the task to another free Worker.
+
+The data is stored in a distributed file system that replicates the data across multiple nodes, ensuring that if a node fails, the data can still be accessed from another replica (two locally and one remotely).
+
+The Master monitors completion times. If a task is running slower than its peers (**Stragglers**), the Master executes a duplicate of that task on another free Worker. The result from the first Worker to finish is accepted, and the other execution is discarded.
