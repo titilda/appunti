@@ -342,6 +342,7 @@ Then either:
 #### Proof
 ##### Case 1:
 P has an unbounded feasible direction $\underline{d}$ such that $\underline{c}^T\underline{d}<0$ ,this means that proceeding in that direction will make the value smaller and smaller and the objective value tends to -$\infty$.
+
 ##### Case 2:
 P has no unbounded feasible direction such that along that path the value keeps getting smaller.
 As we saw any point of the feasible region can be expressed as a convex combination of its vertices plus the unbounded direction, so for any $\underline{x} \in P$ we have $\underline{d}$ or $\underline{c}^T \underline{d} \geq 0$ (either the value along that direction gets bigger or that direction is $\underline{0}$) so:
