@@ -198,15 +198,122 @@ $$
 ### Convex subsets
 
 >A subset $S \subseteq R^n$ is convex if for each pair of points $\underline{x}_1,\underline{x}_2 \in S$ the segment defined by them is the defined by all the **convex combinations** of the two points:
-
- [$\underline{x}_1,\underline{x}_2$] = {$\:\underline{p} \in R^n : \underline{x} = \alpha\underline{x}_1 + (1 - \alpha)\underline{x}_2 \, \land \alpha \in [0,1]\:$}
+>$$
+ [\underline{x}_1,\underline{x}_2] = {\:\underline{p} \in R^n : \underline{x} = \alpha\underline{x}_1 + (1 - \alpha)\underline{x}_2 \, \land \alpha \in [0,1]\:}
+$$
 
 
 Meaning that the subset contains the whole segment connecting the two points.
 
 ![](assets/chapter3/convexset.png)
 
-[Convex set example](https://www.desmos.com/calculator/y3ays9vrh3?lang=it)
+[Convex set interactive graph](https://www.desmos.com/calculator/y3ays9vrh3?lang=it)
+
+> A *polyhedron* is a convex set of $R^n$ $\implies $ The feasible region of a LP is a convex set of $R^n$
+
+### Vertices
+
+>A vertex of a polyhedron P is a point which cannot be expressed as a convex combination of two other **dinstinct** points of P.
+
+Given a point $\underline{x}$ and a pair of points $(\underline{y}_1,\underline{y}_2)$ </br>
+
+x is a vertex $\iff \:\underline{x} = \alpha\underline{y}_1 + (1 - \alpha)\underline{y}_2 \, \land \alpha \in [0,1]\: \land (\underline{x}= \underline{y}_1 \lor \underline{x}= \underline{y}_2)$ 
+
+### Unbounded feasible direction of polyhedron
+
+>An unbounded feasible direction d of a polyhedron P is a nonzero vector such that ,from a point $\underline{x} \in P$, all points of the form $\underline{x} + \lambda d \:$ with $\lambda > 0$ also belongs to P. The set of such points is often called the **ray** of d through $\underline{x}$.
+
+![](assets/chapter3/unbounded.png)
+
+### Polytopes
+
+>A polytope is a **bounded polyhedron** , hence the only unbounded feasible direction is d = 0 (so in a sense it does not have any) 
+
+![A polytope](assets/chapter3/polytope.png)
+
+### Representation of polyhedra - Weyl-Minkowsky Theorem
+>Every point $\underline{x}$ of a polyhedron P can be expressed as a **convex combination** of its vertices $\underline{x}^1, \dots, \underline{x}^k$ plus (if needed) an **unbounded feasible direction** \underline{d} of P:
+$$
+ \underline{x} = \alpha_1\underline{x}_1 + \dots + \alpha_k \underline{x}_k + \underline{d}
+$$
+> where $\quad\sum_{i=1}^{k} \alpha_i = 1 ,\:\alpha_i \geq 0 , \forall i \in { 1 \dots k}$ <br>
+> "The multipliers are positive and theirs sum must be equal to 1"
+## Standard form of LPs
+
+### Transformations rules
+
+- $max \quad \underline{c}^T \underline{x} \implies -min \:(-\underline{c}^T \underline{x})$
+ 
+
+- $\underline{a}^T \underline{x} \leq b \implies \begin{cases} \underline{a}^T\underline{x} + s = b \\
+  s \geq 0
+  \end{cases}\quad$ where s is a **slack** variable.
+  
+
+- $\underline{a}^T \underline{x} \geq b \implies \begin{cases} \underline{a}^T\underline{x} - s = b \\
+  s \geq 0
+  \end{cases}\quad$ where s is a **surplus** variable.
+
+
+- $x_j$ unrestricted sign \implies $\begin{cases} x_j = {x_j}^+\,-\,{x_j}^- \\
+  {x_j}^+\, , \, x_j^- \geq 0
+  \end{cases}\quad$ <br><br>
+After substituting $x_j$ with ${x_j}^+\,-\,{x_j}^-$ , we delete $x_j$ from the problem.
+
+### Standard form 
+> An LP is said to be in standard form if this is its appearance:
+
+$$
+ \begin{align*}
+    min \quad & z=\underline{c}^T\underline{x} \\
+    s.t. \quad & A\underline{x} = \underline{b} \\
+    & \underline{x} \geq \underline{0}
+ \end{align*}
+$$
+
+#### Example:
+Let's put the following LP in standard form:
+
+$$  
+\begin{align*}
+max  \quad & 2\mathscr{x}_1 + 3\mathscr{x}_2 + 4\mathscr{x}_3 + 5\mathscr{x}_4 + 6\mathscr{x}_5 \\
+s.t. \quad & 3\mathscr{x}_1 + 6\mathscr{x}_2 + 7\mathscr{x}_3 + 9\mathscr{x}_4 + 10\mathscr{x}_5 \leq 3000 \quad \\
+& \mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + \mathscr{x}_4 + \mathscr{x}_5 \leq 400\quad\\
+& \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4} \: , \mathscr{x}_5 \in R
+\end{align*}
+$$
+  
+1. From maximization to minimization
+   $$  
+   \begin{align*}
+   min  \quad & -2\mathscr{x}_1 - 3\mathscr{x}_2 - 4\mathscr{x}_3 - 5\mathscr{x}_4 - 6\mathscr{x}_5 \\
+   s.t. \quad & 3\mathscr{x}_1 + 6\mathscr{x}_2 + 7\mathscr{x}_3 + 9\mathscr{x}_4 + 10\mathscr{x}_5 \leq 3000 \quad \\
+   & \mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + \mathscr{x}_4 + \mathscr{x}_5 \leq 400\quad\\
+   & \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4} \: , \mathscr{x}_5 \in R
+   \end{align*}
+   $$
+2. From inequality to equalities by adding slack variables
+   $$  
+   \begin{align*}
+   min  \quad & -2\mathscr{x}_1 - 3\mathscr{x}_2 - 4\mathscr{x}_3 - 5\mathscr{x}_4 - 6\mathscr{x}_5 \\
+   s.t. \quad & 3\mathscr{x}_1 + 6\mathscr{x}_2 + 7\mathscr{x}_3 + 9\mathscr{x}_4 + 10\mathscr{x}_5 + S_1 = 3000 \quad \\
+   & \mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + \mathscr{x}_4 + \mathscr{x}_5 + S_2 = 400\quad\\
+   & \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4} \: , \mathscr{x}_5 \in R \\
+   & S_1, S_2 \geq 0
+   \end{align*}
+   $$
+3. Substituting unrestricted sign variables
+   $$  
+   \begin{align*}
+   min  \quad & -2\mathscr{x}_1 - 3\mathscr{x}_2 - 4\mathscr{x}_3 - 5\mathscr{x}_4 - 6\mathscr{x}_5 \\
+   s.t. \quad & 3\mathscr{x}_1 + 6\mathscr{x}_2 + 7\mathscr{x}_3 + 9\mathscr{x}_4 + 10\mathscr{x}_5 + S_1 = 3000 \quad \\
+   & \mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + \mathscr{x}_4 + \mathscr{x}_5^+ - \mathscr{x}_5^- + S_2 = 400\quad\\
+   & \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4} \:  \\
+   & \mathscr{x}_5^+ , \mathscr{x}_5^- \geq 0 \\
+   & S_1, S_2 \geq 0
+   \end{align*}
+   $$
+    The problem is now in standard form.
 
 
 
