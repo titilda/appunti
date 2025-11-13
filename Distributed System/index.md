@@ -1125,3 +1125,390 @@ Logging protocols are classified based on how they handle the logging of message
 
 - **Pessimistic Logging**: Ensures that no orphan processes are created by making sure that messages cannot be sent if there are unstable messages in the system (The process is a $P_{COPY}$). This often involves synchronous logging, which can introduce performance overhead.
 - **Optimistic Logging**: Messages are sent before they are logged to stable storage. This can improve performance but may lead to the creation of orphan processes, which must be handled during recovery.
+
+## Distributed Agreement
+
+### Commits
+
+**Atomic Commit** ensure that a distributed transaction is either fully committed or fully aborted across all participating nodes, maintaining the atomicity property of transactions.
+
+In consensus, nodes must agree on a single value, while in atomic commit, all nodes must vote to commit, otherwise the transaction is aborted.
+
+#### Two Phase Commit (2PC)
+
+The **Two Phase Commit** protocol is based on the election of a coordinator (that can be or not a participant of the transaction).
+
+The client, during the transaction, communicate with all the participant nodes, once the transaction is over, the client sends a commit message to the coordinator that starts the 2PC:
+
+1. The coordinator sends a `prepare` message to all the participants;
+2. Each participant votes to `commit` or `abort` and sends the vote to the coordinator;
+3. The coordinator collects all the votes and decides to `global-commit` if all the votes are `commit`, otherwise it decides to `global-abort`;
+4. The coordinator sends the global decision to all the participants;
+5. Each participant performs the action and sends an ack to the coordinator;
+
+```mermaid
+stateDiagram-v2
+
+  c_init: Init
+  c_wait: Wait
+  c_commit: Commit
+  c_abort: Abort
+
+  state coordinator {
+    [*] --> c_init
+    c_init --> c_wait: receive commit request
+    c_wait --> c_commit: all votes are commit
+    c_wait --> c_abort: at least one vote is abort
+  }
+
+  p_init: Init
+  p_ready: Ready
+  p_commit: Commit
+  p_abort: Abort
+
+  state participant {
+    [*] --> p_init
+    p_init --> p_ready: receive prepare
+    p_ready --> p_commit: receive global-commit
+    p_ready --> p_abort: receive global-abort
+    p_init --> p_abort: receive global-abort
+  }
+```
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant Coordinator
+  participant Participant1
+  participant Participant2
+
+  Client->>Coordinator: Commit Request
+  Coordinator->>Participant1: Prepare
+  Coordinator->>Participant2: Prepare
+  Participant1-->>Coordinator: Vote Commit
+  alt All votes are Commit
+    Participant2-->>Coordinator: Vote Commit
+    Coordinator->>Participant1: Global Commit
+    Coordinator->>Participant2: Global Commit
+  else At least one vote is Abort
+    Participant2-->>Coordinator: Vote Abort
+    Coordinator->>Participant1: Global Abort
+    Coordinator->>Participant2: Global Abort
+  end
+  Participant1-->>Coordinator: Ack
+  Participant2-->>Coordinator: Ack
+  Coordinator-->>Client: Transaction result
+```
+
+To detect failure, and make the system synchronous, a timeout is introduced.
+
+After the coordinator send the `prepare` message, it starts a timeout waiting for all the votes. If of at least one participant fails to respond, the coordinator will abort the transaction.
+
+If the coordinator fails the participant can choose:
+
+- If the participant is in the `init` state, it will _abort_;
+- If the participant is in the `ready` state, it can:
+  - wait for the coordinator to recover and send the global decision;
+  - if a timeout expire, ask other participants for their state:
+    - If at least one is in the `init` state, the coordinator didn't complete the prepare phase, so it will _abort_;
+    - If at least one has received the `global-action` before the coordinator failed, it will commit or abort based on that;
+    - If all the others are in the `ready`, it cannot decide and need to wait;
+
+This protocol is **Safe** as it doesn't leads to an incorrect state, but it doesn't preserve **liveness** as the failure of the coordinator can block the participants indefinitely.
+
+#### Three Phase Commit (3PC)
+
+**3PC** improves the 2PC protocol by separating the commit into two phases `pre-commit` and `commit` to avoid blocking in case of coordinator failure.
+
+```mermaid
+stateDiagram-v2
+
+  c_init: Init
+  c_wait: Wait
+  c_pre_commit: Pre Commit
+  c_commit: Commit
+  c_abort: Abort
+
+  state coordinator {
+    [*] --> c_init
+    c_init --> c_wait: receive commit request
+    c_wait --> c_pre_commit: all votes are commit, send pre-commit
+    c_pre_commit --> c_commit: receive acks from all participants, send global-commit
+    c_wait --> c_abort: at least one vote is abort
+  }
+
+  p_init: Init
+  p_ready: Ready
+  p_pre_commit: Pre Commit
+  p_commit: Commit
+  p_abort: Abort
+
+  state participant {
+    [*] --> p_init
+    p_init --> p_ready: receive prepare
+    p_ready --> p_pre_commit: receive pre-commit
+    p_pre_commit --> p_commit: receive global-commit
+    p_ready --> p_abort: receive global-abort
+    p_init --> p_abort: receive global-abort
+  }
+```
+
+If a participant fails during the `init` or `wait` state, the transaction is aborted as the coordinator cannot reach a decision.
+
+If a participant fails during the `pre-commit` state, the coordinator already knows that all the participants voted to commit, so it can send the `global-commit` message and wait for it to recover.
+
+If the coordinator fails, the participant can choose:
+
+- If in the `init` state, it will _abort_;
+- If in the `ready` state, it contact other participants:
+  - If at least one is in the `init` state, it will _abort_;
+  - If at least one is in the `commit` or `pre-commit` state, it will _commit_;
+  - If at least one is in the `abort` state, it will _abort_;
+  - If all the others are in the `ready` state, it will _abort_;
+
+This protocol preserve liveness and safety, but it increase the time needed and expensive.
+
+#### CAP Theorem
+
+A distributed system where these is replication of data, can have only two of these properties:
+
+- Consistency (C): all replicas see the same data at the same time;
+- Availability (A): every request receives a response, without guarantee that it contains the most recent write;
+- Partition Tolerance (P): The system continues to operate despite network partitions that split the system into isolated groups.
+
+If there is a partition (P) the system cannot have perfect C and A.
+
+### Replicated State Machines
+
+The **Replicated State Machine** approach is a primary method for achieving _fault tolerance_ in distributed systems. It structures the system as a collection of identical, deterministic servers (nodes) that maintain the same internal state.
+
+The key idea is that if all nodes start in the same initial state and execute the exact **same sequence** of operations in the exact **same order**, they will end up in the exact same final state. This makes the entire collection of nodes appear to the client as a single, highly available machine.
+
+The nodes can change the state machine iff all the replication agree on the state.
+
+Under the assumption of crash failures (no Byzantine behavior) and deterministic processes,it guarantee:
+
+- Safety (Consistency): All non-faulty nodes execute the same sequence of operations, guaranteeing linearizability (the outcome is equivalent to a serial execution on a single machine).
+- Liveness (Availability): The system remains operational as long as a majority of nodes are non-faulty and communicating.
+
+#### Raft
+
+**Raft** is a consensus algorithm designed to be easier to understand and implement than its predecessor, _Paxos_.
+
+Raft uses a **leader** that is responsible for:
+
+- Receives commands from the client;
+- Store the commands on its log, assigning an unique index;
+- Propagate _Append Entries_ ($<index, term>$) messages to all the followers to replicate the log;
+- Once the majority of followers acknowledge to have a consistent log, it commits the command and respond to the client;
+- Notify the followers of the commit.
+
+The leader periodically sends to all the nodes, requests from the client or keep alive messages.
+
+When a client send a command to a follower, it redirect the client to the leader.
+
+##### Leader Election
+
+Raft defines three states for a node: **Follower**, **Candidate**, and **Leader**.
+
+Raft divides time into numbered, sequential **Terms**. Each Term begins with an election, and if successful, one Leader serves for the rest of that Term.
+
+All the nodes start as **followers**. If a follower doesn't receive any message from the leader within a timeout, it becomes a **candidate**, increasing the **term** and starting an election.
+
+The candidate will send a message to all the nodes requesting votes.
+
+A node will vote for the first candidate, with an up-to-date log, that request the vote in a term, and it will reset its timeout.
+
+If a candidate receives votes from the majority of the nodes, it becomes the **leader** for that term.
+
+##### Consistency Check
+
+When the leader sends _Append Entries_ messages it includes the entry that precede the new one. The nodes must agree with the append entry, otherwise it rejects the request and the leader resend with the previous log, until a consistency is found than it will update its log.
+
+##### Raft Architecture
+
+The structure is typically to have the majority nearby to decrease the delay for the round trip time. There should be other nodes for disaster recovery but that are not necessary for the computation.
+
+To have a k-fault tolerant system, there should be at least $2k + 1$ nodes, while for byzantine failure there should be at least $3k + 1$ nodes.
+
+### Blockchain
+
+A **Blockchain** is a distributed, decentralized, and immutable ledger (log) that utilizes cryptographic primitives and a consensus mechanism (like Proof-of-Work) to achieve Byzantine Fault Tolerance (BFT) without knowing the number of nodes or trusting any single entity.
+
+To add a new block (commit a set of transactions), nodes (miners) must compete to solve a difficult, cryptographic puzzle (mining).
+
+The problem requires significant computational force to find a solution. The difficulty automatically adjusts to maintain a target commit frequency which is kept low to increase security.
+
+Once a solution is found, the miner broadcasts the new block to the network. Other nodes verify the block's validity (simple process) and add it to their local copy of the blockchain.
+
+The puzzle links the current transaction data with the cryptographic hash of the previous block, making the chain immutable and securing the history of the ledger.
+
+The longest valid chain is considered the authoritative version of the blockchain, ensuring consistency across the distributed network.
+
+## Replication
+
+**Replication** is the strategy of storing copies of data on multiple machines (replicas) in a distributed system.
+
+Replication provides several key benefits:
+
+- **Fault Tolerance/Reliability**: If one replica fails, others can continue serving the data, preventing system downtime.
+- **Caching/Latency/Location Awareness**: Placing replicas geographically closer to clients reduces network latency and improves local responsiveness.
+- **Load Balancing/Throughput**: Distributing requests across multiple replicas reduces the load on any single machine, increasing the overall throughput and performance of the system.
+
+Most replication challenges consist of managing write conflicts (when two clients try to update the same data item simultaneously).
+
+A **Consistency Model** is a contract between the processes and data store:
+
+- Strict guarantees simplify the development but have high costs;
+- weaker guarantees reduce the cost but increase the difficult of the development.
+
+Some example of models are:
+
+- **Guarantees on content**: there is a max delta between the version stored on the nodes (e.g. you could sell 32 out of 30 articles);
+- **Guarantees on staleness**: define a maximum acceptable time gap between an update and its propagation to all replicas. (e.g. web cache);
+- **Guarantees on the order of updates**: Constrains how concurrent write operations are resolved and ordered across replicas.
+
+### Single Leader Consistency Protocols
+
+A single replica is designated as the **Leader**, which is the only node responsible for all write operations. Followers handle read operations and receive updates from the Leader.
+
+This protocol avoid conflicts as all the writes-write (read-write can still happen) are concentrated into a single node.
+
+The updates from the leader to the followers can be done in different ways:
+
+- **Synchronous**: The Leader waits for all replicas to acknowledge the write before responding to the client (Highest consistency, highest latency);
+- **Asynchronous**: The Leader responds to the client immediately after writing locally. Propagation happens in the background (Lowest latency, weaker consistency);
+- **Semi-Synchronous**: The Leader waits for a majority of replicas to acknowledge the write.
+
+It's possible to partition the protocol and give a leader for each partition to distribute the load.
+
+### Multi Leader Protocol
+
+In this protocol there are multiple leaders that can handle write operations.
+
+In this case the write-write conflict can happen, but the application should be able to easily handle them.
+
+The workload is balanced between multiple nodes.
+
+### Leaderless Protocol
+
+In this protocol there is no leader, all the nodes can handle read and write operations.
+
+The client, or a proxy, is responsible for contacting multiple replicas to perform read and write operations.
+
+This protocol use _quorum_ based techniques to ensure consistency.
+
+### Data-Centric Consistency Model
+
+Data-Centric Consistency Models define the rules for how updates to replicated data are ordered and observed by all client processes. These models represent a critical trade-off: stronger consistency (simpler programming) comes at the cost of higher latency and lower availability.
+
+Based on the strength of the consistency guarantees, data-centric models can be classified into several categories:
+
+#### Eventual Consistency
+
+The **Eventual Consistency** model doesn't guarantee anything about the order of the operations, it only guarantees the execution of the operations.
+
+This is good for _read-heavy_ systems with few concurrent updates or there are almost no concurrent updates, on append-only data structures, or if the application is commutative semantic allowing to send operations instead of values.
+
+This is very easy to implement and with almost no overhead.
+
+#### FIFO Consistency
+
+The **First-In-First-Out (FIFO)** consistency model ensures that write operations done by a single process are perceived in the same order by all the other processes. Write operations from other processes can happen at any time.
+
+This can be easily implemented by tagging each write operation with a unique scalar clock for each process.
+
+When a replica receives a write operation, it checks the sequence number to ensure that writes from the same process are applied in the correct order. If a write operation arrives out of order, the replica can buffer it until the missing operations are received.
+
+An example is a chat application messages sent by a user should be displayed in the order they were sent.
+
+#### Causal Consistency
+
+The **Causal Consistency** model ensures that all processes observe causally related write operations in the same order.
+
+If a process $P_1$ performs a write operation $W_1$ and then another process $P_2$ reads the value written by $W_1$ and performs a write operation $W_2$, then all processes must observe $W_1$ before $W_2$.
+
+This can be implemented by tracking the causal relationships between operations using vector clocks. A write operation is only applied at a replica if all causally preceding operations have been applied.
+
+To work correctly, the clients must be sticky to a single replica, otherwise it can happen that a client read a value that doesn't include its previous write.
+
+#### Sequential Consistency
+
+The **Sequential Consistency** model ensures that the results of operations are consistent with some sequential order of execution across all processes.
+
+Sequential consistency is expensive, even programming languages (java, c++, etc), doesn't support sequential consistency (value can be different inside core's cache) as cache coherence is expensive, but can be forced with synchronization.
+
+The read operation can interleave with each other.
+
+This can be solved using two, non-highly available, protocols:
+
+##### Sequential Consistency with Single Leader
+
+Assumption: no failure, fifo network, processes are sticky (processes communicate with the same replica)
+
+All writes go to a Leader, which totally orders them and propagates changes to all the replicas.
+
+##### Sequential Consistency without Leaders
+
+Uses a quorum system to force a consistent global ordering.
+
+There are some fixed value for the amount of nodes to contact for reading (NR) and the amount of nodes to contact for writing (NW). The amount should follow these rules:
+
+- $\text{NR} + \text{NW} > N$ (avoids read-write conflicts)
+- $\text{NW} > \frac{N}{2}$ (avoids write-write conflicts)
+
+In this way, reading from NR promise that at least one of the has the newer value, identifiable by the timestamp.
+
+If the $\text{NW}$ is less than half of the total nodes, that, as the time is scalar, can happen that some have the same time, but different values.
+
+The consistency can be maintained by two protocols:
+
+- **Read-Repair**: the client, once receiving all the reads, if some have older value it sends the new value;
+- **Anti-entropy**: nodes periodically exchange data about changes.
+
+#### Linearizability
+
+The **Linearizability** model ensures that all operations appear to occur instantaneously at some point between their invocation and their response.
+
+This is the strongest consistency model, as it guarantees real-time ordering of operations.
+
+All write operation are handled by a single leader, but when it propagate the changes, the replicas lock the resource, preventing reading the new value until the update is complete across all the replicas.
+
+Once the leader receive all the ack from the replica, it send an unlock to all the replica.
+
+### Client Centric Consistency Model
+
+A **client centric model** guarantees some properties from the point of view of a single client, regardless of the replica it is connected to.
+
+Client models can have four properties that must apply regardless of the replica:
+
+- **Monotonic reads**: When a client reads the value of $x$, any successive read operation will return the same value $x$, or more recent values.
+- **Monotonic Writes**: A write operation by a client on a data item $x$ is completed before any successive write operation by that client on $x$.
+- **Read your writes**: After a write operation by a client, any successive read operation by that client will return the value of that write or a more recent value.
+- **Writes follow Reads**: A write operation by a client on a data item $x$ following a read operation on $x$ by that client is completed on the same or a more recent value of $x$.
+
+Each operation has an unique ID that the client stores, the server are stateless.
+
+When connecting to a replica, the client send the id of the last operation performed by him. If the replica didn't already receive that operation, the replica wait to respond until receiving the latest data.
+
+Guarantee this properties allows to have a _casual consistency_, moving some of the complexity from the server to the client.
+
+### Design Strategies
+
+Designing a distributed system with replicated data involves making strategic choices that balance fault tolerance, performance, and consistency.
+
+#### Replica placement
+
+The placement of replicas can significantly impact the system's performance and fault tolerance. Some common strategies include:
+
+- **Permanent replica**: The replicas are statically configured;
+- **Server-initiated replicas**: The server decides where and when to place the replicas based on load, location, etc.;
+- **Client-initiated replicas**: A copy of the data is maintained directly on the client machine, like cache.
+
+#### Update Propagation
+
+When a write operation occurs on a primary replica, the system must decide what information to send to the other replicas to synchronize their states. The choices include:
+
+- **Propagate the modified data**: If #reads >> #writes, than in case of update propagate the new value (push-based);
+- **Propagate notification**: If #write >> #reads, in case of update propagate only a notification to notify the nodes that the data has changed; When a read is performed, the node fetch the new value on-demand (pull-based);
+- **Propagate the operation**: If the data structure is append-only or commutative, propagate only the operation to be performed, reducing the overhead (might cause side-effects if the operation is not idempotent).

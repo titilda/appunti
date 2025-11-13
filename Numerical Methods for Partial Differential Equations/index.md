@@ -281,6 +281,7 @@ The Lax-Milgram lemma requires that
 4. $a$ is coercive
 5. $F$ is linear
 6. $F$ is bounded
+7. $f \in L^2(\Omega)$
 
 For what concerns point (1), we take for granted that $V$ is an Hilbert space. We have to choose one of two norms to use in the proofs. We can either choose the **complete norm**
 
@@ -296,7 +297,7 @@ $$
 
 The reduced norm can be used only with a non-empty Dirichlet boundary. For this proof, we chose to use the complete norm.
 
-Proving (2) and (5) is trivial.
+Proving (2), (5) and (7) is trivial.
 
 We will now prove (3). By definition, $a$ is continuous if $\exists M \gt 0 : |a(u, v)| \le M \|u\| \|v\| \ \forall u, v \in V$.
 
@@ -397,6 +398,31 @@ $$
 $$
 
 This means that the solution is bounded independently on the value of $h$ (**stability** property).
+
+_TODO: NDim generalization_
+
+## Non homogeneous elliptic PDEs
+
+Up until now, we have assumed that the Dirichlet boundary conditions were shaped like $u(\Gamma_D) = 0$. This is called **homogeneous problem**. If $u(\Gamma_D) = \varphi$ then it is called **heterogeneous problem**.
+
+In the case of an heterogeneous problem, we introduce a **lifting** $R$ of $\varphi$ such that $u^0 = u - R\varphi\$ and $u^0(a) = 0$.
+
+The problem now become
+
+$$
+\begin{align*}
+  a(u, v) &= F(v) \\
+  a(u^0 + R\varphi, v) &= F(v) \\
+  a(u^0, v) + \underbrace{a(R\varphi, v)}_{G(v)} = F(v) \\
+  a(u^0, v) = F(v) - G(v)
+\end{align*}
+$$
+
+A good choice for $R$ in 1D is a choice s.t. $R\varphi = \varphi$. In the multidimensional case, we choose an $R$ such that $u(\Gamma_D) = 0$.
+
+## Galerkin approximation
+
+_TODO_
 
 # Practical numerical solution
 
