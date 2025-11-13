@@ -326,6 +326,92 @@ $$
    \end{align*}
    $$
     The problem is now in standard form.
+### Fundamental Theorem of Linear Programming
+:::{.callout .callout-theorem title="Fundamental Theorem of Linear Programming"}
+Consider a minimization problem in standard form where the constraints define a non-empty feasible area (polyhedron) P.
+Then either:
+1. The value of **the objective function** is **unbounded below** on P.
+
+
+2. Exists at least one **optimal** vertex.
+:::
+#### Proof
+##### Case 1:
+P has an unbounded feasible direction $\underline{d}$ such that $\underline{c}^T\underline{d}<0$ ,this means that proceeding in that direction will make the value smaller and smaller and the objective value tends to -$\infty$.
+##### Case 2:
+P has no unbounded feasible direction such that along that path the value keeps getting smaller.
+As we saw any point of the feasible region can be expressed as a convex combination of its vertices plus the unbounded direction, so for any $\underline{x} \in P$ we have $\underline{d}$ or $\underline{c}^T \underline{d} \geq 0$ (either the value along that direction gets bigger or that direction is $\underline{0}$) so:
+
+$$
+    \underline{c}^T\underline{x} = \underline{c}^T ( \sum_{i=1}^{k}{\alpha_i\underline{x}^i + \underline{d}}) =\sum_{i=1}^{k}{\alpha_i\underline{c}^T\underline{x}^i +\underline{c}^T\underline{d}} \geq min_{i=1.\dots,k}{(\underline{c}^T\underline{x}^i)}
+$$
+
+Put in words this tells us that the objective value of any point inside the feasible region ($\underline{c}^T (\sum_{i=1}^{k}{\alpha_i\underline{x}^i + \underline{d}})$) will be bigger the minimum value that the objective function has in one of its vertices (the optimal vertex) : $min_{i=1.\dots,k}{(\underline{c}^T\underline{x}^i)}$.
+
+>This also foreshadow that the solution of any minimization problem lies in one of its vertices ( if the solution is unique)
+
+This would likely become more clear when we see how to solve LP problems graphically.
+
+### Types of LPs
+1. Unique optimal solution.
+2. Multiple(infinite) optimal solutions.
+3. Unbounded LP: Unbounded polyhedron and unlimited objective function value.
+4. Empty polyhedron: no feasible solutions.
+
+### Solving LPs Graphically
+
+We would like to solve this problem:
+
+$$
+\begin{align*}
+max &\quad x_1+3x_2 \\
+    &\quad -x_1+x_2 \geq-2\\
+    &\quad 2x_1+x_2 \leq 10 \\
+    &\quad -x_1+3x_2 \leq 9 \\
+    &\quad x_1,x_2 \geq 0
+\end{align*}
+$$
+
+This is our feasible region (x = $x_1$ ; y  = $x_2$):
+
+
+![feasible region](assets/chapter3/feasibleRegion.png)
+
+Lets analyze the objective function:
+$$
+ z=x_1+3x_2
+$$
+Lets compute its gradient:
+$$
+\nabla z= [ 1 \quad 3]^T
+$$
+
+This tells us where to go if we want our value to increase, since we are solving an LP this direction will always be the same.
+
+Let's take a level curve from our objective function by assigning z to some constant c:
+$$
+c = x_1+3x_2
+$$
+Starting from 0 we see that by increasing the value of c the level curve follows the direction of the gradient:
+![](assets/chapter3/gradientincr.png)
+
+If we follow that direction we would see that it leads us to the vertex $[3 \:,\: 4]^T$ since it the last meeting point it will give us the maximum value of the objective function:
+
+$$
+ z = 1 \times 3 + 3 \times 4 = 15
+$$
+
+This graphical method is pretty easy to use , but it is feasible only for problems with less than 2 variables.
+To solve bigger problems we must find a better method.
+
+#### MIP implementation:
+
+
+
+
+
+
+
 
 
 
