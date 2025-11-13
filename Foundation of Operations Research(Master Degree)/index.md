@@ -99,6 +99,7 @@ $$
 </div>
 
 ### General Assumptions
+:::{.callout .callout-property title="Assumptions"}
 1. Consequences of the linearity: 
 
    -  **Proportionality**: Contribution of each variable $=$ constant $\times$ variable , we often refer to these constants as parameters.
@@ -109,8 +110,8 @@ $$
 
 
 3. Parameters are constants.
-
-### Example:
+:::
+#### Example:
  Suppose that we want to maximize how much we gain from the selling of 5 products ( suppose that we sell and produce the products in grams) , the price/g of each one of them are respectively: 2, 3, 4, 5, 6; the cost of production of each one of them is: 3, 6, 7, 9, 10; no more than 400g must be produced and the total production cost must be lower than 3000.
 We shall model this problem like this:
 
