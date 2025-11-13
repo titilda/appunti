@@ -16,7 +16,7 @@ A linear programming problem is an optimization problem where:
 <div style="display:flex; justify-content:space-between; width:100%;">
 
 <div style="flex:1; padding-right:10px;">
-<h3>General form</h3>
+<h4>General form</h4>
 
 $$ 
     \begin{align*}
@@ -31,7 +31,7 @@ $$
 </div>
 
 <div style="flex:1; padding-left:10px;">
-<h3>Matrix form </h3>
+<h4>Matrix form </h4>
 <div style="text-align: center;">
 
 $min \quad z = [c_1 \dots c_n] 
@@ -111,7 +111,7 @@ We shall model this problem like this:
 <div style="display:flex; justify-content:space-between; width:100%;">
 
 <div style="flex:1; padding-right:10px;">
-<h3>Traditional modelling</h3>
+<h4>Traditional modelling</h4>
 
 $$  
  \begin{align*}
@@ -126,7 +126,7 @@ $$
 </div>
 
 <div style="flex:1; padding-left:10px;">
-<h3>Using python's MIP library:</h3>
+<h4>Using python's MIP library:</h4>
 
 ```python 
     import mip
@@ -169,31 +169,46 @@ $$
  
 > Each inequality constraint defines an affine half-space in the variable space.
 
-> The feasible region of a linear programming problem is the intersection of a finite number of half-spaces ( constraints ).
+> The feasible region of a linear programming problem is the intersection of a finite number of half-spaces (constraints).
 > Said feasible region is a **polyhedron**.
 
 <div style="display:flex; justify-content:space-between; width:100%;">
 
 <div style="flex:1; padding-right:10px;">
-<h3>Hyperplane (affine) </h3>
+<h4>Hyperplane (affine) </h4>
 
-![hyperplane](assets/chapter3/hyperplane.png)
+![](assets/chapter3/hyperplane.png)
 
 </div>
 
 <div style="flex:1; padding-left:10px;">
-<h3>Affine half-space</h3>
+<h4>Affine half-space</h4>
 
-![affine half-space](assets/chapter3/affine_half-space.png)
+![](assets/chapter3/affine_half-space.png)
 
 </div>
 <div style="flex:1; padding-left:10px;">
-<h3>Polyhedron</h3>
+<h4>Polyhedron</h4>
 
-![polyhedron](assets/chapter3/polyhedron.png)
+![](assets/chapter3/polyhedron.png)
 
 </div>
 </div>
+
+### Convex subsets
+
+>A subset $S \subseteq R^n$ is convex if for each pair of points $\underline{x}_1,\underline{x}_2 \in S$ the segment defined by them is the defined by all the **convex combinations** of the two points: 
+<center>
+
+ [$\underline{x}_1,\underline{x}_2$] = {$\:\underline{p} \in R^n : \underline{x} = \alpha\underline{x}_1 + (1 - \alpha)\underline{x}_2 \, \land \alpha \in [0,1]\:$}
+
+</center>
+
+Meaning that the subset contains the whole segment connecting the two points.
+
+![](assets/chapter3/convexset.png)
+
+[Convex set example](https://www.desmos.com/calculator/y3ays9vrh3?lang=it)
 
 
 
