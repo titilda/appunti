@@ -405,9 +405,25 @@ This graphical method is pretty easy to use , but it is feasible only for proble
 To solve bigger problems we must find a better method.
 
 #### MIP implementation:
+```python
+import mip
+from mip import CONTINUOUS
 
+model = mip.Model()
+# variable definition
+x = [model.add_var(name = f"x_{1}", lb =0 ,var_type=CONTINUOUS), model.add_var(name = f"x_{2}", lb =0 ,var_type=CONTINUOUS)]
+# objective function
+model.objective = mip.maximize(x[0]+3*x[1])
+# constraints
+model.add_constr(-x[0]+x[1] >= -2)
+model.add_constr(2*x[0]+x[1] <= 10)
+model.add_constr(-x[0]+3*x[1] <= 9)
 
-
+model.optimize()
+for i in model.vars:
+print(i.name,i.x)
+```
+![Output](assets/chapter3/mip_graph_ex.png)
 
 
 
