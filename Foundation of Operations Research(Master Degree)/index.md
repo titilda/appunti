@@ -7,7 +7,7 @@ author:
 ## Linear Programming 
 A linear programming problem is an optimization problem where:
 
-- **The objective function** $\mathscr{F} : X \to R$  is linear , where X is the feasible region.
+- **The objective function** $F : X \to R$  is linear , where X is the feasible region.
 - **The feasible region**  has linear constraints.
 :::{.callout .callout-definition title="Optimal solution"}
 A solution $\underline{x}^* \in R^n$ is said to be **optimal** if  $f(\underline{x}^*)$ beats $f(\underline{x}), \forall \underline{x} \in X$.
