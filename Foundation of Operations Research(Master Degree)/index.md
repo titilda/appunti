@@ -336,6 +336,7 @@ Then either:
 1. The value of **the objective function** is **unbounded below** on P.
 
 2. Exists at least one **optimal** vertex.
+
 :::
 #### Proof
 ##### Case 1:
