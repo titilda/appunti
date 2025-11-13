@@ -332,12 +332,11 @@ $$
 :::{.callout .callout-theorem title="Fundamental Theorem of Linear Programming"} ;
 Consider a minimization problem in standard form where the constraints define a non-empty feasible area (polyhedron) P.
 Then either:
-1. The value of **the objective function** is **unbounded below** on P.
 
+1. The value of **the objective function** is **unbounded below** on P.
 
 2. Exists at least one **optimal** vertex.
 :::
-3. 
 #### Proof
 ##### Case 1:
 P has an unbounded feasible direction $\underline{d}$ such that $\underline{c}^T\underline{d}<0$ ,this means that proceeding in that direction will make the value smaller and smaller and the objective value tends to -$\infty$.
