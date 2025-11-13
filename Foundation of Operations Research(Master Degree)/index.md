@@ -198,11 +198,11 @@ $$
 ### Convex subsets
 
 >A subset $S \subseteq R^n$ is convex if for each pair of points $\underline{x}_1,\underline{x}_2 \in S$ the segment defined by them is the defined by all the **convex combinations** of the two points: 
-<center>
+<div style="text-align: center;">
 
  [$\underline{x}_1,\underline{x}_2$] = {$\:\underline{p} \in R^n : \underline{x} = \alpha\underline{x}_1 + (1 - \alpha)\underline{x}_2 \, \land \alpha \in [0,1]\:$}
 
-</center>
+</div>
 
 Meaning that the subset contains the whole segment connecting the two points.
 
