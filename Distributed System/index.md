@@ -1622,3 +1622,56 @@ Using Dataflow it's possible to implement stream with both scheduling and pipeli
 
 - **Scheduling**: The stream is divided into micro-batches that are processed sequentially. Each micro-batch is treated as a bounded dataset, allowing the use of batch processing techniques. This approach introduces some latency.
 - **Pipeline**: Uses _Stateful Operators_ that maintain internal state across multiple events to achieve a windowed computation.
+
+## Peer-To-Peer
+
+**Peer-to-Peer** (P2P) is a decentralized communication paradigm where resources are distributed and shared among participants (peers) at the edge of the network, rather than relying solely on centralized servers.
+
+This architecture is in contrast with the Client-Server model, which suffers from poor scalability (central server becomes a bottleneck) and high vulnerability (Single Point of Failure).
+
+P2P allows to share different resources: _Network Bandwidth_, _Processing Cycle_, _Storage space_, _Data_.
+
+All nodes act as both **users** (clients) and **providers** (servers) of services and resources.
+
+Nodes are inherently **unreliable** and unpredictable as they can join and leave the network at any time.
+
+Nodes are connected via virtual links that form a logical **Overlay Network**, which is independent of the underlying physical network topology.
+
+Retrieving resources is performed by two operations:
+
+- **Search**: Locating resources based on a descriptive query;
+- **Lookup**: Locating a resource based on its unique identifier.
+
+### Centralized Search
+
+This system (e.g. _Napster_) uses a central server that maps the metadata of the resources to the peers that store them.
+
+When a peer joins the network it contacts the central server to register its resources.
+
+To retrieve resources the peer contacts the central server with a query, that responds with the location of the peer that stores the resource. Than the peer contacts directly the other peer to retrieve the resource.
+
+The presence of a central server allows to have a fast search operation ($O(1)$), but the server is a single point of failure and a bottleneck for scalability.
+
+### Query Flooding
+
+This system (e.g. _Gnutella_) uses a fully decentralized approach where each node is equal and is linked to some neighbors.
+
+To enter the network, a node must know at least one node already in the network, then it connects and send it a ping message that will be flooded across the network. If a node receive a ping it might reply with a pong message to offer a link to the new node, increasing the resilience.
+
+To retrieve resources each node maintains a local index of the resources it stores.
+
+When a node wants to search a resource it sends a query to its neighbor that is flooded across the network (or TTL expires). If a node has the resource it will send a message to the node.
+
+The search scope is $O(n)$ and the search time is $O(2d)$ and there is no guarantees to find inside the scope the resource.
+
+This is a fully decentralized approach, but it doesn't scale well as the amount of messages grow with the amount of nodes.
+
+### Hierarchical Topology
+
+This system (e.g. _Kazaa_) combines the efficiency of centralization with the resilience of decentralization by introducing **super nodes**.
+
+Super nodes are peers with higher capabilities (bandwidth, storage, uptime). They communicate between each other to form a backbone of the network.
+
+When a peer wants to publish its resources, it contacts a super node to register them.
+
+To retrieve resources, a peer sends a query to its super node that communicates with other super nodes to find the resource.
