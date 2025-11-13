@@ -130,8 +130,6 @@ $$
 \end{align*}
 $$
 1. Maximum production cost
-
-
 2. Maximum quantity produced
 </div>
 
