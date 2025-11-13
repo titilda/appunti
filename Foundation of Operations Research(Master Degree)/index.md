@@ -326,7 +326,7 @@ $$
    \end{align*}
    $$
     The problem is now in standard form.
-### Fundamental Theorem of Linear Programming
+## Fundamental Theorem of Linear Programming
 :::{.callout .callout-theorem title="Fundamental Theorem of Linear Programming"}
 Consider a minimization problem in standard form where the constraints define a non-empty feasible area (polyhedron) P.
 Then either:
@@ -425,6 +425,14 @@ print(i.name,i.x)
 ```
 ![Output](assets/chapter3/mip_graph_ex.png)
 
+## Basic feasible solutions and vertices of polyhedra
+The geometrical definition of vertex cannot be exploited algorithmically because even though LPs can be viewed as combinatorial problems, and you can theoretically examine only the vertices and keep the best, the number of vertices is often exponential, so this route is not feasible.
+
+**We need algebraic characterization**
+
+Consider a polyhedron (feasible region) P = {$\underline{x} \in R^n : A \underline{x} = \underline{b} , \underline{x} \geq$}
+
+**Assumption**: $A \in R^{m\times n}$ is such that $m\leq n$ of rank m (There are no redundant constraints)
 
 
 
