@@ -9,9 +9,9 @@ A linear programming problem is an optimization problem where:
 
 - **The objective function** $\mathscr{F} : X \to R $  is linear , where X is the feasible region.
 - **The feasible region**  has linear constraints.
-
-> A solution $\underline{x}^* \in R^n$ is said to be **optimal** if  $f(\underline{x}^*)$ beats $f(\underline{x}), \forall \underline{x} \in X$.
-
+:::{.callout .callout-definition title="Optimal solution"}
+A solution $\underline{x}^* \in R^n$ is said to be **optimal** if  $f(\underline{x}^*)$ beats $f(\underline{x}), \forall \underline{x} \in X$.
+:::
 ### Traditional representations:
 
 <div style="display:flex; justify-content:space-between; width:100%;">
@@ -172,7 +172,7 @@ $$
 
 ## Geometry of linear Programming
 ### A couple of definitions:
-- An **hyperplane** defined as H = {$\,\underline{x} \in R^n : \underline{a}^T \underline{x} = b\,$} is a flat surface that generalize a two-dimensional plane (in our case where b $\ne$ 0 is said to be an **affine** hyperplane).
+- A **hyperplane** defined as H = {$\,\underline{x} \in R^n : \underline{a}^T \underline{x} = b\,$} is a flat surface that generalize a two-dimensional plane (in our case where b $\ne$ 0 is said to be an **affine** hyperplane).
 - An **affine half-space** defined as $H^-$ = {$\,\underline{x} \in R^n:\underline{a}^T \underline{x} \leq b \,$} is the region that lies "below" or "above" an **affine hyperplane**.
  
 > Each inequality constraint defines an affine half-space in the variable space.
@@ -204,12 +204,12 @@ $$
 </div>
 
 ### Convex subsets
-
->A subset $S \subseteq R^n$ is convex if for each pair of points $\underline{x}_1,\underline{x}_2 \in S$ the segment defined by them is the defined by all the **convex combinations** of the two points:
->$$
+:::{.callout .callout-definition }
+A subset $S \subseteq R^n$ is convex if for each pair of points $\underline{x}_1,\underline{x}_2 \in S$ the segment defined by them is the defined by all the **convex combinations** of the two points:
+$$
  [\underline{x}_1,\underline{x}_2] = {\:\underline{p} \in R^n : \underline{x} = \alpha\underline{x}_1 + (1 - \alpha)\underline{x}_2 \, \land \alpha \in [0,1]\:}
 $$
-
+:::
 
 Meaning that the subset contains the whole segment connecting the two points.
 
@@ -228,24 +228,27 @@ Given a point $\underline{x}$ and a pair of points $(\underline{y}_1,\underline{
 $\underline{x}$ is a vertex $\iff \:\underline{x} = \alpha\underline{y}_1 + (1 - \alpha)\underline{y}_2 \, \land \alpha \in [0,1]\: \land (\underline{x}= \underline{y}_1 \lor \underline{x}= \underline{y}_2)$ 
 
 ### Unbounded feasible direction of polyhedron
-
->An unbounded feasible direction d of a polyhedron P is a nonzero vector such that ,from a point $\underline{x} \in P$, all points of the form $\underline{x} + \lambda d \:$ with $\lambda > 0$ also belongs to P. The set of such points is often called the **ray** of d through $\underline{x}$.
-
+:::{.callout .callout-definition title="Unbounded feasible direction"}
+An unbounded feasible direction d of a polyhedron P is a nonzero vector such that ,from a point $\underline{x} \in P$, all points of the form $\underline{x} + \lambda d \:$ with $\lambda > 0$ also belongs to P. The set of such points is often called the **ray** of d through $\underline{x}$.
+:::
 ![](assets/chapter3/unbounded.png)
 
 ### Polytopes
-
->A polytope is a **bounded polyhedron** , hence the only unbounded feasible direction is d = 0 (so in a sense it does not have any) 
+:::{.callout .callout-definition title="Polytope"}
+A polytope is a **bounded polyhedron** , hence the only unbounded feasible direction is d = 0 (so in a sense it does not have any)
+:::
 
 ![A polytope](assets/chapter3/polytope.png)
 
 ### Representation of polyhedra - Weyl-Minkowsky Theorem
->Every point $\underline{x}$ of a polyhedron P can be expressed as a **convex combination** of its vertices $\underline{x}^1, \dots, \underline{x}^k$ plus (if needed) an **unbounded feasible direction** \underline{d} of P:
+::: {.callout .callout-theorem title="Weyl-Minkowsky Theorem"}
+Every point $\underline{x}$ of a polyhedron P can be expressed as a **convex combination** of its vertices $\underline{x}^1, \dots, \underline{x}^k$ plus (if needed) an **unbounded feasible direction** \underline{d} of P:
 $$
  \underline{x} = \alpha_1\underline{x}_1 + \dots + \alpha_k \underline{x}_k + \underline{d}
 $$
-> where $\quad\sum_{i=1}^{k} \alpha_i = 1 ,\:\alpha_i \geq 0 , \forall i \in { 1 \dots k}$ <br>
-> "The multipliers are positive and theirs sum must be equal to 1"
+ where $\quad\sum_{i=1}^{k} \alpha_i = 1 ,\:\alpha_i \geq 0 , \forall i \in { 1 \dots k}$ <br>
+ "The multipliers are positive and theirs sum must be equal to 1"
+:::
 ## Standard form of LPs
 
 ### Transformations rules
