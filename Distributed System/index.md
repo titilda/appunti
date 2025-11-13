@@ -1544,3 +1544,44 @@ Since both _Map_ and _Reduce_ operations are deterministic and stateless (they o
 The data is stored in a distributed file system that replicates the data across multiple nodes, ensuring that if a node fails, the data can still be accessed from another replica (two locally and one remotely).
 
 The Master monitors completion times. If a task is running slower than its peers (**Stragglers**), the Master executes a duplicate of that task on another free Worker. The result from the first Worker to finish is accepted, and the other execution is discarded.
+
+### Dataflow Platform
+
+This programming model is an improvement of the MapReduce paradigm computation is modeled as a DAG, where the nodes represent operations (like Map, Filter, Join) and the edges represent the flow of data between them.
+
+#### Dataflow Scheduling
+
+This model focuses on processing bounded datasets (batches) and until the entire dataset is processed, the next operation cannot start. An example is **Apache Spark**.
+
+The output of an operation is stored in an external storage (like a distributed file system) before being used as input for the next operation.
+
+The computation is divided into multiple **Tasks** that can be grouped into **Stages** if there is no shuffle of data between them.
+
+Scheduling gives some advantage:
+
+- **Fault Tolerance**: Since the entire intermediate dataset between stages is persisted to stable storage, a failed task only requires the master to restart that task from the stable input data for that stage;
+- **Load balance**: The master can redistribute load and assign tasks to different nodes at the start of each new stage;
+- **Elasticity**: Resources can be dynamically scaled or adjusted between stages based on the size of the intermediate data produced, optimizing resource allocation.
+
+The disadvantages of the scheduling are:
+
+- **Overhead**: Introducing mandatory I/O steps (writing to and reading from stable external storage) between stages adds significant latency;
+- **Streaming**: While possible via micro-batching (processing data streams in small, periodic batches), it fundamentally compromises the real-time nature of streaming.
+
+#### Dataflow Pipeline
+
+This model focuses on low-latency processing of unbounded datasets (streams) where each operation can start processing data as soon as it becomes available from the previous operation. An example is **Apache Flink**.
+
+The output of one task is directly piped to the input of the next task via in-memory data structures or network protocols (like TCP). Data is processed tuple-by-tuple or in small buffers, and there is no required intermediate step to stable external storage.
+
+All the resources are statically allocated at the beginning of the computation.
+
+The advantages of pipeline are:
+
+- **Simultaneous Execution**: All parts of the DAG run concurrently, maximizing pipeline efficiency;
+- **Low Latency**: Very low processing delay because data is streamed directly between tasks.
+
+The disadvantages are:
+
+- **Fault Tolerance**: Since intermediate data is not persisted, recovering from a failure requires checkpointing the internal state of the tasks and rolling back the entire graph to that consistent snapshot;
+- **Resource Inflexibility**: Resources are allocated statically. Changing the capacity (scaling up or down) generally requires stopping and restarting the entire streaming job.
