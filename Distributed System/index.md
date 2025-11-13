@@ -1512,3 +1512,113 @@ When a write operation occurs on a primary replica, the system must decide what 
 - **Propagate the modified data**: If #reads >> #writes, than in case of update propagate the new value (push-based);
 - **Propagate notification**: If #write >> #reads, in case of update propagate only a notification to notify the nodes that the data has changed; When a read is performed, the node fetch the new value on-demand (pull-based);
 - **Propagate the operation**: If the data structure is append-only or commutative, propagate only the operation to be performed, reducing the overhead (might cause side-effects if the operation is not idempotent).
+
+## Distributed Data Processing
+
+Distributed Data Processing enables the efficient processing of large volumes of data (that cannot be stored on a single node) by partitioning the data and distributing the computation across distributed nodes.
+
+It's also possible to separate a problem into multiple sub-problems and use the output as input for the next problem.
+
+### Map Reduce
+
+**Map-Reduce** is a programming model for processing large data sets in a distributed system, developed by Google.
+
+The model has a **master** node that coordinates the work and multiple **worker** nodes that perform the tasks.
+
+There are two types of tasks:
+
+- **Map**: Takes as input a $<key, value>$ pair and executes a function to produce a set of $<key, value>$ pairs;
+- **Reduce**: Takes as input a key and a list of values associated with that key, and merges them to produce a smaller set of values.
+
+1. The input data, typically stored in a distributed file system with a pagination of 64MB, is split into $M$ partitions.
+2. The master handle the _scheduling_, assigns each partition to a free worker node (based on data locality) to perform the map task.
+3. Each worker processes its assigned partition, producing intermediate $<key, value>$ pairs.
+4. The intermediate data is grouped by key.
+5. The master assigns reduce tasks to worker nodes, each responsible for processing a subset of the keys.
+6. Each reduce worker processes its assigned keys and their associated values, producing the final output.
+
+#### Map-Reduce Fault Tolerance
+
+Since both _Map_ and _Reduce_ operations are deterministic and stateless (they only rely on input data), failure recovery is simple: if a Worker fails, the Master simply re-assigns the task to another free Worker.
+
+The data is stored in a distributed file system that replicates the data across multiple nodes, ensuring that if a node fails, the data can still be accessed from another replica (two locally and one remotely).
+
+The Master monitors completion times. If a task is running slower than its peers (**Stragglers**), the Master executes a duplicate of that task on another free Worker. The result from the first Worker to finish is accepted, and the other execution is discarded.
+
+### Dataflow Platform
+
+This programming model is an improvement of the MapReduce paradigm computation is modeled as a DAG, where the nodes represent operations (like Map, Filter, Join) and the edges represent the flow of data between them.
+
+#### Dataflow Scheduling
+
+This model focuses on processing bounded datasets (batches) and until the entire dataset is processed, the next operation cannot start. An example is **Apache Spark**.
+
+The output of an operation is stored in an external storage (like a distributed file system) before being used as input for the next operation.
+
+The computation is divided into multiple **Tasks** that can be grouped into **Stages** if there is no shuffle of data between them.
+
+Scheduling gives some advantage:
+
+- **Fault Tolerance**: Since the entire intermediate dataset between stages is persisted to stable storage, a failed task only requires the master to restart that task from the stable input data for that stage;
+- **Load balance**: The master can redistribute load and assign tasks to different nodes at the start of each new stage;
+- **Elasticity**: Resources can be dynamically scaled or adjusted between stages based on the size of the intermediate data produced, optimizing resource allocation.
+
+The disadvantages of the scheduling are:
+
+- **Overhead**: Introducing mandatory I/O steps (writing to and reading from stable external storage) between stages adds significant latency;
+- **Streaming**: While possible via micro-batching (processing data streams in small, periodic batches), it fundamentally compromises the real-time nature of streaming.
+
+#### Dataflow Pipeline
+
+This model focuses on low-latency processing of unbounded datasets (streams) where each operation can start processing data as soon as it becomes available from the previous operation. An example is **Apache Flink**.
+
+The output of one task is directly piped to the input of the next task via in-memory data structures or network protocols (like TCP). Data is processed tuple-by-tuple or in small buffers, and there is no required intermediate step to stable external storage.
+
+All the resources are statically allocated at the beginning of the computation.
+
+The advantages of pipeline are:
+
+- **Simultaneous Execution**: All parts of the DAG run concurrently, maximizing pipeline efficiency;
+- **Low Latency**: Very low processing delay because data is streamed directly between tasks.
+
+The disadvantages are:
+
+- **Fault Tolerance**: Since intermediate data is not persisted, recovering from a failure requires checkpointing the internal state of the tasks and rolling back the entire graph to that consistent snapshot;
+- **Resource Inflexibility**: Resources are allocated statically. Changing the capacity (scaling up or down) generally requires stopping and restarting the entire streaming job.
+
+### Stream Processing
+
+In stream processing, data is treated as a continuous flow rather than a static dataset. This model is characterized by low-latency requirements.
+
+Since a data stream is theoretically infinite, processing is done over finite segments called **windows**. A window isolates a portion of the stream and defines when a computation should be performed.
+
+The window can be defined in two ways:
+
+- **Count-based**: A window closes once a specific number of elements is reached;
+- **Time-based**: window closes once a specific time interval has elapsed.
+
+Some parameter are:
+
+- **size**: The total amount of data enclosed by the window;
+- **slide**: How often a new window is started.
+
+The relationship between the window's size and its slide determines the window type:
+
+- **Tumbling Windows**: Occur when size equals slide, resulting in non-overlapping, contiguous windows.
+- **Sliding Windows**: Occur when slide is less than size resulting in overlapping windows.
+
+#### Stream Time
+
+The time of the data is important and can vary between the generation of the data and the processing time leading to:
+
+- **Event Time**: The time when the event actually occurred, recorded by the data source.
+- **Processing Time**: The time when the event is processed by the system.
+
+When using event time, there is a need to handle out-of-order data (data that arrives late). This can be done by keeping the window open until a _watermark_ (a message that indicates no more events with a timestamp earlier than the watermark will arrive) is reached.
+
+#### Stream Implementation
+
+Using Dataflow it's possible to implement stream with both scheduling and pipeline.
+
+- **Scheduling**: The stream is divided into micro-batches that are processed sequentially. Each micro-batch is treated as a bounded dataset, allowing the use of batch processing techniques. This approach introduces some latency.
+- **Pipeline**: Uses _Stateful Operators_ that maintain internal state across multiple events to achieve a windowed computation.
