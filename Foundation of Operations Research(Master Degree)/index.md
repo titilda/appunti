@@ -164,6 +164,36 @@ $$
 
 ## Geometry of linear Programming
 ### A couple of definitions:
-The feasible region is an :
-- **Hyperplane** if it is defined as H = ${\underline{x} in R^n : \underline{a}
+- An **hyperplane** defined as H = {$\,\underline{x} \in R^n : \underline{a}^T \underline{x} = b\,$} is a flat surface that generalize a two-dimensional plane (in our case where b $\ne$ 0 is said to be an **affine** hyperplane).
+- An **affine half-space** defined as $H^-$ = {$\,\underline{x} \in R^n:\underline{a}^T \underline{x} \leq b \,$} is the region that lies "below" or "above" an **affine hyperplane**.
+ 
+> Each inequality constraint defines an affine half-space in the variable space.
+
+> The feasible region of a linear programming problem is the intersection of a finite number of half-spaces ( constraints ).
+> Said feasible region is a **polyhedron**.
+
+<div style="display:flex; justify-content:space-between; width:100%;">
+
+<div style="flex:1; padding-right:10px;">
+<h3>Hyperplane (affine) </h3>
+
+![hyperplane](assets/chapter3/hyperplane.png)
+
+</div>
+
+<div style="flex:1; padding-left:10px;">
+<h3>Affine half-space</h3>
+
+![affine half-space](assets/chapter3/affine_half-space.png)
+
+</div>
+<div style="flex:1; padding-left:10px;">
+<h3>Polyhedron</h3>
+
+![polyhedron](assets/chapter3/polyhedron.png)
+
+</div>
+</div>
+
+
 
