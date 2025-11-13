@@ -7,7 +7,7 @@ author:
 ## Linear Programming 
 A linear programming problem is an optimization problem where:
 
-- **The objective function** $\mathscr{F} : X \to R $  is linear , where X is the feasible region.
+- **The objective function** $\mathscr{F} : X \to R$  is linear , where X is the feasible region.
 - **The feasible region**  has linear constraints.
 :::{.callout .callout-definition title="Optimal solution"}
 A solution $\underline{x}^* \in R^n$ is said to be **optimal** if  $f(\underline{x}^*)$ beats $f(\underline{x}), \forall \underline{x} \in X$.
@@ -204,7 +204,7 @@ $$
 </div>
 
 ### Convex subsets
-:::{.callout .callout-definition }
+:::{.callout .callout-definition title="Convex subsets" }
 A subset $S \subseteq R^n$ is convex if for each pair of points $\underline{x}_1,\underline{x}_2 \in S$ the segment defined by them is the defined by all the **convex combinations** of the two points:
 $$
  [\underline{x}_1,\underline{x}_2] = {\:\underline{p} \in R^n : \underline{x} = \alpha\underline{x}_1 + (1 - \alpha)\underline{x}_2 \, \land \alpha \in [0,1]\:}
