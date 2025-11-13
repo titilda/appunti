@@ -6,6 +6,7 @@ author:
 
 ## Linear Programming 
 A linear programming problem is an optimization problem where:
+
 - **The objective function** $\mathscr{F} : X \to R $  is linear , where X is the feasible region.
 - **The feasible region**  has linear constraints.
 
@@ -98,10 +99,15 @@ $$
 </div>
 
 ### General Assumptions
-1. Consequences of the linearity:
+1. Consequences of the linearity: 
+
    -  **Proportionality**: Contribution of each variable $=$ constant $\times$ variable , we often refer to these constants as parameters.
    -  **Additivity**: Contribution of all variable $=$ sum of single contributions : $f(x + y + z) = f(x) + f(y) + f(z)$
+
+
 2. In these types of problems variables can take any rational values.
+
+
 3. Parameters are constants.
 
 ### Example:
@@ -122,6 +128,8 @@ $$
 \end{align*}
 $$
 1. Maximum production cost
+
+
 2. Maximum quantity produced
 </div>
 
@@ -217,7 +225,7 @@ Meaning that the subset contains the whole segment connecting the two points.
 
 Given a point $\underline{x}$ and a pair of points $(\underline{y}_1,\underline{y}_2)$ </br>
 
-x is a vertex $\iff \:\underline{x} = \alpha\underline{y}_1 + (1 - \alpha)\underline{y}_2 \, \land \alpha \in [0,1]\: \land (\underline{x}= \underline{y}_1 \lor \underline{x}= \underline{y}_2)$ 
+$\underline{x}$ is a vertex $\iff \:\underline{x} = \alpha\underline{y}_1 + (1 - \alpha)\underline{y}_2 \, \land \alpha \in [0,1]\: \land (\underline{x}= \underline{y}_1 \lor \underline{x}= \underline{y}_2)$ 
 
 ### Unbounded feasible direction of polyhedron
 
@@ -261,15 +269,16 @@ $$
 After substituting $x_j$ with ${x_j}^+\,-\,{x_j}^-$ , we delete $x_j$ from the problem.
 
 ### Standard form 
-> An LP is said to be in standard form if this is its appearance:
-
+::: {.callout .callout-definition title="LP standard form"}
+An LP is said to be in standard form if this is its appearance:
 $$
- \begin{align*}
-    min \quad & z=\underline{c}^T\underline{x} \\
-    s.t. \quad & A\underline{x} = \underline{b} \\
-    & \underline{x} \geq \underline{0}
- \end{align*}
+\begin{align*}
+min \quad & z=\underline{c}^T\underline{x} \\
+s.t. \quad & A\underline{x} = \underline{b} \\
+& \underline{x} \geq \underline{0}
+\end{align*}
 $$
+:::
 
 #### Example:
 Let's put the following LP in standard form:
