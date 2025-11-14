@@ -1622,3 +1622,113 @@ Using Dataflow it's possible to implement stream with both scheduling and pipeli
 
 - **Scheduling**: The stream is divided into micro-batches that are processed sequentially. Each micro-batch is treated as a bounded dataset, allowing the use of batch processing techniques. This approach introduces some latency.
 - **Pipeline**: Uses _Stateful Operators_ that maintain internal state across multiple events to achieve a windowed computation.
+
+## Peer-To-Peer
+
+**Peer-to-Peer** (P2P) is a decentralized communication paradigm where resources are distributed and shared among participants (peers) at the edge of the network, rather than relying solely on centralized servers.
+
+This architecture is in contrast with the Client-Server model, which suffers from poor scalability (central server becomes a bottleneck) and high vulnerability (Single Point of Failure).
+
+P2P allows to share different resources: _Network Bandwidth_, _Processing Cycle_, _Storage space_, _Data_.
+
+All nodes act as both **users** (clients) and **providers** (servers) of services and resources.
+
+Nodes are inherently **unreliable** and unpredictable as they can join and leave the network at any time.
+
+Nodes are connected via virtual links that form a logical **Overlay Network**, which is independent of the underlying physical network topology.
+
+Retrieving resources is performed by two operations:
+
+- **Search**: Locating resources based on a descriptive query;
+- **Lookup**: Locating a resource based on its unique identifier.
+
+### Centralized Search
+
+This system (e.g. _Napster_) uses a central server that maps the metadata of the resources to the peers that store them.
+
+When a peer joins the network it contacts the central server to register its resources.
+
+To retrieve resources the peer contacts the central server with a query, that responds with the location of the peer that stores the resource. Than the peer contacts directly the other peer to retrieve the resource.
+
+The presence of a central server allows to have a fast search operation ($O(1)$), but the server is a single point of failure and a bottleneck for scalability.
+
+### Query Flooding
+
+This system (e.g. _Gnutella_) uses a fully decentralized approach where each node is equal and is linked to some neighbors.
+
+To enter the network, a node must know at least one node already in the network, then it connects and send it a ping message that will be flooded across the network. If a node receive a ping it might reply with a pong message to offer a link to the new node, increasing the resilience.
+
+To retrieve resources each node maintains a local index of the resources it stores.
+
+When a node wants to search a resource it sends a query to its neighbor that is flooded across the network (or TTL expires). If a node has the resource it will send a message to the node.
+
+The search scope is $O(n)$ and the search time is $O(2d)$ and there is no guarantees to find inside the scope the resource.
+
+This is a fully decentralized approach, but it doesn't scale well as the amount of messages grow with the amount of nodes.
+
+### Hierarchical Topology
+
+This system (e.g. _Kazaa_) combines the efficiency of centralization with the resilience of decentralization by introducing **super nodes**.
+
+Super nodes are peers with higher capabilities (bandwidth, storage, uptime). They communicate between each other to form a backbone of the network.
+
+When a peer wants to publish its resources, it contacts a super node to register them.
+
+To retrieve resources, a peer sends a query to its super node that communicates with other super nodes to find the resource.
+
+### Collaborative System
+
+Collaborative systems (e.g. _BitTorrent_) incentivize sharing resources among peers by improving performance for those who contribute.
+
+Once a peer joins the network it contacts a tracker to retrieve a list of peers that are sharing the resource (.torrent files), external to the system.
+
+Once the peer has the list of peers it contacts them to download chunks of the file concurrently, becoming a _leecher_.
+
+Once the peer has downloaded some chunks it can start sharing them with other peers. The peers starts downloading the rarest chunks first to increase its availability.
+
+Once all the chunks are downloaded the file is reassembled and the peer becomes a _seeder_ of that resource.
+
+While uploading chunks to other peers, the peer evaluates the connection speed of each peer. If the peers is not uploading the connection can be choked to favor other peers that contribute more to the network.
+
+This evaluation is performed each 10 seconds and a connection can be optimistically unchoked to give a chance to new peers.
+
+### Secure Storage
+
+**Secure Storage** systems (e.g. _FreeNet_) provide a distributed storage mechanism that ensures data confidentiality, integrity, and availability across a decentralized network of peers.
+
+Each node and resource has a unique identifier that is in the same space.
+
+Once a resource is published it is encrypted and chunked into fixed-size blocks (making for the host impossible to access the content), than is sent to the node with the nearest id.
+
+To access a resource a node sends a request to the node with the id nearest to the resource, that will forward the request until reaching the node that stores the resource. To read the content the peer needs to also know the decryption key.
+
+Each node stores a _routing table_ with the id of the resources and the pointer to the node that knows about it.
+
+Once a resource pass through the node the table is updated. Files that are frequently accessed are also cached on the node, not only the table row.
+
+Networks tends to create a _small world_, as id with similar id tends to cluster together
+
+### Structured Topology
+
+**Structured Topology** systems (e.g. _DHT_, _Chord_) organize nodes in a specific topology to enable efficient _lookup_ operations.
+
+Nodes and items have similar m-bit id (hash of the ip for the node and hash of the resource for the element).
+
+Items with key $k$ are stored on the smaller node with $id \ge k$.
+
+Search can be performed based on the knowledge of each node:
+
+- if each node knows all the other nodes, the search is constant, but the routing table would be huge that would need to be constantly updated;
+- if each node only know about the successor, the search would be linear, but the routing table is small;
+- if each node knows a log amount of nodes (finger-table), a search operation would be logarithmic, as in the worst case, at each step the space would half.
+
+Each node would know the first nodes with an id greater than $id_{current} + 2^i$.
+
+When a node n joins the network:
+
+- initialize the predecessor and fingers ($\log n$) of n, by performing $\log n$ search with the required ids;
+- update the fingers and predecessors of existing nodes to reflect the addition.
+
+Periodically each node perform a check if the nodes are still up.
+
+Each node also know a replication of near nodes, to support failures.
