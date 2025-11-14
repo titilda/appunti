@@ -437,7 +437,202 @@ The geometrical definition of vertex cannot be exploited algorithmically because
 
 Consider a polyhedron (feasible region) P = {$\underline{x} \in R^n : A \underline{x} = \underline{b} , \underline{x} \geq$}
 
-**Assumption**: $A \in R^{m\times n}$ is such that $m\leq n$ of rank m (There are no redundant constraints)
+**Assumption**: $A \in R^{m\times n}$ (n variables and m constraints) is such that $m\leq n$ of rank m (There are no redundant constraints)
+
+- If m=n , there is a unique solution for $A\underline{x} = \underline{b}$
+- If m<n , there are $\infty$ solutions for $A\underline{x} = \underline{b}$ . The system has n-m degrees of freedom( the number of variables that can freely change while still satisfying the constraints), n-m variables can be fixed arbitrarily and by fixing them to 0 we get a vertex.
+
+:::{.callout .callout-definition title="Basis"}
+A basis of a matrix "A" is a subset of its columns "m" that are linearly independent and form an m$\times$m non-singular(invertible) matrix B.
+We can separate A like this:
+
+$$
+A=[\overbrace{B}^{m} \: |\overbrace{N}^{n-m}]
+$$
+:::
+
+Similarly to "A" we can also separate the variables in **basic** ("inside" of B) and **non-basic** ("inside" of N) , like so:
+$$
+\underline{x}=[\:\underline{x}_B^T\quad|\quad\underline{x}_N^T\:]\quad (1)
+$$
+
+By substituting (1) into our system: $A\underline{x} = \underline{b}$; we can rewrite it as:
+$$
+B\underline{x}_B+N\underline{x}_n = \underline{b}
+$$
+
+Thanks to the non-singularity of B we can describe the set of basic variables using the non-basic ones:
+$$
+\underline{x}_B=B^{-1}b-B^{-1}\underline{x}_N
+$$
+
+So lets put things together:
+- A basic solution is a solution obtained by setting $\underline{x}_N = \underline{0}$ (it's basic because there are no non-basic variables **DUH**), with this our definition of basic variables becomes:
+  $\underline{x}_B = B^{-1}b$
+- A basic solution with $\underline{x}_B \geq 0$ is a basic **feasible solution** (the problem is in standard form, the variables are strictly positive).
+
+Wait , we said that by fixing n-m variables to 0 we get a vertex , but later we saw that a basic solution is obtained by setting to 0 all the non-basic variables which are also n-m, wonder what that could mean...
+
+Not surprsingly:
+
+:::{.callout .callout-definition title="Radagon is Marika"}
+$$
+vertex\quad \iff \quad basic\:feasible\:solution
+$$
+:::
+
+>Number of basic feasible solutions: At least $\binom{n}{m}$ (from the fundamental theorem looking at LPs as combinatorial problems)
+
+## Simplex method
+We discussed the need for a method that would work even for bigger problems, this method is the way to go, but before talking about it, we need to discuss a few things.
+
+### Active constraints
+Let's take a feasible region:
+
+![](assets/chapter3/feasibleRegion.png)
+
+defined by these constraints:
+$$
+\begin{align*}
+&\quad x_1-x_2 \leq 2\\
+&\quad 2x_1+x_2 \leq 10 \\
+&\quad -x_1+3x_2 \leq 9 \\
+&\quad x_1,x_2 \geq 0
+\end{align*}
+$$
+
+Let's put them in standard form by adding slack variables $S_1, S_2, S_3$:
+
+$$
+\begin{align*}
+&\quad x_1-x_2 + S_1 = 2\\
+&\quad 2x_1+x_2+ S_2 = 10 \\
+&\quad -x_1+3x_2 + S_3 = 9 \\
+&\quad x_1,x_2,S_1,S_2,S_3 \geq 0
+\end{align*}
+$$
+
+If we decide to put one of the slack variables to 0 the original constraint becomes an equality, meaning that the variables will "be moving" on the "side" that the constraint describe.
+
+By doing so we say that we **activate** the constraint.
+
+In other words:
+
+:::{.callout .callout-definition title="Active constraint"}
+If an assignment of the variables results in a point that lies on one of the borders of the feasible region , the constraint that is responsible for that border is labelled as active.
+:::
+
+### Moving from a vertex to another
+
+When we talked about the **LP Fundamental theorem** we saw how enumerating all the vertices and keeping only the best, is not a good strategy.
+So instead of trying to find all of them, we'll work on how to find one by "moving" from a neighboring vertex that we already know.
+
+Let's take a feasible region:
+
+![](assets/chapter3/movingVertexFeasible.png)
+
+Defined by these constraints:
+$$
+\begin{align*}
+&\quad x_1+x_2 \leq 7\\
+&\quad -x_1+x_2 \leq 3 \\
+&\quad x_1-2x_2  \leq 1 \\
+&\quad x_1,x_2 \geq 0
+\end{align*}
+$$
+
+Put in standard form:
+
+$$
+\begin{align*}
+&\quad x_1+x_2+S_1 = 7 \quad (1)\\  
+&\quad -x_1+x_2+S_2 = 3 \quad (2)\\
+&\quad x_1-2x_2+S_3  = 1 \quad (3)\\
+&\quad x_1,x_2,S_1,S_2,S_3 \geq 0
+\end{align*}
+$$
+
+Our matrix A is :
+$$
+A= \begin{bmatrix}
+ 1 & 1 & 1 & 0 & 0  \\
+ -1 & 1 & 0 & 1 &0  \\
+1 & -2 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+we have m = 3 and n = 5 so we have 2 degrees of freedom.
+
+Let's pick a starting point, we choose the vertex "A" since we just need to take out the first two columns of the matrix to find it
+(remember that since we are talking about vertexes the variable that are non-basic are set to 0 , and since all of Ss variables are basic none of them 0 meaning no constraints is active).
+
+Our matrix is partitioned this way:
+
+$$
+B= \begin{bmatrix}
+ 1 & 0 & 0  \\
+ 0 & 1 &0  \\
+ 0 & 0 & 1
+\end{bmatrix}\quad
+N=\begin{bmatrix}
+1 & 1   \\
+-1 & 1   \\
+1 & -2
+\end{bmatrix}
+$$
+
+Now lets say that we want to move from vertex A to vertex B :
+
+![](assets/chapter3/movingAB.png)
+
+How should we change our basis to achieve the goal?
+
+We must activate the constraints whose interception defines the wanted vertex, in our case the constraint (3), so we activate it by dropping the column $[0,\:0,\:1]^T$ from B and adding $[1,\:-1,\:1]^T$ (we need $x_2$ also to be 0 so we keep it non-basic by not choosing the other column).
+
+Our partition is now:
+
+$$
+B= \begin{bmatrix}
+1 &1 & 0   \\
+-1& 0 & 1  \\
+1 &0 & 0 
+\end{bmatrix}\quad
+N=\begin{bmatrix}
+ 1  & 0 \\
+ 1  & 0 \\
+ -2 & 1
+\end{bmatrix}
+$$
+
+And we moved to vertex B.
+
+What if we wanted to move from B to C?
+
+![](assets/chapter3/movingVertexBC.png)
+
+We need to activate constraint (1) since C is the meeting point of (1) and (3) so we kick $S_1$ out :
+
+$$
+B= \begin{bmatrix}
+1 &1 & 0   \\
+-1& 1 & 1  \\
+1 &-2 & 0
+\end{bmatrix}\quad
+N=\begin{bmatrix}
+1  & 0 \\
+0  & 0 \\
+0& 1
+\end{bmatrix}
+$$
+
+We are now in vertex C.
+
+Now that we saw how to move to neighboring vertex , we need to find a good way to determine which vertex it would be better to move to.
+
+### Reduced costs
+
+
+
 
 
 
