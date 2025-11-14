@@ -467,6 +467,7 @@ $$
 $$
 
 So lets put things together:
+
 - A basic solution is a solution obtained by setting $\underline{x}_N = \underline{0}$ (it's basic because there are no non-basic variables **DUH**), with this our definition of basic variables becomes:
   $\underline{x}_B = B^{-1}b$
 - A basic solution with $\underline{x}_B \geq 0$ is a basic **feasible solution** (the problem is in standard form, the variables are strictly positive).
