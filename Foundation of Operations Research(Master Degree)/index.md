@@ -217,7 +217,7 @@ Meaning that the subset contains the whole segment connecting the two points.
 
 [Convex set interactive graph](https://www.desmos.com/calculator/y3ays9vrh3?lang=it)
 
-> A *polyhedron* is a convex set of $R^n$ $\implies $ The feasible region of a LP is a convex set of $R^n$
+> A *polyhedron* is a convex set of $R^n$ $\implies$ The feasible region of a LP is a convex set of $R^n$
 
 ### Vertices
 
