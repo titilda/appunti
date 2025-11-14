@@ -513,7 +513,7 @@ $$
 \end{align*}
 $$
 
-If we decide to put one of the slack variables to 0 the original constraint becomes an equality, meaning that the variables will "be moving" on the "side" that the constraint describe.
+If we decide to assign 0 to one of the slack variables,the original constraint becomes an equality, meaning that the variables will "be moving" on the "side" that the constraint describe.
 
 By doing so we say that we **activate** the constraint.
 
