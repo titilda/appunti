@@ -672,7 +672,7 @@ $$
 
 The first part of the formula (V) is the value of the objective function when we are in a basic feasible solution (vertex) since $\underline{x}_N$ is $\underline{0}$.
 
-THe second part of the formula (R) are the reduced costs(of then non-basic variables), but before giving you the definition let's try to understand what are the reduced cost.
+The second part of the formula (R) are the reduced costs(of then non-basic variables), but before giving you the definition let's try to understand what are the reduced cost.
 
 ### Definition walkthrough
 
@@ -747,7 +747,7 @@ B^{-1}N=\begin{bmatrix}
 1  & 1
 \end{bmatrix}
 $$
-This tells us that by increasing $x_2$ by 1 the value of $x_1$ must change by a factor of 3 and $x_4$ by a factor of 1 (the first column), lets see it algebraically:
+This tells us that by increasing $x_2$ by 1 the value of $x_1$ must change by a factor of 2 and $x_4$ by a factor of 1 (the first column), lets see it algebraically:
 
 We know that:
 
@@ -803,14 +803,29 @@ This tells us that value of the objective changes by -1 which is exactly what we
 
 So let's now give the definition of reduced costs:
 
-:::{.callout .callout-definition title="Active constraint"}
-The reduced costs represents the change in the objective function value if non-basic $x_j$ would be increased from 0 to 1 while keeping all other non-basic variables to 0.
+:::{.callout .callout-definition title="Reduced costs"}
+The reduced costs (of non-basic variables) represents the change in the objective function value if non-basic $x_j$ would be increased from 0 to 1 while keeping all other non-basic variables to 0.
 (we specified the variables as non-basic because we express the basis one in function of the non-basic one, but this potentially hold for any partitioning)
 
 The solution value changes by $\Delta z= \overline{c}_j \Delta x_j$ ( in our previous example $\Delta x_j$ was 1)
 :::
 
-### Optimal solution
+> we say that the reduced cost of basic variables is 0.
+### Optimality of a solution
+We said that in a standard form LP (minimization problem) the optimal solution $\underline{x}^*$ is such that:
+$$
+\underline{c}^T \underline{x}^* \leq \underline{c}^T \underline{x}, \forall \underline{x} \in R^n
+$$
+So by moving to any other point our solution must have an increase in its value, meaning that the reduced cost must be $\geq 0$.
+
+Paraphrasing:
+
+:::{.callout .callout-definition title="Optimal solution"}
+    If $\underline{\overline{c}}_n \geq 0$ then the basic feasible solution $(\underline{x}_B^T,\underline{x}_N^T)$ of cost (value) $\:\underline{c}_B^TB^{-1}\underline{b}$ is a global optimum (technically a local optimum, but since we are in a linear context the definition are equivalent).
+:::
+
+
+
 
 
 
