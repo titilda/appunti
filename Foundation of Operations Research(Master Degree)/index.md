@@ -811,6 +811,7 @@ The solution value changes by $\Delta z= \overline{c}_j \Delta x_j$ ( in our pre
 :::
 
 > we say that the reduced cost of basic variables is 0.
+> 
 ### Optimality of a solution
 We said that in a standard form LP (minimization problem) the optimal solution $\underline{x}^*$ is such that:
 $$
