@@ -470,7 +470,7 @@ So lets put things together:
 
 - A basic solution is a solution obtained by setting $\underline{x}_N = \underline{0}$ (it's basic because there are no non-basic variables **DUH**), with this our definition of basic variables becomes:
   $\underline{x}_B = B^{-1}b$
-- A basic solution with $\underline{x}_B \geq 0$ is a basic **feasible solution** (the problem is in standard form, the variables are strictly positive).
+- A basic solution with $\underline{x}_B \geq 0$ is a basic **feasible solution** (the problem is in standard form, the variables are positive).
 
 Wait , we said that by fixing n-m variables to 0 we get a vertex , but later we saw that a basic solution is obtained by setting to 0 all the non-basic variables which are also n-m, wonder what that could mean...
 
@@ -631,6 +631,190 @@ We are now in vertex C.
 Now that we saw how to move to neighboring vertex , we need to find a good way to determine which vertex it would be better to move to.
 
 ### Reduced costs
+We have an LP in standard form:
+$$
+\begin{align*}
+min\quad & z=\underline{c}^T\underline{x}\\
+& A\underline{x} = \underline{b}
+\end{align*}
+$$
+Let's now expand the objective function by making explicit the basic and non-basic parts:
+$$
+z = [\:\underline{c}_B^T \quad \underline{c}_N^T\:] \begin{bmatrix}
+\underline{x}_B \\
+\underline{x}_N
+\end{bmatrix} \quad(1)
+$$
+
+We previously saw how to express basic variables in terms of non-basic ones , like so (with B and N being partitions of A):
+$$
+\underline{x}_B=B^{-1}b-B^{-1}\underline{x}_N \quad(2)
+$$
+
+So we can rewrite (1) using (2) as:
+
+$$
+z=[\:\underline{c}_B^T \quad \underline{c}_N^T\:] \begin{bmatrix}
+B^{-1}b-B^{-1}\underline{x}_N \\
+\underline{x}_N
+\end{bmatrix} \quad
+$$
+
+That translates into:
+$$
+z = \underline{c}_B^T B^{-1} b-c_B^TB^{-1} N \underline{x}_N+c_N^T\underline{x}_N
+$$
+
+Let's group by $\underline{x}_N$:
+$$
+z = \underbrace{\underline{c}_B^T B^{-1} b}_{V}+\underline{x}_N(\underbrace{c_N^T-c_B^TB^{-1}N}_R)
+$$
+
+The first part of the formula (V) is the value of the objective function when we are in a basic feasible solution (vertex) since $\underline{x}_N$ is $\underline{0}$.
+
+THe second part of the formula (R) are the reduced costs(of then non-basic variables), but before giving you the definition let's try to understand what are the reduced cost.
+
+### Definition walkthrough
+
+Let's start from our formula:
+
+$$
+\underline{\overline{c}}_N^T = c_N^T-c_B^TB^{-1}N
+$$
+
+The $c_N^T$ part doesn't tell us much ,it just is the contribution of the non-basic variables in the objective function.
+The $c_B^TB^{-1}N$ part on the other hand is where the things start to get interesting.
+
+What is $B^{-1}N$?
+
+Let's suppose that we have the following constraint:
+$$
+x_1 +4 x_2 + 2 x_3 + x_4 = 24
+$$
+
+And we have these assignments: 
+$$
+\underline{x}^T = [\:1\quad 2\quad 6 \quad3\:]
+$$
+
+>If we decided to change the value of one of the variables, how the others should adjust themselves in order to still satisfy the constraint?
+
+This is exactly what $B^{-1}N$ tells us.
+
+Let's crunch some numbers:
+
+We have this LP:
+
+$$
+\begin{align*}
+min\quad &x_1+2 x_2+3x_3+x_4\\
+&x_1+2x_2+x_3 = 5\\
+&x_2+x_3+x_4 = 3\\
+\end{align*}
+$$
+We decide to start from a vertex by choosing $x_1$ and $x_4$ as basic variables, so we partition the matrix this way:
+$$
+B= \begin{bmatrix}
+1 & 0   \\
+0&  1  
+\end{bmatrix}\quad
+N=\begin{bmatrix}
+2  & 1 \\
+1  & 1 
+\end{bmatrix}
+$$
+
+Our current assignment is:
+$$
+\underline{x}^T=[\:5\quad0\quad 0 \quad3\:]
+$$
+or
+
+$$
+\underline{x}_B^T=[\:5\quad3\:]\quad \quad \underline{x}_N^T=[\: 0 \quad 0 \:]
+$$
+
+The objective value is:
+$$
+5 + 0 + 0 + 3 = 8
+$$
+What if we increased $x_2$ by 1?
+
+Let's compute $B^{-1}N$:
+$$
+B^{-1}N=\begin{bmatrix}
+2  & 1 \\
+1  & 1
+\end{bmatrix}
+$$
+This tells us that by increasing $x_2$ by 1 the value of $x_1$ must change by a factor of 3 and $x_4$ by a factor of 1 (the first column), lets see it algebraically:
+
+We know that:
+
+$$
+\underline{x}_B=B^{-1}b-B^{-1}\underline{x}_N
+$$
+
+>Which holds regardless whether we are in a vertex or not, we are just expressing two variables in function of the other two.
+
+So let's compute the new values of $x_1$ and $x_4$:
+
+$$
+\underline{x}_B=\begin{bmatrix} 5\\ 3\end{bmatrix}-\begin{bmatrix}
+2  & 1 \\
+1  & 1
+\end{bmatrix}\begin{bmatrix} 1\\ 0\end{bmatrix} = \begin{bmatrix} 3\\ 2\end{bmatrix}
+$$
+Where $[1\quad 0]^T$ is the new assignment of $x_2$.
+
+The constraints hold:
+
+$$
+\begin{align*}
+& 3 +2\times 1+0 = 5\\
+&1+0+2 = 3\\
+\end{align*}
+$$
+
+The new value of the objective is:
+
+$$
+3+2\times1+0+2 = 7
+$$
+
+Let's use the formula given by our previous definition:
+
+$$
+\underline{\overline{c}}_N^T = c_N^T-c_B^TB^{-1}N
+$$
+
+Substituting:
+$$
+\begin{align*}
+\underline{\overline{c}}_N^T &= \begin{bmatrix} 2\\ 3\end{bmatrix} - [\:1\quad1\:]\begin{bmatrix}
+2  & 1 \\
+1  & 1
+\end{bmatrix} \\
+& =\begin{bmatrix} 2\\ 3\end{bmatrix} - \begin{bmatrix} 3\\ 2\end{bmatrix} \\
+& =\begin{bmatrix} -1 \\ 1\end{bmatrix}
+\end{align*}\\
+$$
+This tells us that value of the objective changes by -1 which is exactly what we got from our calculations (the other value is the change that we would get by increasing $x_3$ by one)
+
+So let's now give the definition of reduced costs:
+
+:::{.callout .callout-definition title="Active constraint"}
+The reduced costs represents the change in the objective function value if non-basic $x_j$ would be increased from 0 to 1 while keeping all other non-basic variables to 0.
+(we specified the variables as non-basic because we express the basis one in function of the non-basic one, but this potentially hold for any partitioning)
+
+The solution value changes by $\Delta z= \overline{c}_j \Delta x_j$ ( in our previous example $\Delta x_j$ was 1)
+:::
+
+### Optimal solution
+
+
+
+
 
 
 
