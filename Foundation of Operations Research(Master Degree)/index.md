@@ -463,7 +463,7 @@ $$
 
 Thanks to the non-singularity of B we can describe the set of basic variables using the non-basic ones:
 $$
-\underline{x}_B=B^{-1}b-B^{-1}\underline{x}_N
+\underline{x}_B=B^{-1}b-B^{-1}N\underline{x}_N
 $$
 
 So lets put things together:
@@ -648,14 +648,14 @@ $$
 
 We previously saw how to express basic variables in terms of non-basic ones , like so (with B and N being partitions of A):
 $$
-\underline{x}_B=B^{-1}b-B^{-1}\underline{x}_N \quad(2)
+\underline{x}_B=B^{-1}b-B^{-1}N\underline{x}_N \quad(2)
 $$
 
 So we can rewrite (1) using (2) as:
 
 $$
 z=[\:\underline{c}_B^T \quad \underline{c}_N^T\:] \begin{bmatrix}
-B^{-1}b-B^{-1}\underline{x}_N \\
+B^{-1}b-B^{-1}N\underline{x}_N \\
 \underline{x}_N
 \end{bmatrix} \quad
 $$
@@ -752,7 +752,7 @@ This tells us that by increasing $x_2$ by 1 the value of $x_1$ must change by a 
 We know that:
 
 $$
-\underline{x}_B=B^{-1}b-B^{-1}\underline{x}_N
+\underline{x}_B=B^{-1}b-B^{-1}N\underline{x}_N
 $$
 
 >Which holds regardless whether we are in a vertex or not, we are just expressing two variables in function of the other two.
@@ -821,8 +821,45 @@ So by moving to any other point our solution must have an increase in its value,
 Paraphrasing:
 
 :::{.callout .callout-definition title="Optimal solution"}
-    If $\underline{\overline{c}}_n \geq 0$ then the basic feasible solution $(\underline{x}_B^T,\underline{x}_N^T)$ of cost (value) $\:\underline{c}_B^TB^{-1}\underline{b}$ is a global optimum (technically a local optimum, but since we are in a linear context the definition are equivalent).
+    If $\underline{\overline{c}}_n \geq 0$ then the basic feasible solution $(\underline{x}_B^T,\underline{x}_N^T)$ of cost (value) $\:\underline{c}_B^TB^{-1}\underline{b}$ is a global optimum (technically a local optimum, but since we are in a linear context the definitions are equivalent).
 :::
+
+### Tightest upper bound
+In order to keep all the values of the variables positive , we need a measure to determine how much we can increase the value of a non-basic before violating this constraint.
+
+Let's start from our definition of basic variables:
+$$
+\underline{x}_B=B^{-1}b-B^{-1}N\underline{x}_N
+$$
+
+We must guarantee that
+$$
+B^{-1}b-B^{-1}N\underline{x}_N \geq 0
+$$
+Let's redefine our members like this:
+$$
+\overline{\underline{b}} = B^{-1}b =\begin{bmatrix}\:\overline{b}_1 \\ \vdots \\ \:\overline{b}_i  \end{bmatrix} \quad \quad \quad \overline{N}=B^{-1}N=\begin{bmatrix} \overline{a}_{11} & \dots & \overline{a}_{1s} \\
+\vdots & & \vdots \\
+\overline{a}_{i1} & \dots & \overline{a}_{is}
+\end{bmatrix}
+$$
+Remember that we are in a vertex (so all non-basic to 0), and we want to se how much we can increase a non-basic before violating the positivity constraint.
+
+So if we wish to increase the $x_s$ variable(from 0), this must hold:
+
+$$
+\overline{b}_i - \overline{a}_{is} x_s \geq 0 \implies x_s \leq \overline{b}_i / \overline{a}_{is} , \quad for \quad \overline{a}_{is} \geq 0
+$$
+
+>Why must $\overline{a}_{is}$ by greater or equal than 0?
+
+Because if it's negative that means that for what concerns the variable at row "i" the non-basic can increase as much as we want, since that variable also increase with it!
+
+Meaning that if $\overline{a}_{is}$ \leq 0 $\forall i$ , there is no limit to the increase of $x_s$.
+
+
+
+
 
 
 
