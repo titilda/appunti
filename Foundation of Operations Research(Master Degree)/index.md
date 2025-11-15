@@ -892,7 +892,7 @@ Then we organize the data in table-like structure:
 | $S_1$ | value of the variable               | constraint 1       |       |       |       |       |
 | $S_2$ | value of the variable               | constraint 2       |       |       |       |       |
 
-(I apologize for the abhorrent creation that I just made, but when Mr. Dantiz  designed this horrendous representation had only hate in his mind)
+(I apologize for the abhorrent creation that I just made, but when Mr. Dantiz  designed this horrendous representation had only evil thoughts in his mind)
 
 Substituting with our values:
 
@@ -904,7 +904,162 @@ Substituting with our values:
 
 (we will discuss the reason behind -z shortly)
 
-This is the first step of the simplex method, and now we can start to discuss its logic.
+This is the first step of the simplex method, and we can now start to discuss its logic.
+
+### Moving through vertex using tableau representation
+Let's take this LP in standard form:
+$$
+\begin{align*}
+min  &\quad x_1-3x_2 \\
+s.t. &\quad x_1-x_2 + S_1 = 2 \\
+&\quad 2x_1+x_2+ S_2 = 10 \\
+&\quad -x_1+3x_2 + S_3 = 9 \\
+&\quad x_1,x_2,S_1,S_2,S_3 \geq 0
+\end{align*}
+$$
+
+and its tableau representation starting from the vertex in the origin (so the base is formed by $S_1$, $S_2$ and $S_3$)
+
+|       |    | $x_1$ | $x_2$ | $S_1$ | $S_2$ | $S_3$ |
+|-------|----|-------|-------|-------|-------|-------|
+| $-z$  | 0  | 1     | -3    | 0     | 0     | 0     |
+| $S_1$ | 2  | 1     | -1    | 1     | 0     | 0     |
+| $S_2$ | 10 | 2     | 1     | 0     | 1     | 0     |
+| $S_3$ | 9  | -1    | 3     | 0     | 0     | 1     |
+
+What needs to be done to move from (0,0) to (0,3)?
+
+![](assets/chapter3/feasibleRegion.png)
+
+As we saw , we need to make $x_2$ enter and $S_3$ exits (since the first is the one responsible for that border) , let's see how this translates in the tableau representation:
+
+We have this set of equations:
+
+$$
+\begin{align*}
+&z = x_1-3x_2 \\
+&x_1-x_2 + S_1 = 2 \quad(1)\\
+&2x_1+x_2+ S_2 = 10 \quad(2)\\
+&-x_1+3x_2 + S_3 = 9 \quad(3)\\
+\end{align*}
+$$
+
+Since we want to enter $x_2$ making it a basic variable, we need to express it in function of non-basic variables, we will use (3) since it is the only basic variable in that constraint.
+
+So we pivot that equation to explicit the $x_2$ term (meaning we want him with a coefficient of 1) :
+
+$$
+-\frac{1}{3} x_1+x_2+\frac{1}{3} S_3 = 3 \quad (4)
+$$
+
+>Since $x_2$ is the only basic variable here we can say that its value is 3.
+
+Now we'll use (4) to "correct" the other equations:
+
+$$
+\begin{align*}
+&z = x_1-3*(3 +\frac{1}{3} x_1-\frac{1}{3} S_3) \\
+&x_1-(3 +\frac{1}{3} x_1-\frac{1}{3} S_3) + S_1 = 2 \quad(1)\\
+&2x_1 +(3 +\frac{1}{3} x_1-\frac{1}{3} S_3)+ S_2 = 10 \quad(2)\\
+&x_2 = 3 +\frac{1}{3} x_1-\frac{1}{3} S_3\quad (4*)\\
+\end{align*}
+$$
+
+That gives us:
+
+$$
+\begin{align*}
+&z = S_3-9\\
+&\frac{4}{3}x_1+S_1+S_3 = 5 \quad(1)\\
+&\frac{7}{3}x_1 + S_2 -\frac{1}{3}S_3 = 7 \quad(2)\\
+&-\frac{1}{3} x_1+x_2+\frac{1}{3} S_3 = 3 \quad (4)\\
+\end{align*}
+$$
+
+We rewrite the objective function as:
+$$
+ z+9 = S_3
+$$
+Since $S_3$ is a non-basic variable (so its value is 0) we can say that: $-z=9$
+
+This is how our system after the change of basis looks like:
+
+$$
+\begin{align*}
+&z+9 = S_3\\
+&\frac{4}{3}x_1+S_1+S_3 = 5 \quad(1)\\
+&\frac{7}{3}x_1 + S_2 -\frac{1}{3}S_3 = 7 \quad(2)\\
+&-\frac{1}{3} x_1+x_2+\frac{1}{3} S_3 = 3 \quad (4)\\
+\end{align*}
+$$
+
+>This is precisely how moving from a vertex to another works in tableau representation.
+
+We start from:
+
+|       |    | $x_1$ | $x_2$ | $S_1$ | $S_2$ | $S_3$ |
+|-------|----|-------|-------|-------|-------|-------|
+| $-z$  | 0  | 1     | -3    | 0     | 0     | 0     |
+| $S_1$ | 2  | 1     | -1    | 1     | 0     | 0     |
+| $S_2$ | 10 | 2     | 1     | 0     | 1     | 0     |
+| $S_3$ | 9  | -1    | 3     | 0     | 0     | 1     |
+
+We enter $x_1$ by dropping $S_3$ so we pivot on $x_1$ (by dividing for -1) and we get:
+
+|       |    | $x_1$          | $x_2$ | $S_1$ | $S_2$ | $S_3$         |
+|-------|----|----------------|-------|-------|-------|---------------|
+| $-z$  | 0  | 1              | -3    | 0     | 0     | 0             |
+| $S_1$ | 2  | 1              | -1    | 1     | 0     | 0             |
+| $S_2$ | 10 | 2              | 1     | 0     | 1     | 0             |
+| $x_2$ | 3  | $-\frac{1}{3}$ | 1     | 0     | 0     | $\frac{1}{3}$ |
+
+Then we correct the other lines by doing so:
+
+- Update $S_1$:
+$$
+\begin{align*}
+S_1&= [\:2 \quad 1 \quad -1 \quad 1 \quad 0 \quad 0\:] - (-1) *[\:3 \quad -\frac{1}{3} \quad 1 \quad 0 \quad 0 \quad \frac{1}{3}\:] \\
+&=[\:5 \quad \frac{4}{3} \quad 0 \quad 1 \quad 0 \quad 1\:]
+\end{align*}
+$$
+
+|       |    | $x_1$          | $x_2$ | $S_1$ | $S_2$ | $S_3$         |
+|-------|----|----------------|-------|-------|-------|---------------|
+| $-z$  | 0  | 1              | -3    | 0     | 0     | 0             |
+| $S_1$ | 5  | $\frac{4}{3}$  | 0     | 1     | 0     | 1             |
+| $S_2$ | 10 | 2              | 1     | 0     | 1     | 0             |
+| $x_2$ | 3  | $-\frac{1}{3}$ | 1     | 0     | 0     | $\frac{1}{3}$ |
+
+- Update $S_2$:
+$$
+\begin{align*}
+S_2&= [\:10 \quad 2 \quad 1 \quad 0 \quad 1 \quad 0\:] - (1) *[\:3 \quad -\frac{1}{3} \quad 1 \quad 0 \quad 0 \quad \frac{1}{3}\:] \\
+&=[\:7 \quad \frac{7}{3} \quad 0 \quad 0 \quad 1 \quad -\frac{1}{3}\:]
+\end{align*}
+$$
+
+|       |    | $x_1$          | $x_2$ | $S_1$ | $S_2$ | $S_3$          |
+|-------|----|----------------|-------|-------|-------|----------------|
+| $-z$  | 0  | 1              | -3    | 0     | 0     | 0              |
+| $S_1$ | 5  | $\frac{4}{3}$  | 0     | 1     | 0     | 1             |
+| $S_2$ | 7  | $\frac{7}{3}$  | 0     | 0     | 1     | -$\frac{1}{3}$ |
+| $x_2$ | 3  | $-\frac{1}{3}$ | 1     | 0     | 0     | $\frac{1}{3}$  |
+
+- Update $-z$:
+  $$
+  \begin{align*}
+  -z&= [\:0 \quad 1 \quad -3 \quad 0 \quad 0 \quad 0\:] - (-3) *[\:3 \quad -\frac{1}{3} \quad 1 \quad 0 \quad 0 \quad \frac{1}{3}\:] \\
+  &=[\:9 \quad 0 \quad 0 \quad 0 \quad 0 \quad 1\:]
+  \end{align*}
+  $$
+
+|       |   | $x_1$          | $x_2$ | $S_1$ | $S_2$ | $S_3$          |
+|-------|---|----------------|-------|-------|-------|----------------|
+| $-z$  | 9 | 0              | 0     | 0     | 0     | 1              |
+| $S_1$ | 5 | $\frac{4}{3}$  | 0     | 1     | 0     | 1              |
+| $S_2$ | 7 | $\frac{7}{3}$  | 0     | 0     | 1     | -$\frac{1}{3}$ |
+| $x_2$ | 3 | $-\frac{1}{3}$ | 1     | 0     | 0     | $\frac{1}{3}$  |
+
 
 
 
