@@ -858,9 +858,53 @@ Because if it's negative that means that for what concerns the variable at row "
 
 Meaning that if $\overline{a}_{is}$ \leq 0 $\forall i$ , there is no limit to the increase of $x_s$.
 
+### Tableau representation
+Tableau representation is a useful way to represent an LPs ,and it is a key part of the simplex method.
+
+Let's start from an LP in standard form:
+$$
+\begin{align*}
+min\quad & x_1+x_2+3x_3\\
+s.t.\quad & x_1-2x_2+3x_3+S_1=10 \\
+& -x_1-x_2-x_3+S_2 = -8 \\
+&x_1,x_2,x_3,S_1,S_2 \geq 0
+\end{align*}
+$$
+
+we choose a starting point by partitioning A , we always start by putting B as a subset of columns that form an Identity, since we want an easy starting BSF (vertex/basic feasible solution), in our case we choose a basis of $S_1$ and $S_2$:
+$$
+B= \begin{bmatrix}
+1 & 0   \\
+0&  1  
+\end{bmatrix}\quad
+N=\begin{bmatrix}
+1  & -2 & 3 \\
+-1  & -1 & -1
+\end{bmatrix}
+$$
 
 
+Then we organize the data in table-like structure:
 
+|       |                                     | $x_1$              | $x_2$ | $x_3$ | $S_1$ | $S_2$ |
+|-------|-------------------------------------|--------------------|-------|-------|-------|-------|
+| $-z$  | current value of the objective * -1 | objective function |
+| $S_1$ | value of the variable               | constraint 1       |       |       |       |       |
+| $S_2$ | value of the variable               | constraint 2       |       |       |       |       |
+
+(I apologize for the abhorrent creation that I just made, but when Mr. Dantiz  designed this horrendous representation had only hate in his mind)
+
+Substituting with our values:
+
+|       |    | $x_1$ | $x_2$ | $x_3$ | $S_1$ | $S_2$ |
+|-------|----|-------|-------|-------|-------|-------|
+| $-z$  | 0  | 1     | 1     | 3     | 0     | 0     |
+| $S_1$ | 10 | 1     | -2    | 3     | 1     | 0     |
+| $S_2$ | -8 | -1    | -1    | -1    | 0     | 1     |
+
+(we will discuss the reason behind -z shortly)
+
+This is the first step of the simplex method, and now we can start to discuss its logic.
 
 
 
