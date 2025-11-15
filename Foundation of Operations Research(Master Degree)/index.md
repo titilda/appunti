@@ -822,7 +822,7 @@ So by moving to any other point our solution must have an increase in its value,
 Paraphrasing:
 
 :::{.callout .callout-definition title="Optimal solution"}
-    If $\underline{\overline{c}}_n \geq 0$ then the basic feasible solution $(\underline{x}_B^T,\underline{x}_N^T)$ of cost (value) $\:\underline{c}_B^TB^{-1}\underline{b}$ is a global optimum (technically a local optimum, but since we are in a linear context the definitions are equivalent).
+If $\underline{\overline{c}}_n \geq 0$ then the basic feasible solution $(\underline{x}_B^T,\underline{x}_N^T)$ of cost (value) $\:\underline{c}_B^TB^{-1}\underline{b}$ is a global optimum (technically a local optimum, but since we are in a linear context the definitions are equivalent).
 :::
 
 ### Tightest upper bound
