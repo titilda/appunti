@@ -137,33 +137,33 @@ $$
 <h4>Using python's MIP library:</h4>
 
 ```python 
-    import mip
-    from mip import CONTINUOUS
-    
-    # these are our parameters
-    I = [0, 1, 2, 3, 4] # Products
-    P = [2, 3, 4, 5, 6] # Prices
-    C = [3, 6, 7, 9, 10] # Costs
-    Cmax = 3000 # Max total cost
-    Qmax = 400 # Max total amount of product
-    
-    
-    model=mip.Model()
-    x = [model.add_var(name=f"x_{i+1}", lb=0 ,var_type=CONTINUOUS) for i in I]
-    
-    # Objective function
-    model.objective = mip.maximize(mip.xsum(P[i] * x[i] for i in I))
-    
-    # Constraints
-    
-    # Maximum production cost
-    model.add_constr(mip.xsum(x[i]*C[i] for i in I) <= 3000)
-    
-    # Maximum quantity produced
-    model.add_constr(mip.xsum(x[i] for i in I)<= 400)
-    
-    model.optimize()
-    for i in model.vars:
+import mip
+from mip import CONTINUOUS
+
+# these are our parameters
+I = [0, 1, 2, 3, 4] # Products
+P = [2, 3, 4, 5, 6] # Prices
+C = [3, 6, 7, 9, 10] # Costs
+Cmax = 3000 # Max total cost
+Qmax = 400 # Max total amount of product
+
+
+model=mip.Model()
+x = [model.add_var(name=f"x_{i+1}", lb=0 ,var_type=CONTINUOUS) for i in I]
+
+# Objective function
+model.objective = mip.maximize(mip.xsum(P[i] * x[i] for i in I))
+
+# Constraints
+
+# Maximum production cost
+model.add_constr(mip.xsum(x[i]*C[i] for i in I) <= 3000)
+
+# Maximum quantity produced
+model.add_constr(mip.xsum(x[i] for i in I)<= 400)
+
+model.optimize()
+for i in model.vars:
     print(i.name,i.x)
 ```
 </div>
@@ -426,7 +426,7 @@ model.add_constr(-x[0]+3*x[1] <= 9)
 
 model.optimize()
 for i in model.vars:
-print(i.name,i.x)
+    print(i.name,i.x)
 ```
 ![Output](assets/chapter3/mip_graph_ex.png)
 
@@ -1435,24 +1435,21 @@ Solution $\underline{x}^T=[\: 0 \quad \frac{8}{3}  \quad \frac{1}{3} \quad 0 \qu
 import mip
 from mip import CONTINUOUS
 
-I = [0, 1, 2, 3]
-C = [2, 3, 5, 2]
-A = [[1, 2, 3, 1],[2, 1, 1, 2]]
-b = [3, 4]
 model = mip.Model()
 # variable definition
-x = [model.add_var(name = f"x_{i+1}", lb =0 ,var_type=CONTINUOUS) for i in I]
-
+x = [model.add_var(name = f"x_{1}", lb =0 ,var_type=CONTINUOUS),
+     model.add_var(name = f"x_{2}", lb =0 ,var_type=CONTINUOUS),
+     model.add_var(name = f"x_{3}", lb =0 ,var_type=CONTINUOUS)]
 # objective function
-model.objective = mip.maximize(mip.xsum(C[i]*x[i] for i in I))
-
+model.objective = mip.minimize(x[0]-2*x[1])
 # constraints
-for j in range(0,2):
-    model.add_constr(mip.xsum(A[j][i]*x[i] for i in I)<= b[j])
-
+model.add_constr(2*x[0]+3*x[2] == 1)
+model.add_constr(3*x[0]+2*x[1]-x[2] == 5)
 model.optimize()
+for i in model.vars:
+    print(i.name,i.x)
 ```
-![](assets/chapter3/simplexexPy.png)
+![](assets/chapter3/two_phase_simplex_py.png)
 </div>
 </div>
 
