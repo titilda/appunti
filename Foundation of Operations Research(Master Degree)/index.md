@@ -1394,8 +1394,8 @@ We also need to adjust the original objective function so that is expressed in t
 So we take the rows of the tableau and we explicit the basic terms:
 $$
 \begin{align*}
-&x_1 = \frac{1}{2} - \frac{3}{2} x_3 \\ \quad (3)
-&x_2 = \frac{7}{4} + \frac{11}{4} x_3 \quad {4}
+&x_1 = \frac{1}{2} - \frac{3}{2} x_3  \quad (3) \\
+&x_2 = \frac{7}{4} + \frac{11}{4} x_3 \quad (4)
 \end{align*}
 $$
 
@@ -1512,7 +1512,7 @@ We are confident to say that the expression on the right will always be bigger t
 
 In order to say this we must add a few things:
 
->$y_1$ $y_2$, and $ y_3$ must be $\geq 0$ otherwise the inequality won't hold.
+>$y_1$ $y_2$, and $y_3$ must be $\geq 0$ otherwise the inequality won't hold.
 
 Can we say more about what we found?
 
@@ -1581,7 +1581,7 @@ $$
 
 $$
 \begin{align*}
-mini \quad & w = \underline{b}^T \underline{y} \\
+min \quad & w = \underline{b}^T \underline{y} \\
 & A^T \underline{y} \geq \underline{c} \\
 & \underline{y} \geq 0
 \end{align*}
