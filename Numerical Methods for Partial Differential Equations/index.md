@@ -428,6 +428,102 @@ _TODO_
 
 _TODO_
 
+# Parabolic PDEs
+
+**Parabolic PDEs** are a generalization of elliptic PDEs that differs only for the fact that they are time-dependent.
+
+A general parabolic problem can be expressed as
+
+$$
+\text{$\forall t \in (0, T)$, find $u$ : }\begin{cases}
+  \frac{\partial u}{\partial t} + Lu = f & \text{in } \Omega \\
+  \text{Boundary conditions} & \text{in } \partial\Omega, 0 \lt t \lt T \\
+  \text{Initial condition} & \text{in } x \in \Omega, t = 0
+\end{cases}
+$$
+
+where $L$ is the elliptic operator already defined for elliptic PDEs and so are the boundary conditions, except for the fact that they must be true $\forall t$. The solution $u$ also depends on time.
+
+The time-dependent domain where the PArabolid PDE applies is defined as $Q = \Omega \times (0, T)$ and, technically, it is a cylinder.
+
+The procedure to get to "something that can be computed" is really similar to the one used for elliptic PDEs.
+
+```mermaid
+flowchart LR
+    id1[Strong parabolic problem]
+    id2[Weak parabolic problem]
+    id3[Galerkin problem]
+    id4[Algebraic problem]
+
+    id1-->id2-->id3-->id4
+```
+
+In order to get to the weak parabolic problem we first multiply by a test function $v$ and then integrate, moving all the known terms to the right hand side of the equation.
+
+$$
+\frac{\partial u}{\partial t} -\operatorname{div}(\mu \nabla u) + \vec{b} \nabla u + \sigma u = f \\
+\int_\Omega \frac{\partial u}{\partial t} v \ dx - \int_\Omega \operatorname{div}(\mu \nabla u) v \ dx + \int_\Omega \vec{b} \nabla u v \ dx + \int_\Omega \sigma uv = \int_\Omega fv \ dx \qquad \forall v \in V\\
+\int_\Omega \frac{\partial u}{\partial t} v \ dx + \underbrace{\int_\Omega \mu \nabla u \nabla v + \int_\Omega \vec{b} \nabla u v \ dx + \int_\Omega \sigma u v \ dx}_{a(u, v)} = \underbrace{\int_\Omega f v \ dx + \int_{\Gamma_N} \psi v \ d\gamma}_{F(v)}  \qquad \forall v \in V \\
+\int_\Omega \frac{\partial u}{\partial t} v \ dx  + a(u, v) = F(v) \qquad \forall v \in V
+$$
+
+Therefore, the **weak parabolic form** of the problem is
+
+$$
+\text{$\forall t \in (0, T)$, find $u \in V$ s.t. } \int_\Omega \frac{\partial u}{\partial t} v \ dx  + a(u, v) = F(v) \qquad \forall v \in V
+$$
+
+where $V$ is defined exactly in the same way it was defined for elliptic PDEs.
+
+Let $V_h \sub V, \dim(V_h) = N_h$ then we can get to the **Galerkin approximation** of the problem:
+
+$$
+\text{$\forall t \in (0, T)$, find $u_h \in V_h$ s.t. } \begin{cases}
+  \int_\Omega \frac{\partial u_h}{\partial t} v_h \ dx + a(u_h, v_h) = F(v_h) \quad \forall v_h \in V_h \\
+  u_n|_{t=0} = u_{0h} \in V_h
+\end{cases}
+$$
+
+Knowing that 
+
+$$
+v_h(x) = \sum_{j = 1}^{N_h} v_j \varphi_j(x)
+$$
+
+we can apply even more algebraic transformations:
+
+$$
+\int_\Omega \frac{\partial}{\partial t} \left( \sum_{j=1}^{N_h} u_j(t) \varphi_j \right) \varphi_i \ dx + a\left( \sum_{j = 1}^{N_h} u_j(t \varphi_j, \varphi_i) \right) = F(\varphi_i) \qquad \forall i = 1, 2, \dots, N_h \\
+\sum_{j=1}^{N_h} \frac{\partial}{\partial t} u_j(t) \int_\Omega \varphi_j \varphi_i \ dx + \sum_{j=1}^{N_h} u_j(t) a(\varphi_j, \varphi_i) = F(\varphi_i) \qquad \forall i = 1, 2, \dots, N_h \\
+M \frac{\partial \vec{u}}{\partial t} + A \vec{u} = \vec{F}
+$$
+
+In the last step we got to a system of ordinary differential equations (the actual **Galerkin approximation**).
+
+The Galerkin approximation is also called **semidiscretization of the weak parabolic problem** because the time is still continuous.
+
+To get to the **fully discretized** problem, the $\theta$-method must be applied.
+
+::: {.callout .callout-definition title="$\Theta$-method"}
+Let $y^n = y(t^n)$ then $\frac{\partial y}{\partial t}$ in an ODE can be approximated as follows:
+
+$$
+\frac{y^{n+1} - y^{n}}{\Delta t} = \theta f(t^{n+1}, y^{n+1}) + (1 - \theta)f(t^n, y^n) \qquad 0 \le \theta \le 1
+$$
+
+If $\theta = 0$ we get the **forward Euler** method, if $\theta = \frac{1}{2}$ we get the **Crank-Nicolson** method and if $\theta = 1$ we get the **backward Euler** method. The Crank-Nicolson method gives a second order convergence, while the Euler methods only gives first order convergence.
+:::
+
+With the application of the $\theta$-method, we can finally write the fully discretized problem:
+
+$$
+M \frac{\vec{u}^{n+1} - \vec{u}^n}{\Delta t} + \theta A \vec{u}^{n+1} + (1 - \theta) A \vec{u}^n = \theta \vec{F}^{n+1} + (1 - \theta)\vec{F}^{n} \qquad n = 1, 2, \dots, N \\
+\underbrace{\left( \frac{1}{\Delta t}M + \theta A \right)}_{K} \vec{u}^{n+1} = \underbrace{\theta \vec{F}^{n+1} + (1 - \theta) \vec{F}^n + \frac{1}{\Delta t} M \vec{u}^n - (1 - \theta) A \vec{u}^n}_{\vec{G}^n} \qquad n = 1, 2, \dots, N \\
+K \vec{u}^{n+1} = \vec{G}^n
+$$
+
+The fully discretized form is composed by a linear system for each timestep $n$. Since the solution of the $n+1$<sup>th</sup> timestep depends on the solution of the $n$<sup>th</sup> one, the linear systems must be resolved sequentially.
+
 # Appendix
 
 ## Normal derivative
