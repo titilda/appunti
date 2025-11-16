@@ -1456,6 +1456,7 @@ for i in model.vars:
 ## Linear Programming duality
 
 ![](assets/chapter3/duality.png)
+
 ### Upperbounds and Lower bounds of optimal values
 
 Let's take an LP, doesn't matter if it is standard form or not:
