@@ -1679,7 +1679,7 @@ Now that we have a clear idea of what the dual problem is ,we can now list two o
 
 :::{.callout .callout-theorem title="Weak duality"}
 Given a minimization problem (P)  and its dual (D) with:
-$X =${$\:\underline{x} \in R^n : A \underline{x} \geq \underline{b} , \underline{x} \geq 0\:$}$\neq \emptyset$ and $Y = ${$\:\underline{y} \in R^m : A^T \underline{y} \leq \underline{c} , \underline{y} \geq 0\:$}$\neq \emptyset$ 
+$X =${$\:\underline{x} \in R^n : A \underline{x} \geq \underline{b} , \underline{x} \geq 0\:$}$\neq \emptyset$ and $Y =${$\:\underline{y} \in R^m : A^T \underline{y} \leq \underline{c} , \underline{y} \geq 0\:$}$\neq \emptyset$ 
 being the respective feasible areas.
 For every feasible solution $\underline{x} \in X$ of (P) and every feasible solution $\underline{y}$ of (D) we have:
 $$
