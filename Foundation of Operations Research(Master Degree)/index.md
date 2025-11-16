@@ -1578,6 +1578,7 @@ $$
 
 <div style="flex:1; padding-left:10px;">
 <h4>Dual:</h4>
+
 $$
 \begin{align*}
 mini \quad & w = \underline{b}^T \underline{y} \\
