@@ -1290,11 +1290,11 @@ $$
 
 Why we do this?
 
-By adding these two variables we hope to "stimulate" the variables of the problem by trying to minimize the sum of the auxiliary variables.
+By adding these auxiliary variables we hope to "stimulate" the originals by trying to minimize their sum.
 
 Why we must minimize?
 
-We need to remember the original problem, in fact by minimize the sum of the auxiliaries we try to "flat" their values to 0 (that is in fact the minimum value that they can reach),if at the end of this "Phase I" we didn't manage to make the objective 0 this means that at leat one of the variables is $\neq 0$, meaning that one of more constraints of the original problem are violated.
+We need to remember the original problem, in fact by minimizing the sum of the auxiliaries we try to "flat" their values to 0 (that is in fact the minimum value that they can reach),if at the end of this "Phase I" we didn't manage to make the objective 0 this means that at leat one of the variables is $\neq 0$, meaning that one of more constraints of the original problem are violated.
 
 So:
 
@@ -1375,7 +1375,7 @@ Blands rule tells us that $x_1$ is the first to enter, min ratio test tells us t
 | $x_1$ | $\frac{1}{2}$  | 1     | 0     | $\frac{3}{2}$   | $\frac{1}{2}$  | 0     | 
 | $y_2$ | $\frac{7}{2}$  | 0     | 2     | $-\frac{11}{2}$ | $-\frac{3}{2}$ | 1     | 
 
-Solution $\underline{x}^T=[\: \frac{1}{32} \quad 0 \quad 0 \quad 0 \quad 0 \quad \frac{7}{2} \: ]$ with value v = $\frac{7}{2}$ , reduced costs tell us there is still room for improvement.
+Solution $\underline{x}^T=[\: \frac{1}{2} \quad 0 \quad 0 \quad 0 \quad 0 \quad \frac{7}{2} \: ]$ with value v = $\frac{7}{2}$ , reduced costs tell us there is still room for improvement.
 
 Blands rule tells us that $x_2$ enters, min ratio test tells us that $y_2$ is the one we kick out, after pivoting the updated table is:
 
