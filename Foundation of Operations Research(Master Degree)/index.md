@@ -485,6 +485,9 @@ $$
 >Number of basic feasible solutions: At least $\binom{n}{m}$ (from the fundamental theorem looking at LPs as combinatorial problems)
 
 ## Simplex method
+!["Stand ready for my arrival, worm"](assets/chapter3/simplex.png)
+
+
 We discussed the need for a method that would work even for bigger problems, this method is the way to go, but before talking about it, we need to discuss a few things.
 
 ### Active constraints
@@ -812,7 +815,7 @@ The solution value changes by $\Delta z= \overline{c}_j \Delta x_j$ ( in our pre
 :::
 
 > we say that the reduced cost of basic variables is 0.
-> 
+ 
 ### Optimality of a solution
 We said that in a standard form LP (minimization problem) the optimal solution $\underline{x}^*$ is such that:
 $$
@@ -1125,10 +1128,6 @@ Having a tableau like this:
 
 If we wished to enter $x_2$ , we compute for all rows $\underline{b}_i$/$\underline{a}_{i2}$ (for $\underline{a}_{i2}$ **positive** ) and we drop the one with the minimum.
 
-An important note, we always start from an identity basis for two main reasons:
-1. It's easy to find and it's trivially invertible.
-2. Leads to an easy feasible solution, this way we know whether the problem is feasible or not.
-
 
 ### Example
 
@@ -1140,8 +1139,8 @@ An important note, we always start from an identity basis for two main reasons:
 $$  
 \begin{align*}
 max  \quad & 2\mathscr{x}_1 + 3\mathscr{x}_2 + 5\mathscr{x}_3 + 2\mathscr{x}_4  \\
-s.t. \quad & \mathscr{x}_1 + 2\mathscr{x}_2 + 3\mathscr{x}_3 + \mathscr{x}_4  \leq 3 \quad (1)\\
-& 2\mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + 2\mathscr{x}_4  \leq 4\quad(2)\\
+s.t. \quad & \mathscr{x}_1 + 2\mathscr{x}_2 + 3\mathscr{x}_3 + \mathscr{x}_4  \leq 3 \quad\\
+& 2\mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + 2\mathscr{x}_4  \leq 4\quad\\
 & \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4}
 \end{align*}
 $$
@@ -1235,10 +1234,227 @@ model.optimize()
 </div>
 </div>
 
+>The simplex algorithm with Bland's rule terminates after $\leq \binom{n}{m}$
+
+### Degenerate basic feasible solutions
+:::{.callout .callout-definition title="Degenerate basic feasible solutions"}
+A basic feasible solution $\underline{x}$ is **degenerate** if it contains at least one basic variable that it is equal to 0.
+A solution with more than $n-m$ zeroes corresponds to several distinct bases.
+:::
+
+In the presence of degenerate basic feasible solutions, **a basis change may not decrease the objective function value**, without an anticycling rule one can cycle through a sequence of "degenerate" bases associated to the same vertex.
+
+>That's why we use Blands rule to determine which values enters first.
+
+### Starting from an Identity
+
+>Why when applying the simplex method we always start from an Identity?
+
+Two main reasons:
+
+1. It's easy to find and it's trivially invertible.
+2. Leads to an easy feasible solution, this way we know whether the problem is feasible or not.
+
+What happens when we don't manage to find an Identity, is the problem unfeasible?
+
+![The simplex method reaching is new ultimate form](assets/chapter3/simplexEvo.png)
 
 
+## Two-phase simplex method
 
+![You are cooked](assets/chapter3/Two-phasesimplex.png)
 
+As we said before we need a way tackle problems where an identity partition is not well-defined.
+
+## Auxiliary problems
+
+Starting from an LP in standard form:
+
+$$
+\begin{align*}
+min \quad & z = \underline{c}^T \underline{x} \\
+s.t. \quad & A \underline{x} = \underline{b} \\
+\quad & \underline{x} \geq \underline{0}
+\end{align*}
+$$
+
+We build an Auxiliary problem:
+
+$$
+\begin{align*}
+min \quad & v = \sum_{i=1}^{m}{y_i} \\
+s.t. \quad & A \underline{x} + I \underline{y} = \underline{b} \\
+\quad & \underline{x} , \underline{y} \geq \underline{0}
+\end{align*}
+$$
+
+Why we do this?
+
+By adding these two variables we hope to "stimulate" the variables of the problem by trying to minimize the sum of the auxiliary variables.
+
+Why we must minimize?
+
+We need to remember the original problem, in fact by minimize the sum of the auxiliaries we try to "flat" their values to 0 (that is in fact the minimum value that they can reach),if at the end of this "Phase I" we didn't manage to make the objective 0 this means that at leat one of the variables is $\neq 0$, meaning that one of more constraints of the original problem are violated.
+
+So:
+
+1. if $v^* > 0$ , the problem is infeasible.
+2. if $v^* =0$, that means $\underline{y}^* = 0$ and $\underline{x}^*$ is feasible.<br>
+Two situations can occur:
+    - If $y_i$ is non-basic $\forall i$ just delete the columns and obtain a "normal" tableau, the "-z" row is obtained by putting the objective function in terms of non-basic variables(by substitution).
+    - If $_i$ is basis , perform a change of basis dropping $y_i$ with any non-basic in its row with a coefficient $\neq0$.
+
+### Example
+
+<div style="display:flex; justify-content:space-between; width:100%;">
+
+<div style="flex:1; padding-right:10px;">
+<h4>By hand</h4>
+From this:
+
+$$  
+\begin{align*}
+min  \quad & \mathscr{x}_1 - 2\mathscr{x}_2  \\
+s.t. \quad & 2\mathscr{x}_1 + 3\mathscr{x}_3 = 1 \quad\\
+& 3\mathscr{x}_1 + 2\mathscr{x}_2 - \mathscr{x}_3 = 5\quad\\
+& \mathscr{x}_i \geq 0, \forall i \in {1,2,3}
+\end{align*}
+$$
+
+No identity partition available $\implies$ we construct an auxiliary problem:
+
+$$  
+\begin{align*}
+min  \quad & \mathscr{y}_1 + \mathscr{y}_2  \\
+s.t. \quad & 2\mathscr{x}_1 + 3\mathscr{x}_3 + \mathscr{y}_1 = 1 \quad(1)\\
+& 3\mathscr{x}_1 + 2\mathscr{x}_2 - \mathscr{x}_3 +\mathscr{y}_2= 5\quad(2)\\
+& \mathscr{x}_i \geq 0, \forall i \in {1,2,3} \\
+& \mathscr{y}_1, \mathscr{y}_2 \geq 0
+\end{align*}
+$$
+
+We start from the basis made of $\underline{y}_1$ and $\underline{y}_2$
+
+And we express the objective in function of non-basic variables (nothing new).
+
+So from this:
+
+$$
+ v = \mathscr{y}_1 + \mathscr{y}_2
+$$
+
+Making explicit (1) and (2):
+$$  
+\begin{align*}
+ & \mathscr{y}_1 = 1-2\mathscr{x}_1 - 3\mathscr{x}_3 \quad(1)\\
+& \mathscr{y}_2= 5 -3\mathscr{x}_1 - 2\mathscr{x}_2 + \mathscr{x}_3 \quad(2)\\
+\end{align*}
+$$
+
+Our objective becomes:
+
+$$
+v - 6 = -5x_1-2x_2-2x_3
+$$
+
+Now we can start.
+
+Tableau representation:
+
+|       |    | $x_1$ | $x_2$ | $x_3$ | $y_1$ | $y_2$ |
+|-------|----|-------|-------|-------|-------|-------|
+| $-v$  | -6 | -5    | -2    | -2    | 0     | 0     | 
+| $y_1$ | 1  | 2     | 0     | 3     | 1     | 0     | 
+| $y_2$ | 5  | 3     | 2     | -1    | 0     | 1     | 
+
+Blands rule tells us that $x_1$ is the first to enter, min ratio test tells us that $y_1$ is the one we kick out, after pivoting the updated table is:
+
+|       |                | $x_1$ | $x_2$ | $x_3$           | $y_1$          | $y_2$ |
+|-------|----------------|-------|-------|-----------------|----------------|-------|
+| $-v$  | $-\frac{7}{2}$ | 0     | -2    | $\frac{11}{2}$  | $\frac{5}{2}$  | 0     | 
+| $x_1$ | $\frac{1}{2}$  | 1     | 0     | $\frac{3}{2}$   | $\frac{1}{2}$  | 0     | 
+| $y_2$ | $\frac{7}{2}$  | 0     | 2     | $-\frac{11}{2}$ | $-\frac{3}{2}$ | 1     | 
+
+Solution $\underline{x}^T=[\: \frac{1}{32} \quad 0 \quad 0 \quad 0 \quad 0 \quad \frac{7}{2} \: ]$ with value v = $\frac{7}{2}$ , reduced costs tell us there is still room for improvement.
+
+Blands rule tells us that $x_2$ enters, min ratio test tells us that $y_2$ is the one we kick out, after pivoting the updated table is:
+
+|       |               | $x_1$ | $x_2$ | $x_3$           | $y_1$          | $y_2$         |
+|-------|---------------|-------|-------|-----------------|----------------|---------------|
+| $-v$  | 0             | 0     | 0     | 0               | 1              | 1             | 
+| $x_1$ | $\frac{1}{2}$ | 1     | 0     | $\frac{3}{2}$   | $\frac{1}{2}$  | 0             | 
+| $x_2$ | $\frac{7}{4}$ | 0     | 1     | $-\frac{11}{4}$ | $-\frac{3}{4}$ | $\frac{1}{2}$ | 
+
+Solution $\underline{x}^T=[\: \frac{1}{2} \quad \frac{7}{4}  \quad 0 \quad 0 \quad 0 \quad 0 \: ]$ with value v = 0  , as the reduced costs tell us we reached the optimal solution.
+
+Since $v=0$ the problem is feasible and since no auxiliary variable is basic we can cut out the auxiliary columns.
+
+We also need to adjust the original objective function so that is expressed in terms of the remaining non-basic variables($x_3$):
+
+So we take the rows of the tableau and we explicit the basic terms:
+$$
+\begin{align*}
+&x_1 = \frac{1}{2} - \frac{3}{2} x_3 \\ \quad (3)
+&x_2 = \frac{7}{4} + \frac{11}{4} x_3 \quad {4}
+\end{align*}
+$$
+
+We substitute (3) and (4) in the original objective function:
+$$
+\begin{align*}
+z&=(\frac{1}{2} - \frac{3}{2} x_3)-2*(\frac{7}{4} + \frac{11}{4} x_3) \\
+&=-3-7 x_3 \\
+z+3 & = -7x_3
+\end{align*}
+$$
+
+We can now proceed to Phase II :
+
+|       |               | $x_1$ | $x_2$ | $x_3$           |
+|-------|---------------|-------|-------|-----------------|
+| $-z$  | 3             | 0     | 0     | -7              | 
+| $x_1$ | $\frac{1}{2}$ | 1     | 0     | $\frac{3}{2}$   | 
+| $x_2$ | $\frac{7}{4}$ | 0     | 1     | $-\frac{11}{4}$ | 
+
+Blands rule tells us that $x_3$ enters, min ratio test tells us that $x_1$ is the one we kick out, after pivoting the updated table is:
+
+|       |                | $x_1$          | $x_2$ | $x_3$ |
+|-------|----------------|----------------|-------|-------|
+| $-z$  | $\frac{16}{3}$ | $\frac{14}{3}$ | 0     | 0     | 
+| $x_3$ | $\frac{1}{3}$  | $\frac{2}{3}$  | 0     | 1     | 
+| $x_2$ | $\frac{8}{3}$  | 0              | 1     | 0     | 
+
+Solution $\underline{x}^T=[\: 0 \quad \frac{8}{3}  \quad \frac{1}{3} \quad 0 \quad 0 \quad 0 \: ]$ with value z = $-\frac{16}{3}$  , as the reduced costs tell us we reached the optimal solution.
+
+</div>
+
+<div style="flex:1; padding-left:10px;">
+<h4>By python's mip:</h4>
+
+```python 
+import mip
+from mip import CONTINUOUS
+
+I = [0, 1, 2, 3]
+C = [2, 3, 5, 2]
+A = [[1, 2, 3, 1],[2, 1, 1, 2]]
+b = [3, 4]
+model = mip.Model()
+# variable definition
+x = [model.add_var(name = f"x_{i+1}", lb =0 ,var_type=CONTINUOUS) for i in I]
+
+# objective function
+model.objective = mip.maximize(mip.xsum(C[i]*x[i] for i in I))
+
+# constraints
+for j in range(0,2):
+    model.add_constr(mip.xsum(A[j][i]*x[i] for i in I)<= b[j])
+
+model.optimize()
+```
+![](assets/chapter3/simplexexPy.png)
+</div>
+</div>
 
 
 
