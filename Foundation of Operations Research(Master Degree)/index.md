@@ -1676,9 +1676,10 @@ With this example we derived all the duality's transformation rules, let's summa
 
 ### Weak duality and Strong duality
 Now that we have a clear idea of what the dual problem is ,we can now list two obvious but important theorems:
+
 :::{.callout .callout-theorem title="Weak duality"}
 Given a minimization problem (P)  and its dual (D) with:
-$ X = ${$\:\underline{x} \in R^n : A \underline{x} \geq \underline{b} , \underline{x} \geq 0\:$}$ \neq \emptyset$ and $ Y = ${$\:\underline{y} \in R^m : A^T \underline{y} \leq \underline{c} , \underline{y} \geq 0\:$}$ \neq \emptyset$ 
+$X =${$\:\underline{x} \in R^n : A \underline{x} \geq \underline{b} , \underline{x} \geq 0\:$}$\neq \emptyset$ and $Y = ${$\:\underline{y} \in R^m : A^T \underline{y} \leq \underline{c} , \underline{y} \geq 0\:$}$\neq \emptyset$ 
 being the respective feasible areas.
 For every feasible solution $\underline{x} \in X$ of (P) and every feasible solution $\underline{y}$ of (D) we have:
 $$
@@ -1686,13 +1687,13 @@ $$
 $$
 :::
 
-If $\underline{x}$ is a feasible solution of (P) ($\underline{x} \in $ X), y is a feasible solution of (D) ($\underline{y} \in $ Y) and
-$\underline{c}^T \underline{x} = \underline{b}^T \underline{y}, then \underline{x} is optimal for (P) and \underline{y} is optimal for (D).
+If $\underline{x}$ is a feasible solution of (P) ($\underline{x} \in$ X), y is a feasible solution of (D) ($\underline{y} \in$ Y) and
+$\underline{c}^T \underline{x} = \underline{b}^T \underline{y}$, then $\underline{x}$ is optimal for (P) and $\underline{y}$ is optimal for (D).
 
 Formally:
 
 :::{.callout .callout-theorem title="Strong duality"}
-If $ X = ${$\:\underline{x} \in R^n : A \underline{x} \geq \underline{b} , \underline{x} \geq 0\:$}$ \neq \emptyset$ and min {$ \underline{c}^T \underline{x} : \underline{x} \in X$} is finite there exists $\underline{x}^* \in X$ and $\underline{y}^* \in Y$ such that $\underline{c}^T \underline{x}^* = \underline{b}^T \underline{y}^*$ , that is:
+If $X =${$\:\underline{x} \in R^n : A \underline{x} \geq \underline{b} , \underline{x} \geq 0\:$}$\neq \emptyset$ and min {$\underline{c}^T \underline{x} : \underline{x} \in X$} is finite there exists $\underline{x}^* \in X$ and $\underline{y}^* \in Y$ such that $\underline{c}^T \underline{x}^* = \underline{b}^T \underline{y}^*$ , that is:
 $$
 \min{\{\underline{c}^T \underline{x} : \underline{x} \in X \}} = \max{\{\underline{b}^T \underline{y} : \underline{y} \in Y\}}
 $$
