@@ -1203,7 +1203,7 @@ Blands rule tells us that $x_4$ enters, min ratio test tells us that $x_1$ is th
 | $x_3$ | $\frac{2}{5}$  | 0     | $\frac{2}{5}$ | 1     | 0     | $\frac{2}{5}$  | $-\frac{1}{5}$ |
 | $x_4$ | $\frac{9}{5}$  | 1     | $\frac{1}{5}$ | 0     | 1     | $-\frac{1}{5}$ | $\frac{3}{5}$  |
 
-Solution $\underline{x}^T=[\: 0 \quad 0  \quad \frac{2}{5} \quad \frac{9}{5} \quad 0 \quad 0 \: ]$ with value z =$\frac{19}{5}$  , reduced costs are all positive , this is the optimal solution.
+Solution $\underline{x}^T=[\: 0 \quad 0  \quad \frac{2}{5} \quad \frac{9}{5} \quad 0 \quad 0 \: ]$ with value z =$\frac{28}{5}$  , reduced costs are all positive , this is the optimal solution.
 
 </div>
 
@@ -1211,35 +1211,27 @@ Solution $\underline{x}^T=[\: 0 \quad 0  \quad \frac{2}{5} \quad \frac{9}{5} \qu
 <h4>By python's mip:</h4>
 
 ```python 
-    import mip
-    from mip import CONTINUOUS
-    
-    # these are our parameters
-    I = [0, 1, 2, 3, 4] # Products
-    P = [2, 3, 4, 5, 6] # Prices
-    C = [3, 6, 7, 9, 10] # Costs
-    Cmax = 3000 # Max total cost
-    Qmax = 400 # Max total amount of product
-    
-    
-    model=mip.Model()
-    x = [model.add_var(name=f"x_{i+1}", lb=0 ,var_type=CONTINUOUS) for i in I]
-    
-    # Objective function
-    model.objective = mip.maximize(mip.xsum(P[i] * x[i] for i in I))
-    
-    # Constraints
-    
-    # Maximum production cost
-    model.add_constr(mip.xsum(x[i]*C[i] for i in I) <= 3000)
-    
-    # Maximum quantity produced
-    model.add_constr(mip.xsum(x[i] for i in I)<= 400)
-    
-    model.optimize()
-    for i in model.vars:
-    print(i.name,i.x)
+import mip
+from mip import CONTINUOUS
+
+I = [0, 1, 2, 3]
+C = [2, 3, 5, 2]
+A = [[1, 2, 3, 1],[2, 1, 1, 2]]
+b = [3, 4]
+model = mip.Model()
+# variable definition
+x = [model.add_var(name = f"x_{i+1}", lb =0 ,var_type=CONTINUOUS) for i in I]
+
+# objective function
+model.objective = mip.maximize(mip.xsum(C[i]*x[i] for i in I))
+
+# constraints
+for j in range(0,2):
+    model.add_constr(mip.xsum(A[j][i]*x[i] for i in I)<= b[j])
+
+model.optimize()
 ```
+![](assets/chapter3/simplexexPy.png)
 </div>
 </div>
 
