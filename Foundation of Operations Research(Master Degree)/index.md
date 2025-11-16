@@ -1453,6 +1453,230 @@ for i in model.vars:
 </div>
 </div>
 
+## Linear Programming duality
+
+### Upperbounds and Lower bounds of optimal values
+
+Let's take an LP, doesn't matter if it is standard form or not:
+$$
+\begin{align*}
+max \quad & 4 x_1 + x_2 + 5 x_3 + x_4 \\
+& 3 x_1 +x_2+ 3 x_3 + x_4 \leq 25 \quad (1) \\
+& 2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4 \leq 10 \quad (2) \\
+& 4 x_1 - 3 x_2 + x_3 - 2 x_4 \leq 2 \quad (3) \\
+& \forall x_i \geq 0 , i \in {1,2,3,4}
+\end{align*}
+$$
+
+We would like to have an upperbound of what the optimal solution might be, how should we proceed?
+
+Well for example we could take (1) and multiply it by 2 , this way we get an expression that is surely is bigger than the one we need to study:
+
+$$
+\begin{align*}
+4 x_1 + x_2 + 5 x_3 + x_4 &\leq 2 \times (3 x_1 +x_2+ 3 x_3 + x_4) \leq 2 \times 25\\
+& \leq 6 x_1 + 2 x_2 + 6 x_3 +2 x_4 \leq 50
+\end{align*}
+$$
+
+We now know for certain that if a feasible solution exists , surely is less than 50.
+
+We get a tighter upperbound by taking (2) and multiplying it by 2:
+
+$$
+\begin{align*}
+4 x_1 + x_2 + 5 x_3 + x_4 &\leq 2 \times (2 x_1 +x_2+ 3 x_3 +\frac{1}{2} x_4) \leq 2 \times 10\\
+& \leq 4 x_1 + 2 x_2 + 6 x_3 + x_4 \leq 20
+\end{align*}
+$$
+
+We could probably do even better if we found the right combination of coefficients to multiply the constraints with and add together.
+
+So theoretically exists a combination of coefficients $y_1$, $y_2$ and $y_3$ such that:
+
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 \leq y_1*(3 x_1 +x_2+ 3 x_3 + x_4)+y_2*(2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4)+y_3* (4 x_1 - 3 x_2 + x_3 - 2 x_4)
+$$
+
+And by definition of the problem we can also know that:
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 \leq y_1*(\underbrace{3 x_1 +x_2+ 3 x_3 + x_4}_{\leq 25})+y_2*(\underbrace{2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4}_{\leq 10})+y_3* (\underbrace{4 x_1 - 3 x_2 + x_3 - 2 x_4}_{\leq 2})
+$$
+
+So we can also say that:
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 \leq y_1*(3 x_1 +x_2+ 3 x_3 + x_4)+y_2*(2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4)+y_3* (4 x_1 - 3 x_2 + x_3 - 2 x_4) \leq 25 y_1 + 10 y_2 + 2 y_3
+$$
+
+We are confident to say that the expression on the right will always be bigger than the one on the left, and if they are equivalent in a point it will surely be the minimum for the right and maximum for the left.
+
+In order to say this we must add a few things:
+
+>$y_1$ $y_2$, and $ y_3$ must be $\geq 0$ otherwise the inequality won't hold.
+
+Can we say more about what we found?
+
+Let's analyze the left and middle expression:
+
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 \leq y_1*(3 x_1 +x_2+ 3 x_3 + x_4)+y_2*(2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4)+y_3* (4 x_1 - 3 x_2 + x_3 - 2 x_4)
+$$
+If we rearrange the middle expression we get that:
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 \leq x_1*(3 y_1 +2y_2+ 4 y_3)+x_2*(y_1 +y_2- 3 y_3)+x_3* (3 y_1 + 3 y_2 + y_3)+x_4*(y_1+\frac{1}{2}y_2-2 y_3)
+$$
+
+In order for this to hold:
+
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 \leq x_1*(\underbrace{3 y_1 +2y_2+ 4 y_3}_{\geq 4})+x_2*(\underbrace{y_1 +y_2- 3 y_3}_{\geq 1})+x_3* (\underbrace{3 y_1 + 3 y_2 + y_3}_{\geq 5})+x_4*(\underbrace{y_1+\frac{1}{2}y_2-2 y_3}_{\geq 1})
+$$
+
+Putting all of this together:
+
+$$
+\begin{align*}
+&3 y_1 +2 y_2 +4 y_3 \geq 4 \\
+& y_1 + y_3 -3 y_3 \geq 1 \\
+& 3 y_1 + 3 y_2 + y_3 \geq 5 \\
+& y_1 +\frac{1}{2} y_2 - 2 y_3 \geq 1\\
+& y_1 \geq 0 , \forall i \in { 1,2,3}
+\end{align*}
+$$
+
+If we add what we said at the beginning of our analysis ( about how the minimum of one is the maximum of the other):
+
+$$
+\begin{align*}
+min \quad & 25 y_1 + 10 y_2 + 2 y_ 3 \\
+s.t. \quad & 3 y_1 +2 y_2 +4 y_3 \geq 4 \\
+& y_1 + y_3 -3 y_3 \geq 1 \\
+& 3 y_1 + 3 y_2 + y_3 \geq 5 \\
+& y_1 +\frac{1}{2} y_2 - 2 y_3 \geq 1\\
+& y_1 \geq 0 , \forall i \in { 1,2,3}
+\end{align*}
+$$
+
+This problem is the **Dual** of the original.
+
+:::{.callout .callout-definition title="Linear Programming duality"}
+To any minimization (maximization) LP we can associate a closely related maximization (minimization) LP based on the same parameters.
+The optimal objective function values coincide (we'll see about this shortly).
+<div style="display:flex; justify-content:space-between; width:100%;">
+
+<div style="flex:1; padding-right:10px;">
+<h4>Primal:</h4>
+
+$$
+\begin{align*}
+max \quad & z = \underline{c}^T \underline{x} \\
+& A \underline{x} \leq \underline{b} \\
+& \underline{x} \geq 0
+\end{align*}
+$$
+</div>
+
+<div style="flex:1; padding-left:10px;">
+<h4>Dual:</h4>
+$$
+\begin{align*}
+mini \quad & w = \underline{b}^T \underline{y} \\
+& A^T \underline{y} \geq \underline{c} \\
+& \underline{y} \geq 0
+\end{align*}
+$$
+</div>
+</div>
+
+:::
+
+
+### General transformation rules
+
+Before giving you a very funny table with all the transformation rules, let's derive them in a similar way of how we derived the dual in the previous section.
+
+Let's change our friendly LP a little:
+
+$$
+\begin{align*}
+max \quad & 4 x_1 + x_2 + 5 x_3 + x_4 \\
+& 3 x_1 +x_2+ 3 x_3 + x_4 =  25 \quad (1) \\
+& 2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4 \leq 10 \quad (2) \\
+& 4 x_1 - 3 x_2 + x_3 - 2 x_4 \geq 2 \quad (3) \\
+& x_1 \in R \\
+& x_2 \geq 0 \\
+& x_3 \leq 0 \\
+& x_4 \geq 0
+\end{align*}
+$$
+
+We compose a linear combination of the constraints to upperbound the objective:
+
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 \leq y_1*(3 x_1 +x_2+ 3 x_3 + x_4)+y_2*(2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4)+y_3* (4 x_1 - 3 x_2 + x_3 - 2 x_4) \leq 25 y_1 + 10 y_2 + 2 y_3
+$$
+
+We know that :
+
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 \leq y_1*(\underbrace{3 x_1 +x_2+ 3 x_3 + x_4}_{=25})+y_2*(\underbrace{2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4}_{\leq 10})+y_3* (\underbrace{4 x_1 - 3 x_2 + x_3 - 2 x_4}_{\geq 2})\leq 25 y_1 + 10 y_2 + 2 y_3
+$$
+
+What can be said about $y_1$ , $y_2$ and $y_3$?
+
+- Since the coefficient of $y_1$ is exactly 25 the inequality on the right will always hold for that value , so is sign can be any , variable is **unrestricted**.
+- The coefficient of $y_2$ is exactly the same as before , in order to for the right side to be true $y_2$ must be $\geq 0$.
+- The coefficient of $y_3$ is less than 2 , so in order for the right inequality to hold , $y_3$ must be $\leq 0$ (since $k*c_1 \leq k * c_2$ if $c_1 \geq c_2$ )
+
+What about the constraints of the dual?
+
+Let's rearrange the middle part:
+
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 \leq x_1*(3 y_1 +2y_2+ 4 y_3)+x_2*(y_1 +y_2- 3 y_3)+x_3* (3 y_1 + 3 y_2 + y_3)+x_4*(y_1+\frac{1}{2}y_2-2 y_3)
+$$
+
+What can we say about the expressions inside the brackets?
+
+- The sign of $x_1$ is unrestricted , the only way this could hold for any value of $x_1$ is by having the expression be exactly 4.
+- The sign of $x_2$ is the same as before , the expression must be greater than 1.
+- The sign of $x_3$ is less than zero (this problem is clearly not in standard form , but let's think about it anyway), as what we said about the sign of $y_3$ this value needs to be $\leq 5$.
+- Same as before, $\geq 1$
+
+So let's put all we said together:
+
+$$
+\begin{align*}
+min \quad & 25 y_1 + 10 y_2 + 2 y_ 3 \\
+s.t. \quad & 3 y_1 +2 y_2 +4 y_3 = 4 \\
+& y_1 + y_3 -3 y_3 \geq 1 \\
+& 3 y_1 + 3 y_2 + y_3 \leq 5 \\
+& y_1 +\frac{1}{2} y_2 - 2 y_3 \geq 1\\
+& y_1 \in R \\
+& y_2 \geq 0 \\
+& y_3  \leq 0
+\end{align*}
+$$
+
+With this example we derived all the duality's transformation rules, let's summarize them in a table:
+
+| Primal(minimization)   | Dual(maximization)     | 
+|------------------------|------------------------|
+| m constraints          | m variables            |
+| n variables            | n constraints          |
+| coefficients obj. fct. | right handside         |
+| $A$                    | $A^T$                  |
+| equality constraints   | unrestricted variables |
+| unrestricted variables | equality constraint.   |
+| contraints $\geq$      | variables $\geq 0$     |
+| varib $\geq 0$         | constraints $\leq$     |
+
+
+
+
+
+
+
 
 
 
