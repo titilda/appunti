@@ -791,12 +791,13 @@ $$
 Substituting:
 $$
 \begin{align*}
-\underline{\overline{c}}_N^T &= \begin{bmatrix} 2\\ 3\end{bmatrix} - [\:1\quad1\:]\begin{bmatrix}
+\underline{\overline{c}}_N^T &= [\:2\quad3\:] - [\:1\quad1\:]\begin{bmatrix}
 2  & 1 \\
 1  & 1
 \end{bmatrix} \\
-& =\begin{bmatrix} 2\\ 3\end{bmatrix} - \begin{bmatrix} 3\\ 2\end{bmatrix} \\
-& =\begin{bmatrix} -1 \\ 1\end{bmatrix}
+& =[\:2\quad3\:] - [\:3\quad2\:] \\
+&\\
+& =[\:-1\quad1\:]
 \end{align*}\\
 $$
 This tells us that value of the objective changes by -1 which is exactly what we got from our calculations (the other value is the change that we would get by increasing $x_3$ by one)
@@ -851,6 +852,12 @@ So if we wish to increase the $x_s$ variable(from 0), this must hold:
 $$
 \overline{b}_i - \overline{a}_{is} x_s \geq 0 \implies x_s \leq \overline{b}_i / \overline{a}_{is} , \quad for \quad \overline{a}_{is} \geq 0
 $$
+
+:::{.callout .callout-definition title="Tightest upperbound"}
+$$
+\Theta^* = \min_{j=1,\dots,i}{\leq \overline{b}_i / \overline{a}_{is} , \quad for \quad \overline{a}_{is} \geq 0}
+$$
+:::
 
 >Why must $\overline{a}_{is}$ by greater or equal than 0?
 
@@ -1061,12 +1068,180 @@ $$
 | $x_2$ | 3 | $-\frac{1}{3}$ | 1     | 0     | 0     | $\frac{1}{3}$  |
 
 
+This is how we perform a change of basis using tableau representation,now in order to complete our journey in the whimsical world of the simplex method we need one last thing:
+
+**A way to determine which variable exits and which enters in order to chase after the optimal solution.**
+
+### Chasing the optimal
+
+>How we know in an LP (in standard form , so minimization problem) when we are in an optimal solution?
+>$\implies$ we look at the reduced costs, if they are all positive we are optimal.
+
+Let's remember the formula for the objective value:
+
+$$
+z = \underline{c}_B^T B^{-1} b+\underline{x}_N(\underbrace{c_N^T-c_B^TB^{-1}N}_{Reduced \: costs})
+$$
+
+In the tableau representation the first line is composed like this:
+
+$$
+z-z_0 = \underline{x}_N * (coefficients)
+$$
+
+>Not surprisingly those coefficients are the reduced costs (after pivoting operations) of the non-basic variables
+
+So in order to improve the objective value we will include into the basis only variables that have a negative reduced cost (which will result in a smaller objective value).
+
+> And when all reduced costs are positive we'll have reached our solution.
 
 
+**Blands rule** : In order to avoid being stuck in loops , the variables with smaller indexes enter first (from left to right).
+
+What about the variables that we drop?
+
+We need to remember that each time we enter a variable into the basis (changing is value from 0 to another value), we also need to drop another variable (by literally bringing its value down to 0), this operation not only affects the two variables that we chose but also all the other basic variables that needs to be recalibrated in order to not break the constraints ,and they have to be positive.
+
+So how can we determine which is the best variable to drop?
+
+>We drop the first variable that goes to zero.
+
+Why?
+
+>Because since its value "drops faster" we are sure that the others will still retain positive values.
+
+What shall we use to determine which variable "drops" faster?
+
+>We choose the variable with the tightest upperbound
+
+Having a tableau like this:
+
+|       |                   | $x_1$                | $x_2$                | $x_3$ | $x_4$ | $x_5$ |
+|-------|-------------------|----------------------|----------------------|-------|-------|-------|
+| $-z$  | $-z_0$            | $\overline{c}_{N_1}$ | $\overline{c}_{N_2}$ | 0     | 0     | 0     |
+| $x_3$ | $\underline{b}_1$ | $\underline{a}_{11}$ | $\underline{a}_{12}$ | 1     | 0     | 0     |
+| $x_4$ | $\underline{b}_2$ | $\underline{a}_{21}$ | $\underline{a}_{22}$ | 0     | 1     | 0     |
+| $x_5$ | $\underline{b}_3$ | $\underline{a}_{31}$ | $\underline{a}_{32}$ | 0     | 0     | 1     |
+
+If we wished to enter $x_2$ , we compute for all rows $\underline{b}_i$/$\underline{a}_{i2}$ (for $\underline{a}_{i2}$ **positive** ) and we drop the one with the minimum.
+
+An important note, we always start from an identity basis for two main reasons:
+1. It's easy to find and it's trivially invertible.
+2. Leads to an easy feasible solution, this way we know whether the problem is feasible or not.
 
 
+### Example
 
+<div style="display:flex; justify-content:space-between; width:100%;">
 
+<div style="flex:1; padding-right:10px;">
+<h4>By hand</h4>
+
+$$  
+\begin{align*}
+max  \quad & 2\mathscr{x}_1 + 3\mathscr{x}_2 + 5\mathscr{x}_3 + 2\mathscr{x}_4  \\
+s.t. \quad & \mathscr{x}_1 + 2\mathscr{x}_2 + 3\mathscr{x}_3 + \mathscr{x}_4  \leq 3 \quad (1)\\
+& 2\mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + 2\mathscr{x}_4  \leq 4\quad(2)\\
+& \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4}
+\end{align*}
+$$
+
+Standard form:
+
+$$  
+\begin{align*}
+min  \quad & -2\mathscr{x}_1 - 3\mathscr{x}_2 - 5\mathscr{x}_3 - 2\mathscr{x}_4  \\
+s.t. \quad & \mathscr{x}_1 + 2\mathscr{x}_2 + 3\mathscr{x}_3 + \mathscr{x}_4 +\mathscr{x}_5 = 3 \quad \\
+& 2\mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + 2\mathscr{x}_4 + \mathscr{x}_6 \leq 4\quad\\
+& \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4,5,6}
+\end{align*}
+$$
+
+Tableau representation:
+
+|       |   | $x_1$ | $x_2$ | $x_3$ | $x_4$ | $x_5$ | $x_6$ |
+|-------|---|-------|-------|-------|-------|-------|-------|
+| $-z$  | 0 | -1    | -3    | -5    | -2    | 0     | 0     |
+| $x_5$ | 3 | 1     | 2     | 3     | 1     | 1     | 0     |
+| $x_6$ | 4 | 2     | 1     | 1     | 2     | 0     | 1     |
+
+Blands rule tells us that $x_1$ is the first to enter, min ratio test (tightest upper bound) tells us that $x_6$ is the one we kick out, after pivoting the updated table is:
+
+|       |   | $x_1$ | $x_2$          | $x_3$          | $x_4$ | $x_5$ | $x_6$          |
+|-------|---|-------|----------------|----------------|-------|-------|----------------|
+| $-z$  | 2 | 0     | $-\frac{5}{2}$ | $-\frac{9}{2}$ | -1    | 0     | $\frac{1}{2}$  |
+| $x_5$ | 1 | 0     | $\frac{3}{2}$  | $\frac{5}{2}$  | 0     | 1     | $-\frac{1}{2}$ |
+| $x_1$ | 2 | 1     | $\frac{1}{2}$  | $\frac{1}{2}$  | 1     | 0     | $\frac{1}{2}$  |
+
+Solution $\underline{x}^T=[\: 2 \quad 0 \quad 0 \quad 0 \quad 1 \quad 0 \: ]$ with value z = -2 , reduced costs tell us there is still room for improvement.
+
+Blands rule tells us that $x_2$ enters, min ratio test tells us that $x_5$ is the one we kick out, after pivoting the updated table is:
+
+|       |                | $x_1$ | $x_2$ | $x_3$          | $x_4$ | $x_5$          | $x_6$          |
+|-------|----------------|-------|-------|----------------|-------|----------------|----------------|
+| $-z$  | $\frac{11}{3}$ | 0     | 0     | $-\frac{1}{3}$ | -1    | $\frac{5}{3}$  | $-\frac{1}{3}$ |
+| $x_2$ | $\frac{2}{3}$  | 0     | 1     | $\frac{5}{3}$  | 0     | $\frac{2}{3}$  | $-\frac{1}{3}$ |
+| $x_1$ | $\frac{5}{3}$  | 1     | 0     | $-\frac{1}{3}$ | 1     | $-\frac{1}{3}$ | $\frac{2}{3}$  |
+
+Solution $\underline{x}^T=[\: \frac{5}{3} \quad \frac{2}{3}  \quad 0 \quad 0 \quad 0 \quad 0 \: ]$ with value z =$-\frac{11}{3}$  , reduced costs tell us there is still room for improvement.
+
+Blands rule tells us that $x_3$ enters, min ratio test tells us that $x_2$ is the one we kick out, after pivoting the updated table is:
+
+|       |                | $x_1$ | $x_2$         | $x_3$ | $x_4$ | $x_5$          | $x_6$          |
+|-------|----------------|-------|---------------|-------|-------|----------------|----------------|
+| $-z$  | $\frac{19}{3}$ | 0     | $\frac{1}{5}$ | 0     | -1    | $\frac{9}{5}$  | $-\frac{2}{5}$ |
+| $x_3$ | $\frac{2}{5}$  | 0     | $\frac{3}{5}$ | 1     | 0     | $\frac{2}{5}$  | $-\frac{1}{5}$ |
+| $x_1$ | $\frac{9}{5}$  | 1     | $\frac{1}{5}$ | 0     | 1     | $-\frac{1}{5}$ | $\frac{3}{5}$  |
+
+Solution $\underline{x}^T=[\: \frac{9}{5} \quad 0  \quad \frac{2}{5} \quad 0 \quad 0 \quad 0 \: ]$ with value z =$\frac{19}{5}$  , reduced costs tell us there is still room for improvement.
+
+Blands rule tells us that $x_4$ enters, min ratio test tells us that $x_1$ is the one we kick out, after pivoting the updated table is:
+
+|       |                | $x_1$ | $x_2$         | $x_3$ | $x_4$ | $x_5$          | $x_6$          |
+|-------|----------------|-------|---------------|-------|-------|----------------|----------------|
+| $-z$  | $\frac{28}{5}$ | 1     | $\frac{2}{5}$ | 0     | 0     | $\frac{8}{5}$  | $\frac{1}{5}$  |
+| $x_3$ | $\frac{2}{5}$  | 0     | $\frac{2}{5}$ | 1     | 0     | $\frac{2}{5}$  | $-\frac{1}{5}$ |
+| $x_4$ | $\frac{9}{5}$  | 1     | $\frac{1}{5}$ | 0     | 1     | $-\frac{1}{5}$ | $\frac{3}{5}$  |
+
+Solution $\underline{x}^T=[\: 0 \quad 0  \quad \frac{2}{5} \quad \frac{9}{5} \quad 0 \quad 0 \: ]$ with value z =$\frac{19}{5}$  , reduced costs are all positive , this is the optimal solution.
+
+</div>
+
+<div style="flex:1; padding-left:10px;">
+<h4>By python's mip:</h4>
+
+```python 
+    import mip
+    from mip import CONTINUOUS
+    
+    # these are our parameters
+    I = [0, 1, 2, 3, 4] # Products
+    P = [2, 3, 4, 5, 6] # Prices
+    C = [3, 6, 7, 9, 10] # Costs
+    Cmax = 3000 # Max total cost
+    Qmax = 400 # Max total amount of product
+    
+    
+    model=mip.Model()
+    x = [model.add_var(name=f"x_{i+1}", lb=0 ,var_type=CONTINUOUS) for i in I]
+    
+    # Objective function
+    model.objective = mip.maximize(mip.xsum(P[i] * x[i] for i in I))
+    
+    # Constraints
+    
+    # Maximum production cost
+    model.add_constr(mip.xsum(x[i]*C[i] for i in I) <= 3000)
+    
+    # Maximum quantity produced
+    model.add_constr(mip.xsum(x[i] for i in I)<= 400)
+    
+    model.optimize()
+    for i in model.vars:
+    print(i.name,i.x)
+```
+</div>
+</div>
 
 
 
