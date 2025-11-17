@@ -30,22 +30,6 @@ $$
 
 
 ### Matrix form
-
-$$
-min \quad z = [c_1 \dots c_n] 
-\begin{bmatrix}
-x_1 \\
-\vdots\\
-x_n
-\end{bmatrix}
-$$
-
-
-
-<div style="display:flex; justify-content:space-between; width:100%;">
-
-<div style="flex:1; padding-right:10px;">
-
 $$
 \begin{align*}
 min \quad &z = \underline{c}^T \underline{x} \\
@@ -53,15 +37,14 @@ s.t.\quad  & A\underline{x} \geq \underline{b} \\
 &\underline{x} \geq 0
 \end{align*}
 $$
-
-</div>
-
-<div style="flex:1; padding-left:10px;">
-<div style="text-align: center;">
-
-
-</div>
-
+$$
+min \quad z = [c_1 \dots c_n]
+\begin{bmatrix}
+x_1 \\
+\vdots\\
+x_n
+\end{bmatrix}
+$$
 $$
 s.t. \quad 
 \begin{bmatrix}
@@ -81,9 +64,6 @@ b_1  \\
 b_m
 \end{bmatrix}
 $$
-
-</div>
-</div>
 
 $$
 \begin{bmatrix}
@@ -1534,10 +1514,9 @@ This problem is the **Dual** of the original.
 :::{.callout .callout-definition title="Linear Programming duality"}
 To any minimization (maximization) LP we can associate a closely related maximization (minimization) LP based on the same parameters.
 The optimal objective function values coincide (we'll see about this shortly).
-<div style="display:flex; justify-content:space-between; width:100%;">
 
-<div style="flex:1; padding-right:10px;">
-<h4>Primal:</h4>
+
+#### Primal:
 
 $$
 \begin{align*}
@@ -1546,10 +1525,8 @@ max \quad & z = \underline{c}^T \underline{x} \\
 & \underline{x} \geq 0
 \end{align*}
 $$
-</div>
 
-<div style="flex:1; padding-left:10px;">
-<h4>Dual:</h4>
+#### Dual:
 
 $$
 \begin{align*}
@@ -1558,8 +1535,7 @@ min \quad & w = \underline{b}^T \underline{y} \\
 & \underline{y} \geq 0
 \end{align*}
 $$
-</div>
-</div>
+
 
 :::
 
@@ -1880,10 +1856,31 @@ That leads to the solution $\underline{x} = ( \frac{20}{3},\frac{11}{3})$.
 
 If we put these values inside the original objective we got:
 $$
-2 \times \frac{20}{3}+ \frac{11}{33} = 17
+2 \times \frac{20}{3}+ \frac{11}{3} = 17
 $$
 
 That is equal to the objective value of the dual.
+
+MIP modelling :
+```python
+import mip
+from mip import CONTINUOUS
+
+model = mip.Model()
+# variable definition
+x = [model.add_var(name = f"x_{1}", lb =0 ,var_type=CONTINUOUS),
+     model.add_var(name = f"x_{2}", lb =0 ,var_type=CONTINUOUS)]
+# objective function
+model.objective = mip.maximize( 2*x[0]+x[1])
+# constraints
+model.add_constr(x[0]+2*x[1] <= 14)
+model.add_constr(2*x[0]-x[1] <= 10)
+model.add_constr(x[0]-x[1] <= 3)
+model.optimize()
+for i in model.vars:
+    print(i.name,i.x)
+```
+![output](assets/chapter3/complementary_pyexmpl.png)
 
 
 
