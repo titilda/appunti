@@ -15,10 +15,7 @@ A solution $\underline{x}^* \in R^n$ is said to be **optimal** if  $f(\underline
 :::
 ### Traditional representations:
 
-<div style="display:flex; justify-content:space-between; width:100%;">
-
-<div style="flex:1; padding-right:10px;">
-<h4>General form</h4>
+### General form
 
 $$ 
     \begin{align*}
@@ -30,20 +27,20 @@ $$
     \end{align*}
 $$
 
-</div>
 
-<div style="flex:1; padding-left:10px;">
-<h4>Matrix form </h4>
-<div style="text-align: center;">
 
-$min \quad z = [c_1 \dots c_n] 
+### Matrix form
+
+$$
+min \quad z = [c_1 \dots c_n] 
 \begin{bmatrix}
 x_1 \\
 \vdots\\
 x_n
-\end{bmatrix}$
+\end{bmatrix}
+$$
 
-</div>
+
 
 <div style="display:flex; justify-content:space-between; width:100%;">
 
@@ -96,8 +93,6 @@ x_n
 \end{bmatrix}
 \geq \underline{0}
 $$
-</div>
-</div>
 
 ### General Assumptions
 :::{.callout .callout-property title="Assumptions"}
@@ -116,10 +111,7 @@ $$
  Suppose that we want to maximize how much we gain from the selling of 5 products ( suppose that we sell and produce the products in grams) , the price/g of each one of them are respectively: 2, 3, 4, 5, 6; the cost of production of each one of them is: 3, 6, 7, 9, 10; no more than 400g must be produced and the total production cost must be lower than 3000.
 We shall model this problem like this:
 
-<div style="display:flex; justify-content:space-between; width:100%;">
-
-<div style="flex:1; padding-right:10px;">
-<h4>Traditional modelling</h4>
+#### Traditional modelling
 
 $$  
  \begin{align*}
@@ -129,12 +121,12 @@ $$
         & \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4,5}
 \end{align*}
 $$
+
 1. Maximum production cost
 2. Maximum quantity produced
-</div>
 
-<div style="flex:1; padding-left:10px;">
-<h4>Using python's MIP library:</h4>
+
+#### Using python's mip library
 
 ```python 
 import mip
@@ -166,8 +158,7 @@ model.optimize()
 for i in model.vars:
     print(i.name,i.x)
 ```
-</div>
-</div>
+
 
 
 ## Geometry of linear Programming
@@ -180,28 +171,20 @@ for i in model.vars:
 > The feasible region of a linear programming problem is the intersection of a finite number of half-spaces (constraints).
 > Said feasible region is a **polyhedron**.
 
-<div style="display:flex; justify-content:space-between; width:100%;">
 
-<div style="flex:1; padding-right:10px;">
-<h4>Hyperplane (affine) </h4>
+### Hyperplane (affine) 
 
 ![](assets/chapter3/hyperplane.png)
 
-</div>
 
-<div style="flex:1; padding-left:10px;">
-<h4>Affine half-space</h4>
+### Affine half-space
 
 ![](assets/chapter3/affine_half-space.png)
 
-</div>
-<div style="flex:1; padding-left:10px;">
-<h4>Polyhedron</h4>
+### Polyhedron
 
 ![](assets/chapter3/polyhedron.png)
 
-</div>
-</div>
 
 ### Convex subsets
 :::{.callout .callout-definition title="Convex subsets" }
@@ -1131,10 +1114,7 @@ If we wished to enter $x_2$ , we compute for all rows $\underline{b}_i$/$\underl
 
 ### Example
 
-<div style="display:flex; justify-content:space-between; width:100%;">
-
-<div style="flex:1; padding-right:10px;">
-<h4>By hand</h4>
+### By hand
 
 $$  
 \begin{align*}
@@ -1204,10 +1184,7 @@ Blands rule tells us that $x_4$ enters, min ratio test tells us that $x_1$ is th
 
 Solution $\underline{x}^T=[\: 0 \quad 0  \quad \frac{2}{5} \quad \frac{9}{5} \quad 0 \quad 0 \: ]$ with value z =$\frac{28}{5}$  , reduced costs are all positive , this is the optimal solution.
 
-</div>
-
-<div style="flex:1; padding-left:10px;">
-<h4>By python's mip:</h4>
+### By python's mip:
 
 ```python 
 import mip
@@ -1231,8 +1208,7 @@ for j in range(0,2):
 model.optimize()
 ```
 ![](assets/chapter3/simplexexPy.png)
-</div>
-</div>
+
 
 >The simplex algorithm with Bland's rule terminates after $\leq \binom{n}{m}$
 
@@ -1306,10 +1282,7 @@ Two situations can occur:
 
 ### Example
 
-<div style="display:flex; justify-content:space-between; width:100%;">
-
-<div style="flex:1; padding-right:10px;">
-<h4>By hand</h4>
+#### By hand
 From this:
 
 $$  
@@ -1426,10 +1399,8 @@ Blands rule tells us that $x_3$ enters, min ratio test tells us that $x_1$ is th
 
 Solution $\underline{x}^T=[\: 0 \quad \frac{8}{3}  \quad \frac{1}{3} \quad 0 \quad 0 \quad 0 \: ]$ with value z = $-\frac{16}{3}$  , as the reduced costs tell us we reached the optimal solution.
 
-</div>
 
-<div style="flex:1; padding-left:10px;">
-<h4>By python's mip:</h4>
+#### By python's mip:
 
 ```python 
 import mip
@@ -1450,8 +1421,7 @@ for i in model.vars:
     print(i.name,i.x)
 ```
 ![](assets/chapter3/two_phase_simplex_py.png)
-</div>
-</div>
+
 
 ## Linear Programming duality
 
@@ -1699,7 +1669,221 @@ $$
 $$
 :::
 
+The dual of a problem is sure an interesting topic and can be quite useful to transform LPs with lots of constraints , into perhaps easier problems.
 
+But by solving the dual we only get **what** is the value of optimal solution and not "where" is the optimal solution.
+
+What should we do if we wanted to actually find the solution of the original problem?
+
+## Complementary slackness
+![](assets/chapter3/complementaryslackness.png)
+
+Let's take the problem we used in the previous section:
+$$
+\begin{align*}
+max \quad & 4 x_1 + x_2 + 5 x_3 + x_4 \\
+& 3 x_1 +x_2+ 3 x_3 + x_4 \leq 25 \quad (1) \\
+& 2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4 \leq 10 \quad (2) \\
+& 4 x_1 - 3 x_2 + x_3 - 2 x_4 \leq 2 \quad (3) \\
+& \forall x_i \geq 0 , i \in {1,2,3,4}
+\end{align*}
+$$
+
+We said that:
+
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 \leq y_1*(3 x_1 +x_2+ 3 x_3 + x_4)+y_2*(2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4)+y_3* (4 x_1 - 3 x_2 + x_3 - 2 x_4) \leq 25 y_1 + 10 y_2 + 2 y_3
+$$
+
+If we found an optimal solution for the Dual problem , thanks to **Strong duality** we can say that:
+
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 = y_1*(3 x_1 +x_2+ 3 x_3 + x_4)+y_2*(2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4)+y_3* (4 x_1 - 3 x_2 + x_3 - 2 x_4) = 25 y_1 + 10 y_2 + 2 y_3
+$$
+
+The middle part will be our "bridge" between the solution of the two problem , we will use that to derive the original solution, so we have:
+
+$$
+y_1*(3 x_1 +x_2+ 3 x_3 + x_4)+y_2*(2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4)+y_3* (4 x_1 - 3 x_2 + x_3 - 2 x_4) = 25 y_1 + 10 y_2 + 2 y_3
+$$
+
+We can separate each independent term and get a set of equations:
+
+$$
+\begin{align*}
+y_1*(3 x_1 +x_2+ 3 x_3 + x_4) & = 25 y_1 \\
+y_2*(2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4) & = 10 y_2\\
+y_3* (4 x_1 - 3 x_2 + x_3 - 2 x_4) & = 2 y_3
+\end{align*}
+$$
+
+We also know that:
+
+$$
+4 x_1 + x_2 + 5 x_3 + x_4 =  x_1*(3 y_1 +2y_2+ 4 y_3)+x_2*(y_1 +y_2- 3 y_3)+x_3* (3 y_1 + 3 y_2 + y_3)+x_4*(y_1+\frac{1}{2}y_2-2 y_3)
+$$
+So we have 4 more equations for our set:
+
+$$
+\begin{align*}
+x_1*(3 y_1 +2y_2+ 4 y_3) & =4 x_1 \\
+x_2*(y_1 +y_2- 3 y_3) & = x_2 \\
+x_3* (3 y_1 + 3 y_2 + y_3) & = 5 x_3\\
+x_4*(y_1+\frac{1}{2}y_2-2 y_3) = x_4 \\
+y_1*(3 x_1 +x_2+ 3 x_3 + x_4) & = 25 y_1 \\
+y_2*(2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4) & = 10 y_2\\
+y_3* (4 x_1 - 3 x_2 + x_3 - 2 x_4) & = 2 y_3 
+\end{align*}
+$$
+
+We can reorganize the terms like this:
+$$
+\begin{align*}
+x_1*(3 y_1 +2y_2+ 4 y_3 - 4) & =0 \quad (1)\\
+x_2*(y_1 +y_2- 3 y_3 - 1 ) & = 0 \quad (2)\\
+x_3* (3 y_1 + 3 y_2 + y_3 - 5 ) & = 0 \quad (3)\\
+x_4*(y_1+\frac{1}{2}y_2-2 y_3 - 1) &= 0 \quad (4)\\
+y_1*(3 x_1 +x_2+ 3 x_3 + x_4 - 25) & = 0 \quad (5)\\
+y_2*(2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4-10) & = 0 \quad (6)\\
+y_3* (4 x_1 - 3 x_2 + x_3 - 2 x_4-2) & = 0 \quad (7)
+\end{align*}
+$$
+
+We are going to use (1), (2), (3), (4) to find more about the original's problem variables , and then we are going to use that knowledge to solve (5) (6) and (7).
+
+Let's analyze (1), (2), (3), (4):
+
+$$
+\begin{align*}
+x_1*(3 y_1 +2y_2+ 4 y_3 - 4) & =0 \quad (1)\\
+x_2*(y_1 +y_2- 3 y_3 - 1 ) & = 0 \quad (2)\\
+x_3* (3 y_1 + 3 y_2 + y_3 - 5 ) & = 0 \quad (3)\\
+x_4*(y_1+\frac{1}{2}y_2-2 y_3 - 1) &= 0 \quad (4)
+\end{align*}
+$$
+
+We substitute the values of the $y_i$ variables , and if:
+- The expression in the parenthesis evaluates to 0 , then the constraint is said to be **tight** meaning that the corresponding $x_j$ can assume any* value (usually $\geq 0$)
+- The expression in the parenthesis is not zero , then the constraint is said to be **slack** meaning that the only possible value of the corresponding $x_j$ variable is 0 ( otherwise the equality won't hold).
+
+Then with what we got from this step we analyze the last 3 equalities:
+
+$$
+\begin{align*}
+y_1*(3 x_1 +x_2+ 3 x_3 + x_4 - 25) & = 0 \quad (5)\\
+y_2*(2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4-10) & = 0 \quad (6)\\
+y_3* (4 x_1 - 3 x_2 + x_3 - 2 x_4-2) & = 0 \quad (7)
+\end{align*}
+$$
+
+Now suppose that ,from our previous step, we found out that x_4 is equal to 0 , then we have:
+
+$$
+\begin{align*}
+y_1*(3 x_1 +x_2+ 3 x_3  - 25) & = 0 \quad (5)\\
+y_2*(2 x_1 +x_2+ 3 x_3 -10) & = 0 \quad (6)\\
+y_3* (4 x_1 - 3 x_2 + x_3 -2) & = 0 \quad (7)
+\end{align*}
+$$
+
+Since the values of $y_i$ are known , we have a problem with 3 unknowns and 3 equations, we can now find the solution of the original problem.
+
+So formally:
+
+:::{.callout .callout-theorem title="Complementary slackness"}
+$\underline{x}^* \in X$ and  $\underline{y}^* \in Y$ are optimal solutions of, respectively (P) and (D) if and only if:
+
+$$
+\begin{align*}
+y_i^*(\overbrace{\underline{a}_i^T \underline{x}^* - b_i}^{s_i}) & = 0,\quad i = 1,\dots,m\\
+(\underbrace{c_j^T-\underline{y}^{*T} A_j}_{s'_j}) x_j^* & = 0,\quad j = 1,\dots,n
+\end{align*}
+$$
+
+Where $\underline{a}_i$ denotes the i-th row of $A$ , $A_j$ the j-th column of A, $s_i$ the slack of the i-th constraint of (P), and $s'_j$ the slack of the j-th constraint of (D).
+
+At optimality, the product of each variable with the corresponding slack variable of the constraint of the relative dual is 0.
+
+:::
+
+### Example:
+
+Suppose that we have this problem:
+
+$$
+\begin{align*}
+max \quad &2x_1+x_2 \\
+s.t. \quad & x_1+2x_2 \leq 14 \\
+& 2 x_1-x_2 \leq 10 \\
+& x_1 - x_2 \leq 3 \\
+& x_1, x_2 \geq 0
+\end{align*}
+$$
+
+And its dual:
+
+$$
+\begin{align*}
+min \quad &14 y_1 + 10 y_2 + 3 y_3 \\
+s.t. \quad& y_1+2 y_2 + y_3 \geq 2\\
+& 2 y_1 - y_2 - y_3  \geq 1 \\
+& y_1, y_2, y_3 \geq 0
+\end{align*}
+$$
+
+Suppose that we found the optimal solution for the dual at $\underline{y} = (1,0,1)$ , with a corresponding objective value of 17.
+
+>What is the solution for the primal problem?
+
+Let's write the corresponding set of equations:
+
+$$
+\begin{align*}
+x_1 * (y_1+2 y_2+y_3-2) &= 0 \\
+x_2 * (2 y_1-y_2-y_3-1) & = 0 \\
+y_1 * (x_1+2x_2-14) & = 0 \\
+y_2 * (2x_1-x_2-10) & = 0 \\
+y_3 * (x_1-x_2-3) & = 0
+\end{align*}
+$$
+
+By substituting:
+$$
+\begin{align*}
+x_1 * (y_1+2 y_2+y_3-2) &= x_1 * (1+2\times 0+1-2) = x_1 * (0) \implies tight \implies x_1 \neq 0 \\
+x_2 * (2 y_1-y_2-y_3-1) & =  x_2 * (2-0-1-1) = x_2 * (0) \implies tight \implies x_2 \neq 0 \\
+y_1 * (x_1+2x_2-14) & = 0 \\
+y_2 * (2x_1-x_2-10) & = 0 \\
+y_3 * (x_1-x_2-3) & = 0
+\end{align*}
+$$
+
+So none of the original variables is equal to 0, lets solve the remaining equations:
+
+$$
+\begin{align*} 
+y_1 * (x_1+2x_2-14) & = x_1+2x_2-14 = 0  \\
+y_2 * (2x_1-x_2-10) & = 0 *(2x_1-x_2-10) = 0  \\
+y_3 * (x_1-x_2-3) & = x_1-x_2-3 = 0
+\end{align*}
+$$
+
+Se we ended up with:
+$$
+\begin{align*}
+x_1+2x_2-14 = 0  \\
+ x_1-x_2-3 = 0
+\end{align*}
+$$
+
+That leads to the solution $\underline{x} = ( \frac{20}{3},\frac{11}{3})$.
+
+If we put these values inside the original objective we got:
+$$
+2 \times \frac{20}{3}+ \frac{11}{33} = 17
+$$
+
+That is equal to the objective value of the dual.
 
 
 
