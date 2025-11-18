@@ -418,6 +418,29 @@ To speed up memory trasfers (mainly reducing overhead), DRAM bursting is impleme
 
 Coalesced memory access happens when the threads in a warp access memory at an offset that can be expressed as `f(...) + threadIdx.x` where f _does not_ depend on `threadIdx.x`.
 
+## Shared cache architecture
 
+When multiple threads access caches that may or may not be shared and backed by a bigger and slower memory, it is important to ensure coherence and consistency between all the threads so that no undefined behaviour happens.
+
+**Memory coherence** ensures that a system that reads and writes to a shared cache will behave just the same as if there were no caches. When multiple accesses happens at the same time,
+the result of said accesses must be coherent between all the processors (i.e. if multiple processors read at the same time, they will read the same value and if multiple processors write at the same time, all the processors must agree on what will be actually written).
+
+
+**Memory consistency** defines _when_ the memory writes from one processor will be propagated to all the other processor.
+
+Both requirements are not trivial to satisfy and they heavily affect the life of the programmer (they should think about those problem and adapt their algorithms) and the performace (instruction reordering may break things and memory latencies are harder to mask).
+
+In practice, in a multithreaded application, all the access to memory must happen as if there were a single processor doing all the work sequentially. Given two variables `x` and `y`, in the case of a reads and writes involving both of the variables, it should always be possible to determine which operation happens before the other.
+
+There are four different types of memory operation orderings:
+
+- $W_x \to R_y$: a write to $x$ must commit before a subsequent read from $y$;
+- $R_x \to R_y$: a read from $x$ must commit before a subsequent read from $y$;
+- $R_x \to W_y$: a read from $x$ must commit before a subsequent write to $y$
+- $W_x \to W_y$: a write to $x$ must commit before a subsequent write to $y$.
+
+A **sequentially consistent** memory system maintain all the aforementioned four memory operation orderings. In practice, a sequentially consistent system will choose the next instruction to run from a thread at random. Threads will need manual synchronization so that only acceptable code path are followed.
+
+<!-- lecture 6 consistency : 19 -->
 
 _To be continued_
