@@ -396,6 +396,51 @@ kernel<<<blocks, threadPerBlock>>>(/* parameters */)
 // Read results from GPU global memory
 ```
 
-<!-- TODO: memory and data locality -->
+It is useless to write here all the peculiarities, intrinsics and things one can do with CUDA, only the most notable ones will be considered. For a more complete CUDA explanation, please refer to [CUDA by examples](https://developer.nvidia.com/cuda-example).
+
+### GPU memory
+
+Streaming multiprocessors are really fast. So fast that GPU memory (the **VRAM**) cannot keep it up. This is the reason why caches and other types of memories were introduced.
+
+Since the memory is the main bottleneck, using the correct memory access patterns is a must, otherwise the gpu will be idle for the majority of the time.
+
+Each thread has its registers and shares a region called **shared memory** (creative naming, I know) with all the other threads in the same block. All the threads in all blocks may read from both the **global memory** and the **constant memory** and also write to the first one.
+
+The shared memory is stored in the L1 cache that also stores the instructions that will be run by each thread.
+
+Intuitively, registers are the smallest and faster form of storage while global memory is bigger but slower.
+
+A good CUDA program will always prefer re-computing something when it is needed instead of computing it once, and reading it from memory when needed (unless, of course, the computation is so complex that it would take longer than a memory access, but this usually never happens) and make use of memory coalescence (we will see this later).
+
+Shared memory may be used to store intermediate results in place of the global memory, if the amount of data to store is small.
+
+To speed up memory trasfers (mainly reducing overhead), DRAM bursting is implemented: with this technique, a large amount of data (usually requested by multiple threads) is transferred in a single batch (thus, saving on the time required to initialize each single transfer). DRAM bursting happens when memory access is **coalesced**.
+
+Coalesced memory access happens when the threads in a warp access memory at an offset that can be expressed as `f(...) + threadIdx.x` where f _does not_ depend on `threadIdx.x`.
+
+## Shared cache architecture
+
+When multiple threads access caches that may or may not be shared and backed by a bigger and slower memory, it is important to ensure coherence and consistency between all the threads so that no undefined behaviour happens.
+
+**Memory coherence** ensures that a system that reads and writes to a shared cache will behave just the same as if there were no caches. When multiple accesses happens at the same time,
+the result of said accesses must be coherent between all the processors (i.e. if multiple processors read at the same time, they will read the same value and if multiple processors write at the same time, all the processors must agree on what will be actually written).
+
+
+**Memory consistency** defines _when_ the memory writes from one processor will be propagated to all the other processor.
+
+Both requirements are not trivial to satisfy and they heavily affect the life of the programmer (they should think about those problem and adapt their algorithms) and the performace (instruction reordering may break things and memory latencies are harder to mask).
+
+In practice, in a multithreaded application, all the access to memory must happen as if there were a single processor doing all the work sequentially. Given two variables `x` and `y`, in the case of a reads and writes involving both of the variables, it should always be possible to determine which operation happens before the other.
+
+There are four different types of memory operation orderings:
+
+- $W_x \to R_y$: a write to $x$ must commit before a subsequent read from $y$;
+- $R_x \to R_y$: a read from $x$ must commit before a subsequent read from $y$;
+- $R_x \to W_y$: a read from $x$ must commit before a subsequent write to $y$
+- $W_x \to W_y$: a write to $x$ must commit before a subsequent write to $y$.
+
+A **sequentially consistent** memory system maintain all the aforementioned four memory operation orderings. In practice, a sequentially consistent system will choose the next instruction to run from a thread at random. Threads will need manual synchronization so that only acceptable code path are followed.
+
+<!-- lecture 6 consistency : 19 -->
 
 _To be continued_
