@@ -333,7 +333,7 @@ We would like to solve this problem:
 $$
 \begin{align*}
 max &\quad x_1+3x_2 \\
-    &\quad -x_1+x_2 \geq-2\\
+ s.t.   &\quad -x_1+x_2 \geq-2\\
     &\quad 2x_1+x_2 \leq 10 \\
     &\quad -x_1+3x_2 \leq 9 \\
     &\quad x_1,x_2 \geq 0
@@ -674,8 +674,9 @@ We have this LP:
 $$
 \begin{align*}
 min\quad &x_1+2 x_2+3x_3+x_4\\
-&x_1+2x_2+x_3 = 5\\
+s.t. \quad &x_1+2x_2+x_3 = 5\\
 &x_2+x_3+x_4 = 3\\
+& x_1,x_2,x_3,x_4 \geq 0
 \end{align*}
 $$
 We decide to start from a vertex by choosing $x_1$ and $x_4$ as basic variables, so we partition the matrix this way:
@@ -1098,7 +1099,7 @@ If we wished to enter $x_2$ , we compute for all rows $\underline{b}_i$/$\underl
 
 $$  
 \begin{align*}
-max  \quad & 2\mathscr{x}_1 + 3\mathscr{x}_2 + 5\mathscr{x}_3 + 2\mathscr{x}_4  \\
+max  \quad & \mathscr{x}_1 + 3\mathscr{x}_2 + 5\mathscr{x}_3 + 2\mathscr{x}_4  \\
 s.t. \quad & \mathscr{x}_1 + 2\mathscr{x}_2 + 3\mathscr{x}_3 + \mathscr{x}_4  \leq 3 \quad\\
 & 2\mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + 2\mathscr{x}_4  \leq 4\quad\\
 & \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4}
@@ -1109,7 +1110,7 @@ Standard form:
 
 $$  
 \begin{align*}
-min  \quad & -2\mathscr{x}_1 - 3\mathscr{x}_2 - 5\mathscr{x}_3 - 2\mathscr{x}_4  \\
+min  \quad & -\mathscr{x}_1 - 3\mathscr{x}_2 - 5\mathscr{x}_3 - 2\mathscr{x}_4  \\
 s.t. \quad & \mathscr{x}_1 + 2\mathscr{x}_2 + 3\mathscr{x}_3 + \mathscr{x}_4 +\mathscr{x}_5 = 3 \quad \\
 & 2\mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + 2\mathscr{x}_4 + \mathscr{x}_6 \leq 4\quad\\
 & \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4,5,6}
@@ -1413,7 +1414,7 @@ Let's take an LP, doesn't matter if it is standard form or not:
 $$
 \begin{align*}
 max \quad & 4 x_1 + x_2 + 5 x_3 + x_4 \\
-& 3 x_1 +x_2+ 3 x_3 + x_4 \leq 25 \quad (1) \\
+s.t.\quad & 3 x_1 +x_2+ 3 x_3 + x_4 \leq 25 \quad (1) \\
 & 2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4 \leq 10 \quad (2) \\
 & 4 x_1 - 3 x_2 + x_3 - 2 x_4 \leq 2 \quad (3) \\
 & \forall x_i \geq 0 , i \in {1,2,3,4}
