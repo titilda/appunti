@@ -2103,7 +2103,7 @@ $$
 If we focus on the k-th line:
 
 $$
-\overline{\underline{c}}_k \geq - \delta_k 
+\overline{c}_k \geq - \delta_k 
 $$
 
 If this holds the solution stays optimal.
