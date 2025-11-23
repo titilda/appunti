@@ -1884,9 +1884,41 @@ for i in model.vars:
 ```
 ![output](assets/chapter3/complementary_pyexmpl.png)
 
+### Unboundness and Unfeasibility of the dual
 
+![](assets/chapter3/unfeasible.png)
 
+>What if we found out that dual problem is unbound (and feasible), what does this tell us about the primal?
 
+Weak duality tells us that for any minimization problem P->$\underline{c}^T\underline{x}$ and its dual (a maximization problem) D->$\underline{y}^T \underline{b}$ :
+
+$$
+\underline{y}^T \underline{b} \leq \underline{c}^T\underline{x}
+$$
+
+So if the dual is unbounded **above** (if it wasn't this wouldn't make any difference since is a maximization problem) it means that there's not a biggest value and the objective can grow arbitrarily large,but the minimization problem must win over the maximization one if weak duality holds amd there's no way that an infinitely large value is less than equal to the minimum of another function, so the primal problem is **unfeasible**
+
+:::{.callout .callout-property title="Unboundess-Unfeasibility relation"}
+$$
+ dual = unbounded + feasible \implies primal = unfeasible
+$$
+:::
+
+>What if is the Dual the unfeasible one?
+
+Two cases can arise, either:
+
+1. The primal is also unfeasible.
+2. The primal is unbounded and feasible.
+
+>How is this possible?
+
+Since the dual is unfeasible, we are unable t find a point that for example is bigger than any other point in the primal and the reason for that could be:
+
+1. There isn't any point in the primal, the problem has no solution, you cannot bound something that doesn't exist.
+2. There are infinite points with bigger objective in the primal, you cannot bound something that is infinitely big,
+
+So unless we can prove that the primal is feasible, we cannot be sure about its nature knowing only about the unfeasibility of the dual.
 
 
 
