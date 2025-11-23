@@ -114,7 +114,7 @@ from mip import CONTINUOUS
 
 # these are our parameters
 I = [0, 1, 2, 3, 4] # Products
-P = [2, 3, 4, 5, 6] # Prices
+P = [2, 3, 4, 5, 6] # Profits
 C = [3, 6, 7, 9, 10] # Costs
 Cmax = 3000 # Max total cost
 Qmax = 400 # Max total amount of product
