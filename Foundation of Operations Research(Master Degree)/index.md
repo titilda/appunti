@@ -1896,7 +1896,7 @@ $$
 \underline{y}^T \underline{b} \leq \underline{c}^T\underline{x}
 $$
 
-So if the dual is unbounded **above** (if it wasn't this wouldn't make any difference since is a maximization problem) it means that there's not a biggest value and the objective can grow arbitrarily large,but the minimization problem must win over the maximization one if weak duality holds amd there's no way that an infinitely large value is less than equal to the minimum of another function, so the primal problem is **unfeasible**
+So if the dual is unbounded **above** (if it wasn't this wouldn't make any difference since is a maximization problem) it means that there's not a biggest value and the objective can grow arbitrarily large, but the minimization problem must win over the maximization one if weak duality holds and since there's no way that an infinitely large value is less than equal to the minimum of another function, the primal problem is **unfeasible**
 
 :::{.callout .callout-property title="Unboundess-Unfeasibility relation"}
 $$
