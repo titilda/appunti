@@ -1920,7 +1920,92 @@ Since the dual is unfeasible, we are unable to find a point that for example is 
 
 So unless we can prove that the primal is feasible, we cannot be sure about its nature knowing only about the unfeasibility of the dual.
 
+## Sensitivity analysis
 
+We are a company that produces metal alloy plates, in order to manufacture these plates we need 4 raw ingredients we'll call them $x_1$, $x_2$ , $x_3$ and $x_4$ suppose that the mixture of these ingredients must be not over 4 litres ,we measured that to be a valid alloy there are some constraints that need to be met (shown below).
+Our objective is to maximize the "hardness" of our plates , we estimated that the "hardness contribution" (hardness/grams) for each one of the ingredients are respectively: 3, 4, -3 and 1.
 
+So we end up with this problem:
 
+$$
+\begin{align*}
+max \quad & 3 x_1 + 4 x_2 - 3 x_3 + x_4 \\
+s.t.\quad & 2 x_1 + 3 x_2 + x_3 + x_4 \leq 17\\
+    \quad & 3 x_1 + 2 x_2 - 4 x_3 - x_4 \leq -5\\
+    \quad & x_1,x_2,x_3,x_4 \geq 0
+\end{align*}
+$$
+
+Now , what if the values we estimated were a little off , how much does our solution change?
+
+Ergo:
+
+>What happens to our optimal solution if we tweak the values a little, is it still optimal?
+
+### Tweaking the problem
+![](assets/chapter3/tweaking.png)
+
+We have an LP in standard form:
+
+$$
+\begin{align*}
+min \quad &z = \underline{c}^T \underline{x} \\
+s.t.\quad  & A\underline{x} = \underline{b} \\
+&\underline{x} \geq 0
+\end{align*}
+$$
+
+>What happens when we tweak the values of $\underline{b}$?
+
+So we introduce a "noise" $\delta_k$ affecting the k-th row:
+$$
+b' = b + \delta_k e_k 
+$$
+
+Where $e_k$ is a vector with the only non-zero value (1) at the k-th row.
+
+We know that:
+$$
+z = \underline{c}^T_B B^{-1} b + \underline{x}_N (\underline{c}_N^T-\underline{c}_B^TB^{-1}N)
+$$
+
+Substituting the new value b':
+
+$$
+z' = \underline{c}^T_B B^{-1} (b + \delta_k e_k) + \underline{x}_N (\underline{c}_N^T-\underline{c}_B^TB^{-1}N)
+$$
+
+Separating:
+$$
+z' = z + \underline{c}^T_B B^{-1} (\delta_k e_k)
+$$
+
+Our objective value changed by:
+
+$$
+\Delta z = \underline{c}^T_B B^{-1} (\delta_k e_k)
+$$
+
+The value of the set of basic variables also changes (otherwise the constraints won't hold anymore):
+
+$$
+\begin{align*}
+\underline{x}_B' & = B^{-1}(b + \delta_k e_k)-B^{-1}N\underline{x}_N \\
+& = B^{-1}b-B^{-1}N\underline{x}_N+B^{-1}(\delta_k e_k) \\
+& = \underline{x}_B + B^{-1}(\delta_k e_k)
+\end{align*}
+$$
+
+Our solution changes by:
+
+$$
+\Delta \underline{x}_B = B^{-1}(\delta_k e_k)
+$$
+
+Notice that we are expressing the basic variables in terms of non-basic one, so if we were originally in a vertex using this process of thought we end up in a vertex that has the same base of the previous one, if we wanted to keep the values of the old basic variables (just for the love of the game) are the non-basic variables that have to change, the result is: **we are no longer in a vertex**.
+
+![Before tweaking](assets/chapter3/before.png)
+![After tweaking](assets/chapter3/after.png)
+
+[Interactive tweakable graph](https://www.desmos.com/calculator/o5kfrfk9uk?lang=it)
 
