@@ -2009,3 +2009,106 @@ Notice that we are expressing the basic variables in terms of non-basic one, so 
 
 [Interactive tweakable graph](https://www.desmos.com/calculator/o5kfrfk9uk?lang=it)
 
+>What happens when we tweak the cost coefficients?
+
+In this case two situations can occur:
+
+1. The tweaked cost is the one of a basic variable.
+2. The tweaked cost is the one of a non-basic variable.
+
+In the first we have that:
+
+$$
+z'=\underline{c'}_B^TB^{-1}b + \underline{x}_N (\underline{c}_N^T-\underline{c'}_B^TB^{-1}N)
+$$
+
+Where $\underline{c'}_B^T = \underline{c'}_B^T+\delta_k e_k^T$ (same as before the tweaked value is the one at the k-th row).
+
+If we are in a vertex we know that $\underline{x}_N = \underline{0}$ so the value of the objective is just:
+
+$$
+\begin{align*}
+z'  &=\underline{c'}_B^TB^{-1}b \\
+    &=(\underline{c}_B^T+\delta_k e_k^T)B^{-1}b \\
+    &=\underline{c}_B^TB^{-1}N +(\delta_k e_k^T)B^{-1}b \\
+    &= z + (\delta_k e_k^T)B^{-1}b
+\end{align*}
+$$
+
+So our solution changes by $\Delta z = (\delta_k e_k^T)B^{-1}b$.
+
+Now let's suppose that our initial solution was the optimal one , is still optimal?
+
+Let's look at the reduced costs (remember that we are in a minimization problem):
+
+$$
+\overline{\underline{c}}_N^T = \underline{c}_N^T - \underline{c'}_B^TB^{-1}N
+$$
+
+We expand the $\underline{c'}_B^T$ term:
+
+$$
+\begin{align*}
+\overline{\underline{c'}}_N^T & = \underline{c}_N^T - (\underline{c}_B^T+\delta_k e_k^T)B^{-1}N \\
+                              & = \underbrace{\underline{c}_N^T - \underline{c}_B^TB^{-1}N}_{reduced \: costs} - \delta_k e_k^TB^{-1}N \\ 
+                              & = \overline{\underline{c}}_N^T - \delta_k \underbrace{e_k^TB^{-1}N}_{\rho_k^T} \\
+                              & = \overline{\underline{c}}_N^T - \delta_k \rho^T
+\end{align*}
+$$
+
+Optimality condition:
+$$
+\overline{\underline{c}}_N^T - \delta_k \rho^T \geq \underline{0}
+$$
+
+We focus only on k-th term of the reduced costs:
+
+$$
+\overline{c}_k \geq \rho_k^T
+$$
+
+If this holds the solution stays optimal.
+
+In the second we have that:
+
+$$
+z'=\underline{c}_B^TB^{-1}b + \underline{x}_N (\underline{c'}_N^T-\underline{c}_B^TB^{-1}N)
+$$
+
+Since $\underline{x}_N = \underline{0}$ the objective value of the solution doesn't change, what about its optimality?
+
+We have that:
+
+$$
+\overline{\underline{c'}}_N^T = \underline{c'}_N^T - \underline{c}_B^T B^{-1}N
+$$
+
+Where $\underline{c'}_N^T = \underline{c}_N^T + \delta_k e_k^T$
+
+We expand the term and group the reduced costs:
+$$
+\begin{align*}
+\overline{\underline{c'}}_N^T & = \underline{c}_N^T + \delta_k e_k^T - \underline{c}_B^T B^{-1}N \\
+                              & = \underline{c}_N^T - \underline{c}_B^T B^{-1}N + \delta_k e_k^T \\
+                              & = \overline{\underline{c}}_N^T + \delta_k e_k^T                               
+\end{align*}
+$$
+
+Optimality condition:
+
+$$
+\overline{\underline{c}}_N^T + \delta_k e_k^T \geq \underline{0}
+$$
+
+If we focus on the k-th line:
+
+$$
+\overline{\underline{c}}_k \geq - \delta_k 
+$$
+
+If this holds the solution stays optimal.
+
+
+
+
+
