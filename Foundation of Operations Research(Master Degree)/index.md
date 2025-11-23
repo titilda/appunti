@@ -1913,7 +1913,7 @@ Two cases can arise, either:
 
 >How is this possible?
 
-Since the dual is unfeasible, we are unable t find a point that for example is bigger than any other point in the primal and the reason for that could be:
+Since the dual is unfeasible, we are unable to find a point that for example is bigger than any other point in the primal and the reason for that could be:
 
 1. There isn't any point in the primal, the problem has no solution, you cannot bound something that doesn't exist.
 2. There are infinite points with bigger objective in the primal, you cannot bound something that is infinitely big,
