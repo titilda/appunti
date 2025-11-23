@@ -1112,7 +1112,7 @@ $$
 \begin{align*}
 min  \quad & -\mathscr{x}_1 - 3\mathscr{x}_2 - 5\mathscr{x}_3 - 2\mathscr{x}_4  \\
 s.t. \quad & \mathscr{x}_1 + 2\mathscr{x}_2 + 3\mathscr{x}_3 + \mathscr{x}_4 +\mathscr{x}_5 = 3 \quad \\
-& 2\mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + 2\mathscr{x}_4 + \mathscr{x}_6 \leq 4\quad\\
+& 2\mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + 2\mathscr{x}_4 + \mathscr{x}_6 = 4\quad\\
 & \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4,5,6}
 \end{align*}
 $$
@@ -1153,7 +1153,7 @@ Blands rule tells us that $x_3$ enters, min ratio test tells us that $x_2$ is th
 | $x_3$ | $\frac{2}{5}$  | 0     | $\frac{3}{5}$ | 1     | 0     | $\frac{2}{5}$  | $-\frac{1}{5}$ |
 | $x_1$ | $\frac{9}{5}$  | 1     | $\frac{1}{5}$ | 0     | 1     | $-\frac{1}{5}$ | $\frac{3}{5}$  |
 
-Solution $\underline{x}^T=[\: \frac{9}{5} \quad 0  \quad \frac{2}{5} \quad 0 \quad 0 \quad 0 \: ]$ with value z =$\frac{19}{5}$  , reduced costs tell us there is still room for improvement.
+Solution $\underline{x}^T=[\: \frac{9}{5} \quad 0  \quad \frac{2}{5} \quad 0 \quad 0 \quad 0 \: ]$ with value z =$-\frac{19}{5}$  , reduced costs tell us there is still room for improvement.
 
 Blands rule tells us that $x_4$ enters, min ratio test tells us that $x_1$ is the one we kick out, after pivoting the updated table is:
 
@@ -1163,10 +1163,11 @@ Blands rule tells us that $x_4$ enters, min ratio test tells us that $x_1$ is th
 | $x_3$ | $\frac{2}{5}$  | 0     | $\frac{2}{5}$ | 1     | 0     | $\frac{2}{5}$  | $-\frac{1}{5}$ |
 | $x_4$ | $\frac{9}{5}$  | 1     | $\frac{1}{5}$ | 0     | 1     | $-\frac{1}{5}$ | $\frac{3}{5}$  |
 
-Solution $\underline{x}^T=[\: 0 \quad 0  \quad \frac{2}{5} \quad \frac{9}{5} \quad 0 \quad 0 \: ]$ with value z =$\frac{28}{5}$  , reduced costs are all positive , this is the optimal solution.
+Solution $\underline{x}^T=[\: 0 \quad 0  \quad \frac{2}{5} \quad \frac{9}{5} \quad 0 \quad 0 \: ]$ with value z =$-\frac{28}{5}$  , reduced costs are all positive , this is the optimal solution.
 
 ### By python's mip:
 
+Notice that the solution that mip gives us is the opposite that the one we got, that's because mip doesn't care about putting the problem in standard form so it solves it as a maximization one.
 ```python 
 import mip
 from mip import CONTINUOUS
