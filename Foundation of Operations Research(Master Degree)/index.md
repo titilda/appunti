@@ -812,7 +812,7 @@ $$
 \overline{a}_{i1} & \dots & \overline{a}_{is}
 \end{bmatrix}
 $$
-Remember that we are in a vertex (so all non-basic to 0), and we want to se how much we can increase a non-basic before violating the positivity constraint.
+Remember that we are in a vertex (so all non-basic to 0), and we want to see how much we can increase a non-basic before violating the positivity constraint.
 
 So if we wish to increase the $x_s$ variable(from 0), this must hold:
 
@@ -826,7 +826,7 @@ $$
 $$
 :::
 
->Why must $\overline{a}_{is}$ by greater or equal than 0?
+>Why must $\overline{a}_{is}$ be greater or equal than 0?
 
 Because if it's negative that means that for what concerns the variable at row "i" the non-basic can increase as much as we want, since that variable also increase with it!
 
