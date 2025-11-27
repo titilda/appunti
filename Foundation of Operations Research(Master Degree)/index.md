@@ -2246,7 +2246,7 @@ Has the transportation problem pattern if:
 2. A contains only either -1, 0 or 1.
 3. Each column has exactly K non-zero entries, where K = number of constraints families.
 
-Now you may ask yourself , "what is a constraint family?" , this is a constraint family:
+Now you may ask yourself , "what is a constraint family?", this is a constraint family:
 
 $$
 \sum_{j=1}^{n}{x_{ij}} \leq p_i, \quad i=1,\dots,m
