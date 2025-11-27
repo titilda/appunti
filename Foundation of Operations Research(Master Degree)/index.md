@@ -2109,6 +2109,148 @@ $$
 If this holds the solution stays optimal.
 
 
+## Integer Linear Programming
+
+Suppose that we are selling metal **balls** , there are 4 types of metal **balls** :$x_1$, $x_2$, $x_3$, $x_4$ we want to maximize the profit we get from selling these **balls**, the price of each type of **ball** is respectively 5 4 3 1 ($/**ball**) and there are some constraints regarding the production of these **balls** ( see the problem below), so we end up with this formulation:
+$$
+\begin{align*}
+max \quad & 5 x_1 + 4 x_2 + 3 x_3 + x_4\\
+s.t.\quad & x_1+x_2+x_3-x_4 \leq 5\\
+    \quad &  2 x_1 + x_2 - 2 x_3 + x_4 \geq 2\\
+    \quad x_1,x_2,x_3,x_4 \geq 0
+\end{align*}
+$$
+
+Everything looks fine until we realize that our optimal solution of producing 4.789 x_1, 2.111 x_2, 3.002 x_3 and 9.12 x_4 **balls** ( completely random numbers) is not achievable since we cannot produce 9.12 units of something.
+
+So what is the plan now?
+
+Do we just round up/down the numbers and cross our fingers?
+
+:::{.callout .callout-definition title="Integer Linear Programming problem"}
+
+An Integer Linear Programming problem is an optimization problem of the form
+
+$$
+\begin{align*}
+min \quad & \underline{c}^T \underline{x}\\
+s.t.\quad & A\underline{x} \geq \underline{b}\\
+    \quad & \underline{x} \geq \underline{0} \quad \\
+    \quad & \underline{x} \in Z^n
+\end{align*}
+$$
+In particular:
+1. If $x_j\in\{0,1\} \forall j$, it is a **binary LP**.
+2. If there is a $x_j$ that it is not an integer, it is a **mixed integer LP**. 
+
+The feasible region of an ILP problem is called **lattice**.
+:::
+
+$$
+\begin{align*}
+z_{LP} = max \quad & z = 21 x_1 + 11 x_2 \\
+         s.t \quad & 7 x_1 + 4 x_2 \leq 13 \\
+             \quad & x_1,x_2 \geq 0\\
+             \quad & \underline{x} \in Z^n
+\end{align*}
+$$
+
+![lattice of the problem](assets/chapter4/lattice1.png)
+
+### Linear programming relaxation of ILP
+![The ILP be chilling](assets/chapter4/relax.png)
 
 
+With the term "relaxing" we refer to the act of dropping the integrality constraint and obtaining a classic LP problem which we label as the **linear programming relaxation**.
+
+Formally:
+
+:::{.callout .callout-definition title="Linear programming relaxation of ILP"}
+Let (ILP) be:
+$$
+\begin{align*}
+z_{ILP} = max \quad & \underline{c}^T \underline{x}\\
+s.t.\quad & A\underline{x} \leq \underline{b}\\
+\quad & \underline{x} \geq \underline{0} \quad \\
+\quad & \underline{x} \in Z^n
+\end{align*}
+$$
+
+The problem (LP):
+
+$$
+\begin{align*}
+z_{LP} = max \quad & \underline{c}^T \underline{x}\\
+s.t.\quad & A\underline{x} \leq \underline{b}\\
+\quad & \underline{x} \geq \underline{0} \quad \\
+\end{align*}
+$$
+
+is the **linear programming relaxation** of (ILP)
+:::
+
+>So if we relax the problem take the optimal solution and floor it, do we get the optimal also for the integer one?
+
+>Unluckily for us no.
+
+If we look at the problem in the previous section:
+
+$$
+\begin{align*}
+z_{LP} = max \quad & z = 21 x_1 + 11 x_2 \\
+s.t \quad & 7 x_1 + 4 x_2 \leq 13 \\
+\quad & x_1,x_2 \geq 0\\
+\quad & \underline{x} \in Z^n
+\end{align*}
+$$
+
+And we solve the relaxation and find the optimal solution:
+
+![](assets/chapter4/relaxed%20sol.png)
+
+If we assume that the rounded solution in (1,0) that yields to a value of 21 is the optimal we would be wrong since:
+
+![](assets/chapter4/realsolution.png)
+
+So what relation there is between the solution of the relaxation and the solution of the real one?
+
+If we try to solve the problem through the graphical method we see that since the integrality constraint reduce the feasible area to a "lattice" , the relaxation is able to "**follow**" the gradient of the objective for longer yielding to a bigger value.
+
+Formally:
+
+:::{.callout .callout-property title="bound the ILP"}
+
+For any ILP with max (min) , we have that $z_{ILP} \leq z_{LP}$ ($z_{ILP} \leq z_{LP}$), i.e., the relaxation provides an **upper bound** (lower bound) on the optimal value of an ILP.
+
+:::
+
+### Transportation problem "pattern"
+
+In the last section we implied that the solution of the relaxation is different from the original one and defines a bound for it.
+
+There is an exception to this rule , where all vertexes of the feasible region lie on integer values (hence the two solutions are equal) , due to its correlation with a real life problem known as the "Transportation problem", we'll say that these problems have a Transportation problem **pattern**.
+
+A problem in standard form:
+
+$$
+\begin{align*}
+min \quad & \underline{c}^T \underline{x}\\
+s.t.\quad & A\underline{x} \geq \underline{b}\\
+\quad & \underline{x} = \underline{0} \quad
+\end{align*}
+$$
+
+Has the transportation problem pattern if:
+
+1. $\underline{b}$ is made of integers.
+2. A contains only either -1, 0 or 1.
+3. Each column has exactly K non-zero entries, where K = number of constraints families.
+
+Now you may ask yourself , "what is a constraint family" , this is a constraint family:
+
+$$
+\sum_{j=1}^{n}{x_{ij}} \leq p_i, \quad i=1,\dots,m
+$$
+
+So a collection of constraints that defines the same characteristic for different "elements" , in this case if this were the "plant capacity family" each member of this family describes the max capacity of each plant i to store n different types of elements.
 
