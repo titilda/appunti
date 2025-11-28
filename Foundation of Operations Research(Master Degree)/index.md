@@ -88,7 +88,7 @@ $$
 3. Parameters are constants.
 :::
 #### Example:
- Suppose that we want to maximize how much we gain from the selling of 5 products ( suppose that we sell and produce the products in grams) , the price/g of each one of them are respectively: 2, 3, 4, 5, 6; the cost of production of each one of them is: 3, 6, 7, 9, 10; no more than 400g must be produced and the total production cost must be lower than 3000.
+ Suppose that we want to maximize how much we gain from the selling of 5 products ( suppose that we sell and produce the products in grams) , the profits/g of each one of them are respectively: 2, 3, 4, 5, 6; the cost of production of each one of them is: 3, 6, 7, 9, 10; no more than 400g must be produced and the total production cost must be lower than 3000.
 We shall model this problem like this:
 
 #### Traditional modelling
@@ -114,7 +114,7 @@ from mip import CONTINUOUS
 
 # these are our parameters
 I = [0, 1, 2, 3, 4] # Products
-P = [2, 3, 4, 5, 6] # Prices
+P = [2, 3, 4, 5, 6] # Profits
 C = [3, 6, 7, 9, 10] # Costs
 Cmax = 3000 # Max total cost
 Qmax = 400 # Max total amount of product
@@ -333,7 +333,7 @@ We would like to solve this problem:
 $$
 \begin{align*}
 max &\quad x_1+3x_2 \\
-    &\quad -x_1+x_2 \geq-2\\
+ s.t.   &\quad -x_1+x_2 \geq-2\\
     &\quad 2x_1+x_2 \leq 10 \\
     &\quad -x_1+3x_2 \leq 9 \\
     &\quad x_1,x_2 \geq 0
@@ -674,8 +674,9 @@ We have this LP:
 $$
 \begin{align*}
 min\quad &x_1+2 x_2+3x_3+x_4\\
-&x_1+2x_2+x_3 = 5\\
+s.t. \quad &x_1+2x_2+x_3 = 5\\
 &x_2+x_3+x_4 = 3\\
+& x_1,x_2,x_3,x_4 \geq 0
 \end{align*}
 $$
 We decide to start from a vertex by choosing $x_1$ and $x_4$ as basic variables, so we partition the matrix this way:
@@ -811,7 +812,7 @@ $$
 \overline{a}_{i1} & \dots & \overline{a}_{is}
 \end{bmatrix}
 $$
-Remember that we are in a vertex (so all non-basic to 0), and we want to se how much we can increase a non-basic before violating the positivity constraint.
+Remember that we are in a vertex (so all non-basic to 0), and we want to see how much we can increase a non-basic before violating the positivity constraint.
 
 So if we wish to increase the $x_s$ variable(from 0), this must hold:
 
@@ -825,7 +826,7 @@ $$
 $$
 :::
 
->Why must $\overline{a}_{is}$ by greater or equal than 0?
+>Why must $\overline{a}_{is}$ be greater or equal than 0?
 
 Because if it's negative that means that for what concerns the variable at row "i" the non-basic can increase as much as we want, since that variable also increase with it!
 
@@ -1098,7 +1099,7 @@ If we wished to enter $x_2$ , we compute for all rows $\underline{b}_i$/$\underl
 
 $$  
 \begin{align*}
-max  \quad & 2\mathscr{x}_1 + 3\mathscr{x}_2 + 5\mathscr{x}_3 + 2\mathscr{x}_4  \\
+max  \quad & \mathscr{x}_1 + 3\mathscr{x}_2 + 5\mathscr{x}_3 + 2\mathscr{x}_4  \\
 s.t. \quad & \mathscr{x}_1 + 2\mathscr{x}_2 + 3\mathscr{x}_3 + \mathscr{x}_4  \leq 3 \quad\\
 & 2\mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + 2\mathscr{x}_4  \leq 4\quad\\
 & \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4}
@@ -1109,9 +1110,9 @@ Standard form:
 
 $$  
 \begin{align*}
-min  \quad & -2\mathscr{x}_1 - 3\mathscr{x}_2 - 5\mathscr{x}_3 - 2\mathscr{x}_4  \\
+min  \quad & -\mathscr{x}_1 - 3\mathscr{x}_2 - 5\mathscr{x}_3 - 2\mathscr{x}_4  \\
 s.t. \quad & \mathscr{x}_1 + 2\mathscr{x}_2 + 3\mathscr{x}_3 + \mathscr{x}_4 +\mathscr{x}_5 = 3 \quad \\
-& 2\mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + 2\mathscr{x}_4 + \mathscr{x}_6 \leq 4\quad\\
+& 2\mathscr{x}_1 + \mathscr{x}_2 + \mathscr{x}_3 + 2\mathscr{x}_4 + \mathscr{x}_6 = 4\quad\\
 & \mathscr{x}_i \geq 0, \forall i \in {1,2,3,4,5,6}
 \end{align*}
 $$
@@ -1152,7 +1153,7 @@ Blands rule tells us that $x_3$ enters, min ratio test tells us that $x_2$ is th
 | $x_3$ | $\frac{2}{5}$  | 0     | $\frac{3}{5}$ | 1     | 0     | $\frac{2}{5}$  | $-\frac{1}{5}$ |
 | $x_1$ | $\frac{9}{5}$  | 1     | $\frac{1}{5}$ | 0     | 1     | $-\frac{1}{5}$ | $\frac{3}{5}$  |
 
-Solution $\underline{x}^T=[\: \frac{9}{5} \quad 0  \quad \frac{2}{5} \quad 0 \quad 0 \quad 0 \: ]$ with value z =$\frac{19}{5}$  , reduced costs tell us there is still room for improvement.
+Solution $\underline{x}^T=[\: \frac{9}{5} \quad 0  \quad \frac{2}{5} \quad 0 \quad 0 \quad 0 \: ]$ with value z =$-\frac{19}{5}$  , reduced costs tell us there is still room for improvement.
 
 Blands rule tells us that $x_4$ enters, min ratio test tells us that $x_1$ is the one we kick out, after pivoting the updated table is:
 
@@ -1162,10 +1163,11 @@ Blands rule tells us that $x_4$ enters, min ratio test tells us that $x_1$ is th
 | $x_3$ | $\frac{2}{5}$  | 0     | $\frac{2}{5}$ | 1     | 0     | $\frac{2}{5}$  | $-\frac{1}{5}$ |
 | $x_4$ | $\frac{9}{5}$  | 1     | $\frac{1}{5}$ | 0     | 1     | $-\frac{1}{5}$ | $\frac{3}{5}$  |
 
-Solution $\underline{x}^T=[\: 0 \quad 0  \quad \frac{2}{5} \quad \frac{9}{5} \quad 0 \quad 0 \: ]$ with value z =$\frac{28}{5}$  , reduced costs are all positive , this is the optimal solution.
+Solution $\underline{x}^T=[\: 0 \quad 0  \quad \frac{2}{5} \quad \frac{9}{5} \quad 0 \quad 0 \: ]$ with value z =$-\frac{28}{5}$  , reduced costs are all positive , this is the optimal solution.
 
 ### By python's mip:
 
+Notice that the solution that mip gives us is the opposite that the one we got, that's because mip doesn't care about putting the problem in standard form so it solves it as a maximization one.
 ```python 
 import mip
 from mip import CONTINUOUS
@@ -1413,7 +1415,7 @@ Let's take an LP, doesn't matter if it is standard form or not:
 $$
 \begin{align*}
 max \quad & 4 x_1 + x_2 + 5 x_3 + x_4 \\
-& 3 x_1 +x_2+ 3 x_3 + x_4 \leq 25 \quad (1) \\
+s.t.\quad & 3 x_1 +x_2+ 3 x_3 + x_4 \leq 25 \quad (1) \\
 & 2 x_1 +x_2+ 3 x_3 + \frac{1}{2}x_4 \leq 10 \quad (2) \\
 & 4 x_1 - 3 x_2 + x_3 - 2 x_4 \leq 2 \quad (3) \\
 & \forall x_i \geq 0 , i \in {1,2,3,4}
@@ -1882,11 +1884,373 @@ for i in model.vars:
 ```
 ![output](assets/chapter3/complementary_pyexmpl.png)
 
+### Unboundness and Unfeasibility of the dual
+
+![](assets/chapter3/unfeasible.png)
+
+>What if we found out that dual problem is unbound (and feasible), what does this tell us about the primal?
+
+Weak duality tells us that for any minimization problem P->$\underline{c}^T\underline{x}$ and its dual (a maximization problem) D->$\underline{y}^T \underline{b}$ :
+
+$$
+\underline{y}^T \underline{b} \leq \underline{c}^T\underline{x}
+$$
+
+So if the dual is unbounded **above** (if it wasn't this wouldn't make any difference since is a maximization problem) it means that there's not a biggest value and the objective can grow arbitrarily large, but the minimization problem must win over the maximization one if weak duality holds and since there's no way that an infinitely large value is less than equal to the minimum of another function, the primal problem is **unfeasible**
+
+:::{.callout .callout-property title="Unboundess-Unfeasibility relation"}
+$$
+ dual = unbounded + feasible \implies primal = unfeasible
+$$
+:::
+
+>What if is the Dual the unfeasible one?
+
+Two cases can arise, either:
+
+1. The primal is also unfeasible.
+2. The primal is unbounded and feasible.
+
+>How is this possible?
+
+Since the dual is unfeasible, we are unable to find a point that for example is bigger than any other point in the primal and the reason for that could be:
+
+1. There isn't any point in the primal, the problem has no solution, you cannot bound something that doesn't exist.
+2. There are infinite points with bigger objective in the primal, you cannot bound something that is infinitely big,
+
+So unless we can prove that the primal is feasible, we cannot be sure about its nature knowing only about the unfeasibility of the dual.
+
+## Sensitivity analysis
+
+We are a company that produces metal alloy plates, in order to manufacture these plates we need 4 raw ingredients we'll call them $x_1$, $x_2$ , $x_3$ and $x_4$ suppose that the mixture of these ingredients must be not over 4 litres ,we measured that to be a valid alloy there are some constraints that need to be met (shown below).
+Our objective is to maximize the "hardness" of our plates , we estimated that the "hardness contribution" (hardness/grams) for each one of the ingredients are respectively: 3, 4, -3 and 1.
+
+So we end up with this problem:
+
+$$
+\begin{align*}
+max \quad & 3 x_1 + 4 x_2 - 3 x_3 + x_4 \\
+s.t.\quad & 2 x_1 + 3 x_2 + x_3 + x_4 \leq 17\\
+    \quad & 3 x_1 + 2 x_2 - 4 x_3 - x_4 \leq -5\\
+    \quad & x_1,x_2,x_3,x_4 \geq 0
+\end{align*}
+$$
+
+Now , what if the values we estimated were a little off , how much does our solution change?
+
+Ergo:
+
+>What happens to our optimal solution if we tweak the values a little, is it still optimal?
+
+### Tweaking the problem
+![](assets/chapter3/tweaking.png)
+
+We have an LP in standard form:
+
+$$
+\begin{align*}
+min \quad &z = \underline{c}^T \underline{x} \\
+s.t.\quad  & A\underline{x} = \underline{b} \\
+&\underline{x} \geq 0
+\end{align*}
+$$
+
+>What happens when we tweak the values of $\underline{b}$?
+
+So we introduce a "noise" $\delta_k$ affecting the k-th row:
+$$
+b' = b + \delta_k e_k 
+$$
+
+Where $e_k$ is a vector with the only non-zero value (1) at the k-th row.
+
+We know that:
+$$
+z = \underline{c}^T_B B^{-1} b + \underline{x}_N (\underline{c}_N^T-\underline{c}_B^TB^{-1}N)
+$$
+
+Substituting the new value b':
+
+$$
+z' = \underline{c}^T_B B^{-1} (b + \delta_k e_k) + \underline{x}_N (\underline{c}_N^T-\underline{c}_B^TB^{-1}N)
+$$
+
+Separating:
+$$
+z' = z + \underline{c}^T_B B^{-1} (\delta_k e_k)
+$$
+
+Our objective value changed by:
+
+$$
+\Delta z = \underline{c}^T_B B^{-1} (\delta_k e_k)
+$$
+
+The value of the set of basic variables also changes (otherwise the constraints won't hold anymore):
+
+$$
+\begin{align*}
+\underline{x}_B' & = B^{-1}(b + \delta_k e_k)-B^{-1}N\underline{x}_N \\
+& = B^{-1}b-B^{-1}N\underline{x}_N+B^{-1}(\delta_k e_k) \\
+& = \underline{x}_B + B^{-1}(\delta_k e_k)
+\end{align*}
+$$
+
+Our solution changes by:
+
+$$
+\Delta \underline{x}_B = B^{-1}(\delta_k e_k)
+$$
+
+Notice that we are expressing the basic variables in terms of non-basic one, so if we were originally in a vertex using this process of thought we end up in a vertex that has the same base of the previous one, if we wanted to keep the values of the old basic variables (just for the love of the game) are the non-basic variables that have to change, the result is: **we are no longer in a vertex**.
+
+![Before tweaking](assets/chapter3/before.png)
+![After tweaking](assets/chapter3/after.png)
+
+[Interactive tweakable graph](https://www.desmos.com/calculator/o5kfrfk9uk?lang=it)
+
+>What happens when we tweak the cost coefficients?
+
+In this case two situations can occur:
+
+1. The tweaked cost is the one of a basic variable.
+2. The tweaked cost is the one of a non-basic variable.
+
+In the first we have that:
+
+$$
+z'=\underline{c'}_B^TB^{-1}b + \underline{x}_N (\underline{c}_N^T-\underline{c'}_B^TB^{-1}N)
+$$
+
+Where $\underline{c'}_B^T = \underline{c'}_B^T+\delta_k e_k^T$ (same as before the tweaked value is the one at the k-th row).
+
+If we are in a vertex we know that $\underline{x}_N = \underline{0}$ so the value of the objective is just:
+
+$$
+\begin{align*}
+z'  &=\underline{c'}_B^TB^{-1}b \\
+    &=(\underline{c}_B^T+\delta_k e_k^T)B^{-1}b \\
+    &=\underline{c}_B^TB^{-1}N +(\delta_k e_k^T)B^{-1}b \\
+    &= z + (\delta_k e_k^T)B^{-1}b
+\end{align*}
+$$
+
+So our solution changes by $\Delta z = (\delta_k e_k^T)B^{-1}b$.
+
+Now let's suppose that our initial solution was the optimal one , is still optimal?
+
+Let's look at the reduced costs (remember that we are in a minimization problem):
+
+$$
+\overline{\underline{c}}_N^T = \underline{c}_N^T - \underline{c'}_B^TB^{-1}N
+$$
+
+We expand the $\underline{c'}_B^T$ term:
+
+$$
+\begin{align*}
+\overline{\underline{c'}}_N^T & = \underline{c}_N^T - (\underline{c}_B^T+\delta_k e_k^T)B^{-1}N \\
+                              & = \underbrace{\underline{c}_N^T - \underline{c}_B^TB^{-1}N}_{reduced \: costs} - \delta_k e_k^TB^{-1}N \\ 
+                              & = \overline{\underline{c}}_N^T - \delta_k \underbrace{e_k^TB^{-1}N}_{\rho_k^T} \\
+                              & = \overline{\underline{c}}_N^T - \delta_k \rho^T
+\end{align*}
+$$
+
+Optimality condition:
+$$
+\overline{\underline{c}}_N^T - \delta_k \rho^T \geq \underline{0}
+$$
+
+We focus only on k-th term of the reduced costs:
+
+$$
+\overline{c}_k \geq \rho_k^T
+$$
+
+If this holds the solution stays optimal.
+
+In the second we have that:
+
+$$
+z'=\underline{c}_B^TB^{-1}b + \underline{x}_N (\underline{c'}_N^T-\underline{c}_B^TB^{-1}N)
+$$
+
+Since $\underline{x}_N = \underline{0}$ the objective value of the solution doesn't change, what about its optimality?
+
+We have that:
+
+$$
+\overline{\underline{c'}}_N^T = \underline{c'}_N^T - \underline{c}_B^T B^{-1}N
+$$
+
+Where $\underline{c'}_N^T = \underline{c}_N^T + \delta_k e_k^T$
+
+We expand the term and group the reduced costs:
+$$
+\begin{align*}
+\overline{\underline{c'}}_N^T & = \underline{c}_N^T + \delta_k e_k^T - \underline{c}_B^T B^{-1}N \\
+                              & = \underline{c}_N^T - \underline{c}_B^T B^{-1}N + \delta_k e_k^T \\
+                              & = \overline{\underline{c}}_N^T + \delta_k e_k^T                               
+\end{align*}
+$$
+
+Optimality condition:
+
+$$
+\overline{\underline{c}}_N^T + \delta_k e_k^T \geq \underline{0}
+$$
+
+If we focus on the k-th line:
+
+$$
+\overline{c}_k \geq - \delta_k 
+$$
+
+If this holds the solution stays optimal.
 
 
+## Integer Linear Programming
+
+Suppose that we are selling metal **balls** , there are 4 types of metal **balls** :$x_1$, $x_2$, $x_3$, $x_4$ we want to maximize the profit we get from selling these **balls**, the price of each type of **ball** is respectively 5 4 3 1 ($/**ball**) and there are some constraints regarding the production of these **balls** ( see the problem below), so we end up with this formulation:
+$$
+\begin{align*}
+max \quad & 5 x_1 + 4 x_2 + 3 x_3 + x_4\\
+s.t.\quad & x_1+x_2+x_3-x_4 \leq 5\\
+    \quad &  2 x_1 + x_2 - 2 x_3 + x_4 \geq 2\\
+    \quad x_1,x_2,x_3,x_4 \geq 0
+\end{align*}
+$$
+
+Everything looks fine until we realize that our optimal solution of producing 4.789 x_1, 2.111 x_2, 3.002 x_3 and 9.12 x_4 **balls** ( completely random numbers) is not achievable since we cannot produce 9.12 units of something.
+
+So what is the plan now?
+
+Do we just round up/down the numbers and cross our fingers?
+
+:::{.callout .callout-definition title="Integer Linear Programming problem"}
+
+An Integer Linear Programming problem is an optimization problem of the form
+
+$$
+\begin{align*}
+min \quad & \underline{c}^T \underline{x}\\
+s.t.\quad & A\underline{x} \geq \underline{b}\\
+    \quad & \underline{x} \geq \underline{0} \quad \\
+    \quad & \underline{x} \in Z^n
+\end{align*}
+$$
+In particular:
+1. If $x_j\in\{0,1\} \forall j$, it is a **binary LP**.
+2. If there is a $x_j$ that it is not an integer, it is a **mixed integer LP**. 
+
+The feasible region of an ILP problem is called **lattice**.
+:::
+
+$$
+\begin{align*}
+z_{LP} = max \quad & z = 21 x_1 + 11 x_2 \\
+         s.t \quad & 7 x_1 + 4 x_2 \leq 13 \\
+             \quad & x_1,x_2 \geq 0\\
+             \quad & \underline{x} \in Z^n
+\end{align*}
+$$
+
+![lattice of the problem](assets/chapter4/lattice1.png)
+
+### Linear programming relaxation of ILP
+![The ILP be chilling](assets/chapter4/relax.png)
 
 
+With the term "relaxing" we refer to the act of dropping the integrality constraint and obtaining a classic LP problem which we label as the **linear programming relaxation**.
 
+Formally:
 
+:::{.callout .callout-definition title="Linear programming relaxation of ILP"}
+Let (ILP) be:
+$$
+\begin{align*}
+z_{ILP} = max \quad & \underline{c}^T \underline{x}\\
+s.t.\quad & A\underline{x} \leq \underline{b}\\
+\quad & \underline{x} \geq \underline{0} \quad \\
+\quad & \underline{x} \in Z^n
+\end{align*}
+$$
 
+The problem (LP):
+
+$$
+\begin{align*}
+z_{LP} = max \quad & \underline{c}^T \underline{x}\\
+s.t.\quad & A\underline{x} \leq \underline{b}\\
+\quad & \underline{x} \geq \underline{0} \quad \\
+\end{align*}
+$$
+
+is the **linear programming relaxation** of (ILP)
+:::
+
+>So if we relax the problem take the optimal solution and floor it, do we get the optimal also for the integer one?
+
+>Unluckily for us no.
+
+If we look at the problem in the previous section:
+
+$$
+\begin{align*}
+z_{LP} = max \quad & z = 21 x_1 + 11 x_2 \\
+s.t \quad & 7 x_1 + 4 x_2 \leq 13 \\
+\quad & x_1,x_2 \geq 0\\
+\quad & \underline{x} \in Z^n
+\end{align*}
+$$
+
+And we solve the relaxation and find the optimal solution:
+
+![](assets/chapter4/relaxed%20sol.png)
+
+If we assume that the rounded solution in (1,0) that yields to a value of 21 is the optimal we would be wrong since:
+
+![](assets/chapter4/realsolution.png)
+
+So what relation there is between the solution of the relaxation and the solution of the real one?
+
+If we try to solve the problem through the graphical method we see that since the integrality constraint reduce the feasible area to a "lattice" , the relaxation is able to "**follow**" the gradient of the objective for longer yielding to a bigger value.
+
+Formally:
+
+:::{.callout .callout-property title="bound the ILP"}
+
+For any ILP with max (min) , we have that $z_{ILP} \leq z_{LP}$ ($z_{ILP} \leq z_{LP}$), i.e., the relaxation provides an **upper bound** (lower bound) on the optimal value of an ILP.
+
+:::
+
+### Transportation problem "pattern"
+
+In the last section we implied that the solution of the relaxation is different from the original one and defines a bound for it.
+
+There is an exception to this rule , where all vertexes of the feasible region lie on integer values (hence the two solutions are equal) , due to its correlation with a real life problem known as the "Transportation problem", we'll say that these problems have a Transportation problem **pattern**.
+
+A problem in standard form:
+
+$$
+\begin{align*}
+min \quad & \underline{c}^T \underline{x}\\
+s.t.\quad & A\underline{x} \geq \underline{b}\\
+\quad & \underline{x} = \underline{0} \quad
+\end{align*}
+$$
+
+Has the transportation problem pattern if:
+
+1. $\underline{b}$ is made of integers.
+2. A contains only either -1, 0 or 1.
+3. Each column has exactly K non-zero entries, where K = number of constraints families.
+
+Now you may ask yourself , "what is a constraint family?", this is a constraint family:
+
+$$
+\sum_{j=1}^{n}{x_{ij}} \leq p_i, \quad i=1,\dots,m
+$$
+
+So a collection of constraints that defines the same characteristic for different "elements" , in this case if this were the "plant capacity family" each member of this family describes the max capacity of each plant i to store n different types of elements.
 
