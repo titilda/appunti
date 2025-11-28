@@ -153,6 +153,22 @@
 					+ "</div>";
 			});
 
+			document.querySelectorAll(".collapsible").forEach((el) => {
+				let title = el.getAttribute("title");
+				let content = el.innerHTML;
+				let id = self.crypto.randomUUID();
+
+				el.innerHTML = "<div><div><a class=\"btn btn-info\" data-toggle=\"collapse\" href=\"#"
+					+ id
+					+ "\"<hr /><i class=\"bi bi-eye\"></i><b>"
+					+ title
+					+ "</b></a></div><div class=\"collapse\" id=\""
+					+ id
+					+ "\">"
+					+ content
+					+ "</div><hr /></div>"
+			});
+
 			// Remove `<code>` put by pandoc befose running mermaid
 			document.querySelectorAll("pre.mermaid").forEach((pre) => {
 				let code_el = pre.querySelector("code");
