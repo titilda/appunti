@@ -158,9 +158,11 @@
 				let content = el.innerHTML;
 				let id = self.crypto.randomUUID();
 
-				el.innerHTML = "<div><div><a class=\"btn btn-info\" data-toggle=\"collapse\" href=\"#"
+				el.innerHTML = "<div><hr /><div><a data-bs-toggle=\"collapse\" role=\"button\"  href=\"#"
 					+ id
-					+ "\"><hr /><i class=\"bi bi-eye\"></i><b>"
+					+ "\" aria-controls=\""
+					+ id
+					+ "\"><i class=\"bi bi-eye\"></i> - <b>"
 					+ title
 					+ "</b></a></div><div class=\"collapse\" id=\""
 					+ id
