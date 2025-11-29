@@ -2116,8 +2116,8 @@ $$
 \begin{align*}
 max \quad & 5 x_1 + 4 x_2 + 3 x_3 + x_4\\
 s.t.\quad & x_1+x_2+x_3-x_4 \leq 5\\
-    \quad &  2 x_1 + x_2 - 2 x_3 + x_4 \geq 2\\
-    \quad x_1,x_2,x_3,x_4 \geq 0
+    \quad & 2 x_1 + x_2 - 2 x_3 + x_4 \geq 2\\
+    \quad & x_1,x_2,x_3,x_4 \geq 0
 \end{align*}
 $$
 
