@@ -640,7 +640,86 @@ $$
 $$
 
 ::: {.collapsible title="Proof"}
+Let $A$ and $M$ be two matrices. A **generalized eigenvalue problem** consists in finding all the eigenpairs $(\lambda, v)$ s.t. $Av = \lambda M v$. If $A$ is SPD then all the eigenvalues $\lambda$ are strictly positive and real numbers.
 
+Let $a \in V \times V$ be a bilinear form. The eigenpairs of $a$ can be written as all the tuples $(\lambda, w)$ s.t.
+
+$$
+a(w, v) = \lambda(w, v) = \lambda \int_{\Omega} w v \qquad \forall v \in V
+$$
+
+If, instead of $V$, we take $V_h$, we get that $(\lambda_h, w_h)$ is an approzimation of $(\lambda, w)$ if 
+
+$$
+a(w_h, v_h) = \lambda_h(w_h, v_h) \qquad \forall v_h \in V_h \\
+a\left( \sum_j w_j \varphi_j, \varphi_i \right) = \lambda \left( \sum_j w_j \varphi_j, \varphi_i \right) \qquad \forall i = 1, 2, \dots, N_h\\
+\sum_j w_j a(\varphi_j, \varphi_i) = \lambda_h \sum_j w_j (\varphi_j, \varphi_i) \qquad \forall i = 1, 2, \dots, N_h \\
+A\vec{w} = \lambda_h M \vec{w}
+$$
+
+therefore the problem of the approximation of the eigenpairs of a bilinear form is equivalent to a generalized eigenvalue problem.
+
+Let $(w_h^j, \lambda_h^j)$ be the $j$<sup>th</sup> eigenpair and assume that $w_h^k$ is normalized. It holds that
+
+$$
+(w_h^j, w_h^i) = \delta_{ij} \qquad \|w_h^j\|_{L^2(\Omega)}^2 = 1
+$$
+
+Let $u_h$ be the approximation of the solution, $v_h$ be the test function and $F = 0$, then, if we apply the $\theta$-method, we get that
+
+$$
+\int_\Omega \frac{u_h^{k+1} - u_h^k}{\Delta t} v_h + a(\theta u_h^{k+1} + (1 - \theta) u_h^k, v_h) = 0 \qquad \forall v_h \in V_h \\
+\int_\Omega \frac{1}{\Delta t} \left( \sum_j (u_j^{k+1} - u_j^k) w_h^j \right) w_h^i + a\left(\sum_j u_j^{k+1} w_h^j + (1 - \theta)\sum_j u_j^k w_h^j, w_h^i\right) = 0 \qquad \forall i = 1, 2, \dots, N_h \\
+\frac{1}{\Delta t} \sum_j (u_j^{k+1} - u_j^k) \underbrace{\int_\Omega w_h^j, w_h^i}_{\delta_{ij}} + \sum_j (\theta u_j^{k+1} - (1 - \theta) u_j^k) \underbrace{a(w_h^j, w_h^i)}_{\lambda_h^j(w_h^j, w_h^i) = \lambda_h^j \delta_{ij}} = 0 \qquad \forall i = 1, 2, \dots, N_h \\
+\frac{1}{\Delta t} (u_i^{k+1} - u_i^{k}) + (\theta u_i^{k+1} + (1 - \theta) u_i^k) \lambda_h^i = 0 \qquad \forall i = 1, 2, \dots, N_h \\
+u_i^{k+1} + \Delta t \theta u_i^{k+1} \lambda_h^i = u_i^k - \Delta t (1 - \theta) \lambda_h^i u_i^k \qquad \forall i = 1, 2, \dots, N_h \\
+(1 + \Delta t \theta \lambda_k^i) u_i^{k+1} = [1 - \Delta t (1 - \theta) \lambda_h^i] u_i^k \qquad \forall i = 1, 2, \dots, N_h \\
+u_i^{k+1} = \underbrace{\frac{1 - \Delta t (1 - \theta) \lambda_h^i}{1 + \Delta t \theta \lambda_h^i}}_{\rho_i} u_h^k \qquad \forall i = 1, 2, \dots, N_h
+$$
+
+Assume $|\rho_i| \lt 1$ then $|u_i^{k+1}| \lt |u_i^k| \lt \dots \lt |u_i^0|$, therefore
+
+$$
+\sum_{i = 1}^{N_h} |u_i^n|^2 \lt \sum_{i = 1}^{N_h} |u_i^0|^2
+$$
+
+Since
+
+$$
+u_h^n(x) = \sum_{j = 1}^{N_h} u_j^n w_h^j(x)
+$$
+
+then
+
+$$
+\|u_h^n\|_{L^2(\Omega)}^2 = \int_\Omega (u_h^n)^2 = \int_\Omega \left( \sum u_j^n w_h^j \right)\left( \sum u_j^n w_h^j \right) = \sum_j \sum_i u_j^n u_i^n \underbrace{\int_\Omega w_h^j w_h^i}_{\delta_{ij}} = \sum_j (u_j^n)^2
+$$
+
+therefore
+
+$$
+\|u_h^n\|_{L^2(\Omega)} \le \|u_h^n\|_{L^2(\Omega)}
+$$
+
+hence, stability of the $\theta$-method.
+
+To prove stability, we assumed that $|\rho_i| < 1$, we will now study when that statement is true.
+
+$$
+|\rho_i| \lt 1 \iff -1 - \theta \lambda_h^i \Delta t \lt 1 - (1 - \theta) \lambda_h^i \Delta t \lt 1 + \theta \lambda_h^i \Delta t \iff 2 \theta - 1 \gt - \frac{2}{\lambda_h^i \Delta t}
+$$
+
+If $\theta \ge \frac{1}{2}$ the inequality is always satisfied and the method in unconditionally stable, otherwise we must impose that
+
+$$
+\Delta t \lt \frac{2}{(1 - 2 \theta) \lambda_h^i}
+$$
+
+Since that condition should hold for all the eigenvalies $\lambda_h^i$, it will suffice to impose it only for the bigger one, so
+
+$$
+\Delta t \gt \frac{2}{(1 - 2 \theta) \lambda_h^{N_h}} \simeq \frac{2}{1 - 2\theta} h^2
+$$
 :::
 
 # Appendix
