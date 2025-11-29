@@ -2111,13 +2111,13 @@ If this holds the solution stays optimal.
 
 ## Integer Linear Programming
 
-Suppose that we are selling metal **balls** , there are 4 types of metal **balls** :$x_1$, $x_2$, $x_3$, $x_4$ we want to maximize the profit we get from selling these **balls**, the price of each type of **ball** is respectively 5 4 3 1 ($/**ball**) and there are some constraints regarding the production of these **balls** ( see the problem below), so we end up with this formulation:
+Suppose that we are selling metal **balls** , there are 4 types of metal **balls** :$x_1$, $x_2$, $x_3$, $x_4$ we want to maximize the profit we get from selling these **balls**, the price of each type of **ball** is respectively 5 4 3 1 (euros/**ball**) and there are some constraints regarding the production of these **balls** ( see the problem below), so we end up with this formulation:
 $$
 \begin{align*}
 max \quad & 5 x_1 + 4 x_2 + 3 x_3 + x_4\\
 s.t.\quad & x_1+x_2+x_3-x_4 \leq 5\\
-    \quad &  2 x_1 + x_2 - 2 x_3 + x_4 \geq 2\\
-    \quad x_1,x_2,x_3,x_4 \geq 0
+    \quad & 2 x_1 + x_2 - 2 x_3 + x_4 \geq 2\\
+    \quad & x_1,x_2,x_3,x_4 \geq 0
 \end{align*}
 $$
 
@@ -2139,7 +2139,9 @@ s.t.\quad & A\underline{x} \geq \underline{b}\\
     \quad & \underline{x} \in Z^n
 \end{align*}
 $$
+
 In particular:
+
 1. If $x_j\in\{0,1\} \forall j$, it is a **binary LP**.
 2. If there is a $x_j$ that it is not an integer, it is a **mixed integer LP**. 
 
