@@ -2111,7 +2111,7 @@ If this holds the solution stays optimal.
 
 ## Integer Linear Programming
 
-Suppose that we are selling metal **balls** , there are 4 types of metal **balls** :$x_1$, $x_2$, $x_3$, $x_4$ we want to maximize the profit we get from selling these **balls**, the price of each type of **ball** is respectively 5 4 3 1 ($/**ball**) and there are some constraints regarding the production of these **balls** ( see the problem below), so we end up with this formulation:
+Suppose that we are selling metal **balls** , there are 4 types of metal **balls** :$x_1$, $x_2$, $x_3$, $x_4$ we want to maximize the profit we get from selling these **balls**, the price of each type of **ball** is respectively 5 4 3 1 (euros/**ball**) and there are some constraints regarding the production of these **balls** ( see the problem below), so we end up with this formulation:
 $$
 \begin{align*}
 max \quad & 5 x_1 + 4 x_2 + 3 x_3 + x_4\\
