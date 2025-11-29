@@ -2139,7 +2139,9 @@ s.t.\quad & A\underline{x} \geq \underline{b}\\
     \quad & \underline{x} \in Z^n
 \end{align*}
 $$
+
 In particular:
+
 1. If $x_j\in\{0,1\} \forall j$, it is a **binary LP**.
 2. If there is a $x_j$ that it is not an integer, it is a **mixed integer LP**. 
 
