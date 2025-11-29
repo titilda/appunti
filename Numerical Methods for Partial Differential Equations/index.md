@@ -405,7 +405,7 @@ _TODO: NDim generalization_
 
 Up until now, we have assumed that the Dirichlet boundary conditions were shaped like $u(\Gamma_D) = 0$. This is called **homogeneous problem**. If $u(\Gamma_D) = \varphi$ then it is called **heterogeneous problem**.
 
-In the case of an heterogeneous problem, we introduce a **lifting** $R$ of $\varphi$ such that $u^0 = u - R\varphi\$ and $u^0(a) = 0$.
+In the case of an heterogeneous problem, we introduce a **lifting** $R$ of $\varphi$ such that $u^0 = u - R\varphi$ and $u^0(a) = 0$.
 
 The problem now become
 
@@ -524,6 +524,204 @@ $$
 
 The fully discretized form is composed by a linear system for each timestep $n$. Since the solution of the $n+1$<sup>th</sup> timestep depends on the solution of the $n$<sup>th</sup> one, the linear systems must be resolved sequentially.
 
+::: {.callout .callout-note title="$K$ factorization"}
+As $K$ does not depend on time, it may be useful to apply LU or Cholesky factorization on it once and for all before solving the system for each timestep. For a big enough number of timesteps, the time spent performing the factorization will be masked by the performance gain.
+:::
+
+## Well-posedness of parabolic PDE problems
+
+For the well-posedness of elliptic problems, coercivity was required. For parabolic problems, weak coercivity is enough.
+
+Assume we want to prove the well-posedness of the following problem
+
+$$
+\begin{cases}
+  \frac{\partial u}{\partial t} - \nu \frac{\partial^2 u}{\partial x^2} = f & \bar a \lt x \lt \bar b \\
+  \nu \frac{\partial u}{\partial x}(\bar a) = \frac{\partial u}{\partial x}(\bar b) = 0 & \Gamma_N \\
+  u(x, 0) = u_0(x) & \bar a \lt x \lt \bar b
+\end{cases}
+$$
+
+with $\nu \gt 0$ and constant.
+
+If we multiply by a test function and integrate, we get that
+
+$$
+\int_{\bar a}^{\bar b} \frac{\partial u}{\partial t} v + \underbrace{\int_{\bar a}^{\bar b} \nu \frac{\partial u}{\partial x} \frac{\partial v}{\partial x}}_{a(u, v)} - \underbrace{\left[ \nu \frac{\partial u}{\partial x} v \right]_{\bar a}^{\bar b}}_{0} = \int_{\bar a}^{\bar b} fv
+$$
+
+Consider $a(v, v) = \int_{\bar a}^{\bar b} \nu (\frac{\partial v}{\partial x})^2 = \nu \|\frac{\partial v}{\partial x}\|_{L^2(\bar a, \bar b)}^2$: there cannot be coercivity because $a(v, v)$ cannot be, in any way, larger than the complete norm of $v$ squared.
+
+::: {.callot .callout-note title="Complete norm"}
+Remember that the **complete norm of $v$** is expressed as
+
+$$
+\|v\| = \sqrt{\|v\|_{L^2(\bar a, \bar b)}^2 + \left\| \frac{\partial v}{\partial x} \right\|_{L^2(\bar a, \bar b)}^2}
+$$
+:::
+
+Consider instead $a(v, v) + \lambda \|v\|_{L^2(\bar a, \bar b)}^2$ then
+
+$$
+a(v, v) + \lambda \|v\|_{L^2(\bar a, \bar b)} = \nu \left\| \frac{\partial u}{\partial x} \right\|_{L^2(\bar a, \bar b)}^2 + \lambda \|v\|_{L^2(\bar a, \bar b)}^2 \ge \underbrace{\min(\nu, \lambda)}_\alpha \cdot \underbrace{\left( \|v\|_{L^2(\bar a, \bar b)}^2 + \left\| \frac{\partial v}{\partial x}_{L^2(\bar a, \bar b)}^2 \right\| \right)}_{\|v\|^2} = \alpha \|v\|^2
+$$
+
+hence, we got that $a$ is weakly coercive.
+
+### Stability of the $\theta$-method
+
+The term **stability** refers to the fact that the solution does not explode and that is bounded in time.
+
+Depending on the value of $\theta$, we can either have **unconditional stability** (the method is stable for an arbitrary $\Delta t$) or **conditional stability** (the method is stable only for small enough values of $\Delta t$).
+
+To study the stability of the fully discretized problem, we apply the $\theta$-method to the Galerkin problem:
+
+$$
+\left( \frac{u_h^{k+1} - u_h^{k}}{\Delta t}, v_h \right) + a(\theta u_h^{k+1} + (1 - \theta)u_h^k, v_h) = \theta F^{k+1}(v_h) + (1 - \theta)F^k(v_h)
+$$
+
+for each timestep $k$ and where $(\cdot, \cdot)$ is the sclar product:
+
+$$
+(a, b) = \int a(x) \cdot b(x) \ dx
+$$
+
+::: {.callout .callout-example title="Unconditional stability of the backward Euler method"}
+Assume for simplicity that $F = 0$ and that $\theta = 1$ (backwrd Euler). As we want to use coercivity, we take $a(u_h^{k+1}, u_h^{k+1})$.
+
+$$
+(u_h^{k+1}, u_h^{k+1}) + \Delta t \underbrace{a(u_h^{k+1}, u_h^{k+1})}_{\ge \alpha \|u_h^{k+1}\|_V^2} = (u_h^k, u_h^{k+1}) \\
+\|u_h^{k+1}\|_{L^2(\Omega)}^2 + \Delta t \alpha \|u_h^{k+1}\|_V^2 \le \|u_h^k\|_{L^2(\Omega)} \|u_h^{k+1}\|_{L^2(\Omega)} \le \frac{1}{2} \|u_h^k\|^2_{L^2(\Omega)} + \frac{1}{2} \|u_h^{k+1}\|_{L^2(\Omega)}^2
+$$
+
+where we used the coercivity of $a$ (even if it is weakly coercive, it works anyway).
+
+We will now prove **boundedess**:
+
+$$
+\|u_h^{k+1}\|_{L^2(\Omega)}^2 + 2 \Delta t \alpha \|u_h^{k+1}\|_{L^2(\Omega)}^2 \le \|u_h^k\|_{L^2(\Omega)}^2 \\
+\left( \|u_h^{k+1}\|_{L^2(\Omega)}^2 - \|u_h^k\|_{L^2(\Omega)}^2 \right) + 2 \Delta t \alpha \|u_h^{k+1}\|_{L^2(\Omega)}^2 \le 0 \\
+\left( \|u_h^{n+1}\|_{L^2(\Omega)}^2 - \|u_h^0\|_{L^2(\Omega)}^2 \right) + 2 \alpha \Delta t \sum_{k = 0}^n \|u_h^{k+1}\|_V^2 \le 0 \\
+\underbrace{\|u_h^{n+1}\|_{L^2(\Omega)}^2 + 2 \alpha \Delta t \sum \|u_n^{k+1}\|_{L^2(\Omega)}^2}_{\text{One possible norm for $u_h^{n+1}$}} \le \|u^0_h\|_{L^2(\Omega)}
+$$
+
+where we used the fact that the $V$-norm of somethins is smaller or equal to the $L^2$ norm of the same thing.
+
+We will now proove **stability**
+
+$$
+(1 + 2 \alpha \Delta t) \|u_h^{k+1}\|_{L^2(\Omega)}^2 \le \|u_h^k\| \\
+\|u_h^k\|_{L^2(\Omega)} \le \left( \frac{1}{\sqrt{1 + 2 \alpha \Delta t}} \right)^k \|u_h^0\|_{L^2(\Omega)}
+$$
+
+therefore the backward Euler method is unconditionally stable.
+:::
+
+::: {.callout .callout-note title="Weak coercivity is still coercivity"}
+In the previous example we used the fact that $a$ even if it was declared as _weakly_ coercive. This is perfectly fine because if we perform a specific change of variables on a weakly coercive form, we get a normally coercive form:
+
+Take a weakly coercive form $a$:
+
+$$
+\frac{\partial u}{\partial t} - \nu \frac{\partial^2 u}{\partial x^2} = f \implies a(u, v) = \int_\Omega \frac{\partial u}{\partial x} \frac{\partial v}{\partial x}
+$$
+
+If we take $u = e^{\lambda t}w$ then the problem become
+
+$$
+\frac{\partial}{\partial t} \left( e^{\lambda t} w \right) - \nu \frac{\partial^2}{\partial t^2} \left( e^{\lambda t} w \right) = f \implies \tilde a(w, v) = \int_{\Omega} \frac{\partial w}{\partial x} \frac{\partial v}{\partial x} + \lambda \int_{\Omega} w^2 = a(w, v) + \lambda \|v\|_{L^2(\Omega)}^2 \ge \lambda \|w\|_{L^2(\Omega)}^2
+$$
+:::
+
+While the backward Euler is unconditionally stable, in general, this property depends on the chosen value for $\theta$, in particular, the $\theta$-method is unconditionally stable only for $\theta \ge 0$, otherwise we must have that $\Delta t$ is small enough:
+
+$$
+\Delta t \lt \frac{2}{(1 - 2\theta) \lambda_{max}(A)} \simeq \frac{2}{1 - 2\theta} h^2
+$$
+
+::: {.collapsible title="Proof"}
+Let $A$ and $M$ be two matrices. A **generalized eigenvalue problem** consists in finding all the eigenpairs $(\lambda, v)$ s.t. $Av = \lambda M v$. If $A$ is SPD then all the eigenvalues $\lambda$ are strictly positive and real numbers.
+
+Let $a \in V \times V$ be a bilinear form. The eigenpairs of $a$ can be written as all the tuples $(\lambda, w)$ s.t.
+
+$$
+a(w, v) = \lambda(w, v) = \lambda \int_{\Omega} w v \qquad \forall v \in V
+$$
+
+If, instead of $V$, we take $V_h$, we get that $(\lambda_h, w_h)$ is an approzimation of $(\lambda, w)$ if 
+
+$$
+a(w_h, v_h) = \lambda_h(w_h, v_h) \qquad \forall v_h \in V_h \\
+a\left( \sum_j w_j \varphi_j, \varphi_i \right) = \lambda \left( \sum_j w_j \varphi_j, \varphi_i \right) \qquad \forall i = 1, 2, \dots, N_h\\
+\sum_j w_j a(\varphi_j, \varphi_i) = \lambda_h \sum_j w_j (\varphi_j, \varphi_i) \qquad \forall i = 1, 2, \dots, N_h \\
+A\vec{w} = \lambda_h M \vec{w}
+$$
+
+therefore the problem of the approximation of the eigenpairs of a bilinear form is equivalent to a generalized eigenvalue problem.
+
+Let $(w_h^j, \lambda_h^j)$ be the $j$<sup>th</sup> eigenpair and assume that $w_h^k$ is normalized. It holds that
+
+$$
+(w_h^j, w_h^i) = \delta_{ij} \qquad \|w_h^j\|_{L^2(\Omega)}^2 = 1
+$$
+
+Let $u_h$ be the approximation of the solution, $v_h$ be the test function and $F = 0$, then, if we apply the $\theta$-method, we get that
+
+$$
+\int_\Omega \frac{u_h^{k+1} - u_h^k}{\Delta t} v_h + a(\theta u_h^{k+1} + (1 - \theta) u_h^k, v_h) = 0 \qquad \forall v_h \in V_h \\
+\int_\Omega \frac{1}{\Delta t} \left( \sum_j (u_j^{k+1} - u_j^k) w_h^j \right) w_h^i + a\left(\sum_j u_j^{k+1} w_h^j + (1 - \theta)\sum_j u_j^k w_h^j, w_h^i\right) = 0 \qquad \forall i = 1, 2, \dots, N_h \\
+\frac{1}{\Delta t} \sum_j (u_j^{k+1} - u_j^k) \underbrace{\int_\Omega w_h^j, w_h^i}_{\delta_{ij}} + \sum_j (\theta u_j^{k+1} - (1 - \theta) u_j^k) \underbrace{a(w_h^j, w_h^i)}_{\lambda_h^j(w_h^j, w_h^i) = \lambda_h^j \delta_{ij}} = 0 \qquad \forall i = 1, 2, \dots, N_h \\
+\frac{1}{\Delta t} (u_i^{k+1} - u_i^{k}) + (\theta u_i^{k+1} + (1 - \theta) u_i^k) \lambda_h^i = 0 \qquad \forall i = 1, 2, \dots, N_h \\
+u_i^{k+1} + \Delta t \theta u_i^{k+1} \lambda_h^i = u_i^k - \Delta t (1 - \theta) \lambda_h^i u_i^k \qquad \forall i = 1, 2, \dots, N_h \\
+(1 + \Delta t \theta \lambda_k^i) u_i^{k+1} = [1 - \Delta t (1 - \theta) \lambda_h^i] u_i^k \qquad \forall i = 1, 2, \dots, N_h \\
+u_i^{k+1} = \underbrace{\frac{1 - \Delta t (1 - \theta) \lambda_h^i}{1 + \Delta t \theta \lambda_h^i}}_{\rho_i} u_h^k \qquad \forall i = 1, 2, \dots, N_h
+$$
+
+Assume $|\rho_i| \lt 1$ then $|u_i^{k+1}| \lt |u_i^k| \lt \dots \lt |u_i^0|$, therefore
+
+$$
+\sum_{i = 1}^{N_h} |u_i^n|^2 \lt \sum_{i = 1}^{N_h} |u_i^0|^2
+$$
+
+Since
+
+$$
+u_h^n(x) = \sum_{j = 1}^{N_h} u_j^n w_h^j(x)
+$$
+
+then
+
+$$
+\|u_h^n\|_{L^2(\Omega)}^2 = \int_\Omega (u_h^n)^2 = \int_\Omega \left( \sum u_j^n w_h^j \right)\left( \sum u_j^n w_h^j \right) = \sum_j \sum_i u_j^n u_i^n \underbrace{\int_\Omega w_h^j w_h^i}_{\delta_{ij}} = \sum_j (u_j^n)^2
+$$
+
+therefore
+
+$$
+\|u_h^n\|_{L^2(\Omega)} \le \|u_h^n\|_{L^2(\Omega)}
+$$
+
+hence, stability of the $\theta$-method.
+
+To prove stability, we assumed that $|\rho_i| < 1$, we will now study when that statement is true.
+
+$$
+|\rho_i| \lt 1 \iff -1 - \theta \lambda_h^i \Delta t \lt 1 - (1 - \theta) \lambda_h^i \Delta t \lt 1 + \theta \lambda_h^i \Delta t \iff 2 \theta - 1 \gt - \frac{2}{\lambda_h^i \Delta t}
+$$
+
+If $\theta \ge \frac{1}{2}$ the inequality is always satisfied and the method in unconditionally stable, otherwise we must impose that
+
+$$
+\Delta t \lt \frac{2}{(1 - 2 \theta) \lambda_h^i}
+$$
+
+Since that condition should hold for all the eigenvalies $\lambda_h^i$, it will suffice to impose it only for the bigger one, so
+
+$$
+\Delta t \gt \frac{2}{(1 - 2 \theta) \lambda_h^{N_h}} \simeq \frac{2}{1 - 2\theta} h^2
+$$
+:::
+
 # Appendix
 
 ## Normal derivative
@@ -617,6 +815,12 @@ $$
 \exists \alpha \gt 0 : a(v, v) \gt \alpha \|v\|_V^2
 $$
 
+A form $a$ is called **weakly coercive** if
+
+$$
+\exists \lambda \ge 0, \alpha \gt 0 : a(v, v) + \lambda \|v\|_{L^2}^2 \ge \alpha \|v\|_V^2
+$$
+
 ## Functionals
 
 _TODO_
@@ -629,4 +833,18 @@ $$
 \left|\int_\Omega uv\right| \le \|u\|_{L^2(\Omega)} \|v\|_{L^2(\Omega)} \\
 \left|\int_\Omega u'v'\right| \le \|u'\|_{L^2(\Omega)} \|v'\|_{L^2(\Omega)} \\
 \left|\int_\Omega u'v\right| \le \|u'\|_{L^2(\Omega)} \|v'\|_{L^2(\Omega)} \\
+$$
+
+## Young inequality
+
+Let $A, B \in \mathbb{R}$ then
+
+$$
+AB \le \varepsilon A^2 + \frac{1}{4\varepsilon}B^2 \qquad \forall \varepsilon \gt 0
+$$
+
+In particular, for $\varepsilon = \frac{1}{2}$, then
+
+$$
+AB \le \frac{A^2}{2} + \frac{B^2}{2}
 $$
