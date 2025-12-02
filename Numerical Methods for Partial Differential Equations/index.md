@@ -722,6 +722,97 @@ $$
 $$
 :::
 
+# Domain decomposition
+
+**Domain Decomposition** methods are used to split a big problem into two or more smaller problems. Assume you have a problem so solve that looks like
+
+$$
+\begin{cases}
+  Lu = f & \Omega = \{x : \bar a \lt x \lt \bar b\}\\
+  u(\bar a) = \gamma_1 \\
+  u(\bar b) = \gamma_2
+\end{cases}
+$$
+
+We want to split $\Omega$ into two subdomains so that we can get a new, equivalent problem:
+
+$$
+\begin{cases}
+  Lu_1 = f & \Omega_1 = \{x : \bar a \lt x \lt \Gamma\} \\
+  Lu_2 = f & \Omega_2 = \{x : \Gamma \lt x \lt \bar b\} \\
+  u_1(\bar a) = \gamma_1 \\
+  u_2(\bar b) = \gamma_2 \\
+  u_1(\Gamma) = u_2(\Gamma) \\
+  (\mu u_1')(\Gamma) = (\mu u_2')(\Gamma)
+\end{cases}
+$$
+
+$\Gamma$ is called the **interface** between $\Omega_1$ and $\Omega_2$.
+
+We see in the new, equivalent problem, that on the interface, we need to impose continuity of both the solution and its derivative (**interface conditions**). Interface conditions are both Dirichlet and Neumann.
+
+If we define
+
+$$
+u = \begin{cases}
+  u_1 & \Omega_1 \\
+  u_2 & \Omega_2
+\end{cases}
+$$
+
+then we can recover the solution of the original problem from the unknowns of the equivalent one.
+
+$u_1$ and $u_2$ are called **local solutions**.
+
+We use an iterative method (the **Dirichlet-Neumann DD** method) to solve the new equivalent problem splitting it into two separate problems:
+
+$$
+\begin{cases}
+  Lu_1^{(k)} = f & \Omega_1 \\
+  u_1^{(k)} = u_2^{(k-1)} & \Gamma \\
+  \text{Boundary conditions} & \partial\Gamma_1 \cap \partial\Gamma
+\end{cases} \\
+\begin{cases}
+  Lu_2^{(k)} = f & \Omega_2 \\
+  \mu u_2'^{(k)} = \mu u_1'^{(k)} & \Gamma \\
+  \text{Boundary conditions} & \partial\Gamma_2 \cap \partial\Gamma
+\end{cases}
+$$
+
+Lets call $P_1$ the problem on $\Omega_1$ and $P_2$ the one on $\Omega_2$.
+
+The DN-DD method is sequential: $u_2^{(k)}$ (from $P_2$) depends on $u_1^{(k)}$ (from $P_1$) which in turn depends on $u_2^{(k-1)}$ (from $P_2$ on the previous iteration) and so on.
+
+We modify $P_2$ to make the two $P_1$ and $P_2$ independent so that they can be solved in parallel (in red the changes to the algorithm):
+
+$$
+\begin{cases}
+  Lu_2^{(k)} = f & \Omega_2 \\
+  \mu u_2'^{(k)} = \mu \textcolor{red}{u_1'^{(k - 1)}} & \Gamma \\
+  \text{Boundary conditions} & \partial\Gamma_2 \cap \partial\Gamma
+\end{cases}
+$$
+
+With $k \to \infty$, we have that $u_i^{(k)} \to u_i$.
+
+Depending on the choice for $\Gamma$, the algorithm may or may not converge. To improve convergence, we modify $P_1$ to have a relaxation parameter (changes in red) to get the DN-$\theta$ problem:
+
+$$
+\begin{cases}
+  Lu_1^{(k)} = f & \Omega_1 \\
+  u_1^{(k)} = \textcolor{red}{\theta u_2^{(k-1)} + (1-\theta) u_1^{(k-1)}} & \Gamma \\
+  \text{Boundary conditions} & \partial\Gamma_1 \cap \partial\Gamma
+\end{cases}
+$$
+
+where $\theta > 0$ is called **relaxation parameter** and can be chosen arbitrarily.
+
+With $0 \lt \theta \lt \theta_{max}$, convergence is guaranteed.
+
+::: {.callout .callout-note title="Single iteration convergence"}
+With a 1D problem, splitting it in two domains, it exists $\theta_{opt}$ s.t. the algorithm converges in one single iteration.
+:::
+
 # Appendix
 
 ## Normal derivative
@@ -739,7 +830,7 @@ where $n$ is the normal direction of $v$ in each point.
 Let $\vec{w} \in \mathbb{R}^d, d \in \mathbb{N}^+$ then the **divergence operator** applied to $\vec{w}$ is defined as
 
 $$
-\operatorname{div}(\vec{w}) = \sum_{i = 1}^d \frac{\partial w_d}{\partial x_d}
+\operatorname{div}(\vec{w}) = \sum_{i = 1}^d \frac{\partial w_i}{\partial x_i}
 $$
 
 ## Gradient
