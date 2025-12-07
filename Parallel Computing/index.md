@@ -464,6 +464,22 @@ We can also allow to reorder _all_ the types of memory access operations to get 
 
 **Syncronization primitives** are used to synchronize memory accesses from multiple sources. Programmers may use **lock**s, **semaphore**s and more.
 
+A possible strategy to implement simple locks are the **atomic taest-and-set** instructions. Baically, they atomically perform a load from memory to a register and, if certain conditions are met, the value stored in memory is changed. In this way, it is possible to _query_ the status of the lock, waiting for it to be released safely.
+
+A good lock system have the following characteristics:
+
+- low latency;
+- low interconnect traffic (if more than one processors wants to acquire the lock at the same time, they all should be able to do so sequentially, without generating too much traffic on the bus);
+- scalability;
+- low storage cost;
+- fairness.
+
+Test-and-set lock aren't idea: they generate a lot of traffic, they are not easily scalable and there is no guarantee of fairness.
+
+**Test-and-test-and-set** locks are a different approach: the processor continues to query the status of the lock until it is released. At that point, it tries to acquire it and, if it fails, it goes back to waiting.
+
+This type of locks have a slightly higher latency but generate less traffic (no continuous loads) and are more scalable.
+
 
 
 _To be continued_
