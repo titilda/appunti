@@ -502,8 +502,122 @@ Also, the types of optimization that you (or the compiler) can introduce may be 
 
 Multiple parallelization libraries and technologies may be used at the same time, as long as they do not interfere with each other: as an example, one can use CUDA to send computation on the GPU while performing parallelized computation on the CPU with OpenMP. It is even possible to mix MPI and OpenMP to parallelize on multiple cores on multiple chips.
 
-<!-- 7.5 -->
+## Parallel algorithms
 
+Designing a parallel algorithm is not trivial, often times the PCAM procedure is followed:
 
+1. **Partitioning**: decompose problem in smaller tasks;
+2. **Communication**: choose how the tasks need to exchange information between each other;
+3. **Agglomeration**: group similar and independent  to reduce overhead;
+4. **Mapping**: assign resources to each agglomerate.
+
+Partitioning can be performed with **domain decomposition** (split data with the least possible replication and assign each subset to a task) or **functional decomposition**  (the problem is split in smaller subproblems).
+
+The partitions must be such that there should be at least an order of magnitude more tasks that there are processors available. Each task must be such that there is no useless redundant computation performed, each task should take a comparable amount of time to be completed and the number of them should be able to scale with the problem size.
+
+Communication can be **local** (communication only between _close_ tasks) or **global** (communication between everyone), **structured** (information flows following a pattern like tree, grid, mesh, o-ring, etc.) or **unstructured** (information can flow in arbitrary patterns), **static** (communication partners are decided at compile time) or **dynamic** (communication partners are decided at run time).
+
+Communication can also be **explicit** (using messages) or **implicit** (reading and writing on shared memory).
+
+The synchronization between communication partners can either be **synchronous** (blocking and with handshake) or **asynchronous** (data transfer is independent from execution flow).
+
+## Threads
+
+A single process can spawn multiple threads. Each thread can access all the resources acquired by the main process.
+
+A thread is an abstraction: it may or may not correspond to an hardware execution unit and may or may not be executed in parallel with other threads.
+
+## Pthread
+
+To use pthread, one must `#include <pthread.h>` and use `-pthread` when compiling.
+
+When using pthreads, threads are created with `pthread_create`. A thread ca terminate itself callong a `return` or a `pthread_exit`. Threads can terminate other threads using `pthread_cancel`. If the main process is terminated, all threads are terminated as well, but if the main thread calls `pthread_exit` then all the threads survive.
+
+Threads can wait for other threads to exit calling `pthread_join`.
+
+Barriers are crated with `pthread_barrier_init` and are used through `pthread_barrier_wait`.
+
+Mutexes are available: `pthread_mutex_lock` and `pthread_mutex_unlock`.
+
+## OpenMP
+
+To use OpenMP, one must `#include <omp.h>` and use `-fopenmp` when compiling.
+
+OpenMP parallelizes stuff written in a `parallel` block:
+
+```c
+#pragma omp parallel
+{
+
+}
+```
+
+It is possible to specify how many threads will be used in the section:
+
+```c
+#pragma omp parallel num_threads(4)
+{
+
+}
+```
+
+_Note: one can also use `OMP_NUM_THREADS` or `omp_set_num_threads`._
+
+### Sections
+
+Sections represent the functional parallelism.
+
+Sections can be defined to run independnt tasks concurrently:
+
+```c
+#pragma omp parallel sections
+{
+    #pragma omp section
+    {
+        task1();
+    }
+
+    #pragma omp section
+    {
+        task2();
+    }
+    ...
+}
+```
+
+### For
+
+For represents data parallelism.
+
+One can parallelize the iterations of a for-loop:
+
+```c
+#pragma omp parallel for
+for(...) {
+
+}
+```
+
+Since each thread receives a block of iteration to process sequentially, it is possible to specify `schedule(...)` to be `static` (when all the iterations takes more or less the same time), `dynamic` (when different iterations takes different times) or `runtime` (based on `OMP_SCHEDULE`).
+
+`reduction` is used to perform a reduce over a specified variable at the end of all the iterations (all the threads keeps a private copy of the variable to reduce and then a global reduction is performed to save the result on the shared variable).
+
+### Synchronization
+
+Code wrapped by `#pragma omp single` is executed by only one single thread, if it is instead wrapped by `#pragma omp master` the code will be executed specifically by the master thread.
+
+`#pragma omp critical` is used to denote sections that must be executed atomically by one thread at a time. `critical`s may be named, in that case, critical sections with different names can be run in parallel.
+
+`#pragma omp barrier` is used to wait for all the threads to reach the same barrier.
+
+`#pragma omp atomic` ensures that the memory access in the following statement are performed atomically.
+
+### Visibility
+
+**Data Scope Attribute Clauses** are used to tell OpenMP how the variables are shared between threads.
+
+Variables may be declared as `private` (all threads have their local non-shared copy) or `shared` (all threads share the same variable).
+
+It is possible to specify `default(shared)` or `default(private)` to set the visibility of all the variables whose visibility was not specified or `default(none)` to force the programmer to specify visibility for _all_ variables.
 
 _To be continued_
