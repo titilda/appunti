@@ -677,3 +677,102 @@ A better approach is done by using a simple heuristic called **Move-to-Front** t
 The potential function is calculates as $\phi(L_i) = 2 \cdot \text{\# inversions}$, where an inversion is a pair of elements that are out of order compared to the optimal list. Each movement create/destroy 1 inversion.
 
 The amortized cost of the $i$-th operation is: $\hat{c}_i = c_i + \Delta \phi(L_i) = 4c_i$, making the algorithm 4-competitive. Using a linked list the cost of the transposition is free, allowing to be 2-competitive.
+
+## Parallel programming
+
+Ideally, parallelization should be automatically implemented by the compiler by converting a sequential code into a parallel one. In practice this is not feasible as is impossible to guarantee data safety (like overlapping memory access).
+
+It's better, and safer, to let the programmer decide what to parallelize.
+
+### Type of Parallelism
+
+Parallelism can be implemented at different levels of granularity:
+
+- **Bit Level**: Processing multiple bits simultaneously within a single instruction. While crucial for hardware implementation (ASIC/FPGA), it is also relevant in software for operations like bit-packing.
+- **Instruction Level (ILP)**: Executing different instructions simultaneously on the same core. This is supported by superscalar architectures, pipelines, and SIMD units and is generally extracted by compilers.
+- **Task Level**: Breaking a program into discrete sections (tasks) that run on multiple processors. This is difficult to extract automatically and requires explicit management.
+  - **Task Graph**: Represented as a Directed Acyclic Graph (DAG) where vertices are tasks and edges represent dependencies or data communication.
+  - **Pipeline**: Mimics processor pipelining where data streams through stages. This is ideal for streaming applications like video encoding.
+
+#### Communication
+
+Data sharing describe the communication between the processors:
+
+- **Shared Memory**: All tasks share a global address space. Modifications by one processor are visible to others.
+- **Message Passing**: Each task has private memory and interacts by explicitly sending/receiving messages
+
+### Parallel Programming Technologies
+
+There is no single standard for parallel programming. There is an inverse relationship between _abstraction level_ and _Overhead_.
+
+#### Verilog / VHDL
+
+Verilog and VHDL are Hardware Description Languages (HDL) used to design and model digital systems at the hardware level.
+
+They have a very low level of abstraction, allowing precise control over hardware resources, maximizing parallelism and performance.
+
+Requires specific hardware knowledge and specialized tools FPGA/ASIC.
+
+#### MPI
+
+The Message Passing Interface (MPI) is a standardized and portable message-passing system designed to function on a wide variety of parallel computing architectures.
+
+This is highly scalable and works on diverse architectures.
+
+Explicit message-based communication can introduce significant overhead and complexity in programming.
+
+#### Pthread
+
+The POSIX Threads (Pthreads) is a standard for multithreading in C/C++.
+
+It provides a low-level API for creating and managing threads, allowing fine-grained control over thread behavior and synchronization.
+
+There is a higher complexity and overhead in managing threads and synchronization.
+
+#### OpenMP
+
+OpenMP is an API that supports multi-platform shared memory multiprocessing programming in C, C++, and Fortran.
+
+It provides a higher-level abstraction for parallel programming, allowing developers to easily parallelize code using compiler directives.
+
+The main target are multi-core CPUs with shared memory architecture.
+
+#### CUDA
+
+CUDA (Compute Unified Device Architecture) is a parallel computing platform and programming model developed by Nvidia for general-purpose computing on Nvidia GPUs.
+
+It allows developers to leverage the massive parallel processing power of GPUs for computationally intensive tasks.
+
+#### OpenCL
+
+OpenCL (Open Computing Language) is an open standard for parallel programming of heterogeneous systems, including CPUs, GPUs, and FPGAs, hiding the hardware specifics.
+
+Hiding hardware specifics can lead to suboptimal performance compared to platform-specific solutions.
+
+#### Apache Spark
+
+Apache Spark is an open-source distributed computing system designed for big data processing and analytics.
+
+Abstract parallelization and communication.
+
+#### Comparison of Parallel Technologies
+
+| Technology     | Type                          | Target               | Memory model              |
+| -------------- | ----------------------------- | -------------------- | ------------------------- |
+| Verilog / VHDL | Hardware Description Language | ASIC/FPGA            | Hardware-level            |
+| MPI            | Library                       | Multi-CPUs (Cluster) | Message Passing           |
+| Pthread        | Library                       | Multi-core CPU       | Shared Memory             |
+| OpenMP         | C/Fortran Extension           | Multi-core CPU       | Shared Memory             |
+| CUDA           | C Extension                   | Nvidia GPU + CPU     | Shared Memory             |
+| OpenCL         | C/C++ Extension & API         | CPU/GPU/FPGA         | Distributed Shared Memory |
+| Apache Spark   | API                           | Cluster              | Distributed               |
+
+| Technology     | Parallelism         | Bit   | Instruction | Task  | Communication       |
+| -------------- | ------------------- | ----- | ----------- | ----- | ------------------- |
+| Verilog / VHDL | Explicit            | Yes   | Yes         | No    | Explicit            |
+| MPI            | Implicit            | (Yes) | (Yes)       | Yes   | Explicit            |
+| Pthread        | Explicit            | (Yes) | (Yes)       | Yes   | Implicit            |
+| OpenMP         | Explicit            | (Yes) | (Yes)       | Yes   | Implicit            |
+| CUDA           | Implicit (Explicit) | (Yes) | No          | (Yes) | Implicit (Explicit) |
+| OpenCL         | Explicit/Implicit   | (Yes) | No          | Yes   | Explicit/Implicit   |
+| Apache Spark   | Implicit            | (Yes) | No          | (Yes) | Implicit            |
