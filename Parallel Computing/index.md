@@ -480,6 +480,30 @@ Test-and-set lock aren't idea: they generate a lot of traffic, they are not easi
 
 This type of locks have a slightly higher latency but generate less traffic (no continuous loads) and are more scalable.
 
+# Parallel programming
+
+_Note: a great part of this section is in common with [Advanced Algorithms and Parallel Programming](../Advanced%20Algorithm%20and%20Parallel%20Programming/index.html)_.
+
+There are three types of parallelism that can be implemented:
+
+- **bit level parallelism**: multiple words of bits are processed at the same (simd);
+- **instruction level parallelism**: multiple instructions are executed on the same core at the same time (pipeline, hyperthreading);
+- **task level parallelism**: multiple programs or code blocks (tasks) are executed at the same time on multiple processors.
+
+With task level parallelism, program is split into different tasks. Based on the dependency graph between tasks, multiple independent tasks can be run at the same time.
+
+Tasks can be pipelined to save time.
+
+Tasks can communicate either over **shared memory** or with **message passing** (each task has its own private memory and communicates with other tasks by sending and receiving _messages_ of data).
+
+In order to tell the compiler that parallelism can be extracted from our source code, we must give it precise instructions and hint. Take as an example a function that process an array elementwise and writes the result on another array. Since the compiler cannot guarantee that the two array does not overlap, it will not parallelie anything. If instead we mark the arrays as `restrict`, the compiler will be more prone to use simd instructions or similar stuff (in this case, if we do not respect the restrictedness constraing, undefined behaviour may happen).
+
+Also, the types of optimization that you (or the compiler) can introduce may be suitable for the architecture you are programming: unsuitable paralleliation techniques will either cause undefined behaviours or introduce useless overhead.
+
+Multiple parallelization libraries and technologies may be used at the same time, as long as they do not interfere with each other: as an example, one can use CUDA to send computation on the GPU while performing parallelized computation on the CPU with OpenMP. It is even possible to mix MPI and OpenMP to parallelize on multiple cores on multiple chips.
+
+<!-- 7.5 -->
+
 
 
 _To be continued_
