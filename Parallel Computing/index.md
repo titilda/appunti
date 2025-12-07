@@ -425,8 +425,11 @@ When multiple threads access caches that may or may not be shared and backed by 
 **Memory coherence** ensures that a system that reads and writes to a shared cache will behave just the same as if there were no caches. When multiple accesses happens at the same time,
 the result of said accesses must be coherent between all the processors (i.e. if multiple processors read at the same time, they will read the same value and if multiple processors write at the same time, all the processors must agree on what will be actually written).
 
+Coherence is required because using caches, data is duplicates, so there has to be a way to synchronize changes.
 
 **Memory consistency** defines _when_ the memory writes from one processor will be propagated to all the other processor.
+
+Basically, memory consistency defines what a compiler can or cannot do and what precautions the programmer has to take in order to produce functioning programs. It also depends on the hardware configuration.
 
 Both requirements are not trivial to satisfy and they heavily affect the life of the programmer (they should think about those problem and adapt their algorithms) and the performace (instruction reordering may break things and memory latencies are harder to mask).
 
@@ -441,6 +444,26 @@ There are four different types of memory operation orderings:
 
 A **sequentially consistent** memory system maintain all the aforementioned four memory operation orderings. In practice, a sequentially consistent system will choose the next instruction to run from a thread at random. Threads will need manual synchronization so that only acceptable code path are followed.
 
-<!-- lecture 6 consistency : 19 -->
+The sequential consistency is very time consuming, is there a way to relax ordering requirements to allow parallel accesses and save on time? We can place a write buffer between the processor and the memory, violating the $W_x \to R_y$ rule to obtain the **total store ordering** memory system.
+
+In general, we can relax memory operation ordering until it is not possible to keep computation consistent: 
+
+With TSO memory system, a processor can read a variable before the value it has written on another variable is propagated to all the other processors (can move own reads before own writes).
+
+<!-- Processor consistency ??? -->
+
+With TSO, writes are _not_ reordered.
+
+Consistency is not related to the presence of caches: even with multiple processors accessing the same shared memory, it must be guaranteed.
+
+We can also allow write operations to be reordered (relaxation of $W_x \to R_y$ and $W_x \to W_y$) to obtain **partial store ordering**.
+
+We can also allow to reorder _all_ the types of memory access operations to get the fastest speed (**weak ordering** and **release consistency**). The more we relax, the more need to use synchronization primitives we have (otherwise access to a same memory location may be non deterministic, causing _funny and easy to debug problems_ like **data races**).
+
+### Synchronization primitives
+
+**Syncronization primitives** are used to synchronize memory accesses from multiple sources. Programmers may use **lock**s, **semaphore**s and more.
+
+
 
 _To be continued_
