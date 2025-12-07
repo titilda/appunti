@@ -33,8 +33,14 @@ $$M' = \langle M, X, Y, A \rangle$$
 Each time step, each processor can simultaneously perform:
 
 - Read from shared memory ($A, X$);
+- Read from internal memory;
 - Perform an internal computation;
+- Write to internal memory;
 - Write to shared memory ($A, Y$).
+
+Each RAM is synchronized with the others by a global clock. This allows to have all the processors perform the same step at the same time, removing synchronization mechanisms.
+
+When a PRAM has a bounded number of processors $p'$, it's possible to simulate it with a PRAM with $p$ processors. This is done by dividing the work among the $p$ processors, each processor simulating $\lceil \frac{p}{p'} \rceil$ processors of the original PRAM. This increase the time complexity by a factor of $\lceil \frac{p}{p'} \rceil$.
 
 ### PRAM Classification
 
@@ -59,14 +65,14 @@ The classification is done by combining the two types of access.
 
 The complexity of a PRAM algorithm is measured by:
 
-| Metric              | Symbol          | Formula                                             | Context / Meaning                                                                                                                          |
-| :------------------ | :-------------- | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
-| **Elapsed Time**    | $T_p(n)$        | -                                                   | The number of steps (time) to complete the algorithm of size $n$ using $p$ processors.                                                     |
-| **Sequential Time** | $T^*(n)$        | -                                                   | The time complexity of the **best known sequential algorithm** for the same problem. $\mathbf{T^*(n) \neq T_1(n)}$.                        |
-| **Speedup**         | $SU_p(n)$       | $\frac{T^*(n)}{T_p(n)}$                             | Measures how much **faster** the parallel algorithm is compared to the best sequential one. Ideally, $SU_p(n) \approx p$ (linear speedup). |
-| **Efficiency**      | $E_p(n)$        | $\frac{SU_p(n)}{p} = \frac{T_1(n)}{p \cdot T_p(n)}$ | Measures the **average utilization** of the $p$ processors. $0 \leq E_p(n) \leq 1$. An efficiency close to 1 is considered **optimal**.    |
-| **Cost**     | $C_p(n)$ | $p \cdot T_p(n)$                                    | Amount of time of the algorithm multiplied by the number of processors used                                                  |
-| **Work**     | $W(n)$ |                                    | The total number of operations performed by **all** $p$ processors during the execution. ($W \leq C$) |
+| Metric              | Symbol    | Formula                                             | Context / Meaning                                                                                                                          |
+| :------------------ | :-------- | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Elapsed Time**    | $T_p(n)$  | -                                                   | The number of steps (time) to complete the algorithm of size $n$ using $p$ processors.                                                     |
+| **Sequential Time** | $T^*(n)$  | -                                                   | The time complexity of the **best known sequential algorithm** for the same problem. $\mathbf{T^*(n) \neq T_1(n)}$.                        |
+| **Speedup**         | $SU_p(n)$ | $\frac{T^*(n)}{T_p(n)}$                             | Measures how much **faster** the parallel algorithm is compared to the best sequential one. Ideally, $SU_p(n) \approx p$ (linear speedup). |
+| **Efficiency**      | $E_p(n)$  | $\frac{SU_p(n)}{p} = \frac{T_1(n)}{p \cdot T_p(n)}$ | Measures the **average utilization** of the $p$ processors. $0 \leq E_p(n) \leq 1$. An efficiency close to 1 is considered **optimal**.    |
+| **Cost**            | $C_p(n)$  | $p \cdot T_p(n)$                                    | Amount of time of the algorithm multiplied by the number of processors used                                                                |
+| **Work**            | $W(n)$    |                                                     | The total number of operations performed by **all** $p$ processors during the execution. ($W \leq C$)                                      |
 
 ### Examples
 
@@ -119,7 +125,7 @@ The scaling is classified in two types:
 
 #### Strong Scaling
 
-In strong scaling the problem size ($n$) is kept constant while the number of processors ($p$) is increased. The goal is to reduce the time ($T$) taken to complete the computation.
+In strong scaling the problem size ($n$) is kept constant and the goal is to improve performance ($T$) by increasing the number of processors ($p$) (**Fixed Size Problem**).
 
 To analyze strong scaling, we use **Amdahl's Law**:
 
@@ -140,7 +146,7 @@ $$T \propto \frac{1}{p}$$
 
 #### Weak Scaling
 
-In weak scaling, the problem size ($n$) is increased proportionally with the number of processors ($p$), keeping the workload per processor constant. The goal is to maintain a constant time ($T$) as both $n$ and $p$ increase.
+In weak scaling, the problem size ($n$) is increased and the goal is to keep the execution time ($T$) constant by increasing the number of processors ($p$) (**Fixed Time Problem**).
 
 To analyze weak scaling, we use **Gustafson's Law**:
 
@@ -207,7 +213,7 @@ The solution might not be the best, but is feasible, the probability to find the
 
 It's possible to repeat $l$ times the algorithm, keeping all the results and choosing the best one, increasing the probability to find the best solution to $1 - (1 - \frac{1}{\binom n2})^{l\binom n2}$.
 
-Choosing $l = c \log n$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l \cdot \log n)$ (The optimal $l$ is $O(n^2 \log n)$).
+Choosing $l = c \log n$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l)$. The optimal $l$ is $n^2\log n$ to get a final complexity of $O(n^4 \log n)$.
 
 ### Karger-Stein Algorithm
 
@@ -671,3 +677,102 @@ A better approach is done by using a simple heuristic called **Move-to-Front** t
 The potential function is calculates as $\phi(L_i) = 2 \cdot \text{\# inversions}$, where an inversion is a pair of elements that are out of order compared to the optimal list. Each movement create/destroy 1 inversion.
 
 The amortized cost of the $i$-th operation is: $\hat{c}_i = c_i + \Delta \phi(L_i) = 4c_i$, making the algorithm 4-competitive. Using a linked list the cost of the transposition is free, allowing to be 2-competitive.
+
+## Parallel programming
+
+Ideally, parallelization should be automatically implemented by the compiler by converting a sequential code into a parallel one. In practice this is not feasible as is impossible to guarantee data safety (like overlapping memory access).
+
+It's better, and safer, to let the programmer decide what to parallelize.
+
+### Type of Parallelism
+
+Parallelism can be implemented at different levels of granularity:
+
+- **Bit Level**: Processing multiple bits simultaneously within a single instruction. While crucial for hardware implementation (ASIC/FPGA), it is also relevant in software for operations like bit-packing.
+- **Instruction Level (ILP)**: Executing different instructions simultaneously on the same core. This is supported by superscalar architectures, pipelines, and SIMD units and is generally extracted by compilers.
+- **Task Level**: Breaking a program into discrete sections (tasks) that run on multiple processors. This is difficult to extract automatically and requires explicit management.
+  - **Task Graph**: Represented as a Directed Acyclic Graph (DAG) where vertices are tasks and edges represent dependencies or data communication.
+  - **Pipeline**: Mimics processor pipelining where data streams through stages. This is ideal for streaming applications like video encoding.
+
+#### Communication
+
+Data sharing describe the communication between the processors:
+
+- **Shared Memory**: All tasks share a global address space. Modifications by one processor are visible to others.
+- **Message Passing**: Each task has private memory and interacts by explicitly sending/receiving messages
+
+### Parallel Programming Technologies
+
+There is no single standard for parallel programming. There is an inverse relationship between _abstraction level_ and _Overhead_.
+
+#### Verilog / VHDL
+
+Verilog and VHDL are Hardware Description Languages (HDL) used to design and model digital systems at the hardware level.
+
+They have a very low level of abstraction, allowing precise control over hardware resources, maximizing parallelism and performance.
+
+Requires specific hardware knowledge and specialized tools FPGA/ASIC.
+
+#### MPI
+
+The Message Passing Interface (MPI) is a standardized and portable message-passing system designed to function on a wide variety of parallel computing architectures.
+
+This is highly scalable and works on diverse architectures.
+
+Explicit message-based communication can introduce significant overhead and complexity in programming.
+
+#### Pthread
+
+The POSIX Threads (Pthreads) is a standard for multithreading in C/C++.
+
+It provides a low-level API for creating and managing threads, allowing fine-grained control over thread behavior and synchronization.
+
+There is a higher complexity and overhead in managing threads and synchronization.
+
+#### OpenMP
+
+OpenMP is an API that supports multi-platform shared memory multiprocessing programming in C, C++, and Fortran.
+
+It provides a higher-level abstraction for parallel programming, allowing developers to easily parallelize code using compiler directives.
+
+The main target are multi-core CPUs with shared memory architecture.
+
+#### CUDA
+
+CUDA (Compute Unified Device Architecture) is a parallel computing platform and programming model developed by Nvidia for general-purpose computing on Nvidia GPUs.
+
+It allows developers to leverage the massive parallel processing power of GPUs for computationally intensive tasks.
+
+#### OpenCL
+
+OpenCL (Open Computing Language) is an open standard for parallel programming of heterogeneous systems, including CPUs, GPUs, and FPGAs, hiding the hardware specifics.
+
+Hiding hardware specifics can lead to suboptimal performance compared to platform-specific solutions.
+
+#### Apache Spark
+
+Apache Spark is an open-source distributed computing system designed for big data processing and analytics.
+
+Abstract parallelization and communication.
+
+#### Comparison of Parallel Technologies
+
+| Technology     | Type                          | Target               | Memory model              |
+| -------------- | ----------------------------- | -------------------- | ------------------------- |
+| Verilog / VHDL | Hardware Description Language | ASIC/FPGA            | Hardware-level            |
+| MPI            | Library                       | Multi-CPUs (Cluster) | Message Passing           |
+| Pthread        | Library                       | Multi-core CPU       | Shared Memory             |
+| OpenMP         | C/Fortran Extension           | Multi-core CPU       | Shared Memory             |
+| CUDA           | C Extension                   | Nvidia GPU + CPU     | Shared Memory             |
+| OpenCL         | C/C++ Extension & API         | CPU/GPU/FPGA         | Distributed Shared Memory |
+| Apache Spark   | API                           | Cluster              | Distributed               |
+
+| Technology     | Parallelism         | Bit   | Instruction | Task  | Communication       |
+| -------------- | ------------------- | ----- | ----------- | ----- | ------------------- |
+| Verilog / VHDL | Explicit            | Yes   | Yes         | No    | Explicit            |
+| MPI            | Implicit            | (Yes) | (Yes)       | Yes   | Explicit            |
+| Pthread        | Explicit            | (Yes) | (Yes)       | Yes   | Implicit            |
+| OpenMP         | Explicit            | (Yes) | (Yes)       | Yes   | Implicit            |
+| CUDA           | Implicit (Explicit) | (Yes) | No          | (Yes) | Implicit (Explicit) |
+| OpenCL         | Explicit/Implicit   | (Yes) | No          | Yes   | Explicit/Implicit   |
+| Apache Spark   | Implicit            | (Yes) | No          | (Yes) | Implicit            |
