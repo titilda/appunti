@@ -638,6 +638,10 @@ In a nutshell, to be able to execute statements in parallel, there must not be d
 
 Parallel patterns are used to solve specific types of issues that arises when moving from a serial implementation to a parallel one.
 
+Some kond of patterns can be classified as **collective**s: those are the patterns that operates on the entire collection of data rather than on the single elements.
+
+Reduce, scan, partition, scatter and gather are collectives.
+
 ### Control patterns
 
 **Control patterns** are used to control the execution flow in parallel programs.
@@ -662,11 +666,25 @@ Data management patterns are strategies used to allocate and move data for each 
 
 The **pack** pattern (opposite of **unpack**) is used to remove unused space from a sequence to reduce memory consumption.
 
+Parallel pack works by creating a mask of `1`s and `0`s where `1` means that the element is present and must be kept. After that, the mask undergo a pass of prefix sum (scan with addition operator) to get an array of incremental indices to feed into a scatter.
+
+Unpack works in the opposite way: given the mask, the prefix sum is computed and the input (sequentially indexed) is written into the output (indexed by the prefix sum).
+
+**split** (opposite of **unsplit**) is a variation of pack that puts all the `1` elements on one side and all the other on another side.
+
+**bin** is just split but with more than 2 categories (there are multiple masks and prefix sums).
+
+**expand** is just map but can produce an arbitrary number of output elements for each input element.
+
 The **pipeline** pattern is used to move data between tasks exactly as it sounds.
 
 The **geometric decomposition** pattern is used to split data into smaller subproblems based off the geometry of the input data. May be **overlapping** or **not overlapping**.
 
 The **gather** pattern is used to read some data given the list of positions to read from. Opposite of **scatter** (which may result in race contitions).
+
+**shift**, **zip** and **unzip** are variations of gather.
+
+As scatter performs multiple writes, collisions may happen. In this case we must choose between a number of rules to handle them. **atomic scatter** chooses randomly the final value; **permutation scatter** gives an error in case of collision (and the output is a pure permutation of the input); **merge scatter** reduces the values causing a collision into a single value using a provided associative and commutative operator; **priority scatter** uses the priority of the element to be written (usually using the input index from which the element is coming);
 
 ### Other patterns
 
@@ -676,7 +694,7 @@ The **futures** pattern is just like javascript promises, nothing more.
 
 The **speculative selection** pattern is just an higher level implementation of hardware speculative execution.
 
-The **workpile** pattern is just a map that, for each element of the initial collection, may produce an arbitrary number of outputs that must be then concatenated.
+The **workpile** pattern is just a map that, for each element of the initial collection, may produce an arbitrary number of other elements to be processed.
 
 The **search** pattern is literally what is seems to be.
 
@@ -685,5 +703,15 @@ The **segmentation** pattern is  map but applied to non-overlapping non-necessar
 The **expand** pattern is a combination of pack and map.
 
 The **category reduction** pattern is a combination of filter and reduce.
+
+### AoS vs SoA
+
+AoS stands for **array of structures** while SoA stands for "Structure of arrays".
+
+The former consists in storing the problem structures all in one single array while the latter consists in having a struct containing one array for each attribute containing all the corresponding attributes.
+
+AoS is good for random access (best cache usage) while SoA is good for vectorization et similia.
+
+Both methods may need padding to be correctly aligned. Padding may be placed at the end, after each structure (for AoS) or after each array (for SoA).
 
 _To be continued_
