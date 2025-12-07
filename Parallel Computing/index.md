@@ -620,4 +620,70 @@ Variables may be declared as `private` (all threads have their local non-shared 
 
 It is possible to specify `default(shared)` or `default(private)` to set the visibility of all the variables whose visibility was not specified or `default(none)` to force the programmer to specify visibility for _all_ variables.
 
+## Parallel patterns
+
+Patterns are known solutions to known problems. There exist known parallel patterns to solve known parallel problems.
+
+The main problem in parallel programming is **dependency** (that arises when multiple statements needs to access the same resources).
+
+There are three types of dependency: $\delta$ (**true/flow dependency**: inputs for one statement are the outputs for a previous one), $\delta^0$ (**output dependency**: two statements have the same outputs) and $\delta^{-1}$ (**antidependence**: outputs for one statements are the inputs for a previous one).
+
+Two statements can be executed in parallel if and only if there are no dependencies of any kind between them. Dependencies may be removed by rearranging or eliminating statements.
+
+Prallelism can also be extracted in loops: if each iteration (or groups of iterations, in the case the dependency is between non-consecutive iterations) are independent from each other, the loop can be parallelized or unrolled.
+
+If parallelism can be extracted from multiple loops, it is possible to group one iteration from all loops into a single thread.
+
+In a nutshell, to be able to execute statements in parallel, there must not be dependencies between those statements and the order in which they would be executed serially should not matter.
+
+Parallel patterns are used to solve specific types of issues that arises when moving from a serial implementation to a parallel one.
+
+### Control patterns
+
+**Control patterns** are used to control the execution flow in parallel programs.
+
+The **fork-join** pattern is used to split computation in multiple flows and reconcile them at the end.
+
+The **map** pattern is used to apply the same function (called **elemental function**) to all the elements of a sequence in parallel.
+
+Elemental functions must be pure.
+
+The **stencil** pattern is a generalization of the map pattern where the elemental function requires also to access _nearby_ elements of the sequence.
+
+The **reduction** pattern is used to reduce a sequence into a single element.
+
+The **scan** pattern is used to compute every partial reduction of a sequence.
+
+The **recurrence** pattern is an even-more-generalized version of map where multiple iterations of map are performed and each iteration depends on the results of the previous ones (not only the single elements but also neighbors).
+
+### Data management patterns
+
+Data management patterns are strategies used to allocate and move data for each thread.
+
+The **pack** pattern (opposite of **unpack**) is used to remove unused space from a sequence to reduce memory consumption.
+
+The **pipeline** pattern is used to move data between tasks exactly as it sounds.
+
+The **geometric decomposition** pattern is used to split data into smaller subproblems based off the geometry of the input data. May be **overlapping** or **not overlapping**.
+
+The **gather** pattern is used to read some data given the list of positions to read from. Opposite of **scatter** (which may result in race contitions).
+
+### Other patterns
+
+The **superscalar sequence** pattern consists in writing tasks and ordering them only depending on their dependencies.
+
+The **futures** pattern is just like javascript promises, nothing more.
+
+The **speculative selection** pattern is just an higher level implementation of hardware speculative execution.
+
+The **workpile** pattern is just a map that, for each element of the initial collection, may produce an arbitrary number of outputs that must be then concatenated.
+
+The **search** pattern is literally what is seems to be.
+
+The **segmentation** pattern is  map but applied to non-overlapping non-necessarily-uniform-sized partitions of the problem.
+
+The **expand** pattern is a combination of pack and map.
+
+The **category reduction** pattern is a combination of filter and reduce.
+
 _To be continued_
