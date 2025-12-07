@@ -33,8 +33,14 @@ $$M' = \langle M, X, Y, A \rangle$$
 Each time step, each processor can simultaneously perform:
 
 - Read from shared memory ($A, X$);
+- Read from internal memory;
 - Perform an internal computation;
+- Write to internal memory;
 - Write to shared memory ($A, Y$).
+
+Each RAM is synchronized with the others by a global clock. This allows to have all the processors perform the same step at the same time, removing synchronization mechanisms.
+
+When a PRAM has a bounded number of processors $p'$, it's possible to simulate it with a PRAM with $p$ processors. This is done by dividing the work among the $p$ processors, each processor simulating $\lceil \frac{p}{p'} \rceil$ processors of the original PRAM. This increase the time complexity by a factor of $\lceil \frac{p}{p'} \rceil$.
 
 ### PRAM Classification
 
@@ -59,14 +65,14 @@ The classification is done by combining the two types of access.
 
 The complexity of a PRAM algorithm is measured by:
 
-| Metric              | Symbol          | Formula                                             | Context / Meaning                                                                                                                          |
-| :------------------ | :-------------- | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
-| **Elapsed Time**    | $T_p(n)$        | -                                                   | The number of steps (time) to complete the algorithm of size $n$ using $p$ processors.                                                     |
-| **Sequential Time** | $T^*(n)$        | -                                                   | The time complexity of the **best known sequential algorithm** for the same problem. $\mathbf{T^*(n) \neq T_1(n)}$.                        |
-| **Speedup**         | $SU_p(n)$       | $\frac{T^*(n)}{T_p(n)}$                             | Measures how much **faster** the parallel algorithm is compared to the best sequential one. Ideally, $SU_p(n) \approx p$ (linear speedup). |
-| **Efficiency**      | $E_p(n)$        | $\frac{SU_p(n)}{p} = \frac{T_1(n)}{p \cdot T_p(n)}$ | Measures the **average utilization** of the $p$ processors. $0 \leq E_p(n) \leq 1$. An efficiency close to 1 is considered **optimal**.    |
-| **Cost**     | $C_p(n)$ | $p \cdot T_p(n)$                                    | Amount of time of the algorithm multiplied by the number of processors used                                                  |
-| **Work**     | $W(n)$ |                                    | The total number of operations performed by **all** $p$ processors during the execution. ($W \leq C$) |
+| Metric              | Symbol    | Formula                                             | Context / Meaning                                                                                                                          |
+| :------------------ | :-------- | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Elapsed Time**    | $T_p(n)$  | -                                                   | The number of steps (time) to complete the algorithm of size $n$ using $p$ processors.                                                     |
+| **Sequential Time** | $T^*(n)$  | -                                                   | The time complexity of the **best known sequential algorithm** for the same problem. $\mathbf{T^*(n) \neq T_1(n)}$.                        |
+| **Speedup**         | $SU_p(n)$ | $\frac{T^*(n)}{T_p(n)}$                             | Measures how much **faster** the parallel algorithm is compared to the best sequential one. Ideally, $SU_p(n) \approx p$ (linear speedup). |
+| **Efficiency**      | $E_p(n)$  | $\frac{SU_p(n)}{p} = \frac{T_1(n)}{p \cdot T_p(n)}$ | Measures the **average utilization** of the $p$ processors. $0 \leq E_p(n) \leq 1$. An efficiency close to 1 is considered **optimal**.    |
+| **Cost**            | $C_p(n)$  | $p \cdot T_p(n)$                                    | Amount of time of the algorithm multiplied by the number of processors used                                                                |
+| **Work**            | $W(n)$    |                                                     | The total number of operations performed by **all** $p$ processors during the execution. ($W \leq C$)                                      |
 
 ### Examples
 
@@ -119,7 +125,7 @@ The scaling is classified in two types:
 
 #### Strong Scaling
 
-In strong scaling the problem size ($n$) is kept constant while the number of processors ($p$) is increased. The goal is to reduce the time ($T$) taken to complete the computation.
+In strong scaling the problem size ($n$) is kept constant and the goal is to improve performance ($T$) by increasing the number of processors ($p$) (**Fixed Size Problem**).
 
 To analyze strong scaling, we use **Amdahl's Law**:
 
@@ -140,7 +146,7 @@ $$T \propto \frac{1}{p}$$
 
 #### Weak Scaling
 
-In weak scaling, the problem size ($n$) is increased proportionally with the number of processors ($p$), keeping the workload per processor constant. The goal is to maintain a constant time ($T$) as both $n$ and $p$ increase.
+In weak scaling, the problem size ($n$) is increased and the goal is to keep the execution time ($T$) constant by increasing the number of processors ($p$) (**Fixed Time Problem**).
 
 To analyze weak scaling, we use **Gustafson's Law**:
 
@@ -207,7 +213,7 @@ The solution might not be the best, but is feasible, the probability to find the
 
 It's possible to repeat $l$ times the algorithm, keeping all the results and choosing the best one, increasing the probability to find the best solution to $1 - (1 - \frac{1}{\binom n2})^{l\binom n2}$.
 
-Choosing $l = c \log n$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l \cdot \log n)$ (The optimal $l$ is $O(n^2 \log n)$).
+Choosing $l = c \log n$ the probability become $\le \frac{1}{n^c}$ with a complexity of $O(n^2 \cdot l)$. The optimal $l$ is $n^2\log n$ to get a final complexity of $O(n^4 \log n)$.
 
 ### Karger-Stein Algorithm
 
