@@ -776,3 +776,60 @@ Abstract parallelization and communication.
 | CUDA           | Implicit (Explicit) | (Yes) | No          | (Yes) | Implicit (Explicit) |
 | OpenCL         | Explicit/Implicit   | (Yes) | No          | Yes   | Explicit/Implicit   |
 | Apache Spark   | Implicit            | (Yes) | No          | (Yes) | Implicit            |
+
+## Parallel Programming Design
+
+Designing a **parallel algorithm** starts by understanding the problem, analyzing the dependencies, and identifying opportunities for parallelism in a machine-independent environment.
+
+After that, it's possible to design a **parallel program** selecting the architecture, the language, communication model, etc.
+
+### PCAM Methodology
+
+A common methodology to design parallel algorithms is the **PCAM** (Partitioning, Communication, Agglomeration, Mapping) methodology.
+
+#### PCAM - Partitioning
+
+The goal of this phase is to identify the parallelism in the problem by decomposing the problem into a large number of smaller tasks. This done with two approaches:
+
+- **Domain (Data) Decomposition**: Decompose the data into smaller chunks that can be processed independently.
+- **Functional Decomposition**: Decompose a problem into task without dependencies with each other.
+
+Some guidelines for partitioning:
+
+- The number of tasks should exceed the number of processors to ensure efficient utilization and overlap of computation and communication.
+- Avoid redundant computation and storage to enhance scalability.
+- Each task should perform a similar amount of work to balance the load across processors.
+- The number of tasks should scale with the problem size, in line with Gustafson's Law.
+
+#### PCAM - Communication
+
+If tasks need to exchange data, define the communication model to ensure efficient data transfer and synchronization.
+
+Communication can be classified based on several criteria:
+
+- **Local or Global**: Local communication avoids overhead by minimizing data movement, improving performance.
+- **Structured or Unstructured**: Structured communication organizes data access regularly, enhancing predictability and efficiency.
+- **Static or Dynamic**: Static communication has fixed quantities and partners, while dynamic communication determines them at runtime based on conditions.
+- **Implicit or Explicit**: Implicit communication uses shared memory, whereas explicit communication relies on message passing.
+- **Synchronous or Asynchronous**: Synchronous communication requires acknowledgment before proceeding, while asynchronous allows continuation without waiting.
+- **Point-to-Point or Collective**: Point-to-point involves direct exchange between two tasks, whereas collective communication engages multiple tasks simultaneously.
+
+Communication overhead can degrade performance compared to sequential execution. To mitigate this, overlap communication with computation where possible. Balance the load by ensuring each task transfers roughly the same amount of data, and minimize conflicts between communication and computation phases.
+
+#### PCAM - Agglomeration
+
+This step transitions from abstract parallel tasks to concrete implementation by grouping smaller tasks into larger ones.
+
+The goal is to reduce the number of tasks to increase the granularity, minimizing communication overhead and improving load balancing.
+
+#### PCAM - Mapping
+
+This phase assigns each task to a specific processor in the target architecture.
+
+- Placing tasks on different processors increase the physical parallelism, but also the communication overhead.
+- Grouping tasks on the same processor reduce communication overhead, but also the physical parallelism.
+
+Mapping is NP-Complete, so heuristics are used to find a good solution:
+
+- **Static Mapping**: Tasks are assigned to processors before execution based on estimated workloads and communication patterns.
+- **Dynamic Mapping**: Tasks are assigned to processors by a runtime load balancer during execution.
