@@ -833,3 +833,32 @@ Mapping is NP-Complete, so heuristics are used to find a good solution:
 
 - **Static Mapping**: Tasks are assigned to processors before execution based on estimated workloads and communication patterns.
 - **Dynamic Mapping**: Tasks are assigned to processors by a runtime load balancer during execution.
+
+### Dependencies
+
+A parallel program must be _correct_, meaning that the result must be the same of the sequential version.
+
+A **dependency** arise when the order of two statements $S1$ and $S2$ affect the final result.
+
+There are three types of dependencies:
+
+- **True (flow) dependency**: $S2$ depend on the result of $S1$ (Read after Write - RAW);
+- **Output dependency**: both $S1$ and $S2$ write to the same variable (Write after Write - WAW);
+- **Anti-dependency**: $S1$ read a variable and $S2$ write to the same variable (Write after Read - WAR).
+
+The Output dependency and Anti-dependency are _name_ dependencies, meaning that they depend only on the variable names, not on the actual values. Name dependencies can be removed by renaming variables.
+
+Dependencies can be represented with a **dependence graph**, where nodes are instructions and edges are dependencies. Dependencies can be detected by comparing the $IN$ and $OUT$ sets of each instruction.
+
+#### Loop Dependencies
+
+Loops are a major source of parallelism, but there can be dependencies between different iterations of the loop. Based on the dependencies it's possible to classify loops into:
+
+- **DoAll Loops**: All iterations are independent and can be executed in parallel.
+- **Loop-Carried Dependencies**: All the iterations depend on the previous one (e.g. `a[i] = a[i-1] + 1`), making parallelization impossible, but may allow pipelining.
+- **Loop-Independent Dependencies**: Dependencies exist within the same iteration, but not between iterations (e.g. `a[i] = a[i + 10] + 2`), allowing partial parallelization.
+
+The dependency can be:
+
+- **Lexical forward** if the source came before the sink in the code;
+- **Lexical backward** if the source came after the sink in the code;
