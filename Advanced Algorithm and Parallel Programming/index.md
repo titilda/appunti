@@ -873,7 +873,7 @@ Patterns can be **nested**, involving organizing tasks in a hierarchical structu
 
 Control patterns define how tasks are ordered and executed. While serial programming relies on sequence, selection, iteration, and recursion, parallel programming adapts these concepts to allow concurrent execution.
 
-#### Serial vs. Parallel Control Structures
+#### Serial Control Structures
 
 - **Sequence**: In serial execution, tasks run one after another ($A \to B$). In parallel, a sequence implies a dependency where $B$ cannot start until $A$ finishes.
 - **Selection**: In serial execution, a condition determines which branch to take (if-else). In parallel execution, **speculative execution** allows multiple branches to run concurrently before the condition is fully evaluated, discarding the incorrect results later.
@@ -1099,4 +1099,205 @@ flowchart TB
     F2 --> F3 --> R3
     A4 --> F4
     F3 --> F4 --> R4
+```
+
+### Data Management Pattern
+
+Data management patterns focus on how data is organized, accessed, and manipulated in parallel computing environments. Efficient data management is crucial for performance and scalability.
+
+#### Serial Data Management Patterns
+
+In serial programming, data can be managed in various ways:
+
+- **Random Read/Write**: Allows direct access to any memory location at any time, typically using pointers. This flexibility enables efficient data manipulation but can lead to aliasing issues, where multiple pointers reference the same location, complicating parallelization due to potential race conditions.
+- **Stack Allocation**: Memory is managed in a last-in-first-out (LIFO) manner, ideal for local variables and function calls. Allocation and deallocation are fast and automatic, preserving data locality and simplifying management. Each thread in a parallel context maintains its own stack, ensuring isolation.
+- **Heap Allocation**: Supports dynamic memory allocation and deallocation during runtime. While powerful for variable-sized data structures, it introduces overhead and complexity, such as fragmentation and manual management. In parallel programs, threads may use separate heap pools to avoid contention.
+- **Objects**: Encapsulate data and behavior, promoting modularity. In serial code, objects handle state changes predictably, but in parallel environments, shared objects require synchronization to prevent concurrent access issues.
+
+#### Pack
+
+**Pack** is a pattern that involves reorganizing data to eliminate unused or irrelevant elements, thereby reducing memory usage and improving cache performance.
+
+```mermaid
+flowchart TB
+    subgraph Usage Array
+        direction TB
+        B1[0]
+        B2[1]
+        B3[1]
+        B4[0]
+        B5[1]
+    end
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+        A5[5]
+    end
+
+    subgraph Packed Array
+        direction TB
+        P1[2]
+        P2[3]
+        P3[5]
+    end
+
+    B1 --> A1
+    B2 --> A2 --> P1
+    B3 --> A3 --> P2
+    B4 --> A4
+    B5 --> A5 --> P3
+```
+
+To restore the original structure, an **unpack** operation is performed, which reinserts the unused elements back into their original positions.
+
+#### Pipeline
+
+**Pipeline** is a pattern that divides a task into a series of stages, where each stage processes data and passes it to the next stage. This works in a producer-consumer way.
+
+```mermaid
+flowchart TB
+    subgraph Stage 1
+        direction LR
+        S1[ Storage ]
+        F1([ Task ])
+    end
+    subgraph Stage 2
+        direction LR
+        S2[ Storage ]
+        F2([ Task ])
+    end
+    subgraph Stage 3
+        direction LR
+        S3[ Storage ]
+        F3([ Task ])
+    end
+
+    Input --> F1 --> F2 --> F3 --> Output
+    S1 --> F1 --> S1
+    S2 --> F2 --> S2
+    S3 --> F3 --> S3
+```
+
+#### Geometric Decomposition
+
+**Geometric Decomposition** is a pattern that divides a large data structure (e.g., array, matrix) into smaller substructures that can be processed independently in parallel.
+
+The substructures can be overlapping.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+        A5[5]
+        A6[6]
+        A7[7]
+        A8[8]
+    end
+
+    subgraph Substructure 1
+        direction TB
+        S1A1[1]
+        S1A2[2]
+        S1A3[3]
+        S1A4[4]
+        S1A5[5]
+    end
+
+    subgraph Substructure 2
+        direction TB
+        S2A0[4]
+        S2A1[5]
+        S2A2[6]
+        S2A3[7]
+        S2A4[8]
+    end
+
+    A1 --> S1A1
+    A2 --> S1A2
+    A3 --> S1A3
+    A4 --> S1A4
+    A5 --> S1A5
+    A4 --> S2A0
+    A5 --> S2A1
+    A6 --> S2A2
+    A7 --> S2A3
+    A8 --> S2A4
+```
+
+On shared memory is possible to avoid data duplication by sharing the regions.
+
+#### Gather
+
+**Gather** is a pattern that collects elements from a source array into a destination array. The index array specifies the positions of the elements to be gathered from the source array.
+
+```mermaid
+flowchart TB
+    subgraph Index Array
+        direction LR
+        I1[4]
+        I2[2]
+        I3[5]
+    end
+    subgraph Original Array
+        direction LR
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+        A5[5]
+    end
+    subgraph Gathered Array
+        direction LR
+        R1[4]
+        R2[2]
+        R3[5]
+    end
+
+    A1 --> A2 --> A3 --> A4 --> A5
+
+    I1 --> A4 --> R1
+    I2 --> A2 --> R2
+    I3 --> A5 --> R3
+```
+
+#### Scatter
+
+**Scatter** is a pattern that distributes elements from a source array into a destination array. The index array specifies the positions where the elements from the source array should be placed in the destination array.
+
+```mermaid
+flowchart TB
+    subgraph Index Array
+        direction LR
+        I1[2]
+        I2[4]
+        I3[1]
+    end
+    subgraph Original Array
+        direction LR
+        A1[10]
+        A2[20]
+        A3[30]
+    end
+    subgraph Scattered Array
+        direction LR
+        R1[30]
+        R2[10]
+        R3[0]
+        R4[20]
+        R5[0]
+    end
+
+    A1 --> A2 --> A3
+    R1 --> R2 --> R3 --> R4 --> R5
+
+    A1 --> I1 --> R2
+    A2 --> I2 --> R4
+    A3 --> I3 --> R1
 ```
