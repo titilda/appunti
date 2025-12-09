@@ -862,3 +862,241 @@ The dependency can be:
 
 - **Lexical forward** if the source came before the sink in the code;
 - **Lexical backward** if the source came after the sink in the code;
+
+## Parallel Patterns
+
+Parallel patterns are recurring strategies for organizing parallel computations. They can be categorized into structural patterns (like nesting) and control patterns (how tasks are orchestrated).
+
+Patterns can be **nested**, involving organizing tasks in a hierarchical structure. A task may spawn sub-tasks, which in turn may spawn further sub-tasks.
+
+### Control Patterns
+
+Control patterns define how tasks are ordered and executed. While serial programming relies on sequence, selection, iteration, and recursion, parallel programming adapts these concepts to allow concurrent execution.
+
+#### Serial vs. Parallel Control Structures
+
+- **Sequence**: In serial execution, tasks run one after another ($A \to B$). In parallel, a sequence implies a dependency where $B$ cannot start until $A$ finishes.
+- **Selection**: In serial execution, a condition determines which branch to take (if-else). In parallel execution, **speculative execution** allows multiple branches to run concurrently before the condition is fully evaluated, discarding the incorrect results later.
+- **Iteration**: In serial execution, loops run sequentially. In parallel execution, iterations can be distributed across processors (**Parallel Loop**), provided there are no loop-carried dependencies.
+- **Recursion**: In serial execution, functions call themselves sequentially. In parallel execution, recursive calls can be spawned as independent tasks (e.g., in Merge-sort), operating on distinct data subsets.
+
+#### Fork-join
+
+**\*Fork-Join** is a parallel programming model where a task is divided into multiple subtasks (fork) that are executed concurrently, and then the results are combined (join) once all subtasks are complete.
+
+```mermaid
+flowchart TB
+    A[Start] --> F[ Fork ]
+    F --> T1[ Task 1 ]
+    F --> T2[ Task 2 ]
+    F --> T3[ Task 3 ]
+    T1 --> J[ Join ]
+    T2 --> J
+    T3 --> J
+    J --> E[ End ]
+```
+
+#### Map
+
+**Map** is a pattern that applies a given function to each element of a collection independently.
+
+Thanks to the independence of each operation, all the tasks can be executed in parallel.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+    end
+
+    F1([func])
+    F2([func])
+    F3([func])
+    F4([func])
+
+    subgraph Result Array
+        direction TB
+        R1[ 1 ]
+        R2[ 2 ]
+        R3[ 3 ]
+        R4[ 4 ]
+    end
+
+    A1 --> F1 --> R1
+    A2 --> F2 --> R2
+    A3 --> F3 --> R3
+    A4 --> F4 --> R4
+```
+
+A code example in pseudocode:
+
+```plaintext
+function map(collection, func):
+    result = new collection of same size
+    parallel for each element in collection:
+        result[element.index] = func(element)
+    return result
+```
+
+In a sequential program the complexity is $O(n)$, while in a parallel program with $p$ processors the complexity is $O(\frac{n}{p} + \log p)$, where $\log p$ is the overhead to manage the parallel tasks.
+
+Without overhead the complexity can be $O(1)$.
+
+Map can be unary (single input collection) or n-ary (multiple input collections).
+
+To optimize multiple map it's possible:
+
+- **Fusion**: combine multiple map operations into a single pass over the data, reducing the number of iterations and improving cache performance;
+- **Cache Fusion**: group together operations that access the same data to improve cache locality and reduce memory access latency.
+
+#### Stencil
+
+**Stencil** is a generalization of Map, where each element in a grid or array is updated based on a function based on the values of its neighboring elements.
+
+The neighbor are the one before the execution of the function, making the operations independent and parallelizable.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+    end
+
+    F1([func])
+    F2([func])
+    F3([func])
+    F4([func])
+
+    subgraph Result Array
+        direction TB
+        R1[ 1 ]
+        R2[ 2 ]
+        R3[ 3 ]
+        R4[ 4 ]
+    end
+
+    A1 --> F1
+    A2 --> F1 --> R1
+    A1 --> F2
+    A2 --> F2
+    A3 --> F2 --> R2
+    A2 --> F3
+    A3 --> F3
+    A4 --> F3 --> R3
+    A3 --> F4
+    A4 --> F4 --> R4
+```
+
+#### Reduce
+
+**Reduce** is a pattern that combines the results of a collection into a single result using a specified operation (e.g., sum, max), allowing for concurrent aggregation of data.
+
+In a parallel program, the collection is divided into smaller chunks, each chunk is reduced independently, and then the intermediate results are combined to produce the final result.
+
+To allow parallelization, the operation must be **associative** (e.g., addition, multiplication) and sometimes **commutative**.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+    end
+
+    F1([ func ])
+    F2([ func ])
+    F3([ func ])
+
+    R[ Result ]
+
+    A1 --> F1
+    A2 --> F1
+    A3 --> F2
+    A4 --> F2
+    F1 --> F3
+    F2 --> F3
+
+    F3 --> R
+```
+
+#### Scan
+
+**Scan** is a pattern that computes all the partial reduction results for a sequence of elements, allowing for concurrent computation of prefix sums or other associative operations.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+    end
+
+    F1([ func ])
+    F2([ func ])
+    F3([ func ])
+    F4([ func ])
+
+    subgraph Result Array
+        direction TB
+        R1[ 1 ]
+        R2[ 2 ]
+        R3[ 3 ]
+        R4[ 4 ]
+    end
+
+    A1 --> R1
+    A1 --> F1
+    A2 --> F1 --> R2
+    A3 --> F3
+    F1 --> F3 --> R3
+    A3 --> F2
+    A4 --> F2
+    F1 --> F4
+    F2 --> F4 --> R4
+```
+
+#### Recurrence
+
+**Recurrence** is a more complex version of the _map_ where the computation of an element depends on the results of previous elements.
+
+To be computed there must be serial order of the elements.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+    end
+    F1([ func ])
+    F2([ func ])
+    F3([ func ])
+    F4([ func ])
+    subgraph Result Array
+        direction TB
+        R1[ 1 ]
+        R2[ 2 ]
+        R3[ 3 ]
+        R4[ 4 ]
+    end
+
+    A1 --> F1 --> R1
+    A2 --> F2
+    F1 --> F2 --> R2
+    A3 --> F3
+    F2 --> F3 --> R3
+    A4 --> F4
+    F3 --> F4 --> R4
+```
