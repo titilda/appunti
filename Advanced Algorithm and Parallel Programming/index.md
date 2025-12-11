@@ -1105,6 +1105,13 @@ flowchart TB
 
 Data management patterns focus on how data is organized, accessed, and manipulated in parallel computing environments. Efficient data management is crucial for performance and scalability.
 
+Data movement is often more expensive than computation, so minimizing data transfer and optimizing data locality are key considerations.
+
+When dealing with structures and arrays it's possible to have:
+
+- **Array of Structures (AoS)**: Each element is a structure containing multiple fields. This layout is intuitive and easy to use and is good for cache on random access patterns.
+- **Structure of Arrays (SoA)**: Each field of the structure is stored in a separate array. This layout is good for vectorized operations.
+
 #### Serial Data Management Patterns
 
 In serial programming, data can be managed in various ways:
@@ -1117,6 +1124,8 @@ In serial programming, data can be managed in various ways:
 #### Pack
 
 **Pack** is a pattern that involves reorganizing data to eliminate unused or irrelevant elements, thereby reducing memory usage and improving cache performance.
+
+To restore the original structure, an **unpack** operation is performed, which reinserts the unused elements back into their original positions.
 
 ```mermaid
 flowchart TB
@@ -1151,7 +1160,68 @@ flowchart TB
     B5 --> A5 --> P3
 ```
 
-To restore the original structure, an **unpack** operation is performed, which reinserts the unused elements back into their original positions.
+A parallel pseudocode implementation for a PRAM model:
+
+```plaintext
+function pack(original, usage):
+    n = length(original)
+    m = count(usage == 1)
+
+    mask_sum = new array of size n
+    result = new array of size m
+
+    mask_sum[0] = 0
+
+    // Compute prefix sum of usage array
+    parallel for i from 1 to n-1:
+        mask_sum[i] = mask_sum[i-1] + usage[i-1]
+
+    parallel for i from 0 to n-1:
+        if usage[i] == 1:
+            result[mask_sum[i]] = original[i]
+
+    return result
+```
+
+Some special cases of the pack pattern are:
+
+- **Split**: where the data is divided into two separate arrays based on a condition on the independent elements;
+- **Bin**: where the data is divided into multiple arrays (bins) based on a range of values.
+
+```plaintext
+function bin(original, group):
+    n = length(original)
+    k = max(group) + 1
+
+    mask_counts = new matrix of size k x n
+    offsets = new array of size k
+
+    // Initialize mask_counts
+    parallel for i from 0 to k-1:
+        mask_counts[i][0] = 0
+
+    // Initialize offsets
+    parallel for i from 0 to k-1:
+        offsets[i] = 0
+
+    // Count elements for each bin
+    parallel for i from 0 to n-1:
+        offsets[group[i]] += 1
+
+    // Compute prefix sum for mask_counts
+    parallel for i from 1 to n-1:
+        for j from 0 to k-1:
+            mask_counts[j][i] = mask_counts[j][i-1] + (group[i-1] == j ? 1 : 0)
+
+    result = new array of size n
+
+    // Distribute elements into bins
+    parallel for i from 0 to n-1:
+        position = offsets[original[i]] + mask_counts[original[i]][i]
+        result[position] = original[i]
+
+    return result
+```
 
 #### Pipeline
 
@@ -1267,9 +1337,35 @@ flowchart TB
     I3 --> A5 --> R3
 ```
 
+A parallel pseudocode implementation for a PRAM model:
+
+```plaintext
+function gather(original, usage):
+    n = length(usage)
+    result = new array of size n
+
+    parallel for i from 0 to n-1:
+        result[i] = original[usage[i]]
+
+    return result
+```
+
+Some special cases of the gather pattern are:
+
+- **Shift**: where each element is moved by a fixed offset;
+- **Zip**: where n arrays are interleaved into a single array;
+- **Unzip**: where a single array is split into n arrays by separating elements based on an offset;
+
 #### Scatter
 
 **Scatter** is a pattern that distributes elements from a source array into a destination array. The index array specifies the positions where the elements from the source array should be placed in the destination array.
+
+Scatter can lead to collisions if two elements are scattered to the same position. This can be resolved by:
+
+- **Atomic Scatter**: using atomic operations to ensure that only one write occurs at a time for each position;
+- **Permutation Scatter**: check for collisions in the index array and avoid them by reordering the input data or using a different index array;
+- **Merge Scatter**: allow multiple writes to the same position and combine them using a specified operation (e.g., sum, max).
+- **Priority Scatter**: assign priorities to the elements being scattered and only allow the highest priority element to be written to a position in case of collisions.
 
 ```mermaid
 flowchart TB
@@ -1300,4 +1396,14 @@ flowchart TB
     A1 --> I1 --> R2
     A2 --> I2 --> R4
     A3 --> I3 --> R1
+```
+
+A parallel pseudocode implementation for a PRAM model:
+
+```plaintext
+function scatter(original, usage, result):
+    n = length(original)
+
+    parallel for i from 0 to n-1:
+        result[usage[i]] = original[i]
 ```
