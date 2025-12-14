@@ -691,8 +691,42 @@ Parallelism can be implemented at different levels of granularity:
 - **Bit Level**: Processing multiple bits simultaneously within a single instruction. While crucial for hardware implementation (ASIC/FPGA), it is also relevant in software for operations like bit-packing.
 - **Instruction Level (ILP)**: Executing different instructions simultaneously on the same core. This is supported by superscalar architectures, pipelines, and SIMD units and is generally extracted by compilers.
 - **Task Level**: Breaking a program into discrete sections (tasks) that run on multiple processors. This is difficult to extract automatically and requires explicit management.
-  - **Task Graph**: Represented as a Directed Acyclic Graph (DAG) where vertices are tasks and edges represent dependencies or data communication.
-  - **Pipeline**: Mimics processor pipelining where data streams through stages. This is ideal for streaming applications like video encoding.
+
+#### Task Graph
+
+A parallel program can be represented as a **task graph**, where each node represents a task and edges represent dependencies or communication between tasks.
+
+```mermaid
+graph LR
+    A[Task 1] --> B[Task 2]
+    A --> C[Task 3]
+    B --> D[Task 4]
+    C --> D
+```
+
+Each task needs some time $T$ to be executed.
+
+The sum of all the times is the **work** $W = \sum T$ (time to execute the program on a single processor).
+
+The longest path from the start to the end of the graph is the critical path, **Span** $S$ (time to execute the program with infinite processors).
+
+Based on these two values it's possible to calculate the **parallelism** of the program: $P = \frac{W}{S}$ (average amount of work that can be done in parallel, or the average number of processors that are not idle).
+
+A good parallel program has a high parallelism (many tasks can be executed in parallel) and a low span (the critical path is short).
+
+#### Pipeline
+
+A **pipeline** is a series of processing stages where the output of one stage is the input to the next. Each stage can operate concurrently, allowing multiple data items to be processed simultaneously.
+
+```mermaid
+graph LR
+    A[Stage 1] --> B[Stage 2]
+    B --> C[Stage 3]
+```
+
+#### Vectorization
+
+**Vectorization** is the process of converting scalar operations to vector operations, allowing multiple data points to be processed in parallel using SIMD (Single Instruction, Multiple Data) instructions.
 
 #### Communication
 
@@ -833,6 +867,43 @@ Mapping is NP-Complete, so heuristics are used to find a good solution:
 
 - **Static Mapping**: Tasks are assigned to processors before execution based on estimated workloads and communication patterns.
 - **Dynamic Mapping**: Tasks are assigned to processors by a runtime load balancer during execution.
+
+### Memory Architecture
+
+Parallel architectures can be classified based on their memory model:
+
+- **Shared Memory**: All processors share a common address space, allowing direct access to shared data. This model simplifies programming but can lead to contention and synchronization issues.
+- **Distributed Memory**: Each processor has its own private memory, and data is exchanged through message passing. This model scales well but requires explicit communication management.
+- **Hybrid Memory**: Combines shared and distributed memory models, often seen in clusters of multi-core processors.
+
+### Thread
+
+Inside of a process the memory is divided into:
+
+- **Kernel Space**: Reserved for the operating system and low-level system functions.
+- **User Space**: Used by user applications, further divided into:
+  - **Stack**: Stores local variables and function call information.
+  - **Heap**: Used for dynamic memory allocation.
+  - **Data Segment**: Contains global and static variables.
+  - **Text Segment**: Contains the executable code of the program.
+
+Each thread has its own stack, while the heap and data segment are shared among all threads in a process.
+
+The main advantage of threads is the low overhead to create and manage them, as they share the same memory space.
+
+The thread execute independently, making them non-deterministic, but need synchronization when accessing shared data to avoid problems like:
+
+- **Race Condition**: Two or more threads access shared data concurrently, and at least one thread modifies the data, leading to inconsistent results.
+- **Deadlock**: Two or more threads are blocked forever, each waiting for the other to release a resource.
+- **Livelock**: Two or more threads continuously change their state in response to each other without making progress.
+- **Starvation**: A thread is perpetually denied access to resources it needs to proceed, often due to other threads monopolizing those resources.
+
+Synchronization can be done with:
+
+- **Mutex**: A mutual exclusion lock that allows only one thread to access a resource at a time.
+- **Semaphore**: A signaling mechanism that controls access to a resource pool, allowing multiple threads to access a limited number of instances of a resource.
+- **Barrier**: A synchronization point where threads must wait until all threads reach the barrier before any can proceed.
+- **Condition Variable**: A synchronization primitive that allows threads to wait for certain conditions to be met before proceeding.
 
 ### Dependencies
 
@@ -1055,7 +1126,7 @@ flowchart TB
     end
 
     A1 --> R1
-    A1 --> F1
+    A1 --> F1the
     A2 --> F1 --> R2
     A3 --> F3
     F1 --> F3 --> R3
@@ -1172,9 +1243,7 @@ function pack(original, usage):
 
     mask_sum[0] = 0
 
-    // Compute prefix sum of usage array
-    parallel for i from 1 to n-1:
-        mask_sum[i] = mask_sum[i-1] + usage[i-1]
+    // Compute prefix sum of usage array using ex scan
 
     parallel for i from 0 to n-1:
         if usage[i] == 1:
@@ -1193,12 +1262,8 @@ function bin(original, group):
     n = length(original)
     k = max(group) + 1
 
-    mask_counts = new matrix of size k x n
+    prefix_mask = new matrix of size k x n
     offsets = new array of size k
-
-    // Initialize mask_counts
-    parallel for i from 0 to k-1:
-        mask_counts[i][0] = 0
 
     // Initialize offsets
     parallel for i from 0 to k-1:
@@ -1208,16 +1273,15 @@ function bin(original, group):
     parallel for i from 0 to n-1:
         offsets[group[i]] += 1
 
-    // Compute prefix sum for mask_counts
-    parallel for i from 1 to n-1:
-        for j from 0 to k-1:
-            mask_counts[j][i] = mask_counts[j][i-1] + (group[i-1] == j ? 1 : 0)
+    // Compute prefix sum for prefix_mask using parallel exclusive scan
+    parallel for i from 0 to k-1:
+        prefix_mask[i] = scan(prefix_mask, func: (a, b) => a + b) // this is wrong
 
     result = new array of size n
 
     // Distribute elements into bins
     parallel for i from 0 to n-1:
-        position = offsets[original[i]] + mask_counts[original[i]][i]
+        position = offsets[original[i]] + prefix_mask[original[i]][i]
         result[position] = original[i]
 
     return result
@@ -1330,7 +1394,9 @@ flowchart TB
         R3[5]
     end
 
+    I1 --> I2 --> I3
     A1 --> A2 --> A3 --> A4 --> A5
+    R1 --> R2 --> R3
 
     I1 --> A4 --> R1
     I2 --> A2 --> R2
@@ -1391,6 +1457,7 @@ flowchart TB
     end
 
     A1 --> A2 --> A3
+    I1 --> I2 --> I3
     R1 --> R2 --> R3 --> R4 --> R5
 
     A1 --> I1 --> R2
