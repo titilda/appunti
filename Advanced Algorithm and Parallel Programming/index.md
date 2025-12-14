@@ -755,13 +755,138 @@ This is highly scalable and works on diverse architectures.
 
 Explicit message-based communication can introduce significant overhead and complexity in programming.
 
-#### Pthread
+#### PThread
 
 The POSIX Threads (Pthreads) is a standard for multithreading in C/C++.
 
 It provides a low-level API for creating and managing threads, allowing fine-grained control over thread behavior and synchronization.
 
 There is a higher complexity and overhead in managing threads and synchronization.
+
+##### Creation
+
+A new thread is created using the `pthread_create` function.
+
+```c
+#include <pthread.h>
+
+int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+                   void *(*start_routine)(void*), void *arg);
+```
+
+Where:
+
+- `thread`: pointer to the thread identifier;
+- `attr`: thread attributes:
+  - _Joinable_ or _detached_: determines if other threads can wait for its completion;
+  - _Stack size_: size of the thread's stack;
+  - _Scheduling_: thread scheduling policy and priority;
+- `start_routine`: function to be executed by the thread;
+- `arg`: argument to be passed to the function.
+
+##### Termination
+
+The thread can terminate itself by calling `pthread_exit`, which allows it to return a value to any joining threads.
+
+```c
+#include <pthread.h>
+
+void pthread_exit(void *retval);
+```
+
+Where `retval` is a pointer to the return value.
+
+The thread can also be terminated by another thread using `pthread_cancel`, which sends a cancellation request to the target thread.
+
+```c
+#include <pthread.h>
+
+int pthread_cancel(pthread_t thread);
+```
+
+Where `thread` is the identifier of the thread to be canceled.
+
+##### Joining
+
+A thread can wait for a _joinable_ thread to complete using `pthread_join`, which blocks the calling thread until the specified thread terminates.
+
+```c
+#include <pthread.h>
+
+int pthread_join(pthread_t thread, void **retval);
+```
+
+Where:
+
+- `thread`: identifier of the thread to wait for;
+- `retval`: pointer to store the return value of the terminated thread.
+
+##### Barriers
+
+A barrier is a synchronization primitive that allows multiple threads to wait until all threads have reached a certain point in their execution before proceeding.
+
+A barrier is initialized using `pthread_barrier_init`, threads wait at the barrier using `pthread_barrier_wait`, and the barrier is destroyed using `pthread_barrier_destroy`.
+
+```c
+#include <pthread.h>
+
+int pthread_barrier_init(pthread_barrier_t *barrier,
+                           const pthread_barrierattr_t *attr,
+                           unsigned count);
+
+int pthread_barrier_wait(pthread_barrier_t *barrier);
+int pthread_barrier_destroy(pthread_barrier_t *barrier);
+```
+
+Where:
+
+- `barrier`: pointer to the barrier object;
+- `attr`: barrier attributes (usually NULL);
+- `count`: number of threads that must call `pthread_barrier_wait` before any of them can proceed.
+
+##### Mutex
+
+A mutex (mutual exclusion) is a synchronization primitive used to protect shared resources from concurrent access by multiple threads.
+
+A mutex is initialized using `pthread_mutex_init`, locked using `pthread_mutex_lock`, unlocked using `pthread_mutex_unlock`, and destroyed using `pthread_mutex_destroy`.
+
+```c
+#include <pthread.h>
+
+int pthread_mutex_init(pthread_mutex_t *mutex,
+                        const pthread_mutexattr_t *attr);
+int pthread_mutex_lock(pthread_mutex_t *mutex);
+int pthread_mutex_unlock(pthread_mutex_t *mutex);
+int pthread_mutex_destroy(pthread_mutex_t *mutex);
+```
+
+Where:
+
+- `mutex`: pointer to the mutex object;
+- `attr`: mutex attributes (usually NULL).
+
+##### Conditional Variables
+
+A condition variable is a synchronization primitive that allows threads to wait for certain conditions to be met.
+
+A condition variable is initialized using `pthread_cond_init`, threads wait on the condition variable using `pthread_cond_wait`, signal other threads using `pthread_cond_signal` or `pthread_cond_broadcast`, and the condition variable is destroyed using `pthread_cond_destroy`.
+
+```c
+#include <pthread.h>
+
+int pthread_cond_init(pthread_cond_t *cond,
+                        const pthread_condattr_t *attr);
+int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
+int pthread_cond_signal(pthread_cond_t *cond);
+int pthread_cond_broadcast(pthread_cond_t *cond);
+int pthread_cond_destroy(pthread_cond_t *cond);
+```
+
+Where:
+
+- `cond`: pointer to the condition variable object;
+- `attr`: condition variable attributes (usually NULL);
+- `mutex`: pointer to the associated mutex that must be locked before calling `pthread_cond_wait`.
 
 #### OpenMP
 
