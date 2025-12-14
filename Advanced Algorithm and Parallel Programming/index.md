@@ -896,6 +896,292 @@ It provides a higher-level abstraction for parallel programming, allowing develo
 
 The main target are multi-core CPUs with shared memory architecture.
 
+OpenMP is mainly composed by compiler pragmas that specify parallel regions, work-sharing constructs, and synchronization mechanisms.
+
+A pragma directive is a special instruction for the compiler, and it looks like this:
+
+```c
+#pragma omp <directive> [clause[,...]]
+```
+
+Parallelism is based on the fork-join paradigm, where the main thread forks multiple threads to execute parallel regions and then joins them back together.
+
+A program is divided in **parallel regions**, where multiple threads execute concurrently, and **serial regions**, where only the main thread executes. The default behavior is to execute code in serial regions and a parallel region starts only with the directive:
+
+```c
+#pragma omp parallel [if(<condition>)] [num_threads(<num>)]
+{
+    // Code executed by multiple threads
+}
+```
+
+The `if` clause allows to conditionally execute the parallel region based on a runtime condition, while the `num_threads` clause specifies the number of threads to be created for the parallel region. If the number of threads is not specified, the default number of threads can be set using the `omp_set_num_threads` function or the `OMP_NUM_THREADS` environment variable.
+
+It is possible to nest multiple parallel regions and all the threads will have ids based on their level of nesting.
+
+```mermaid
+graph TD
+    A[Main Thread - ID 0]
+    A --> B[Parallel Region 1]
+    B --> C[Thread 1.0 - ID 0]
+    B --> D[Thread 1.1 - ID 1]
+    C --> E[Parallel Region 2]
+    E --> F[Thread 2.0 - ID 0]
+    E --> G[Thread 2.1 - ID 1]
+    D --> H[Parallel Region 3]
+    H --> I[Thread 3.0 - ID 0]
+    H --> J[Thread 3.1 - ID 1]
+```
+
+##### Work-Sharing Constructs
+
+Work-sharing constructs divide the execution of a parallel region among the threads.
+
+The most common work-sharing construct is the `for` directive, which distributes the iterations of a loop among the threads:
+
+```c
+#pragma omp for [schedule(<type>[, <chunk_size>])] [nowait]
+{
+    // Loop to be parallelized
+}
+```
+
+Where:
+
+- `schedule`: defines how iterations are divided among threads:
+  - `static`: iterations are divided into chunks of equal size and assigned to threads in a round-robin fashion;
+  - `dynamic`: iterations are assigned to threads dynamically as they finish their work, with optional chunk size;
+  - `guided`: similar to dynamic scheduling, but the chunk size decreases over time;
+- `nowait`: allows threads to proceed without waiting for all threads to finish the loop.
+
+Another work-sharing construct is the `sections` directive, which allows different sections of code to be executed by different threads:
+
+```c
+#pragma omp sections
+{
+    #pragma omp section
+    {
+        // Code for section 1
+    }
+    #pragma omp section
+    {
+        // Code for section 2
+    }
+}
+```
+
+Where each `section` is executed by a different thread.
+
+It's also possible to use the `single` directive to specify that a block of code should be executed by only one thread:
+
+```c
+#pragma omp single
+{
+    // Code executed by a single thread
+}
+```
+
+Or the `master` directive to specify that a block of code should be executed by the master thread only:
+
+```c
+#pragma omp master
+{
+    // Code executed by the master thread
+}
+```
+
+##### SIMD Vectorization
+
+OpenMP provides the `simd` directive to enable vectorization of loops, allowing multiple data points to be processed in parallel by a single thread using SIMD instructions:
+
+```c
+#pragma omp simd [safelen(<length>)]
+{
+    // Loop to be vectorized
+}
+```
+
+Where:
+
+- `safelen`: specifies the maximum number of iterations that can be safely executed in parallel without data dependencies.
+
+To separate the vector between threads it's possible to use the `parallel for simd` directive, which combines parallelization and vectorization:
+
+```c
+#pragma omp parallel for simd [schedule(simd:<type>[, <chunk_size>])]
+{
+    // Loop to be parallelized and vectorized
+}
+```
+
+Where the `schedule` clause works the same as in the `for` directive.
+
+To declare a function to use SIMD vectorization, the `declare simd` directive is used:
+
+```c
+#pragma omp declare simd [uniform(var [, var2])] [linear(var [, var2]: <step>)] [inbranch|notinbranch]
+<return_type> function_name(<parameters>);
+```
+
+Where:
+
+- `uniform`: specifies that the variable is the same for all SIMD lanes;
+- `linear`: specifies that the variable changes linearly across SIMD lanes with a given step;
+- `inbranch`: indicates that the function may be called in a branch, requiring additional handling for divergent execution;
+- `notinbranch`: indicates that the function is never called in a branch, allowing for better optimization.
+
+##### Synchronization
+
+OpenMP provides several synchronization mechanisms to coordinate the execution of threads.
+
+The `critical` directive defines a critical section that can be executed by only one thread at a time:
+
+```c
+#pragma omp critical
+{
+    // Code executed by one thread at a time
+}
+```
+
+The `barrier` directive synchronizes all threads in a parallel region, making them wait until all threads reach the barrier:
+
+```c
+#pragma omp barrier
+```
+
+The `atomic` directive ensures that a specific memory operation is performed atomically, preventing race conditions:
+
+```c
+#pragma omp atomic
+variable += value;
+```
+
+##### Data Environment
+
+OpenMP allows to specify the scope of variables in parallel regions using data-sharing attributes:
+
+```c
+#pragma omp <directive> private(var [, var2])
+```
+
+All the variable defined in the `private` clause are private to each thread, meaning that each thread has its own copy of the variable.
+
+```c
+#pragma omp <directive> shared(var [, var2])
+```
+
+All the variable defined in the `shared` clause are shared among all threads, meaning that all threads access the same memory location for the variable.
+
+This is the default behavior.
+
+```c
+#pragma omp <directive> firstprivate(var [, var2])
+```
+
+All the variable defined in the `firstprivate` clause are private to each thread, but they are initialized with the value of the variable before entering the parallel region.
+
+```c
+#pragma omp <directive> lastprivate(var [, var2])
+```
+
+All the variable defined in the `lastprivate` clause are private to each thread, but after the parallel region, the value of the variable from the last iteration is copied back to the original variable.
+
+It is possible to override the default data-sharing attributes using the `default` clause:
+
+```c
+#pragma omp <directive> default(shared|none)
+```
+
+If `shared` is specified, all variables are shared by default. If `none` is specified, all variables must be explicitly declared with a data-sharing attribute.
+
+To perform reductions on variables, OpenMP provides the `reduction` clause:
+
+```c
+#pragma omp <directive> reduction(<operator>: var [, var2])
+```
+
+Where `<operator>` can be one of the following: `+`, `-`, `*`, `/`, `&`, `|`, `^`, `&&`, `||`, `max`, `min`.
+
+##### Memory Model
+
+OpenMP follows a relaxed memory model, which means that there are no guarantees about the order in which memory operations are performed across different threads.
+
+To ensure memory consistency, OpenMP provides the `flush` directive that must be executed by all the threads, which enforces a memory synchronization point:
+
+```c
+#pragma omp flush([var [, var2]])
+```
+
+##### Thread Cancellation
+
+OpenMP supports thread cancellation, allowing threads to be terminated before they complete their execution.
+
+To cancel a thread, the `cancel` directive is used:
+
+```c
+#pragma omp cancel <construct>
+```
+
+Where `<construct>` can be one of the following: `parallel`, `for`, `sections`, `task`, `taskgroup`.
+
+Other threads can check for cancellation points using the `cancellation point` directive:
+
+```c
+#pragma omp cancellation point <construct>
+```
+
+If other threads have issued a cancel directive for the same construct, the thread will terminate at the cancellation point.
+
+This check is also performed at `barrier` directives.
+
+##### Tasks
+
+OpenMP supports task-based parallelism, allowing the creation of independent units of work that can be executed by different threads.
+
+Tasks are useful for irregular parallelism and dynamic workloads.
+
+```c
+#pragma omp task depend(out: var [, var2]) depend(in: var3 [, var4])
+{
+    // Code for the task
+}
+```
+
+Where:
+
+- `depend`: specifies the dependencies of the task:
+  - `out`: variables that the task will produce (write);
+  - `in`: variables that the task will consume (read).
+
+It is possible to create a task group using the `taskgroup` directive, which allows to group multiple tasks together:
+
+```c
+#pragma omp taskgroup
+{
+    // Code for the task group
+}
+```
+
+To synchronize tasks, the `taskwait` directive is used to make the current task wait until all its child tasks have completed.
+
+```c
+#pragma omp taskwait
+```
+
+To use tasks in a parallel region, the `taskloop` directive is used to distribute loop iterations among tasks:
+
+```c
+#pragma omp taskloop [grainsize(<size>)] [num_tasks(<num>)]
+{
+    // Loop to be parallelized with tasks
+}
+```
+
+Where:
+
+- `grainsize`: specifies the minimum number of iterations per task;
+- `num_tasks`: specifies the total number of tasks to be created.
+
 #### CUDA
 
 CUDA (Compute Unified Device Architecture) is a parallel computing platform and programming model developed by Nvidia for general-purpose computing on Nvidia GPUs.
