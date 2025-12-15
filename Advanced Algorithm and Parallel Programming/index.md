@@ -815,6 +815,31 @@ Where:
 
 The rank can be used to differentiate the behavior of each process in the parallel program.
 
+To create new communicators, use `MPI_Comm_split`.
+
+```c
+#include <mpi.h>
+
+int MPI_Comm_split(MPI_Comm comm, int color, int key, MPI_Comm *newcomm);
+```
+
+Where:
+
+- `comm`: the original communicator handle;
+- `color`: integer value that determines the new communicator group;
+- `key`: integer value that determines the rank ordering in the new communicator;
+- `newcomm`: pointer to store the new communicator handle.
+
+To free the resources associated with a communicator, use `MPI_Comm_free`.
+
+```c
+#include <mpi.h>
+
+int MPI_Comm_free(MPI_Comm *comm);
+```
+
+Where `comm` is a pointer to the communicator handle to be freed.
+
 ##### Point-to-Point Communication
 
 Point-to-point communication involves sending and receiving messages between pairs of MPI processes.
@@ -871,6 +896,8 @@ This operation is blocking until a message matching the specified source and tag
 
 It is possible to use `MPI_ANY_SOURCE` and `MPI_ANY_TAG` to receive messages from any source or with any tag.
 
+###### MPI Probe
+
 To check information about the receiving message without copying the data to the buffer, use `MPI_Probe`.
 
 ```c
@@ -901,6 +928,8 @@ int MPI_Irecv(void *buf, int count, MPI_Datatype datatype,
 
 Where the `request` parameter is used to track the status of the non-blocking operation.
 
+###### MPI Async checks
+
 Using `MPI_Wait` (blocking) or `MPI_Test` (non-blocking), it's possible to check if the operation has completed.
 
 ```c
@@ -916,6 +945,8 @@ Where:
 - `flag`: pointer to an integer that is set to true if the operation has completed;
 - `status`: pointer to the status object to store information about the completed operation.
 
+###### MPI Async Cancel
+
 To cancel a non-blocking operation before it completes, use `MPI_Cancel`.
 
 ```c
@@ -925,6 +956,126 @@ int MPI_Cancel(MPI_Request *request);
 ```
 
 Where `request` is a pointer to the request object of the operation to be canceled.
+
+##### Collective Communication
+
+Collective communication involves communication patterns that include all processes in a communicator. Until all processes reach the collective operation, none of them can proceed.
+
+###### MPI Barrier
+
+To synchronize all processes in a communicator, use `MPI_Barrier`.
+
+```c
+#include <mpi.h>
+
+int MPI_Barrier(MPI_Comm comm);
+```
+
+Where `comm` is the communicator handle.
+
+###### MPI Broadcast
+
+To broadcast a message from one process to all other processes in a communicator, use `MPI_Bcast`.
+
+```c
+#include <mpi.h>
+
+int MPI_Bcast(void *buf, int count, MPI_Datatype datatype,
+                  int root, MPI_Comm comm);
+```
+
+Where:
+
+- `buf`: pointer to the data to be broadcasted;
+- `count`: number of elements to broadcast;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `root`: rank of the root process that initiates the broadcast;
+- `comm`: communicator handle.
+
+###### MPI Gather
+
+To gather messages from all processes to a single process in a communicator, use `MPI_Gather`. If the size of the messages is different, use `MPI_Gatherv`. If all the processes need to gather data from all other processes, use `MPI_Allgather`.
+
+The root also receives its own data.
+
+```c
+#include <mpi.h>
+
+int MPI_Gather(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                   void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                   int root, MPI_Comm comm);
+int MPI_Allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                       void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                       MPI_Comm comm);
+int MPI_Gatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                    void *recvbuf, const int *recvcounts, const int *displs,
+                    MPI_Datatype recvtype, int root, MPI_Comm comm);
+```
+
+Where:
+
+- `sendbuf`: pointer to the data to be sent;
+- `sendcount`: number of elements to send;
+- `sendtype`: data type of the elements to send (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `recvbuf`: pointer to the buffer to store the received data;
+- `recvcount`: number of elements to receive from each process;
+- `recvtype`: data type of the elements to receive (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `recvcounts`: array specifying the number of elements to receive from each process (only for `MPI_Gatherv`);
+- `displs`: array specifying the displacements at which to place the incoming data (only for `MPI_Gatherv`);
+- `root`: rank of the root process that gathers the data (not used in `MPI_Allgather`);
+- `comm`: communicator handle.
+
+###### MPI Scatter
+
+To scatter messages from a single process to all other processes in a communicator, use `MPI_Scatter`. If the size of the messages is different, use `MPI_Scatterv`.
+
+```c
+#include <mpi.h>
+
+int MPI_Scatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                    void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                    int root, MPI_Comm comm);
+int MPI_Scatterv(const void *sendbuf, const int *sendcounts,
+                     const int *displs, MPI_Datatype sendtype,
+                     void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                     int root, MPI_Comm comm);
+```
+
+Where:
+
+- `sendbuf`: pointer to the data to be scattered;
+- `sendcount`: number of elements to send to each process;
+- `sendtype`: data type of the elements to send (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `sendcounts`: array specifying the number of elements to send to each process (only for `MPI_Scatterv`);
+- `displs`: array specifying the displacements from which to take the outgoing data (only for `MPI_Scatterv`);
+- `recvbuf`: pointer to the buffer to store the received data;
+- `recvcount`: number of elements to receive;
+- `recvtype`: data type of the elements to receive (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `root`: rank of the root process that scatters the data;
+- `comm`: communicator handle.
+
+###### MPI Reduce
+
+To perform a reduction operation (e.g., sum, max, min) across all processes in a communicator and store the result in a single process, use `MPI_Reduce`. If all processes need the result, use `MPI_Allreduce`.
+
+```c
+#include <mpi.h>
+
+int MPI_Reduce(const void *sendbuf, void *recvbuf, int count,
+                   MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm);
+int MPI_Allreduce(const void *sendbuf, void *recvbuf, int count,
+                       MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+```
+
+Where:
+
+- `sendbuf`: pointer to the data to be reduced;
+- `recvbuf`: pointer to the buffer to store the reduced result;
+- `count`: number of elements to reduce;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `op`: reduction operation (e.g., `MPI_SUM`, `MPI_MAX`, `MPI_MIN`);
+- `root`: rank of the root process that receives the reduced result (not used in `MPI_Allreduce`);
+- `comm`: communicator handle.
 
 #### PThread
 
