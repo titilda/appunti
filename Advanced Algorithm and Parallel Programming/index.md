@@ -749,11 +749,182 @@ Requires specific hardware knowledge and specialized tools FPGA/ASIC.
 
 #### MPI
 
-The Message Passing Interface (MPI) is a standardized and portable message-passing system designed to function on a wide variety of parallel computing architectures.
+The Message Passing Interface (MPI) is a standardized and portable message-passing system designed to function on a wide variety of parallel computing architectures with distributed memory.
 
 This is highly scalable and works on diverse architectures.
 
 Explicit message-based communication can introduce significant overhead and complexity in programming.
+
+MPI is only a standard, then there are different implementations like OpenMPI. Each implementation provides:
+
+- `libmpi.so`: the library containing the MPI functions;
+- `mpicc`: compiler wrapper for C programs;
+- `mpirun`/`mpiexec`: command to run MPI programs.
+
+##### Initialization and Finalization
+
+An MPI program starts with the initialization of the MPI environment using `MPI_Init`.
+
+```c
+#include <mpi.h>
+
+int MPI_Init(int *argc, char ***argv, int required, int *provided);
+```
+
+Where:
+
+- `argc` and `argv`: command-line arguments;
+- `required`: desired level of thread support;
+- `provided`: actual level of thread support provided (`MPI_THREAD_SINGLE` < `MPI_THREAD_FUNNELED` < `MPI_THREAD_SERIALIZED` < `MPI_THREAD_MULTIPLE`).
+
+Then to finalize the MPI environment use `MPI_Finalize`.
+
+```c
+#include <mpi.h>
+
+int MPI_Finalize(void);
+```
+
+This is the last MPI function called in the program and after this it's not more possible to initialize new MPI processes.
+
+All the MPI functions returns a status code, where `MPI_SUCCESS` indicates successful completion.
+
+##### Communicator
+
+A **communicator** is a group of MPI processes that can communicate with each other. They are identified by a unique handle of type `MPI_Comm`.
+
+The base communicator groups are:
+
+- `MPI_COMM_WORLD`: This group involves all the MPI processes.
+- `MPI_COMM_SELF`: This group involves only the current process.
+
+Each process in a communicator has a unique identifier called **rank**, which ranges from `0` to `size - 1`, where `size` is the total number of processes in the communicator.
+
+```c
+#include <mpi.h>
+
+int MPI_Comm_size(MPI_Comm comm, int *size);
+int MPI_Comm_rank(MPI_Comm comm, int *rank);
+```
+
+Where:
+
+- `comm`: the communicator handle;
+- `size`: pointer to store the number of processes in the communicator;
+- `rank`: pointer to store the rank of the calling process within the communicator.
+
+The rank can be used to differentiate the behavior of each process in the parallel program.
+
+##### Point-to-Point Communication
+
+Point-to-point communication involves sending and receiving messages between pairs of MPI processes.
+
+The functions are mainly related to sending and receiving messages, but the communication can be:
+
+- **Synchronous** (`MPI_Ssend`): the sender waits until the receiver has received the message;
+- **Buffered** (`MPI_Bsend`): the message is copied to a buffer, allowing to send multiple messages without waiting for the receiver;
+- **Standard** (`MPI_Send` / `MPI_Recv`): the MPI implementation decides the best way to send the message;
+- **Ready** (`MPI_Rsend`): the receiver must be ready to receive the message, otherwise the behavior is undefined.
+
+```c
+#include <mpi.h>
+
+int MPI_Send(const void *buf, int count, MPI_Datatype datatype,
+                 int dest, int tag, MPI_Comm comm);
+int MPI_Ssend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm);
+int MPI_Bsend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm);
+int MPI_Rsend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm);
+```
+
+Where:
+
+- `buf`: pointer to the data to be sent;
+- `count`: number of elements to send;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `dest`: rank of the destination process;
+- `tag`: message tag to identify the message;
+- `comm`: communicator handle;
+
+This operation are blocking and the function returns only when the `buf` is safe to be modified or reused. For the `synchronous` send, this means that the receiver has received the message.
+
+```c
+#include <mpi.h>
+
+int MPI_Recv(void *buf, int count, MPI_Datatype datatype,
+                 int source, int tag, MPI_Comm comm, MPI_Status *status);
+```
+
+Where:
+
+- `buf`: pointer to the buffer to store the received data;
+- `count`: maximum number of elements to receive;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `source`: rank of the source process;
+- `tag`: message tag to identify the message;
+- `comm`: communicator handle;
+- `status`: pointer to the status object to store information about the received message.
+
+This operation is blocking until a message matching the specified source and tag is received and the data is copied into `buf`.
+
+It is possible to use `MPI_ANY_SOURCE` and `MPI_ANY_TAG` to receive messages from any source or with any tag.
+
+To check information about the receiving message without copying the data to the buffer, use `MPI_Probe`.
+
+```c
+#include <mpi.h>
+
+int MPI_Probe(int source, int tag, MPI_Comm comm, MPI_Status *status);
+```
+
+Where:
+
+- `source`: rank of the source process (or `MPI_ANY_SOURCE`);
+- `tag`: message tag to identify the message (or `MPI_ANY_TAG`);
+- `comm`: communicator handle;
+- `status`: pointer to the status object to store information about the received message.
+
+##### Non-blocking Communication
+
+The communication can also be non-blocking using `MPI_Isend` and `MPI_Irecv`, which return immediately and allow the program to continue executing while the communication is in progress.
+
+```c
+#include <mpi.h>
+
+int MPI_Isend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Irecv(void *buf, int count, MPI_Datatype datatype,
+                  int source, int tag, MPI_Comm comm, MPI_Request *request);
+```
+
+Where the `request` parameter is used to track the status of the non-blocking operation.
+
+Using `MPI_Wait` (blocking) or `MPI_Test` (non-blocking), it's possible to check if the operation has completed.
+
+```c
+#include <mpi.h>
+
+int MPI_Wait(MPI_Request *request, MPI_Status *status);
+int MPI_Test(MPI_Request *request, int *flag, MPI_Status *status);
+```
+
+Where:
+
+- `request`: pointer to the request object;
+- `flag`: pointer to an integer that is set to true if the operation has completed;
+- `status`: pointer to the status object to store information about the completed operation.
+
+To cancel a non-blocking operation before it completes, use `MPI_Cancel`.
+
+```c
+#include <mpi.h>
+
+int MPI_Cancel(MPI_Request *request);
+```
+
+Where `request` is a pointer to the request object of the operation to be canceled.
 
 #### PThread
 
