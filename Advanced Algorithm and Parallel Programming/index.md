@@ -691,8 +691,42 @@ Parallelism can be implemented at different levels of granularity:
 - **Bit Level**: Processing multiple bits simultaneously within a single instruction. While crucial for hardware implementation (ASIC/FPGA), it is also relevant in software for operations like bit-packing.
 - **Instruction Level (ILP)**: Executing different instructions simultaneously on the same core. This is supported by superscalar architectures, pipelines, and SIMD units and is generally extracted by compilers.
 - **Task Level**: Breaking a program into discrete sections (tasks) that run on multiple processors. This is difficult to extract automatically and requires explicit management.
-  - **Task Graph**: Represented as a Directed Acyclic Graph (DAG) where vertices are tasks and edges represent dependencies or data communication.
-  - **Pipeline**: Mimics processor pipelining where data streams through stages. This is ideal for streaming applications like video encoding.
+
+#### Task Graph
+
+A parallel program can be represented as a **task graph**, where each node represents a task and edges represent dependencies or communication between tasks.
+
+```mermaid
+graph LR
+    A[Task 1] --> B[Task 2]
+    A --> C[Task 3]
+    B --> D[Task 4]
+    C --> D
+```
+
+Each task needs some time $T$ to be executed.
+
+The sum of all the times is the **work** $W = \sum T$ (time to execute the program on a single processor).
+
+The longest path from the start to the end of the graph is the critical path, **Span** $S$ (time to execute the program with infinite processors).
+
+Based on these two values it's possible to calculate the **parallelism** of the program: $P = \frac{W}{S}$ (average amount of work that can be done in parallel, or the average number of processors that are not idle).
+
+A good parallel program has a high parallelism (many tasks can be executed in parallel) and a low span (the critical path is short).
+
+#### Pipeline
+
+A **pipeline** is a series of processing stages where the output of one stage is the input to the next. Each stage can operate concurrently, allowing multiple data items to be processed simultaneously.
+
+```mermaid
+graph LR
+    A[Stage 1] --> B[Stage 2]
+    B --> C[Stage 3]
+```
+
+#### Vectorization
+
+**Vectorization** is the process of converting scalar operations to vector operations, allowing multiple data points to be processed in parallel using SIMD (Single Instruction, Multiple Data) instructions.
 
 #### Communication
 
@@ -715,19 +749,466 @@ Requires specific hardware knowledge and specialized tools FPGA/ASIC.
 
 #### MPI
 
-The Message Passing Interface (MPI) is a standardized and portable message-passing system designed to function on a wide variety of parallel computing architectures.
+The Message Passing Interface (MPI) is a standardized and portable message-passing system designed to function on a wide variety of parallel computing architectures with distributed memory.
 
 This is highly scalable and works on diverse architectures.
 
 Explicit message-based communication can introduce significant overhead and complexity in programming.
 
-#### Pthread
+MPI is only a standard, then there are different implementations like OpenMPI. Each implementation provides:
+
+- `libmpi.so`: the library containing the MPI functions;
+- `mpicc`: compiler wrapper for C programs;
+- `mpirun`/`mpiexec`: command to run MPI programs.
+
+##### Initialization and Finalization
+
+An MPI program starts with the initialization of the MPI environment using `MPI_Init`.
+
+```c
+#include <mpi.h>
+
+int MPI_Init(int *argc, char ***argv, int required, int *provided);
+```
+
+Where:
+
+- `argc` and `argv`: command-line arguments;
+- `required`: desired level of thread support;
+- `provided`: actual level of thread support provided (`MPI_THREAD_SINGLE` < `MPI_THREAD_FUNNELED` < `MPI_THREAD_SERIALIZED` < `MPI_THREAD_MULTIPLE`).
+
+Then to finalize the MPI environment use `MPI_Finalize`.
+
+```c
+#include <mpi.h>
+
+int MPI_Finalize(void);
+```
+
+This is the last MPI function called in the program and after this it's not more possible to initialize new MPI processes.
+
+All the MPI functions returns a status code, where `MPI_SUCCESS` indicates successful completion.
+
+##### Communicator
+
+A **communicator** is a group of MPI processes that can communicate with each other. They are identified by a unique handle of type `MPI_Comm`.
+
+The base communicator groups are:
+
+- `MPI_COMM_WORLD`: This group involves all the MPI processes.
+- `MPI_COMM_SELF`: This group involves only the current process.
+
+Each process in a communicator has a unique identifier called **rank**, which ranges from `0` to `size - 1`, where `size` is the total number of processes in the communicator.
+
+```c
+#include <mpi.h>
+
+int MPI_Comm_size(MPI_Comm comm, int *size);
+int MPI_Comm_rank(MPI_Comm comm, int *rank);
+```
+
+Where:
+
+- `comm`: the communicator handle;
+- `size`: pointer to store the number of processes in the communicator;
+- `rank`: pointer to store the rank of the calling process within the communicator.
+
+The rank can be used to differentiate the behavior of each process in the parallel program.
+
+To create new communicators, use `MPI_Comm_split`.
+
+```c
+#include <mpi.h>
+
+int MPI_Comm_split(MPI_Comm comm, int color, int key, MPI_Comm *newcomm);
+```
+
+Where:
+
+- `comm`: the original communicator handle;
+- `color`: integer value that determines the new communicator group;
+- `key`: integer value that determines the rank ordering in the new communicator;
+- `newcomm`: pointer to store the new communicator handle.
+
+To free the resources associated with a communicator, use `MPI_Comm_free`.
+
+```c
+#include <mpi.h>
+
+int MPI_Comm_free(MPI_Comm *comm);
+```
+
+Where `comm` is a pointer to the communicator handle to be freed.
+
+##### Point-to-Point Communication
+
+Point-to-point communication involves sending and receiving messages between pairs of MPI processes.
+
+The functions are mainly related to sending and receiving messages, but the communication can be:
+
+- **Synchronous** (`MPI_Ssend`): the sender waits until the receiver has received the message;
+- **Buffered** (`MPI_Bsend`): the message is copied to a buffer, allowing to send multiple messages without waiting for the receiver;
+- **Standard** (`MPI_Send` / `MPI_Recv`): the MPI implementation decides the best way to send the message;
+- **Ready** (`MPI_Rsend`): the receiver must be ready to receive the message, otherwise the behavior is undefined.
+
+```c
+#include <mpi.h>
+
+int MPI_Send(const void *buf, int count, MPI_Datatype datatype,
+                 int dest, int tag, MPI_Comm comm);
+int MPI_Ssend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm);
+int MPI_Bsend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm);
+int MPI_Rsend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm);
+```
+
+Where:
+
+- `buf`: pointer to the data to be sent;
+- `count`: number of elements to send;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `dest`: rank of the destination process;
+- `tag`: message tag to identify the message;
+- `comm`: communicator handle;
+
+This operation are blocking and the function returns only when the `buf` is safe to be modified or reused. For the `synchronous` send, this means that the receiver has received the message.
+
+```c
+#include <mpi.h>
+
+int MPI_Recv(void *buf, int count, MPI_Datatype datatype,
+                 int source, int tag, MPI_Comm comm, MPI_Status *status);
+```
+
+Where:
+
+- `buf`: pointer to the buffer to store the received data;
+- `count`: maximum number of elements to receive;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `source`: rank of the source process;
+- `tag`: message tag to identify the message;
+- `comm`: communicator handle;
+- `status`: pointer to the status object to store information about the received message.
+
+This operation is blocking until a message matching the specified source and tag is received and the data is copied into `buf`.
+
+It is possible to use `MPI_ANY_SOURCE` and `MPI_ANY_TAG` to receive messages from any source or with any tag.
+
+###### MPI Probe
+
+To check information about the receiving message without copying the data to the buffer, use `MPI_Probe`.
+
+```c
+#include <mpi.h>
+
+int MPI_Probe(int source, int tag, MPI_Comm comm, MPI_Status *status);
+```
+
+Where:
+
+- `source`: rank of the source process (or `MPI_ANY_SOURCE`);
+- `tag`: message tag to identify the message (or `MPI_ANY_TAG`);
+- `comm`: communicator handle;
+- `status`: pointer to the status object to store information about the received message.
+
+##### Non-blocking Communication
+
+The communication can also be non-blocking using `MPI_Isend` and `MPI_Irecv`, which return immediately and allow the program to continue executing while the communication is in progress.
+
+```c
+#include <mpi.h>
+
+int MPI_Isend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Irecv(void *buf, int count, MPI_Datatype datatype,
+                  int source, int tag, MPI_Comm comm, MPI_Request *request);
+```
+
+Where the `request` parameter is used to track the status of the non-blocking operation.
+
+###### MPI Async checks
+
+Using `MPI_Wait` (blocking) or `MPI_Test` (non-blocking), it's possible to check if the operation has completed.
+
+```c
+#include <mpi.h>
+
+int MPI_Wait(MPI_Request *request, MPI_Status *status);
+int MPI_Test(MPI_Request *request, int *flag, MPI_Status *status);
+```
+
+Where:
+
+- `request`: pointer to the request object;
+- `flag`: pointer to an integer that is set to true if the operation has completed;
+- `status`: pointer to the status object to store information about the completed operation.
+
+###### MPI Async Cancel
+
+To cancel a non-blocking operation before it completes, use `MPI_Cancel`.
+
+```c
+#include <mpi.h>
+
+int MPI_Cancel(MPI_Request *request);
+```
+
+Where `request` is a pointer to the request object of the operation to be canceled.
+
+##### Collective Communication
+
+Collective communication involves communication patterns that include all processes in a communicator. Until all processes reach the collective operation, none of them can proceed.
+
+###### MPI Barrier
+
+To synchronize all processes in a communicator, use `MPI_Barrier`.
+
+```c
+#include <mpi.h>
+
+int MPI_Barrier(MPI_Comm comm);
+```
+
+Where `comm` is the communicator handle.
+
+###### MPI Broadcast
+
+To broadcast a message from one process to all other processes in a communicator, use `MPI_Bcast`.
+
+```c
+#include <mpi.h>
+
+int MPI_Bcast(void *buf, int count, MPI_Datatype datatype,
+                  int root, MPI_Comm comm);
+```
+
+Where:
+
+- `buf`: pointer to the data to be broadcasted;
+- `count`: number of elements to broadcast;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `root`: rank of the root process that initiates the broadcast;
+- `comm`: communicator handle.
+
+###### MPI Gather
+
+To gather messages from all processes to a single process in a communicator, use `MPI_Gather`. If the size of the messages is different, use `MPI_Gatherv`. If all the processes need to gather data from all other processes, use `MPI_Allgather`.
+
+The root also receives its own data.
+
+```c
+#include <mpi.h>
+
+int MPI_Gather(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                   void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                   int root, MPI_Comm comm);
+int MPI_Allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                       void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                       MPI_Comm comm);
+int MPI_Gatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                    void *recvbuf, const int *recvcounts, const int *displs,
+                    MPI_Datatype recvtype, int root, MPI_Comm comm);
+```
+
+Where:
+
+- `sendbuf`: pointer to the data to be sent;
+- `sendcount`: number of elements to send;
+- `sendtype`: data type of the elements to send (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `recvbuf`: pointer to the buffer to store the received data;
+- `recvcount`: number of elements to receive from each process;
+- `recvtype`: data type of the elements to receive (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `recvcounts`: array specifying the number of elements to receive from each process (only for `MPI_Gatherv`);
+- `displs`: array specifying the displacements at which to place the incoming data (only for `MPI_Gatherv`);
+- `root`: rank of the root process that gathers the data (not used in `MPI_Allgather`);
+- `comm`: communicator handle.
+
+###### MPI Scatter
+
+To scatter messages from a single process to all other processes in a communicator, use `MPI_Scatter`. If the size of the messages is different, use `MPI_Scatterv`.
+
+```c
+#include <mpi.h>
+
+int MPI_Scatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                    void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                    int root, MPI_Comm comm);
+int MPI_Scatterv(const void *sendbuf, const int *sendcounts,
+                     const int *displs, MPI_Datatype sendtype,
+                     void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                     int root, MPI_Comm comm);
+```
+
+Where:
+
+- `sendbuf`: pointer to the data to be scattered;
+- `sendcount`: number of elements to send to each process;
+- `sendtype`: data type of the elements to send (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `sendcounts`: array specifying the number of elements to send to each process (only for `MPI_Scatterv`);
+- `displs`: array specifying the displacements from which to take the outgoing data (only for `MPI_Scatterv`);
+- `recvbuf`: pointer to the buffer to store the received data;
+- `recvcount`: number of elements to receive;
+- `recvtype`: data type of the elements to receive (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `root`: rank of the root process that scatters the data;
+- `comm`: communicator handle.
+
+###### MPI Reduce
+
+To perform a reduction operation (e.g., sum, max, min) across all processes in a communicator and store the result in a single process, use `MPI_Reduce`. If all processes need the result, use `MPI_Allreduce`.
+
+```c
+#include <mpi.h>
+
+int MPI_Reduce(const void *sendbuf, void *recvbuf, int count,
+                   MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm);
+int MPI_Allreduce(const void *sendbuf, void *recvbuf, int count,
+                       MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+```
+
+Where:
+
+- `sendbuf`: pointer to the data to be reduced;
+- `recvbuf`: pointer to the buffer to store the reduced result;
+- `count`: number of elements to reduce;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `op`: reduction operation (e.g., `MPI_SUM`, `MPI_MAX`, `MPI_MIN`);
+- `root`: rank of the root process that receives the reduced result (not used in `MPI_Allreduce`);
+- `comm`: communicator handle.
+
+#### PThread
 
 The POSIX Threads (Pthreads) is a standard for multithreading in C/C++.
 
 It provides a low-level API for creating and managing threads, allowing fine-grained control over thread behavior and synchronization.
 
 There is a higher complexity and overhead in managing threads and synchronization.
+
+##### Creation
+
+A new thread is created using the `pthread_create` function.
+
+```c
+#include <pthread.h>
+
+int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+                   void *(*start_routine)(void*), void *arg);
+```
+
+Where:
+
+- `thread`: pointer to the thread identifier;
+- `attr`: thread attributes:
+  - _Joinable_ or _detached_: determines if other threads can wait for its completion;
+  - _Stack size_: size of the thread's stack;
+  - _Scheduling_: thread scheduling policy and priority;
+- `start_routine`: function to be executed by the thread;
+- `arg`: argument to be passed to the function.
+
+##### Termination
+
+The thread can terminate itself by calling `pthread_exit`, which allows it to return a value to any joining threads.
+
+```c
+#include <pthread.h>
+
+void pthread_exit(void *retval);
+```
+
+Where `retval` is a pointer to the return value.
+
+The thread can also be terminated by another thread using `pthread_cancel`, which sends a cancellation request to the target thread.
+
+```c
+#include <pthread.h>
+
+int pthread_cancel(pthread_t thread);
+```
+
+Where `thread` is the identifier of the thread to be canceled.
+
+##### Joining
+
+A thread can wait for a _joinable_ thread to complete using `pthread_join`, which blocks the calling thread until the specified thread terminates.
+
+```c
+#include <pthread.h>
+
+int pthread_join(pthread_t thread, void **retval);
+```
+
+Where:
+
+- `thread`: identifier of the thread to wait for;
+- `retval`: pointer to store the return value of the terminated thread.
+
+##### Barriers
+
+A barrier is a synchronization primitive that allows multiple threads to wait until all threads have reached a certain point in their execution before proceeding.
+
+A barrier is initialized using `pthread_barrier_init`, threads wait at the barrier using `pthread_barrier_wait`, and the barrier is destroyed using `pthread_barrier_destroy`.
+
+```c
+#include <pthread.h>
+
+int pthread_barrier_init(pthread_barrier_t *barrier,
+                           const pthread_barrierattr_t *attr,
+                           unsigned count);
+
+int pthread_barrier_wait(pthread_barrier_t *barrier);
+int pthread_barrier_destroy(pthread_barrier_t *barrier);
+```
+
+Where:
+
+- `barrier`: pointer to the barrier object;
+- `attr`: barrier attributes (usually NULL);
+- `count`: number of threads that must call `pthread_barrier_wait` before any of them can proceed.
+
+##### Mutex
+
+A mutex (mutual exclusion) is a synchronization primitive used to protect shared resources from concurrent access by multiple threads.
+
+A mutex is initialized using `pthread_mutex_init`, locked using `pthread_mutex_lock`, unlocked using `pthread_mutex_unlock`, and destroyed using `pthread_mutex_destroy`.
+
+```c
+#include <pthread.h>
+
+int pthread_mutex_init(pthread_mutex_t *mutex,
+                        const pthread_mutexattr_t *attr);
+int pthread_mutex_lock(pthread_mutex_t *mutex);
+int pthread_mutex_unlock(pthread_mutex_t *mutex);
+int pthread_mutex_destroy(pthread_mutex_t *mutex);
+```
+
+Where:
+
+- `mutex`: pointer to the mutex object;
+- `attr`: mutex attributes (usually NULL).
+
+##### Conditional Variables
+
+A condition variable is a synchronization primitive that allows threads to wait for certain conditions to be met.
+
+A condition variable is initialized using `pthread_cond_init`, threads wait on the condition variable using `pthread_cond_wait`, signal other threads using `pthread_cond_signal` or `pthread_cond_broadcast`, and the condition variable is destroyed using `pthread_cond_destroy`.
+
+```c
+#include <pthread.h>
+
+int pthread_cond_init(pthread_cond_t *cond,
+                        const pthread_condattr_t *attr);
+int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
+int pthread_cond_signal(pthread_cond_t *cond);
+int pthread_cond_broadcast(pthread_cond_t *cond);
+int pthread_cond_destroy(pthread_cond_t *cond);
+```
+
+Where:
+
+- `cond`: pointer to the condition variable object;
+- `attr`: condition variable attributes (usually NULL);
+- `mutex`: pointer to the associated mutex that must be locked before calling `pthread_cond_wait`.
 
 #### OpenMP
 
@@ -736,6 +1217,292 @@ OpenMP is an API that supports multi-platform shared memory multiprocessing prog
 It provides a higher-level abstraction for parallel programming, allowing developers to easily parallelize code using compiler directives.
 
 The main target are multi-core CPUs with shared memory architecture.
+
+OpenMP is mainly composed by compiler pragmas that specify parallel regions, work-sharing constructs, and synchronization mechanisms.
+
+A pragma directive is a special instruction for the compiler, and it looks like this:
+
+```c
+#pragma omp <directive> [clause[,...]]
+```
+
+Parallelism is based on the fork-join paradigm, where the main thread forks multiple threads to execute parallel regions and then joins them back together.
+
+A program is divided in **parallel regions**, where multiple threads execute concurrently, and **serial regions**, where only the main thread executes. The default behavior is to execute code in serial regions and a parallel region starts only with the directive:
+
+```c
+#pragma omp parallel [if(<condition>)] [num_threads(<num>)]
+{
+    // Code executed by multiple threads
+}
+```
+
+The `if` clause allows to conditionally execute the parallel region based on a runtime condition, while the `num_threads` clause specifies the number of threads to be created for the parallel region. If the number of threads is not specified, the default number of threads can be set using the `omp_set_num_threads` function or the `OMP_NUM_THREADS` environment variable.
+
+It is possible to nest multiple parallel regions and all the threads will have ids based on their level of nesting.
+
+```mermaid
+graph TD
+    A[Main Thread - ID 0]
+    A --> B[Parallel Region 1]
+    B --> C[Thread 1.0 - ID 0]
+    B --> D[Thread 1.1 - ID 1]
+    C --> E[Parallel Region 2]
+    E --> F[Thread 2.0 - ID 0]
+    E --> G[Thread 2.1 - ID 1]
+    D --> H[Parallel Region 3]
+    H --> I[Thread 3.0 - ID 0]
+    H --> J[Thread 3.1 - ID 1]
+```
+
+##### Work-Sharing Constructs
+
+Work-sharing constructs divide the execution of a parallel region among the threads.
+
+The most common work-sharing construct is the `for` directive, which distributes the iterations of a loop among the threads:
+
+```c
+#pragma omp for [schedule(<type>[, <chunk_size>])] [nowait]
+{
+    // Loop to be parallelized
+}
+```
+
+Where:
+
+- `schedule`: defines how iterations are divided among threads:
+  - `static`: iterations are divided into chunks of equal size and assigned to threads in a round-robin fashion;
+  - `dynamic`: iterations are assigned to threads dynamically as they finish their work, with optional chunk size;
+  - `guided`: similar to dynamic scheduling, but the chunk size decreases over time;
+- `nowait`: allows threads to proceed without waiting for all threads to finish the loop.
+
+Another work-sharing construct is the `sections` directive, which allows different sections of code to be executed by different threads:
+
+```c
+#pragma omp sections
+{
+    #pragma omp section
+    {
+        // Code for section 1
+    }
+    #pragma omp section
+    {
+        // Code for section 2
+    }
+}
+```
+
+Where each `section` is executed by a different thread.
+
+It's also possible to use the `single` directive to specify that a block of code should be executed by only one thread:
+
+```c
+#pragma omp single
+{
+    // Code executed by a single thread
+}
+```
+
+Or the `master` directive to specify that a block of code should be executed by the master thread only:
+
+```c
+#pragma omp master
+{
+    // Code executed by the master thread
+}
+```
+
+##### SIMD Vectorization
+
+OpenMP provides the `simd` directive to enable vectorization of loops, allowing multiple data points to be processed in parallel by a single thread using SIMD instructions:
+
+```c
+#pragma omp simd [safelen(<length>)]
+{
+    // Loop to be vectorized
+}
+```
+
+Where:
+
+- `safelen`: specifies the maximum number of iterations that can be safely executed in parallel without data dependencies.
+
+To separate the vector between threads it's possible to use the `parallel for simd` directive, which combines parallelization and vectorization:
+
+```c
+#pragma omp parallel for simd [schedule(simd:<type>[, <chunk_size>])]
+{
+    // Loop to be parallelized and vectorized
+}
+```
+
+Where the `schedule` clause works the same as in the `for` directive.
+
+To declare a function to use SIMD vectorization, the `declare simd` directive is used:
+
+```c
+#pragma omp declare simd [uniform(var [, var2])] [linear(var [, var2]: <step>)] [inbranch|notinbranch]
+<return_type> function_name(<parameters>);
+```
+
+Where:
+
+- `uniform`: specifies that the variable is the same for all SIMD lanes;
+- `linear`: specifies that the variable changes linearly across SIMD lanes with a given step;
+- `inbranch`: indicates that the function may be called in a branch, requiring additional handling for divergent execution;
+- `notinbranch`: indicates that the function is never called in a branch, allowing for better optimization.
+
+##### Synchronization
+
+OpenMP provides several synchronization mechanisms to coordinate the execution of threads.
+
+The `critical` directive defines a critical section that can be executed by only one thread at a time:
+
+```c
+#pragma omp critical
+{
+    // Code executed by one thread at a time
+}
+```
+
+The `barrier` directive synchronizes all threads in a parallel region, making them wait until all threads reach the barrier:
+
+```c
+#pragma omp barrier
+```
+
+The `atomic` directive ensures that a specific memory operation is performed atomically, preventing race conditions:
+
+```c
+#pragma omp atomic
+variable += value;
+```
+
+##### Data Environment
+
+OpenMP allows to specify the scope of variables in parallel regions using data-sharing attributes:
+
+```c
+#pragma omp <directive> private(var [, var2])
+```
+
+All the variable defined in the `private` clause are private to each thread, meaning that each thread has its own copy of the variable.
+
+```c
+#pragma omp <directive> shared(var [, var2])
+```
+
+All the variable defined in the `shared` clause are shared among all threads, meaning that all threads access the same memory location for the variable.
+
+This is the default behavior.
+
+```c
+#pragma omp <directive> firstprivate(var [, var2])
+```
+
+All the variable defined in the `firstprivate` clause are private to each thread, but they are initialized with the value of the variable before entering the parallel region.
+
+```c
+#pragma omp <directive> lastprivate(var [, var2])
+```
+
+All the variable defined in the `lastprivate` clause are private to each thread, but after the parallel region, the value of the variable from the last iteration is copied back to the original variable.
+
+It is possible to override the default data-sharing attributes using the `default` clause:
+
+```c
+#pragma omp <directive> default(shared|none)
+```
+
+If `shared` is specified, all variables are shared by default. If `none` is specified, all variables must be explicitly declared with a data-sharing attribute.
+
+To perform reductions on variables, OpenMP provides the `reduction` clause:
+
+```c
+#pragma omp <directive> reduction(<operator>: var [, var2])
+```
+
+Where `<operator>` can be one of the following: `+`, `-`, `*`, `/`, `&`, `|`, `^`, `&&`, `||`, `max`, `min`.
+
+##### Memory Model
+
+OpenMP follows a relaxed memory model, which means that there are no guarantees about the order in which memory operations are performed across different threads.
+
+To ensure memory consistency, OpenMP provides the `flush` directive that must be executed by all the threads, which enforces a memory synchronization point:
+
+```c
+#pragma omp flush([var [, var2]])
+```
+
+##### Thread Cancellation
+
+OpenMP supports thread cancellation, allowing threads to be terminated before they complete their execution.
+
+To cancel a thread, the `cancel` directive is used:
+
+```c
+#pragma omp cancel <construct>
+```
+
+Where `<construct>` can be one of the following: `parallel`, `for`, `sections`, `task`, `taskgroup`.
+
+Other threads can check for cancellation points using the `cancellation point` directive:
+
+```c
+#pragma omp cancellation point <construct>
+```
+
+If other threads have issued a cancel directive for the same construct, the thread will terminate at the cancellation point.
+
+This check is also performed at `barrier` directives.
+
+##### Tasks
+
+OpenMP supports task-based parallelism, allowing the creation of independent units of work that can be executed by different threads.
+
+Tasks are useful for irregular parallelism and dynamic workloads.
+
+```c
+#pragma omp task depend(out: var [, var2]) depend(in: var3 [, var4])
+{
+    // Code for the task
+}
+```
+
+Where:
+
+- `depend`: specifies the dependencies of the task:
+  - `out`: variables that the task will produce (write);
+  - `in`: variables that the task will consume (read).
+
+It is possible to create a task group using the `taskgroup` directive, which allows to group multiple tasks together:
+
+```c
+#pragma omp taskgroup
+{
+    // Code for the task group
+}
+```
+
+To synchronize tasks, the `taskwait` directive is used to make the current task wait until all its child tasks have completed.
+
+```c
+#pragma omp taskwait
+```
+
+To use tasks in a parallel region, the `taskloop` directive is used to distribute loop iterations among tasks:
+
+```c
+#pragma omp taskloop [grainsize(<size>)] [num_tasks(<num>)]
+{
+    // Loop to be parallelized with tasks
+}
+```
+
+Where:
+
+- `grainsize`: specifies the minimum number of iterations per task;
+- `num_tasks`: specifies the total number of tasks to be created.
 
 #### CUDA
 
@@ -776,3 +1543,667 @@ Abstract parallelization and communication.
 | CUDA           | Implicit (Explicit) | (Yes) | No          | (Yes) | Implicit (Explicit) |
 | OpenCL         | Explicit/Implicit   | (Yes) | No          | Yes   | Explicit/Implicit   |
 | Apache Spark   | Implicit            | (Yes) | No          | (Yes) | Implicit            |
+
+## Parallel Programming Design
+
+Designing a **parallel algorithm** starts by understanding the problem, analyzing the dependencies, and identifying opportunities for parallelism in a machine-independent environment.
+
+After that, it's possible to design a **parallel program** selecting the architecture, the language, communication model, etc.
+
+### PCAM Methodology
+
+A common methodology to design parallel algorithms is the **PCAM** (Partitioning, Communication, Agglomeration, Mapping) methodology.
+
+#### PCAM - Partitioning
+
+The goal of this phase is to identify the parallelism in the problem by decomposing the problem into a large number of smaller tasks. This done with two approaches:
+
+- **Domain (Data) Decomposition**: Decompose the data into smaller chunks that can be processed independently.
+- **Functional Decomposition**: Decompose a problem into task without dependencies with each other.
+
+Some guidelines for partitioning:
+
+- The number of tasks should exceed the number of processors to ensure efficient utilization and overlap of computation and communication.
+- Avoid redundant computation and storage to enhance scalability.
+- Each task should perform a similar amount of work to balance the load across processors.
+- The number of tasks should scale with the problem size, in line with Gustafson's Law.
+
+#### PCAM - Communication
+
+If tasks need to exchange data, define the communication model to ensure efficient data transfer and synchronization.
+
+Communication can be classified based on several criteria:
+
+- **Local or Global**: Local communication avoids overhead by minimizing data movement, improving performance.
+- **Structured or Unstructured**: Structured communication organizes data access regularly, enhancing predictability and efficiency.
+- **Static or Dynamic**: Static communication has fixed quantities and partners, while dynamic communication determines them at runtime based on conditions.
+- **Implicit or Explicit**: Implicit communication uses shared memory, whereas explicit communication relies on message passing.
+- **Synchronous or Asynchronous**: Synchronous communication requires acknowledgment before proceeding, while asynchronous allows continuation without waiting.
+- **Point-to-Point or Collective**: Point-to-point involves direct exchange between two tasks, whereas collective communication engages multiple tasks simultaneously.
+
+Communication overhead can degrade performance compared to sequential execution. To mitigate this, overlap communication with computation where possible. Balance the load by ensuring each task transfers roughly the same amount of data, and minimize conflicts between communication and computation phases.
+
+#### PCAM - Agglomeration
+
+This step transitions from abstract parallel tasks to concrete implementation by grouping smaller tasks into larger ones.
+
+The goal is to reduce the number of tasks to increase the granularity, minimizing communication overhead and improving load balancing.
+
+#### PCAM - Mapping
+
+This phase assigns each task to a specific processor in the target architecture.
+
+- Placing tasks on different processors increase the physical parallelism, but also the communication overhead.
+- Grouping tasks on the same processor reduce communication overhead, but also the physical parallelism.
+
+Mapping is NP-Complete, so heuristics are used to find a good solution:
+
+- **Static Mapping**: Tasks are assigned to processors before execution based on estimated workloads and communication patterns.
+- **Dynamic Mapping**: Tasks are assigned to processors by a runtime load balancer during execution.
+
+### Memory Architecture
+
+Parallel architectures can be classified based on their memory model:
+
+- **Shared Memory**: All processors share a common address space, allowing direct access to shared data. This model simplifies programming but can lead to contention and synchronization issues.
+- **Distributed Memory**: Each processor has its own private memory, and data is exchanged through message passing. This model scales well but requires explicit communication management.
+- **Hybrid Memory**: Combines shared and distributed memory models, often seen in clusters of multi-core processors.
+
+### Thread
+
+Inside of a process the memory is divided into:
+
+- **Kernel Space**: Reserved for the operating system and low-level system functions.
+- **User Space**: Used by user applications, further divided into:
+  - **Stack**: Stores local variables and function call information.
+  - **Heap**: Used for dynamic memory allocation.
+  - **Data Segment**: Contains global and static variables.
+  - **Text Segment**: Contains the executable code of the program.
+
+Each thread has its own stack, while the heap and data segment are shared among all threads in a process.
+
+The main advantage of threads is the low overhead to create and manage them, as they share the same memory space.
+
+The thread execute independently, making them non-deterministic, but need synchronization when accessing shared data to avoid problems like:
+
+- **Race Condition**: Two or more threads access shared data concurrently, and at least one thread modifies the data, leading to inconsistent results.
+- **Deadlock**: Two or more threads are blocked forever, each waiting for the other to release a resource.
+- **Livelock**: Two or more threads continuously change their state in response to each other without making progress.
+- **Starvation**: A thread is perpetually denied access to resources it needs to proceed, often due to other threads monopolizing those resources.
+
+Synchronization can be done with:
+
+- **Mutex**: A mutual exclusion lock that allows only one thread to access a resource at a time.
+- **Semaphore**: A signaling mechanism that controls access to a resource pool, allowing multiple threads to access a limited number of instances of a resource.
+- **Barrier**: A synchronization point where threads must wait until all threads reach the barrier before any can proceed.
+- **Condition Variable**: A synchronization primitive that allows threads to wait for certain conditions to be met before proceeding.
+
+### Dependencies
+
+A parallel program must be _correct_, meaning that the result must be the same of the sequential version.
+
+A **dependency** arise when the order of two statements $S1$ and $S2$ affect the final result.
+
+There are three types of dependencies:
+
+- **True (flow) dependency**: $S2$ depend on the result of $S1$ (Read after Write - RAW);
+- **Output dependency**: both $S1$ and $S2$ write to the same variable (Write after Write - WAW);
+- **Anti-dependency**: $S1$ read a variable and $S2$ write to the same variable (Write after Read - WAR).
+
+The Output dependency and Anti-dependency are _name_ dependencies, meaning that they depend only on the variable names, not on the actual values. Name dependencies can be removed by renaming variables.
+
+Dependencies can be represented with a **dependence graph**, where nodes are instructions and edges are dependencies. Dependencies can be detected by comparing the $IN$ and $OUT$ sets of each instruction.
+
+#### Loop Dependencies
+
+Loops are a major source of parallelism, but there can be dependencies between different iterations of the loop. Based on the dependencies it's possible to classify loops into:
+
+- **DoAll Loops**: All iterations are independent and can be executed in parallel.
+- **Loop-Carried Dependencies**: All the iterations depend on the previous one (e.g. `a[i] = a[i-1] + 1`), making parallelization impossible, but may allow pipelining.
+- **Loop-Independent Dependencies**: Dependencies exist within the same iteration, but not between iterations (e.g. `a[i] = a[i + 10] + 2`), allowing partial parallelization.
+
+The dependency can be:
+
+- **Lexical forward** if the source came before the sink in the code;
+- **Lexical backward** if the source came after the sink in the code;
+
+## Parallel Patterns
+
+Parallel patterns are recurring strategies for organizing parallel computations. They can be categorized into structural patterns (like nesting) and control patterns (how tasks are orchestrated).
+
+Patterns can be **nested**, involving organizing tasks in a hierarchical structure. A task may spawn sub-tasks, which in turn may spawn further sub-tasks.
+
+### Control Patterns
+
+Control patterns define how tasks are ordered and executed. While serial programming relies on sequence, selection, iteration, and recursion, parallel programming adapts these concepts to allow concurrent execution.
+
+#### Serial Control Structures
+
+- **Sequence**: In serial execution, tasks run one after another ($A \to B$). In parallel, a sequence implies a dependency where $B$ cannot start until $A$ finishes.
+- **Selection**: In serial execution, a condition determines which branch to take (if-else). In parallel execution, **speculative execution** allows multiple branches to run concurrently before the condition is fully evaluated, discarding the incorrect results later.
+- **Iteration**: In serial execution, loops run sequentially. In parallel execution, iterations can be distributed across processors (**Parallel Loop**), provided there are no loop-carried dependencies.
+- **Recursion**: In serial execution, functions call themselves sequentially. In parallel execution, recursive calls can be spawned as independent tasks (e.g., in Merge-sort), operating on distinct data subsets.
+
+#### Fork-join
+
+**\*Fork-Join** is a parallel programming model where a task is divided into multiple subtasks (fork) that are executed concurrently, and then the results are combined (join) once all subtasks are complete.
+
+```mermaid
+flowchart TB
+    A[Start] --> F[ Fork ]
+    F --> T1[ Task 1 ]
+    F --> T2[ Task 2 ]
+    F --> T3[ Task 3 ]
+    T1 --> J[ Join ]
+    T2 --> J
+    T3 --> J
+    J --> E[ End ]
+```
+
+#### Map
+
+**Map** is a pattern that applies a given function to each element of a collection independently.
+
+Thanks to the independence of each operation, all the tasks can be executed in parallel.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+    end
+
+    F1([func])
+    F2([func])
+    F3([func])
+    F4([func])
+
+    subgraph Result Array
+        direction TB
+        R1[ 1 ]
+        R2[ 2 ]
+        R3[ 3 ]
+        R4[ 4 ]
+    end
+
+    A1 --> F1 --> R1
+    A2 --> F2 --> R2
+    A3 --> F3 --> R3
+    A4 --> F4 --> R4
+```
+
+A code example in pseudocode:
+
+```plaintext
+function map(collection, func):
+    result = new collection of same size
+    parallel for each element in collection:
+        result[element.index] = func(element)
+    return result
+```
+
+In a sequential program the complexity is $O(n)$, while in a parallel program with $p$ processors the complexity is $O(\frac{n}{p} + \log p)$, where $\log p$ is the overhead to manage the parallel tasks.
+
+Without overhead the complexity can be $O(1)$.
+
+Map can be unary (single input collection) or n-ary (multiple input collections).
+
+To optimize multiple map it's possible:
+
+- **Fusion**: combine multiple map operations into a single pass over the data, reducing the number of iterations and improving cache performance;
+- **Cache Fusion**: group together operations that access the same data to improve cache locality and reduce memory access latency.
+
+#### Stencil
+
+**Stencil** is a generalization of Map, where each element in a grid or array is updated based on a function based on the values of its neighboring elements.
+
+The neighbor are the one before the execution of the function, making the operations independent and parallelizable.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+    end
+
+    F1([func])
+    F2([func])
+    F3([func])
+    F4([func])
+
+    subgraph Result Array
+        direction TB
+        R1[ 1 ]
+        R2[ 2 ]
+        R3[ 3 ]
+        R4[ 4 ]
+    end
+
+    A1 --> F1
+    A2 --> F1 --> R1
+    A1 --> F2
+    A2 --> F2
+    A3 --> F2 --> R2
+    A2 --> F3
+    A3 --> F3
+    A4 --> F3 --> R3
+    A3 --> F4
+    A4 --> F4 --> R4
+```
+
+#### Reduce
+
+**Reduce** is a pattern that combines the results of a collection into a single result using a specified operation (e.g., sum, max), allowing for concurrent aggregation of data.
+
+In a parallel program, the collection is divided into smaller chunks, each chunk is reduced independently, and then the intermediate results are combined to produce the final result.
+
+To allow parallelization, the operation must be **associative** (e.g., addition, multiplication) and sometimes **commutative**.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+    end
+
+    F1([ func ])
+    F2([ func ])
+    F3([ func ])
+
+    R[ Result ]
+
+    A1 --> F1
+    A2 --> F1
+    A3 --> F2
+    A4 --> F2
+    F1 --> F3
+    F2 --> F3
+
+    F3 --> R
+```
+
+#### Scan
+
+**Scan** is a pattern that computes all the partial reduction results for a sequence of elements, allowing for concurrent computation of prefix sums or other associative operations.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+    end
+
+    F1([ func ])
+    F2([ func ])
+    F3([ func ])
+    F4([ func ])
+
+    subgraph Result Array
+        direction TB
+        R1[ 1 ]
+        R2[ 2 ]
+        R3[ 3 ]
+        R4[ 4 ]
+    end
+
+    A1 --> R1
+    A1 --> F1the
+    A2 --> F1 --> R2
+    A3 --> F3
+    F1 --> F3 --> R3
+    A3 --> F2
+    A4 --> F2
+    F1 --> F4
+    F2 --> F4 --> R4
+```
+
+#### Recurrence
+
+**Recurrence** is a more complex version of the _map_ where the computation of an element depends on the results of previous elements.
+
+To be computed there must be serial order of the elements.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+    end
+    F1([ func ])
+    F2([ func ])
+    F3([ func ])
+    F4([ func ])
+    subgraph Result Array
+        direction TB
+        R1[ 1 ]
+        R2[ 2 ]
+        R3[ 3 ]
+        R4[ 4 ]
+    end
+
+    A1 --> F1 --> R1
+    A2 --> F2
+    F1 --> F2 --> R2
+    A3 --> F3
+    F2 --> F3 --> R3
+    A4 --> F4
+    F3 --> F4 --> R4
+```
+
+### Data Management Pattern
+
+Data management patterns focus on how data is organized, accessed, and manipulated in parallel computing environments. Efficient data management is crucial for performance and scalability.
+
+Data movement is often more expensive than computation, so minimizing data transfer and optimizing data locality are key considerations.
+
+When dealing with structures and arrays it's possible to have:
+
+- **Array of Structures (AoS)**: Each element is a structure containing multiple fields. This layout is intuitive and easy to use and is good for cache on random access patterns.
+- **Structure of Arrays (SoA)**: Each field of the structure is stored in a separate array. This layout is good for vectorized operations.
+
+#### Serial Data Management Patterns
+
+In serial programming, data can be managed in various ways:
+
+- **Random Read/Write**: Allows direct access to any memory location at any time, typically using pointers. This flexibility enables efficient data manipulation but can lead to aliasing issues, where multiple pointers reference the same location, complicating parallelization due to potential race conditions.
+- **Stack Allocation**: Memory is managed in a last-in-first-out (LIFO) manner, ideal for local variables and function calls. Allocation and deallocation are fast and automatic, preserving data locality and simplifying management. Each thread in a parallel context maintains its own stack, ensuring isolation.
+- **Heap Allocation**: Supports dynamic memory allocation and deallocation during runtime. While powerful for variable-sized data structures, it introduces overhead and complexity, such as fragmentation and manual management. In parallel programs, threads may use separate heap pools to avoid contention.
+- **Objects**: Encapsulate data and behavior, promoting modularity. In serial code, objects handle state changes predictably, but in parallel environments, shared objects require synchronization to prevent concurrent access issues.
+
+#### Pack
+
+**Pack** is a pattern that involves reorganizing data to eliminate unused or irrelevant elements, thereby reducing memory usage and improving cache performance.
+
+To restore the original structure, an **unpack** operation is performed, which reinserts the unused elements back into their original positions.
+
+```mermaid
+flowchart TB
+    subgraph Usage Array
+        direction TB
+        B1[0]
+        B2[1]
+        B3[1]
+        B4[0]
+        B5[1]
+    end
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+        A5[5]
+    end
+
+    subgraph Packed Array
+        direction TB
+        P1[2]
+        P2[3]
+        P3[5]
+    end
+
+    B1 --> A1
+    B2 --> A2 --> P1
+    B3 --> A3 --> P2
+    B4 --> A4
+    B5 --> A5 --> P3
+```
+
+A parallel pseudocode implementation for a PRAM model:
+
+```plaintext
+function pack(original, usage):
+    n = length(original)
+    m = count(usage == 1)
+
+    mask_sum = new array of size n
+    result = new array of size m
+
+    mask_sum[0] = 0
+
+    // Compute prefix sum of usage array using ex scan
+
+    parallel for i from 0 to n-1:
+        if usage[i] == 1:
+            result[mask_sum[i]] = original[i]
+
+    return result
+```
+
+Some special cases of the pack pattern are:
+
+- **Split**: where the data is divided into two separate arrays based on a condition on the independent elements;
+- **Bin**: where the data is divided into multiple arrays (bins) based on a range of values.
+
+```plaintext
+function bin(original, group):
+    n = length(original)
+    k = max(group) + 1
+
+    prefix_mask = new matrix of size k x n
+    offsets = new array of size k
+
+    // Initialize offsets
+    parallel for i from 0 to k-1:
+        offsets[i] = 0
+
+    // Count elements for each bin
+    parallel for i from 0 to n-1:
+        offsets[group[i]] += 1
+
+    // Compute prefix sum for prefix_mask using parallel exclusive scan
+    parallel for i from 0 to k-1:
+        prefix_mask[i] = scan(prefix_mask, func: (a, b) => a + b) // this is wrong
+
+    result = new array of size n
+
+    // Distribute elements into bins
+    parallel for i from 0 to n-1:
+        position = offsets[original[i]] + prefix_mask[original[i]][i]
+        result[position] = original[i]
+
+    return result
+```
+
+#### Pipeline
+
+**Pipeline** is a pattern that divides a task into a series of stages, where each stage processes data and passes it to the next stage. This works in a producer-consumer way.
+
+```mermaid
+flowchart TB
+    subgraph Stage 1
+        direction LR
+        S1[ Storage ]
+        F1([ Task ])
+    end
+    subgraph Stage 2
+        direction LR
+        S2[ Storage ]
+        F2([ Task ])
+    end
+    subgraph Stage 3
+        direction LR
+        S3[ Storage ]
+        F3([ Task ])
+    end
+
+    Input --> F1 --> F2 --> F3 --> Output
+    S1 --> F1 --> S1
+    S2 --> F2 --> S2
+    S3 --> F3 --> S3
+```
+
+#### Geometric Decomposition
+
+**Geometric Decomposition** is a pattern that divides a large data structure (e.g., array, matrix) into smaller substructures that can be processed independently in parallel.
+
+The substructures can be overlapping.
+
+```mermaid
+flowchart TB
+    subgraph Original Array
+        direction TB
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+        A5[5]
+        A6[6]
+        A7[7]
+        A8[8]
+    end
+
+    subgraph Substructure 1
+        direction TB
+        S1A1[1]
+        S1A2[2]
+        S1A3[3]
+        S1A4[4]
+        S1A5[5]
+    end
+
+    subgraph Substructure 2
+        direction TB
+        S2A0[4]
+        S2A1[5]
+        S2A2[6]
+        S2A3[7]
+        S2A4[8]
+    end
+
+    A1 --> S1A1
+    A2 --> S1A2
+    A3 --> S1A3
+    A4 --> S1A4
+    A5 --> S1A5
+    A4 --> S2A0
+    A5 --> S2A1
+    A6 --> S2A2
+    A7 --> S2A3
+    A8 --> S2A4
+```
+
+On shared memory is possible to avoid data duplication by sharing the regions.
+
+#### Gather
+
+**Gather** is a pattern that collects elements from a source array into a destination array. The index array specifies the positions of the elements to be gathered from the source array.
+
+```mermaid
+flowchart TB
+    subgraph Index Array
+        direction LR
+        I1[4]
+        I2[2]
+        I3[5]
+    end
+    subgraph Original Array
+        direction LR
+        A1[1]
+        A2[2]
+        A3[3]
+        A4[4]
+        A5[5]
+    end
+    subgraph Gathered Array
+        direction LR
+        R1[4]
+        R2[2]
+        R3[5]
+    end
+
+    I1 --> I2 --> I3
+    A1 --> A2 --> A3 --> A4 --> A5
+    R1 --> R2 --> R3
+
+    I1 --> A4 --> R1
+    I2 --> A2 --> R2
+    I3 --> A5 --> R3
+```
+
+A parallel pseudocode implementation for a PRAM model:
+
+```plaintext
+function gather(original, usage):
+    n = length(usage)
+    result = new array of size n
+
+    parallel for i from 0 to n-1:
+        result[i] = original[usage[i]]
+
+    return result
+```
+
+Some special cases of the gather pattern are:
+
+- **Shift**: where each element is moved by a fixed offset;
+- **Zip**: where n arrays are interleaved into a single array;
+- **Unzip**: where a single array is split into n arrays by separating elements based on an offset;
+
+#### Scatter
+
+**Scatter** is a pattern that distributes elements from a source array into a destination array. The index array specifies the positions where the elements from the source array should be placed in the destination array.
+
+Scatter can lead to collisions if two elements are scattered to the same position. This can be resolved by:
+
+- **Atomic Scatter**: using atomic operations to ensure that only one write occurs at a time for each position;
+- **Permutation Scatter**: check for collisions in the index array and avoid them by reordering the input data or using a different index array;
+- **Merge Scatter**: allow multiple writes to the same position and combine them using a specified operation (e.g., sum, max).
+- **Priority Scatter**: assign priorities to the elements being scattered and only allow the highest priority element to be written to a position in case of collisions.
+
+```mermaid
+flowchart TB
+    subgraph Index Array
+        direction LR
+        I1[2]
+        I2[4]
+        I3[1]
+    end
+    subgraph Original Array
+        direction LR
+        A1[10]
+        A2[20]
+        A3[30]
+    end
+    subgraph Scattered Array
+        direction LR
+        R1[30]
+        R2[10]
+        R3[0]
+        R4[20]
+        R5[0]
+    end
+
+    A1 --> A2 --> A3
+    I1 --> I2 --> I3
+    R1 --> R2 --> R3 --> R4 --> R5
+
+    A1 --> I1 --> R2
+    A2 --> I2 --> R4
+    A3 --> I3 --> R1
+```
+
+A parallel pseudocode implementation for a PRAM model:
+
+```plaintext
+function scatter(original, usage, result):
+    n = length(original)
+
+    parallel for i from 0 to n-1:
+        result[usage[i]] = original[i]
+```
