@@ -890,6 +890,8 @@ flowchart TB
 
 Thanks to the independence of each operation, all the tasks can be executed in parallel.
 
+The function must be **pure** (no side effects) to ensure correctness.
+
 ```mermaid
 flowchart TB
     subgraph Original Array
@@ -922,11 +924,11 @@ flowchart TB
 A code example in pseudocode:
 
 ```plaintext
-function map(collection, func):
-    result = new collection of same size
-    parallel for each element in collection:
-        result[element.index] = func(element)
-    return result
+input: Data[n]
+f: Data -> Data
+output: Data[n]
+
+output[i] = f(input[i])
 ```
 
 In a sequential program the complexity is $O(n)$, while in a parallel program with $p$ processors the complexity is $O(\frac{n}{p} + \log p)$, where $\log p$ is the overhead to manage the parallel tasks.
@@ -939,6 +941,19 @@ To optimize multiple map it's possible:
 
 - **Fusion**: combine multiple map operations into a single pass over the data, reducing the number of iterations and improving cache performance;
 - **Cache Fusion**: group together operations that access the same data to improve cache locality and reduce memory access latency.
+
+If the map produces multiple outputs for each input it's called **flatmap** or **expand**.
+
+```plaintext
+input: Data[n]
+f: Data -> Data
+mask: int[n] // number of outputs for each input
+ex_scan: int[n] // exclusive scan of mask
+output: Data[n]
+
+if mask[i] > 0:
+    output[ex_scan[i]] = copy(f(input[i]))
+```
 
 #### Stencil
 
@@ -1151,22 +1166,20 @@ flowchart TB
 A parallel pseudocode implementation for a PRAM model:
 
 ```plaintext
-function pack(original, usage):
-    n = length(original)
-    m = count(usage == 1)
+input: Data[n]
+mask: bool[n]
+ex_scan: int[n] // exclusive scan of mask
+output: Data[m] // m = count of true in mask
 
-    mask_sum = new array of size n
-    result = new array of size m
+// pack
+if mask[i] == true:
+    output[ex_scan[i]] = input[i]
 
-    mask_sum[0] = 0
-
-    // Compute prefix sum of usage array using ex scan
-
-    parallel for i from 0 to n-1:
-        if usage[i] == 1:
-            result[mask_sum[i]] = original[i]
-
-    return result
+// unpack
+if mask[i] == true:
+    output[i] = input[ex_scan[i]]
+else:
+    output[i] = default_value
 ```
 
 Some special cases of the pack pattern are:
@@ -1175,33 +1188,17 @@ Some special cases of the pack pattern are:
 - **Bin**: where the data is divided into multiple arrays (bins) based on a range of values.
 
 ```plaintext
-function bin(original, group):
-    n = length(original)
-    k = max(group) + 1
+input: Data[n]
+mask: int[n]
+ex_scans: int[k][n]     // exclusive scan of mask for k bins
+offsets: int[k]         // starting offset of each bin in output
+output: Data[n]
 
-    prefix_mask = new matrix of size k x n
-    offsets = new array of size k
+// bin
+output[offsets[mask[i]] + ex_scans[mask[i]][i]] = input[i]
 
-    // Initialize offsets
-    parallel for i from 0 to k-1:
-        offsets[i] = 0
-
-    // Count elements for each bin
-    parallel for i from 0 to n-1:
-        offsets[group[i]] += 1
-
-    // Compute prefix sum for prefix_mask using parallel exclusive scan
-    parallel for i from 0 to k-1:
-        prefix_mask[i] = scan(prefix_mask, func: (a, b) => a + b) // this is wrong
-
-    result = new array of size n
-
-    // Distribute elements into bins
-    parallel for i from 0 to n-1:
-        position = offsets[original[i]] + prefix_mask[original[i]][i]
-        result[position] = original[i]
-
-    return result
+// unbin
+output[i] = input[offsets[mask[i]] + ex_scans[mask[i]][i]]
 ```
 
 #### Pipeline
@@ -1323,14 +1320,11 @@ flowchart TB
 A parallel pseudocode implementation for a PRAM model:
 
 ```plaintext
-function gather(original, usage):
-    n = length(usage)
-    result = new array of size n
+input: Data[n]
+output: Data[m]
+index: int[m]
 
-    parallel for i from 0 to n-1:
-        result[i] = original[usage[i]]
-
-    return result
+output[i] = input[index[i]]
 ```
 
 Some special cases of the gather pattern are:
@@ -1385,11 +1379,11 @@ flowchart TB
 A parallel pseudocode implementation for a PRAM model:
 
 ```plaintext
-function scatter(original, usage, result):
-    n = length(original)
+input: Data[n]
+index: int[n]
+output: Data[m]
 
-    parallel for i from 0 to n-1:
-        result[usage[i]] = original[i]
+output[index[i]] = input[i]
 ```
 
 ## Parallel Programming Technologies
