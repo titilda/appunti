@@ -728,822 +728,6 @@ graph LR
 
 **Vectorization** is the process of converting scalar operations to vector operations, allowing multiple data points to be processed in parallel using SIMD (Single Instruction, Multiple Data) instructions.
 
-#### Communication
-
-Data sharing describe the communication between the processors:
-
-- **Shared Memory**: All tasks share a global address space. Modifications by one processor are visible to others.
-- **Message Passing**: Each task has private memory and interacts by explicitly sending/receiving messages
-
-### Parallel Programming Technologies
-
-There is no single standard for parallel programming. There is an inverse relationship between _abstraction level_ and _Overhead_.
-
-#### Verilog / VHDL
-
-Verilog and VHDL are Hardware Description Languages (HDL) used to design and model digital systems at the hardware level.
-
-They have a very low level of abstraction, allowing precise control over hardware resources, maximizing parallelism and performance.
-
-Requires specific hardware knowledge and specialized tools FPGA/ASIC.
-
-#### MPI
-
-The Message Passing Interface (MPI) is a standardized and portable message-passing system designed to function on a wide variety of parallel computing architectures with distributed memory.
-
-This is highly scalable and works on diverse architectures.
-
-Explicit message-based communication can introduce significant overhead and complexity in programming.
-
-MPI is only a standard, then there are different implementations like OpenMPI. Each implementation provides:
-
-- `libmpi.so`: the library containing the MPI functions;
-- `mpicc`: compiler wrapper for C programs;
-- `mpirun`/`mpiexec`: command to run MPI programs.
-
-##### Initialization and Finalization
-
-An MPI program starts with the initialization of the MPI environment using `MPI_Init`.
-
-```c
-#include <mpi.h>
-
-int MPI_Init(int *argc, char ***argv, int required, int *provided);
-```
-
-Where:
-
-- `argc` and `argv`: command-line arguments;
-- `required`: desired level of thread support;
-- `provided`: actual level of thread support provided (`MPI_THREAD_SINGLE` < `MPI_THREAD_FUNNELED` < `MPI_THREAD_SERIALIZED` < `MPI_THREAD_MULTIPLE`).
-
-Then to finalize the MPI environment use `MPI_Finalize`.
-
-```c
-#include <mpi.h>
-
-int MPI_Finalize(void);
-```
-
-This is the last MPI function called in the program and after this it's not more possible to initialize new MPI processes.
-
-All the MPI functions returns a status code, where `MPI_SUCCESS` indicates successful completion.
-
-##### Communicator
-
-A **communicator** is a group of MPI processes that can communicate with each other. They are identified by a unique handle of type `MPI_Comm`.
-
-The base communicator groups are:
-
-- `MPI_COMM_WORLD`: This group involves all the MPI processes.
-- `MPI_COMM_SELF`: This group involves only the current process.
-
-Each process in a communicator has a unique identifier called **rank**, which ranges from `0` to `size - 1`, where `size` is the total number of processes in the communicator.
-
-```c
-#include <mpi.h>
-
-int MPI_Comm_size(MPI_Comm comm, int *size);
-int MPI_Comm_rank(MPI_Comm comm, int *rank);
-```
-
-Where:
-
-- `comm`: the communicator handle;
-- `size`: pointer to store the number of processes in the communicator;
-- `rank`: pointer to store the rank of the calling process within the communicator.
-
-The rank can be used to differentiate the behavior of each process in the parallel program.
-
-To create new communicators, use `MPI_Comm_split`.
-
-```c
-#include <mpi.h>
-
-int MPI_Comm_split(MPI_Comm comm, int color, int key, MPI_Comm *newcomm);
-```
-
-Where:
-
-- `comm`: the original communicator handle;
-- `color`: integer value that determines the new communicator group;
-- `key`: integer value that determines the rank ordering in the new communicator;
-- `newcomm`: pointer to store the new communicator handle.
-
-To free the resources associated with a communicator, use `MPI_Comm_free`.
-
-```c
-#include <mpi.h>
-
-int MPI_Comm_free(MPI_Comm *comm);
-```
-
-Where `comm` is a pointer to the communicator handle to be freed.
-
-##### Point-to-Point Communication
-
-Point-to-point communication involves sending and receiving messages between pairs of MPI processes.
-
-The functions are mainly related to sending and receiving messages, but the communication can be:
-
-- **Synchronous** (`MPI_Ssend`): the sender waits until the receiver has received the message;
-- **Buffered** (`MPI_Bsend`): the message is copied to a buffer, allowing to send multiple messages without waiting for the receiver;
-- **Standard** (`MPI_Send` / `MPI_Recv`): the MPI implementation decides the best way to send the message;
-- **Ready** (`MPI_Rsend`): the receiver must be ready to receive the message, otherwise the behavior is undefined.
-
-```c
-#include <mpi.h>
-
-int MPI_Send(const void *buf, int count, MPI_Datatype datatype,
-                 int dest, int tag, MPI_Comm comm);
-int MPI_Ssend(const void *buf, int count, MPI_Datatype datatype,
-                  int dest, int tag, MPI_Comm comm);
-int MPI_Bsend(const void *buf, int count, MPI_Datatype datatype,
-                  int dest, int tag, MPI_Comm comm);
-int MPI_Rsend(const void *buf, int count, MPI_Datatype datatype,
-                  int dest, int tag, MPI_Comm comm);
-```
-
-Where:
-
-- `buf`: pointer to the data to be sent;
-- `count`: number of elements to send;
-- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
-- `dest`: rank of the destination process;
-- `tag`: message tag to identify the message;
-- `comm`: communicator handle;
-
-This operation are blocking and the function returns only when the `buf` is safe to be modified or reused. For the `synchronous` send, this means that the receiver has received the message.
-
-```c
-#include <mpi.h>
-
-int MPI_Recv(void *buf, int count, MPI_Datatype datatype,
-                 int source, int tag, MPI_Comm comm, MPI_Status *status);
-```
-
-Where:
-
-- `buf`: pointer to the buffer to store the received data;
-- `count`: maximum number of elements to receive;
-- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
-- `source`: rank of the source process;
-- `tag`: message tag to identify the message;
-- `comm`: communicator handle;
-- `status`: pointer to the status object to store information about the received message.
-
-This operation is blocking until a message matching the specified source and tag is received and the data is copied into `buf`.
-
-It is possible to use `MPI_ANY_SOURCE` and `MPI_ANY_TAG` to receive messages from any source or with any tag.
-
-###### MPI Probe
-
-To check information about the receiving message without copying the data to the buffer, use `MPI_Probe`.
-
-```c
-#include <mpi.h>
-
-int MPI_Probe(int source, int tag, MPI_Comm comm, MPI_Status *status);
-```
-
-Where:
-
-- `source`: rank of the source process (or `MPI_ANY_SOURCE`);
-- `tag`: message tag to identify the message (or `MPI_ANY_TAG`);
-- `comm`: communicator handle;
-- `status`: pointer to the status object to store information about the received message.
-
-##### Non-blocking Communication
-
-The communication can also be non-blocking using `MPI_Isend` and `MPI_Irecv`, which return immediately and allow the program to continue executing while the communication is in progress.
-
-```c
-#include <mpi.h>
-
-int MPI_Isend(const void *buf, int count, MPI_Datatype datatype,
-                  int dest, int tag, MPI_Comm comm, MPI_Request *request);
-int MPI_Irecv(void *buf, int count, MPI_Datatype datatype,
-                  int source, int tag, MPI_Comm comm, MPI_Request *request);
-```
-
-Where the `request` parameter is used to track the status of the non-blocking operation.
-
-###### MPI Async checks
-
-Using `MPI_Wait` (blocking) or `MPI_Test` (non-blocking), it's possible to check if the operation has completed.
-
-```c
-#include <mpi.h>
-
-int MPI_Wait(MPI_Request *request, MPI_Status *status);
-int MPI_Test(MPI_Request *request, int *flag, MPI_Status *status);
-```
-
-Where:
-
-- `request`: pointer to the request object;
-- `flag`: pointer to an integer that is set to true if the operation has completed;
-- `status`: pointer to the status object to store information about the completed operation.
-
-###### MPI Async Cancel
-
-To cancel a non-blocking operation before it completes, use `MPI_Cancel`.
-
-```c
-#include <mpi.h>
-
-int MPI_Cancel(MPI_Request *request);
-```
-
-Where `request` is a pointer to the request object of the operation to be canceled.
-
-##### Collective Communication
-
-Collective communication involves communication patterns that include all processes in a communicator. Until all processes reach the collective operation, none of them can proceed.
-
-###### MPI Barrier
-
-To synchronize all processes in a communicator, use `MPI_Barrier`.
-
-```c
-#include <mpi.h>
-
-int MPI_Barrier(MPI_Comm comm);
-```
-
-Where `comm` is the communicator handle.
-
-###### MPI Broadcast
-
-To broadcast a message from one process to all other processes in a communicator, use `MPI_Bcast`.
-
-```c
-#include <mpi.h>
-
-int MPI_Bcast(void *buf, int count, MPI_Datatype datatype,
-                  int root, MPI_Comm comm);
-```
-
-Where:
-
-- `buf`: pointer to the data to be broadcasted;
-- `count`: number of elements to broadcast;
-- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
-- `root`: rank of the root process that initiates the broadcast;
-- `comm`: communicator handle.
-
-###### MPI Gather
-
-To gather messages from all processes to a single process in a communicator, use `MPI_Gather`. If the size of the messages is different, use `MPI_Gatherv`. If all the processes need to gather data from all other processes, use `MPI_Allgather`.
-
-The root also receives its own data.
-
-```c
-#include <mpi.h>
-
-int MPI_Gather(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
-                   void *recvbuf, int recvcount, MPI_Datatype recvtype,
-                   int root, MPI_Comm comm);
-int MPI_Allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
-                       void *recvbuf, int recvcount, MPI_Datatype recvtype,
-                       MPI_Comm comm);
-int MPI_Gatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
-                    void *recvbuf, const int *recvcounts, const int *displs,
-                    MPI_Datatype recvtype, int root, MPI_Comm comm);
-```
-
-Where:
-
-- `sendbuf`: pointer to the data to be sent;
-- `sendcount`: number of elements to send;
-- `sendtype`: data type of the elements to send (e.g., `MPI_INT`, `MPI_FLOAT`);
-- `recvbuf`: pointer to the buffer to store the received data;
-- `recvcount`: number of elements to receive from each process;
-- `recvtype`: data type of the elements to receive (e.g., `MPI_INT`, `MPI_FLOAT`);
-- `recvcounts`: array specifying the number of elements to receive from each process (only for `MPI_Gatherv`);
-- `displs`: array specifying the displacements at which to place the incoming data (only for `MPI_Gatherv`);
-- `root`: rank of the root process that gathers the data (not used in `MPI_Allgather`);
-- `comm`: communicator handle.
-
-###### MPI Scatter
-
-To scatter messages from a single process to all other processes in a communicator, use `MPI_Scatter`. If the size of the messages is different, use `MPI_Scatterv`.
-
-```c
-#include <mpi.h>
-
-int MPI_Scatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
-                    void *recvbuf, int recvcount, MPI_Datatype recvtype,
-                    int root, MPI_Comm comm);
-int MPI_Scatterv(const void *sendbuf, const int *sendcounts,
-                     const int *displs, MPI_Datatype sendtype,
-                     void *recvbuf, int recvcount, MPI_Datatype recvtype,
-                     int root, MPI_Comm comm);
-```
-
-Where:
-
-- `sendbuf`: pointer to the data to be scattered;
-- `sendcount`: number of elements to send to each process;
-- `sendtype`: data type of the elements to send (e.g., `MPI_INT`, `MPI_FLOAT`);
-- `sendcounts`: array specifying the number of elements to send to each process (only for `MPI_Scatterv`);
-- `displs`: array specifying the displacements from which to take the outgoing data (only for `MPI_Scatterv`);
-- `recvbuf`: pointer to the buffer to store the received data;
-- `recvcount`: number of elements to receive;
-- `recvtype`: data type of the elements to receive (e.g., `MPI_INT`, `MPI_FLOAT`);
-- `root`: rank of the root process that scatters the data;
-- `comm`: communicator handle.
-
-###### MPI Reduce
-
-To perform a reduction operation (e.g., sum, max, min) across all processes in a communicator and store the result in a single process, use `MPI_Reduce`. If all processes need the result, use `MPI_Allreduce`.
-
-```c
-#include <mpi.h>
-
-int MPI_Reduce(const void *sendbuf, void *recvbuf, int count,
-                   MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm);
-int MPI_Allreduce(const void *sendbuf, void *recvbuf, int count,
-                       MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
-```
-
-Where:
-
-- `sendbuf`: pointer to the data to be reduced;
-- `recvbuf`: pointer to the buffer to store the reduced result;
-- `count`: number of elements to reduce;
-- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
-- `op`: reduction operation (e.g., `MPI_SUM`, `MPI_MAX`, `MPI_MIN`);
-- `root`: rank of the root process that receives the reduced result (not used in `MPI_Allreduce`);
-- `comm`: communicator handle.
-
-#### PThread
-
-The POSIX Threads (Pthreads) is a standard for multithreading in C/C++.
-
-It provides a low-level API for creating and managing threads, allowing fine-grained control over thread behavior and synchronization.
-
-There is a higher complexity and overhead in managing threads and synchronization.
-
-##### Creation
-
-A new thread is created using the `pthread_create` function.
-
-```c
-#include <pthread.h>
-
-int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
-                   void *(*start_routine)(void*), void *arg);
-```
-
-Where:
-
-- `thread`: pointer to the thread identifier;
-- `attr`: thread attributes:
-  - _Joinable_ or _detached_: determines if other threads can wait for its completion;
-  - _Stack size_: size of the thread's stack;
-  - _Scheduling_: thread scheduling policy and priority;
-- `start_routine`: function to be executed by the thread;
-- `arg`: argument to be passed to the function.
-
-##### Termination
-
-The thread can terminate itself by calling `pthread_exit`, which allows it to return a value to any joining threads.
-
-```c
-#include <pthread.h>
-
-void pthread_exit(void *retval);
-```
-
-Where `retval` is a pointer to the return value.
-
-The thread can also be terminated by another thread using `pthread_cancel`, which sends a cancellation request to the target thread.
-
-```c
-#include <pthread.h>
-
-int pthread_cancel(pthread_t thread);
-```
-
-Where `thread` is the identifier of the thread to be canceled.
-
-##### Joining
-
-A thread can wait for a _joinable_ thread to complete using `pthread_join`, which blocks the calling thread until the specified thread terminates.
-
-```c
-#include <pthread.h>
-
-int pthread_join(pthread_t thread, void **retval);
-```
-
-Where:
-
-- `thread`: identifier of the thread to wait for;
-- `retval`: pointer to store the return value of the terminated thread.
-
-##### Barriers
-
-A barrier is a synchronization primitive that allows multiple threads to wait until all threads have reached a certain point in their execution before proceeding.
-
-A barrier is initialized using `pthread_barrier_init`, threads wait at the barrier using `pthread_barrier_wait`, and the barrier is destroyed using `pthread_barrier_destroy`.
-
-```c
-#include <pthread.h>
-
-int pthread_barrier_init(pthread_barrier_t *barrier,
-                           const pthread_barrierattr_t *attr,
-                           unsigned count);
-
-int pthread_barrier_wait(pthread_barrier_t *barrier);
-int pthread_barrier_destroy(pthread_barrier_t *barrier);
-```
-
-Where:
-
-- `barrier`: pointer to the barrier object;
-- `attr`: barrier attributes (usually NULL);
-- `count`: number of threads that must call `pthread_barrier_wait` before any of them can proceed.
-
-##### Mutex
-
-A mutex (mutual exclusion) is a synchronization primitive used to protect shared resources from concurrent access by multiple threads.
-
-A mutex is initialized using `pthread_mutex_init`, locked using `pthread_mutex_lock`, unlocked using `pthread_mutex_unlock`, and destroyed using `pthread_mutex_destroy`.
-
-```c
-#include <pthread.h>
-
-int pthread_mutex_init(pthread_mutex_t *mutex,
-                        const pthread_mutexattr_t *attr);
-int pthread_mutex_lock(pthread_mutex_t *mutex);
-int pthread_mutex_unlock(pthread_mutex_t *mutex);
-int pthread_mutex_destroy(pthread_mutex_t *mutex);
-```
-
-Where:
-
-- `mutex`: pointer to the mutex object;
-- `attr`: mutex attributes (usually NULL).
-
-##### Conditional Variables
-
-A condition variable is a synchronization primitive that allows threads to wait for certain conditions to be met.
-
-A condition variable is initialized using `pthread_cond_init`, threads wait on the condition variable using `pthread_cond_wait`, signal other threads using `pthread_cond_signal` or `pthread_cond_broadcast`, and the condition variable is destroyed using `pthread_cond_destroy`.
-
-```c
-#include <pthread.h>
-
-int pthread_cond_init(pthread_cond_t *cond,
-                        const pthread_condattr_t *attr);
-int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
-int pthread_cond_signal(pthread_cond_t *cond);
-int pthread_cond_broadcast(pthread_cond_t *cond);
-int pthread_cond_destroy(pthread_cond_t *cond);
-```
-
-Where:
-
-- `cond`: pointer to the condition variable object;
-- `attr`: condition variable attributes (usually NULL);
-- `mutex`: pointer to the associated mutex that must be locked before calling `pthread_cond_wait`.
-
-#### OpenMP
-
-OpenMP is an API that supports multi-platform shared memory multiprocessing programming in C, C++, and Fortran.
-
-It provides a higher-level abstraction for parallel programming, allowing developers to easily parallelize code using compiler directives.
-
-The main target are multi-core CPUs with shared memory architecture.
-
-OpenMP is mainly composed by compiler pragmas that specify parallel regions, work-sharing constructs, and synchronization mechanisms.
-
-A pragma directive is a special instruction for the compiler, and it looks like this:
-
-```c
-#pragma omp <directive> [clause[,...]]
-```
-
-Parallelism is based on the fork-join paradigm, where the main thread forks multiple threads to execute parallel regions and then joins them back together.
-
-A program is divided in **parallel regions**, where multiple threads execute concurrently, and **serial regions**, where only the main thread executes. The default behavior is to execute code in serial regions and a parallel region starts only with the directive:
-
-```c
-#pragma omp parallel [if(<condition>)] [num_threads(<num>)]
-{
-    // Code executed by multiple threads
-}
-```
-
-The `if` clause allows to conditionally execute the parallel region based on a runtime condition, while the `num_threads` clause specifies the number of threads to be created for the parallel region. If the number of threads is not specified, the default number of threads can be set using the `omp_set_num_threads` function or the `OMP_NUM_THREADS` environment variable.
-
-It is possible to nest multiple parallel regions and all the threads will have ids based on their level of nesting.
-
-```mermaid
-graph TD
-    A[Main Thread - ID 0]
-    A --> B[Parallel Region 1]
-    B --> C[Thread 1.0 - ID 0]
-    B --> D[Thread 1.1 - ID 1]
-    C --> E[Parallel Region 2]
-    E --> F[Thread 2.0 - ID 0]
-    E --> G[Thread 2.1 - ID 1]
-    D --> H[Parallel Region 3]
-    H --> I[Thread 3.0 - ID 0]
-    H --> J[Thread 3.1 - ID 1]
-```
-
-##### Work-Sharing Constructs
-
-Work-sharing constructs divide the execution of a parallel region among the threads.
-
-The most common work-sharing construct is the `for` directive, which distributes the iterations of a loop among the threads:
-
-```c
-#pragma omp for [schedule(<type>[, <chunk_size>])] [nowait]
-{
-    // Loop to be parallelized
-}
-```
-
-Where:
-
-- `schedule`: defines how iterations are divided among threads:
-  - `static`: iterations are divided into chunks of equal size and assigned to threads in a round-robin fashion;
-  - `dynamic`: iterations are assigned to threads dynamically as they finish their work, with optional chunk size;
-  - `guided`: similar to dynamic scheduling, but the chunk size decreases over time;
-- `nowait`: allows threads to proceed without waiting for all threads to finish the loop.
-
-Another work-sharing construct is the `sections` directive, which allows different sections of code to be executed by different threads:
-
-```c
-#pragma omp sections
-{
-    #pragma omp section
-    {
-        // Code for section 1
-    }
-    #pragma omp section
-    {
-        // Code for section 2
-    }
-}
-```
-
-Where each `section` is executed by a different thread.
-
-It's also possible to use the `single` directive to specify that a block of code should be executed by only one thread:
-
-```c
-#pragma omp single
-{
-    // Code executed by a single thread
-}
-```
-
-Or the `master` directive to specify that a block of code should be executed by the master thread only:
-
-```c
-#pragma omp master
-{
-    // Code executed by the master thread
-}
-```
-
-##### SIMD Vectorization
-
-OpenMP provides the `simd` directive to enable vectorization of loops, allowing multiple data points to be processed in parallel by a single thread using SIMD instructions:
-
-```c
-#pragma omp simd [safelen(<length>)]
-{
-    // Loop to be vectorized
-}
-```
-
-Where:
-
-- `safelen`: specifies the maximum number of iterations that can be safely executed in parallel without data dependencies.
-
-To separate the vector between threads it's possible to use the `parallel for simd` directive, which combines parallelization and vectorization:
-
-```c
-#pragma omp parallel for simd [schedule(simd:<type>[, <chunk_size>])]
-{
-    // Loop to be parallelized and vectorized
-}
-```
-
-Where the `schedule` clause works the same as in the `for` directive.
-
-To declare a function to use SIMD vectorization, the `declare simd` directive is used:
-
-```c
-#pragma omp declare simd [uniform(var [, var2])] [linear(var [, var2]: <step>)] [inbranch|notinbranch]
-<return_type> function_name(<parameters>);
-```
-
-Where:
-
-- `uniform`: specifies that the variable is the same for all SIMD lanes;
-- `linear`: specifies that the variable changes linearly across SIMD lanes with a given step;
-- `inbranch`: indicates that the function may be called in a branch, requiring additional handling for divergent execution;
-- `notinbranch`: indicates that the function is never called in a branch, allowing for better optimization.
-
-##### Synchronization
-
-OpenMP provides several synchronization mechanisms to coordinate the execution of threads.
-
-The `critical` directive defines a critical section that can be executed by only one thread at a time:
-
-```c
-#pragma omp critical
-{
-    // Code executed by one thread at a time
-}
-```
-
-The `barrier` directive synchronizes all threads in a parallel region, making them wait until all threads reach the barrier:
-
-```c
-#pragma omp barrier
-```
-
-The `atomic` directive ensures that a specific memory operation is performed atomically, preventing race conditions:
-
-```c
-#pragma omp atomic
-variable += value;
-```
-
-##### Data Environment
-
-OpenMP allows to specify the scope of variables in parallel regions using data-sharing attributes:
-
-```c
-#pragma omp <directive> private(var [, var2])
-```
-
-All the variable defined in the `private` clause are private to each thread, meaning that each thread has its own copy of the variable.
-
-```c
-#pragma omp <directive> shared(var [, var2])
-```
-
-All the variable defined in the `shared` clause are shared among all threads, meaning that all threads access the same memory location for the variable.
-
-This is the default behavior.
-
-```c
-#pragma omp <directive> firstprivate(var [, var2])
-```
-
-All the variable defined in the `firstprivate` clause are private to each thread, but they are initialized with the value of the variable before entering the parallel region.
-
-```c
-#pragma omp <directive> lastprivate(var [, var2])
-```
-
-All the variable defined in the `lastprivate` clause are private to each thread, but after the parallel region, the value of the variable from the last iteration is copied back to the original variable.
-
-It is possible to override the default data-sharing attributes using the `default` clause:
-
-```c
-#pragma omp <directive> default(shared|none)
-```
-
-If `shared` is specified, all variables are shared by default. If `none` is specified, all variables must be explicitly declared with a data-sharing attribute.
-
-To perform reductions on variables, OpenMP provides the `reduction` clause:
-
-```c
-#pragma omp <directive> reduction(<operator>: var [, var2])
-```
-
-Where `<operator>` can be one of the following: `+`, `-`, `*`, `/`, `&`, `|`, `^`, `&&`, `||`, `max`, `min`.
-
-##### Memory Model
-
-OpenMP follows a relaxed memory model, which means that there are no guarantees about the order in which memory operations are performed across different threads.
-
-To ensure memory consistency, OpenMP provides the `flush` directive that must be executed by all the threads, which enforces a memory synchronization point:
-
-```c
-#pragma omp flush([var [, var2]])
-```
-
-##### Thread Cancellation
-
-OpenMP supports thread cancellation, allowing threads to be terminated before they complete their execution.
-
-To cancel a thread, the `cancel` directive is used:
-
-```c
-#pragma omp cancel <construct>
-```
-
-Where `<construct>` can be one of the following: `parallel`, `for`, `sections`, `task`, `taskgroup`.
-
-Other threads can check for cancellation points using the `cancellation point` directive:
-
-```c
-#pragma omp cancellation point <construct>
-```
-
-If other threads have issued a cancel directive for the same construct, the thread will terminate at the cancellation point.
-
-This check is also performed at `barrier` directives.
-
-##### Tasks
-
-OpenMP supports task-based parallelism, allowing the creation of independent units of work that can be executed by different threads.
-
-Tasks are useful for irregular parallelism and dynamic workloads.
-
-```c
-#pragma omp task depend(out: var [, var2]) depend(in: var3 [, var4])
-{
-    // Code for the task
-}
-```
-
-Where:
-
-- `depend`: specifies the dependencies of the task:
-  - `out`: variables that the task will produce (write);
-  - `in`: variables that the task will consume (read).
-
-It is possible to create a task group using the `taskgroup` directive, which allows to group multiple tasks together:
-
-```c
-#pragma omp taskgroup
-{
-    // Code for the task group
-}
-```
-
-To synchronize tasks, the `taskwait` directive is used to make the current task wait until all its child tasks have completed.
-
-```c
-#pragma omp taskwait
-```
-
-To use tasks in a parallel region, the `taskloop` directive is used to distribute loop iterations among tasks:
-
-```c
-#pragma omp taskloop [grainsize(<size>)] [num_tasks(<num>)]
-{
-    // Loop to be parallelized with tasks
-}
-```
-
-Where:
-
-- `grainsize`: specifies the minimum number of iterations per task;
-- `num_tasks`: specifies the total number of tasks to be created.
-
-#### CUDA
-
-CUDA (Compute Unified Device Architecture) is a parallel computing platform and programming model developed by Nvidia for general-purpose computing on Nvidia GPUs.
-
-It allows developers to leverage the massive parallel processing power of GPUs for computationally intensive tasks.
-
-#### OpenCL
-
-OpenCL (Open Computing Language) is an open standard for parallel programming of heterogeneous systems, including CPUs, GPUs, and FPGAs, hiding the hardware specifics.
-
-Hiding hardware specifics can lead to suboptimal performance compared to platform-specific solutions.
-
-#### Apache Spark
-
-Apache Spark is an open-source distributed computing system designed for big data processing and analytics.
-
-Abstract parallelization and communication.
-
-#### Comparison of Parallel Technologies
-
-| Technology     | Type                          | Target               | Memory model              |
-| -------------- | ----------------------------- | -------------------- | ------------------------- |
-| Verilog / VHDL | Hardware Description Language | ASIC/FPGA            | Hardware-level            |
-| MPI            | Library                       | Multi-CPUs (Cluster) | Message Passing           |
-| Pthread        | Library                       | Multi-core CPU       | Shared Memory             |
-| OpenMP         | C/Fortran Extension           | Multi-core CPU       | Shared Memory             |
-| CUDA           | C Extension                   | Nvidia GPU + CPU     | Shared Memory             |
-| OpenCL         | C/C++ Extension & API         | CPU/GPU/FPGA         | Distributed Shared Memory |
-| Apache Spark   | API                           | Cluster              | Distributed               |
-
-| Technology     | Parallelism         | Bit   | Instruction | Task  | Communication       |
-| -------------- | ------------------- | ----- | ----------- | ----- | ------------------- |
-| Verilog / VHDL | Explicit            | Yes   | Yes         | No    | Explicit            |
-| MPI            | Implicit            | (Yes) | (Yes)       | Yes   | Explicit            |
-| Pthread        | Explicit            | (Yes) | (Yes)       | Yes   | Implicit            |
-| OpenMP         | Explicit            | (Yes) | (Yes)       | Yes   | Implicit            |
-| CUDA           | Implicit (Explicit) | (Yes) | No          | (Yes) | Implicit (Explicit) |
-| OpenCL         | Explicit/Implicit   | (Yes) | No          | Yes   | Explicit/Implicit   |
-| Apache Spark   | Implicit            | (Yes) | No          | (Yes) | Implicit            |
-
 ## Parallel Programming Design
 
 Designing a **parallel algorithm** starts by understanding the problem, analyzing the dependencies, and identifying opportunities for parallelism in a machine-independent environment.
@@ -1659,8 +843,8 @@ Dependencies can be represented with a **dependence graph**, where nodes are ins
 Loops are a major source of parallelism, but there can be dependencies between different iterations of the loop. Based on the dependencies it's possible to classify loops into:
 
 - **DoAll Loops**: All iterations are independent and can be executed in parallel.
-- **Loop-Carried Dependencies**: All the iterations depend on the previous one (e.g. `a[i] = a[i-1] + 1`), making parallelization impossible, but may allow pipelining.
-- **Loop-Independent Dependencies**: Dependencies exist within the same iteration, but not between iterations (e.g. `a[i] = a[i + 10] + 2`), allowing partial parallelization.
+- **Loop-Carried Dependencies**: All the iterations depend on the previous one (e.g. `a[i] = a[i-N] + 1`), making parallelization impossible, but may allow pipelining.
+- **Loop-Independent Dependencies**: Dependencies exist within the same iteration, but not between iterations (e.g. `a[i] = a[i] + 2; a[i] = a[i] * 3`), allowing partial parallelization.
 
 The dependency can be:
 
@@ -1803,7 +987,7 @@ flowchart TB
 
 In a parallel program, the collection is divided into smaller chunks, each chunk is reduced independently, and then the intermediate results are combined to produce the final result.
 
-To allow parallelization, the operation must be **associative** (e.g., addition, multiplication) and sometimes **commutative**.
+To allow parallelization, the operation must be **associative** (e.g., addition, multiplication) and **commutative** to allow SIMD vectorization.
 
 ```mermaid
 flowchart TB
@@ -1859,7 +1043,7 @@ flowchart TB
     end
 
     A1 --> R1
-    A1 --> F1the
+    A1 --> F1
     A2 --> F1 --> R2
     A3 --> F3
     F1 --> F3 --> R3
@@ -2207,3 +1391,825 @@ function scatter(original, usage, result):
     parallel for i from 0 to n-1:
         result[usage[i]] = original[i]
 ```
+
+## Parallel Programming Technologies
+
+There is no single standard for parallel programming. There is an inverse relationship between _abstraction level_ and _Overhead_.
+
+### Verilog / VHDL
+
+Verilog and VHDL are Hardware Description Languages (HDL) used to design and model digital systems at the hardware level.
+
+They have a very low level of abstraction, allowing precise control over hardware resources, maximizing parallelism and performance.
+
+Requires specific hardware knowledge and specialized tools FPGA/ASIC.
+
+Specific hardware is less flexible but provide better efficiency and performance for specific applications.
+
+The traditional way to design hardware is writing to hardware designer to describe the circuit at the gate level using HDLs. This process is time-consuming and error-prone.
+
+High-Level Synthesis (HLS) tools allow designers to write hardware designs using high-level programming languages like C/C++. The HLS tool then automatically translates the high-level code into HDL, which can be synthesized into hardware.
+
+An example of HLS tools are Bambu, Vitis HLS, Xilinx Vivado HLS.
+
+It exports using the FSMD model:
+
+- **Controller**: Finite State Machine (FSM) that manages the control flow of the design;
+- **Datapath**: Set of registers, functional units, and interconnections that perform the data processing operations.
+
+### MPI
+
+The Message Passing Interface (MPI) is a standardized and portable message-passing system designed to function on a wide variety of parallel computing architectures with distributed memory.
+
+This is highly scalable and works on diverse architectures.
+
+Explicit message-based communication can introduce significant overhead and complexity in programming.
+
+MPI is only a standard, then there are different implementations like OpenMPI. Each implementation provides:
+
+- `libmpi.so`: the library containing the MPI functions;
+- `mpicc`: compiler wrapper for C programs;
+- `mpirun`/`mpiexec`: command to run MPI programs.
+
+#### Initialization and Finalization
+
+An MPI program starts with the initialization of the MPI environment using `MPI_Init`.
+
+```c
+#include <mpi.h>
+
+int MPI_Init(int *argc, char ***argv, int required, int *provided);
+```
+
+Where:
+
+- `argc` and `argv`: command-line arguments;
+- `required`: desired level of thread support;
+- `provided`: actual level of thread support provided (`MPI_THREAD_SINGLE` < `MPI_THREAD_FUNNELED` < `MPI_THREAD_SERIALIZED` < `MPI_THREAD_MULTIPLE`).
+
+Then to finalize the MPI environment use `MPI_Finalize`.
+
+```c
+#include <mpi.h>
+
+int MPI_Finalize(void);
+```
+
+This is the last MPI function called in the program and after this it's not more possible to initialize new MPI processes.
+
+All the MPI functions returns a status code, where `MPI_SUCCESS` indicates successful completion.
+
+#### Communicator
+
+A **communicator** is a group of MPI processes that can communicate with each other. They are identified by a unique handle of type `MPI_Comm`.
+
+The base communicator groups are:
+
+- `MPI_COMM_WORLD`: This group involves all the MPI processes.
+- `MPI_COMM_SELF`: This group involves only the current process.
+
+Each process in a communicator has a unique identifier called **rank**, which ranges from `0` to `size - 1`, where `size` is the total number of processes in the communicator.
+
+```c
+#include <mpi.h>
+
+int MPI_Comm_size(MPI_Comm comm, int *size);
+int MPI_Comm_rank(MPI_Comm comm, int *rank);
+```
+
+Where:
+
+- `comm`: the communicator handle;
+- `size`: pointer to store the number of processes in the communicator;
+- `rank`: pointer to store the rank of the calling process within the communicator.
+
+The rank can be used to differentiate the behavior of each process in the parallel program.
+
+To create new communicators, use `MPI_Comm_split`.
+
+```c
+#include <mpi.h>
+
+int MPI_Comm_split(MPI_Comm comm, int color, int key, MPI_Comm *newcomm);
+```
+
+Where:
+
+- `comm`: the original communicator handle;
+- `color`: integer value that determines the new communicator group;
+- `key`: integer value that determines the rank ordering in the new communicator;
+- `newcomm`: pointer to store the new communicator handle.
+
+To free the resources associated with a communicator, use `MPI_Comm_free`.
+
+```c
+#include <mpi.h>
+
+int MPI_Comm_free(MPI_Comm *comm);
+```
+
+Where `comm` is a pointer to the communicator handle to be freed.
+
+#### Point-to-Point Communication
+
+Point-to-point communication involves sending and receiving messages between pairs of MPI processes.
+
+The functions are mainly related to sending and receiving messages, but the communication can be:
+
+- **Synchronous** (`MPI_Ssend`): the sender waits until the receiver has received the message;
+- **Buffered** (`MPI_Bsend`): the message is copied to a buffer, allowing to send multiple messages without waiting for the receiver;
+- **Standard** (`MPI_Send` / `MPI_Recv`): the MPI implementation decides the best way to send the message;
+- **Ready** (`MPI_Rsend`): the receiver must be ready to receive the message, otherwise the behavior is undefined.
+
+```c
+#include <mpi.h>
+
+int MPI_Send(const void *buf, int count, MPI_Datatype datatype,
+                 int dest, int tag, MPI_Comm comm);
+int MPI_Ssend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm);
+int MPI_Bsend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm);
+int MPI_Rsend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm);
+```
+
+Where:
+
+- `buf`: pointer to the data to be sent;
+- `count`: number of elements to send;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `dest`: rank of the destination process;
+- `tag`: message tag to identify the message;
+- `comm`: communicator handle;
+
+This operation are blocking and the function returns only when the `buf` is safe to be modified or reused. For the `synchronous` send, this means that the receiver has received the message.
+
+```c
+#include <mpi.h>
+
+int MPI_Recv(void *buf, int count, MPI_Datatype datatype,
+                 int source, int tag, MPI_Comm comm, MPI_Status *status);
+```
+
+Where:
+
+- `buf`: pointer to the buffer to store the received data;
+- `count`: maximum number of elements to receive;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `source`: rank of the source process;
+- `tag`: message tag to identify the message;
+- `comm`: communicator handle;
+- `status`: pointer to the status object to store information about the received message.
+
+This operation is blocking until a message matching the specified source and tag is received and the data is copied into `buf`.
+
+It is possible to use `MPI_ANY_SOURCE` and `MPI_ANY_TAG` to receive messages from any source or with any tag.
+
+##### MPI Probe
+
+To check information about the receiving message without copying the data to the buffer, use `MPI_Probe`.
+
+```c
+#include <mpi.h>
+
+int MPI_Probe(int source, int tag, MPI_Comm comm, MPI_Status *status);
+```
+
+Where:
+
+- `source`: rank of the source process (or `MPI_ANY_SOURCE`);
+- `tag`: message tag to identify the message (or `MPI_ANY_TAG`);
+- `comm`: communicator handle;
+- `status`: pointer to the status object to store information about the received message.
+
+#### Non-blocking Communication
+
+The communication can also be non-blocking using `MPI_Isend` and `MPI_Irecv`, which return immediately and allow the program to continue executing while the communication is in progress.
+
+```c
+#include <mpi.h>
+
+int MPI_Isend(const void *buf, int count, MPI_Datatype datatype,
+                  int dest, int tag, MPI_Comm comm, MPI_Request *request);
+int MPI_Irecv(void *buf, int count, MPI_Datatype datatype,
+                  int source, int tag, MPI_Comm comm, MPI_Request *request);
+```
+
+Where the `request` parameter is used to track the status of the non-blocking operation.
+
+##### MPI Async checks
+
+Using `MPI_Wait` (blocking) or `MPI_Test` (non-blocking), it's possible to check if the operation has completed.
+
+```c
+#include <mpi.h>
+
+int MPI_Wait(MPI_Request *request, MPI_Status *status);
+int MPI_Test(MPI_Request *request, int *flag, MPI_Status *status);
+```
+
+Where:
+
+- `request`: pointer to the request object;
+- `flag`: pointer to an integer that is set to true if the operation has completed;
+- `status`: pointer to the status object to store information about the completed operation.
+
+##### MPI Async Cancel
+
+To cancel a non-blocking operation before it completes, use `MPI_Cancel`.
+
+```c
+#include <mpi.h>
+
+int MPI_Cancel(MPI_Request *request);
+```
+
+Where `request` is a pointer to the request object of the operation to be canceled.
+
+#### Collective Communication
+
+Collective communication involves communication patterns that include all processes in a communicator. Until all processes reach the collective operation, none of them can proceed.
+
+##### MPI Barrier
+
+To synchronize all processes in a communicator, use `MPI_Barrier`.
+
+```c
+#include <mpi.h>
+
+int MPI_Barrier(MPI_Comm comm);
+```
+
+Where `comm` is the communicator handle.
+
+##### MPI Broadcast
+
+To broadcast a message from one process to all other processes in a communicator, use `MPI_Bcast`.
+
+```c
+#include <mpi.h>
+
+int MPI_Bcast(void *buf, int count, MPI_Datatype datatype,
+                  int root, MPI_Comm comm);
+```
+
+Where:
+
+- `buf`: pointer to the data to be broadcasted;
+- `count`: number of elements to broadcast;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `root`: rank of the root process that initiates the broadcast;
+- `comm`: communicator handle.
+
+##### MPI Gather
+
+To gather messages from all processes to a single process in a communicator, use `MPI_Gather`. If the size of the messages is different, use `MPI_Gatherv`. If all the processes need to gather data from all other processes, use `MPI_Allgather`.
+
+The root also receives its own data.
+
+```c
+#include <mpi.h>
+
+int MPI_Gather(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                   void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                   int root, MPI_Comm comm);
+int MPI_Allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                       void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                       MPI_Comm comm);
+int MPI_Gatherv(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                    void *recvbuf, const int *recvcounts, const int *displs,
+                    MPI_Datatype recvtype, int root, MPI_Comm comm);
+```
+
+Where:
+
+- `sendbuf`: pointer to the data to be sent;
+- `sendcount`: number of elements to send;
+- `sendtype`: data type of the elements to send (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `recvbuf`: pointer to the buffer to store the received data;
+- `recvcount`: number of elements to receive from each process;
+- `recvtype`: data type of the elements to receive (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `recvcounts`: array specifying the number of elements to receive from each process (only for `MPI_Gatherv`);
+- `displs`: array specifying the displacements at which to place the incoming data (only for `MPI_Gatherv`);
+- `root`: rank of the root process that gathers the data (not used in `MPI_Allgather`);
+- `comm`: communicator handle.
+
+##### MPI Scatter
+
+To scatter messages from a single process to all other processes in a communicator, use `MPI_Scatter`. If the size of the messages is different, use `MPI_Scatterv`.
+
+```c
+#include <mpi.h>
+
+int MPI_Scatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+                    void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                    int root, MPI_Comm comm);
+int MPI_Scatterv(const void *sendbuf, const int *sendcounts,
+                     const int *displs, MPI_Datatype sendtype,
+                     void *recvbuf, int recvcount, MPI_Datatype recvtype,
+                     int root, MPI_Comm comm);
+```
+
+Where:
+
+- `sendbuf`: pointer to the data to be scattered;
+- `sendcount`: number of elements to send to each process;
+- `sendtype`: data type of the elements to send (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `sendcounts`: array specifying the number of elements to send to each process (only for `MPI_Scatterv`);
+- `displs`: array specifying the displacements from which to take the outgoing data (only for `MPI_Scatterv`);
+- `recvbuf`: pointer to the buffer to store the received data;
+- `recvcount`: number of elements to receive;
+- `recvtype`: data type of the elements to receive (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `root`: rank of the root process that scatters the data;
+- `comm`: communicator handle.
+
+##### MPI Reduce
+
+To perform a reduction operation (e.g., sum, max, min) across all processes in a communicator and store the result in a single process, use `MPI_Reduce`. If all processes need the result, use `MPI_Allreduce`.
+
+```c
+#include <mpi.h>
+
+int MPI_Reduce(const void *sendbuf, void *recvbuf, int count,
+                   MPI_Datatype datatype, MPI_Op op, int root, MPI_Comm comm);
+int MPI_Allreduce(const void *sendbuf, void *recvbuf, int count,
+                       MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);
+```
+
+Where:
+
+- `sendbuf`: pointer to the data to be reduced;
+- `recvbuf`: pointer to the buffer to store the reduced result;
+- `count`: number of elements to reduce;
+- `datatype`: data type of the elements (e.g., `MPI_INT`, `MPI_FLOAT`);
+- `op`: reduction operation (e.g., `MPI_SUM`, `MPI_MAX`, `MPI_MIN`);
+- `root`: rank of the root process that receives the reduced result (not used in `MPI_Allreduce`);
+- `comm`: communicator handle.
+
+### PThread
+
+The POSIX Threads (Pthreads) is a standard for multithreading in C/C++.
+
+It provides a low-level API for creating and managing threads, allowing fine-grained control over thread behavior and synchronization.
+
+There is a higher complexity and overhead in managing threads and synchronization.
+
+#### Creation
+
+A new thread is created using the `pthread_create` function.
+
+```c
+#include <pthread.h>
+
+int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+                   void *(*start_routine)(void*), void *arg);
+```
+
+Where:
+
+- `thread`: pointer to the thread identifier;
+- `attr`: thread attributes:
+  - _Joinable_ or _detached_: determines if other threads can wait for its completion;
+  - _Stack size_: size of the thread's stack;
+  - _Scheduling_: thread scheduling policy and priority;
+- `start_routine`: function to be executed by the thread;
+- `arg`: argument to be passed to the function.
+
+#### Termination
+
+The thread can terminate itself by calling `pthread_exit`, which allows it to return a value to any joining threads.
+
+```c
+#include <pthread.h>
+
+void pthread_exit(void *retval);
+```
+
+Where `retval` is a pointer to the return value.
+
+The thread can also be terminated by another thread using `pthread_cancel`, which sends a cancellation request to the target thread.
+
+```c
+#include <pthread.h>
+
+int pthread_cancel(pthread_t thread);
+```
+
+Where `thread` is the identifier of the thread to be canceled.
+
+#### Joining
+
+A thread can wait for a _joinable_ thread to complete using `pthread_join`, which blocks the calling thread until the specified thread terminates.
+
+```c
+#include <pthread.h>
+
+int pthread_join(pthread_t thread, void **retval);
+```
+
+Where:
+
+- `thread`: identifier of the thread to wait for;
+- `retval`: pointer to store the return value of the terminated thread.
+
+#### Barriers
+
+A barrier is a synchronization primitive that allows multiple threads to wait until all threads have reached a certain point in their execution before proceeding.
+
+A barrier is initialized using `pthread_barrier_init`, threads wait at the barrier using `pthread_barrier_wait`, and the barrier is destroyed using `pthread_barrier_destroy`.
+
+```c
+#include <pthread.h>
+
+int pthread_barrier_init(pthread_barrier_t *barrier,
+                           const pthread_barrierattr_t *attr,
+                           unsigned count);
+
+int pthread_barrier_wait(pthread_barrier_t *barrier);
+int pthread_barrier_destroy(pthread_barrier_t *barrier);
+```
+
+Where:
+
+- `barrier`: pointer to the barrier object;
+- `attr`: barrier attributes (usually NULL);
+- `count`: number of threads that must call `pthread_barrier_wait` before any of them can proceed.
+
+#### Mutex
+
+A mutex (mutual exclusion) is a synchronization primitive used to protect shared resources from concurrent access by multiple threads.
+
+A mutex is initialized using `pthread_mutex_init`, locked using `pthread_mutex_lock`, unlocked using `pthread_mutex_unlock`, and destroyed using `pthread_mutex_destroy`.
+
+```c
+#include <pthread.h>
+
+int pthread_mutex_init(pthread_mutex_t *mutex,
+                        const pthread_mutexattr_t *attr);
+int pthread_mutex_lock(pthread_mutex_t *mutex);
+int pthread_mutex_unlock(pthread_mutex_t *mutex);
+int pthread_mutex_destroy(pthread_mutex_t *mutex);
+```
+
+Where:
+
+- `mutex`: pointer to the mutex object;
+- `attr`: mutex attributes (usually NULL).
+
+#### Condition Variables
+
+A condition variable is a synchronization primitive that allows threads to wait for certain conditions to be met.
+
+A condition variable is initialized using `pthread_cond_init`, threads wait on the condition variable using `pthread_cond_wait`, signal other threads using `pthread_cond_signal` or `pthread_cond_broadcast`, and the condition variable is destroyed using `pthread_cond_destroy`.
+
+```c
+#include <pthread.h>
+
+int pthread_cond_init(pthread_cond_t *cond,
+                        const pthread_condattr_t *attr);
+int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
+int pthread_cond_signal(pthread_cond_t *cond);
+int pthread_cond_broadcast(pthread_cond_t *cond);
+int pthread_cond_destroy(pthread_cond_t *cond);
+```
+
+Where:
+
+- `cond`: pointer to the condition variable object;
+- `attr`: condition variable attributes (usually NULL);
+- `mutex`: pointer to the associated mutex that must be locked before calling `pthread_cond_wait`.
+
+### OpenMP
+
+OpenMP is an API that supports multi-platform shared memory multiprocessing programming in C, C++, and Fortran.
+
+It provides a higher-level abstraction for parallel programming, allowing developers to easily parallelize code using compiler directives.
+
+The main target are multi-core CPUs with shared memory architecture.
+
+OpenMP is mainly composed by compiler pragmas that specify parallel regions, work-sharing constructs, and synchronization mechanisms.
+
+A pragma directive is a special instruction for the compiler, and it looks like this:
+
+```c
+#pragma omp <directive> [clause[,...]]
+```
+
+Parallelism is based on the fork-join paradigm, where the main thread forks multiple threads to execute parallel regions and then joins them back together.
+
+A program is divided in **parallel regions**, where multiple threads execute concurrently, and **serial regions**, where only the main thread executes. The default behavior is to execute code in serial regions and a parallel region starts only with the directive:
+
+```c
+#pragma omp parallel [if(<condition>)] [num_threads(<num>)]
+{
+    // Code executed by multiple threads
+}
+```
+
+The `if` clause allows to conditionally execute the parallel region based on a runtime condition, while the `num_threads` clause specifies the number of threads to be created for the parallel region. If the number of threads is not specified, the default number of threads can be set using the `omp_set_num_threads` function or the `OMP_NUM_THREADS` environment variable.
+
+It is possible to nest multiple parallel regions and all the threads will have ids based on their level of nesting.
+
+```mermaid
+graph TD
+    A[Main Thread - ID 0]
+    A --> B[Parallel Region 1]
+    B --> C[Thread 1.0 - ID 0]
+    B --> D[Thread 1.1 - ID 1]
+    C --> E[Parallel Region 2]
+    E --> F[Thread 2.0 - ID 0]
+    E --> G[Thread 2.1 - ID 1]
+    D --> H[Parallel Region 3]
+    H --> I[Thread 3.0 - ID 0]
+    H --> J[Thread 3.1 - ID 1]
+```
+
+#### Work-Sharing Constructs
+
+Work-sharing constructs divide the execution of a parallel region among the threads.
+
+The most common work-sharing construct is the `for` directive, which distributes the iterations of a loop among the threads:
+
+```c
+#pragma omp for [schedule(<type>[, <chunk_size>])] [nowait]
+{
+    // Loop to be parallelized
+}
+```
+
+Where:
+
+- `schedule`: defines how iterations are divided among threads:
+  - `static`: iterations are divided into chunks of equal size and assigned to threads in a round-robin fashion. Good for balanced workloads;
+  - `dynamic`: iterations are assigned to threads dynamically as they finish their work, with optional chunk size. Good for unbalanced workloads;
+  - `guided`: similar to dynamic scheduling, but the chunk size decreases over time. Good for workloads that decrease in size over time;
+- `nowait`: allows threads to proceed without waiting for all threads to finish the loop.
+
+Another work-sharing construct is the `sections` directive, which allows different sections of code to be executed by different threads:
+
+```c
+#pragma omp sections
+{
+    #pragma omp section
+    {
+        // Code for section 1
+    }
+    #pragma omp section
+    {
+        // Code for section 2
+    }
+}
+```
+
+Where each `section` is executed by a different thread.
+
+It's also possible to use the `single` directive to specify that a block of code should be executed by only one thread:
+
+```c
+#pragma omp single
+{
+    // Code executed by a single thread
+}
+```
+
+Or the `master` directive to specify that a block of code should be executed by the master thread only:
+
+```c
+#pragma omp master
+{
+    // Code executed by the master thread
+}
+```
+
+#### SIMD Vectorization
+
+OpenMP provides the `simd` directive to enable vectorization of loops, allowing multiple data points to be processed in parallel by a single thread using SIMD instructions:
+
+```c
+#pragma omp simd [safelen(<length>)]
+{
+    // Loop to be vectorized
+}
+```
+
+Where:
+
+- `safelen`: specifies the maximum number of iterations that can be safely executed in parallel without data dependencies.
+
+To separate the vector between threads it's possible to use the `parallel for simd` directive, which combines parallelization and vectorization:
+
+```c
+#pragma omp parallel for simd [schedule(simd:<type>[, <chunk_size>])]
+{
+    // Loop to be parallelized and vectorized
+}
+```
+
+Where the `schedule` clause works the same as in the `for` directive.
+
+To declare a function to use SIMD vectorization, the `declare simd` directive is used:
+
+```c
+#pragma omp declare simd [uniform(var [, var2])] [linear(var [, var2]: <step>)] [inbranch|notinbranch]
+<return_type> function_name(<parameters>);
+```
+
+Where:
+
+- `uniform`: specifies that the variable is the same for all SIMD lanes;
+- `linear`: specifies that the variable changes linearly across SIMD lanes with a given step;
+- `inbranch`: indicates that the function may be called in a branch, requiring additional handling for divergent execution;
+- `notinbranch`: indicates that the function is never called in a branch, allowing for better optimization.
+
+#### Synchronization
+
+OpenMP provides several synchronization mechanisms to coordinate the execution of threads.
+
+The `critical` directive defines a critical section that can be executed by only one thread at a time:
+
+```c
+#pragma omp critical [<name>]
+{
+    // Code executed by one thread at a time
+}
+```
+
+The `barrier` directive synchronizes all threads in a parallel region, making them wait until all threads reach the barrier:
+
+```c
+#pragma omp barrier
+```
+
+The `atomic` directive ensures that a specific memory operation is performed atomically, preventing race conditions:
+
+```c
+#pragma omp atomic
+variable += value;
+```
+
+#### Data Environment
+
+OpenMP allows to specify the scope of variables in parallel regions using data-sharing attributes:
+
+```c
+#pragma omp <directive> private(var [, var2])
+```
+
+All the variable defined in the `private` clause are private to each thread, meaning that each thread has its own copy of the variable.
+
+```c
+#pragma omp <directive> shared(var [, var2])
+```
+
+All the variable defined in the `shared` clause are shared among all threads, meaning that all threads access the same memory location for the variable.
+
+This is the default behavior.
+
+```c
+#pragma omp <directive> firstprivate(var [, var2])
+```
+
+All the variable defined in the `firstprivate` clause are private to each thread, but they are initialized with the value of the variable before entering the parallel region.
+
+```c
+#pragma omp <directive> lastprivate(var [, var2])
+```
+
+All the variable defined in the `lastprivate` clause are private to each thread, but after the parallel region, the value of the variable from the last iteration is copied back to the original variable.
+
+It is possible to override the default data-sharing attributes using the `default` clause:
+
+```c
+#pragma omp <directive> default(shared|none)
+```
+
+If `shared` is specified, all variables are shared by default. If `none` is specified, all variables must be explicitly declared with a data-sharing attribute.
+
+To perform reductions on variables, OpenMP provides the `reduction` clause:
+
+```c
+#pragma omp <directive> reduction(<operator>: var [, var2])
+```
+
+Where `<operator>` can be one of the following: `+`, `-`, `*`, `/`, `&`, `|`, `^`, `&&`, `||`, `max`, `min`.
+
+#### Memory Model
+
+OpenMP follows a relaxed memory model, which means that there are no guarantees about the order in which memory operations are performed across different threads.
+
+To ensure memory consistency, OpenMP provides the `flush` directive that must be executed by all the threads, which enforces a memory synchronization point:
+
+```c
+#pragma omp flush([var [, var2]])
+```
+
+#### Thread Cancellation
+
+OpenMP supports thread cancellation, allowing threads to be terminated before they complete their execution.
+
+To cancel a thread, the `cancel` directive is used:
+
+```c
+#pragma omp cancel <construct>
+```
+
+Where `<construct>` can be one of the following: `parallel`, `for`, `sections`, `task`, `taskgroup`.
+
+Other threads can check for cancellation points using the `cancellation point` directive:
+
+```c
+#pragma omp cancellation point <construct>
+```
+
+If other threads have issued a cancel directive for the same construct, the thread will terminate at the cancellation point.
+
+This check is also performed at `barrier` directives.
+
+#### Tasks
+
+OpenMP supports task-based parallelism, allowing the creation of independent units of work that can be executed by different threads.
+
+Tasks are useful for irregular parallelism and dynamic workloads.
+
+```c
+#pragma omp task depend(out: var [, var2]) depend(in: var3 [, var4])
+{
+    // Code for the task
+}
+```
+
+Where:
+
+- `depend`: specifies the dependencies of the task:
+  - `out`: variables that the task will produce (write);
+  - `in`: variables that the task will consume (read).
+
+It is possible to create a task group using the `taskgroup` directive, which allows to group multiple tasks together:
+
+```c
+#pragma omp taskgroup
+{
+    // Code for the task group
+}
+```
+
+To synchronize tasks, the `taskwait` directive is used to make the current task wait until all its child tasks have completed.
+
+```c
+#pragma omp taskwait
+```
+
+To use tasks in a parallel region, the `taskloop` directive is used to distribute loop iterations among tasks:
+
+```c
+#pragma omp taskloop [grainsize(<size>)] [num_tasks(<num>)]
+{
+    // Loop to be parallelized with tasks
+}
+```
+
+Where:
+
+- `grainsize`: specifies the minimum number of iterations per task;
+- `num_tasks`: specifies the total number of tasks to be created.
+
+### CUDA
+
+CUDA (Compute Unified Device Architecture) is a parallel computing platform and programming model developed by Nvidia for general-purpose computing on Nvidia GPUs.
+
+It allows developers to leverage the massive parallel processing power of GPUs for computationally intensive tasks.
+
+### OpenCL
+
+OpenCL (Open Computing Language) is an open standard for parallel programming of heterogeneous systems, including CPUs, GPUs, and FPGAs, hiding the hardware specifics.
+
+Hiding hardware specifics can lead to suboptimal performance compared to platform-specific solutions.
+
+### Apache Spark
+
+Apache Spark is an open-source distributed computing system designed for big data processing and analytics.
+
+Abstract parallelization and communication.
+
+### Comparison of Parallel Technologies
+
+| Technology     | Type                          | Target               | Memory model              |
+| -------------- | ----------------------------- | -------------------- | ------------------------- |
+| Verilog / VHDL | Hardware Description Language | ASIC/FPGA            | Hardware-level            |
+| MPI            | Library                       | Multi-CPUs (Cluster) | Message Passing           |
+| Pthread        | Library                       | Multi-core CPU       | Shared Memory             |
+| OpenMP         | C/Fortran Extension           | Multi-core CPU       | Shared Memory             |
+| CUDA           | C Extension                   | Nvidia GPU + CPU     | Shared Memory             |
+| OpenCL         | C/C++ Extension & API         | CPU/GPU/FPGA         | Distributed Shared Memory |
+| Apache Spark   | API                           | Cluster              | Distributed               |
+
+| Technology     | Parallelism         | Bit   | Instruction | Task  | Communication       |
+| -------------- | ------------------- | ----- | ----------- | ----- | ------------------- |
+| Verilog / VHDL | Explicit            | Yes   | Yes         | No    | Explicit            |
+| MPI            | Implicit            | (Yes) | (Yes)       | Yes   | Explicit            |
+| Pthread        | Explicit            | (Yes) | (Yes)       | Yes   | Implicit            |
+| OpenMP         | Explicit            | (Yes) | (Yes)       | Yes   | Implicit            |
+| CUDA           | Implicit (Explicit) | (Yes) | No          | (Yes) | Implicit (Explicit) |
+| OpenCL         | Explicit/Implicit   | (Yes) | No          | Yes   | Explicit/Implicit   |
+| Apache Spark   | Implicit            | (Yes) | No          | (Yes) | Implicit            |
