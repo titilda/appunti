@@ -714,4 +714,31 @@ AoS is good for random access (best cache usage) while SoA is good for vectoriza
 
 Both methods may need padding to be correctly aligned. Padding may be placed at the end, after each structure (for AoS) or after each array (for SoA).
 
-_To be continued_
+# Heterogeneous computing
+
+**Heterogeneous computing** refers to the kind of computation that is performed over different devices and architectures. Examples of heterogeneous computing may be using both a cpu and a gpu, maybe with some tensor processing units or FPGAs.
+
+Heterogenous computing is useful because real world problems are very variagate and some kind of hardware may be better suited than others to solve them.
+
+Another advantae of heterogeneous systems is that the more general purpose a chip is, the slower ant power hunghry it is (but also the easier to program).
+
+There exist **Domain Specific Language**s (DSLs) that trade generality with performance and productivity: it may be easy to use them for really specific tasks but as general purpose languages, they are a really bad choice.
+
+## Halide
+
+Halide is a programming language used to decouple the algorithm from the scheduling. With Halide is easy to change _how_ an algorithm is executed (on which hardware, in which order) to try and find the best configuration.
+
+## FPGAs
+
+**Field Programmable Gate Array** are a kind of reconfigurable chip generally composed by a large number of configurable logic blocks and a configurable routing system. Each logic block usually contains a small lookup table and a flip flop. Multiple blocks can be configured to compute specific functions in order to achieve the required result.
+
+FPGAs can both be programmed with RTL languages (VHDL, Verilog, etc) to keep a very fine-grained control over the entire chip (with all the disadvantages of the case) or with HLS (using higher level languages to produce modules).
+
+With HLS, the compiler takes the higher level speciication, the constraints and optional optimization directives to have an RTL module as output. With HLS it is also easier to iterate over multiple designs and to perform verification (if a slower result is acceptable).
+
+With HLS, multiple constraints can be produced:
+
+- minimun delay/minimum area;
+- scheduling constraints;
+- power consumption constraints;
+- clock constraints.
