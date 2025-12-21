@@ -171,7 +171,7 @@
 				let content = el.innerHTML;
 				let id = self.crypto.randomUUID();
 
-				el.innerHTML = "<div><hr /><div><a class=\"collapsible-title\" data-bs-toggle=\"collapse\" role=\"button\" href=\"#"
+				el.innerHTML = "<div><div><a class=\"collapsible-title\" data-bs-toggle=\"collapse\" role=\"button\" href=\"#"
 					+ id
 					+ "\" aria-controls=\""
 					+ id
@@ -181,7 +181,7 @@
 					+ id
 					+ "\">"
 					+ content
-					+ "</div><hr /></div>"
+					+ "</div><hr width=\"20%\"/></div>"
 			});
 
 			// Remove `<code>` put by pandoc befose running mermaid
