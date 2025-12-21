@@ -51,7 +51,7 @@ $|u\rangle$ belongs to the Hilbert space $\mathcal{H}$ that contains all the pos
 - $(\cdot): \mathbb{C} \times \mathcal{H} \to \mathcal{H} \overset{\Delta}{=} \alpha |v\rangle \mapsto |\alpha v\rangle$
 - $\langle \cdot | \cdot \rangle: \mathcal{H} \times \mathcal{H} \to \mathbb{C}$
 
-The first operation is called the **superposition operation**.
+The first operation is called the **superposition operation**, the third one is the **bracket**.
 
 ::: {.callout .callout-property title="Properties of Hilbert operators"}
 Since $\mathcal{H}$ is an Hilbert space, a few properties holds:
@@ -60,7 +60,7 @@ Since $\mathcal{H}$ is an Hilbert space, a few properties holds:
 - $\langle v | u \rangle = \langle u | v \rangle^*$
 - $\langle v | u + w \rangle = \langle v | u \rangle + \langle v | w \rangle$
 - $\langle v | v \rangle \in \mathbb{R}$, $\langle v | v \rangle \ge 0$, $\langle v | v \rangle = \langle v | v \rangle^*$
-- $\||v\rangle\| = \sqrt{\langle v | v \rangle}$
+- $\|v\| = \sqrt{\langle v | v \rangle}$
 :::
 
 A generic state can be represended as a weighted sum of other states. Weights are complex numbers.
@@ -113,7 +113,7 @@ The probability of observing a specific value $O_j$ when performing a measuremen
 The **Born rule** gives the prorability of observing a given value $O_j$ when performing a measurement on $|u\rangle$:
 
 $$
-P(O = O_j) = \frac{a_j^* a_j}{\langle u | u \rangle}
+P(O = O_j) = \frac{a_j^* a_j}{\langle u | u \rangle} = \frac{}{}
 $$
 :::
 
@@ -140,7 +140,7 @@ The Copenhagen interpretation is **consistent**.
 
 Let $|u\rangle$ be a quantum state, then $\alpha_j = \langle O_j | u \rangle$.
 
-::: {.collapsible title="Proof}
+::: {.collapsible title="Proof"}
 $$
 \begin{align*}
     \langle O_j | u \rangle &= \langle O_j | \left( \sum \alpha_j | O_j \rangle \right) \\
@@ -225,7 +225,57 @@ $$
 $$
 :::
 
-<!-- discrete vs continuous systems -->
+While $(+)$ and $(\cdot)$ are quite intuitive when using a complex vector space to describe quantum systems, the braket operator may not be so trivial:
+
+$$
+\langle u | v \rangle = \sum_{ji} \alpha_j^* \beta_i \delta_{ji} = \sum_j \alpha_j^* \beta_j
+$$
+
+## Discrete vs continuous systems
+
+What we have seen so far was just for discrete systems (in the sense that observables can only assume quantized values). In reality, everything can be adapted to work for continuous systems with a few, intuitive tweaks.
+
+Usually, it is just a matter of using integrals instead of sums and probability density functions instead of probabilities.
+
+The quantum state describing a system can be written as
+
+$$
+|u\rangle = \int \alpha(\xi) |O(\xi)\rangle d\xi
+$$
+
+The statevector containing all the coefficients is now called **statefunction** (or, for a position observable, **wave function**):
+
+$$
+\psi(x) \overset{\Delta}{=} \langle O(x) | u \rangle
+$$
+
+The bracket is computed as
+
+$$
+\begin{align*}
+    \langle u | v \rangle &= \int \alpha^*(\xi) \beta(\xi) d\xi \\
+    \langle u | u \rangle &= \int |\alpha(\xi)| d\xi \\
+    \langle O(\xi) | O(\eta) \rangle &= \delta(\xi - \eta) \\
+\end{align*}
+$$
+
+$\delta$ is the continuous extension of the Dirac delta we've used before:
+
+$$
+f(\eta) = \int f(\xi) \delta(\xi - \eta) 
+$$
+
+Observables probabilities are now computed with
+
+$$
+f(\xi) = Pdf(O(\xi)) = \frac{|\alpha(\xi)|}{\langle u | u \rangle} \\
+f(\xi_0) = \lim_{\Delta \xi \to 0} \frac{P(\xi_0 \lt \xi \lt \xi + \Delta \xi)}{\Delta \xi} \\
+P(\xi_1 \lt \xi \lt \xi_2) = \int_{\xi_1}^{\xi_2} f(\xi) d\xi
+$$
+
+# Operators
+
+## Operators associated to observables
 
 _To be continued._
 
