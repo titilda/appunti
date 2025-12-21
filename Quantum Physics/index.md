@@ -17,6 +17,8 @@ A good "popular" introduction to relativistic effects can be found [here](https:
 
 # Fundamentals
 
+We will now give the fundamental tools and concepts to understand more advanced topics.
+
 ## Wave-particle duality
 
 The **wave-particle duality** is at the foundation of the entire field of quantum mechanics. Hoc can you prove that a particle is, in fact, a particle? Consider the following setup, where a beam of particles if thrown into a 50/50 beam-splitter:
@@ -45,7 +47,7 @@ Let $|u\rangle$ be the **quantum state** (the equivalent of the state of motion)
 
 Just as with the classical counterpart, knowing the quantum state of a particle at a give time, unless irreversible operations like [measurements](#measurements) are performed, is enough information to let us compute the quantum state of the same particle forever in the past and in the future.
 
-$|u\rangle$ belongs to the Hilbert space $\mathcal{H}$ that contains all the possible quantum states for the particle. Since $\mathcal{H}$ is an Hilbert space, three operations are defined:
+$|u\rangle$ belongs to the Hilbert (i.e. a vector space with a scalar product) space $\mathcal{H}$ that contains all the possible quantum states for the particle. Since $\mathcal{H}$ is an Hilbert space, three operations are defined:
 
 - $(+): \mathcal{H} \times \mathcal{H} \to H \overset{\Delta}{=} |u\rangle> + |v\rangle \mapsto |u+v\rangle$
 - $(\cdot): \mathbb{C} \times \mathcal{H} \to \mathcal{H} \overset{\Delta}{=} \alpha |v\rangle \mapsto |\alpha v\rangle$
@@ -63,7 +65,9 @@ Since $\mathcal{H}$ is an Hilbert space, a few properties holds:
 - $\|v\| = \sqrt{\langle v | v \rangle}$
 :::
 
-A generic state can be represended as a weighted sum of other states. Weights are complex numbers.
+A generic state can be represended as a weighted sum (a.k.a. **superposition** or **linear combination**) of other states. Weights are complex numbers.
+
+Any superposition of valid states is another valid state for the system.
 
 $$
 |u\rangle = \sum_{j=1}^n \alpha_j |v_j\rangle \qquad |u\rangle, |v_j\rangle \in \mathcal{H}, \alpha_j \in \mathbb{C}
@@ -104,6 +108,10 @@ $$
 $$
 
 The various $|O_j\rangle$s are therefore all proper states.
+
+::: {.callout .callout-note title="Invariance w.r.t. multiplication by a phase factor"}
+The same information encoded in $|u\rangle$ is also the one encoded in both $e^{i\varphi}|u\rangle$ and $A|u\rangle$. They all describe the exact same quantum state.
+:::
 
 The $\alpha_j$ coefficient are enough to determine the state of a quantum systemm therefore knowing $\alpha = [\alpha_1, \alpha_2, \dots]^T$ at a specific time allows us to determine the same vector forever in the past and in the future (unless irreversible operations are performed).
 
@@ -165,6 +173,8 @@ $$
 $$
 
 ## Vector representation
+
+_Vector representation is not to be confused with "position representation", "energy representation" et similia. The former is used to indicate the "data structure" used in the computations, the latters are used to indicate the "basis" for those data structures. This will become clear later._
 
 To operate numerically with quantum states, we should choose an appropriate Hilbert space that is isomorphic to the space of quantum states allowable by the quantum system we are working with. $\{0\}$ and $\mathbb{C}^n \forall n \in \mathbb{N}$ are all good examples of Hilbert spaces that can be used to describe quantum systems. Vectors used to describe the state of a quantum system are called **statevector**s.
 
@@ -231,6 +241,8 @@ $$
 \langle u | v \rangle = \sum_{ji} \alpha_j^* \beta_i \delta_{ji} = \sum_j \alpha_j^* \beta_j
 $$
 
+_Vector representation will be the default for discrete systems for the remaining of this document._
+
 ## Discrete vs continuous systems
 
 What we have seen so far was just for discrete systems (in the sense that observables can only assume quantized values). In reality, everything can be adapted to work for continuous systems with a few, intuitive tweaks.
@@ -273,9 +285,138 @@ f(\xi_0) = \lim_{\Delta \xi \to 0} \frac{P(\xi_0 \lt \xi \lt \xi + \Delta \xi)}{
 P(\xi_1 \lt \xi \lt \xi_2) = \int_{\xi_1}^{\xi_2} f(\xi) d\xi
 $$
 
+_This representation will be the default for continuous systems for the remaining of this document._
+
 # Operators
 
+Changes to a quantum systems are represented by changes in the corresponding statevector. Said changes are encoded in linear functions that act on the quantum state and return the modified quantum state.
+
+We denote with $[\hat O_1, \hat O_2]$ the commutator of the two operators $\hat O_1$ and $\hat O_2$.
+
+Two operators are said to **commute** if and only if $\hat O_1 \hat O_2 = \hat O_2 \hat O_1$. In this case, the order of application of the two operators does not matter.
+
 ## Operators associated to observables
+
+If an operator is linear and also **hermitian** (a.k.a. **self adjoint**, i.e. it holds that $\langle u | \hat O v \rangle = \langle \hat O v | u \rangle$) then it is associated with an observable.
+
+We can write the following eigenequation
+
+$$
+\hat O |u \rangle = O |u \rangle
+$$
+
+The solution of said eigenequation yields all possible observables $O$ (from now on, **eigenvalues**) associated with the respective proper states (from now on **eigenstates**).
+
+An eigenvalue may be degenerate: in such a case, when that value is measured, the system will collapse in a superposition of the eigenstates associated to that eigenvalue.
+
+If we knew all the possible eigenvalues and the associated eigenstates, any operator associated to an observable property can be described as
+
+$$
+\hat O = \sum O_j |O_j \rangle\langle O_j| \\
+\hat O = \int O(\xi) |O(\xi) \rangle \langle O(\xi)| d\xi
+$$
+
+::: {.callout .callout-property title="Hermitianity test"}
+Given an operator $\hat A$, then
+
+$$
+\exists \hat A^\dagger : \langle v | A u \rangle = \langle \hat A^\dagger v | u \rangle
+$$
+
+If $\hat A$ is hermitian, then $\hat A = \hat A^\dagger$.
+
+To check if $\hat A$ it sufficies to chech whether $\langle v | \hat A u \rangle = \langle \hat A v | u \rangle$.
+
+This is equivalent to check whether $A = A^H$.
+:::
+
+Since eigenvalues correspond to a measurable quantity, they must always be real (and they are).
+
+::: {.collapsible title="Proof"}
+Let $|u\rangle$ be an eigenvector for $\hat O$ that is associated with the eigenvalue $O$, then
+
+$$
+\langle u | (\hat O | u \rangle) = \langle u | (O | u \rangle) = O \langle u | u \rangle \\
+\langle u | (\hat O | u \rangle) = \langle \hat O u | u \rangle = \langle O u | u \rangle = O \langle u | u \rangle
+$$
+
+therefore it must be true that $O = O^*$, that is equivalent to say that $\Im\{O\} = 0$.
+:::
+
+A really important relation exists between operators and expectation values:
+
+$$
+\langle O \rangle = \frac{\langle u | \hat O | u \rangle}{\langle u | u \rangle}
+$$
+
+::: {.collapsible title="Proof"}
+Let $u\rangle = \sum \alpha_j |O_j\rangle$ and assume it is normalized (otherwise divide everyhting by $\langle u | u \rangle$), then
+
+$$
+\langle O \rangle = \sum_j O_j P(O_j) = \sum_j O_j |\alpha_j|^2 = \sum o_j \alpha_j^* \alpha_j = \sum_j O_j \langle u | O_j \rangle \langle O_j | u \rangle = \langle u | \left( \sum_j O_j | O_j \rangle \langle O_j | \right) u \rangle = \langle u | \hat O | \rangle
+$$
+:::
+
+::: {.callout .callout-example title="Ammonia molecule"}
+An ammonia molecule (NH<sub>3</sub>) is shaped like a tetrahedron with one atom at each vertex. Consider the plane described by the three hydrogen atoms and say that it is perpendicular to the Z axis, with the origin for said axis where it intersect the plane.
+
+The nitrogen atom can be found either above the plane at position $+Z_0$ or below, at position $-Z_0$.
+
+We associate this observable quantity to two orthogonal quantum states:
+
+$$
+|+Z_0\rangle = \begin{bmatrix} 1 \\ 0 \end{bmatrix} \qquad |-Z_0\rangle = \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+$$
+
+The operator associated with the relative position of the nitrogen atom is
+
+$$
+\hat Z = Z_0 \begin{bmatrix} 1 \\ 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \end{bmatrix} + (-Z_0) \begin{bmatrix} 0 \\ 1 \end{bmatrix} \begin{bmatrix} 0 & 1 \end{bmatrix} = \begin{bmatrix} Z_0 & 0 \\ 0 & -Z_0 \end{bmatrix}
+$$
+
+We now define the **reflection operator** $\hat R$ that, when applied to the ammonia molecule, it flips it
+
+$$
+\begin{cases}
+    \hat R |+Z_0\rangle = |-Z_0\rangle \\
+    \hat R |-Z_0\rangle = |+Z_0\rangle \\
+\end{cases} \implies \hat R = \begin{bmatrix}
+    0 & 1 \\ 1 & 0
+\end{bmatrix}
+$$
+
+Since this is an hermitian operator, it is associated to some observabe property of the system that, in this case, is the parity of the molecule.
+
+Its two eigenstates are **gerade**
+
+$$
+\lambda_g = 1 \qquad |g\rangle = \begin{bmatrix}\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}\end{bmatrix} \qquad \hat R |g\rangle = |g\rangle
+$$
+
+and **ungerade**
+
+$$
+\lambda_u = -1 \qquad |u\rangle = \begin{bmatrix}\frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}}\end{bmatrix} \qquad \hat R |u\rangle = -|u\rangle
+$$
+
+
+We now introdice the energy observable (that will be discussed in detail later) associated with the operator $\hat E$. It is safe to assume that the molecule energy does not care about the orientation of the molecule, so
+
+$$
+\hat E \hat R |v\rangle = E \hat R |v\rangle \implies\hat R^{-1}\hat E\hat R |v\rangle = E|v\rangle = \hat E|v\rangle \implies \hat E \hat R = \hat R \hat E
+$$
+
+hence, $\hat R$ and $\hat E$ commutes.
+
+Since $\hat E$ is associated with an observable, it is hermitian, therefore
+
+$$
+\hat E = \begin{bmatrix} a & b \\ b & a \end{bmatrix}
+$$
+
+<!-- continue from ammona example before "commuting operator" -->
+
+:::
 
 _To be continued._
 
