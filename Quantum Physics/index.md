@@ -291,9 +291,38 @@ _This representation will be the default for continuous systems for the remainin
 
 Changes to a quantum systems are represented by changes in the corresponding statevector. Said changes are encoded in linear functions that act on the quantum state and return the modified quantum state.
 
+## Commutators
+
 We denote with $[\hat O_1, \hat O_2]$ the commutator of the two operators $\hat O_1$ and $\hat O_2$.
 
 Two operators are said to **commute** if and only if $\hat O_1 \hat O_2 = \hat O_2 \hat O_1$. In this case, the order of application of the two operators does not matter.
+
+::: {.callout .callout-property title="Properties of commuting operators"}
+Commuting operators have two very important properties.
+
+1. Operators sharing a common set of eigenstates, commute;
+2. TODO
+
+::: {.collapsible title="Proof of (1)"}
+Let $|u\rangle$ belong to the common set of eigenstates, then
+
+$$
+\hat A \hat B |u\rangle = \hat A(B|u\rangle) = B(\hat A|u\rangle) = BA|u\rangle = AB|u\rangle = A(\hat B|u\rangle) = \hat B(A|u\rangle) = \hat B \hat A|u\rangle
+$$
+
+therefore $\hat B \hat A = \hat A \hat B$.
+:::
+
+::: {.collapsible title="Proof of (2)"}
+Let $\hat B$ be an operator without degenerate eigenvalues and $|u\rangle$ be one of its eigenstates, then
+
+$$
+\hat B|u\rangle = B|u\rangle \implies \hat A \hat B |u\rangle = \hat A B |u\rangle
+$$
+
+Since $\hat A$ and $\hat B$ commute, then $\hat A \hat B = \hat B \hat A$. Let $|v\rangle = \hat A|u\rangle$ so that $\hat B \hat A = B|v\rangle$ but there is only one eigenstate for a given eigenvalue so $|v\rangle = A|u\rangle$ therefore $\hat A|v\rangle = A|v\rangle$
+:::
+:::
 
 ## Operators associated to observables
 
@@ -410,11 +439,39 @@ hence, $\hat R$ and $\hat E$ commutes.
 
 Since $\hat E$ is associated with an observable, it is hermitian, therefore
 
+<!-- TODO: why is this true? -->
+
 $$
 \hat E = \begin{bmatrix} a & b \\ b & a \end{bmatrix}
 $$
 
-<!-- continue from ammona example before "commuting operator" -->
+The eigenvalues of $\hat E$ are $E = \pm b + a$. We take $a = 0$ to make the eigenvalues symmetric, therefore
+
+$$
+\hat E = \frac{\Delta E}{2}\begin{bmatrix}
+    0 & 1 \\ 1 & 0
+\end{bmatrix}
+$$
+
+Note that energy is quantized!
+
+Usually, the lower energy state is associated with the gerade state and the higher one is associated with ungerade.
+
+Assume that we let the molecule rest enough time to reach the gerade state, the expectation value of the orientation of the molecule in the gerade state can be computed as
+
+$$
+\langle Z \rangle = \langle g | \hat Z | g \rangle = g^H \cdot \hat Z \cdot g = 0
+$$
+
+<!-- TODO: is this representationally correct??? -->
+
+This means that we have an equal probability to find the particle in any orientation.
+
+We can reach this same conclusion, for example, by calculating the probabilities for the particle to be oriented in a specific way:
+
+$$
+P(Z_0) = \frac{|\langle +Z_0 | g \rangle|^2}{\langle g | g \rangle} = |\langle +Z_0 | g \rangle|^2 = \left| \begin{bmatrix} 1 & 0 \end{bmatrix}\begin{bmatrix}\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}\end{bmatrix}\right|^2 = \frac{1}{2}
+$$
 
 :::
 
