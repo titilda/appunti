@@ -35,7 +35,7 @@ Intuitively, sending a beam of particles inside this setup would make both detec
 
 Sending a particle at a time shows the same result (therefore no interference between different particles).
 
-The mathematica modellization of the Mach-Zender interferometer will be presented in the corresponding paragraph. <!-- TODO -->
+The mathematic modellization of the Mach-Zender interferometer will be presented [here](#translation-operator).
 
 The Mach-Zender interferometer demonstrates that each particle also propagates like a wave, taking both the upper and the lower paths at the same time (**superposition**), interfering with itself at the second beam-splitter.
 
@@ -78,6 +78,12 @@ The notorious Schr&ouml;dinger's cat is in a superposition of "being alive" and 
 
 $$
 |cat\rangle = |alive\rangle + |dead\rangle
+$$
+
+If the cat is really sick, it is possible that
+
+$$
+|cat\rangle = \frac{1}{10}|alive\rangle + 100i|dead\rangle
 $$
 :::
 
@@ -298,12 +304,12 @@ We denote with $[\hat O_1, \hat O_2]$ the commutator of the two operators $\hat 
 Two operators are said to **commute** if and only if $\hat O_1 \hat O_2 = \hat O_2 \hat O_1$. In this case, the order of application of the two operators does not matter.
 
 ::: {.callout .callout-property title="Properties of commuting operators"}
-Commuting operators have two very important properties.
 
-1. Operators sharing a common set of eigenstates, commute;
-2. TODO
+Two operators commute if and only if they share a common set of eigenvalues
 
-::: {.collapsible title="Proof of (1)"}
+::: {.collapsible title="Proof"}
+We will now prove that if two operators share the same set of eigenvalues, they commute.
+
 Let $|u\rangle$ belong to the common set of eigenstates, then
 
 $$
@@ -311,18 +317,31 @@ $$
 $$
 
 therefore $\hat B \hat A = \hat A \hat B$.
-:::
 
-::: {.collapsible title="Proof of (2)"}
-Let $\hat B$ be an operator without degenerate eigenvalues and $|u\rangle$ be one of its eigenstates, then
+We will now prove that if two operators commute, they share the same set of eigenvalues
+
+Let $\hat A$ and $\hat B$ be commuting operators without degenerate eigenvalues and $|u\rangle$ be one of their eigenstates, then
 
 $$
 \hat B|u\rangle = B|u\rangle \implies \hat A \hat B |u\rangle = \hat A B |u\rangle
 $$
 
-Since $\hat A$ and $\hat B$ commute, then $\hat A \hat B = \hat B \hat A$. Let $|v\rangle = \hat A|u\rangle$ so that $\hat B \hat A = B|v\rangle$ but there is only one eigenstate for a given eigenvalue so $|v\rangle = A|u\rangle$ therefore $\hat A|v\rangle = A|v\rangle$
+Since $\hat A$ and $\hat B$ commute, then $\hat A \hat B = \hat B \hat A$. Let $|v\rangle = \hat A|u\rangle$ so that $\hat B \hat A |u\rangle = B|v\rangle$ but there is only one eigenstate for a given eigenvalue so $|v\rangle = A|u\rangle$ therefore $\hat A|v\rangle = A|v\rangle$
 :::
 :::
+
+Commutation between operators is an equivalence relation.
+
+Let $\{\hat A, \hat B, \hat C, \dots\}$ be a set of operators such that if two operators are in that set, they commute. We denote one of the shared eigenstates with $|a_n, b_m, c_o, \dots \rangle$ to clearly indicate that
+
+$$
+\begin{cases}\begin{align*}
+    \hat A |a_n, b_m, c_o, \dots \rangle &= a_n |a_n, b_m, c_o, \dots \rangle \\
+    \hat B |a_n, b_m, c_o, \dots \rangle &= b_m |a_n, b_m, c_o, \dots \rangle \\
+    \hat C |a_n, b_m, c_o, \dots \rangle &= c_o |a_n, b_m, c_o, \dots \rangle \\
+    &\dots
+\end{align*}\end{cases}
+$$
 
 ## Operators associated to observables
 
@@ -472,6 +491,401 @@ We can reach this same conclusion, for example, by calculating the probabilities
 $$
 P(Z_0) = \frac{|\langle +Z_0 | g \rangle|^2}{\langle g | g \rangle} = |\langle +Z_0 | g \rangle|^2 = \left| \begin{bmatrix} 1 & 0 \end{bmatrix}\begin{bmatrix}\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}}\end{bmatrix}\right|^2 = \frac{1}{2}
 $$
+:::
+
+# Heisenberg uncertainty principle
+
+Given two operators $\hat A$ and $\hat B$ with the standard deviation associated to the measurement of the associated observables $\sigma_A, \sigma_B$, the Heisenberg uncertainty principle states that
+
+$$
+\sigma_A\sigma_B \ge \left|\frac{i}{2} \langle u | [\hat A, \hat B]|u\rangle \right|
+$$
+
+This meas that, in a joined measurement of $A$ and $B$, it is impossible to get bot standard deviations low, no matter the precision of the instruments, this uncertainty is intrinsicly built into quantum mechanics: the lowe is one, the higher the other one.
+
+::: {.collapsible title="Proof"}
+Let $|u\rangle$ be normalized, then
+
+$$
+\begin{align*}
+    \sigma_A^2 &\overset{\Delta}{=} \langle u | (\hat A - \langle A \rangle)^2)|u\rangle = \langle u | \hat A^2 + \langle A \rangle^2 - 2 \hat A \langle A \rangle |u \rangle \\
+    &= \langle u | \hat A^2 | u \rangle + \langle A \rangle^2\langle u|u \rangle - 2 \langle A \rangle \langle u|\hat A|u \rangle \\
+    &= \langle u|\hat A^2|u \rangle - \langle A \rangle^2 \\
+    &= \langle u|\hat A^2 - \langle A \rangle^2|u \rangle
+\end{align*}
+$$
+
+Let $\hat A' = \hat A - \langle A \rangle$ so that $\sigma_A^2 = \sigma_{A'}$, then
+
+<!-- This proof does not make any sense! -->
+$$
+\begin{align*}
+    \sigma_A^2 \sigma_B^2 = \sigma_{A'} \sigma_{B'} &=\langle u |\hat A'^2| u \rangle \langle u | \hat B'^2| u \rangle = \langle u|\hat A' \hat A'|u \rangle\langle u|\hat B' \hat B'|u \rangle \\
+    &= \langle \hat A' u | \hat A' u \rangle \langle \hat B' u | \hat B' u \rangle \overset{(1)}{\ge} |\langle \hat A' u | \hat B ' u \rangle|^2 \\
+    &= \left[ \Re\{\langle \hat A'u | \hat B'u \rangle \} \right]^2 + \left[ \Im\{\langle \hat A'u | \hat B'u \rangle \} \right]^2 \\
+    &\ge \left[ \Im\{\langle \hat A'u | \hat B'u \rangle \} \right]^2 \overset{(2)}{=} \left[ \frac{i}{2} \left(\langle \hat A'u | \hat B'u \rangle - \langle \hat B'u | \hat A'u \rangle\right) \right] \\
+    &= \left[ \frac{i}{2} \left( \langle u|\hat A' \hat B'|u \rangle - \langle u|\hat B' \hat A'|u \rangle \right) \right]^2 \\
+    &= \left[ \frac{i}{2} \left( \langle u | \hat A' \hat B' - \hat B' \hat A' | u \rangle \right) \right]^2 \\
+    &\overset{(3)}{=} \left[ \frac{i}{2} \left( \langle u | [\hat A, \hat B] | u \rangle \right) \right]^2
+\end{align*}
+$$
+
+where in $(1)$ we used the Cauchy-Schwarz inequality ($\langle v|v \rangle \langle u|u \rangle \ge |\langle v|u \rangle|^2$), in $(2)$ we used the fact that $\Im\{c\} = -i \frac{c - c^*}{2}$ and in $(3)$ we used the fact that $[\hat A, \hat B] = [\hat A', \hat B']$.
+
+The thesis follows.
+:::
+
+# Complex systems
+
+A complex system is a system in which we consider multiple degrees of freedom. It may be a system composed of multiple particles or a system in which we look at different properties of the same particle (or both).
+
+To describe a complex system, quantum states needs to belong to a tensor product of multiple Hilbert spaces, one for each particle/properties observed: a combined state may be expressed as 
+
+$$
+|u\rangle_1|v\rangle_2 \in \mathcal{H}_1 \otimes \mathcal{H}_2
+$$
+
+::: {.callout .callout-property title="Property of tensor product"}
+- $\alpha |\cdot\rangle_1 + \beta |\cdot\rangle_2 \in \mathcal{H}_1 \otimes \mathcal{H}_2$
+- $\langle (|u\rangle_1 |v\rangle_2) | = \langle u|_1 \langle v|_2$
+- $(\langle u|_1 \langle v|_2)(|w\rangle_1 |y\rangle_2) = \langle u|w \rangle_1 \langle v|y \rangle_2$
+:::
+
+A composite state is said to be **entangled** if it cannot be expressed as a product of states, all belonging to different Hilbert spaces (otherwise it is said to be **disentangled**).
+
+::: {.callout .callout-example title="Entangled states"}
+Let
+
+$$
+|u\rangle = (|T\rangle_1 + |H\rangle_1)(|T\rangle_2 + |H\rangle_2) \\
+|v\rangle = |T\rangle_1 |T\rangle_2 + |H\rangle_1 |H\rangle_2
+$$
+
+then, the former is disentangled and the latter is entangled.
+:::
+
+The most general form to be used to express a generic complex system is
+
+$$
+|w\rangle_{1 \otimes 2} = \sum_{ji} \gamma_{ji} |O_j\rangle_1 |O_i\rangle_2
+$$
+
+while, if the system is disentangled, it can be expressed as
+
+$$
+|w\rangle_{1 \otimes 2} = \sum_{ji} \alpha_i \beta_j |O_i\rangle_1 |O_j\rangle_2
+$$
+
+It is possible to apply composite operators to composite systems: each operator is only applied to components of the state belonging to the same Hilbert space it belongs to.
+
+If $|u\rangle = |a\rangle_1 |b\rangle_2$ then
+
+$$
+\hat O_1 \hat O_2 |u\rangle = (\hat O_1|a\rangle_1)(\hat O_2|b\rangle_2)
+$$
+
+It is possible to compute the probability of a joined measurement: let $|w\rangle$ be a general complex system composed of two degrees of freedom, then the probability of measuring $O_j$ for the first degree of freedom and, at the same time, $O_i$ for the second one is
+
+$$
+P = \frac{\|\gamma_{ji}\|}{\langle w|w \rangle}
+$$
+
+Let $|w\rangle = \sum_{ji} \gamma_{ji} |O_j\rangle_1 |O_i\rangle_2$ and $|y\rangle = \sum_{kl} \delta_{kl} |O_k\rangle_1 |O_l\rangle_2$, then
+
+$$
+\langle w|y \rangle = \sum_{jikl} \gamma_{ji}^* \delta_{kl} \langle O_j|O_k \rangle_1 \langle O_i|O_l \rangle_2 = \sum_{ji} \gamma_{ji} \delta_{ji}
+$$
+
+Continuous extension of compisite system use multidimensional integrals.
+
+Compisite systems can be represented using vectors and the **Kroneker product** as tensor product.
+
+# Momentum and position operators
+
+Position and velocity are the basic properties to describe the state of motion of a particle. In quantum mechanics we use, instead of velocity, the momentum, due to some difficulties in handling velocities in complex systems.
+
+Both the momentum operator and the position operators operates on the **position representation** of a quantum state, meaning that, the quantum state must be written like 
+
+$$
+|u\rangle = \int \psi(x) |O(x)\rangle dx
+$$
+
+where the statefunction $psi$ is the **wave function** of the system (i.e. one of the functions whose square norm is the probability density function of the position distribution).
+
+Let $f(x) = |\psi(x)|^2$, then
+
+$$
+\langle x \rangle = \langle \psi(x) | \hat X | \psi(x) \rangle =  \int x f(x) dx = \int \psi^*(x) x \psi(x) dx = \int \psi^*(x) \hat X \psi(x) dx
+$$
+
+therefore, the position operator is just a "multiplication by scalar" operator:
+
+$$
+\hat X \psi = x \psi
+$$
+
+The n-dimensional exptension is trivial ($\hat{\vec{X}} = \hat X \cdot \vec{u_x} + \hat Y \cdot \vec{u_y} + \dots$).
+
+Deriving the momentum operator is more difficult: a proof is provided below, for now just say that it can be written as
+
+$$
+\hat P_x = -i \hbar\frac{\partial}{\partial x} \qquad \hbar = 1.054 \cdot 10^{-34} Js
+$$
+
+::: {.collapsible title="Two-hours-long proof"}
+
+I'm not joking, this proof is very long. It took me 1 hour and 27 minutes just to write it all down here, you can imagine how much time I spent trying to fully understand it, and I still do not think I have fully grasped everything. This is the fourth time I've rewritten this, finding new errors every time. This is probably the longest proof here on TiTilda.
+
+We will now demonstrate and derive the momentum operator. The proof will be articulated in multiple steps for better clarity:
+
+1. properties of an isolated system;
+2. translation and momentum commute;
+3. translation eigenstates;
+4. distribution of translation eigenvalues;
+5. momentum eigenvalues and operator derivation;
+6. proof that momentum is hermitian.
+
+**Properties of an isolated system**
+
+We know that 
+
+$$
+F_x = ma_x = m \frac{dv_x}{dt} = \frac{d}{dt}(m v_x) = \frac{d}{dt}P_x
+$$
+
+and that
+
+$$
+F_x = -\frac{\partial V}{\partial x}(x)
+$$
+
+therefore we can state that if $F_x = 0$ (i.e. we are looking at an isolated system), it means that $P_x$ is constant and that the system is invariant w.r.t. translations.
+
+**Translation and momentum operators commute**
+
+Let $\hat T_R$ be the operator associated with translations
+
+$$
+\hat T_R \psi(x) \overset{\Delta}{=} \psi(x - R)
+$$
+
+and assume we already know how the momentum operator $\hat P$ works, then
+
+$$
+\hat P_x \varphi(x) = P_x \varphi(x)
+$$
+
+As momentum is invariant w.r.t. translations, then
+
+$$
+\begin{align*}
+    \hat P_x(\hat T_R \varphi(x)) &= P_x(\hat T_R \varphi(x)) \\
+    \hat T_{-R} \hat P_x \hat T_R \varphi(x) &=\hat T_{-R} P_x \hat T_R \varphi(x) \\
+    &= P_X \hat T_{-R} \hat T_R \varphi(x) \\
+    &= P_x \varphi(x) \\
+    \hat P_x \hat T_R &= \hat T_R \hat P_x
+\end{align*}
+$$
+
+hence, the translation operator and the translation operator commute, therefore they share the same set of eigenstates.
+
+**Translation eigenvalues**
+
+Intuitively, two translations $\hat T_R$ and $\hat T_{R'}$ commute, so they share the same set of eigenstates. Let $\alpha(x)$ be one of the tranlsation eigenvalues, then
+
+$$
+\hat T_{R + R'} \varphi(x) = \varphi(x - R - R') = \alpha(R + R') \varphi(x)
+$$
+
+and
+
+$$
+\hat T_{R + R'} \varphi(x) = \hat T_{R'} \hat T_R \varphi(x) = \hat T_{R'} \varphi(x - R) = \alpha(R) \hat T_{R'} \varphi(x) = \alpha(R) \varphi(x - R') = \alpha(R) \alpha(R') \varphi(x)
+$$
+
+from which, it must be true that
+
+$$
+\alpha(R + R') = \alpha(R) + \alpha(R')
+$$
+
+We also have to impose that translation does not vary the norm of the wave function:
+
+$$
+\begin{align*}
+    1 \overset{!}{=} \int_{-\infty}^{+\infty} |\varphi(x)|^2 dx = \int_{-\infty}^{+\infty} |\hat T_R \varphi(x)|^2 dx &= \int_{-\infty}^{+\infty} |\varphi(x - R)|^2 dx = \int_{-\infty}^{+\infty} |\varphi(x')|^2 dx \\
+    1 \overset{!}{=} \int_{-\infty}^{+\infty} |\varphi(x)|^2 dx = \int_{-\infty}^{+\infty} |\hat T_R \varphi(x)|^2 dx &= \int_{-\infty}^{+\infty} |\alpha(R) \varphi(x)|^2 dx = \int_{-\infty}^{+\infty} |\alpha(R)|^2|\varphi(x)|^2 dx = |\alpha(R)|^2 \int_{-\infty}^{+\infty} |\varphi(x)|^2 = |\alpha(R)|^2
+\end{align*}
+$$
+
+from which $|\alpha(R)|^2 = 1$ regardless of the translation amount $R$.
+
+One possible function that satisfies those requirements is
+
+$$
+\alpha(R) = e^{ikR} \qquad k \in \mathbb{R}
+$$
+
+Given a translation amount $R$, the associated operator $\hat T_R$ has an infinite amount of eigenvalues, indexed with the $k$ value.
+
+**Distribution of translation eigenvalues** <!-- TODO: Hic sunt leones! - ci sono errori nella dimostrazione, capire. Dal paragrafo dopo, psi e phi sembrano wave functions, qui sembrano eigenvalues, come si fa? -->
+
+Let $\psi_k(x) \overset{\Delta}{=} \varphi_k(x - R) = \hat T_R \varphi_k(x) = e^{-ikR} \varphi_k(x)$. This means that $\varphi_k(x) = \psi_k(x) e^{ikR}$ and that $\varphi_k(x - R) = \psi_k(x - R) e^{ikR}$.
+
+From here, using substitution, we can write that
+
+$$
+\psi_k(x - R) e^{ik(x - R)} = e^{-ikR} \psi_k(x) e^{ikR}
+$$
+
+from which it follows that
+
+$$
+\psi_k(x - R) = \psi_k(x)
+$$
+
+regardless of the translation amount $R$, therefore $\psi_k$ must be a constant regardless of the $k$ index.
+
+It follows that
+
+$$
+\varphi_k(x) = Ce^{ikx}
+$$
+
+where $C$ is the normalization constant.
+
+Let $L$ be the size of the domain (e.g. th length of the laboratory). If we impose normalization, 
+
+$$
+\int_{-\frac{L}{2}}^{+\frac{L}{2}} |\varphi_k(x)|^2 \overset{!}{=} 1
+$$
+
+we get that 
+
+$$
+C = \frac{1}{\sqrt{L}}
+$$
+
+::: {.callout .callout-note title="Infinite domain"}
+Techically, taking $L = \infty$ is possible but it breaks the algebra, so we assume that $L \lt +\infty$.
+:::
+
+We can now write that
+
+$$
+\hat P_x \varphi_k(x) = \frac{1}{\sqrt{L}} \hat P_x e^{ikx} = \frac{1}{\sqrt{L}} P_x e^{ikx}
+$$
+
+therefore, for a well defined momentum, each eigenstate is equally possible.
+
+**Momentum eigenvalues and operator derivation**
+
+We know that $P_x$ should be a function of $k$ and that it does not depend on the mass of the particle. Consider two non-interacting (a.k.a. disengangled) particles with momentums $P_{x_1}(k_1)$ and $P_{x_2}(k_2)$ respectively, then we associate the two momentum eigenvalues with the corresponding translation eigenvalues:
+
+<!-- TODO: WHAT??? -->
+
+$$
+P_{x_1}(k_1) \to \varphi_{k_1}(x_1) = \frac{1}{\sqrt{L}} e^{i k_1 x_1} \\
+P_{x_2}(k_2) \to \varphi_{k_2}(x_2) = \frac{1}{\sqrt{L}} e^{i k_2 x_2}
+$$
+
+We define
+
+$$
+\varphi_{tot}(x_1, x_2) = \varphi_{k_1}(x_1) \varphi_{k_2}(x_2) = \frac{1}{L} e^{i(k_1 x_1 + k_2 x_2)}
+$$
+
+If we apply a translation of the total $\varphi$, we get that
+
+$$
+\hat T_R \varphi_{tot}(x_1, x_2) = \varphi_{tot}(x_1 - R, x_2 - R) = \frac{1}{L} e^{i(k_1 + k_2)R} e^{i(k_1 x_1 + k_2 x_2)} = e^{-i k_{tot} R} \varphi(x_1, x_2)
+$$
+
+where $k_{tot} = k_1 + k_2$.
+
+This means that the eigenvalues for the translation operator in a two-particle system depends only on the $k$ indices.
+
+We know that momentum sums so $P_{tot}(k_1 + k_2) = P_{x_1}(k_1) + P_{x_2}(k_2)$, therefore $P$ must be the proportionality function.
+It can be demonstrated that the proportionality constant is  the **reduced Plank constant**:
+
+$$
+\hbar = 1.054 \cdot 10^{-34} Js
+$$
+
+Finally, since
+
+$$
+\hat P_x = e^{ikx} = \hbar k e^{ikx}
+$$
+
+then
+
+$$
+\hat P_x = -i \hbar \frac{\partial}{\partial x}
+$$
+
+**Proof that momentum is hermitian**
+
+To check whether $\hat P_x$ is hermitian, we must check if $\langle \hat P_x \psi | \varphi \rangle = \langle \psi | \hat P_x \varphi \rangle$.
+
+$$
+\begin{align*}
+    \langle \psi | \hat P_x \varphi \rangle &= \int_{-\infty}^{+\infty} \psi^*(x) \left( -i \hbar \frac{\partial}{\partial x} \right) \varphi(x) dx \\
+    &= -i \hbar \int_{-\infty}^{+\infty} \psi^*(x) \frac{\partial}{\partial x} \varphi(x) dx \\
+    &= -i \hbar \left[ \underbrace{\left(\psi^*(x) \varphi(x)\right)_{-\infty}^{+\infty}}_{(1)} - \int_{-\infty}^{+\infty} \left( \frac{\partial}{\partial x} \psi^*(x) \right) \varphi(x) dx\right] \\
+    &= \int_{-\infty}^{+\infty} \underbrace{\left( i \hbar \frac{\partial}{\partial x} \psi^*(x) \right)}_{(2)} \varphi(x) dx \\
+    &= \langle \hat P_x \psi | \varphi \rangle
+\end{align*}
+$$
+
+where $(1) = 0$ otherwise we would have had a non-sensical diverging integral, and $(2) = (-\hat P_x \psi^*) = (\hat P_x \psi)^*$.
+
+Do we say QED? Nah, [this](https://sciencehumor.io/math-memes/how-to-properly-end-a-proof-ldj8) is better.
+:::
+
+Just as for the position operator, also the n-dimensional extension of the momentum operator is trivial:
+
+$$
+\hat{\vec{P}} = -i \hbar \vec{\nabla}
+$$
+
+Momentum and position operators do not commute: $[\hat{\vec{P}}_x, \hat X] = -i \hbar \ne 0$ therefore, according to the [Heisenberg uncertainty principle](#heisenberg-uncertainty-principle) we can say that
+
+$$
+\sigma_{P_x} \sigma_x \ge \frac{\hbar}{2}
+$$
+
+Knowing that $v = \frac{P}{m}$ then, we can also say that
+
+$$
+\sigma_{v_x} \sigma_x = \frac{\hbar}{2m}
+$$
+
+::: {.collapsible title="Proof"}
+$$
+\begin{align*}
+    [\hat P_x, \hat X] \psi(x) &= \hat P_x(x\psi(x)) - x \hat P_x \psi(x) \\
+    &=-i \hbar \frac{\partial}{\partial x}(x \psi(x)) + i \hbar x \frac{\partial}{\partial x} \psi(x) \\
+    &= -i \hbar \left( \psi(x) + x \frac{\partial}{\partial x} \psi(x) \right) + i \hbar x \frac{\partial}{\partial x} \psi(x) \\
+    &= -i \hbar \left( 1 + x \frac{\partial}{\partial x} \right) \psi(x) \\
+    &= -i\hbar \psi(x)
+\end{align*}
+$$
+
+therefore
+
+$$
+[\hat P_x, \hat X] = -i \hbar \ne 0
+$$
+:::
+
+Since $\hbar$ is really small, the Heisenberg uncertainty principle is not a too strict of a limitation, even for systems as small as $1\r{A}$. This is exactly the reason why classical mechanics work. It is so big that quantum uncertainty is really negligible.
+
+# Translation operator
+
+The translation operator was already introduced in the two-hours-long proof in the previous section. We will now analyze it in more detail.
+
+::: {.callout .callout-example title="Modellization of the Mach-Zender interferometer using the Translasion operator"}
 
 :::
 
