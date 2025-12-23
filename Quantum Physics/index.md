@@ -885,8 +885,107 @@ Since $\hbar$ is really small, the Heisenberg uncertainty principle is not a too
 
 The translation operator was already introduced in the two-hours-long proof in the previous section. We will now analyze it in more detail.
 
-::: {.callout .callout-example title="Modellization of the Mach-Zender interferometer using the Translasion operator"}
+We saw that the translation operator is used to, well, translate stuff:
 
+$$
+\hat T_R \psi(x) = \psi(x - R) = \psi(x) \left.\frac{\partial \psi}{\partial x}\right|_{R = 0} + O(R)
+$$
+
+Since
+
+$$
+\frac{\partial \psi}{\partial x} = \frac{i \hat P_x}{\hbar} \psi
+$$
+
+then
+
+$$
+\psi(x - R) = \sum_{j = 0}^\infty \frac{1}{j!}\left( -\frac{i}{\hbar} \hat P_x R \right)^j \psi(x) = \underbrace{e^{\frac{-i\hat P_x R}{\hbar}}}_{\hat T_R} \psi(x)
+$$
+
+::: {.callout .callout-example title="Modellization of the Mach-Zender interferometer using the Translation operator"}
+Assume we have a Mach-Zender interferometer like the one in the image below.
+
+![](./assets/mach-zender.png)
+
+We describe the beam as a quantum superposition of "entering from the top of the beam-splitter" or "from the right".
+
+$$
+|T\rangle = \begin{bmatrix} 1 \\ 0 \end{bmatrix} \qquad
+|B\rangle = \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+$$
+
+Assume that the beam-splitters are both 50/50.
+
+The beam-splitter effect on the beam is represented by the following operator
+
+$$
+\hat B = \frac{1}{\sqrt{2}}\begin{bmatrix}
+    1 & 1 \\ 1 & -1
+\end{bmatrix}
+$$
+
+One can easily verify that, wherever the beam is coming from, it is always split in two equally intense beams.
+
+In the setup depicted above, particles that exit the first beamsplit from the right enters the second from the top, so they are still described by $|T\rangle$. A similar reasoning can be performed for the other particles and $|B\rangle$.
+
+Particles following the upper paths ($|T\rangle$) are translated by $L_{top}$ (hence, $\hat T^{top} = \hat T_{L_{top}}$), while the other ones ($|B\rangle$) are translated by $L_{bot}$ (hence, $\hat T^{bot} = \hat T_{L_{bot}}$).
+
+$$
+\hat T = \begin{bmatrix}
+    \hat T^{top} & 0 \\ 0 & \hat T^{bot}
+\end{bmatrix}
+$$
+
+The overll Mach-Zender interferometer can then be expressed as
+
+$$
+\psi_{fin} = \hat B \hat T \hat B \psi_{in}
+$$
+
+Assuming that the starting beam comes from the left and enters to the right of the first beam-splitter, then $\psi_{in} = [0, 1]^T$, therefore
+
+$$
+\begin{align*}
+    \psi_{fin} &= \hat B \hat T \hat B \psi_{in} = \frac{1}{\sqrt{2}}\begin{bmatrix}
+        1 & 1 \\ 1 & -1
+    \end{bmatrix}
+    \begin{bmatrix}
+        e^{\frac{-i P L}{\hbar}} & 0 \\
+        0 & e^{\frac{-i P L}{\hbar}}
+    \end{bmatrix}
+    \frac{1}{\sqrt{2}}\begin{bmatrix}
+        1 & 1 \\ 1 & -1
+    \end{bmatrix} \begin{bmatrix}
+        0 \\ 1
+    \end{bmatrix} \\
+    &= \frac{1}{2} \begin{bmatrix}
+        1 & 1 \\ 1 & -1
+    \end{bmatrix}
+    \begin{bmatrix}
+        e^{\frac{-i P L}{\hbar}} & 0 \\
+        0 & e^{\frac{-i P L}{\hbar}}
+    \end{bmatrix} \begin{bmatrix}
+        1 \\ -1
+    \end{bmatrix} \\
+    &= \frac{1}{2} \begin{bmatrix}
+        1 & 1 \\ 1 & -1
+    \end{bmatrix}
+    \begin{bmatrix}
+        e^{\frac{-i P L}{\hbar}} \\
+        -e^{\frac{-i P L}{\hbar}}
+    \end{bmatrix} \\
+    &= \frac{1}{2} \begin{bmatrix}
+        0 \\
+        2e^{\frac{-i P L}{\hbar}}
+    \end{bmatrix} \\
+    &= \begin{bmatrix}
+        0 \\ e^{\frac{-i P L}{\hbar}}
+    \end{bmatrix}
+\end{align*}
+$$
+
+As you can see, in the end, we get the same beam, just translated.
 :::
 
 _To be continued._
