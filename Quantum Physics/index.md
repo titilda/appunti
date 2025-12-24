@@ -728,33 +728,42 @@ $$
 
 Given a translation amount $R$, the associated operator $\hat T_R$ has an infinite amount of eigenvalues, indexed with the $k$ value.
 
-**Distribution of translation eigenvalues** <!-- TODO: Hic sunt leones! - ci sono errori nella dimostrazione, capire. Dal paragrafo dopo, psi e phi sembrano wave functions, qui sembrano eigenvalues, come si fa? -->
+**Distribution of translation eigenvalues**
+<!-- TODO: Hic sunt leones! - ci sono errori nella dimostrazione, capire. Dal paragrafo dopo, psi e phi sembrano wave functions, qui sembrano eigenvalues, come si fa? -->
+<!-- Ok, sono eigenfunctions, una ok e l'altra la stessa ma translata, ora come ci arriva la x all'esponente??? -->
+<!-- W.H.A.T. am I looking at???? -->
+<!-- Now it looks like it works a litte bit better -->
 
-Let $\psi_k(x) \overset{\Delta}{=} \varphi_k(x - R) = \hat T_R \varphi_k(x) = e^{-ikR} \varphi_k(x)$. This means that $\varphi_k(x) = \psi_k(x) e^{ikR}$ and that $\varphi_k(x - R) = \psi_k(x - R) e^{ikR}$.
-
-From here, using substitution, we can write that
-
-$$
-\psi_k(x - R) e^{ik(x - R)} = e^{-ikR} \psi_k(x) e^{ikR}
-$$
-
-from which it follows that
+We define $\psi_k(x) \overset{\Delta}{=} e^{-ikx} \varphi_k(x)$, from which it follows that
 
 $$
+\varphi_k(x) = \psi_k(x) e^{ikx} \qquad \varphi_k(x - R) = \psi_k(x - R) e^{ik(x - R)}
+$$
+
+Since
+
+$$
+\varphi_k(x - R) = e^{-ikR} \varphi_k(x)
+$$
+
+then, by substitution,
+
+$$
+\psi_k(x - R) \cancel{e^{ik(x - R)}} = \cancel{e^{-ikR}} \psi_k(x) \cancel{e^{ikx}} \\
 \psi_k(x - R) = \psi_k(x)
 $$
 
-regardless of the translation amount $R$, therefore $\psi_k$ must be a constant regardless of the $k$ index.
+from which it follows that $\psi_k$ must be constant regardless of $R$: $\psi_k(x) \equiv \psi_k$.
 
-It follows that
+Since $\psi_k$ is constant, then it follows that
 
 $$
 \varphi_k(x) = Ce^{ikx}
 $$
 
-where $C$ is the normalization constant.
+where $C = \psi_k$ is the normalization constant.
 
-Let $L$ be the size of the domain (e.g. th length of the laboratory). If we impose normalization, 
+Let $L$ be the size of the domain (e.g. th length of the laboratory). If we impose normalization,
 
 $$
 \int_{-\frac{L}{2}}^{+\frac{L}{2}} |\varphi_k(x)|^2 \overset{!}{=} 1
@@ -988,6 +997,200 @@ $$
 As you can see, in the end, we get the same beam, just translated.
 :::
 
+# Energy
+
+The energy of a particle can be a sum of multiple terms, depending on the context of the particle. Usually, it is a sum of a potential term that depends on the position and a kinetic term that depends on the momentum:
+
+$$
+E = E(\vec{P}, \vec{r}) = V(\vec{r}) + T(\vec{P}) \\
+$$
+
+We can already give the expansion of the kinetic term (the potential term depends on the pofition but also on the context in which the particle can be found):
+
+$$
+T(\vec{P}) = \frac{1}{2} \frac{P^2}{m} = \frac{1}{2m} (-i\hbar \vec{\nabla})(-i\hbar \vec{\nabla}) = -\frac{\hbar^2}{2m} \vec{\nabla}^2
+$$
+
+The operator associated with the energy observable is called **hamiltonian**:
+
+$$
+\hat H = -\frac{\hbar^2}{2m} \vec{\nabla}^2 + V(\vec{r})
+$$
+
+Having defined $\hat H$, we can now write the non-relativistic version of the **Schr&ouml;dinger equation**:
+
+$$
+\hat H \psi = E \psi
+$$
+
+In order to solve the Schr&ouml;dinger equation, we need information on the system we are working with.
+
+As noted in the introduction, we will ignore any relativistic effect. For a really short introduction to relativistic effects, see the video linked in the [introduction](#introduction).
+
+## Free particle
+
+We will now consider a **free particle**, i.e. an unconstrained particle free to move anywhere in an equipotential space. Since the potential $V$ does not depend on the position and it's constant, we will set its origin to the constant so that $V \equiv 0$.
+
+The Schr&ouml;dinger equation for the free particle is also called **Poisson equation** and looks like this:
+
+$$
+\hat H \psi = -\frac{\hbar^2}{2m} \vec{\nabla}^2 \psi(\vec{R}) = E \psi(\vec{r})
+$$
+
+Solutions to this equations are shaped like
+
+$$
+\psi(\vec{r}) = C \cdot e^{i \vec{k} \vec{r}}
+$$
+
+therefore $\|\psi\|^2 = C^2$ hence, a free particle has the same probability of being anywhere.
+
+Since
+
+$$
+-\frac{\hbar^2}{2m}\vec{\nabla}(\vec{\nabla} C e^{i \vec{k} \vec{r}}) = ECe^{i \vec{k} \vec{r}}
+$$
+
+we can say that the eigenvalues for the enerdy do not depend on the normalization constant $C$ and are shaped like
+
+$$
+E = \frac{\hbar^2 k^2}{2m}
+$$
+
+Please note that, in this case, the eigenvalues are always positive. Considering $V \ne 0$, it would be possible to obtain negative eigenvalues for the kinetic term but summing them to $V$ would always yield positive energies (see below).
+
+$\hat P$ and $\hat H$ share the same set of eigenstates, so they commute:
+
+$$
+\hat P C e^{i \vec{k} \vec{r}} = \vec{P} C e^{i \vec{k} \vec{r}} \\
+-i \hbar \vec{\nabla}^2 e^{i \vec{k} \vec{r}} = \vec{P} e^{i \vec{k} \vec{r}} \\
+\vec{P} = \hbar \vec{k}
+$$
+
+therefore we could also write
+
+$$
+E = \frac{\hbar^2 k^2}{2m} = \frac{P^2}{2m}
+$$
+
+Let's now consider a non-zero constant potential (e.g. we move the origin), then
+
+$$
+\begin{align*}
+    \hat H \psi(\vec{r}) &= -\frac{\hbar^2}{2m} \vec{\nabla}^2 \psi(\vec{r}) + V\psi(\vec{r}) = E \psi(\vec{r}) \\
+    &= -\frac{\hbar^2}{2m} \vec{\nabla}^2 \psi(\vec{r}) = \underbrace{(E - V)}_{E'} \psi(\vec{r}) \\
+\end{align*}
+$$
+
+meaning that
+
+$$
+E' = \frac{\hbar^2 k^2}{2m}
+$$
+
+We can reverse the prevoius formula to get the definition of $k$:
+
+$$
+k = \sqrt{\frac{E' 2m}{\hbar^2}} = \sqrt{\frac{(E - V)2m}{\hbar^2}}
+$$
+
+Since the origin of $V$ can be chosen arbitrarily, it must not influence the final result in any way.
+
+## Particle in a (potential) box
+
+A monodimensional quantum box is mathematically represented by a potential shaped like
+
+$$
+V(x) = \begin{cases}
+    V_0 & 0 \lt x \lt L \\
+    +\infty & x \le 0 \cup x \ge L
+\end{cases}
+$$
+
+If that is the case, then, outside the boundaries of the box, it holds that $\|\psi(x)\| = 0$.
+
+To find the energy eigenstates, we must solve the Schr&ouml;dinger equations, knowing that multiple constraints must be satisfied.
+
+First, inside the box, the particle is free and is in a superposition of "going to the left" and "going to the right":
+
+$$
+\psi(x) = \alpha e^{ikx} \pm \beta e^{-ikx}
+$$
+
+After this, we know that $\psi$ must be continuous with a continuous derivative, so, putting everything all together, we get that
+
+$$
+\begin{cases}
+    |\psi(x)|^2 = 0 & x \le 0 \cup x \ge L \\
+    \psi(x) = \alpha e^{ikx} \pm \beta e^{-ikx} & 0 \lt x \lt L \\
+    \lim\limits_{x \to 0^+} \psi(x) = \lim\limits_{x \to L^-}\psi(x) = 0 \\
+    \lim\limits_{x \to 0^+} \psi'(x) = \lim\limits_{x \to L^-} \psi'(x) = 0
+\end{cases}
+$$
+
+The solution to this looks like
+
+$$
+\psi(x) = C \cdot \sin(kx) \qquad k = \frac{n\pi}{L} \qquad n \in \mathbb{N}^+
+$$
+
+Since the associated eigenvalue $E$ depends on $k$, then $E$ can only assume quantized values (hence the _quantum_ in quantum mechanics):
+
+$$
+E = \frac{\hbar^2 k^2}{2m} = \frac{\hbar^2 \pi^2}{2mL}n^2
+$$
+
+Please note that $n = 0$ would yield a non normalizable eigenstate so it is not acceptable.
+
+If the box is symmetric (i.e. it goes from $-\frac{L}{2}$ to $+\frac{L}{2}$ instead of going from $0$ to $L$) then the **ground state** (n=1) and all the other states with an odd $n$ value are symmetric (in terms ow wave-function) while the ones with an even $n$ value are antisymmetric. <!-- TODO: this does not look right --> [Geogebra](https://www.geogebra.org/m/naprbxmy)
+
+### Multidimensional version
+
+The multidimensional extension to the particle in a box is trivial: all the multidimensional equations and constraints get split into multiple monodimensional ones. Take, as an example, the three-dimensional case:
+
+$$
+-\frac{h^2}{2m}\left( \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2} + \frac{\partial^2}{\partial z^2} \right) \psi(x, y, z) = E \psi(x, y, z)
+$$
+
+Since the particle is free inside the box, there are no entanglement between coordinates, so we can express
+
+$$
+\psi(x, y, z) = X(x) Y(y) Z(z)
+$$
+
+therefore
+
+$$
+-\frac{\hbar^2}{2m} \left[ \left( \frac{\partial^2 X(x)}{\partial x^2} \right) Y(y) Z(z) + X(x) \left( \frac{\partial^2 Y(y)}{\partial y^2} \right) Z(z) + X(x) Y(y) \left( \frac{\partial^2 Z(z)}{\partial z^2} \right) \right] = E X(x) Y(x) Z(z) \\
+E = -\frac{\hbar^2}{2m}\left[ \underbrace{\left( \frac{\partial^2 X(x)}{\partial x^2} \right) \frac{1}{X(x)}}_{g(x)} + \underbrace{\left( \frac{\partial^2 Y(y)}{\partial y^2} \right) \frac{1}{Y(y)}}_{h(y)} + \underbrace{\left( \frac{\partial^2 Z(z)}{\partial z^2} \right) \frac{1}{Z(z)}}_{l(z)} \right]
+$$
+
+Since kinetic energy is constant w.r.t. position, all $g, h, l$ must be constants, so we can split the equation in three:
+
+$$
+\begin{cases}
+    E_x = -\frac{\hbar^2}{2m}g \\
+    E_y = -\frac{\hbar^2}{2m}h \\
+    E_z = -\frac{\hbar^2}{2m}l
+\end{cases}
+$$
+
+Since we already know the solution in the monodimensional case, we can write that
+
+$$
+\begin{align*}
+    X(x) = \sin(k_x x) &\qquad E_x = \left( \frac{\pi^2 \hbar^2}{2mL_x} \right)n_x^2 \\
+    Y(y) = \sin(k_y y) &\qquad E_y = \left( \frac{\pi^2 \hbar^2}{2mL_y} \right)n_y^2 \\
+    Z(z) = \sin(k_z z) &\qquad E_z = \left( \frac{\pi^2 \hbar^2}{2mL_z} \right)n_z^2 \\
+\end{align*}
+$$
+
+therefore
+
+$$
+E_{tot} = E_x + E_y + E_z = \frac{\pi^2 \hbar}{2m} \left( \frac{n_x^2}{L_x} + \frac{n_y^2}{L_y} + \frac{n_z^2}{L_z} \right)
+$$
+
+where $n_x, n_y, n_z \in \mathbb{N}^+$. If one of the $n$ values were $0$ it would mean that a particle has no kinetic energy in one direction therefore we could be able to measure its position with infinite precision on that direction, disprooving the [Heisenberg uncertainty principle](#heisenberg-uncertainty-principle). Fortunately (?) this is impossible because that would yield a non normalizable eigenstate, which is forbidden.
+
 _To be continued._
-
-
