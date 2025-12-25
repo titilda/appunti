@@ -1323,7 +1323,66 @@ In reality, instead of the first equation, we could have also written only somet
 
 ## Realistic potential well
 
+A realistic potential well is like a box, except that the outer potential is finite:
+
+$$
+V(x) = \begin{cases}
+    V_l & x \le 0 \\
+    V_r & x \ge L \\
+    0 & 0 \lt x \lt L
+\end{cases}
+$$
+
+The reasoning for the solution follows the one for the [potential step](#potential-step):
+
+$$
+\psi(x) = \begin{cases}
+    Be^{-ik_lx} & k_l = \sqrt{(E - V_l)\frac{2m}{\hbar^2}} & x \le 0 \\
+    Ce^{ik_0x} + De^{-ik_0x} & k_0 = \sqrt{E\frac{2m}{\hbar^2}} & 0 \lt x \lt L \\
+    Ee^{ik_rx} & k_r = \sqrt{(E - V_r)\frac{2m}{\hbar^2}} & x \ge L \\
+\end{cases}
+$$
+
+We have to consider multiple cases, that we will summarize in this table:
+
+| Conditions                 | $x \le 0$         | $0 \lt x \lt L$ | $x \ge L$         |
+| -------------------------- | ----------------- | --------------- | ----------------- |
+| $E \gt V_l \cap E \gt V_r$ | Oscillatory       | Oscillatory     | Oscillatory       |
+| $E \gt V_l \cap E \lt V_r$ | Oscillatory       | Oscillatory     | Exponential decay |
+| $E \lt V_l \cap E \gt V_r$ | Exponential decay | Oscillatory     | Oscillatory       |
+| $E \lt V_l \cap E \lt V_r$ | Exponential decay | Oscillatory     | Exponential decay |
+
+Repeating filling in numbers, we get that for $x \le 0$ and $x \ge L$ we get an exponential that decreases while getting far from the well while inside the well we get oscillatory behaviour.
+
+Imposing $\psi \in \mathcal{C}^1(\mathbb{R})$ we get that
+
+$$
+\begin{cases}
+    \lim\limits_{x \to 0^-} Be^{-ik_lx} = \lim\limits_{x \to 0^+} Ce^{ik_0x} + De^{-ik_0x} \\
+    \lim\limits_{x \to L^-} Ce^{ik_0x} + De^{-ik_0x} = \lim\limits_{x \to L^+} Ee^{ik_rx} \\
+    \lim\limits_{x \to 0^-} -ik_lBe^{-ik_lx} = \lim\limits_{x \to 0^+} ik_0Ce^{ik_0x} - ik_0De^{-ik_0x} \\
+    \lim\limits_{x \to L^-} ik_0Ce^{ik_0x} - ik_0De^{-ik_0x} = \lim\limits_{x \to L^+} ik_rEe^{ik_rx}
+\end{cases}
+$$
+
+Which gives
+
+$$
+\begin{cases}
+    B = C + D \\
+    -ik_lB = ik_0C - ik_0D
+\end{cases}
+$$
+
+_To be continued._
+
+Symmetric box consideration still applies here.
+
+
 ## Finite potential wall
+
+- tunnelling
+- example alpha decay
 
 ## Harmonic oscillator
 
