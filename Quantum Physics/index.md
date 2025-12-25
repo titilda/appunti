@@ -1025,6 +1025,8 @@ $$
 
 In order to solve the Schr&ouml;dinger equation, we need information on the system we are working with.
 
+Basically, we need to get the hamiltonian for each different potential and then we need to impose continuity of the solution and of it's first derivative.
+
 As noted in the introduction, we will ignore any relativistic effect. For a really short introduction to relativistic effects, see the video linked in the [introduction](#introduction).
 
 ## Free particle
@@ -1096,6 +1098,24 @@ $$
 
 Since the origin of $V$ can be chosen arbitrarily, it must not influence the final result in any way.
 
+## Constrained particles
+
+When a particle is not free, it is constrained. Depending on the shape of the potential, we can say that we have a [particle in a box](#particle-in-a-potential-box), a [potential step](#potential-step), a [realistic potential well](#realistic-potential-well), a [finite potential wall](#finite-potential-wall) or an [harmonic oscillator](#harmonic-oscillator).
+
+In the most general case, the Schr&ouml;dinger equation
+
+$$
+-\frac{\hbar^2}{2m} \frac{\partial^2}{\partial x^2} \psi(x) + V(x)\psi(x) = E \psi(x)
+$$
+
+must remain valid everywhere and since we know that, in each section, the wave function must be a superposition of particles moving from the left and particles moving from the right, we can state that the general shape of the solution is shaped like
+
+$$
+\psi(x) = A e^{\pm ikx} + B e^{\mp ikx} \qquad k = \sqrt{(E - V(x)) \frac{2m}{\hbar^2}}
+$$
+
+Once the formula for the potential is known, it is just a matter of substitution and imposition of $\psi \in \mathcal{C}^1$.
+
 ## Particle in a (potential) box
 
 A monodimensional quantum box is mathematically represented by a potential shaped like
@@ -1131,7 +1151,10 @@ $$
 The solution to this looks like
 
 $$
-\psi(x) = C \cdot \sin(kx) \qquad k = \frac{n\pi}{L} \qquad n \in \mathbb{N}^+
+\begin{cases}
+    \psi(x) = C \cdot \sin(kx) \qquad k = \frac{n\pi}{L} \qquad n \in \mathbb{N}^+ & 0 \lt x \lt L \\
+    0 & \text{otherwise}
+\end{cases}
 $$
 
 Since the associated eigenvalue $E$ depends on $k$, then $E$ can only assume quantized values (hence the _quantum_ in quantum mechanics):
@@ -1192,5 +1215,186 @@ E_{tot} = E_x + E_y + E_z = \frac{\pi^2 \hbar}{2m} \left( \frac{n_x^2}{L_x} + \f
 $$
 
 where $n_x, n_y, n_z \in \mathbb{N}^+$. If one of the $n$ values were $0$ it would mean that a particle has no kinetic energy in one direction therefore we could be able to measure its position with infinite precision on that direction, disprooving the [Heisenberg uncertainty principle](#heisenberg-uncertainty-principle). Fortunately (?) this is impossible because that would yield a non normalizable eigenstate, which is forbidden.
+
+## Potential step
+
+Assume we have a potential step shaped like
+
+$$
+V(x) = \begin{cases}
+    V_0 \gt 0 & x \lt 0 \\
+    0 & x \gt 0
+\end{cases}
+$$
+
+Since particles always have positive kinetic energy, total energy eigenvalues $E$ are always strictly greater than the minimum potential (in this case, $E \gt 0$).
+
+We will now discuss the two possible case in which we an find the particle under analysis: we could either have $E \gt V_0$ or $E \lt V_0$.
+
+We will now analyze the case where $E \gt V_0$. In this case, since the total energy is greater than the step, the particle does not always get reflected back. Those who get reflected keeps the same kinetic energy, the other ones see it decreased.
+
+Since the particle will never enter the _forbidden zone_ (a place where the potential is higher than the total energy, causing the kinetic energy to be negative), the wave function must be a piecewise sinusoidal function, with different amplitudes and phase factors on the left and on the right of the step.
+
+In the specific piecewise context we are analyzing, the general solution can be rewritten as
+
+$$
+\psi(x) = \begin{cases}
+    A e^{\pm ik_lx} + B e^{\mp ik_lx} & k_l = \sqrt{(E - V_0) \frac{2m}{\hbar^2}} & x \lt 0 \\
+    C e^{\pm ik_rx} + D e^{\mp ik_rx} & k_r = \sqrt{E \frac{2m}{\hbar^2}} & x \gt 0
+\end{cases}
+$$
+
+where $A$ is the intensity of the beam of particles going right on the left of the step, $B$ is the intensity of the beam of particles going left on the left of the step, $C$ is the intensity of the beam going right on the right of the step and $D$ is the intensity of the particles going left on th right of the step. Since there are no particles coming from the left of the step, we set $A = 0$.
+
+$D$ must be given as it is the "input" beam intensity
+
+To find the solution, we must impose that $\psi \in \mathcal C^1(\mathbb{R})$:
+
+$$
+\begin{cases}
+    \lim\limits_{x \to 0^+} \psi(x) = \lim\limits_{x \to 0^-} \psi(x) \\
+    \lim\limits_{x \to 0^+} \psi'(x) = \lim\limits_{x \to 0^-} \psi'(x) \\
+\end{cases}
+$$
+
+which gives
+
+$$
+\begin{cases}
+    B = C + D \\
+    k_l^2B = -k_r^2C + k_r^2D
+\end{cases}
+$$
+
+which, in turn, gives
+
+$$
+B = \frac{2k_r^2}{k_r^2 + k_l^2}D \qquad C = \frac{k_r^2 - k_l^2}{k_r^2 + k_l^2}D
+$$
+
+::: {.callout .callout-note title="Sanity-check"}
+Since particles do not disappear, we can always use the fact that $A + B = C + D$ to see if math is mathing. The fact that "particles do not disappear, can also be adapted to any other kind of piecewise potential constrained particle.
+:::
+
+We can now identify the **transmission coefficient** (which gives the ratio of beam that can cross the step)
+
+$$
+T = \frac{|B|^2}{|D|^2}
+$$
+
+and the **reflection coefficient** (which gives the ratio of beam that gets reflected back)
+
+$$
+R = \frac{|C|^2}{|D|^2}
+$$
+
+It always holds that $T + R = 1$
+
+We will now analyze the case where $0 \lt E \lt V_0$. In this case the particle can still trespass the step, except that it has an exponential probability (exponential w.r.t. distance from the step) to be reflected back. When the particle has trespassed the step but has not been reflected, it is in the _forbidden zone_ where kinetic energy become negative.
+
+All the considerations for the previus case remains true also here: when the particle enters the forbidden zone, $k$ becomes imaginary and cancels out the $i$ at the exponents, replacing oscilaltions with an enpoential.
+
+::: {.callout .callout-note title="$k$ sign"}
+Since $k$ comes from a quare root, be sure to take the correct positive or negative sign to get a decreasing (in the direction _before_ the reflection) expenential, otherwise you will get a non normalizable state that will completely break the algebra.
+:::
+
+Just for the sake of completism, and to highlight the subtle differences, we report here the computation again.
+
+![Look at him! He loves completism! - [tenor.com](https://tenor.com)](assets/sabaku.gif)
+
+_to be continued_
+
+## Realistic potential well
+
+## Finite potential wall
+
+## Harmonic oscillator
+
+### Ladder operators
+
+# Dynamics
+
+A dynamic system is a system that mutates over time. We already saw that, unless irreversible operations are applied on the system, knowing it's precise state at a given moment is enough information to deterministically predict its evolution both forever in the past and in the future, we will now analyze how to do that.
+
+We denote a time-dependent state with
+
+$$
+|u(t)\rangle = \sum_j \alpha_j(t) |O_j\rangle \\
+|u(t)\rangle = \int \psi(\xi, t)|O(\xi)\rangle d\xi
+$$
+
+::: {.callout .callout-note title="Momentum parallelism"}
+If momentum is the quantity that does not change with the origin of position, energy is the one that does not change with the origin of time.
+:::
+
+Assume that $\hat H |\psi(t)\rangle = E |\psi(t)\rangle$ then, if $\psi(t)$ is a solution, $\psi(t + \tau)$ must be another valid solution.
+
+We introduce the time translation operator $\hat t_\tau$ such that $\hat t_\tau \psi(t) = \psi(t + \tau)$.
+
+<!-- TODO: reorganize, it is horrible as it is now -->
+<!--
+::: {.callout .callout-note title="Commutativity"}
+As momentum commutes with position, energy commutes with time translation.
+:::
+
+Since $\hat t_{\tau_1} \hat t_{\tau_2} = \hat t_{\tau_1 + \tau_2}$, it's eigenvalues must be really similar to the ones for translation.
+
+If
+
+$$
+\hat t_\tau|\psi(t)\rangle = \beta(\tau)|\psi(t)\rangle
+$$
+
+then
+
+$$
+\beta(\tau) = C \cdot e^{-i \omega \tau}
+$$
+
+Therefore, given an initial state $|\psi(0)\rangle$, we can express the time evolution of that state with
+
+$$
+|\psi(t)\rangle = e^{-i \omega t}|\psi(0)\rangle
+$$
+
+::: {.callout .callout-example title="Particle moving with constant speed"}
+Let
+
+$$
+|\psi(t)\rangle = \frac{1}{\sqrt{V}} e^{i(\vec{k}\vec{r} - \omega t)} = \frac{1}{\sqrt{V}} e^{i \vec{k}(x - vt)}
+$$
+
+This is a particle moving with a constant speed to direction $\vec{k}$.
+:::
+
+The time translation operator can be expressed as
+
+$$
+\hat t_\tau = e^{-i \frac{E}{\hbar}\tau}
+$$
+
+::: {.collapsible title="Proof"}
+
+:::
+
+The parameter $\omega$ is related to energy as $\vec{k}$ is related to momentum: $\omega = \omega(E)$. We know that energy is additive, therefore $\omega(E_{tot}) = \sum \omega(E_i)$. Let $\psi_j$ be the eigenstates of time translation and $|\psi_{tot}\rangle = \prod_j \psi_j(t)$, then
+-->
+<!-- TODO: WHAT? -->
+<!--
+$$
+\hat t_\tau |\psi_{tot}(t)\rangle = \prod_j \psi_j(t + \tau) = \prod_j e^{-i \omega(E_j) \tau} \prod_j |\psi_j(t)\rangle = e^{-i \omega(\sum_j E_j) \tau} \prod_j |\psi_j(t)\rangle = e^{-i \omega(E_{tot}) \tau} \prod_j |\psi(t)\rangle
+$$
+
+therefore, $\omega$ should be shaped like $\omega(E) = C \cdot E$.
+
+In particular, $C = \frac{1}{\hbar}$, hence
+
+$$
+
+$$
+
+From relativity, we know that $E = \sqrt{c^2 p^2 + m^2 c^4}$. Assum
+
+-->
 
 _To be continued._
