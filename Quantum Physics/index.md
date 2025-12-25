@@ -1111,7 +1111,7 @@ $$
 must remain valid everywhere and since we know that, in each section, the wave function must be a superposition of particles moving from the left and particles moving from the right, we can state that the general shape of the solution is shaped like
 
 $$
-\psi(x) = A e^{\pm ikx} + B e^{\mp ikx} \qquad k = \sqrt{(E - V(x)) \frac{2m}{\hbar^2}}
+\psi(x) = A e^{+ ikx} + B e^{- ikx} \qquad k = \sqrt{(E - V(x)) \frac{2m}{\hbar^2}}
 $$
 
 Once the formula for the potential is known, it is just a matter of substitution and imposition of $\psi \in \mathcal{C}^1$.
@@ -1239,8 +1239,8 @@ In the specific piecewise context we are analyzing, the general solution can be 
 
 $$
 \psi(x) = \begin{cases}
-    A e^{\pm ik_lx} + B e^{\mp ik_lx} & k_l = \sqrt{(E - V_0) \frac{2m}{\hbar^2}} & x \lt 0 \\
-    C e^{\pm ik_rx} + D e^{\mp ik_rx} & k_r = \sqrt{E \frac{2m}{\hbar^2}} & x \gt 0
+    A e^{+ ik_lx} + B e^{- ik_lx} & k_l = \sqrt{(E - V_0) \frac{2m}{\hbar^2}} & x \lt 0 \\
+    C e^{+ ik_rx} + D e^{- ik_rx} & k_r = \sqrt{E \frac{2m}{\hbar^2}} & x \gt 0
 \end{cases}
 $$
 
@@ -1302,7 +1302,24 @@ Just for the sake of completism, and to highlight the subtle differences, we rep
 
 ![Look at him! He loves completism! - [tenor.com](https://tenor.com)](assets/sabaku.gif)
 
-_to be continued_
+In this case, all the particles, eventually, gets reflected so we say that the solution is shaped like
+
+$$
+\psi(x) = \begin{cases}
+    Ae^{ik_lx} + Be^{-ik_lx} & k_l = \sqrt{(E - V_0)\frac{2m}{\hbar^2}} & x \lt 0 \\
+    Ce^{ik_rx} + De^{-ik_rx} & k_r = \sqrt{E\frac{2m}{\hbar^2}} & x \gt 0
+\end{cases}
+$$
+
+where $A$ are the particles going right on the left of the step, $B$ are the particles going left on the left of the step, $C$ are the particles going right on the right of the step and $D$ are the particles going left on the right of the step.
+
+We continue to have $A = 0$ and $D$ given.
+
+Since $E \lt V_0$ then $k_l \in \mathbb{C}, \Re\{k_l\} = 0$, if we only consider the exponent of the non-zeroed term in the $x \lt 0$ equation, it becomes an increasing exponential. This is needed because going from zero towards negative infinity, the area under said exponential is bounded and can, therefore, be normalized.
+
+::: {.callout .callout-note title="Quick trick"}
+In reality, instead of the first equation, we could have also written only something like $Fe^{\pm ik_lx}$ choosing the sign to obtain a non-divergent exponential. This is a quick trick to prevent confusion trying to understant what coefficient between $A$ and $B$ must be turned off.
+:::
 
 ## Realistic potential well
 
