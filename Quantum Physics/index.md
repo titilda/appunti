@@ -1374,19 +1374,213 @@ $$
 \end{cases}
 $$
 
-_To be continued._
+<!-- TODO -->
+
+_Incomplete computations._
 
 Symmetric box consideration still applies here.
 
-
 ## Finite potential wall
 
-- tunnelling
-- example alpha decay
+A finite potential wall is the complement of the [realistic potential well](#realistic-potential-well):
+
+$$
+V(x) = \begin{cases}
+    V_0 & 0 \le x \le L \\
+    0 & x \lt 0 \cup x \gt L
+\end{cases}
+$$
+
+Here there are the two usual different cases to be analyzed: $E \gt V_0$ and $E \lt $V_0$. The former will not be repeated as it is, again, a piecewise sinusoidal function.
+
+We rewrite here the general form of the wave function in this context, with a slight twist:
+
+$$
+\psi(x) = \begin{cases}
+    Ae^{ik_ox} + Be^{-ik_ox} & k_o = \sqrt{E \frac{2m}{\hbar^2}} & x \lt 0 \\
+    Ce^{-ik_ix} + De^{ik_ix} & k_i = \sqrt{(E - V_0)\frac{2m}{\hbar^2}} & 0 \le x \le L \\
+    t(E)Ae^{ik_ox} & & x \gt L
+\end{cases}
+$$
+
+$t(E)$ is called **trasmissivity coefficient** and it is used to calculate the probability of a particle _tunneling_ through the wall:
+
+$$
+T(E) = |t(E)|^2 = \left|\frac{A + B}{A}\right|^2e^{-2k_iL}
+$$
+
+$T(E)$ decreases exponentially with the energy difference ($E - V_0$) and the wall thickness ($L$).
+
+There is always a non-zero chance that the particle will be able to trespass the wall: this is called **quantum tunneling**.
+
+The $D$ coefficient is the one that is used to indicate the fact that the end of the wall may also reflect particles back: while in reality this number is not null, it is so small that for the sake of clarity we will assume it to be zero.
+
+Imposing $\psi(x) \in \mathcal{C}^1(\mathbb{R})$ we get that
+
+$$
+\begin{cases}
+    A + B = C \\
+    |t(E)Ae^{ik_oL}|^2 = |Ce^{-ik_iL}|^2
+\end{cases}
+$$
+
+::: {.callout .callout-example title="$\alpha$-decay"}
+$\alpha$-decays can be explained by quantum tunneling.
+
+An $\alpha$-decay consists in an helium nucleus being shot out from a bigger atom nucleus.
+
+<!-- TODO: add formula and plot and comments -->
+:::
+
+::: {.callout .callout-example title="Ammonia molecule, again"}
+<!-- TODO -->
+:::
 
 ## Harmonic oscillator
 
+The quantum harmonic oscillator is the quantum equivalent of a bouncing spring and it represent the behavior of a system close to equilibrium.
+
+For an harmonic potential shaped like
+
+$$
+V(x) = \frac{1}{2} kx^2 = \frac{1}{2}m \omega^2 x^2
+$$
+
+the hamiltonian can be rewritten as
+
+$$
+\hat H = \frac{1}{2m}\hat P^2 + \frac{1}{2}m\omega^2\hat X^2
+$$
+
+We already said that energy is quantized, so there will be infinite eigenstates for this hamiltonian, indexed by $n \in \mathbb{N}$ (this time including $0$).
+
+::: {.collapsible title="Ground state eigenpair"}
+The ground eigenfunction is shaped like a gaussian:
+
+$$
+\psi_0(x) = Ce^{-\alpha x^2}
+$$
+
+If we plug $\psi_0$ into the eigenequation, we get that
+
+$$
+\begin{align*}
+    -\frac{\hbar^2}{2m} \frac{\partial^2}{\partial x^2} \psi_0 + \frac{1}{2}m\omega^2x^2\psi_0 &= E_0\psi_0 \\
+    -\frac{\hbar^2}{2m} \left( C4\alpha^2 x^2 e^{-\alpha x^2} - C2\alpha e^{-\alpha x^2} \right) + \frac{1}{2} m \omega^2 x^2 Ce^{-\alpha x^2} &= E_0 Ce^{-\alpha x^2} \\
+    -\frac{\hbar^2}{2m}\left( 4 \alpha^2 x^2 -2 \alpha \right) + \frac{1}{2} m \omega^2 x^2 &= E_0 \\
+    \frac{\hbar^2 \alpha}{m} - 2\frac{\hbar^2 \alpha^2}{m} x^2 + \frac{1}{2} m \omega^2x^2 &= E_0
+\end{align*}
+$$
+
+Since the ground energy should be constant regardless of $x$, we impose that the sum of all the terms depending on $x$ gets cancelled out:
+
+$$
+-2\frac{\hbar^2 \alpha^2}{m} + \frac{1}{2} m \omega^2 = 0
+$$
+
+which entails
+
+$$
+\alpha = \pm \frac{1}{2} \frac{m \omega}{\hbar}
+$$
+
+Since we want a gaussian, we must take the positive value of $\alpha$ otherwise it would explode.
+
+With the newly found $\alpha$ value, we can also state that
+
+$$
+E_0 = \frac{\hbar^2 \alpha}{m} = \frac{1}{2} \hbar \omega
+$$
+
+Again, note that $E_0 \gt 0$ strictly. If it were $E_0 = 0$ then the particle would have had $v = 0$ and we would be able to perfectly know both position and velocity perfectly at the same time. This is yet another mathematical confirmation of the [Heisenberg Uncertainty Principle](#heisenberg-uncertainty-principle).
+:::
+
+In general, the $n$-th eigenfunction can be expressed as
+
+$$
+\psi_n(x) = C_n e^{\frac{-\alpha^2 x^2}{2}}H_n(\alpha x)
+$$
+
+where $H_n$ denotes the $n$-th physicists [Hermite polynomial](https://en.wikipedia.org/wiki/Hermite_polynomials).
+
 ### Ladder operators
+
+Instead of using Hermite polynomials, it is easier to use **ladder operators** to go up and down energy levels, like with a ladder.
+
+We define two dimensionless operators: the **creation/increasing** operator
+
+$$
+\hat a^\dagger \overset{\Delta}{=} \frac{1}{\sqrt{2m\hbar\omega}} (-i \hat P_x + m \omega x)
+$$
+
+and the **destruction/annihilation/lowering** operator
+
+$$
+\hat a \overset{\Delta}{=} \frac{1}{\sqrt{2m\hbar\omega}} (+i \hat P_x + m \omega x)
+$$
+
+Since those operatos are not hermitian, they do not correspond to any physical observable.
+
+The hamiltonian can be rewritten making use of the ladder operators:
+
+$$
+\hat H = \hbar \omega\left( \hat a \hat a^\dagger - \frac{1}{2} \right) = \hbar \omega \left( \hat a^\dagger \hat a + \frac{1}{2} \right) = \frac{1}{2} (\hat a^\dagger \hat a - \hat a \hat a^\dagger)
+$$
+
+::: {.callout .callout-property title="Ladder operators properties"}
+$$
+\langle \psi | \hat a \varphi \rangle = \langle \hat a^\dagger \psi | \varphi \rangle \qquad \langle \psi | \hat a^\dagger \varphi \rangle = \langle \hat a \psi | \varphi \rangle \\
+[\hat a, \hat a^\dagger] = 1 \qquad [\hat H, \hat a^\dagger] = \hbar \omega \hat a^\dagger \qquad [\hat H, \hat a] = -\hbar \omega \hat a \\
+\hat a |\psi_0\rangle = 0
+$$
+:::
+
+Let $|n\rangle$ have $\psi_n$ as a wavefunction, then the ladders operators operate on $|n\rangle$ in the following ways:
+
+$$
+\hat a^\dagger |n\rangle = \sqrt{n + 1}|n + 1\rangle \qquad \hat a |n\rangle = \sqrt{n}|n - 1\rangle
+$$
+
+Energy is quantized: energy of two consecutive levels differ by $\hbar \omega$, therefore, since $E_0 = \frac{1}{2}\hbar\omega$ then
+
+$$
+E_n = E_0 + n\hbar\omega = \hbar \omega\left( n + \frac{1}{2} \right)
+$$
+
+::: {.collapsible title="Proof"}
+First, we will proove that the application of $\hat a^\dagger$ gives another valid solution for the Schr&ouml;dinger equation, then, we will compute the exact value.
+
+Assume we want to compute $\hat H \hat a^\dagger |n\rangle$.
+
+Since $\hat H \hat a^\dagger = \hbar \omega \hat a^\dagger + \hat a^\dagger \hat H$ then
+
+$$
+\hat H(\hat a^\dagger|n\rangle) = (\hbar \omega \hat a^\dagger + \hat a^\dagger \hat H)|n\rangle = \hbar \omega \hat a^\dagger |n\rangle + \hat a^\dagger \hat H |n\rangle = \hbar \omega \hat a^\dagger |n\rangle + \hat a^\dagger E_n |n\rangle = (\hbar \omega + E_n)(\hat a^\dagger |n\rangle)
+$$
+
+thus, $\hat a^\dagger |n\rangle$ is another valid solution for the Schr&ouml;dinger equation. We shall call this new solution $|n + 1\rangle$. The same proof can be adapted for $\hat a$.
+
+Assume that $|n\rangle$ and $|n + 1\rangle$ are already normalized, then
+
+$$
+\begin{align*}
+    \|\hat a^\dagger|n\rangle\|^2 &= \langle (\hat a^\dagger|n\rangle)|(\hat a^\dagger|n\rangle)\rangle = \langle n | \hat a \hat a^\dagger | n \rangle = \langle n | \frac{\hat H}{\hbar \omega} + \frac{1}{2} | n \rangle \\
+    &= \langle n | \frac{\hat H}{\hbar \omega} | n \rangle + \langle n | \frac{1}{2} | n \rangle = \langle n |\frac{\hbar\omega}{\hbar\omega} (n + \frac{1}{2}) | n \rangle + \langle n | \frac{1}{2} | n \rangle \\
+    &= \left( n + \frac{1}{2} \right)\langle n | n \rangle + \frac{1}{2} \langle n | n \rangle \\
+    &= n + 1
+\end{align*}
+$$
+
+therefore, if $\hat a^\dagger |n\rangle = C|n + 1\rangle$ then, it must be that $C = \sqrt{n + 1}$.
+
+The same proof can be adapted for $\hat a$.
+:::
+
+From the properties above, it follows that $\hat a^\dagger \hat a$ is an operator that gives the number of energy quanta in the system
+
+$$
+\hat a^\dagger \hat a | n \rangle = n |n\rangle
+$$
 
 # Dynamics
 
