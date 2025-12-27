@@ -1792,7 +1792,7 @@ $$
 $$
 
 <!-- TODO: HOWWWWWWWWWW is V(x) a scalar mult??? -->
-Since $\hat V(x)$ and $\hat X$ are both multiplication by scalars, theyr commutator is zero.
+Since $\hat V(x)$ and $\hat X$ are both multiplication by scalars, their commutator is zero.
 
 Since
 
@@ -1854,6 +1854,151 @@ Three types of trails may be observed in a bubble chamber:
 - **straight trails**: just big spirals caused by particles so powerful that the interaction with the magnetic field is negligible.
 
 ![](./assets/spirals.jpg)
+:::
+
+# Angular Momentum
+
+From conventional physics angular momentum is defined as
+
+$$
+\vec{L} \overset{\Delta}{=} \vec{r} \cdot \vec{P} = \vec{u_x} \cdot L_x + \vec{u_y} \cdot L_y + \vec{u_z} \cdot L_z \\
+\vec{r} = \vec{u_x} x + \vec{u_y} y + \vec{u_z} z \qquad \vec{P} = \vec{u_x} P_x + \vec{u_y} P_y + \vec{u_z} P_z
+$$
+
+hence
+
+$$
+L_x = yP_z + zP_y \qquad L_y = zP_x + xP_z \qquad L_z = xP_y + yP_x
+$$
+
+Since we know the operators for position and momentum, the quantum equivalent immediately follow:
+
+$$
+\hat L_x = y \hat P_z + z \hat P_y \qquad \hat L_y = z \hat P_x + x \hat P_z \qquad L_z = x \hat P_y + y \hat P_x
+$$
+
+While dealing with angular stuff, it is easier to use spherical coordinates:
+
+$$
+\begin{cases}
+    x = \rho\sin\theta\cos\phi \\
+    y = \rho\sin\theta\sin\phi \\
+    z = \rho\cos\theta
+\end{cases}
+$$
+
+We can arbitrarily choose any **quantization axis** so we choose to use $z$ (it follow that, in this case, $\phi_z = \varphi$).
+
+Let $\phi_x, \phi_y, \phi_z$ be the rotation around the corresponding axes, then
+
+$$
+\hat L_x = -i \hbar \frac{\partial}{\partial \phi_x} \qquad \hat L_y = -i \hbar \frac{\partial}{\partial \phi_y} \qquad \hat L_z = -i \hbar \frac{\partial}{\partial \phi_z} 
+$$
+
+::: {.collapsible title="Proof"}
+In spherical coordinates, using $z$ as the quantization axis, $\varphi = \phi_z$, then
+
+$$
+\begin{align*}
+    -i \hbar \frac{\partial}{\partial \varphi} &= -i \hbar \left( \frac{\partial}{\partial x} \frac{\partial x}{\partial \varphi} + \frac{\partial}{\partial y} \frac{\partial y}{\partial \varphi} + \frac{\partial}{\partial z} \frac{\partial z}{\partial \varphi} \right) \\
+    &= -i \hbar \left( \rho\sin\theta\cos\varphi \frac{\partial}{\partial x} + \rho\sin\theta\cos\varphi \frac{\partial}{\partial y} \right) \\
+    &= -i \hbar \left( y \frac{\partial}{\partial x} + x \frac{\partial}{\partial y} \right) \\
+    &= \hat L_z
+\end{align*}
+$$
+:::
+
+::: {.callout .callout-note title="Commutation relations"}
+Like [momentum](#momentum-and-position-operators) commutes with (and does not depend on) translations, angular momentum commutes with (and does not depend on) rotations.
+
+As $\hat H$ commutes with momentum, it also commutes with angular momentum.
+:::
+
+Enter the rotation operator:
+
+$$
+\hat R_{\Delta \varphi} = e^{\frac{-L_z \Delta \varphi}{\hbar}}
+$$
+
+Let $\psi(\rho, \theta, \varphi)$ be the wave function in spherical coordinate representation, then
+
+$$
+\hat R_{\Delta \varphi} \psi(\rho, \theta, \varphi) = \psi(\rho, \theta, \varphi + \Delta \varphi)
+$$
+
+::: {.callout .callout-note title="Quantization axis"}
+Again, note that this works only with $z$ as the quantization axis. $z$ was chosen because it allows for easier calculation. It is not true that if we chose $y$ (or $x$) as quantization axis, it would be $\varphi = \phi_y$.
+:::
+
+While position translations commute with each other, this does not happen with rotations:
+
+$$
+[\hat L_x, \hat L_y] = i \hbar \hat L_z \qquad
+[\hat L_y, \hat L_z] = i \hbar \hat L_x \qquad
+[\hat L_z, \hat L_x] = i \hbar \hat L_y
+$$
+
+therefore we cannot measure precise angular momentum w.r.t. more than one axis.
+
+Since $\hat L_z$ only operates on $z$, we can rewrite $\psi$:
+
+$$
+\psi = \alpha(\rho, \theta)\varphi(\phi_z)
+$$
+
+Since
+
+$$
+-i \hbar \frac{\partial}{\partial \phi_z}\varphi(\phi_z) = L_z \varphi(\phi_z)
+$$
+
+then
+
+<!-- TODO: HOW? -->
+$$
+\varphi(\phi_z) = e^{-im\phi_z} \qquad L_z = \hbar m
+$$
+
+$m$ is called **magnetic quantum number** and is the quantum number associated with angular momentum (<u>not the mass</u>). We see that, just like energy, angular momentum is quantized as well.
+
+<!-- TODO: how??? -->
+Since $\varphi(\phi_z) = \varphi(\phi_z + 2\pi)$ then $e^{2im\pi} = 1$, therefore $m \in \mathbb{Z}$.
+
+We use $|m\rangle$ to denote particles whose magnetic quantum number is $m$:
+
+$$
+\hat L_z |m\rangle = \hbar m \rangle
+$$
+
+There exist an equivalent for the ladder operators:
+
+$$
+\hat L_\pm = \hat L_x \pm i \hat L_y
+$$
+
+Intuitively, the ladder operators act on an eigenstate $|m\rangle$ in the following ways:
+
+$$
+\hat L_\pm |m\rangle = C_\pm |m \pm 1\rangle
+$$
+
+::: {.collapsible title="Proof"}
+Since $|m\rangle$ is an eigenstate for $\hat L_z$, then
+
+$$
+\begin{align*}
+    \hat L_z\left( \hat L_\pm |m\rangle \right) &= \hat L_z \left( \hat L_x \pm i \hat L_y \right) |m\rangle = \left( \hat L_z \hat L_x \pm i \hat L_z \hat L_y \right) |m\rangle \\
+    &= \left[ i \hbar \hat L_y + \hat L_x \hat L_y \pm \left( i \hat L_y \hat L_z + i \hbar \hat L_x \right) \right] |m\rangle \\
+    &= \left[ (\hat L_x \pm i \hat L_y) \hat L_z + \hbar \left( \hat L_x \pm i \hat L_y \right) \right] |m\rangle \\
+    &= \left( \hat L_x \pm i \hat L_y \right)\left( \hat L_z + \hbar \right) |m\rangle \\
+    &= \hat L_\pm (\hbar m \pm \hbar) |m\rangle \\
+    &= \hbar (m \pm 1) \hat L_\pm |m\rangle
+\end{align*}
+$$
+
+To prove what are the values of $C_\pm$, more theory is needed. The relative proof can be found below.
+
+![](./assets/oak.png)
 :::
 
 _To be continued._
