@@ -1601,70 +1601,214 @@ Assume that $\hat H |\psi(t)\rangle = E |\psi(t)\rangle$ then, if $\psi(t)$ is a
 
 We introduce the time translation operator $\hat t_\tau$ such that $\hat t_\tau \psi(t) = \psi(t + \tau)$.
 
-<!-- TODO: reorganize, it is horrible as it is now -->
-<!--
-::: {.callout .callout-note title="Commutativity"}
-As momentum commutes with position, energy commutes with time translation.
-:::
-
-Since $\hat t_{\tau_1} \hat t_{\tau_2} = \hat t_{\tau_1 + \tau_2}$, it's eigenvalues must be really similar to the ones for translation.
-
-If
+Let $|\psi_j(0)\rangle$ be an eigenstate for energy, then, its time evolution is given by
 
 $$
-\hat t_\tau|\psi(t)\rangle = \beta(\tau)|\psi(t)\rangle
+|\psi_j(t)\rangle = \hat t_t |\psi(0)\rangle = e^{\frac{-iE_jt}{\hbar}}|\psi_j(0)\rangle
+$$
+
+therefore, if
+
+$$
+|u(0)\rangle = \sum_j \alpha_j |psi_j(0)\rangle
+$$
+
+its time evolution is given by
+
+$$
+|u(t)\rangle = \sum_j \alpha_j |\psi_j(t)\rangle = \sum_j \alpha_j \hat t_t |\psi_j(0)\rangle = \sum \alpha_j e^{\frac{-iE_jt}{\hbar}} |\psi_j(0)\rangle
+$$
+
+We define
+
+$$
+\omega = \frac{E}{\hbar}
+$$
+
+If a generic ket $|u\rangle$ is a solution of the Schr&ouml;dinger equation (that, from now on, will be called **time-independent Schr&ouml;dinger equation**), then $|u\rangle$ is called **stationary state**, i.e. a state whose time evolution is given simply by a multiplication by a phase factor (in practice, energy eigenstates).
+
+A more general equation is needed: enter the **time-dependent Schr&ouml;dinger equation**. Any ket $|u(t)\rangle$ must be a solution of this equation for every $t$:
+
+$$
+\hat H |u(t)\rangle = i \hbar \frac{d}{dt} |u(t)\rangle
+$$
+
+::: {.collapsible title="Derivation"}
+$$
+\begin{align*}
+    \frac{d}{dt} |u(t)\rangle &= \sum_j \alpha_j \left( -\frac{i}{\hbar} E_j \right) e^{\frac{-iE_jt}{\hbar}} |\psi_j(0)\rangle \\
+    &=-\frac{i}{\hbar} \sum_j \alpha_j E_j e^{\frac{-iE_jt}{\hbar}} |\psi_j(t)\rangle \\
+    &= -\frac{i}{\hbar} \sum_j e^{\frac{-iE_jt}{\hbar}} \hat H|\psi_j(0)\rangle \\
+    &= -\frac{i}{\hbar} \hat H \sum_j \alpha_j e^{\frac{-iE_jt}{\hbar}}|\psi_j(0)\rangle \\
+    &= -\frac{i}{\hbar} \hat H |u(t)\rangle
+\end{align*}
+$$
+
+Thesis follows.
+:::
+
+The time-dependent Schr&ouml;dinger equation is always valid, no matter the choice of $|u(t)\rangle$, as long as it is in energy representation.
+
+We can express any time dependent ket as an entanglement of a time-independent ket and a time dependence:
+
+$$
+|u(t)\rangle = |v\rangle e^{-i\omega t}
+$$
+
+The hamiltonian operator $\hat H$ only operates on the time-independent part:
+
+$$
+\hat H |u(t)\rangle = e^{-i \omega t}\hat H|v\rangle
+$$
+
+If we now apply the time-dependent Schr&ouml;dinger equation
+
+$$
+\begin{align*}
+    \hat H |u(t)\rangle &= i \hbar \frac{\partial}{\partial t} |u(t)\rangle \\
+    e^{-i \omega t} \hat H |v\rangle &= i \hbar (-i \omega) e^{-i \omega t} |v\rangle \\
+    \hat H |v\rangle &= \hbar \omega |v\rangle \\
+    \hat H |v\rangle &= E |v\rangle
+\end{align*}
+$$
+
+hence, the solution of the time-independent Schr&ouml;dinger equation does not depend on time.
+
+It may happen to have a time-dependent hamiltonian, such in the case of a particle in an oscillating electric field. The time-dependent Schr&ouml;dinger equation can be extended to handle this case but it is beyond the scope of this document.
+
+The most general expression of the time translation operator is
+
+$$
+\hat t_t = e^{-\frac{i \hat H t}{\hbar}}
+$$
+
+::: {.collapsible title="Proof"}
+$$
+\begin{align*}
+    |u(t)\rangle &= |u(0)\rangle + \left. \frac{d}{dt} |u(t)\rangle\right|_{t=0} + \left.\frac{1}{2} \frac{d^2}{dt^2} |u(t)\rangle\right|_{t=0} + \dots \\
+    &= \sum_k \frac{1}{k!} \left( \left. \frac{d^k}{dt^k} |u(t)\rangle \right|_{t=0} \right) \\
+    &= \left[ \sum_k \frac{1}{k!} \left( -\frac{i}{\hbar} \hat H t \right)^k \right] \left(|u(t)\rangle\right)_{t=0} \\
+    &= \left[ \sum_k \frac{1}{k!} \left( -\frac{i}{\hbar} \hat H t \right)^k \right] |u(0)\rangle \\
+    &= e^{-\frac{i \hat H t}{\hbar}} |u(0)\rangle
+\end{align*}
+$$
+
+In physics, this series, always converges.
+:::
+
+### Energy and position measurement
+
+Let $|v\rangle$ and $|w\rangle$ be normalized stationary states and $|u\rangle = \alpha |v\rangle + \beta |w\rangle$ normalized, then
+
+$$
+|u(t)\rangle = \alpha e^{-\frac{-iE_vt}{\hbar}} |v\rangle + \beta e^{-\frac{-iE_wt}{\hbar}} |w\rangle
+$$
+
+Assume we want to measure the position in function of time on the $x$ axis, then
+
+$$
+\begin{align*}
+    \langle x(t) \rangle &= \langle u(t) | \hat X | u(t) \rangle \\
+    &= \left( \alpha e^{\frac{iE_vt}{\hbar}} \langle v| + \beta e^{\frac{iE_wt}{\hbar}} \langle w| \right) \hat X \left( \alpha e^{-\frac{iE_vt}{\hbar}} |v\rangle + \beta e^{-\frac{iE_wt}{\hbar}} |w\rangle \right) \\
+    &= \alpha^2 \langle v | \hat X | v \rangle + \beta^2 \langle w | \hat X | w \rangle + \alpha \beta e^{\frac{i(E_v - E_w)t}{\hbar}} \langle v | \hat X | w \rangle + \beta \alpha e^{\frac{i(E_w - E_v)t}{\hbar}} \langle w | \hat X | v \rangle \\
+    &= \langle x(0) \rangle + \alpha \beta \left[ e^{\frac{i\Delta Et}{\hbar}} \langle v | \hat X | w \rangle + e^{\frac{-i\Delta Et}{\hbar}} \langle w | \hat X | v \rangle \right] \\
+    &= \langle x(0) \rangle + 2 \alpha \beta \Re \left\{ e^{\frac{i\Delta Et}{\hbar}} \langle v | \hat X | w \rangle \right\} \\
+    &= \langle x(0) \rangle + 2 \alpha \beta \langle v | \hat X | w \rangle \cos\left( \frac{\Delta Et}{\hbar} \right)
+\end{align*}
+$$
+
+where we assumed that $\langle v | \hat X | w \rangle \in \mathbb{C}$
+
+From the previous computation, we can conclude that the expectation value for the position is linked to the energy difference of the two "base" states.
+
+::: {.callout .callout-example title="Ammonia molecule"}
+Assume that we have an excited ammonia molecule in a superposition of $|-Z_0\rangle$ and $|+Z_0\rangle$: the frequency of oscillation is around $24\ GHz$.
+
+Charges going up and down the molecule makes the molecule itself an antenna that emits electromagnetic waves.
+
+Measuring the frequency of the emitted waves can give a really precise indication about the difference between enegy levels:
+
+$$
+\omega = \frac{\Delta E}{\hbar}
+$$
+:::
+
+### Ehrenfest theorem
+
+Ehrenfest theorem is one of the few things in common between quantum and classical mechanics. It is used to determine how generic observables mutate in time.
+
+::: {.callout .callout-theorem title="Ehrenfest theorem"}
+$$
+\frac{\partial}{\partial t} \langle O \rangle = \frac{i}{\hbar} \langle [\hat H, \hat O] \rangle + \langle \frac{\partial \hat O}{\partial t} \rangle
+$$
+
+::: {.collapsible title="Proof"}
+$$
+\begin{align*}
+    \frac{\partial}{\partial t} \langle O \rangle &= \langle \frac{\partial}{\partial t} u | \hat O | u \rangle + \langle u | \frac{\partial}{\partial t} \hat O | u \rangle + \langle u | \hat O | \frac{\partial}{\partial t} u \rangle \\
+    &= \langle -\frac{i}{\hbar} \hat H u | \hat O | u \rangle + \langle u | \hat O | -\frac{i}{\hbar} \hat H u \rangle + \langle \frac{\partial \hat O}{\partial t} \rangle \\
+    &= \frac{i}{\hbar} \left( \langle u | \hat H \hat O | u \rangle - \langle u | \hat O \hat H | u \rangle \right) + \langle \frac{\partial \hat O}{\partial t} \rangle \\
+    &= \frac{i}{\hbar} \langle u | [\hat H, \hat O] | u \rangle + \langle \frac{\partial \hat O}{\partial t} \rangle \\
+    &= \frac{i}{\hbar} \langle [\hat H, \hat O] \rangle + \langle \frac{\partial \hat O}{\partial t} \rangle
+\end{align*}
+$$
+:::
+:::
+
+Even if this theorem is quite general and works even with time-dependent operators, we will only use it on time-independent operators.
+
+This fantastic theorem can be used to derive the formula for the velocity of a particle, to derive the second law of thermodynamics and for much more.
+
+::: {.collapsible title="Velocity"}
+Velocity is the derivative of position.
+
+$$
+\frac{\partial}{\partial t} \langle x \rangle = \frac{i}{\hbar} \langle [\hat H, \hat X] \rangle = \frac{i}{\hbar} \left( \langle [\hat T_x, \hat X] \rangle + \langle [\hat V(x), \hat X] \rangle\right)
+$$
+
+Since
+
+$$
+\hat T_x = -\frac{\hbar^2}{2m} \frac{d^2}{dx^2}
 $$
 
 then
 
 $$
-\beta(\tau) = C \cdot e^{-i \omega \tau}
+\begin{align*}
+    [\hat T_x, \hat X]\varphi &= \hat T_x \hat X \varphi - \hat X \hat T_x \varphi \\
+    &= \hat T_x x \varphi + \hat X \frac{\hbar^2}{2m} \frac{d^2 \varphi}{dx^2} \\
+    &= -\frac{\hbar^2}{2m} \left[ \frac{d}{dx} \left( \frac{d}{dx} (x \varphi) \right) -x \frac{d^2 \varphi}{dx^2} \right] \\
+    &= -\frac{\hbar^2}{2m} \left[ \frac{d}{dx} \left( \varphi + x \frac{d\varphi}{dx} \right) - x\frac{d^2 \varphi}{dx^2} \right] \\
+    &= -\frac{\hbar^2}{2m} \left[ \frac{d\varphi}{dx} + \frac{d\varphi}{dx} + x \frac{d^2\varphi}{dx^2} - x \frac{d^2\varphi}{dx^2} \right] \\
+    &= -\frac{\hbar^2}{m} \frac{d}{dx} \varphi
+\end{align*}
 $$
 
-Therefore, given an initial state $|\psi(0)\rangle$, we can express the time evolution of that state with
+therefore
 
 $$
-|\psi(t)\rangle = e^{-i \omega t}|\psi(0)\rangle
+[\hat T_x, \hat X] = -\frac{\hbar^2}{m} \frac{d}{dx}
 $$
 
-::: {.callout .callout-example title="Particle moving with constant speed"}
-Let
+<!-- TODO: HOWWWWWWWWWW -->
+Since $\hat V(x)$ and $\hat X$ are both multiplication by scalars, theyr commutator is zero.
+
+Since
 
 $$
-|\psi(t)\rangle = \frac{1}{\sqrt{V}} e^{i(\vec{k}\vec{r} - \omega t)} = \frac{1}{\sqrt{V}} e^{i \vec{k}(x - vt)}
+[\hat H, \hat X] = -\frac{\hbar^2}{m} \frac{d}{dx} = -\frac{i \hbar}{m} \left( -i \hbar \frac{\partial}{\partial x} \right) = -\frac{i \hbar}{m} \hat P_x = -i \hbar \hat v
 $$
 
-This is a particle moving with a constant speed to direction $\vec{k}$.
+therefore
+
+$$
+\frac{\partial}{\partial t} \langle x \rangle = \frac{i}{\hbar} \cdot (-i \hbar \hat v) = \hat v
+$$
 :::
 
-The time translation operator can be expressed as
-
-$$
-\hat t_\tau = e^{-i \frac{E}{\hbar}\tau}
-$$
-
-::: {.collapsible title="Proof"}
+::: {.collapsible title="Second law of thermodynamics"}
 
 :::
-
-The parameter $\omega$ is related to energy as $\vec{k}$ is related to momentum: $\omega = \omega(E)$. We know that energy is additive, therefore $\omega(E_{tot}) = \sum \omega(E_i)$. Let $\psi_j$ be the eigenstates of time translation and $|\psi_{tot}\rangle = \prod_j \psi_j(t)$, then
--->
-<!-- TODO: WHAT? -->
-<!--
-$$
-\hat t_\tau |\psi_{tot}(t)\rangle = \prod_j \psi_j(t + \tau) = \prod_j e^{-i \omega(E_j) \tau} \prod_j |\psi_j(t)\rangle = e^{-i \omega(\sum_j E_j) \tau} \prod_j |\psi_j(t)\rangle = e^{-i \omega(E_{tot}) \tau} \prod_j |\psi(t)\rangle
-$$
-
-therefore, $\omega$ should be shaped like $\omega(E) = C \cdot E$.
-
-In particular, $C = \frac{1}{\hbar}$, hence
-
-$$
-
-$$
-
-From relativity, we know that $E = \sqrt{c^2 p^2 + m^2 c^4}$. Assum
-
--->
 
 _To be continued._
