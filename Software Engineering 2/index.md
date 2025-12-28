@@ -310,3 +310,99 @@ This is crucial for non-functional requirements like performance, availability, 
 The deployment structure can be represented with:
 
 - **Deployment Diagrams**: show the physical nodes and their relationships.
+
+## Architecture Style
+
+### Client-Server
+
+The **Client-Server** architecture is a distributed structure that divides the system into two main components: the **server** (provider of services) and the **client** (consumer of services).
+
+There are three main layers:
+
+- **Presentation**: User interface and user experience.
+- **Application Logic**: Business rules and processing.
+- **Data Management**: Storage and retrieval of data.
+
+The client-server model can be organized based on the distribution of workload:
+
+- **Thick Client**: The client performs most of the processing, while the server mainly handles data storage and retrieval. This reduces server load and improves responsiveness but requires more powerful client devices.
+- **Thin Client**: The client relies heavily on the server for processing and logic, handling mainly the user interface and input. This simplifies client devices but increases server load and network traffic.
+
+### Concurrency Models (Handling Multiple Requests)
+
+Servers must handle multiple requests simultaneously. Common approaches include:
+
+#### Request per Process
+
+Traditional servers (like older versions of _Apache_) handle concurrency by forking a new **process** (or thread) for each incoming request. This isolates requests but is resource-intensive and inefficient under high load due to context switching overhead.
+
+#### Worker Pool
+
+Modern servers (like _Nginx_) use a **worker pool**.
+
+A fixed number of workers handle requests from a shared queue. This prevents resource exhaustion and handles high concurrency more efficiently, though it may introduce availability issues if the queue becomes full.
+
+### REST (Representational State Transfer)
+
+**REST** is an architectural style for distributed systems, commonly used over HTTP.
+
+Key constraints include:
+
+- **Statelessness**: Each request from the client must contain all the information needed to process it. The server does not store session state between requests.
+- **Resource-Based**: Data is modeled as resources identified by URIs.
+
+Data is serialized into formats like _JSON_, _XML_, or _Protocol Buffers_. These formats vary in:
+
+- **Expressiveness**: Ability to represent complex data structures.
+- **Interoperability**: Support across different languages and platforms.
+- **Performance**: Serialization/deserialization speed and message size.
+- **Transparency**: Human readability.
+
+#### Error Handling
+
+Error handling is decoupled. The server returns standard HTTP status codes (e.g., 400 Bad Request, 500 Internal Server Error) with an optional error body, and the client is responsible for handling them appropriately.
+
+#### Versioning
+
+To maintain backward compatibility, APIs should be versioned (e.g., `/api/v1/resource`). This allows introducing new features without breaking existing clients.
+
+#### Interface Documentation
+
+Documentation is crucial for developers consuming the API. Standard specifications like **OpenAPI** (formerly Swagger) allow describing:
+
+- Endpoints and HTTP methods.
+- Input parameters and request bodies.
+- Response schemas.
+- Authentication mechanisms.
+
+Tools can generate documentation, client SDKs, and server stubs from these specifications.
+
+### Event-Driven Architecture
+
+**Event-Driven Architecture** is based on the **producer-consumer** pattern. Components communicate by emitting and reacting to **events**.
+
+- **Producers** publish events to an **Event Bus** (or Broker).
+- **Consumers** subscribe to specific events they are interested in.
+
+This decouples producers from consumers; they do not need to know about each other, only about the event format.
+
+#### Delivery Models
+
+- **Push**: The event bus pushes events to consumers immediately.
+- **Pull**: Consumers poll the event bus for new messages at their own pace, allowing time-decoupling.
+
+#### Delivery Semantics
+
+- **At most once**: The event is delivered zero or one time (fire-and-forget). Low overhead, but data loss is possible.
+- **At least once**: The event is delivered one or more times. Ensures delivery but requires consumers to handle duplicates (idempotency).
+- **Exactly once**: The event is delivered exactly once. High overhead and latency, difficult to achieve in distributed systems.
+
+#### Kafka
+
+_Apache Kafka_ is a popular distributed event streaming platform. It uses a **log-based** approach:
+
+- **Topics**: Categories where records are published.
+- **Partitions**: Topics are split into partitions for scalability and parallelism.
+- **Brokers**: Servers that store data.
+
+Kafka uses a **pull mechanism**, allowing consumers to process events at their own speed. It ensures fault tolerance through replication.
