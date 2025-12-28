@@ -69,9 +69,93 @@ RE is responsible to to define the **phenomena** (the observable events) that ar
 - **Machine**: This is the part of the system that is being developed. It's the software and hardware building. It includes events and properties that are observable by the machine;
   - Example: internal states, computations, etc.;
 - **Shared Phenomena**: interaction between the world and the machine. Here reside the _requirements_ (R).
-  - _Machine controlled_: the machine perform an action that the world can observe (e.g., display a message);
+  - _Machine controlled_: the machine perform an action that the world can observe (e.g., display a message, interacting with external services);
   - _World controlled_: the world can perform an action that the machine can observe (e.g., user inputs a command).
 
 A requirement is _complete_ iff it satisfy (logically entails) the goal in the context of the domain.
 
 $$\text{R and D} \models G$$
+
+## Software Design
+
+Software Design is the phase where we decide **how** the system will be implemented. It bridges the gap between requirements and code by making high-level decisions about the system's structure.
+
+Design is not about "perfection" but it's a negotiation between multiple tradeoffs (performance, maintainability, scalability, etc).
+
+The workflow is:
+
+```mermaid
+stateDiagram
+  state HighPhases {
+    FeasibilityStudy: Feasibility Study
+    RequirementsAnalysis: Requirements Analysis
+    ArchitecturalDesign: Architectural Design
+  }
+  state LowPhases {
+    CodingAndUnitTesting: Coding and Unit Testing
+    IntegrationAndTesting: Integration and Testing
+    Deployment
+    Maintenance
+  }
+
+  [*] --> HighPhases
+  FeasibilityStudy --> RequirementsAnalysis
+  RequirementsAnalysis --> ArchitecturalDesign
+  HighPhases --> LowPhases
+  CodingAndUnitTesting --> IntegrationAndTesting
+  IntegrationAndTesting --> Deployment
+  Deployment --> Maintenance
+```
+
+To reduce the complexity the system is looked at different **views**:
+
+### Module Structure (Static View)
+
+The module structure describe how the system is decomposed into **Implementation Units** (modules, files, packages, libraries, etc) and how they relate to each other.
+
+This view is used to evaluate:
+
+- **Cohesion**: how closely related and focused the responsibilities of a single module are.
+- **Coupling**: the degree of dependence between modules. Low coupling is desirable as it reduces the impact of changes in one module on others.
+- Planning the implementation phase.
+
+The module structure can be represented with:
+
+- **Package Diagrams**: show the organization of the system into packages and their dependencies.
+- **Class Diagrams**: show the classes within each package and their relationships.
+
+### Component-and-Connector (C&C) Structure (Runtime View)
+
+The C&C structure describe how the system behaves at runtime.
+
+The view is separated between:
+
+- **Components**: are the processing elements (modules, services, etc)
+- **Connectors**: the mean of communication between components (APIs, message queues, etc).
+
+This view is used to evaluate:
+
+- Performance: identify bottleneck and scalability issues;
+- Reliability: identify single point of failure;
+- Security: identify access points and vulnerabilities.
+
+The C&C structure can be represented with:
+
+- **Component Diagrams**: show the components and their interactions.
+- **Sequence Diagrams**: show the dynamic interactions between components over time.
+
+### Deployment Structure (Physical View)
+
+The deployment structure describe how the system is physically deployed on hardware and network infrastructure.
+
+The components mapped are:
+
+- **Hardware**: physical devices (servers, routers, etc);
+- **Execution Environment**: software platforms (OS, containers, VMs, etc);
+- **Networking**: network devices and configurations (Firewall, Load Balancer, etc).
+
+This is crucial for non-functional requirements like performance, availability, and security.
+
+The deployment structure can be represented with:
+
+- **Deployment Diagrams**: show the physical nodes and their relationships.
