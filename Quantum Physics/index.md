@@ -1996,9 +1996,178 @@ $$
 \end{align*}
 $$
 
-To prove what are the values of $C_\pm$, more theory is needed. The relative proof can be found below.
+To prove what are the values of $C_\pm$, more theory is needed. The relative proof can be found after the introducton of the total square angular momentum operator.
 
 ![](./assets/oak.png)
+:::
+
+::: {.callout .callout-note title="Hermitiantity"}
+Notice that, since $\hat L_\pm$ are not hermitian, then, they do not correspont to any physical observable
+:::
+
+::: {.callout .callout-property title="Ladder properties"}
+$$
+\langle \hat L_\pm \varphi | \psi \rangle = \langle \varphi | \hat L_\mp \psi \rangle \\
+[\hat L_+, \hat L_-] = 2 \hbar \hat L_z
+$$
+:::
+
+We already know that the energy of a particle is the sum of a kinetic temr and a potential term: the kinetic term does not depent on the direction of the cartesian axes, so it is **sphere-symmetric**. If we assume that also $V$ depends only on distance from the origin (more than acceptable of an assumption, that is, for example, verified in the case of electrons around a nucleous).
+
+In such a case, $\hat H$ is also sphere-symmetric and does not depend on rotations, so it commutes with $\hat L_x, \hat L_y, \hat L_Z$, therefore eigenstates of energy are also eigenstates for all these three operators. Having chosen $z$ as the quantization axis, we cannot measure precisely angular momentum on $x$ or $y$, therefore we need to introduce another operator, the **square angular momentum operator** defined as
+
+$$
+\hat L^2 = \hat L_x^2 + \hat L_y^2 + \hat L_z^2
+$$
+
+::: {.callout .callout-property title="Square angular momentum commutation"}
+In a spherical-symmetric system
+
+$$
+[\hat L^2, \hat H] = 0 \\
+[\hat L^2, \hat L_x] = [\hat L^2, \hat L_y] = [\hat L^2, \hat L_z] = 0 \\
+[\hat L^2, \hat L_\pm] = 0
+$$
+:::
+
+Since an eigenstate for $\hat H$ is also an eigenstate for all the momentum-related operators defined so far, their eigenvalues will be quantized as well.
+
+We denote with $|\lambda(m), m\rangle$ a state that is an eigenstate both for $\hat L^2$ and $\hat L_z$:
+
+$$
+\begin{cases}
+    \hat L^2 |\lambda(m), m\rangle = \lambda(m) |\lambda(m), m\rangle \\
+    \hat L_z |\lambda(m), m\rangle = \hbar m |\lambda(m), m\rangle
+\end{cases}
+$$
+
+The following relation holds between $m$ and $\lambda(m)$:
+
+$$
+|m| \le \frac{\sqrt{\lambda(m)}}{\hbar}
+$$
+
+::: {.collapsible title="Proof"}
+Consider
+
+$$
+\langle \lambda(m), m | \hat L^2 - \hat L_z | \lambda(m), m \rangle
+$$
+
+Since it can be expressed as a sum of wxpectation values of square quantities, it is always non-negative:
+
+$$
+\langle \lambda(m), m | \hat L^2 - \hat L_z^2 | \lambda(m), m \rangle = \langle \lambda(m), m | \hat L_x^2 | \lambda(m), m \rangle + \langle \lambda(m), m | \hat L_y^2 | \lambda(m), m \rangle \ge 0
+$$
+
+therefore
+
+$$
+\langle \lambda(m), m | \hat L^2 - \hat L_z^2 | \lambda(m), m \rangle = \langle \lambda(m), m | \hat L^2 | \lambda(m), m \rangle - \langle \lambda(m), m | \hat L_z^2 | \lambda(m), m \rangle = \lambda(m) - \hbar^2 m^2 \ge 0
+$$
+
+Thesis follows.
+:::
+
+This means that the projection of the total angular momentum on the $z$ axis cannot be larger than the total angular momentum (how unintuitive, huh?).
+
+It holds that $\hat L_+ |\lambda(m_{max}), m_{max}\rangle = \hat L_- |\lambda(m_{min}), m_{min}\rangle$ = 0.
+
+It is easy to verify that, for a given $m$, there may be multiple solutions to the eigenequation that does not depend on $m$: we have more eigenstates associated with the same eigenvalue, so we need another quantum number to index them. Enter the **angular momentum quantum number**, denoted with $l$.
+
+::: {.collapsible title="Proof"}
+Let $l = m = m_{max}$. Since
+
+$$
+\hat L^2 = \hat L_x^2 + \hat L_y^2 + \hat L_z^2 = \hat L_z^2 + \frac{1}{2} \left( \hat L_+ \hat L_- + \hat L_- \hat L_+ \right) = \hat L_z^2 + \hbar \hat L_z + \hat L_- \hat L_+
+$$
+
+then
+
+$$
+\begin{align*}
+    \hat L^2 |\lambda(l), l\rangle &= \hat L_z^2 |\lambda(l), l\rangle + \hbar \hat L_z |\lambda(l), l\rangle + \hat L_- \underbrace{\hat L_+ |\lambda(l), l\rangle}_{0} \\
+    &= (\hbar^2 l^2 + \hbar^2 l) |\lambda(l), l\rangle \\
+    &= \hbar^2 l(l+1) |\lambda(l), l\rangle
+\end{align*}
+$$
+
+Since $\hat L^2$ and $\hat L_-$ commute, then
+
+$$
+\begin{align*}
+    \hat L^2 \hat L_- |\lambda(l), l\rangle &= \hat L_- \hat L^2 |\lambda(l), l\rangle \\
+    C_- \hat L^2 |\lambda(l), l - 1\rangle &= \hat L_- \hbar^2 l (l+1) |\lambda(l), l\rangle \\
+    &= \hbar^2 l (l+1) C_- |\lambda(l), l - 1\rangle
+\end{align*}
+$$
+
+Thesis follows <!-- TODO: HOW??? -->
+:::
+
+We modify the notation again to keep track of $l$:
+
+$$
+\begin{cases}
+    \hat L^2 |l, m\rangle = \hbar^2 l(l+1) |l, m\rangle \\
+    \hat L_z |l, m\rangle = \hbar m |l, m\rangle & m \in \{ l, l-1, \dots, +1, 0, -1, \dots, -(l - 1), -l \}
+\end{cases}
+$$
+
+::: {.callout .callout-note title="PRactically speaking"}
+Practically speaking, once we know the total angular momentum ($l$), we know all the possible values of the contributions of the $z$ angular momentum to the total.
+:::
+
+We call **degeneracy** of some angular momentum quantum number $l$ the number of possible values of $m$ (it is the number of possible eigenstates with the same $l$) and it is computed with
+
+$$
+2l + 1
+$$
+
+::: {.collapsible title="Ladder operator coefficients"}
+Let $|m\rangle$ and $|m+1\rangle$ be normalized eigenstates for $\hat L_z$, then
+
+$$
+\langle \left( \hat L_\pm |m\rangle \right) | \hat L_\pm | m\ \rangle = C_\pm C_\pm^* \langle m + 1 | m + 1 \rangle = |C_\pm|^2
+$$
+
+Since
+
+$$
+\langle \hat L_\pm \varphi | \psi \rangle = \langle \varphi | \hat L_\mp \psi \rangle
+$$
+
+then
+
+$$
+|C_\pm|^2 = \langle m | \hat L_\mp \hat L_\pm | m \rangle = \langle l, m | \hat L_\mp \hat L_\pm | l, m \rangle
+$$
+
+Since
+
+$$
+\hat L_\mp \hat L_\pm = \hat L^2 - \hat L_z^2 \mp \hbar \hat L_z
+$$
+
+then
+
+$$
+\begin{align*}
+    |C_\pm|^2 &= \langle l, m | \hat L^2 | l, m \rangle - \langle l, m | \hat L_z^2 | l, m \rangle \mp \langle l, m | \hbar \hat L_z | l, m \rangle \\
+    &= \hbar l (l+1) \langle l, m | l, m \rangle - \hbar^2 l^2 \langle l, m | l, m \rangle \mp \hbar^2 m \langle l, m | l, m \rangle \\
+    &= \hbar^2 \left[ l(l + 1) - m(m \pm 1) \right]
+\end{align*}
+$$
+
+Since $C_\pm \in \mathbb{C}$, there are infinite equally valid values. For simplicity, we take a real one:
+
+$$
+C_\pm = \pm \hbar \sqrt{l(l + 1) - m(m \pm 1)}
+$$
+:::
+
+::: {.callout .callout-example title="Ammonia ion and ammonia molecule"}
+
 :::
 
 _To be continued._
