@@ -76,6 +76,157 @@ A requirement is _complete_ iff it satisfy (logically entails) the goal in the c
 
 $$\text{R and D} \models G$$
 
+## Alloy
+
+Alloy is a logic-based formal notation used to specify models of a system. It allows developers to describe the structure and behavior of a system and perform automated analysis to check for consistency and correctness.
+
+Alloy uses a **declarative** notation, meaning it describes _what_ the system should do (constraints and relationships) rather than _how_ to do it.
+
+The analysis is performed by the **Alloy Analyzer**, which translates the model into a boolean formula and uses a SAT solver to find instances (examples) or counterexamples.
+
+### Core Concepts
+
+#### Signatures (`sig`)
+
+Signatures define the types of objects (atoms) in the system. They are similar to classes in OOP but represent sets of atoms.
+
+```alloy
+sig Name, Addr {}
+sig Book {
+    addr: Name
+}
+```
+
+- `abstract sig`: A signature that has no atoms of its own (must be extended).
+- `one sig`: A signature that contains exactly one atom (singleton).
+- `extends`: Creates a subset of another signature (disjoint by default).
+
+#### Relations and Multiplicity
+
+Fields in signatures define relations. Multiplicity keywords constrain the size of these relations:
+
+- `set`: Any number (default).
+- `one`: Exactly one.
+- `some`: One or more (at least one).
+- `lone`: Zero or one (optional).
+
+#### Facts (`fact`)
+
+Facts are constraints that are assumed to be always true in the model. They restrict the set of possible instances.
+
+```alloy
+fact NoSelfReference {
+    all n: Node | n !in n.next
+}
+```
+
+They can also be declared without a name or with the definition of a signature:
+
+```alloy
+sig Node {
+    next: lone Node
+} {
+    next != this
+}
+```
+
+#### Predicates (`pred`)
+
+Predicates are parameterized constraints that can be reused. They are often used to describe operations or state transitions. They are not automatically enforced but can be invoked.
+
+```alloy
+pred add [b, b': Book, n: Name, a: Addr] {
+    b'.addr = b.addr + (n -> a)
+}
+```
+
+#### Functions (`fun`)
+
+Functions are expressions that return a value (a set or relation) rather than a boolean.
+
+```alloy
+fun lookup [b: Book, n: Name]: set Addr {
+    n.(b.addr)
+}
+```
+
+#### Assertions (`assert`)
+
+Assertions are properties that the system is expected to satisfy. The analyzer checks if these hold given the facts.
+
+```alloy
+assert AddIdempotent {
+    all b, b': Book, n: Name, a: Addr |
+        add[b, b', n, a] implies b'.addr = b.addr + (n -> a)
+}
+```
+
+### Analysis Commands
+
+- **`run`**: Asks the analyzer to find an _instance_ where a predicate is true. Used for simulation and validation (checking if a scenario is possible).
+
+  ```alloy
+  run add for 3 but 1 Book
+  ```
+
+- **`check`**: Asks the analyzer to find a _counterexample_ to an assertion. Used for verification.
+
+  ```alloy
+  check AddIdempotent for 3
+  ```
+
+### Operators
+
+- **Set Operators**: `+` (union), `&` (intersection), `-` (difference), `in` (subset).
+- **Relational Join (`.`)**: Navigates relations (similar to dereferencing). `a.r` joins atom `a` with relation `r`.
+- **Quantifiers**:
+  - `all x: S | ...` (For all)
+  - `some x: S | ...` (There exists)
+  - `no x: S | ...` (There exists none)
+  - `one x: S | ...` (There exists exactly one)
+  - `lone x: S | ...` (There exists at most one)
+
+### Temporal Logic (Alloy 6)
+
+Alloy 6 introduces support for **Linear Temporal Logic (LTL)**, allowing the modeling of dynamic systems where state changes over time.
+
+#### Mutable Signatures and Fields (`var`)
+
+To model changing state, signatures and fields can be marked as `var`.
+
+```alloy
+var sig State {}
+sig System {
+    var status: one State
+}
+```
+
+#### Temporal Operators
+
+These operators are used to express properties over execution traces.
+
+Operators about the future:
+
+- **`always`**: The formula must hold in the current state and all future states.
+- **`eventually`**: The formula must hold in the current state or some future state.
+- **`after`**: The formula must hold in the next state.
+
+Operators about the past:
+
+- **`historically`**: The formula must have held in all past states.
+- **`once`**: The formula must have held in some past state.
+- **`before`**: The formula must have held in the previous state.
+
+#### Prime Operator (`'`)
+
+The prime symbol (`'`) is used to refer to the value of a variable in the _next_ state.
+
+```alloy
+fact Transition {
+    always (x' = x + 1)
+}
+```
+
 ## Software Design
 
 Software Design is the phase where we decide **how** the system will be implemented. It bridges the gap between requirements and code by making high-level decisions about the system's structure.
