@@ -406,3 +406,72 @@ _Apache Kafka_ is a popular distributed event streaming platform. It uses a **lo
 - **Brokers**: Servers that store data.
 
 Kafka uses a **pull mechanism**, allowing consumers to process events at their own speed. It ensures fault tolerance through replication.
+
+### Microservices
+
+**Microservices** architecture structures an application as a collection of loosely coupled, independently deployable services. This contrasts with a **Monolithic** architecture, where all components are bundled into a single unit.
+
+The main advantages of microservices include:
+
+- **Scalability**: Services can be scaled independently based on demand (fine-grained scaling), unlike monoliths where the entire application must be replicated.
+- **Decoupling**: Services are isolated; a failure in one service doesn't necessarily bring down the whole system.
+- **Agility**: Smaller, separate codebases allow different teams to work in parallel using different technologies.
+
+The main components of a microservices architecture are:
+
+- **Data Store**: Each microservice owns its database to ensure loose coupling (Database-per-service pattern).
+- **Business Logic**: Each service focuses on a specific business capability (Single Responsibility Principle).
+- **Interface**: Services communicate via well-defined APIs (REST, gRPC) or messaging.
+
+#### Service Discovery (Location Transparency)
+
+In a dynamic environment, service instances scale up/down and change IP addresses. **Service Discovery** allows clients to locate services without hardcoding addresses.
+
+1. **Registration**: Services register themselves with the Service Discovery upon startup.
+2. **Discovery**: Clients query the Service Discovery to get the location of a service.
+3. **Health Checks**: The Service Discovery monitors service health via heartbeats. If a service stops sending heartbeats, it is removed from the registry.
+
+Key considerations:
+
+- **Availability**: The registry must be highly available (often replicated).
+- **Load Balancing**: the registry should balance requests among multiple instances.
+- **Resilience**: The system should handle failures gracefully.
+
+#### Resilience Patterns
+
+To detect failures each service is called through a **Circuit Breaker**, a proxy that monitors calls to the service. It prevents the application from trying to execute an operation that is likely to fail.
+
+- **Closed**: Normal operation. Requests pass through.
+- **Open**: After a threshold of failures is reached, the circuit opens, and requests fail immediately (fail-fast) without waiting for timeouts.
+- **Half-Open**: After a timeout, a limited number of requests are allowed to pass to test if the service has recovered.
+
+```mermaid
+stateDiagram
+    [*] --> Closed
+    Closed --> Open: failures > threshold
+    Open --> HalfOpen: timeout
+    HalfOpen --> Closed: success
+    HalfOpen --> Open: failure
+```
+
+#### Security Patterns (API Gateway)
+
+Directly exposing microservices to clients creates security and complexity issues. An **API Gateway** acts as a single entry point for all clients.
+
+- **Authentication & Authorization**: Verifies identity and permissions before routing requests.
+- **Routing**: Forwards requests to the appropriate microservice.
+- **Rate Limiting**: Protects services from overuse.
+
+_Note: The Gateway can be a single point of failure, so it is usually replicated._
+
+#### Communication & Coupling
+
+Communication between services can be:
+
+- **Synchronous (e.g., HTTP/REST)**: The client waits for a response. Tends to increase coupling and latency.
+- **Asynchronous (e.g., Message Queues)**: The client sends a message and continues. Decouples services and handles bursts of traffic.
+
+Using queues (like RabbitMQ or Kafka) buffers requests and decouples the sender from the receiver.
+
+- **One-way**: Fire-and-forget.
+- **Two-way**: Requires a response queue.
