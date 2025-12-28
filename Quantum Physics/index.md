@@ -2562,6 +2562,31 @@ $$
 [\hat{\vec{J}}^2, \hat{\vec{J}}_z^{(1)}] \ne 0 \qquad [\hat{\vec{J}}^2, \hat{\vec{J}}_z^{(2)}] \ne 0
 $$
 
+We can express
+
+$$
+|J, M, J_1, J_2\rangle = \sum \alpha(J, M, J_1, J_2) |J_1, M_1, J_2, M_2\rangle
+$$
+
+where $\alpha$ are the **Clebsh-Gordan** coefficents:
+
+$$
+\alpha(J, M, J_1, J_2) = \langle J, M, J_1, J_2 | J_1, M_1, J_2, M_2 \rangle
+$$
+
+::: {.callout .callout-property title="Relation between $J$ and $M$"}
+Since we cannot measure multiple components of the composite momentum at the same time, the relation is a bit more vague:
+
+$$
+\begin{cases}
+    |J_1 - J_2| \lt J \lt J_1 + J_2 \\
+    M = M_1 + M_2
+\end{cases}
+$$
+
+$M$ can assume $2J + 1$ different values in the range $-J \lt M \lt J$.
+:::
+
 # Identical particles
 
 ## Pauli exclusion principle
