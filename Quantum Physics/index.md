@@ -2407,4 +2407,64 @@ It can be demonstrated that the eigenvalues for $\hat S_n$ are still $\pm \frac{
 Quantum computers may use spin as a qubit.
 :::
 
+## Time evolution of spin in a magnetic field
+
+As we already subtly mentioned while talking about the Stern-Gerlach experiment, spin couples with magnetic field. The hamiltonian associated with the coupling is
+
+$$
+\hat H_{int} = \mu \cdot \vec{B} \cdot \hat{\vec{S}}
+$$
+
+::: {.callout .callout-note title="Note on $\mu$"}
+$\mu$ depends on the particle. Opposite particles have opposite $\mu$ values (e.g. electron and positron).
+:::
+
+In a constant magnetic field, $\vec{B}$ does not depend on position, so we can write
+
+$$
+\hat H = \hat T + \hat V + \hat H_{int}
+$$
+
+where $\hat T$ and $\hat V$ depends on position and $\hat H_{int}$ depends solely on spin.
+
+For now, we will only consider $\hat H_{int}$. For more information about the two other terms, see [energy](#energy).
+
+Since $\hat H_int$ has the same eigenstates of $\hat H$, we can apply the time-dependent Schr&ouml;dinger equation:
+
+<!-- TODO: check that this is actually the TDSE and not something else -->
+
+$$
+\hat H_{int} |\chi(t)\rangle = i \hbar \frac{d}{dt} |\chi(t)\rangle
+$$
+
+Eigenvalues of $\hat H_{int}$ are
+
+$$
+E_{int} = \pm \frac{\hbar}{2}
+$$
+
+They are the same of $\hat H$ but multiplied by $\mu B$.
+
+Let
+
+$$
+|\chi(0)\rangle = \begin{bmatrix} a \\ b \end{bmatrix} = \alpha \begin{bmatrix} 1 \\ 0 \end{bmatrix} + \beta \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+$$
+
+be normalized, then it follows that
+
+$$
+|\chi(t)\rangle = \alpha e^{-i \frac{\hbar \mu B t}{2 \hbar}} \begin{bmatrix} 1 \\ 0 \end{bmatrix} + \beta e^{+i \frac{\hbar \mu B t}{2 \hbar}} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \begin{bmatrix} \alpha e^{-i \frac{\mu B t}{2}} \\ \beta e^{+i \frac{\mu B t}{2}} \end{bmatrix}
+$$
+
+We will now give the expectation values of the spin observable w.r.t. the three axes in function of time.
+
+<!-- TODO: finish here -->
+
+$$
+\langle S_z \rangle = \frac{\hbar}{2}(\alpha^* \alpha - \beta^* \beta) \\
+\langle S_x \rangle = \hbar A \cos(\mu B t + \phi)
+\langle S_y \rangle = 
+$$
+
 _To be continued._
