@@ -542,13 +542,13 @@ A complex system is a system in which we consider multiple degrees of freedom. I
 To describe a complex system, quantum states needs to belong to a tensor product of multiple Hilbert spaces, one for each particle/properties observed: a combined state may be expressed as 
 
 $$
-|u\rangle_1|v\rangle_2 \in \mathcal{H}_1 \otimes \mathcal{H}_2
+|u\rangle^{(1)}|v\rangle^{(2)} \in \mathcal{H}^{(1)} \otimes \mathcal{H}^{(2)}
 $$
 
 ::: {.callout .callout-property title="Property of tensor product"}
-- $\alpha |\cdot\rangle_1 + \beta |\cdot\rangle_2 \in \mathcal{H}_1 \otimes \mathcal{H}_2$
-- $\langle (|u\rangle_1 |v\rangle_2) | = \langle u|_1 \langle v|_2$
-- $(\langle u|_1 \langle v|_2)(|w\rangle_1 |y\rangle_2) = \langle u|w \rangle_1 \langle v|y \rangle_2$
+- $\alpha |\cdot\rangle^{(1)} + \beta |\cdot\rangle^{(2)} \in \mathcal{H}^{(1)} \otimes \mathcal{H}^{(2)}$
+- $\langle (|u\rangle^{(1)} |v\rangle^{(2)}) | = \langle u|^{(1)} \langle v|^{(2)}$
+- $(\langle u|^{(1)} \langle v|^{(2)})(|w\rangle^{(1)} |y\rangle^{(2)}) = \langle u|w \rangle^{(1)} \langle v|y \rangle^{(2)}$
 :::
 
 A composite state is said to be **entangled** if it cannot be expressed as a product of states, all belonging to different Hilbert spaces (otherwise it is said to be **disentangled**).
@@ -557,8 +557,8 @@ A composite state is said to be **entangled** if it cannot be expressed as a pro
 Let
 
 $$
-|u\rangle = (|T\rangle_1 + |H\rangle_1)(|T\rangle_2 + |H\rangle_2) \\
-|v\rangle = |T\rangle_1 |T\rangle_2 + |H\rangle_1 |H\rangle_2
+|u\rangle = (|T\rangle^{(1)} + |H\rangle^{(1)})(|T\rangle^{(2)} + |H\rangle^{(2)}) \\
+|v\rangle = |T\rangle^{(1)} |T\rangle^{(2)} + |H\rangle^{(1)} |H\rangle^{(2)}
 $$
 
 then, the former is disentangled and the latter is entangled.
@@ -567,21 +567,21 @@ then, the former is disentangled and the latter is entangled.
 The most general form to be used to express a generic complex system is
 
 $$
-|w\rangle_{1 \otimes 2} = \sum_{ji} \gamma_{ji} |O_j\rangle_1 |O_i\rangle_2
+|w\rangle^{(1) \otimes (2)} = \sum_{ji} \gamma_{ji} |O_j\rangle^{(1)} |O_i\rangle^{(2)}
 $$
 
 while, if the system is disentangled, it can be expressed as
 
 $$
-|w\rangle_{1 \otimes 2} = \sum_{ji} \alpha_i \beta_j |O_i\rangle_1 |O_j\rangle_2
+|w\rangle^{(1) \otimes (2)} = \sum_{ji} \alpha_i \beta_j |O_i\rangle^{(1)} |O_j\rangle^{(2)}
 $$
 
 It is possible to apply composite operators to composite systems: each operator is only applied to components of the state belonging to the same Hilbert space it belongs to.
 
-If $|u\rangle = |a\rangle_1 |b\rangle_2$ then
+If $|u\rangle = |a\rangle^{(1)} |b\rangle^{(2)}$ then
 
 $$
-\hat O_1 \hat O_2 |u\rangle = (\hat O_1|a\rangle_1)(\hat O_2|b\rangle_2)
+\hat O^{(1)} \hat O^{(2)} |u\rangle = (\hat O^{(1)}|a\rangle^{(1)})(\hat O^{(2)}|b\rangle^{(2)})
 $$
 
 It is possible to compute the probability of a joined measurement: let $|w\rangle$ be a general complex system composed of two degrees of freedom, then the probability of measuring $O_j$ for the first degree of freedom and, at the same time, $O_i$ for the second one is
@@ -590,10 +590,10 @@ $$
 P = \frac{\|\gamma_{ji}\|}{\langle w|w \rangle}
 $$
 
-Let $|w\rangle = \sum_{ji} \gamma_{ji} |O_j\rangle_1 |O_i\rangle_2$ and $|y\rangle = \sum_{kl} \delta_{kl} |O_k\rangle_1 |O_l\rangle_2$, then
+Let $|w\rangle = \sum_{ji} \gamma_{ji} |O_j\rangle^{(1)} |O_i\rangle^{(2)}$ and $|y\rangle = \sum_{kl} \delta_{kl} |O_k\rangle^{(1)} |O_l\rangle^{(2)}$, then
 
 $$
-\langle w|y \rangle = \sum_{jikl} \gamma_{ji}^* \delta_{kl} \langle O_j|O_k \rangle_1 \langle O_i|O_l \rangle_2 = \sum_{ji} \gamma_{ji} \delta_{ji}
+\langle w|y \rangle = \sum_{jikl} \gamma_{ji}^* \delta_{kl} \langle O_j|O_k \rangle^{(1)} \langle O_i|O_l \rangle^{(2)} = \sum_{ji} \gamma_{ji} \delta_{ji}
 $$
 
 Continuous extension of compisite system use multidimensional integrals.
@@ -2206,7 +2206,7 @@ therefore, even rotation speed is quantized. _Who could have guessed, right?_
 
 # Spin
 
-The Pauli exclusion principle states that no more that on electron can occupy the same energy state.
+The Pauli exclusion principle states that no more that on electron can occupy the same energy state. We will see a more formal introduction to this principle later. TODO link
 
 The lowest evergy state so far is $(n, l, m) = (1, 0, 0)$ except that, experimentally, two electrons can stay here. There must be another quantum number that can be used to differentiate between those two electrons. We shall call this new number **spin**.
 
@@ -2463,8 +2463,126 @@ We will now give the expectation values of the spin observable w.r.t. the three 
 
 $$
 \langle S_z \rangle = \frac{\hbar}{2}(\alpha^* \alpha - \beta^* \beta) \\
-\langle S_x \rangle = \hbar A \cos(\mu B t + \phi)
+\langle S_x \rangle = \hbar A \cos(\mu B t + \phi) \\
 \langle S_y \rangle = 
 $$
+
+The oscillatory behavior described by $\langle S_x \rangle$ and $\langle S_y \rangle$ is called **Larmor precession**.
+
+Note that $\langle S_z \rangle$ is constant through time.
+
+::: {.collapsible title="Proof"}
+$$
+\langle S_z \rangle = \langle \chi(t) | \hat S_z | \chi(t) \rangle = \begin{bmatrix}
+    \alpha^* e^{+i \frac{\mu B t}{2}} &
+    \beta^* e^{-i \frac{\mu B t}{2}}
+\end{bmatrix} \frac{\hbar}{2} \begin{bmatrix}
+    1 & 0 \\ 0 & -1
+\end{bmatrix} \begin{bmatrix}
+    \alpha e^{-i \frac{\mu B t}{2}} \\
+    \beta e^{+i \frac{\mu B t}{2}} 
+\end{bmatrix} = \frac{\hbar}{2} (\alpha^* \alpha - \beta^* \beta)
+$$
+
+$$
+\langle S_x \rangle = \langle \chi(t) | \hat S_x | \chi(t) \rangle = \begin{bmatrix}
+    \alpha^* e^{+i \frac{\mu B t}{2}} &
+    \beta^* e^{-i \frac{\mu B t}{2}}
+\end{bmatrix} \frac{\hbar}{2} \begin{bmatrix}
+    0 & 1 \\ 1 & 0
+\end{bmatrix} \begin{bmatrix}
+    \alpha e^{-i \frac{\mu B t}{2}} \\
+    \beta e^{+i \frac{\mu B t}{2}} 
+\end{bmatrix} = \frac{\hbar}{2} \left( \alpha^* \beta e^{+i \mu B t} + \beta^* \alpha e^{-i \mu B t} \right) = \hbar \Re\{ \alpha^* \beta e^{+i \mu B t} \} = \hbar \Re\{ Ae^{i(\mu B t + \phi)} \} = \hbar A cos(\mu B t + \phi)
+$$
+
+<!-- TODO: finire qui -->
+
+$$
+\langle S_y \rangle = 
+$$
+:::
+
+## Angular momentum of composite system
+
+We will now consider what happens considering both the spatial degree of freedom (angular momentum) and the internal degree of freedom (spin):
+
+<!-- TODO: how is a sum of elements from different spaces belong to the product of those spaces??? -->
+
+$$
+\hat{\vec{J}} = \hat{\vec{L}} + \hat{\vec{S}} \in \mathcal{H}_{space} \otimes \mathcal{H}_{spin}
+$$
+
+In the case of multiple particles
+
+$$
+\hat{\vec{J}} = \hat{\vec{J}}^{(1)} + \hat{\vec{J}}^{(2)} + \dots \in \mathcal{H}^{(1)} \otimes \mathcal{H}^{(2)} \otimes \cdots
+$$
+
+In an isolated system we have conservation of momentum, therefore, since $\vec{\hat{J}}$ is a sum of angular momenta, it is conserved.
+
+The usual commutation relations still hold. Moreover, 
+
+<!-- TODO: from here on: all those J without ^2 look sus -->
+
+$$
+[\hat{\vec{J}}, \hat{\vec{J}}^{(1)}] = [\hat{\vec{J}}, \hat{\vec{J}}^{(2)}] = \dots = 0
+$$
+
+As usual, we can write
+
+$$
+\begin{cases}
+    \hat{\vec{J}} |J, M\rangle = \hbar J(J + 1) |J, M\rangle \\
+    \hat{\vec{J}}_z |J, M\rangle = \hbar M |J, M\rangle
+\end{cases}
+$$
+
+We denote with $|J, M, J_1, J_2\rangle$ the shared eigenstates between $\hat{\vec{J}}$, $\hat{\vec{J}}_z$, $\left[\hat{\vec{J}}^{(1)}\right]^2$ and $\left[\hat{\vec{J}}^{(2)}\right]^2$:
+
+$$
+\begin{cases}
+    \left[\hat{\vec{J}}^{(1)}\right]^2 |J, M, J_1, J_2\rangle = \hbar^2 J_1 (J_1 + 1) |J, M, J_1, J_2\rangle \\
+    \left[\hat{\vec{J}}^{(2)}\right]^2 |J, M, J_1, J_2\rangle = \hbar^2 J_2 (J_2 + 1) |J, M, J_1, J_2\rangle
+\end{cases}
+$$
+
+Since
+
+$$
+\begin{align*}
+    \left[ \hat{\vec{J}}^{(1)} + \hat{\vec{J}}^{(2)} \right]^2 &= \left[\hat{\vec{J}}^{(1)}\right]^2 + \left[\hat{\vec{J}}^{(2)}\right]^2 + 2 \hat{\vec{J}}^{(1)} \hat{\vec{J}}^{(2)} \\
+    &= \left[\hat{\vec{J}}^{(1)}\right]^2 + \left[\hat{\vec{J}}^{(2)}\right]^2 + 2 \left[ \hat{\vec{J}}_x^{(1)} \hat{\vec{J}}_x^{(2)} + \hat{\vec{J}}_y^{(1)} \hat{\vec{J}}_y^{(2)} + \hat{\vec{J}}_z^{(1)} \hat{\vec{J}}_z^{(1)} \right]
+\end{align*}
+$$
+
+then
+
+$$
+[\hat{\vec{J}}^2, \hat{\vec{J}}_z^{(1)}] \ne 0 \qquad [\hat{\vec{J}}^2, \hat{\vec{J}}_z^{(2)}] \ne 0
+$$
+
+# Identical particles
+
+## Pauli exclusion principle
+
+::: {.callout .callout-example title="Symmetrization"}
+
+:::
+
+### Consequences
+
+<!-- adieu -->
+
+- Case 1
+- Case 2
+- Case 3
+
+# The Einstein-Podolski-Rosen paradox
+
+## Hidden variables theory
+
+## Quantum communication
+
 
 _To be continued._
