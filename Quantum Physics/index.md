@@ -2204,6 +2204,207 @@ $$
 
 therefore, even rotation speed is quantized. _Who could have guessed, right?_
 
-## Pauli exclusion principle
+# Spin
+
+The Pauli exclusion principle states that no more that on electron can occupy the same energy state.
+
+The lowest evergy state so far is $(n, l, m) = (1, 0, 0)$ except that, experimentally, two electrons can stay here. There must be another quantum number that can be used to differentiate between those two electrons. We shall call this new number **spin**.
+
+### Stern-Gerlach experiment
+
+Due to the Zeeman effect, atoms in a magnetic field are deflected according to their $m$ state. The Stern-Gerlach experiment consists in shooting silver atoms (coming from a silver coated incandescent filament) through a specially shaped magnetic field. Since silver atoms have all $m = 0$ (in reality is not the atom but the outer electron), they should be deflected all in the same way, except that this does not happen and in the phosphor coated screen used to see where the atoms ends up, we see two spots. This confirms the fact that there must be another internal degree of freedom that interact with magnetic field. 
+
+<!-- TODO: does atom have m=0 or m=1? -->
+
+::: {.collapsible title="History time"}
+In 1925 Kronig theorized that the undiscovered extra degree of freedom could be some sort of angular momentum, like electron rotation.
+
+Pauli did not agree: shoudl this theory be true, then a point on the surface of the electron would spin faster than light.
+
+In the same year, Uhlenbeck and Goudsmith proposed another similar model (that can be simplified with _an electron spinning w.r.t. the reference frame of the electron itself_) in a paper. Ehrenfest did not agree but published the paper anyway (the two were his students) because "Eh, you are young, even if you publish something completely wrong, it won't hurt your academic career at all".
+
+The two were right, and Pauli had to accept that.
+:::
+
+## Spin algebra
+
+In a former section, we have imposed periodicity of the wave function:
+
+$$
+\varphi(\rho, \theta, \phi_z) = \varphi(\rho, \theta, \phi_z + 2\pi)
+$$
+
+We now impose _the same probability_:
+
+$$
+\begin{align*}
+    |\varphi(\rho, \theta, \phi_z)|^2 &= |\varphi(\rho, \theta, \phi_z + 2 \pi)|^2 \\
+    e^{2 i m \phi_z} &= e^{2 i m (\phi_z + 2\pi)}
+\end{align*}
+$$
+
+that is verified if
+
+$$
+m = 0, \pm \frac{1}{2}, \pm 1, \pm \frac{3}{2}, \dots
+$$
+
+Since we can have both positive and negative solutions, that explains the two spots in the Stern-Gerlach experiment.
+
+By definition, electrons have half integer spins. This is not true for all particles, as we will see later.
+
+We can look at the spin of a particle and consider it as a superposition of _positive_ and _negative_ spin, in the same way as $\sqrt{x^2}$ is a superposition of $+x$ and $-x$. Considering this interpretation, the Hilbert space describing an electron is
+
+$$
+\mathcal{H}_{electron} = \mathcal{H}_{space} \otimes \mathcal{H}_{spin}
+$$
+
+Let $\chi_+$ and $\chi_-$ be associated with positive and negative spin, respectively, then
+
+$$
+\chi_+ = \begin{bmatrix} 1 \\ 0 \end{bmatrix} \qquad \chi_- = \begin{bmatrix} 0 \\ 1 \end{bmatrix} \\
+|u\rangle = \begin{bmatrix}
+    \varphi(x, y, z) \\ \psi(x, y, z)
+\end{bmatrix} = \varphi(x, y, z) \chi_+ + \psi(x, y, z) \chi_-
+$$
+
+Let $\hat S_z$ be the operator associated with the spin observable on the quantization axis. We use $s_z$ as the quantum number associated with spin:
+
+$$
+s_z = \pm \frac{1}{2}
+$$
+
+We also use $s$ like we used $l$ for the angular momentum ($s_z$ is the equivalent of $m$).
+
+For electrons, $s$ (that is the equivalent of $l$ for the angular momentum) is $\frac{1}{2}$. As with the angular momentum, this is linked with the degeneracy of the state.
+
+Since the spin is an angular momentum, then
+
+$$
+S_z = \hbar s_z = \pm \frac{\hbar}{2}
+$$
+
+We may now derive the $\hat S_z$ operator:
+
+$$
+\hat S_z = \frac{\hbar}{2} \begin{bmatrix} 1 & 0 \end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix} - \frac{\hbar}{2} \begin{bmatrix} 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \frac{\hbar}{2} \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}
+$$
+
+As per angular momentum, we define $\hat S^2$ as the operator to extract the total square spin of a particle:
+
+$$
+\hat S^2 = \hbar s(s + 1)
+$$
+
+There exist the ladder operators:
+
+$$
+\hat S_+ |s, s_z\rangle = C_+(s, s_z) |s, s_z + 1\rangle \qquad C_+(l, m) = \hbar \sqrt{l(l + 1) - m(m + 1)} \\
+\hat S_- |s, s_z\rangle = C_-(s, s_z) |s, s_z - 1\rangle \qquad C_-(l, m) = \hbar \sqrt{l(l + 1) - m(m - 1)}
+$$
+
+It holds that
+
+$$
+\hat S_+ |\frac{1}{2}, \frac{1}{2}\rangle = 0 \qquad \hat S_+ |\frac{1}{2}, -\frac{1}{2}\rangle = C_+\left( \frac{1}{2}, -\frac{1}{2} \right) |\frac{1}{2}, \frac{1}{2}\rangle = \hbar |\frac{1}{2}, \frac{1}{2}\rangle \\
+\hat S_- |\frac{1}{2}, -\frac{1}{2}\rangle = 0 \qquad \hat S_- | \frac{1}{2}, \frac{1}{2}\rangle = C_- \left(\frac{1}{2}, \frac{1}{2} \right) |\frac{1}{2}, -\frac{1}{2}\rangle = \hbar |\frac{1}{2}, -\frac{1}{2}\rangle
+$$
+
+::: {.collapsible title="Proof"}
+If
+
+$$
+\hat S_+ = \begin{bmatrix} a & b \\ c & d \end{bmatrix}
+$$
+
+then
+
+$$
+\begin{cases}
+    \begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \\
+    \begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \hbar \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+\end{cases}
+$$
+
+It follows that
+
+$$
+\hat S_+ = \hbar \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}
+$$
+
+If
+
+$$
+\hat S_- = \begin{bmatrix} a & b \\ c & d \end{bmatrix}
+$$
+
+then
+
+$$
+\begin{cases}
+    \begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \\
+    \begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix} = \hbar \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+\end{cases}
+$$
+
+It follows that
+
+$$
+\hat S_+ = \hbar \begin{bmatrix} 0 & 0 \\ 1 & 0 \end{bmatrix}
+$$
+:::
+
+Since
+
+$$
+\begin{cases}
+    \hat S_+ = \hat S_x + i \hat S_y \\
+    \hat S_- = \hat S_x - i \hat S_y
+\end{cases}
+$$
+
+then we can extract also the $\hat S_x$ and $\hat S_y$ operators.
+
+$$
+\begin{cases}
+    \hat S_x = \frac{\hat S_+ + \hat S_-}{2} = \frac{\hbar}{2} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \\
+    \hat S_y = \frac{\hat S_+ - \hat S_-}{2i} = \frac{\hbar}{2} \begin{bmatrix} 0 & -i \\ -i & 0 \end{bmatrix}
+\end{cases}
+$$
+
+Since they correspond to physical observables, they should be hermitian. It is easy to verify that this is, in fact, true.
+
+As if we needed another confirmation of the fact that spin is an angular momentum, those really suspicius commutation relations holds:
+
+$$
+[\hat S_x, \hat S_y] = i \hbar \hat S_z \qquad
+[\hat S_y, \hat S_z] = i \hbar \hat S_x \qquad
+[\hat S_z, \hat S_x] = i \hbar \hat S_y
+$$
+
+_Looks familiar to you?_
+
+$\hat S_x$, $\hat S_y$ and $S_z$ matrices are called **Pauli matrices**.
+
+We can now define the **total spin square operator**:
+
+$$
+\hat S^2 = \hat S_x^2 + \hat S_y^2 + \hat S_z^2 = \frac{3 \hbar}{4} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}
+$$
+
+We can get the projectio of the spin in an arbitrary $\vec{n}$ direction:
+
+$$
+\begin{align*}
+    \hat S_n = \vec{n} \cdot \hat{\vec{S}} &= (\vec{n} \cdot \vec{u_x}) \hat S_x + (\vec{n} \cdot \vec{y}) \hat S_y + (\vec{n} \cdot \vec{u_z}) \hat S_z \\
+    &= \cos \theta_x \cdot \hat S_x + \cos \theta_y \cdot \hat S_y + \cos \theta_z 
+\end{align*}
+$$
+
+It can be demonstrated that the eigenvalues for $\hat S_n$ are still $\pm \frac{1}{2}$.
+
+::: {.callout .callout-note title="Note"}
+Quantum computers may use spin as a qubit.
+:::
 
 _To be continued._
