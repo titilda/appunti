@@ -2166,8 +2166,44 @@ C_\pm = \pm \hbar \sqrt{l(l + 1) - m(m \pm 1)}
 $$
 :::
 
-::: {.callout .callout-example title="Ammonia ion and ammonia molecule"}
+::: {.callout .callout-example title="Ammonia ion, ammonia molecule and cabon monoxide"}
+Consider an ammoina ion $[HN_4]^+$. That molecue is a tetrahedron with the four hydrogens at the corners and the nitrogen at the center.
 
+The hamiltonian associated to the rotational energy is
+
+$$
+\hat H = \frac{1}{2} \left( \frac{\hat L_z^2}{I_z} + \frac{\hat L_y^2}{I_y} + \frac{\hat L_x^2}{I_x} \right)
+$$
+
+Since this ion is very symmetric, we can say that $I_z = I_y = I_x = =$:
+
+$$
+\hat H = \frac{1}{2I} (\hat L_z^2 + \hat L_y^2 + \hat L_x^2) = \frac{1}{2I} \hat L^2
+$$
+
+Now consider a normal ammonia molecule. This molecule is less symmetric than the ion:
+
+$$
+\hat H = \frac{1}{2} \left( \frac{\hat L_z^2}{I_z} + \frac{\hat L_y^2}{I_{xy}} \right) = \frac{1}{2} \left( \frac{\hat L_+ \hat L_- + \hat L_- \hat L_+}{2I_{xy}} + \frac{\hat L_z^2}{I_z} \right)
+$$
+
+In this case
+
+$$
+\hat |l, m\rangle = \frac{\hbar^2}{2} \left( \frac{l(l + 1) - m^2}{I_{xy}} + \frac{m^2}{I_z} \right) |l, m\rangle
+$$
+
+Now consider a carbon monoxide molecule. This molecule is shaped like a stick with one atom at each side. Since in this case $I_z = 0$, to prevent having to deal with infinities et. simila, nature forces $m = 0$.
 :::
+
+From definition, it holds that
+
+$$
+\hat L_+ \hat L_- |l, m\rangle = \hbar^2 [l(l + 1) - m(m - 1)]
+$$
+
+therefore, even rotation speed is quantized. _Who could have guessed, right?_
+
+## Pauli exclusion principle
 
 _To be continued._
