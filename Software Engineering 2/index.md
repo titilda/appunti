@@ -475,3 +475,72 @@ Using queues (like RabbitMQ or Kafka) buffers requests and decouples the sender 
 
 - **One-way**: Fire-and-forget.
 - **Two-way**: Requires a response queue.
+
+### Availability
+
+Availability is the probability that a system is operational and able to perform its required function at a given instant of time. It is a measure of the system's readiness.
+
+#### Failure Lifecycle
+
+When a failure occurs, the recovery process involves several phases:
+
+1. **Detection Time**: Time between the occurrence of the failure and its detection.
+2. **Response Time**: Time to diagnose the issue and decide on a recovery strategy.
+3. **Repair Time**: Time to fix the issue (replace component, restart service, etc.).
+4. **Recovery Time**: Time to restore the system to normal operation (sync state, warm up caches).
+
+#### Metrics
+
+- **MTTF (Mean Time To Failure)**: The average time the system runs successfully before failing (Average Uptime).
+- **MTTR (Mean Time To Repair)**: The average time required to repair the system after a failure (Average Downtime).
+- **MTBF (Mean Time Between Failures)**: The average time between two consecutive failures.
+
+The availability $A$ is calculated as:
+
+$$A = \frac{MTTF}{MTBF} = \frac{MTTF}{MTTF + MTTR}$$
+
+#### The "Nines" Notation
+
+Availability is often expressed in "nines":
+
+| Availability       | Downtime per year |
+| ------------------ | ----------------- |
+| 90% (1 nine)       | 36.5 days         |
+| 99% (2 nines)      | 3.65 days         |
+| 99.9% (3 nines)    | 8.76 hours        |
+| 99.99% (4 nines)   | 52.56 minutes     |
+| 99.999% (5 nines)  | 5.26 minutes      |
+| 99.9999% (6 nines) | 31.5 seconds      |
+
+The availability of a composite system depends on how its components are connected:
+
+- **Serial Connection**: The system fails if _any_ component fails.
+  $$A_{serial} = \prod_{i=1}^n A_i = A_1 \times A_2 \times \dots \times A_n$$
+  _(Availability decreases)_
+
+- **Parallel Connection**: The system fails only if _all_ components fail.
+  $$A_{parallel} = 1 - \prod_{i=1}^n (1 - A_i) = 1 - (1 - A_1) \times (1 - A_2) \times \dots \times (1 - A_n)$$
+  _(Availability increases)_
+
+### Availability Tactics
+
+#### Replication
+
+Replication involves using multiple instances of a component to ensure continuity.
+
+- **Active Redundancy**: All replicas process the same input in parallel. If one fails, others are already up-to-date.
+
+  - **TMR (Triple Modular Redundancy)**: Three replicas process input, and a voter determines the result (majority wins). Handles value faults.
+
+- **Passive Redundancy**: Only the primary replica processes input. Secondary replicas take over upon failure.
+  - **Hot Spare**: The backup is fully synchronized and ready to switch over immediately.
+  - **Warm Spare**: The backup is running but needs to load the latest state before taking over.
+  - **Cold Spare**: The backup is not running and must be started and synchronized.
+
+If the system is stateless, switching is immediate. If stateful, state synchronization is needed.
+
+#### Forward Error Recovery
+
+In forward error recovery, the system is designed to continue operating correctly even in the presence of faults.
+
+From the normal state, the system goes to the failure state when a fault occurs. The system then detects the failure and transitions to a degraded state, where it takes corrective actions to return to the normal state.
