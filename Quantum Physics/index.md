@@ -2589,10 +2589,147 @@ $M$ can assume $2J + 1$ different values in the range $-J \lt M \lt J$.
 
 # Identical particles
 
+In classical mechanics, particles are distinguishable: one can assign labels to particles and keep track of them without any problem.
+This is not true in quantum mechanics! It is impossible to determine where a particle is, let alone distinguish one from other identical.
+
+We say that two particles are identical (**undistinguishable**) when they are described by the same quantum numbers.
+
+Particles can be categorized in two cathegories: **fermions** (half integer spins) and **nosons** (full integer spin).
+
+Within the fermions, we can find **leptons** (electrons ($e$, $s = \frac{1}{2}$), muons ($\mu$, $s = \frac{1}{2}$), taus ($\tau$, $s = \frac{1}{2}$), electron neutrinos ($\nu_e$, $s = \frac{1}{2}$), muon neutrinos ($\nu_\mu$, $s = \frac{1}{2}$), tau neutronos ($\nu_\tau$, $s = \frac{1}{2}$)) and **quarks** (up ($u$, $s = \frac{1}{2}$), down ($d$, $s = \frac{1}{2}$), charm ($c$, $s = \frac{1}{2}$), strange ($s$, $s = \frac{1}{2}$), top ($t$, $s = \frac{1}{2}$), bottom ($b$, $s = \frac{1}{2}$)).
+
+Within the bosons, we can find Higgs bosons ($H$, $s = 0$), gluons ($g$, $s = 1$), photons ($\gamma$, $s = 1$), Zs ($Z^0$, $s = 1$), Ws ($W^\pm$, $s = 1$), gravitons ($G$, only theorized, $s = 2$).
+
+Let $|u\rangle \in \mathcal{H}^{(1)}$ be the quantum state deescribing a single particle. If we are considering both the position and the spin, then $\mathcal{H}^{(1)} = \mathcal{H}_{space}^{(1)} \otimes \mathcal{H}_{spin}^{(1)}$. In such a case, $|u\rangle$ is composed by a vector of $2s + 1$ wave functions, one for each possible spin value:
+
+$$
+|u(\vec{r_1})\rangle = \begin{bmatrix}
+    \varphi(\vec{r_1}) \\ \psi(\vec{r_1}) \\ \vdots
+\end{bmatrix}^{(1)}
+$$
+
+For a two particle system, $u$ can be rewritten as
+
+$$
+|u(\vec{r_1}, \vec{r_2})\rangle = \begin{bmatrix}
+    \varphi(\vec{r_1}) \\ \psi(\vec{r_1}) \\ \vdots
+\end{bmatrix}^{(1)} \begin{bmatrix}
+    \chi(\vec{r_2}) \\ \xi(\vec{r_2}) \\ \vdots
+\end{bmatrix}^{(2)}
+$$
+
+Let $P_{ji}$ be the operator that swaps the positions of the $j$-th and $i$-th particle. This operator commutes with $\hat H$.
+
+::: {.collapsible title="Proof"}
+$\hat H$ is a sum of three terms that do not depend on position and does not change when swapping coordinates, namely:
+
+- kinetic term
+  $$
+  \hat T = -\frac{\hbar^2}{2m}(\nabla_1^2 + \nabla_2^2) = -\frac{\hbar^2}{2m}(\nabla_2^2 + \nabla_1^2)
+  $$
+- total potential term
+  $$
+  \hat V(\vec{r_1}) + \hat V(\vec{r_2}) = \hat V(\vec{r_2}) + \hat V(\vec{r_1})
+  $$
+- interaction potential
+  $$
+  V(\|\vec{r_1} - \vec{r_2}\|) = V(\|\vec{r_2} - \vec{r_1}\|)
+  $$
+:::
+
+If the two particles live inaa magnetic field $B$ and $B$ does depend on position, $P_{ji}$ also needs to swap the spin of the particles:
+
+$$
+\hat P_{12} \psi(\vec{r_1}, s_1, \vec{r_2}, s_2) \ne \psi(\vec{r_2}, s_1, \vec{r_1}, s_2) \\
+\hat P_{12} \psi(\vec{r_1}, s_1, \vec{r_2}, s_2) = \psi(\vec{r_2}, s_2, \vec{r_1}, s_1) \\
+$$
+
+This is due to the fact that, in this case, $\hat H$ has also terms depending on spin and magnetic field at the position of the particles.
+
+::: {.callout .callout-note title="Relativistic effects"}
+Remember that we are ignoring relativistic effects such as terms shaped like $\hat{\vec{L_1}} \hat{\vec{S_1}}$.
+:::
+
+Assume we have two identical particles living into a position-dependent magnetic field, then the contribution to the hamiltonian due to the coupling between the spin and the magnetic field is
+
+$$
+\hat H_B = \vec{B}(\vec{r_1}) \cdot \hat{\vec{S_1}} + \vec{B}(\vec{r_2}) \cdot \hat{\vec{S_2}}
+$$
+
+therefore
+
+$$
+\hat H_B |u(\vec{r_1}, \vec{r_2})\rangle = \left( \vec{B}(\vec{r_1}) \cdot \hat S_1 \begin{bmatrix} \varphi(\vec{r_1}) \\ \psi(\vec{r_1}) \\ \vdots \end{bmatrix}^{(1)} \right) \begin{bmatrix} \chi(\vec{r_2}) \\ \xi(\vec{r_2}) \\ \vdots \end{bmatrix}^{(2)} + \left( \vec{B}(\vec{r_2}) \cdot \hat S_2 \begin{bmatrix} \chi(\vec{r_2}) \\ \xi(\vec{r_2}) \\ \vdots \end{bmatrix}^{(2)} \right) \begin{bmatrix} \varphi(\vec{r_1}) \\ \psi(\vec{r_1}) \\ \vdots \end{bmatrix}^{(1)}
+$$
+
+thus
+
+$$
+\hat H_B \hat P_{12} |u(\vec{r_1}, \vec{r_2})\rangle = \left( \vec{B}(\vec{r_1}) \cdot \hat S_1 \begin{bmatrix} \chi(\vec{r_1}) \\ \xi(\vec{r_1}) \\ \vdots \end{bmatrix}^{(1)} \right) \begin{bmatrix} \varphi(\vec{r_2}) \\ \psi(\vec{r_2}) \\ \vdots \end{bmatrix}^{(2)} + \left( \vec{B}(\vec{r_2}) \cdot \hat S_2 \begin{bmatrix} \varphi(\vec{r_2}) \\ \psi(\vec{r_2}) \\ \vdots \end{bmatrix}^{(2)} \right) \begin{bmatrix} \chi(\vec{r_1}) \\ \xi(\vec{r_1}) \\ \vdots \end{bmatrix}^{(1)}
+$$
+
+::: {.callout .callout-note title="Swapping indexes"}
+Notice that, other than positions and spins, we also swapped the indexes of the Hilbert spaces. If we didn't do that, we would have to deal with situations like having the state of particle $(1)$ in Hilbert space $(2)$ and vice versa.
+:::
+
+What we've just seen here is the proof that, for a disentangled state, the hamiltonian commutes with the permutation. To extend this for a generic state, it is enough to express $u\rangle$ as an entrangled state and to repeat the same steps.
+
+Now consider the square permutation operator $\hat P_{12}^2$. Intuitively, $\hat P_{12}^2 = \mathbb{I}$. This means that 
+
+$$
+\hat P_{12} |\psi(\dots)\rangle = \pm |\psi(\dots)\rangle
+$$
+
+::: {.callout .callout-theorem title="Spin statistics theorem"}
+$$
+\hat P_{12} |\psi(\dots)\rangle = \alpha|\psi(\dots)\rangle \qquad \alpha = \pm 1
+$$
+
+For bosons, it holds that $\alpha = +1$. For fermions, it is the opposite: $\alpha = -1$.
+
+::: {.collapsible title="Proof?"}
+Proof is so complex that even Feynman could not understand it, so we take this theorem for granted.
+
+![Proof by trust me bro. - [Youtube](https://www.youtube.com/watch?v=I3xdCp_f8ss)](assets/trustmebro.png)
+:::
+:::
+
 ## Pauli exclusion principle
 
-::: {.callout .callout-example title="Symmetrization"}
+Assume a generic two-identical-particle system:
 
+$$
+|u(\vec{r_1}, \vec{r_2})\rangle = \sum_{ji} \alpha_{ji} \begin{bmatrix} \varphi_j(\vec{r_1}) \\ \psi_j(\vec{r_1}) \end{bmatrix}^{(1)} \begin{bmatrix} \varphi_i(\vec{r_2}) \\ \psi_i(\vec{r_2}) \end{bmatrix}^{(2)}
+$$
+
+therefore
+
+$$
+\begin{align*}
+    \hat P_{12} |u(\vec{r_1}, \vec{r_2})\rangle &= \sum_{ji} \alpha_{ji} \begin{bmatrix} \varphi_i(\vec{r_1}) \\ \psi_i(\vec{r_1}) \end{bmatrix}^{(1)} \begin{bmatrix} \varphi_j(\vec{r_2}) \\ \psi_j(\vec{r_2}) \end{bmatrix}^{(2)} \\
+    &= \sum_{ij} \alpha_{ij} \begin{bmatrix} \varphi_j(\vec{r_1}) \\ \psi_j(\vec{r_1}) \end{bmatrix}^{(1)} \begin{bmatrix} \varphi_i(\vec{r_2}) \\ \psi_i(\vec{r_2}) \end{bmatrix}^{(2)} \\
+    &= \pm |u(\vec{r_1}, \vec{r_2})\rangle
+\end{align*}
+$$
+
+For bosons $\alpha_{ji} = \alpha_{ij}$ and there isn't any problem. For fermions $\alpha_{ij} = -\alpha_{ji}$ implies that $\alpha_{ji} = 0$, therefore we cannot find two fermions in the same exact state.
+
+::: {.callout .callout-example title="Symmetrization"}
+We will now give a few examples of correctly symmetrized wave functions for a two-identical-particles system.
+
+If the particles are bosons, then $\alpha = 1$, hence, the correct symmetric shape of the quantum state must be
+
+$$
+|u\rangle =\frac{1}{\sqrt{2}} [\psi(\vec{r_1}) \varphi(\vec{r_2}) + \varphi(\vec{r_1}) \psi(\vec{r_2})]
+$$
+
+For fermions, then
+
+$$
+|u\rangle =\frac{1}{\sqrt{2}} [\psi(\vec{r_1}) \varphi(\vec{r_2}) - \varphi(\vec{r_1}) \psi(\vec{r_2})]
+$$
+
+Notice the change of sign. It can be easily verified that the symmetry is correct.
 :::
 
 ### Consequences
