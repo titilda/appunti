@@ -135,8 +135,8 @@ sig Node {
 Predicates are parameterized constraints that can be reused. They are often used to describe operations or state transitions. They are not automatically enforced but can be invoked.
 
 ```alloy
-pred add [b, b': Book, n: Name, a: Addr] {
-    b'.addr = b.addr + (n -> a)
+pred add [b: Book, a: Addr] {
+    b'.addr = b.addr + a
 }
 ```
 
@@ -145,8 +145,8 @@ pred add [b, b': Book, n: Name, a: Addr] {
 Functions are expressions that return a value (a set or relation) rather than a boolean.
 
 ```alloy
-fun lookup [b: Book, n: Name]: set Addr {
-    n.(b.addr)
+fun addrCount [b: Book]: Int {
+    #b.addr
 }
 ```
 
@@ -156,8 +156,8 @@ Assertions are properties that the system is expected to satisfy. The analyzer c
 
 ```alloy
 assert AddIdempotent {
-    all b, b': Book, n: Name, a: Addr |
-        add[b, b', n, a] implies b'.addr = b.addr + (n -> a)
+    all b: Book, a: Addr |
+        add[b, a] implies b'.addr = b.addr + a
 }
 ```
 
@@ -544,3 +544,26 @@ If the system is stateless, switching is immediate. If stateful, state synchroni
 In forward error recovery, the system is designed to continue operating correctly even in the presence of faults.
 
 From the normal state, the system goes to the failure state when a fault occurs. The system then detects the failure and transitions to a degraded state, where it takes corrective actions to return to the normal state.
+
+## Design Document (DD) Structure
+
+The Design Document (DD) describes the high-level design decisions and how the system will be implemented to satisfy the requirements specified in the RASD.
+
+1. **Introduction**
+   1. Scope: Defines the boundaries of the system and what is included/excluded.
+   2. Definitions: Glossary of terms used in the document.
+   3. Reference Documents: Lists related documents (e.g., RASD, project plan).
+   4. Overview: High-level summary of the system's design and structure.
+2. **Architectural Design**
+   1. Overview: Informal description of high-level components and their interactions.
+   2. Component View: Static component diagrams showing the system's modules and their relationships.
+   3. Deployment View: Deployment diagrams illustrating physical nodes, hardware, and software environments.
+   4. Component Interfaces: Signatures and descriptions of the interfaces between components.
+   5. Runtime View: Dynamic interactions described via sequence diagrams.
+   6. Selected Architectural Styles and Patterns: Justification and description of chosen styles (e.g., client-server, microservices).
+   7. Other Design Decisions: Additional decisions impacting the design (e.g., trade-offs, constraints).
+3. **User Interface Design**: Mockups or wireframes of the UI, refining the RASD from low to mid-fidelity prototypes.
+4. **Requirements Traceability**: Mapping between requirements (from RASD) and design components, often using a traceability matrix.
+5. **Implementation, Integration, and Test Plan**: Defines the order of component implementation (sequential/parallel), integration strategies, and testing approaches.
+6. **Effort Spent**: Summary of time and resources expended during design activities.
+7. **References**: Citations for external sources, standards, or tools used.
