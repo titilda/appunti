@@ -2732,13 +2732,94 @@ $$
 Notice the change of sign. It can be easily verified that the symmetry is correct.
 :::
 
+::: {.callout .callout-note title="Energy degenerate eigenstates"}
+Let
+
+$$
+\chi(\vec{r_1}, \vec{r_2}) = \psi(\vec{r_1}) \psi(\vec{r_2})
+$$
+
+then, since $\hat H$ commutes with $\hat P_{12}$ we can write
+
+$$
+\begin{cases}
+    \hat H \chi(\vec{r_1}, \vec{r_2}) = E \chi(\vec{r_1}, \vec{r_2}) \\
+    \hat H \chi(\vec{r_2}, \vec{r_1}) = E \chi(\vec{r_2}, \vec{r_1})
+\end{cases}
+$$
+
+therefore we can combine $\chi(\vec{r_1}, \vec{r_2})$ and $\chi(\vec{r_2}, \vec{r_1})$ with any coefficient to still get another valid, degenerate, eigenstate for energy.
+:::
+
 ### Consequences
 
-<!-- adieu -->
+![](assets/intuitiveness.png)
 
-- Case 1
-- Case 2
-- Case 3
+We will now examine three case-studies to determine how different types of identical particles interact with each other. We will see that the Pauli exclusion principle will be the confirmed every time, even in the most unintuitive scenarios.
+
+#### Bosons
+
+We can describe a generic two-identical-bosons system with
+
+
+<!-- TODO: controllare conti + come fa a sparire il vettore dalle k? REDO ALL COMPUTATIONSAS PER THE OTHER CASES -->
+$$
+\begin{align*}
+    \chi(\vec{r_1}, \vec{r_2}) &= \frac{1}{V \sqrt{2}} \left[ e^{-i \vec{k_1} \vec{r_1}} e^{-i \vec{k_2} \vec{r_2}} + e^{-i \vec{k_1} \vec{r_2}} e^{-i \vec{k_2} \vec{r_1}}\right] \\
+    &= \frac{1}{V \sqrt{2}} e^{-i (k_1 + k_2) \vec{r}_{cm}} \cos \left[ (k_1 - k_2) \frac{\Delta r}{2} \right]
+\end{align*}
+$$
+
+where 
+
+$$
+\Delta \vec{r} = \vec{r_1} - \vec{r_2} \qquad \vec{r_1} = \vec{r}_{cm} + \frac{\Delta \vec{r}}{2} \qquad \vec{r_2} = \vec{r}_{cm} - \frac{\Delta \vec{r}}{2}
+$$
+
+To find the probability density function, we square the wave function:
+
+<!-- TODO: cos^2 = cos??? Non tonrah -->
+
+$$
+f(\Delta \vec{r}) = \frac{2}{V^2} \cos \left[ (k_1 - k_2) \frac{\Delta r}{2} \right]
+$$
+
+We can see that the probability does only depend on the distance between the two particles (even if the particles are non interacting). We have a locam maximum in $\Delta \vec{r} = 0$, therefore there is an high probability to find the two particles in the same state in the same position, this is called **Exchange interaction**.
+
+This is in agreement with the spin statistics theorem that, in this case, introduces correlation between non-interacting particles.
+
+#### Same-spin fermions
+
+Assume we have two neutron (fermions) with the same spin:
+
+$$
+|\psi(\vec{r_1})\rangle = \begin{bmatrix} \psi(\vec{r_1}) \\ 0 \end{bmatrix}^{(1)} \qquad |\varphi(\vec{r_2})\rangle = \begin{bmatrix} \varphi(\vec{r_2}) \\ 0 \end{bmatrix}^{(2)}
+$$
+
+We now express the state of the system:
+
+$$
+|\chi(\vec{r_1}, \vec{r_2})\rangle = \frac{1}{\sqrt{2}} \left(|\psi(\vec{r_1})\rangle^{(1)} |\varphi(\vec{r_2})\rangle^{(2)} - |\psi(\vec{r_2})\rangle^{(2)} |\varphi(\vec{r_1})\rangle^{(1)} \right)
+$$
+
+therefore
+
+<!-- TODO: where does the V come from??? -->
+<!-- TODO: anche qui capire che fine hanno fatto i vettori r e k -->
+
+$$
+\begin{align*}
+    f(\vec{r_1}, \vec{r_2}) = \langle \chi | \chi \rangle &= \frac{1}{2} \left[ \langle\varphi(\vec{r_2})|^{(2)} \langle\psi(\vec{r_1})|^{(1)} - \langle\psi(\vec{r_2})|^{(2)} \langle\varphi(\vec{r_1})|^{(1)} \right] \left[ |\psi(\vec{r_1})\rangle^{(1)} |\varphi(\vec{r_2})\rangle^{(2)} - |\psi(\vec{r_2})\rangle^{(2)} |\varphi(\vec{r_1})\rangle^{(1)} \right] \\
+    &= \frac{1}{2V^2} \left[ 1 + 1 - \langle \psi(\vec{r_2}) | \varphi(\vec{r_2}) \rangle^{(2)} \langle \varphi(\vec{r_1}) | \psi(\vec{r_1}) \rangle^{(1)} - \langle \psi(\vec{r_1}) | \varphi(\vec{r_1}) \rangle^{(1)} \langle \varphi(\vec{r_2}) | \psi(\vec{r_2}) \rangle^{(2)} \right] \\
+    &= \frac{1}{2V^2} \left[ 2 - e^{-i (k_1 r_1 - k_1 r_2)} e^{-i (k_2 r_2 - k_2 r_1)} - e^{-i (k_1 r_2 - k_1 r_1)} e^{-i (k_2 r_1 - k_2 r_2)} \right] \\
+    &= \frac{1}{2V^2} \left[ 2 - e^{-i (k_1 - k_2)(r_1 - r_2)} - e^{+i (k_1 - k_2)(r_1 - r_2)} \right] \\
+    &= \left[ 1 - \cos \left[ (r_1 - r_2) (k_1 - k_2) \right] \right]
+\end{align*}
+$$
+
+Just like with bosons, we have a dependece by relative distance. If $\Delta \vec{r} = 0$ then $P = 0$, hence the impossibility of having two same-spin fermions in the same state in the same place.
+
+#### Opposite-spin fermions
 
 # The Einstein-Podolski-Rosen paradox
 
