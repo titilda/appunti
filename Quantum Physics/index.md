@@ -458,11 +458,23 @@ hence, $\hat R$ and $\hat E$ commutes.
 
 Since $\hat E$ is associated with an observable, it is hermitian, therefore
 
-<!-- TODO: why is this true? -->
-
 $$
 \hat E = \begin{bmatrix} a & b \\ b & a \end{bmatrix}
 $$
+
+::: {.callout .callout-note title="Hermitian...? Why is one of the $b$s on the antidiagonal complex conjugate?"}
+We know for a fact that $\hat R$ and $\hat E$ commute, so we start imposing that condition.
+
+$$
+\begin{align*}
+    \hat R \hat E &= \hat E \hat R \\
+    \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \begin{bmatrix} a & b \\ b^* & a \end{bmatrix} &= \begin{bmatrix} a & b \\ b^* & a \end{bmatrix} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \\
+    \begin{bmatrix} b^* & a \\ a & b \end{bmatrix} &= \begin{bmatrix} b & a \\ a & b^* \end{bmatrix} \\
+\end{align*}
+$$
+
+therefore it must be that $b = b^*$ or, in other words, $\Im\{b\} = 0$.
+:::
 
 The eigenvalues of $\hat E$ are $E = \pm b + a$. We take $a = 0$ to make the eigenvalues symmetric, therefore
 
