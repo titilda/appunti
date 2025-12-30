@@ -2821,11 +2821,260 @@ Just like with bosons, we have a dependece by relative distance. If $\Delta \vec
 
 #### Opposite-spin fermions
 
+Assume we have two neutrons (fermions) with opposite spin:
+
+$$
+|\psi(\vec{r_1})\rangle = \begin{bmatrix} \psi(\vec{r_1}) \\ 0 \end{bmatrix}^{(1)} \qquad |\varphi(\vec{r_2})\rangle = \begin{bmatrix} 0 \\ \varphi(\vec{r_2})  \end{bmatrix}^{(2)}
+$$
+
+We now express the state of the system:
+
+$$
+|\chi(\vec{r_1}, \vec{r_2})\rangle = \frac{1}{\sqrt 2} \left[ |\psi(\vec{r_1})\rangle^{(1)} |\varphi(\vec{r_2})\rangle^{(2)} - |\psi(\vec{r_2})\rangle^{(2)} |\varphi(\vec{r_1})\rangle^{(1)} \right]
+$$
+
+therefore
+
+$$
+\begin{align*}
+    f(\vec{r_1}, \vec{r_2}) = \langle \chi | \chi \rangle &= \frac{1}{2} \left[ \langle\psi(\vec{r_1})|^{(1)} \langle\varphi(\vec{r_2})|^{(2)} - \langle\varphi(\vec{r_1})|^{(1)} \langle\psi(\vec{r_2})|^{(2)} \right] \left[ |\psi(\vec{r_1})\rangle^{(1)} |\varphi(\vec{r_2})\rangle^{(2)} - |\psi(\vec{r_2})\rangle^{(2)} |\varphi(\vec{r_1})\rangle^{(1)} \right] \\
+    &= \frac{1}{2V^2} \left[ 1 + 1 - \langle \psi(\vec{r_1}) | \varphi(\vec{r_1}) \rangle^{(1)} \langle \varphi(\vec{r_2}) | \psi(\vec{r_2}) \rangle^{(2)} - \langle \varphi(\vec{r_1}) | \psi(\vec{r_1}) \rangle^{(1)} \langle \psi(\vec{r_2}) | \varphi(\vec{r_2}) \rangle^{(2)} \right] \\
+    &= \frac{1}{2V^2} [2 - 0 - 0] \\
+    &= \frac{1}{V^2}
+\end{align*}
+$$
+
+It follows that particles with opposite spins do not have any restriction of sort.
+
+### Different types of entanglement
+
+<!-- TODO: nnokpt -->
+<!--
+Up until now we have considered that
+
+$$
+\mathcal{H}_{tot} = \left( \mathcal{H}_{space}^{(1)} \otimes \mathcal{H}_{spin}^{(1)} \right) \otimes \left( \mathcal{H}_{space}^{(2)} \otimes \mathcal{H}_{spin}^{(2)} \right)
+$$
+
+or, in other words, we have considered the space degrees of freedom disentangled from the spin degrees of freedom.
+
+-->
+
 # The Einstein-Podolski-Rosen paradox
+
+Assume we have a double slit experiment. When we throw a particle, the screen deviates the particle, therefore, since momentum conservation applies, a certain amount of momentum must me transferred to the screen. If that were the case, that momentum could be measured (except that, the screen should be so light that it could be consodered a quantum object).
+
+Considering the screen as a quantum object all the computations make sense and agree with experimental results (experiments that, by the way, were performed [not long ago](https://journals.aps.org/prl/abstract/10.1103/93zb-lws3)).
+
+We will now discuss a simplified version of the **Einstein-Podosski-Rosen paradox** (from now on, **EPR**).
+
+Consider a spinless pion $\pi^0$. There is a non-null probability that those pion decays into a positron and a negatron (synonym for electron). Because of momentum conservation, the spin of the positron must be the opposite of the spin of the electron. Now take the positron and move it far enough so that there is time to perform a spin measurement on the electron before information can travel from the positron to the electron.
+
+Measuring the spin of one particle would let us immediately know what will be the measurement on the other particle.
+
+According to Bohr, measurement results are stochastic (determined at measure-time) but Einstein could not wrap his head around this _spooky action at distance_: he already proved that information cannot travel faster than light (otherwise the past could be influenced after it already happened) therefore, according to him, quantum physics as-is was not complete, meaning that there are some still-undiscovered hidden dynamics. This is the so-called **hidden variables theory** ant is is still plausible because how a pion decays is still not known. May the spin be determined at decay-time?
+
+> "Who cares, algebra works!" &mdash; Bohr to Einstein, probably.
+
+Practically speaking, Einstein stated the **local-realism** hypotheses:
+
+- **realism**: the value of an observable is always predetermined (ant it appears as stochastic because of some hidden dynamics we still do not know about yet);
+- **locality**: performing a measurement in a position does not affect the measurements in a different position at superluminal speeds.
+
+## Quantum mechanics is not a local theory
+
+How can we verify if quantum mechanics follow Einstein's hypotheses? The following work was performed by Bell.
+
+Consider
+
+$$
+\psi^\pm = \frac{1}{\sqrt 2} \left( |\uparrow_z\rangle^{(1)} |\downarrow_z\rangle^{(2)} \pm |\downarrow_z\rangle^{(1)} |\uparrow_z\rangle^{(2)} \right)
+$$
+
+be a superposition of the Bell states.
+
+Note that we are not requiring that the particles are identical: in this way, the spin statistics theorem does not apply and we can choose any symmetry we like.
+
+We also are considering only binary observables such as spin.
+
+Bell introduced the correlation function
+
+$$
+C(a, b) = \frac{S_a^{(1)} S_b^{(2)}}{\hbar^2 S^2}
+$$
+
+::: {.callout .callout-propertiy title="Correlation function properties"}
+$$
+-1 \le C \le 1 \\
+C(-a, b) = C(a, -b) = -C(a, b)
+$$
+:::
+
+Bell proved that the evaluation of $C$ in the context of quantum mechanics would lead to very different results compared with what could be deduceb by the computation of $C$ using the classical framework.
+
+### Quantum framework
+
+We will now see what happens computing the value of the correlation function using the quantum framework.
+
+Consider $\psi^\pm$ ad defined before and consider $a = z$, then, 
+
+$$
+\begin{align*}
+    \langle S_a^{(1)} S_b^{(2)} \rangle &= \langle \psi^\pm | \hat S_a^{(1)} \hat S_b^{(2)} | \psi^\pm \rangle = \langle \psi^\pm | \hat S_z^{(1)} \hat S_b^{(2)} | \psi^\pm \rangle \\
+    &= \frac{1}{2} \left\{ \langle\uparrow_z|^{(1)} \langle \downarrow_z|^{(2)} \hat S_z^{(1)} \hat S_b^{(2)} |\uparrow_z\rangle^{(1)} |\downarrow_z\rangle^{(2)} \pm \underbrace{\langle\uparrow_z|^{(1)} \langle\downarrow_z|^{(2)} \hat S_z^{(1)} \hat S_b^{(2)} |\downarrow_z\rangle^{(1)} |\uparrow_z\rangle^{(2)}}_{0} \pm \underbrace{\langle\downarrow_z|^{(1)} \langle\uparrow_z|^{(2)} \hat S_z^{(1)} \hat S_b^{(2)} |\uparrow_z\rangle^{(1)} |\downarrow_z\rangle^{(2)}}_{0} + \langle\downarrow_z|^{(1)} \langle\uparrow_z|^{(2)} \hat S_z^{(1)} \hat S_b^{(2)} |\downarrow_z\rangle^{(1)} |\uparrow_z\rangle^{(2)} \right\} \\
+    &= \frac{1}{2} \left\{ \underbrace{\langle\uparrow_z| \hat S_z |\uparrow_z\rangle^{(1)}}_{\hbar/2} \langle\downarrow_z| \hat S_b |\downarrow_z\rangle^{(2)} + \underbrace{\langle\downarrow_z| \hat S_z |\downarrow_z\rangle^{(1)}}_{-\hbar/2} \langle\uparrow_z| \hat S_b |\uparrow_z\rangle^{(2)} \right\} \\
+    &= \frac{\hbar}{4} \left\{ \langle\downarrow_z| \hat S_b | \downarrow_z\rangle^{(2)} - \langle\uparrow_z| \hat S_b |\uparrow_z\rangle^{(2)} \right\} \\
+    &= \frac{\hbar}{4} \left\{ -2 \langle \uparrow_z| \hat S_b | \uparrow_z\rangle^{(2)} \right\} \\
+    &= -\frac{\hbar}{2} \langle\uparrow_z| \hat S_b |\uparrow_z\rangle^{(2)} \\
+    &= -\frac{\hbar}{2} \left\{ \underbrace{\langle\uparrow_z| \hat S_x |\uparrow_z\rangle}_{0}\cos\theta_{xb} + \underbrace{\langle\uparrow_z| \hat S_y |\uparrow_z\rangle}_{0}\cos\theta_{yb} + \underbrace{\langle\uparrow_z| \hat S_z |\uparrow_z\rangle}_{\hbar/2}\cos\theta_{zb} \right\} \\
+    &= -\frac{\hbar^2}{4}\cos\theta_{zb}
+\end{align*}
+$$
+
+thus, since for electrons and protons $s^2 = \frac{1}{4}$, then
+
+$$
+C(a, b) = -\cos\theta_{ab}
+$$
+
+This means that, if $\theta_{ab} = 0$ then $C = -1$ and we have perfect anticorelation (so we always measure opposite signs).
+
+It can be demonstrated that, for
+
+$$
+\varphi^\pm = \frac{1}{\sqrt 2} \left( |\uparrow_z\rangle^{(1)} |\uparrow_z\rangle^{(2)} \pm |\downarrow_z\rangle^{(1)} |\downarrow_z\rangle^{(2)} \right)
+$$
+
+it holds that $C = +1$.
+
+### Classical framework (Bell inequality)
+
+We will now see what happend treating the correlation function in the framework of classical mechanics (if the local-realism hypotheses were respected).
+
+If the measurement of one quantity were not able to influence the measurement of another quantity, then, the probabilities of measuring something at one detector is not conditioned by the measurement at the other detector.
+
+From the conservation of momentum, we know that the two spins must be opposite on the same directions. Let $P(S_a^{(1)} = S_b^{(2)})$ be the probability of measuring the same spin along direction $a$ on detector $(1)$ and along direction $b$ on detector $(2)$. Since we are considering only binary observables, it holds that
+
+$$
+\langle S_a^{(1)} S_b^{(2)} \rangle = \hbar^2 s^2 P(S_a^{(1)} = S_a^{(2)}) - \hbar^2 s^2 P(S_a^{(1)} = -S_b^{(2)}) = \hbar^2 s^2 \left( 1 - 2P(S_a^{(1)} = -S_b^{(2)}) \right)
+$$
+
+Since, again, we are considering only a binary observable, one of the three terms on the left hand side of the next inequality must be always verified:
+
+$$
+P(S_a^{(1)} = S_b^{(1)}) + P(S_a^{(1)} = S_c^{(1)}) + P(S_b^{(1)} = S_c^{(1)}) \ge 1
+$$
+
+For the same reason, it holds that
+
+$$
+P(S_a^{(1)} = S_b^{(1)}) = P(S_a^{(1)} = -S_b^{(2)})
+$$
+
+therefore we can rewrite the inequality
+
+$$
+\begin{align*}
+    P(S_a^{(1)} = -S_b^{(2)}) + P(S_a^{(1)} = -S_c^{(2)}) + P(S_b^{(1)} = -S_c^{(2)}) &\ge 1 \\
+    1 - 2P(S_a^{(1)} = -S_b^{(2)}) + 1 - 2P(S_a^{(1)} = -S_c^{(2)}) + 1 - 2P(S_b^{(1)} = -S_c^{(2)}) &\le -2 + 3 = 1 \\
+    \frac{\langle S_a^{(1)} S_b^{(2)} \rangle}{\hbar^2 s^2} + \frac{\langle S_a^{(1)} S_c^{(2)} \rangle}{\hbar^2 s^2} + \frac{\langle S_b^{(1)} S_c^{(2)} \rangle}{\hbar^2 s^2} &\le 1 \\
+    C(a, b) + C(a, c) + C(b, c) &\le 1
+\end{align*}
+$$
+
+This last inequality is called **Bell inequality** and it can be rewritten in multiple equivalent forms:
+
+$$
+\begin{align*}
+    C(a, b) + C(a, -c) + C(b, -c) &\le 1 \\
+    C(a, b) - C(a, c) - C(b, c) &\le 1 \\
+    C(a, b) - C(a, c) &\le 1 + C(b, c) & (\dagger) \\
+\end{align*}
+$$
+
+and again
+
+$$
+\begin{align*}
+    C(-a, b) + C(-a, c) + C(b, c) &\le 1 \\
+    -C(a, b) - C(a, c) + C(b, c) &\le 1 \\
+    -C(a, b) + C(a, c) - C(b, c) &\le 1 \\
+    -C(a, b) + C(a, c) &\le 1 + C(b, c) & (\ddagger)
+\end{align*}
+$$
+
+From $(\dagger)$ and $(\ddagger)$ it follows a stricter version of the Bell inequality:
+
+$$
+|C(a, b) - C(a, c)| \le 1 + C(b, c)
+$$
+
+### Comparison
+
+The Bell inequality must be respected by any theory that respect local realism.
+
+It is easy to see that quantum mechanics does not respect the bell inequality, therefore it is not a local-realistic theory:
+
+$$
+\left(\theta_{ab}, \theta_{ac}, \theta_{bc}\right) = \left(\frac{\pi}{2}, \frac{\pi}{4}, \frac{\pi}{4} \right) \implies \left| 0 - \frac{\sqrt 2}{2} \right| \le 1 - \frac{\sqrt 2}{2}
+$$
+
+that is not satisfied.
+
+This conclusion have also been proven experimentally.
+
+In 1972, Clauser and Freedman performed an experiment where the binary observable was photon polarization and not spin. Basically, they managed to eccitate a calcium atom to make an electron perform a double jump down from a state with $J = 0$ to another state with $J = 0$, emitting two photons.
+
+Since the total momentum must be conserved, those two photons must have opposite polarization, the two photons must be entangled in such a characteristic. The two scientists saw that the measurements of tho polarization violates the Bell inequality therefore, at least one of the two local-realism hypotheses would need to be dropped.
 
 ## Hidden variables theory
 
-## Quantum communication
+As noted before, einstein suggested that there may be some hidden dynamics we have not discovered yet that would let us determine _a priori_ the result of measurements _a priori_. We will now give the proof that this is not the case.
 
+Assume that the measurement result depends on some hidden variables $\xi$, then $S_a^{(1)} = S_a^{(1)}(\xi) = \pm |s|$.
+
+Let $f$ be the probability density function of $\xi$, then
+
+$$
+\langle S_a^{(1)} S_b^{(2)} \rangle = \int S_a^{(1)}(\xi) S_b^{(2)}(\xi) f(\xi) d\xi = -\int S_a^{(1)}(\xi) S_b^{(1)}(\xi) f(\xi) d\xi = -\int S_a(\xi) S_b(\xi) f(\xi) d\xi
+$$
+
+then, it follows that
+
+$$
+\begin{align*}
+    \langle S_a^{(1)} S_b^{(2)} \rangle - \langle S_a^{(1)} S_c^{(2)} \rangle &= -\int S_a(\xi) S_b(\xi) f(\xi) d\xi + \int S_a(\xi) S_c(\xi) f(\xi) d\xi \\
+    &= -\int f(\xi) \left[ S_a(\xi) S_b(\xi) - S_a(\xi) S_c(\xi) \right] d\xi \\
+    &= -\int f(\xi) \left[ S_a(\xi) S_b(\xi) - \frac{4}{\hbar^2} S_a(\xi) S_b(\xi)^2 S_c(\xi) \right] d\xi \\
+    &= -\int f(\xi) S_a(\xi) S_b(\xi) \left[ 1 - \frac{4}{\hbar^2} S_b(\xi) S_c(\xi) \right] d\xi \\
+\end{align*}
+$$
+
+therefore
+
+$$
+\begin{align*}
+    \left| \langle S_a^{(1)} S_b^{(2)} \rangle - \langle S_a^{(1)} S_c^{(2)} \rangle \right| &\le \int \underbrace{|f(\xi)|}_{\ge 0} \underbrace{|S_a(\xi) S_b(\xi)|}_{0 \lt \square \lt \hbar^2 / 4 } \left[ 1 - \frac{4}{\hbar^2} S_b(\xi) S_c(\xi) \right] d\xi \\
+    &\le \int f(\xi) \frac{\hbar^2}{4} \left[ 1 - \frac{4}{\hbar^2} S_b(\xi) S_c(\xi) \right] d\xi \\
+    &= \frac{\hbar^2}{2} \int f(\xi) d\xi - \underbrace{\int f(\xi) S_b(\xi) S_c(\xi) d\xi}_{\langle S_b S_c \rangle}
+\end{align*}
+$$
+
+thus
+
+$$
+|\langle S_a^{(1)} S_b^{(2)} \rangle - \langle S_a^{(1)} S_c^{(2)} \rangle| \le \frac{\hbar^2}{4} - \langle S_b^{(1)} S_c^{(1)} \rangle = \frac{\hbar^2}{4} + \langle S_b^{(1)} S_c^{(2)} \rangle
+$$
+
+hence
+
+$$
+\left| \frac{\langle S_a^{(1)} S_b^{(2)} \rangle}{\hbar^2/4} - \frac{\langle S_a^{(1)} S_c^{(2)} \rangle}{\hbar^2/4} \right| \le 1 - \frac{\langle S_b^{(1)} S_c^{(2)} \rangle}{\hbar^2/4} \\
+|C(a, b) - C(a, c)| \le 1 + C(b, c)
+$$
+
+We got bell's inequality again even considering hidden variables, therefore they are not enough to bring back the local-realism into quantum mechanics.
+
+## Quantum communication
 
 _To be continued._
