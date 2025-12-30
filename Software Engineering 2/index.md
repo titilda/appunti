@@ -567,3 +567,64 @@ The Design Document (DD) describes the high-level design decisions and how the s
 5. **Implementation, Integration, and Test Plan**: Defines the order of component implementation (sequential/parallel), integration strategies, and testing approaches.
 6. **Effort Spent**: Summary of time and resources expended during design activities.
 7. **References**: Citations for external sources, standards, or tools used.
+
+## Verification and Validation
+
+**Verification** and **Validation** (V&V) are independent procedures that are used together for checking that a product meets requirements and specifications and that it fulfills its intended purpose.
+
+- **Verification**: It's an internal process that ensures the product is built correctly according to the specifications.
+- **Validation**: It's an external process that ensures the right product is built for the user.
+
+The chain of causality for software problems is:
+
+1. **Error (Mistake)**: A human action that produces an incorrect result.
+2. **Defect (Fault/Bug)**: An imperfection or deficiency in a product where it does not meet its requirements or specifications.
+3. **Failure**: An event in which a system or system component does not perform a required function within specified limits.
+
+### Static Analysis
+
+**Static Analysis** is the process of evaluating a system or component based on its form, structure, content, or documentation, without executing the code.
+
+This can be achieved using linters, type checkers, formal verification tools.
+
+Some common defects detected by static analysis tools include:
+
+- Memory leaks, buffer overflows, null pointer dereferences.
+- Concurrency issues (race conditions, deadlocks).
+- Security vulnerabilities.
+- Coding standard violations.
+
+Since checking non-trivial properties of programs is undecidable (Rice's Theorem), static analysis tools must approximate. They need a balance precision (minimize false positives) and performance.
+
+#### Data Flow Analysis
+
+Data flow analysis gathers information about the possible set of values calculated at various points in a computer program. It operates on the **Control Flow Graph (CFG)**.
+
+The CFG is a directed graph that represents all paths that might be traversed through a program during its execution. It is composed of:
+
+- **Nodes**: Represent basic blocks (a sequence of instructions with a single entry and exit point).
+- **Edges**: Represent control flow between basic blocks (e.g., jumps, branches).
+
+##### Reaching Definitions Analysis
+
+CFG can be used for **Reaching Definitions Analysis** that determines which definitions of a variable $v$ may reach a point $p$ in the code without being overwritten (killed).
+
+For a basic block $n$:
+
+- $Gen[n]$: Set of definitions generated within block $n$.
+- $Kill[n]$: Set of definitions in the program that are overwritten by definitions in $n$.
+- $In[n]$: Set of definitions reaching the entry of $n$.
+- $Out[n]$: Set of definitions reaching the exit of $n$.
+
+The data flow equations are:
+$$In[n] = \bigcup_{p \in pred(n)} Out[p]$$
+$$Out[n] = Gen[n] \cup (In[n] - Kill[n])$$
+
+From the Reaching Definitions, we can derive the **liveness** of variables: a variable $v$ is "live" at a point $p$, meaning it holds a value that may be needed in the future.
+
+It is also possible to build **def-use chains** and **use-def chains**:
+
+- **Def-Use (DU)**: Connects a definition of a variable to all its possible uses.
+- **Use-Def (UD)**: Connects a use of a variable to all its possible definitions.
+
+These chains are essential for optimizations (like dead code elimination) and bug finding (like use-before-define).
