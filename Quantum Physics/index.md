@@ -4,6 +4,8 @@ author:
 - "Andrea Oggioni"
 ---
 
+_We are aware of a [bug](https://github.com/titilda/appunti/issues/22) that would prevent vector operators from rendering correctly, we are working on it. For the time being, you can recognize vector operators because under the operator hat (this one --&gt; $\hat \,\,$ &lt;--) there is some space as if there were an arrow (this is a normal operator --> $\hat O$, this is a vector operator --> $\hat{\vec{O}}$)_
+
 # Introduction
 
 [This](https://www.youtube.com/watch?v=Wzc0rCniHag) is the only introduction you need. In this document we will explain both the theory and the math behind quantum behaviors and the experiments that prove that they are not just dreams of scientists on drugs but that they are real and verifiable.
@@ -494,8 +496,6 @@ $$
 \langle Z \rangle = \langle g | \hat Z | g \rangle = g^H \cdot \hat Z \cdot g = 0
 $$
 
-<!-- TODO: is this representationally correct??? -->
-
 This means that we have an equal probability to find the particle in any orientation.
 
 We can reach this same conclusion, for example, by calculating the probabilities for the particle to be oriented in a specific way:
@@ -653,7 +653,7 @@ We will now demonstrate and derive the momentum operator. The proof will be arti
 1. properties of an isolated system;
 2. translation and momentum commute;
 3. translation eigenstates;
-4. distribution of translation eigenvalues;
+4. distribution of translation eigenstates;
 5. momentum eigenvalues and operator derivation;
 6. proof that momentum is hermitian.
 
@@ -740,11 +740,7 @@ $$
 
 Given a translation amount $R$, the associated operator $\hat T_R$ has an infinite amount of eigenvalues, indexed with the $k$ value.
 
-**Distribution of translation eigenvalues**
-<!-- TODO: Hic sunt leones! - ci sono errori nella dimostrazione, capire. Dal paragrafo dopo, psi e phi sembrano wave functions, qui sembrano eigenvalues, come si fa? -->
-<!-- Ok, sono eigenfunctions, una ok e l'altra la stessa ma translata, ora come ci arriva la x all'esponente??? -->
-<!-- W.H.A.T. am I looking at???? -->
-<!-- Now it looks like it works a litte bit better -->
+**Distribution of translation eigenstates**
 
 We define $\psi_k(x) \overset{\Delta}{=} e^{-ikx} \varphi_k(x)$, from which it follows that
 
@@ -801,9 +797,7 @@ therefore, for a well defined momentum, each eigenstate is equally possible.
 
 **Momentum eigenvalues and operator derivation**
 
-We know that $P_x$ should be a function of $k$ and that it does not depend on the mass of the particle. Consider two non-interacting (a.k.a. disengangled) particles with momentums $P_{x_1}(k_1)$ and $P_{x_2}(k_2)$ respectively, then we associate the two momentum eigenvalues with the corresponding translation eigenvalues:
-
-<!-- TODO: WHAT??? -->
+We know that $P_x$ should be a function of $k$ and that it does not depend on the mass of the particle. Consider two non-interacting (a.k.a. disentangled) particles with momentums $P_{x_1}(k_1)$ and $P_{x_2}(k_2)$ respectively, then we associate the two momentum eigenvalues with the corresponding translation eigenvalues:
 
 $$
 P_{x_1}(k_1) \to \varphi_{k_1}(x_1) = \frac{1}{\sqrt{L}} e^{i k_1 x_1} \\
@@ -1803,7 +1797,7 @@ $$
 [\hat T_x, \hat X] = -\frac{\hbar^2}{m} \frac{d}{dx}
 $$
 
-<!-- TODO: HOWWWWWWWWWW is V(x) a scalar mult??? -->
+
 Since $\hat V(x)$ and $\hat X$ are both multiplication by scalars, their commutator is zero.
 
 Since
@@ -1966,7 +1960,7 @@ $$
 
 then
 
-<!-- TODO: HOW? -->
+<!-- TODO: HOW? It is not possible to derive those two solely starting from the one above, giving L_z a priori makes computation possible.  -->
 $$
 \varphi(\phi_z) = e^{-im\phi_z} \qquad L_z = \hbar m
 $$
@@ -2218,7 +2212,7 @@ therefore, even rotation speed is quantized. _Who could have guessed, right?_
 
 # Spin
 
-The Pauli exclusion principle states that no more that on electron can occupy the same energy state. We will see a more formal introduction to this principle later. TODO link
+The Pauli exclusion principle states that no more that on electron can occupy the same energy state. We will see a more formal introduction to this principle [later](#pauli-exclusion-principle).
 
 The lowest evergy state so far is $(n, l, m) = (1, 0, 0)$ except that, experimentally, two electrons can stay here. There must be another quantum number that can be used to differentiate between those two electrons. We shall call this new number **spin**.
 
