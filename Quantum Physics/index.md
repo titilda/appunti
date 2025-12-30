@@ -2903,7 +2903,7 @@ $$
 C(a, b) = \frac{S_a^{(1)} S_b^{(2)}}{\hbar^2 S^2}
 $$
 
-::: {.callout .callout-propertiy title="Correlation function properties"}
+::: {.callout .callout-property title="Correlation function properties"}
 $$
 -1 \le C \le 1 \\
 C(-a, b) = C(a, -b) = -C(a, b)
@@ -3013,7 +3013,7 @@ $$
 
 The Bell inequality must be respected by any theory that respect local realism.
 
-It is easy to see that quantum mechanics does not respect the bell inequality, therefore it is not a local-realistic theory:
+It is easy to see that quantum mechanics does not respect the Bell inequality, therefore it is not a local-realistic theory:
 
 $$
 \left(\theta_{ab}, \theta_{ac}, \theta_{bc}\right) = \left(\frac{\pi}{2}, \frac{\pi}{4}, \frac{\pi}{4} \right) \implies \left| 0 - \frac{\sqrt 2}{2} \right| \le 1 - \frac{\sqrt 2}{2}
@@ -3073,8 +3073,41 @@ $$
 |C(a, b) - C(a, c)| \le 1 + C(b, c)
 $$
 
-We got bell's inequality again even considering hidden variables, therefore they are not enough to bring back the local-realism into quantum mechanics.
+We got Bell's inequality again even considering hidden variables, therefore they are not enough to bring back the local-realism into quantum mechanics.
 
 ## Quantum communication
+
+We already said that allowing superluminal communication would mean the possibility of altering the past before it happens.
+
+Consider the pion decay and give, for example, the electron to Alice and the proton to Bob.
+
+Now assume that Alice measures the spin so that the wave function collapse. This may happen either before or after Bob has performed the same measurement on his particle. Either ways, Bob will always measure 50% spin up and 50% spin down and cannot know if alice has or has not already performed the measurement so there is no way to send information by performing an irreversible operation.
+
+Now assume that Alice performs some reversible operation on her particle. We can measure the expectation value of the spin measured by Bob after the operation has been performed:
+
+$$
+\begin{align*}
+    \langle S_z^{(B)} \rangle &= \langle \mathcal{U^{(A)}} \psi^\pm | \hat S_z^{(B)} | \mathcal{U^{(A)}} \psi^\pm \rangle \\
+    &= \langle \psi^\pm | \left[ \mathcal{U}^{(A)} \right]^H \hat S_z^{(B)} \mathcal{U}^{(A)} | \psi^\pm \rangle \\
+    &= \langle \psi^\pm | \hat S_z^{(B)} | \psi^\pm \rangle \\
+    &= \langle S_z^{(B)} \rangle
+\end{align*}
+$$
+
+where we used the fact that $\mathcal{U}^{(A)}$ and $\hat S_z^{(B)}$ commute (since they operate on different Hilbert spaces) and the fact that $\mathcal{U}^{(A)}$ is unitary.
+
+As we can see, even with reversible operations, there is no way for Alice to influence the expectation value of Bob's measurements.
+
+Quantum communications can be used to achieve secure data exchange.
+
+Assume that Alice entangles a pair of particles and sends one to Bob and assume that a third party (Eve) is listening on the channel (where "listening" means "measuring the particles to intercept information), capturing the particles directed to Bob, measuring them, and sending to Bob a particle with the value she has observed.
+
+Let $S(\xi$)$ be the result of the measurement performed by Eve, then we can express the expectation values of the measurement performed by Alice and Bob as
+
+$$
+\langle S_a^{(A)} \rangle = -S(\xi) \cos\theta_{a\xi} \qquad \langle S_b^{(B)} \rangle = -S(\xi) \cos\theta_{b\xi}
+$$
+
+The measurement performed by Eve is like an hidden variable: when Alice and Bob then performs a correlation check, they see that they never violate The Bell inequality, meaning that there is _something_ wrong.
 
 _To be continued._
