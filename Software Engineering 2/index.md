@@ -628,3 +628,16 @@ It is also possible to build **def-use chains** and **use-def chains**:
 - **Use-Def (UD)**: Connects a use of a variable to all its possible definitions.
 
 These chains are essential for optimizations (like dead code elimination) and bug finding (like use-before-define).
+
+### Symbolic Execution
+
+**Symbolic Execution** is a program analysis technique that executes programs with symbolic inputs instead of concrete values. This allows to analyze reachability (which parts of the code can be executed), path feasibility (which paths are possible to take), and generate test cases.
+
+During the symbolic execution, the program is executed symbolically. During the execution the **path condition** (logical formula that represents the constraints on the inputs that must hold for the execution to follow a particular path) is built.
+
+When a branch is encountered (e.g., an `if` statement), the symbolic execution forks into two paths:
+
+1. **True branch**: The path condition is updated to include the condition of the branch.
+2. **False branch**: The path condition is updated to include the negation of the condition.
+
+At the end of each path is possible to analyze the path condition to determine if the path is _feasible_ (i.e., if there exists an input that satisfies the path condition) or is _infeasible_.
