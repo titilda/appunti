@@ -101,7 +101,7 @@ sig Book {
 - `one sig`: A signature that contains exactly one atom (singleton).
 - `extends`: Creates a subset of another signature (disjoint by default).
 
-#### Relations and Multiplicity
+#### Multiplicity
 
 Fields in signatures define relations. Multiplicity keywords constrain the size of these relations:
 
@@ -109,6 +109,18 @@ Fields in signatures define relations. Multiplicity keywords constrain the size 
 - `one`: Exactly one.
 - `some`: One or more (at least one).
 - `lone`: Zero or one (optional).
+
+#### Relations
+
+Relations connect atoms from one signature to atoms of another (or the same) signature. They can be unary, binary, or n-ary.
+
+```alloy
+sig Object {}
+
+sig Chart {
+    object: set Object -> set Int
+}
+```
 
 #### Facts (`fact`)
 
@@ -185,6 +197,10 @@ assert AddIdempotent {
   - `no x: S | ...` (There exists none)
   - `one x: S | ...` (There exists exactly one)
   - `lone x: S | ...` (There exists at most one)
+- **Cardinality (`#`)**: Returns the number of atoms in a set.
+- **Transitive Closure (`^`)**: Computes the transitive closure of a relation.
+- **Reflexive-Transitive Closure (`*`)**: Computes the reflexive-transitive closure of a relation.
+- **Transpose (`~`)**: Reverses the direction of a relation.
 
 ### Temporal Logic (Alloy 6)
 
@@ -223,7 +239,7 @@ The prime symbol (`'`) is used to refer to the value of a variable in the _next_
 
 ```alloy
 fact Transition {
-    always (x' = x + 1)
+    always ( some s: System | s.status' != s.status )
 }
 ```
 
