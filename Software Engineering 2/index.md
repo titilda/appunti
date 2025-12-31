@@ -697,3 +697,20 @@ The best practice is to use fuzzing along with runtime memory checks (like Addre
 **Search-Based Testing** is an automated testing technique generates tests based on an objective (coverage, reachability, etc.).
 
 The distance to the objective is calculated using a **fitness function**. The fitness function assigns a score to each test case based on how close it is to achieving the testing objective.
+
+#### Unit Testing
+
+**Unit Testing** is a manual process aimed at verifying the correctness of individual units or components of a software system in isolation.
+
+This can be achieved using some strategies:
+
+- **Big Bang**: Test all components together after they are all implemented. This approach can make it difficult to isolate defects, but avoid using stubs and drivers.
+- **Top-Down Integration**: Start testing from the top-level modules (modules that depend on lower-level modules) and progressively integrate and test lower-level modules. _Stubs_ are used to simulate lower-level modules that are not yet implemented.
+- **Bottom-Up Integration**: Start testing from the lowest-level modules (modules that do not depend on other modules) and progressively integrate and test higher-level modules. _Drivers_ are used to simulate higher-level modules that are not yet implemented.
+- **Thread Integration**: Test based on features, not on module. Testing involves all the modules required to implement a specific feature.
+
+#### E2E Testing
+
+**End-to-End (E2E) Testing** is a testing procedure that validates the complete and integrated system to ensure that it meets the specified requirements and behaves as expected from start to finish.
+
+This allows to test the functions, the performances, the load handling, and the security of the entire system.
