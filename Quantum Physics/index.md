@@ -4,6 +4,8 @@ author:
 - "Andrea Oggioni"
 ---
 
+_We are aware of a [bug](https://github.com/titilda/appunti/issues/22) that would prevent vector operators from rendering correctly, we are working on it. For the time being, you can recognize vector operators because under the operator hat (this one --&gt; $\hat \,\,$ &lt;--) there is some space as if there were an arrow (this is a normal operator --> $\hat O$, this is a vector operator --> $\hat{\vec{O}}$)_
+
 # Introduction
 
 [This](https://www.youtube.com/watch?v=Wzc0rCniHag) is the only introduction you need. In this document we will explain both the theory and the math behind quantum behaviors and the experiments that prove that they are not just dreams of scientists on drugs but that they are real and verifiable.
@@ -458,11 +460,23 @@ hence, $\hat R$ and $\hat E$ commutes.
 
 Since $\hat E$ is associated with an observable, it is hermitian, therefore
 
-<!-- TODO: why is this true? -->
-
 $$
 \hat E = \begin{bmatrix} a & b \\ b & a \end{bmatrix}
 $$
+
+::: {.callout .callout-note title="Hermitian...? Why is one of the $b$s on the antidiagonal complex conjugate?"}
+We know for a fact that $\hat R$ and $\hat E$ commute, so we start imposing that condition.
+
+$$
+\begin{align*}
+    \hat R \hat E &= \hat E \hat R \\
+    \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \begin{bmatrix} a & b \\ b^* & a \end{bmatrix} &= \begin{bmatrix} a & b \\ b^* & a \end{bmatrix} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \\
+    \begin{bmatrix} b^* & a \\ a & b \end{bmatrix} &= \begin{bmatrix} b & a \\ a & b^* \end{bmatrix} \\
+\end{align*}
+$$
+
+therefore it must be that $b = b^*$ or, in other words, $\Im\{b\} = 0$.
+:::
 
 The eigenvalues of $\hat E$ are $E = \pm b + a$. We take $a = 0$ to make the eigenvalues symmetric, therefore
 
@@ -481,8 +495,6 @@ Assume that we let the molecule rest enough time to reach the gerade state, the 
 $$
 \langle Z \rangle = \langle g | \hat Z | g \rangle = g^H \cdot \hat Z \cdot g = 0
 $$
-
-<!-- TODO: is this representationally correct??? -->
 
 This means that we have an equal probability to find the particle in any orientation.
 
@@ -542,13 +554,13 @@ A complex system is a system in which we consider multiple degrees of freedom. I
 To describe a complex system, quantum states needs to belong to a tensor product of multiple Hilbert spaces, one for each particle/properties observed: a combined state may be expressed as 
 
 $$
-|u\rangle_1|v\rangle_2 \in \mathcal{H}_1 \otimes \mathcal{H}_2
+|u\rangle^{(1)}|v\rangle^{(2)} \in \mathcal{H}^{(1)} \otimes \mathcal{H}^{(2)}
 $$
 
 ::: {.callout .callout-property title="Property of tensor product"}
-- $\alpha |\cdot\rangle_1 + \beta |\cdot\rangle_2 \in \mathcal{H}_1 \otimes \mathcal{H}_2$
-- $\langle (|u\rangle_1 |v\rangle_2) | = \langle u|_1 \langle v|_2$
-- $(\langle u|_1 \langle v|_2)(|w\rangle_1 |y\rangle_2) = \langle u|w \rangle_1 \langle v|y \rangle_2$
+- $\alpha |\cdot\rangle^{(1)} + \beta |\cdot\rangle^{(2)} \in \mathcal{H}^{(1)} \otimes \mathcal{H}^{(2)}$
+- $\langle (|u\rangle^{(1)} |v\rangle^{(2)}) | = \langle u|^{(1)} \langle v|^{(2)}$
+- $(\langle u|^{(1)} \langle v|^{(2)})(|w\rangle^{(1)} |y\rangle^{(2)}) = \langle u|w \rangle^{(1)} \langle v|y \rangle^{(2)}$
 :::
 
 A composite state is said to be **entangled** if it cannot be expressed as a product of states, all belonging to different Hilbert spaces (otherwise it is said to be **disentangled**).
@@ -557,8 +569,8 @@ A composite state is said to be **entangled** if it cannot be expressed as a pro
 Let
 
 $$
-|u\rangle = (|T\rangle_1 + |H\rangle_1)(|T\rangle_2 + |H\rangle_2) \\
-|v\rangle = |T\rangle_1 |T\rangle_2 + |H\rangle_1 |H\rangle_2
+|u\rangle = (|T\rangle^{(1)} + |H\rangle^{(1)})(|T\rangle^{(2)} + |H\rangle^{(2)}) \\
+|v\rangle = |T\rangle^{(1)} |T\rangle^{(2)} + |H\rangle^{(1)} |H\rangle^{(2)}
 $$
 
 then, the former is disentangled and the latter is entangled.
@@ -567,21 +579,21 @@ then, the former is disentangled and the latter is entangled.
 The most general form to be used to express a generic complex system is
 
 $$
-|w\rangle_{1 \otimes 2} = \sum_{ji} \gamma_{ji} |O_j\rangle_1 |O_i\rangle_2
+|w\rangle^{(1) \otimes (2)} = \sum_{ji} \gamma_{ji} |O_j\rangle^{(1)} |O_i\rangle^{(2)}
 $$
 
 while, if the system is disentangled, it can be expressed as
 
 $$
-|w\rangle_{1 \otimes 2} = \sum_{ji} \alpha_i \beta_j |O_i\rangle_1 |O_j\rangle_2
+|w\rangle^{(1) \otimes (2)} = \sum_{ji} \alpha_i \beta_j |O_i\rangle^{(1)} |O_j\rangle^{(2)}
 $$
 
 It is possible to apply composite operators to composite systems: each operator is only applied to components of the state belonging to the same Hilbert space it belongs to.
 
-If $|u\rangle = |a\rangle_1 |b\rangle_2$ then
+If $|u\rangle = |a\rangle^{(1)} |b\rangle^{(2)}$ then
 
 $$
-\hat O_1 \hat O_2 |u\rangle = (\hat O_1|a\rangle_1)(\hat O_2|b\rangle_2)
+\hat O^{(1)} \hat O^{(2)} |u\rangle = (\hat O^{(1)}|a\rangle^{(1)})(\hat O^{(2)}|b\rangle^{(2)})
 $$
 
 It is possible to compute the probability of a joined measurement: let $|w\rangle$ be a general complex system composed of two degrees of freedom, then the probability of measuring $O_j$ for the first degree of freedom and, at the same time, $O_i$ for the second one is
@@ -590,10 +602,10 @@ $$
 P = \frac{\|\gamma_{ji}\|}{\langle w|w \rangle}
 $$
 
-Let $|w\rangle = \sum_{ji} \gamma_{ji} |O_j\rangle_1 |O_i\rangle_2$ and $|y\rangle = \sum_{kl} \delta_{kl} |O_k\rangle_1 |O_l\rangle_2$, then
+Let $|w\rangle = \sum_{ji} \gamma_{ji} |O_j\rangle^{(1)} |O_i\rangle^{(2)}$ and $|y\rangle = \sum_{kl} \delta_{kl} |O_k\rangle^{(1)} |O_l\rangle^{(2)}$, then
 
 $$
-\langle w|y \rangle = \sum_{jikl} \gamma_{ji}^* \delta_{kl} \langle O_j|O_k \rangle_1 \langle O_i|O_l \rangle_2 = \sum_{ji} \gamma_{ji} \delta_{ji}
+\langle w|y \rangle = \sum_{jikl} \gamma_{ji}^* \delta_{kl} \langle O_j|O_k \rangle^{(1)} \langle O_i|O_l \rangle^{(2)} = \sum_{ji} \gamma_{ji} \delta_{ji}
 $$
 
 Continuous extension of compisite system use multidimensional integrals.
@@ -641,7 +653,7 @@ We will now demonstrate and derive the momentum operator. The proof will be arti
 1. properties of an isolated system;
 2. translation and momentum commute;
 3. translation eigenstates;
-4. distribution of translation eigenvalues;
+4. distribution of translation eigenstates;
 5. momentum eigenvalues and operator derivation;
 6. proof that momentum is hermitian.
 
@@ -728,11 +740,7 @@ $$
 
 Given a translation amount $R$, the associated operator $\hat T_R$ has an infinite amount of eigenvalues, indexed with the $k$ value.
 
-**Distribution of translation eigenvalues**
-<!-- TODO: Hic sunt leones! - ci sono errori nella dimostrazione, capire. Dal paragrafo dopo, psi e phi sembrano wave functions, qui sembrano eigenvalues, come si fa? -->
-<!-- Ok, sono eigenfunctions, una ok e l'altra la stessa ma translata, ora come ci arriva la x all'esponente??? -->
-<!-- W.H.A.T. am I looking at???? -->
-<!-- Now it looks like it works a litte bit better -->
+**Distribution of translation eigenstates**
 
 We define $\psi_k(x) \overset{\Delta}{=} e^{-ikx} \varphi_k(x)$, from which it follows that
 
@@ -789,9 +797,7 @@ therefore, for a well defined momentum, each eigenstate is equally possible.
 
 **Momentum eigenvalues and operator derivation**
 
-We know that $P_x$ should be a function of $k$ and that it does not depend on the mass of the particle. Consider two non-interacting (a.k.a. disengangled) particles with momentums $P_{x_1}(k_1)$ and $P_{x_2}(k_2)$ respectively, then we associate the two momentum eigenvalues with the corresponding translation eigenvalues:
-
-<!-- TODO: WHAT??? -->
+We know that $P_x$ should be a function of $k$ and that it does not depend on the mass of the particle. Consider two non-interacting (a.k.a. disentangled) particles with momentums $P_{x_1}(k_1)$ and $P_{x_2}(k_2)$ respectively, then we associate the two momentum eigenvalues with the corresponding translation eigenvalues:
 
 $$
 P_{x_1}(k_1) \to \varphi_{k_1}(x_1) = \frac{1}{\sqrt{L}} e^{i k_1 x_1} \\
@@ -1791,7 +1797,7 @@ $$
 [\hat T_x, \hat X] = -\frac{\hbar^2}{m} \frac{d}{dx}
 $$
 
-<!-- TODO: HOWWWWWWWWWW is V(x) a scalar mult??? -->
+
 Since $\hat V(x)$ and $\hat X$ are both multiplication by scalars, their commutator is zero.
 
 Since
@@ -1954,7 +1960,7 @@ $$
 
 then
 
-<!-- TODO: HOW? -->
+<!-- TODO: HOW? It is not possible to derive those two solely starting from the one above, giving L_z a priori makes computation possible.  -->
 $$
 \varphi(\phi_z) = e^{-im\phi_z} \qquad L_z = \hbar m
 $$
@@ -2166,8 +2172,948 @@ C_\pm = \pm \hbar \sqrt{l(l + 1) - m(m \pm 1)}
 $$
 :::
 
-::: {.callout .callout-example title="Ammonia ion and ammonia molecule"}
+::: {.callout .callout-example title="Ammonia ion, ammonia molecule and cabon monoxide"}
+Consider an ammoina ion $[HN_4]^+$. That molecue is a tetrahedron with the four hydrogens at the corners and the nitrogen at the center.
 
+The hamiltonian associated to the rotational energy is
+
+$$
+\hat H = \frac{1}{2} \left( \frac{\hat L_z^2}{I_z} + \frac{\hat L_y^2}{I_y} + \frac{\hat L_x^2}{I_x} \right)
+$$
+
+Since this ion is very symmetric, we can say that $I_z = I_y = I_x = =$:
+
+$$
+\hat H = \frac{1}{2I} (\hat L_z^2 + \hat L_y^2 + \hat L_x^2) = \frac{1}{2I} \hat L^2
+$$
+
+Now consider a normal ammonia molecule. This molecule is less symmetric than the ion:
+
+$$
+\hat H = \frac{1}{2} \left( \frac{\hat L_z^2}{I_z} + \frac{\hat L_y^2}{I_{xy}} \right) = \frac{1}{2} \left( \frac{\hat L_+ \hat L_- + \hat L_- \hat L_+}{2I_{xy}} + \frac{\hat L_z^2}{I_z} \right)
+$$
+
+In this case
+
+$$
+\hat |l, m\rangle = \frac{\hbar^2}{2} \left( \frac{l(l + 1) - m^2}{I_{xy}} + \frac{m^2}{I_z} \right) |l, m\rangle
+$$
+
+Now consider a carbon monoxide molecule. This molecule is shaped like a stick with one atom at each side. Since in this case $I_z = 0$, to prevent having to deal with infinities et. simila, nature forces $m = 0$.
 :::
+
+From definition, it holds that
+
+$$
+\hat L_+ \hat L_- |l, m\rangle = \hbar^2 [l(l + 1) - m(m - 1)]
+$$
+
+therefore, even rotation speed is quantized. _Who could have guessed, right?_
+
+# Spin
+
+The Pauli exclusion principle states that no more that on electron can occupy the same energy state. We will see a more formal introduction to this principle [later](#pauli-exclusion-principle).
+
+The lowest evergy state so far is $(n, l, m) = (1, 0, 0)$ except that, experimentally, two electrons can stay here. There must be another quantum number that can be used to differentiate between those two electrons. We shall call this new number **spin**.
+
+### Stern-Gerlach experiment
+
+Due to the Zeeman effect, atoms in a magnetic field are deflected according to their $m$ state. The Stern-Gerlach experiment consists in shooting silver atoms (coming from a silver coated incandescent filament) through a specially shaped magnetic field. Since silver atoms have all $m = 0$ (in reality is not the atom but the outer electron), they should be deflected all in the same way, except that this does not happen and in the phosphor coated screen used to see where the atoms ends up, we see two spots. This confirms the fact that there must be another internal degree of freedom that interact with magnetic field. 
+
+<!-- TODO: does atom have m=0 or m=1? -->
+
+::: {.collapsible title="History time"}
+In 1925 Kronig theorized that the undiscovered extra degree of freedom could be some sort of angular momentum, like electron rotation.
+
+Pauli did not agree: shoudl this theory be true, then a point on the surface of the electron would spin faster than light.
+
+In the same year, Uhlenbeck and Goudsmith proposed another similar model (that can be simplified with _an electron spinning w.r.t. the reference frame of the electron itself_) in a paper. Ehrenfest did not agree but published the paper anyway (the two were his students) because "Eh, you are young, even if you publish something completely wrong, it won't hurt your academic career at all".
+
+The two were right, and Pauli had to accept that.
+:::
+
+## Spin algebra
+
+In a former section, we have imposed periodicity of the wave function:
+
+$$
+\varphi(\rho, \theta, \phi_z) = \varphi(\rho, \theta, \phi_z + 2\pi)
+$$
+
+We now impose _the same probability_:
+
+$$
+\begin{align*}
+    |\varphi(\rho, \theta, \phi_z)|^2 &= |\varphi(\rho, \theta, \phi_z + 2 \pi)|^2 \\
+    e^{2 i m \phi_z} &= e^{2 i m (\phi_z + 2\pi)}
+\end{align*}
+$$
+
+that is verified if
+
+$$
+m = 0, \pm \frac{1}{2}, \pm 1, \pm \frac{3}{2}, \dots
+$$
+
+Since we can have both positive and negative solutions, that explains the two spots in the Stern-Gerlach experiment.
+
+By definition, electrons have half integer spins. This is not true for all particles, as we will see later.
+
+We can look at the spin of a particle and consider it as a superposition of _positive_ and _negative_ spin, in the same way as $\sqrt{x^2}$ is a superposition of $+x$ and $-x$. Considering this interpretation, the Hilbert space describing an electron is
+
+$$
+\mathcal{H}_{electron} = \mathcal{H}_{space} \otimes \mathcal{H}_{spin}
+$$
+
+Let $\chi_+$ and $\chi_-$ be associated with positive and negative spin, respectively, then
+
+$$
+\chi_+ = \begin{bmatrix} 1 \\ 0 \end{bmatrix} \qquad \chi_- = \begin{bmatrix} 0 \\ 1 \end{bmatrix} \\
+|u\rangle = \begin{bmatrix}
+    \varphi(x, y, z) \\ \psi(x, y, z)
+\end{bmatrix} = \varphi(x, y, z) \chi_+ + \psi(x, y, z) \chi_-
+$$
+
+Let $\hat S_z$ be the operator associated with the spin observable on the quantization axis. We use $s_z$ as the quantum number associated with spin:
+
+$$
+s_z = \pm \frac{1}{2}
+$$
+
+We also use $s$ like we used $l$ for the angular momentum ($s_z$ is the equivalent of $m$).
+
+For electrons, $s$ (that is the equivalent of $l$ for the angular momentum) is $\frac{1}{2}$. As with the angular momentum, this is linked with the degeneracy of the state.
+
+Since the spin is an angular momentum, then
+
+$$
+S_z = \hbar s_z = \pm \frac{\hbar}{2}
+$$
+
+We may now derive the $\hat S_z$ operator:
+
+$$
+\hat S_z = \frac{\hbar}{2} \begin{bmatrix} 1 & 0 \end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix} - \frac{\hbar}{2} \begin{bmatrix} 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \frac{\hbar}{2} \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}
+$$
+
+As per angular momentum, we define $\hat S^2$ as the operator to extract the total square spin of a particle:
+
+$$
+\hat S^2 = \hbar s(s + 1)
+$$
+
+There exist the ladder operators:
+
+$$
+\hat S_+ |s, s_z\rangle = C_+(s, s_z) |s, s_z + 1\rangle \qquad C_+(l, m) = \hbar \sqrt{l(l + 1) - m(m + 1)} \\
+\hat S_- |s, s_z\rangle = C_-(s, s_z) |s, s_z - 1\rangle \qquad C_-(l, m) = \hbar \sqrt{l(l + 1) - m(m - 1)}
+$$
+
+It holds that
+
+$$
+\hat S_+ |\frac{1}{2}, \frac{1}{2}\rangle = 0 \qquad \hat S_+ |\frac{1}{2}, -\frac{1}{2}\rangle = C_+\left( \frac{1}{2}, -\frac{1}{2} \right) |\frac{1}{2}, \frac{1}{2}\rangle = \hbar |\frac{1}{2}, \frac{1}{2}\rangle \\
+\hat S_- |\frac{1}{2}, -\frac{1}{2}\rangle = 0 \qquad \hat S_- | \frac{1}{2}, \frac{1}{2}\rangle = C_- \left(\frac{1}{2}, \frac{1}{2} \right) |\frac{1}{2}, -\frac{1}{2}\rangle = \hbar |\frac{1}{2}, -\frac{1}{2}\rangle
+$$
+
+::: {.collapsible title="Proof"}
+If
+
+$$
+\hat S_+ = \begin{bmatrix} a & b \\ c & d \end{bmatrix}
+$$
+
+then
+
+$$
+\begin{cases}
+    \begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \\
+    \begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \hbar \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+\end{cases}
+$$
+
+It follows that
+
+$$
+\hat S_+ = \hbar \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}
+$$
+
+If
+
+$$
+\hat S_- = \begin{bmatrix} a & b \\ c & d \end{bmatrix}
+$$
+
+then
+
+$$
+\begin{cases}
+    \begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \\
+    \begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix} = \hbar \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+\end{cases}
+$$
+
+It follows that
+
+$$
+\hat S_+ = \hbar \begin{bmatrix} 0 & 0 \\ 1 & 0 \end{bmatrix}
+$$
+:::
+
+Since
+
+$$
+\begin{cases}
+    \hat S_+ = \hat S_x + i \hat S_y \\
+    \hat S_- = \hat S_x - i \hat S_y
+\end{cases}
+$$
+
+then we can extract also the $\hat S_x$ and $\hat S_y$ operators.
+
+$$
+\begin{cases}
+    \hat S_x = \frac{\hat S_+ + \hat S_-}{2} = \frac{\hbar}{2} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \\
+    \hat S_y = \frac{\hat S_+ - \hat S_-}{2i} = \frac{\hbar}{2} \begin{bmatrix} 0 & -i \\ -i & 0 \end{bmatrix}
+\end{cases}
+$$
+
+Since they correspond to physical observables, they should be hermitian. It is easy to verify that this is, in fact, true.
+
+As if we needed another confirmation of the fact that spin is an angular momentum, those really suspicius commutation relations holds:
+
+$$
+[\hat S_x, \hat S_y] = i \hbar \hat S_z \qquad
+[\hat S_y, \hat S_z] = i \hbar \hat S_x \qquad
+[\hat S_z, \hat S_x] = i \hbar \hat S_y
+$$
+
+_Looks familiar to you?_
+
+$\hat S_x$, $\hat S_y$ and $S_z$ matrices are called **Pauli matrices**.
+
+We can now define the **total spin square operator**:
+
+$$
+\hat S^2 = \hat S_x^2 + \hat S_y^2 + \hat S_z^2 = \frac{3 \hbar}{4} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}
+$$
+
+We can get the projectio of the spin in an arbitrary $\vec{n}$ direction:
+
+$$
+\begin{align*}
+    \hat S_n = \vec{n} \cdot \hat{\vec{S}} &= (\vec{n} \cdot \vec{u_x}) \hat S_x + (\vec{n} \cdot \vec{y}) \hat S_y + (\vec{n} \cdot \vec{u_z}) \hat S_z \\
+    &= \cos \theta_x \cdot \hat S_x + \cos \theta_y \cdot \hat S_y + \cos \theta_z 
+\end{align*}
+$$
+
+It can be demonstrated that the eigenvalues for $\hat S_n$ are still $\pm \frac{1}{2}$.
+
+::: {.callout .callout-note title="Note"}
+Quantum computers may use spin as a qubit.
+:::
+
+## Time evolution of spin in a magnetic field
+
+As we already subtly mentioned while talking about the Stern-Gerlach experiment, spin couples with magnetic field. The hamiltonian associated with the coupling is
+
+$$
+\hat H_{int} = \mu \cdot \vec{B} \cdot \hat{\vec{S}}
+$$
+
+::: {.callout .callout-note title="Note on $\mu$"}
+$\mu$ depends on the particle. Opposite particles have opposite $\mu$ values (e.g. electron and positron).
+:::
+
+In a constant magnetic field, $\vec{B}$ does not depend on position, so we can write
+
+$$
+\hat H = \hat T + \hat V + \hat H_{int}
+$$
+
+where $\hat T$ and $\hat V$ depends on position and $\hat H_{int}$ depends solely on spin.
+
+For now, we will only consider $\hat H_{int}$. For more information about the two other terms, see [energy](#energy).
+
+Since $\hat H_int$ has the same eigenstates of $\hat H$, we can apply the time-dependent Schr&ouml;dinger equation:
+
+<!-- TODO: check that this is actually the TDSE and not something else -->
+
+$$
+\hat H_{int} |\chi(t)\rangle = i \hbar \frac{d}{dt} |\chi(t)\rangle
+$$
+
+Eigenvalues of $\hat H_{int}$ are
+
+$$
+E_{int} = \pm \frac{\hbar}{2}
+$$
+
+They are the same of $\hat H$ but multiplied by $\mu B$.
+
+Let
+
+$$
+|\chi(0)\rangle = \begin{bmatrix} a \\ b \end{bmatrix} = \alpha \begin{bmatrix} 1 \\ 0 \end{bmatrix} + \beta \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+$$
+
+be normalized, then it follows that
+
+$$
+|\chi(t)\rangle = \alpha e^{-i \frac{\hbar \mu B t}{2 \hbar}} \begin{bmatrix} 1 \\ 0 \end{bmatrix} + \beta e^{+i \frac{\hbar \mu B t}{2 \hbar}} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \begin{bmatrix} \alpha e^{-i \frac{\mu B t}{2}} \\ \beta e^{+i \frac{\mu B t}{2}} \end{bmatrix}
+$$
+
+We will now give the expectation values of the spin observable w.r.t. the three axes in function of time.
+
+<!-- TODO: finish here -->
+
+$$
+\langle S_z \rangle = \frac{\hbar}{2}(\alpha^* \alpha - \beta^* \beta) \\
+\langle S_x \rangle = \hbar A \cos(\mu B t + \phi) \\
+\langle S_y \rangle = 
+$$
+
+The oscillatory behavior described by $\langle S_x \rangle$ and $\langle S_y \rangle$ is called **Larmor precession**.
+
+Note that $\langle S_z \rangle$ is constant through time.
+
+::: {.collapsible title="Proof"}
+$$
+\langle S_z \rangle = \langle \chi(t) | \hat S_z | \chi(t) \rangle = \begin{bmatrix}
+    \alpha^* e^{+i \frac{\mu B t}{2}} &
+    \beta^* e^{-i \frac{\mu B t}{2}}
+\end{bmatrix} \frac{\hbar}{2} \begin{bmatrix}
+    1 & 0 \\ 0 & -1
+\end{bmatrix} \begin{bmatrix}
+    \alpha e^{-i \frac{\mu B t}{2}} \\
+    \beta e^{+i \frac{\mu B t}{2}} 
+\end{bmatrix} = \frac{\hbar}{2} (\alpha^* \alpha - \beta^* \beta)
+$$
+
+$$
+\langle S_x \rangle = \langle \chi(t) | \hat S_x | \chi(t) \rangle = \begin{bmatrix}
+    \alpha^* e^{+i \frac{\mu B t}{2}} &
+    \beta^* e^{-i \frac{\mu B t}{2}}
+\end{bmatrix} \frac{\hbar}{2} \begin{bmatrix}
+    0 & 1 \\ 1 & 0
+\end{bmatrix} \begin{bmatrix}
+    \alpha e^{-i \frac{\mu B t}{2}} \\
+    \beta e^{+i \frac{\mu B t}{2}} 
+\end{bmatrix} = \frac{\hbar}{2} \left( \alpha^* \beta e^{+i \mu B t} + \beta^* \alpha e^{-i \mu B t} \right) = \hbar \Re\{ \alpha^* \beta e^{+i \mu B t} \} = \hbar \Re\{ Ae^{i(\mu B t + \phi)} \} = \hbar A cos(\mu B t + \phi)
+$$
+
+<!-- TODO: finire qui -->
+
+$$
+\langle S_y \rangle = 
+$$
+:::
+
+## Angular momentum of composite system
+
+We will now consider what happens considering both the spatial degree of freedom (angular momentum) and the internal degree of freedom (spin):
+
+<!-- TODO: how is a sum of elements from different spaces belong to the product of those spaces??? -->
+
+$$
+\hat{\vec{J}} = \hat{\vec{L}} + \hat{\vec{S}} \in \mathcal{H}_{space} \otimes \mathcal{H}_{spin}
+$$
+
+In the case of multiple particles
+
+$$
+\hat{\vec{J}} = \hat{\vec{J}}^{(1)} + \hat{\vec{J}}^{(2)} + \dots \in \mathcal{H}^{(1)} \otimes \mathcal{H}^{(2)} \otimes \cdots
+$$
+
+In an isolated system we have conservation of momentum, therefore, since $\vec{\hat{J}}$ is a sum of angular momenta, it is conserved.
+
+The usual commutation relations still hold. Moreover, 
+
+<!-- TODO: from here on: all those J without ^2 look sus -->
+
+$$
+[\hat{\vec{J}}, \hat{\vec{J}}^{(1)}] = [\hat{\vec{J}}, \hat{\vec{J}}^{(2)}] = \dots = 0
+$$
+
+As usual, we can write
+
+$$
+\begin{cases}
+    \hat{\vec{J}} |J, M\rangle = \hbar J(J + 1) |J, M\rangle \\
+    \hat{\vec{J}}_z |J, M\rangle = \hbar M |J, M\rangle
+\end{cases}
+$$
+
+We denote with $|J, M, J_1, J_2\rangle$ the shared eigenstates between $\hat{\vec{J}}$, $\hat{\vec{J}}_z$, $\left[\hat{\vec{J}}^{(1)}\right]^2$ and $\left[\hat{\vec{J}}^{(2)}\right]^2$:
+
+$$
+\begin{cases}
+    \left[\hat{\vec{J}}^{(1)}\right]^2 |J, M, J_1, J_2\rangle = \hbar^2 J_1 (J_1 + 1) |J, M, J_1, J_2\rangle \\
+    \left[\hat{\vec{J}}^{(2)}\right]^2 |J, M, J_1, J_2\rangle = \hbar^2 J_2 (J_2 + 1) |J, M, J_1, J_2\rangle
+\end{cases}
+$$
+
+Since
+
+$$
+\begin{align*}
+    \left[ \hat{\vec{J}}^{(1)} + \hat{\vec{J}}^{(2)} \right]^2 &= \left[\hat{\vec{J}}^{(1)}\right]^2 + \left[\hat{\vec{J}}^{(2)}\right]^2 + 2 \hat{\vec{J}}^{(1)} \hat{\vec{J}}^{(2)} \\
+    &= \left[\hat{\vec{J}}^{(1)}\right]^2 + \left[\hat{\vec{J}}^{(2)}\right]^2 + 2 \left[ \hat{\vec{J}}_x^{(1)} \hat{\vec{J}}_x^{(2)} + \hat{\vec{J}}_y^{(1)} \hat{\vec{J}}_y^{(2)} + \hat{\vec{J}}_z^{(1)} \hat{\vec{J}}_z^{(1)} \right]
+\end{align*}
+$$
+
+then
+
+$$
+[\hat{\vec{J}}^2, \hat{\vec{J}}_z^{(1)}] \ne 0 \qquad [\hat{\vec{J}}^2, \hat{\vec{J}}_z^{(2)}] \ne 0
+$$
+
+We can express
+
+$$
+|J, M, J_1, J_2\rangle = \sum \alpha(J, M, J_1, J_2) |J_1, M_1, J_2, M_2\rangle
+$$
+
+where $\alpha$ are the **Clebsh-Gordan** coefficents:
+
+$$
+\alpha(J, M, J_1, J_2) = \langle J, M, J_1, J_2 | J_1, M_1, J_2, M_2 \rangle
+$$
+
+::: {.callout .callout-property title="Relation between $J$ and $M$"}
+Since we cannot measure multiple components of the composite momentum at the same time, the relation is a bit more vague:
+
+$$
+\begin{cases}
+    |J_1 - J_2| \lt J \lt J_1 + J_2 \\
+    M = M_1 + M_2
+\end{cases}
+$$
+
+$M$ can assume $2J + 1$ different values in the range $-J \lt M \lt J$.
+:::
+
+# Identical particles
+
+In classical mechanics, particles are distinguishable: one can assign labels to particles and keep track of them without any problem.
+This is not true in quantum mechanics! It is impossible to determine where a particle is, let alone distinguish one from other identical.
+
+We say that two particles are identical (**undistinguishable**) when they are described by the same quantum numbers.
+
+Particles can be categorized in two cathegories: **fermions** (half integer spins) and **nosons** (full integer spin).
+
+Within the fermions, we can find **leptons** (electrons ($e$, $s = \frac{1}{2}$), muons ($\mu$, $s = \frac{1}{2}$), taus ($\tau$, $s = \frac{1}{2}$), electron neutrinos ($\nu_e$, $s = \frac{1}{2}$), muon neutrinos ($\nu_\mu$, $s = \frac{1}{2}$), tau neutronos ($\nu_\tau$, $s = \frac{1}{2}$)) and **quarks** (up ($u$, $s = \frac{1}{2}$), down ($d$, $s = \frac{1}{2}$), charm ($c$, $s = \frac{1}{2}$), strange ($s$, $s = \frac{1}{2}$), top ($t$, $s = \frac{1}{2}$), bottom ($b$, $s = \frac{1}{2}$)).
+
+Within the bosons, we can find Higgs bosons ($H$, $s = 0$), gluons ($g$, $s = 1$), photons ($\gamma$, $s = 1$), Zs ($Z^0$, $s = 1$), Ws ($W^\pm$, $s = 1$), gravitons ($G$, only theorized, $s = 2$).
+
+Let $|u\rangle \in \mathcal{H}^{(1)}$ be the quantum state deescribing a single particle. If we are considering both the position and the spin, then $\mathcal{H}^{(1)} = \mathcal{H}_{space}^{(1)} \otimes \mathcal{H}_{spin}^{(1)}$. In such a case, $|u\rangle$ is composed by a vector of $2s + 1$ wave functions, one for each possible spin value:
+
+$$
+|u(\vec{r_1})\rangle = \begin{bmatrix}
+    \varphi(\vec{r_1}) \\ \psi(\vec{r_1}) \\ \vdots
+\end{bmatrix}^{(1)}
+$$
+
+For a two particle system, $u$ can be rewritten as
+
+$$
+|u(\vec{r_1}, \vec{r_2})\rangle = \begin{bmatrix}
+    \varphi(\vec{r_1}) \\ \psi(\vec{r_1}) \\ \vdots
+\end{bmatrix}^{(1)} \begin{bmatrix}
+    \chi(\vec{r_2}) \\ \xi(\vec{r_2}) \\ \vdots
+\end{bmatrix}^{(2)}
+$$
+
+Let $P_{ji}$ be the operator that swaps the positions of the $j$-th and $i$-th particle. This operator commutes with $\hat H$.
+
+::: {.collapsible title="Proof"}
+$\hat H$ is a sum of three terms that do not depend on position and does not change when swapping coordinates, namely:
+
+- kinetic term
+  $$
+  \hat T = -\frac{\hbar^2}{2m}(\nabla_1^2 + \nabla_2^2) = -\frac{\hbar^2}{2m}(\nabla_2^2 + \nabla_1^2)
+  $$
+- total potential term
+  $$
+  \hat V(\vec{r_1}) + \hat V(\vec{r_2}) = \hat V(\vec{r_2}) + \hat V(\vec{r_1})
+  $$
+- interaction potential
+  $$
+  V(\|\vec{r_1} - \vec{r_2}\|) = V(\|\vec{r_2} - \vec{r_1}\|)
+  $$
+:::
+
+If the two particles live inaa magnetic field $B$ and $B$ does depend on position, $P_{ji}$ also needs to swap the spin of the particles:
+
+$$
+\hat P_{12} \psi(\vec{r_1}, s_1, \vec{r_2}, s_2) \ne \psi(\vec{r_2}, s_1, \vec{r_1}, s_2) \\
+\hat P_{12} \psi(\vec{r_1}, s_1, \vec{r_2}, s_2) = \psi(\vec{r_2}, s_2, \vec{r_1}, s_1) \\
+$$
+
+This is due to the fact that, in this case, $\hat H$ has also terms depending on spin and magnetic field at the position of the particles.
+
+::: {.callout .callout-note title="Relativistic effects"}
+Remember that we are ignoring relativistic effects such as terms shaped like $\hat{\vec{L_1}} \hat{\vec{S_1}}$.
+:::
+
+Assume we have two identical particles living into a position-dependent magnetic field, then the contribution to the hamiltonian due to the coupling between the spin and the magnetic field is
+
+$$
+\hat H_B = \vec{B}(\vec{r_1}) \cdot \hat{\vec{S_1}} + \vec{B}(\vec{r_2}) \cdot \hat{\vec{S_2}}
+$$
+
+therefore
+
+$$
+\hat H_B |u(\vec{r_1}, \vec{r_2})\rangle = \left( \vec{B}(\vec{r_1}) \cdot \hat S_1 \begin{bmatrix} \varphi(\vec{r_1}) \\ \psi(\vec{r_1}) \\ \vdots \end{bmatrix}^{(1)} \right) \begin{bmatrix} \chi(\vec{r_2}) \\ \xi(\vec{r_2}) \\ \vdots \end{bmatrix}^{(2)} + \left( \vec{B}(\vec{r_2}) \cdot \hat S_2 \begin{bmatrix} \chi(\vec{r_2}) \\ \xi(\vec{r_2}) \\ \vdots \end{bmatrix}^{(2)} \right) \begin{bmatrix} \varphi(\vec{r_1}) \\ \psi(\vec{r_1}) \\ \vdots \end{bmatrix}^{(1)}
+$$
+
+thus
+
+$$
+\hat H_B \hat P_{12} |u(\vec{r_1}, \vec{r_2})\rangle = \left( \vec{B}(\vec{r_1}) \cdot \hat S_1 \begin{bmatrix} \chi(\vec{r_1}) \\ \xi(\vec{r_1}) \\ \vdots \end{bmatrix}^{(1)} \right) \begin{bmatrix} \varphi(\vec{r_2}) \\ \psi(\vec{r_2}) \\ \vdots \end{bmatrix}^{(2)} + \left( \vec{B}(\vec{r_2}) \cdot \hat S_2 \begin{bmatrix} \varphi(\vec{r_2}) \\ \psi(\vec{r_2}) \\ \vdots \end{bmatrix}^{(2)} \right) \begin{bmatrix} \chi(\vec{r_1}) \\ \xi(\vec{r_1}) \\ \vdots \end{bmatrix}^{(1)}
+$$
+
+::: {.callout .callout-note title="Swapping indexes"}
+Notice that, other than positions and spins, we also swapped the indexes of the Hilbert spaces. If we didn't do that, we would have to deal with situations like having the state of particle $(1)$ in Hilbert space $(2)$ and vice versa.
+:::
+
+What we've just seen here is the proof that, for a disentangled state, the hamiltonian commutes with the permutation. To extend this for a generic state, it is enough to express $u\rangle$ as an entrangled state and to repeat the same steps.
+
+Now consider the square permutation operator $\hat P_{12}^2$. Intuitively, $\hat P_{12}^2 = \mathbb{I}$. This means that 
+
+$$
+\hat P_{12} |\psi(\dots)\rangle = \pm |\psi(\dots)\rangle
+$$
+
+::: {.callout .callout-theorem title="Spin statistics theorem"}
+$$
+\hat P_{12} |\psi(\dots)\rangle = \alpha|\psi(\dots)\rangle \qquad \alpha = \pm 1
+$$
+
+For bosons, it holds that $\alpha = +1$. For fermions, it is the opposite: $\alpha = -1$.
+
+::: {.collapsible title="Proof?"}
+Proof is so complex that even Feynman could not understand it, so we take this theorem for granted.
+
+![Proof by trust me bro. - [Youtube](https://www.youtube.com/watch?v=I3xdCp_f8ss)](assets/trustmebro.png)
+:::
+:::
+
+## Pauli exclusion principle
+
+Assume a generic two-identical-particle system:
+
+$$
+|u(\vec{r_1}, \vec{r_2})\rangle = \sum_{ji} \alpha_{ji} \begin{bmatrix} \varphi_j(\vec{r_1}) \\ \psi_j(\vec{r_1}) \end{bmatrix}^{(1)} \begin{bmatrix} \varphi_i(\vec{r_2}) \\ \psi_i(\vec{r_2}) \end{bmatrix}^{(2)}
+$$
+
+therefore
+
+$$
+\begin{align*}
+    \hat P_{12} |u(\vec{r_1}, \vec{r_2})\rangle &= \sum_{ji} \alpha_{ji} \begin{bmatrix} \varphi_i(\vec{r_1}) \\ \psi_i(\vec{r_1}) \end{bmatrix}^{(1)} \begin{bmatrix} \varphi_j(\vec{r_2}) \\ \psi_j(\vec{r_2}) \end{bmatrix}^{(2)} \\
+    &= \sum_{ij} \alpha_{ij} \begin{bmatrix} \varphi_j(\vec{r_1}) \\ \psi_j(\vec{r_1}) \end{bmatrix}^{(1)} \begin{bmatrix} \varphi_i(\vec{r_2}) \\ \psi_i(\vec{r_2}) \end{bmatrix}^{(2)} \\
+    &= \pm |u(\vec{r_1}, \vec{r_2})\rangle
+\end{align*}
+$$
+
+For bosons $\alpha_{ji} = \alpha_{ij}$ and there isn't any problem. For fermions $\alpha_{ij} = -\alpha_{ji}$ implies that $\alpha_{ji} = 0$, therefore we cannot find two fermions in the same exact state.
+
+::: {.callout .callout-example title="Symmetrization"}
+We will now give a few examples of correctly symmetrized wave functions for a two-identical-particles system.
+
+If the particles are bosons, then $\alpha = 1$, hence, the correct symmetric shape of the quantum state must be
+
+$$
+|u\rangle =\frac{1}{\sqrt{2}} [\psi(\vec{r_1}) \varphi(\vec{r_2}) + \varphi(\vec{r_1}) \psi(\vec{r_2})]
+$$
+
+For fermions, then
+
+$$
+|u\rangle =\frac{1}{\sqrt{2}} [\psi(\vec{r_1}) \varphi(\vec{r_2}) - \varphi(\vec{r_1}) \psi(\vec{r_2})]
+$$
+
+Notice the change of sign. It can be easily verified that the symmetry is correct.
+:::
+
+::: {.callout .callout-note title="Energy degenerate eigenstates"}
+Let
+
+$$
+\chi(\vec{r_1}, \vec{r_2}) = \psi(\vec{r_1}) \psi(\vec{r_2})
+$$
+
+then, since $\hat H$ commutes with $\hat P_{12}$ we can write
+
+$$
+\begin{cases}
+    \hat H \chi(\vec{r_1}, \vec{r_2}) = E \chi(\vec{r_1}, \vec{r_2}) \\
+    \hat H \chi(\vec{r_2}, \vec{r_1}) = E \chi(\vec{r_2}, \vec{r_1})
+\end{cases}
+$$
+
+therefore we can combine $\chi(\vec{r_1}, \vec{r_2})$ and $\chi(\vec{r_2}, \vec{r_1})$ with any coefficient to still get another valid, degenerate, eigenstate for energy.
+:::
+
+### Consequences
+
+![](assets/intuitiveness.png)
+
+We will now examine three case-studies to determine how different types of identical particles interact with each other. We will see that the Pauli exclusion principle will be the confirmed every time, even in the most unintuitive scenarios.
+
+#### Bosons
+
+We can describe a generic two-identical-bosons system with
+
+
+<!-- TODO: controllare conti + come fa a sparire il vettore dalle k? REDO ALL COMPUTATIONSAS PER THE OTHER CASES -->
+$$
+\begin{align*}
+    \chi(\vec{r_1}, \vec{r_2}) &= \frac{1}{V \sqrt{2}} \left[ e^{-i \vec{k_1} \vec{r_1}} e^{-i \vec{k_2} \vec{r_2}} + e^{-i \vec{k_1} \vec{r_2}} e^{-i \vec{k_2} \vec{r_1}}\right] \\
+    &= \frac{1}{V \sqrt{2}} e^{-i (k_1 + k_2) \vec{r}_{cm}} \cos \left[ (k_1 - k_2) \frac{\Delta r}{2} \right]
+\end{align*}
+$$
+
+where 
+
+$$
+\Delta \vec{r} = \vec{r_1} - \vec{r_2} \qquad \vec{r_1} = \vec{r}_{cm} + \frac{\Delta \vec{r}}{2} \qquad \vec{r_2} = \vec{r}_{cm} - \frac{\Delta \vec{r}}{2}
+$$
+
+To find the probability density function, we square the wave function:
+
+<!-- TODO: cos^2 = cos??? Non tonrah -->
+
+$$
+f(\Delta \vec{r}) = \frac{2}{V^2} \cos \left[ (k_1 - k_2) \frac{\Delta r}{2} \right]
+$$
+
+We can see that the probability does only depend on the distance between the two particles (even if the particles are non interacting). We have a locam maximum in $\Delta \vec{r} = 0$, therefore there is an high probability to find the two particles in the same state in the same position, this is called **Exchange interaction**.
+
+This is in agreement with the spin statistics theorem that, in this case, introduces correlation between non-interacting particles.
+
+#### Same-spin fermions
+
+Assume we have two neutron (fermions) with the same spin:
+
+$$
+|\psi(\vec{r_1})\rangle = \begin{bmatrix} \psi(\vec{r_1}) \\ 0 \end{bmatrix}^{(1)} \qquad |\varphi(\vec{r_2})\rangle = \begin{bmatrix} \varphi(\vec{r_2}) \\ 0 \end{bmatrix}^{(2)}
+$$
+
+We now express the state of the system:
+
+$$
+|\chi(\vec{r_1}, \vec{r_2})\rangle = \frac{1}{\sqrt{2}} \left(|\psi(\vec{r_1})\rangle^{(1)} |\varphi(\vec{r_2})\rangle^{(2)} - |\psi(\vec{r_2})\rangle^{(2)} |\varphi(\vec{r_1})\rangle^{(1)} \right)
+$$
+
+therefore
+
+<!-- TODO: where does the V come from??? -->
+<!-- TODO: anche qui capire che fine hanno fatto i vettori r e k -->
+
+$$
+\begin{align*}
+    f(\vec{r_1}, \vec{r_2}) = \langle \chi | \chi \rangle &= \frac{1}{2} \left[ \langle\varphi(\vec{r_2})|^{(2)} \langle\psi(\vec{r_1})|^{(1)} - \langle\psi(\vec{r_2})|^{(2)} \langle\varphi(\vec{r_1})|^{(1)} \right] \left[ |\psi(\vec{r_1})\rangle^{(1)} |\varphi(\vec{r_2})\rangle^{(2)} - |\psi(\vec{r_2})\rangle^{(2)} |\varphi(\vec{r_1})\rangle^{(1)} \right] \\
+    &= \frac{1}{2V^2} \left[ 1 + 1 - \langle \psi(\vec{r_2}) | \varphi(\vec{r_2}) \rangle^{(2)} \langle \varphi(\vec{r_1}) | \psi(\vec{r_1}) \rangle^{(1)} - \langle \psi(\vec{r_1}) | \varphi(\vec{r_1}) \rangle^{(1)} \langle \varphi(\vec{r_2}) | \psi(\vec{r_2}) \rangle^{(2)} \right] \\
+    &= \frac{1}{2V^2} \left[ 2 - e^{-i (k_1 r_1 - k_1 r_2)} e^{-i (k_2 r_2 - k_2 r_1)} - e^{-i (k_1 r_2 - k_1 r_1)} e^{-i (k_2 r_1 - k_2 r_2)} \right] \\
+    &= \frac{1}{2V^2} \left[ 2 - e^{-i (k_1 - k_2)(r_1 - r_2)} - e^{+i (k_1 - k_2)(r_1 - r_2)} \right] \\
+    &= \left[ 1 - \cos \left[ (r_1 - r_2) (k_1 - k_2) \right] \right]
+\end{align*}
+$$
+
+Just like with bosons, we have a dependece by relative distance. If $\Delta \vec{r} = 0$ then $P = 0$, hence the impossibility of having two same-spin fermions in the same state in the same place.
+
+#### Opposite-spin fermions
+
+Assume we have two neutrons (fermions) with opposite spin:
+
+$$
+|\psi(\vec{r_1})\rangle = \begin{bmatrix} \psi(\vec{r_1}) \\ 0 \end{bmatrix}^{(1)} \qquad |\varphi(\vec{r_2})\rangle = \begin{bmatrix} 0 \\ \varphi(\vec{r_2})  \end{bmatrix}^{(2)}
+$$
+
+We now express the state of the system:
+
+$$
+|\chi(\vec{r_1}, \vec{r_2})\rangle = \frac{1}{\sqrt 2} \left[ |\psi(\vec{r_1})\rangle^{(1)} |\varphi(\vec{r_2})\rangle^{(2)} - |\psi(\vec{r_2})\rangle^{(2)} |\varphi(\vec{r_1})\rangle^{(1)} \right]
+$$
+
+therefore
+
+$$
+\begin{align*}
+    f(\vec{r_1}, \vec{r_2}) = \langle \chi | \chi \rangle &= \frac{1}{2} \left[ \langle\psi(\vec{r_1})|^{(1)} \langle\varphi(\vec{r_2})|^{(2)} - \langle\varphi(\vec{r_1})|^{(1)} \langle\psi(\vec{r_2})|^{(2)} \right] \left[ |\psi(\vec{r_1})\rangle^{(1)} |\varphi(\vec{r_2})\rangle^{(2)} - |\psi(\vec{r_2})\rangle^{(2)} |\varphi(\vec{r_1})\rangle^{(1)} \right] \\
+    &= \frac{1}{2V^2} \left[ 1 + 1 - \langle \psi(\vec{r_1}) | \varphi(\vec{r_1}) \rangle^{(1)} \langle \varphi(\vec{r_2}) | \psi(\vec{r_2}) \rangle^{(2)} - \langle \varphi(\vec{r_1}) | \psi(\vec{r_1}) \rangle^{(1)} \langle \psi(\vec{r_2}) | \varphi(\vec{r_2}) \rangle^{(2)} \right] \\
+    &= \frac{1}{2V^2} [2 - 0 - 0] \\
+    &= \frac{1}{V^2}
+\end{align*}
+$$
+
+It follows that particles with opposite spins do not have any restriction of sort.
+
+### Different types of entanglement
+
+<!-- TODO: nnokpt -->
+<!--
+Up until now we have considered that
+
+$$
+\mathcal{H}_{tot} = \left( \mathcal{H}_{space}^{(1)} \otimes \mathcal{H}_{spin}^{(1)} \right) \otimes \left( \mathcal{H}_{space}^{(2)} \otimes \mathcal{H}_{spin}^{(2)} \right)
+$$
+
+or, in other words, we have considered the space degrees of freedom disentangled from the spin degrees of freedom.
+
+-->
+
+# The Einstein-Podolski-Rosen paradox
+
+Assume we have a double slit experiment. When we throw a particle, the screen deviates the particle, therefore, since momentum conservation applies, a certain amount of momentum must me transferred to the screen. If that were the case, that momentum could be measured (except that, the screen should be so light that it could be consodered a quantum object).
+
+Considering the screen as a quantum object all the computations make sense and agree with experimental results (experiments that, by the way, were performed [not long ago](https://journals.aps.org/prl/abstract/10.1103/93zb-lws3)).
+
+We will now discuss a simplified version of the **Einstein-Podosski-Rosen paradox** (from now on, **EPR**).
+
+Consider a spinless pion $\pi^0$. There is a non-null probability that those pion decays into a positron and a negatron (synonym for electron). Because of momentum conservation, the spin of the positron must be the opposite of the spin of the electron. Now take the positron and move it far enough so that there is time to perform a spin measurement on the electron before information can travel from the positron to the electron.
+
+Measuring the spin of one particle would let us immediately know what will be the measurement on the other particle.
+
+According to Bohr, measurement results are stochastic (determined at measure-time) but Einstein could not wrap his head around this _spooky action at distance_: he already proved that information cannot travel faster than light (otherwise the past could be influenced after it already happened) therefore, according to him, quantum physics as-is was not complete, meaning that there are some still-undiscovered hidden dynamics. This is the so-called **hidden variables theory** ant is is still plausible because how a pion decays is still not known. May the spin be determined at decay-time?
+
+> "Who cares, algebra works!" &mdash; Bohr to Einstein, probably.
+
+Practically speaking, Einstein stated the **local-realism** hypotheses:
+
+- **realism**: the value of an observable is always predetermined (ant it appears as stochastic because of some hidden dynamics we still do not know about yet);
+- **locality**: performing a measurement in a position does not affect the measurements in a different position at superluminal speeds.
+
+## Quantum mechanics is not a local theory
+
+How can we verify if quantum mechanics follow Einstein's hypotheses? The following work was performed by Bell.
+
+Consider
+
+$$
+\psi^\pm = \frac{1}{\sqrt 2} \left( |\uparrow_z\rangle^{(1)} |\downarrow_z\rangle^{(2)} \pm |\downarrow_z\rangle^{(1)} |\uparrow_z\rangle^{(2)} \right)
+$$
+
+be a superposition of the Bell states.
+
+Note that we are not requiring that the particles are identical: in this way, the spin statistics theorem does not apply and we can choose any symmetry we like.
+
+We also are considering only binary observables such as spin.
+
+Bell introduced the correlation function
+
+$$
+C(a, b) = \frac{S_a^{(1)} S_b^{(2)}}{\hbar^2 S^2}
+$$
+
+::: {.callout .callout-property title="Correlation function properties"}
+$$
+-1 \le C \le 1 \\
+C(-a, b) = C(a, -b) = -C(a, b)
+$$
+:::
+
+Bell proved that the evaluation of $C$ in the context of quantum mechanics would lead to very different results compared with what could be deduceb by the computation of $C$ using the classical framework.
+
+### Quantum framework
+
+We will now see what happens computing the value of the correlation function using the quantum framework.
+
+Consider $\psi^\pm$ ad defined before and consider $a = z$, then, 
+
+$$
+\begin{align*}
+    \langle S_a^{(1)} S_b^{(2)} \rangle &= \langle \psi^\pm | \hat S_a^{(1)} \hat S_b^{(2)} | \psi^\pm \rangle = \langle \psi^\pm | \hat S_z^{(1)} \hat S_b^{(2)} | \psi^\pm \rangle \\
+    &= \frac{1}{2} \left\{ \langle\uparrow_z|^{(1)} \langle \downarrow_z|^{(2)} \hat S_z^{(1)} \hat S_b^{(2)} |\uparrow_z\rangle^{(1)} |\downarrow_z\rangle^{(2)} \pm \underbrace{\langle\uparrow_z|^{(1)} \langle\downarrow_z|^{(2)} \hat S_z^{(1)} \hat S_b^{(2)} |\downarrow_z\rangle^{(1)} |\uparrow_z\rangle^{(2)}}_{0} \pm \underbrace{\langle\downarrow_z|^{(1)} \langle\uparrow_z|^{(2)} \hat S_z^{(1)} \hat S_b^{(2)} |\uparrow_z\rangle^{(1)} |\downarrow_z\rangle^{(2)}}_{0} + \langle\downarrow_z|^{(1)} \langle\uparrow_z|^{(2)} \hat S_z^{(1)} \hat S_b^{(2)} |\downarrow_z\rangle^{(1)} |\uparrow_z\rangle^{(2)} \right\} \\
+    &= \frac{1}{2} \left\{ \underbrace{\langle\uparrow_z| \hat S_z |\uparrow_z\rangle^{(1)}}_{\hbar/2} \langle\downarrow_z| \hat S_b |\downarrow_z\rangle^{(2)} + \underbrace{\langle\downarrow_z| \hat S_z |\downarrow_z\rangle^{(1)}}_{-\hbar/2} \langle\uparrow_z| \hat S_b |\uparrow_z\rangle^{(2)} \right\} \\
+    &= \frac{\hbar}{4} \left\{ \langle\downarrow_z| \hat S_b | \downarrow_z\rangle^{(2)} - \langle\uparrow_z| \hat S_b |\uparrow_z\rangle^{(2)} \right\} \\
+    &= \frac{\hbar}{4} \left\{ -2 \langle \uparrow_z| \hat S_b | \uparrow_z\rangle^{(2)} \right\} \\
+    &= -\frac{\hbar}{2} \langle\uparrow_z| \hat S_b |\uparrow_z\rangle^{(2)} \\
+    &= -\frac{\hbar}{2} \left\{ \underbrace{\langle\uparrow_z| \hat S_x |\uparrow_z\rangle}_{0}\cos\theta_{xb} + \underbrace{\langle\uparrow_z| \hat S_y |\uparrow_z\rangle}_{0}\cos\theta_{yb} + \underbrace{\langle\uparrow_z| \hat S_z |\uparrow_z\rangle}_{\hbar/2}\cos\theta_{zb} \right\} \\
+    &= -\frac{\hbar^2}{4}\cos\theta_{zb}
+\end{align*}
+$$
+
+thus, since for electrons and protons $s^2 = \frac{1}{4}$, then
+
+$$
+C(a, b) = -\cos\theta_{ab}
+$$
+
+This means that, if $\theta_{ab} = 0$ then $C = -1$ and we have perfect anticorelation (so we always measure opposite signs).
+
+It can be demonstrated that, for
+
+$$
+\varphi^\pm = \frac{1}{\sqrt 2} \left( |\uparrow_z\rangle^{(1)} |\uparrow_z\rangle^{(2)} \pm |\downarrow_z\rangle^{(1)} |\downarrow_z\rangle^{(2)} \right)
+$$
+
+it holds that $C = +1$.
+
+### Classical framework (Bell inequality)
+
+We will now see what happend treating the correlation function in the framework of classical mechanics (if the local-realism hypotheses were respected).
+
+If the measurement of one quantity were not able to influence the measurement of another quantity, then, the probabilities of measuring something at one detector is not conditioned by the measurement at the other detector.
+
+From the conservation of momentum, we know that the two spins must be opposite on the same directions. Let $P(S_a^{(1)} = S_b^{(2)})$ be the probability of measuring the same spin along direction $a$ on detector $(1)$ and along direction $b$ on detector $(2)$. Since we are considering only binary observables, it holds that
+
+$$
+\langle S_a^{(1)} S_b^{(2)} \rangle = \hbar^2 s^2 P(S_a^{(1)} = S_a^{(2)}) - \hbar^2 s^2 P(S_a^{(1)} = -S_b^{(2)}) = \hbar^2 s^2 \left( 1 - 2P(S_a^{(1)} = -S_b^{(2)}) \right)
+$$
+
+Since, again, we are considering only a binary observable, one of the three terms on the left hand side of the next inequality must be always verified:
+
+$$
+P(S_a^{(1)} = S_b^{(1)}) + P(S_a^{(1)} = S_c^{(1)}) + P(S_b^{(1)} = S_c^{(1)}) \ge 1
+$$
+
+For the same reason, it holds that
+
+$$
+P(S_a^{(1)} = S_b^{(1)}) = P(S_a^{(1)} = -S_b^{(2)})
+$$
+
+therefore we can rewrite the inequality
+
+$$
+\begin{align*}
+    P(S_a^{(1)} = -S_b^{(2)}) + P(S_a^{(1)} = -S_c^{(2)}) + P(S_b^{(1)} = -S_c^{(2)}) &\ge 1 \\
+    1 - 2P(S_a^{(1)} = -S_b^{(2)}) + 1 - 2P(S_a^{(1)} = -S_c^{(2)}) + 1 - 2P(S_b^{(1)} = -S_c^{(2)}) &\le -2 + 3 = 1 \\
+    \frac{\langle S_a^{(1)} S_b^{(2)} \rangle}{\hbar^2 s^2} + \frac{\langle S_a^{(1)} S_c^{(2)} \rangle}{\hbar^2 s^2} + \frac{\langle S_b^{(1)} S_c^{(2)} \rangle}{\hbar^2 s^2} &\le 1 \\
+    C(a, b) + C(a, c) + C(b, c) &\le 1
+\end{align*}
+$$
+
+This last inequality is called **Bell inequality** and it can be rewritten in multiple equivalent forms:
+
+$$
+\begin{align*}
+    C(a, b) + C(a, -c) + C(b, -c) &\le 1 \\
+    C(a, b) - C(a, c) - C(b, c) &\le 1 \\
+    C(a, b) - C(a, c) &\le 1 + C(b, c) & (\dagger) \\
+\end{align*}
+$$
+
+and again
+
+$$
+\begin{align*}
+    C(-a, b) + C(-a, c) + C(b, c) &\le 1 \\
+    -C(a, b) - C(a, c) + C(b, c) &\le 1 \\
+    -C(a, b) + C(a, c) - C(b, c) &\le 1 \\
+    -C(a, b) + C(a, c) &\le 1 + C(b, c) & (\ddagger)
+\end{align*}
+$$
+
+From $(\dagger)$ and $(\ddagger)$ it follows a stricter version of the Bell inequality:
+
+$$
+|C(a, b) - C(a, c)| \le 1 + C(b, c)
+$$
+
+### Comparison
+
+The Bell inequality must be respected by any theory that respect local realism.
+
+It is easy to see that quantum mechanics does not respect the Bell inequality, therefore it is not a local-realistic theory:
+
+$$
+\left(\theta_{ab}, \theta_{ac}, \theta_{bc}\right) = \left(\frac{\pi}{2}, \frac{\pi}{4}, \frac{\pi}{4} \right) \implies \left| 0 - \frac{\sqrt 2}{2} \right| \le 1 - \frac{\sqrt 2}{2}
+$$
+
+that is not satisfied.
+
+This conclusion have also been proven experimentally.
+
+In 1972, Clauser and Freedman performed an experiment where the binary observable was photon polarization and not spin. Basically, they managed to eccitate a calcium atom to make an electron perform a double jump down from a state with $J = 0$ to another state with $J = 0$, emitting two photons.
+
+Since the total momentum must be conserved, those two photons must have opposite polarization, the two photons must be entangled in such a characteristic. The two scientists saw that the measurements of tho polarization violates the Bell inequality therefore, at least one of the two local-realism hypotheses would need to be dropped.
+
+## Hidden variables theory
+
+As noted before, einstein suggested that there may be some hidden dynamics we have not discovered yet that would let us determine _a priori_ the result of measurements _a priori_. We will now give the proof that this is not the case.
+
+Assume that the measurement result depends on some hidden variables $\xi$, then $S_a^{(1)} = S_a^{(1)}(\xi) = \pm |s|$.
+
+Let $f$ be the probability density function of $\xi$, then
+
+$$
+\langle S_a^{(1)} S_b^{(2)} \rangle = \int S_a^{(1)}(\xi) S_b^{(2)}(\xi) f(\xi) d\xi = -\int S_a^{(1)}(\xi) S_b^{(1)}(\xi) f(\xi) d\xi = -\int S_a(\xi) S_b(\xi) f(\xi) d\xi
+$$
+
+then, it follows that
+
+$$
+\begin{align*}
+    \langle S_a^{(1)} S_b^{(2)} \rangle - \langle S_a^{(1)} S_c^{(2)} \rangle &= -\int S_a(\xi) S_b(\xi) f(\xi) d\xi + \int S_a(\xi) S_c(\xi) f(\xi) d\xi \\
+    &= -\int f(\xi) \left[ S_a(\xi) S_b(\xi) - S_a(\xi) S_c(\xi) \right] d\xi \\
+    &= -\int f(\xi) \left[ S_a(\xi) S_b(\xi) - \frac{4}{\hbar^2} S_a(\xi) S_b(\xi)^2 S_c(\xi) \right] d\xi \\
+    &= -\int f(\xi) S_a(\xi) S_b(\xi) \left[ 1 - \frac{4}{\hbar^2} S_b(\xi) S_c(\xi) \right] d\xi \\
+\end{align*}
+$$
+
+therefore
+
+$$
+\begin{align*}
+    \left| \langle S_a^{(1)} S_b^{(2)} \rangle - \langle S_a^{(1)} S_c^{(2)} \rangle \right| &\le \int \underbrace{|f(\xi)|}_{\ge 0} \underbrace{|S_a(\xi) S_b(\xi)|}_{0 \lt \square \lt \hbar^2 / 4 } \left[ 1 - \frac{4}{\hbar^2} S_b(\xi) S_c(\xi) \right] d\xi \\
+    &\le \int f(\xi) \frac{\hbar^2}{4} \left[ 1 - \frac{4}{\hbar^2} S_b(\xi) S_c(\xi) \right] d\xi \\
+    &= \frac{\hbar^2}{2} \int f(\xi) d\xi - \underbrace{\int f(\xi) S_b(\xi) S_c(\xi) d\xi}_{\langle S_b S_c \rangle}
+\end{align*}
+$$
+
+thus
+
+$$
+|\langle S_a^{(1)} S_b^{(2)} \rangle - \langle S_a^{(1)} S_c^{(2)} \rangle| \le \frac{\hbar^2}{4} - \langle S_b^{(1)} S_c^{(1)} \rangle = \frac{\hbar^2}{4} + \langle S_b^{(1)} S_c^{(2)} \rangle
+$$
+
+hence
+
+$$
+\left| \frac{\langle S_a^{(1)} S_b^{(2)} \rangle}{\hbar^2/4} - \frac{\langle S_a^{(1)} S_c^{(2)} \rangle}{\hbar^2/4} \right| \le 1 - \frac{\langle S_b^{(1)} S_c^{(2)} \rangle}{\hbar^2/4} \\
+|C(a, b) - C(a, c)| \le 1 + C(b, c)
+$$
+
+We got Bell's inequality again even considering hidden variables, therefore they are not enough to bring back the local-realism into quantum mechanics.
+
+## Quantum communication
+
+We already said that allowing superluminal communication would mean the possibility of altering the past before it happens.
+
+Consider the pion decay and give, for example, the electron to Alice and the proton to Bob.
+
+Now assume that Alice measures the spin so that the wave function collapse. This may happen either before or after Bob has performed the same measurement on his particle. Either ways, Bob will always measure 50% spin up and 50% spin down and cannot know if alice has or has not already performed the measurement so there is no way to send information by performing an irreversible operation.
+
+Now assume that Alice performs some reversible operation on her particle. We can measure the expectation value of the spin measured by Bob after the operation has been performed:
+
+$$
+\begin{align*}
+    \langle S_z^{(B)} \rangle &= \langle \mathcal{U^{(A)}} \psi^\pm | \hat S_z^{(B)} | \mathcal{U^{(A)}} \psi^\pm \rangle \\
+    &= \langle \psi^\pm | \left[ \mathcal{U}^{(A)} \right]^H \hat S_z^{(B)} \mathcal{U}^{(A)} | \psi^\pm \rangle \\
+    &= \langle \psi^\pm | \hat S_z^{(B)} | \psi^\pm \rangle \\
+    &= \langle S_z^{(B)} \rangle
+\end{align*}
+$$
+
+where we used the fact that $\mathcal{U}^{(A)}$ and $\hat S_z^{(B)}$ commute (since they operate on different Hilbert spaces) and the fact that $\mathcal{U}^{(A)}$ is unitary.
+
+As we can see, even with reversible operations, there is no way for Alice to influence the expectation value of Bob's measurements.
+
+Quantum communications can be used to achieve secure data exchange.
+
+Assume that Alice entangles a pair of particles and sends one to Bob and assume that a third party (Eve) is listening on the channel (where "listening" means "measuring the particles to intercept information), capturing the particles directed to Bob, measuring them, and sending to Bob a particle with the value she has observed.
+
+Let $S(\xi$)$ be the result of the measurement performed by Eve, then we can express the expectation values of the measurement performed by Alice and Bob as
+
+$$
+\langle S_a^{(A)} \rangle = -S(\xi) \cos\theta_{a\xi} \qquad \langle S_b^{(B)} \rangle = -S(\xi) \cos\theta_{b\xi}
+$$
+
+The measurement performed by Eve is like an hidden variable: when Alice and Bob then performs a correlation check, they see that they never violate The Bell inequality, meaning that there is _something_ wrong.
 
 _To be continued._
