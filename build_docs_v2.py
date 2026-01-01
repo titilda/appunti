@@ -27,7 +27,7 @@ def build_docs_and_index():
                         "--template",
                         "template.html",
                         "--toc",
-                        "--katex=https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/",
+                        "--katex=https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/",
                         "--metadata",
                         "toc-title=Indice",
                         "--metadata",
