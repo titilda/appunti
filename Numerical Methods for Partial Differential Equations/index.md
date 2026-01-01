@@ -64,7 +64,7 @@ A problem can be a **Dirichlet problem** (if it has only Dirichlet conditions), 
 $L$ is a differential operator called **elliptic operator** and it is defined as a sum of three terms (in order, the **diffusion** term, the **advection/convection/transport** term and the **reaction** term):
 
 $$
-Lu \overset{\Delta}{=} -\operatorname{div}(\mu \nabla u) + \vec{b} \nabla u + \sigma u
+Lu \overset{\Delta}{=} -\operatorname{div}(\mu \nabla u) + \vec{b} \cdot \nabla u + \sigma u
 $$
 
 For this reason $L$ is also called **advection/diffusion/reaction** (ADR) operator.
@@ -124,7 +124,7 @@ The term in the square brackets has to be evaluated immediately: it is $0$ on th
 The weak problem is then written as follows:
 
 $$
-\text{Find $u \in V$ s.t. } \underbrace{\int_\Omega (\mu u' v' + b u v' + \sigma u v) dx}_{a(u, v)} = \underbrace{\int_Omega f v \, dx+ \sum \gamma v(x_D)}_{F(v)} \qquad \forall v \in V 
+\text{Find $u \in V$ s.t. } \underbrace{\int_\Omega (\mu u' v' + b u' v + \sigma u v) dx}_{a(u, v)} = \underbrace{\int_\Omega f v \, dx+ \sum \gamma v(x_D)}_{F(v)} \qquad \forall v \in V 
 $$
 
 that is equivalent to
@@ -201,7 +201,7 @@ Multidimensional PDEs are just like monodimensional PDEs, but multidimensional:
 
 $$
 \begin{cases}
-  Lu := -\operatorname{div}(\mu \nabla u) + \vec{b} \nabla u + \sigma v \\
+  Lu := -\operatorname{div}(\mu \nabla u) + \vec{b} \cdot \nabla u + \sigma u = f \\
   u = 0 & \text{on } \Gamma_D \\
   \mu \frac{\partial u}{\partial n} = \phi & \text{on } \Gamma_N
 \end{cases}
@@ -210,7 +210,7 @@ $$
 Integrals become multidimensional, derivatives become gradients and the integration by parts is performed through the **Green formula**:
 
 $$
--\int_{\Omega} \operatorname{div}(\mu \nabla u) v= \int_{\Omega} mu \nabla u \nabla v - \int_{\partial\Omega} \mu \underbrace{\nabla u \vec{n}}_{\frac{\partial u}{\partial n}} v
+-\int_{\Omega} \operatorname{div}(\mu \nabla u) v = \int_{\Omega} \mu \nabla u \cdot \nabla v - \int_{\partial\Omega} \mu \frac{\partial u}{\partial n} v
 $$
 
 _Massaging the problem_ (if you get this joke, you are authorised to open the source of this file and to add your name in the comment below this paragraph) as in the monodimensional case and using the Green formula instead of the integration by parts, we can write that
@@ -222,7 +222,7 @@ Add your name here:
 
 $$
 \begin{align*}
-  a(u, v) &= \int_{\Omega} \mu \nabla u \nabla v  \int_{\Omega} \vec{b} \nabla u v + \int_{\Omega} \sigma u v \\
+  a(u, v) &= \int_{\Omega} \mu \nabla u \cdot \nabla v + \int_{\Omega} \vec{b} \cdot \nabla u v + \int_{\Omega} \sigma u v \\
   F(v) &= \int_{\Omega} fv + \int_{\partial\Omega} \mu \frac{\partial u}{\partial n} v \\
   &= \int_{\Omega} fv + \underbrace{\int_{\Gamma_D} \mu \frac{\partial u}{\partial n} v}_{=0} + \int_{\Gamma_N} \underbrace{\mu \frac{\partial u}{\partial n}}_{\psi} v \\
   &= \int_{\Omega} fv + \int_{\Gamma_N} \psi v
@@ -442,9 +442,18 @@ $$
 \end{cases}
 $$
 
-where $L$ is the elliptic operator already defined for elliptic PDEs and so are the boundary conditions, except for the fact that they must be true $\forall t$. The solution $u$ also depends on time.
+where $L$ is the elliptic operator already defined for elliptic PDEs and so are the boundary conditions, except for the fact that they must be true $\forall t$. The solution $u$ also depends on time: $u = u(t, x)$.
 
-The time-dependent domain where the PArabolid PDE applies is defined as $Q = \Omega \times (0, T)$ and, technically, it is a cylinder.
+The time-dependent domain where the Parabolic PDE applies is defined as $Q = \Omega \times (0, T)$ and, technically, it is a cylinder.
+
+As usual, there are two types of boundary conditions: **Dirichlet** and **Neumann**:
+
+$$
+\begin{cases}
+  u(x, t) = g(x, t) & x \in \Gamma_D \\
+  \frac{\partial u(x, t)}{\partial n} = q(x, t) & x \in \Gamma_N
+\end{cases}
+$$
 
 The procedure to get to "something that can be computed" is really similar to the one used for elliptic PDEs.
 
@@ -461,9 +470,9 @@ flowchart LR
 In order to get to the weak parabolic problem we first multiply by a test function $v$ and then integrate, moving all the known terms to the right hand side of the equation.
 
 $$
-\frac{\partial u}{\partial t} -\operatorname{div}(\mu \nabla u) + \vec{b} \nabla u + \sigma u = f \\
-\int_\Omega \frac{\partial u}{\partial t} v \ dx - \int_\Omega \operatorname{div}(\mu \nabla u) v \ dx + \int_\Omega \vec{b} \nabla u v \ dx + \int_\Omega \sigma uv = \int_\Omega fv \ dx \qquad \forall v \in V\\
-\int_\Omega \frac{\partial u}{\partial t} v \ dx + \underbrace{\int_\Omega \mu \nabla u \nabla v + \int_\Omega \vec{b} \nabla u v \ dx + \int_\Omega \sigma u v \ dx}_{a(u, v)} = \underbrace{\int_\Omega f v \ dx + \int_{\Gamma_N} \psi v \ d\gamma}_{F(v)}  \qquad \forall v \in V \\
+\frac{\partial u}{\partial t} -\operatorname{div}(\mu \nabla u) + \vec{b} \cdot \nabla u + \sigma u = f \\
+\int_\Omega \frac{\partial u}{\partial t} v \ dx - \int_\Omega \operatorname{div}(\mu \nabla u) v \ dx + \int_\Omega \vec{b} \cdot \nabla u v \ dx + \int_\Omega \sigma uv = \int_\Omega fv \ dx \qquad \forall v \in V\\
+\int_\Omega \frac{\partial u}{\partial t} v \ dx + \underbrace{\int_\Omega \mu \nabla u \cdot \nabla v + \int_\Omega \vec{b} \cdot \nabla u v \ dx + \int_\Omega \sigma u v \ dx}_{a(u, v)} = \underbrace{\int_\Omega f v \ dx + \int_{\Gamma_N} \psi v \ d\gamma}_{F(v)}  \qquad \forall v \in V \\
 \int_\Omega \frac{\partial u}{\partial t} v \ dx  + a(u, v) = F(v) \qquad \forall v \in V
 $$
 
@@ -487,16 +496,22 @@ $$
 Knowing that 
 
 $$
-v_h(x) = \sum_{j = 1}^{N_h} v_j \varphi_j(x)
+u_h(x, t) = \sum_{j = 1}^{N_h} u_j(t) \varphi_j(x)
 $$
 
 we can apply even more algebraic transformations:
 
 $$
-\int_\Omega \frac{\partial}{\partial t} \left( \sum_{j=1}^{N_h} u_j(t) \varphi_j \right) \varphi_i \ dx + a\left( \sum_{j = 1}^{N_h} u_j(t \varphi_j, \varphi_i) \right) = F(\varphi_i) \qquad \forall i = 1, 2, \dots, N_h \\
+\int_\Omega \frac{\partial}{\partial t} \left( \sum_{j=1}^{N_h} u_j(t) \varphi_j \right) \varphi_i \ dx + a\left( \sum_{j = 1}^{N_h} u_j(t) \varphi_j, \varphi_i \right) = F(\varphi_i) \qquad \forall i = 1, 2, \dots, N_h \\
 \sum_{j=1}^{N_h} \frac{\partial}{\partial t} u_j(t) \int_\Omega \varphi_j \varphi_i \ dx + \sum_{j=1}^{N_h} u_j(t) a(\varphi_j, \varphi_i) = F(\varphi_i) \qquad \forall i = 1, 2, \dots, N_h \\
 M \frac{\partial \vec{u}}{\partial t} + A \vec{u} = \vec{F}
 $$
+
+::: {.callout .callout-note title="Currying"}
+In order to better understand what happens here, remember that $u_j(t)$ is defined as the partial application of $t$ to $u_h(x, t)$, therefore it is just a function of $x$.
+
+Also note that "\forall v_h \in V_h" can be replaced by "for all the functions $\varphi_i$ in the basis of $V_h$".
+:::
 
 In the last step we got to a system of ordinary differential equations (the actual **Galerkin approximation**).
 
@@ -781,6 +796,8 @@ $$
 
 Lets call $P_1$ the problem on $\Omega_1$ and $P_2$ the one on $\Omega_2$.
 
+$P_1$ is a Dirichlet problem, $P_2$ is a Neumann problem, hence the name of the iterative method.
+
 The DN-DD method is sequential: $u_2^{(k)}$ (from $P_2$) depends on $u_1^{(k)}$ (from $P_1$) which in turn depends on $u_2^{(k-1)}$ (from $P_2$ on the previous iteration) and so on.
 
 We modify $P_2$ to make the two $P_1$ and $P_2$ independent so that they can be solved in parallel (in red the changes to the algorithm):
@@ -807,38 +824,97 @@ $$
 
 where $\theta > 0$ is called **relaxation parameter** and can be chosen arbitrarily.
 
-With $0 \lt \theta \lt \theta_{max}$, convergence is guaranteed.
+With $0 \lt \theta \lt \theta_{max} \lt 1$, convergence is guaranteed.
+
+::: {.callout .callout-definition title="Convergence"}
+In general, for a problem that has been split into $N$ subdomains, **convergence** means that
+
+$$
+\lim_{k \to \infty} u_i^{(k)} = u_i = u|_{\Omega_i} \qquad \forall i = 1, 2, \dots, N
+$$
+:::
 
 ::: {.callout .callout-note title="Single iteration convergence"}
 With a 1D problem, splitting it in two domains, it exists $\theta_{opt}$ s.t. the algorithm converges in one single iteration.
 :::
 
+The same procedure is valid in the multidimensional generalization.
+
+## Neumann-Neumann algorithm
+
+There exists variations of the Dirichlet-Neumann algorithm that may outperform it in specific cases. The **Neumann-Neumann** algorithm outperforms the DN algorithm in the case of a large numbers of subdomains.
+
+The algorithm is structured as follows. First, for each subdomain $i$, we solve
+
+$$
+\begin{cases}
+  Lu_i^{(k+1)} = f & \Omega_i \\
+  u_i^{(k+1)} = \lambda^{(k)} & \Gamma \\
+  u_i^{(k+1)} = 0 & \partial\Gamma_i\backslash\Gamma
+\end{cases}
+$$
+
+_to be continued_
+
+<!-- 1:23:30 -->
+
+## Optimality and scalability
+
+::: {.callout .callout-property title="Optimality"}
+With the finite element method, the rate of convergence is not dependent of $h$.
+:::
+
+While this method is optimal, it is not scalable.
+
+Given a triangulation on $\Omega$, we call **active nodes** the nodes whose degrees of freedom are to be determined in order to get to the solution.
+
+All the active nodes can be split into **interface nodes** (that, intuitively, are nodes located on the interface between two subdomains) and **interior nodes** (all the other nodes).
+
+Note that we do not have any active node on Dirichlet boundaries (the solution at those points is already known).
+
+The solution $\vec{u}$ of a PDE problem can be interpreted as the vector of all the nodal values (i.e. the solution evaluated in the coordinates of the active nodes) of $\Omega$.
+
+Consider a 2-subdomains problem. Let $u_1$, $u_2$ and $\lambda$ be the vector of the local solution on $\Omega_1$, $\Omega_2$ and $\Gamma$ respectively, then
+
+$$
+\vec{u} = \begin{bmatrix}
+  \vec{u_1} \\ \vec{u_2} \\ \vec{u_3}
+\end{bmatrix}
+$$
+
+_TBC_
+
 # Appendix
 
-## Normal derivative
+## Nabla operator
 
-Let $v : \Omega \sub \mathbb{R}^d \to \mathbb{R}$, then the **normal derivative** of $v$ is defined as
+The **nabla** operator (written as $\nabla$) is used to define multiple types of generalized n-dimensional derivatives.
 
-$$
-\frac{\partial v}{\partial n} = \nabla v \cdot n
-$$
-
-where $n$ is the normal direction of $v$ in each point.
-
-## Divergence
-
-Let $\vec{w} \in \mathbb{R}^d, d \in \mathbb{N}^+$ then the **divergence operator** applied to $\vec{w}$ is defined as
+Formally speaking, this operator is defined as
 
 $$
-\operatorname{div}(\vec{w}) = \sum_{i = 1}^d \frac{\partial w_i}{\partial x_i}
+\nabla = \sum_{i=1}^{d} \vec{u_i} \frac{\partial}{\partial x_i}
 $$
 
-## Gradient
+This operator can be used to define **divergence**, **gradient**, **curl** (or **rotor**), **laplacian** and **normal derivative**.
+
+All those types of derivatives, taken on a monodimensional domain, correspond to the simple derivative (you can convince yourself that this is true by explicitly computing a few of those in $d = 1$).
+
+### Divergence
+
+Let $\vec{w} : \mathbb{R}^d \to \mathbb{R}^d, d \in \mathbb{N}^+$ then the **divergence operator** applied to $\vec{w}$ is defined as
+
+$$
+\operatorname{div}(\vec{w}) = \nabla \cdot \vec{w} = 
+\left( \sum_{i=1}^d \vec{u_i} \frac{\partial}{\partial x_i} \right) \cdot \left( \sum_{j = 1}^d \vec{u_j} w_j \right) = \sum_{i=1}^d \sum_{j_1}^d (\vec{u_i} \cdot \vec{u_j}) \frac{\partial}{\partial x_i} w_j = \sum_{i = 1}^d \frac{\partial w_i}{\partial x_i} \in \mathbb{R}
+$$
+
+### Gradient
 
 Let $v : \Omega \sub \mathbb{R}^d \to \mathbb{R}, d \in\mathbb{N}^+$, then the **gradient** of $v$ is defined as
 
 $$
-\nabla v = \begin{bmatrix}
+\operatorname{grad}(\vec{v}) = \nabla v = \sum_{i = 1}^{d} \vec{u_i} \frac{\partial}{\partial x_i} v = \begin{bmatrix}
   \frac{\partial v}{\partial x_1} \\
   \frac{\partial v}{\partial x_2} \\
   \vdots \\
@@ -848,13 +924,23 @@ $$
 
 Let $\vec{x} \in \Omega$ then $\nabla v(\vec{x})$ gives the direction of steepest ascent. If $\nabla v(\vec{x}) = 0$ then $\vec{x}$ can be either a local maximum, a local minimum or a saddle point.
 
-## Laplacian
+### Laplacian
 
-Let $v : \Omega \sub \mathbb{R}^d \to \mathbb{R}, d \in \mathbb{N}^+$, then the **laplacian** of $v$ is defined as
+Let $\vec{v} : \Omega \sub \mathbb{R}^d \to \mathbb{R}, d \in \mathbb{N}^+$, then the **laplacian** of $v$ is defined as
 
 $$
-\Delta v = \sum_{i = 1}^d \frac{\partial^2 v}{\partial x_i^2}
+\Delta \vec{v} = \nabla \cdot (\nabla v) = \left( \sum_{i=1}^{d} \vec{u_i} \frac{\partial}{\partial x_i} \right) \cdot \left( \sum_{j = 1}^{d} \vec{u_j} \frac{\partial \vec{v}}{\partial x_i} \right) = \sum_{i = 1}^d (\vec{i_j} \cdot \vec{u_j}) \frac{\partial}{\partial x_i} \frac{\partial v}{\partial x_i} = \sum_{i = 1}^d \frac{\partial^2 v}{\partial x_i^2}
 $$
+
+## Normal derivative
+
+Let $v : \Omega \sub \mathbb{R}^d \to \mathbb{R}$, then the **normal derivative** of $v$ is defined as
+
+$$
+\frac{\partial \vec{v}}{\partial n} = \nabla \vec{v} \cdot n
+$$
+
+where $n$ is the normal direction of $v$ in each point.
 
 ## Distributional derivative
 
@@ -912,9 +998,33 @@ $$
 \exists \lambda \ge 0, \alpha \gt 0 : a(v, v) + \lambda \|v\|_{L^2}^2 \ge \alpha \|v\|_V^2
 $$
 
+A form $A$ is called **continuous** if
+
+$$
+\exists M \gt 0 : |a(u, v)| \le M \|u\|_V \|v\|_V
+$$
+
+A form $A$ is called **positive definite** if
+
+$$
+a(v, v) \gt 0
+ $$
+
 ## Functionals
 
-_TODO_
+A **functional** is a relation $f : V \mapsto \mathbb{R}$ (where $V$ is a function space).
+
+A functional $F$ is called **linear** if
+
+$$
+F(\lambda u + \mu v) = \lambda F(u) + \mu F(v)
+$$
+
+A functional $F $ is called **bounded** if
+
+$$
+\exist C \gt 0 : |F(v)| \le C\|v\|_V
+$$
 
 ## Cauchy-Schwarz inequality
 
