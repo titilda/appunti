@@ -3108,12 +3108,10 @@ Quantum communications can be used to achieve secure data exchange.
 
 Assume that Alice entangles a pair of particles and sends one to Bob and assume that a third party (Eve) is listening on the channel (where "listening" means "measuring the particles to intercept information), capturing the particles directed to Bob, measuring them, and sending to Bob a particle with the value she has observed.
 
-Let $S(\xi$)$ be the result of the measurement performed by Eve, then we can express the expectation values of the measurement performed by Alice and Bob as
+Let $S(\xi)$ be the result of the measurement performed by Eve, then we can express the expectation values of the measurement performed by Alice and Bob as
 
 $$
 \langle S_a^{(A)} \rangle = -S(\xi) \cos\theta_{a\xi} \qquad \langle S_b^{(B)} \rangle = -S(\xi) \cos\theta_{b\xi}
 $$
 
 The measurement performed by Eve is like an hidden variable: when Alice and Bob then performs a correlation check, they see that they never violate The Bell inequality, meaning that there is _something_ wrong.
-
-_To be continued._

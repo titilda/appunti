@@ -882,8 +882,11 @@ $$
 \end{bmatrix}
 $$
 
+<<<<<<< HEAD
 _TBC_
 
+=======
+>>>>>>> 923b79448b08e56cae9ed2f99af9d19c122f3923
 # Appendix
 
 ## Nabla operator
@@ -898,6 +901,7 @@ $$
 
 This operator can be used to define **divergence**, **gradient**, **curl** (or **rotor**), **laplacian** and **normal derivative**.
 
+<<<<<<< HEAD
 All those types of derivatives, taken on a monodimensional domain, correspond to the simple derivative (you can convince yourself that this is true by explicitly computing a few of those in $d = 1$).
 
 ### Divergence
@@ -909,6 +913,29 @@ $$
 \left( \sum_{i=1}^d \vec{u_i} \frac{\partial}{\partial x_i} \right) \cdot \left( \sum_{j = 1}^d \vec{u_j} w_j \right) = \sum_{i=1}^d \sum_{j_1}^d (\vec{u_i} \cdot \vec{u_j}) \frac{\partial}{\partial x_i} w_j = \sum_{i = 1}^d \frac{\partial w_i}{\partial x_i} \in \mathbb{R}
 $$
 
+=======
+## Nabla operator
+
+The **nabla** operator (written as $\nabla$) is used to define multiple types of generalized n-dimensional derivatives.
+
+Formally speaking, this operator is defined as
+
+$$
+\nabla = \sum_{i=1}^{d} \vec{u_i} \frac{\partial}{\partial x_i}
+$$
+
+This operator can be used to define **divergence**, **gradient**, **curl** (or **rotor**) and **laplacian**.
+
+### Divergence
+
+Let $\vec{w} : \mathbb{R}^d \to \mathbb{R}^d, d \in \mathbb{N}^+$ then the **divergence operator** applied to $\vec{w}$ is defined as
+
+$$
+\operatorname{div}(\vec{w}) = \nabla \cdot \vec{w} = 
+\left( \sum_{i=1}^d \vec{u_i} \frac{\partial}{\partial x_i} \right) \cdot \left( \sum_{j = 1}^d \vec{u_j} w_j \right) = \sum_{i=1}^d \sum_{j_1}^d (\vec{u_i} \cdot \vec{u_j}) \frac{\partial}{\partial x_i} w_j = \sum_{i = 1}^d \frac{\partial w_i}{\partial x_i} \in \mathbb{R}
+$$
+
+>>>>>>> 923b79448b08e56cae9ed2f99af9d19c122f3923
 ### Gradient
 
 Let $v : \Omega \sub \mathbb{R}^d \to \mathbb{R}, d \in\mathbb{N}^+$, then the **gradient** of $v$ is defined as
