@@ -781,6 +781,8 @@ $$
 
 Lets call $P_1$ the problem on $\Omega_1$ and $P_2$ the one on $\Omega_2$.
 
+$P_1$ is a Dirichlet problem, $P_2$ is a Neumann problem, hence the name of the iterative method.
+
 The DN-DD method is sequential: $u_2^{(k)}$ (from $P_2$) depends on $u_1^{(k)}$ (from $P_1$) which in turn depends on $u_2^{(k-1)}$ (from $P_2$ on the previous iteration) and so on.
 
 We modify $P_2$ to make the two $P_1$ and $P_2$ independent so that they can be solved in parallel (in red the changes to the algorithm):
@@ -807,11 +809,63 @@ $$
 
 where $\theta > 0$ is called **relaxation parameter** and can be chosen arbitrarily.
 
-With $0 \lt \theta \lt \theta_{max}$, convergence is guaranteed.
+With $0 \lt \theta \lt \theta_{max} \lt 1$, convergence is guaranteed.
+
+::: {.callout .callout-definition title="Convergence"}
+In general, for a problem that has been split into $N$ subdomains, **convergence** means that
+
+$$
+\lim_{k \to \infty} u_i^{(k)} = u_i = u|_{\Omega_i} \qquad \forall i = 1, 2, \dots, N
+$$
+:::
 
 ::: {.callout .callout-note title="Single iteration convergence"}
 With a 1D problem, splitting it in two domains, it exists $\theta_{opt}$ s.t. the algorithm converges in one single iteration.
 :::
+
+The same procedure is valid in the multidimensional generalization.
+
+## Neumann-Neumann algorithm
+
+There exists variations of the Dirichlet-Neumann algorithm that may outperform it in specific cases. The **Neumann-Neumann** algorithm outperforms the DN algorithm in the case of a large numbers of subdomains.
+
+The algorithm is structured as follows. First, for each subdomain $i$, we solve
+
+$$
+\begin{cases}
+  Lu_i^{(k+1)} = f & \Omega_i \\
+  u_i^{(k+1)} = \lambda^{(k)} & \Gamma \\
+  u_i^{(k+1)} = 0 & \partial\Gamma_i\backslash\Gamma
+\end{cases}
+$$
+
+_to be continued_
+
+<!-- 1:23:30 -->
+
+## Optimality and scalability
+
+::: {.callout .callout-property title="Optimality"}
+With the finite element method, the rate of convergence is not dependent of $h$.
+:::
+
+While this method is optimal, it is not scalable.
+
+Given a triangulation on $\Omega$, we call **active nodes** the nodes whose degrees of freedom are to be determined in order to get to the solution.
+
+All the active nodes can be split into **interface nodes** (that, intuitively, are nodes located on the interface between two subdomains) and **interior nodes** (all the other nodes).
+
+Note that we do not have any active node on Dirichlet boundaries (the solution at those points is already known).
+
+The solution $\vec{u}$ of a PDE problem can be interpreted as the vector of all the nodal values (i.e. the solution evaluated in the coordinates of the active nodes) of $\Omega$.
+
+Consider a 2-subdomains problem. Let $u_1$, $u_2$ and $\lambda$ be the vector of the local solution on $\Omega_1$, $\Omega_2$ and $\Gamma$ respectively, then
+
+$$
+\vec{u} = \begin{bmatrix}
+  \vec{u_1} \\ \vec{u_2} \\ \vec{u_3}
+\end{bmatrix}
+$$
 
 # Appendix
 
@@ -825,20 +879,33 @@ $$
 
 where $n$ is the normal direction of $v$ in each point.
 
-## Divergence
+## Nabla operator
 
-Let $\vec{w} \in \mathbb{R}^d, d \in \mathbb{N}^+$ then the **divergence operator** applied to $\vec{w}$ is defined as
+The **nabla** operator (written as $\nabla$) is used to define multiple types of generalized n-dimensional derivatives.
+
+Formally speaking, this operator is defined as
 
 $$
-\operatorname{div}(\vec{w}) = \sum_{i = 1}^d \frac{\partial w_i}{\partial x_i}
+\nabla = \sum_{i=1}^{d} \vec{u_i} \frac{\partial}{\partial x_i}
 $$
 
-## Gradient
+This operator can be used to define **divergence**, **gradient**, **curl** (or **rotor**) and **laplacian**.
+
+### Divergence
+
+Let $\vec{w} : \mathbb{R}^d \to \mathbb{R}^d, d \in \mathbb{N}^+$ then the **divergence operator** applied to $\vec{w}$ is defined as
+
+$$
+\operatorname{div}(\vec{w}) = \nabla \cdot \vec{w} = 
+\left( \sum_{i=1}^d \vec{u_i} \frac{\partial}{\partial x_i} \right) \cdot \left( \sum_{j = 1}^d \vec{u_j} w_j \right) = \sum_{i=1}^d \sum_{j_1}^d (\vec{u_i} \cdot \vec{u_j}) \frac{\partial}{\partial x_i} w_j = \sum_{i = 1}^d \frac{\partial w_i}{\partial x_i} \in \mathbb{R}
+$$
+
+### Gradient
 
 Let $v : \Omega \sub \mathbb{R}^d \to \mathbb{R}, d \in\mathbb{N}^+$, then the **gradient** of $v$ is defined as
 
 $$
-\nabla v = \begin{bmatrix}
+\operatorname{grad}(\vec{v}) = \nabla v = \sum_{i = 1}^{d} \vec{u_i} \frac{\partial}{\partial x_i} v = \begin{bmatrix}
   \frac{\partial v}{\partial x_1} \\
   \frac{\partial v}{\partial x_2} \\
   \vdots \\
@@ -848,12 +915,12 @@ $$
 
 Let $\vec{x} \in \Omega$ then $\nabla v(\vec{x})$ gives the direction of steepest ascent. If $\nabla v(\vec{x}) = 0$ then $\vec{x}$ can be either a local maximum, a local minimum or a saddle point.
 
-## Laplacian
+### Laplacian
 
-Let $v : \Omega \sub \mathbb{R}^d \to \mathbb{R}, d \in \mathbb{N}^+$, then the **laplacian** of $v$ is defined as
+Let $\vec{v} : \Omega \sub \mathbb{R}^d \to \mathbb{R}, d \in \mathbb{N}^+$, then the **laplacian** of $v$ is defined as
 
 $$
-\Delta v = \sum_{i = 1}^d \frac{\partial^2 v}{\partial x_i^2}
+\Delta \vec{v} = \nabla \cdot (\nabla v) = \left( \sum_{i=1}^{d} \vec{u_i} \frac{\partial}{\partial x_i} \right) \cdot \left( \sum_{j = 1}^{d} \vec{u_j} \frac{\partial \vec{v}}{\partial x_i} \right) = \sum_{i = 1}^d (\vec{i_j} \cdot \vec{u_j}) \frac{\partial}{\partial x_i} \frac{\partial v}{\partial x_i} = \sum_{i = 1}^d \frac{\partial^2 v}{\partial x_i^2}
 $$
 
 ## Distributional derivative
@@ -912,9 +979,33 @@ $$
 \exists \lambda \ge 0, \alpha \gt 0 : a(v, v) + \lambda \|v\|_{L^2}^2 \ge \alpha \|v\|_V^2
 $$
 
+A form $A$ is called **continuous** if
+
+$$
+\exists M \gt 0 : |a(u, v)| \le M \|u\|_V \|v\|_V
+$$
+
+A form $A$ is called **positive definite** if
+
+$$
+a(v, v) \gt 0
+ $$
+
 ## Functionals
 
-_TODO_
+A **functional** is a relation $f : V \mapsto \mathbb{R}$ (where $V$ is a function space).
+
+A functional $F$ is called **linear** if
+
+$$
+F(\lambda u + \mu v) = \lambda F(u) + \mu F(v)
+$$
+
+A functional $F $ is called **bounded** if
+
+$$
+\exist C \gt 0 : |F(v)| \le C\|v\|_V
+$$
 
 ## Cauchy-Schwarz inequality
 
