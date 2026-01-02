@@ -846,22 +846,30 @@ There exists variations of the Dirichlet-Neumann algorithm that may outperform i
 
 <!-- TODO: understand how to generalize to an arbitrary number of subdomains -->
 
-In the case of two subdomains, the algorithm is structured as follows. First, for each subdomain $i \in \{1, 2\}$, we solve
+The algorithm is structured as follows.
+
+Let $\Gamma_{ij}$ be the interface between the $i$-th and $j$-th subdomain, then we define the **global interface skeleton** and the **subdomain interfaces** as
+
+$$
+\Gamma \overset{\Delta}{=} \bigcup_{i \lt j} \Gamma_{ij} \qquad \Gamma_i \overset{\Delta}{=} \partial \Omega_i \cap \Gamma = \bigcup_j \Gamma_{ij}
+$$
+
+First, for each subdomain $i$, we solve
 
 $$
 \begin{cases}
   Lu_i^{(k+1)} = f & \Omega_i \\
-  u_i^{(k+1)} = \lambda^{(k)} & \Gamma \\
+  u_i^{(k+1)} = \lambda^{(k)} & \Gamma_i \\
   u_i^{(k+1)} = 0 & \partial\Omega_i\backslash\Gamma
 \end{cases}
 $$
 
-then, for each subdomain $i \in \{1, 2\}$ we solve
+then, for each subdomain $i$ we solve
 
 $$
 \begin{cases}
   L\psi_i^{(k+1)} = 0 & \Omega_i \\
-  \frac{\partial \psi_i^{(k+1)}}{\partial n} = \frac{\partial u_1^{(k+1)}}{\partial n} - \frac{\partial u_2^{(k+1)}}{\partial n} & \Gamma \\
+  \frac{\partial \psi_i^{(k+1)}}{\partial n} = \frac{\partial u_i^{(k+1)}}{\partial n} - \sum\limits_j\frac{\partial u_j^{(k+1)}}{\partial n} & \Gamma_i \\
   \psi_i^{(k+1)} = 0 & \partial\Omega_i\backslash\Gamma
 \end{cases}
 $$
@@ -869,7 +877,7 @@ $$
 where
 
 $$
-\lambda^{(k+1)} = \lambda^{(k)} - \theta \left( \sigma_1 \psi_{1|\Gamma}^{(k+1)} - \sigma_2 \psi_{2|\Gamma}^{(k+1)}\right)
+\lambda^{(k+1)} = \lambda^{(k)} - \theta \sum_i \sigma_i \psi_{i|\Gamma}^{(k+1)}
 $$
 
 In practice, the first step goes towards the direction of continuity of the solution while the second goes towards the direction of continuity of the derivative.
