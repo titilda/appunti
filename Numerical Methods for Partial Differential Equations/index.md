@@ -510,7 +510,7 @@ $$
 ::: {.callout .callout-note title="Currying"}
 In order to better understand what happens here, remember that $u_j(t)$ is defined as the partial application of $t$ to $u_h(x, t)$, therefore it is just a function of $x$.
 
-Also note that "\forall v_h \in V_h" can be replaced by "for all the functions $\varphi_i$ in the basis of $V_h$".
+Also note that $\forall v_h \in V_h$ can be replaced by "for all the functions $\varphi_i$ in the basis of $V_h$".
 :::
 
 In the last step we got to a system of ordinary differential equations (the actual **Galerkin approximation**).
@@ -602,7 +602,7 @@ $$
 $$
 
 ::: {.callout .callout-example title="Unconditional stability of the backward Euler method"}
-Assume for simplicity that $F = 0$ and that $\theta = 1$ (backwrd Euler). As we want to use coercivity, we take $a(u_h^{k+1}, u_h^{k+1})$.
+Assume for simplicity that $F = 0$ and that $\theta = 1$ (backward Euler). As we want to use coercivity, we take $a(u_h^{k+1}, u_h^{k+1})$.
 
 $$
 (u_h^{k+1}, u_h^{k+1}) + \Delta t \underbrace{a(u_h^{k+1}, u_h^{k+1})}_{\ge \alpha \|u_h^{k+1}\|_V^2} = (u_h^k, u_h^{k+1}) \\
@@ -663,7 +663,7 @@ $$
 a(w, v) = \lambda(w, v) = \lambda \int_{\Omega} w v \qquad \forall v \in V
 $$
 
-If, instead of $V$, we take $V_h$, we get that $(\lambda_h, w_h)$ is an approzimation of $(\lambda, w)$ if 
+If, instead of $V$, we take $V_h$, we get that $(\lambda_h, w_h)$ is an approximation of $(\lambda, w)$ if 
 
 $$
 a(w_h, v_h) = \lambda_h(w_h, v_h) \qquad \forall v_h \in V_h \\
@@ -844,19 +844,35 @@ The same procedure is valid in the multidimensional generalization.
 
 There exists variations of the Dirichlet-Neumann algorithm that may outperform it in specific cases. The **Neumann-Neumann** algorithm outperforms the DN algorithm in the case of a large numbers of subdomains.
 
-The algorithm is structured as follows. First, for each subdomain $i$, we solve
+<!-- TODO: understand how to generalize to an arbitrary number of subdomains -->
+
+In the case of two subdomains, the algorithm is structured as follows. First, for each subdomain $i \in \{1, 2\}$, we solve
 
 $$
 \begin{cases}
   Lu_i^{(k+1)} = f & \Omega_i \\
   u_i^{(k+1)} = \lambda^{(k)} & \Gamma \\
-  u_i^{(k+1)} = 0 & \partial\Gamma_i\backslash\Gamma
+  u_i^{(k+1)} = 0 & \partial\Omega_i\backslash\Gamma
 \end{cases}
 $$
 
-_to be continued_
+then, for each subdomain $i \in \{1, 2\}$ we solve
 
-<!-- 1:23:30 -->
+$$
+\begin{cases}
+  L\psi_i^{(k+1)} = 0 & \Omega_i \\
+  \frac{\partial \psi_i^{(k+1)}}{\partial n} = \frac{\partial u_1^{(k+1)}}{\partial n} - \frac{\partial u_2^{(k+1)}}{\partial n} & \Gamma \\
+  \psi_i^{(k+1)} = 0 & \partial\Omega_i\backslash\Gamma
+\end{cases}
+$$
+
+where
+
+$$
+\lambda^{(k+1)} = \lambda^{(k)} - \theta \left( \sigma_1 \psi_{1|\Gamma}^{(k+1)} - \sigma_2 \psi_{2|\Gamma}^{(k+1)}\right)
+$$
+
+In practice, the first step goes towards the direction of continuity of the solution while the second goes towards the direction of continuity of the derivative.
 
 ## Optimality and scalability
 
