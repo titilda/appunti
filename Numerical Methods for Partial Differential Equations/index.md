@@ -869,7 +869,7 @@ then, for each subdomain $i$ we solve
 $$
 \begin{cases}
   L\psi_i^{(k+1)} = 0 & \Omega_i \\
-  \frac{\partial \psi_i^{(k+1)}}{\partial n} = \frac{\partial u_i^{(k+1)}}{\partial n} - \sum\limits_j\frac{\partial u_j^{(k+1)}}{\partial n} & \Gamma_i \\
+  \frac{\partial \psi_i^{(k+1)}}{\partial n} = \frac{\partial u_i^{(k+1)}}{\partial n} - \sum\limits_{j : \Gamma_{ij} \in \Gamma_i}\frac{\partial u_j^{(k+1)}}{\partial n} & \Gamma_i \\
   \psi_i^{(k+1)} = 0 & \partial\Omega_i\backslash\Gamma
 \end{cases}
 $$
@@ -881,6 +881,8 @@ $$
 $$
 
 In practice, the first step goes towards the direction of continuity of the solution while the second goes towards the direction of continuity of the derivative.
+
+It can be demonstrated that with $0 \lt \theta \lt \theta_{max}$ (different $\theta$s w.r.t. before), this method always converges.
 
 ## Optimality and scalability
 
@@ -903,14 +905,154 @@ Consider a 2-subdomains problem. Let $u_1$, $u_2$ and $\lambda$ be the vector of
 $$
 \vec{u} = \begin{bmatrix}
   \vec{u_1} \\ \vec{u_2} \\ \vec{u_3}
+\end{bmatrix} \in \mathbb{R}^{N_h}
+$$
+
+In the same way, we can rewrite also the $A$ matrix and the $F$ vector:
+
+$$
+A = \begin{bmatrix}
+  A_{11} & A_{12} & A_{1\Gamma} \\
+  A_{21} & A_{22} & A_{2\Gamma} \\
+  A_{\Gamma 1} & A_{\Gamma 2} & A_{\Gamma\Gamma}
+\end{bmatrix} \in \mathbb{R}^{N_h \times N_h}
+\qquad
+\vec{F} = \begin{bmatrix}
+  \vec{F_1} \\ \vec{F_2} \\ \vec{F_\Gamma}
+\end{bmatrix} \in \mathbb{R}^{N_h}
+$$
+
+Since there is no direct coupling between different subdomains (except through the interface $\Gamma$) we can say that
+
+$$
+i \ne j, i \ne \Gamma, j \ne \Gamma \implies A_{ij} = 0
+$$
+
+therefore we can rewrite $A$ again:
+
+$$
+A = \begin{bmatrix}
+  A_{11} & 0 & A_{1\Gamma} \\
+  0 & A_{22} & A_{2\Gamma} \\
+  A_{\Gamma 1} & A_{\Gamma 2} & A_{\Gamma\Gamma}
 \end{bmatrix}
 $$
 
-<<<<<<< HEAD
-_TBC_
+With this new $A$, starting from $A \vec{u} = \vec{F}$, we can write that
 
-=======
->>>>>>> 923b79448b08e56cae9ed2f99af9d19c122f3923
+$$
+\begin{cases}
+  A_{11} \vec{u_1} + A_{1\Gamma} \vec{\lambda} = \vec{F_1} \\
+  A_{22} \vec{u_2} + A_{2\Gamma} \vec{\lambda} = \vec{F_2} \\
+  A_{\Gamma 1} \vec{u_1} + A_{\Gamma 2} \vec{u_2} + A_{\Gamma\Gamma} \vec{\lambda} = \vec{F_\Gamma}
+\end{cases} \implies \begin{cases}
+  \vec{u_1} = A_{11}^{-1} (\vec{F_1} - A_{1\Gamma} \vec{\lambda}) \\
+  \vec{u_2} = A_{22}^{-1} (\vec{F_2} - A_{2\Gamma} \vec{\lambda}) \\
+  A_{\Gamma 1} A_{11}^{-1} (\vec{F_1} - A_{1\Gamma} \vec{\lambda}) + A_{\Gamma 2} A_{22}^{-1} (\vec{F_2} - A_{2\Gamma} \vec{\lambda}) = \vec{F_\Gamma}
+\end{cases}
+$$
+
+thus, we get to a system that only depends on $\lambda$:
+
+$$
+\underbrace{\left[ -\left( A_{\Gamma 1} A_{11}^{-1} A_{1\Gamma} + A_{\Gamma 2} A_{22}^{-1} A_{2\Gamma} \right) + A{\Gamma\Gamma} \right]}_{\Sigma} \vec{\lambda} = \underbrace{\vec{F_\Gamma} - A_{\Gamma 1} A_{11}^{-1} \vec{F_1} - A_{\Gamma_2} A_{22}^{-1} \vec{F_2}}_{\chi}
+$$
+
+This is called the **Schur complement system** and it is a system in which we have eliminated all the internal nodes. We can further apply some mathematical transofrmation: since $A_{\Gamma\Gamma} = A_{\Gamma 1} + A_{\Gamma_2}$ then
+
+$$
+\Sigma = \Sigma^{(1)} + \Sigma^{(2)} = \left( A_{\Gamma\Gamma}^{(1)} - A_{\Gamma 1} A_{11}^{-1} A_{1 \Gamma} \right) + \left( A_{\Gamma\Gamma}^{(2)} - A_{\Gamma 2} A_{22}^{-1} A_{2 \Gamma} \right)
+$$
+
+$\Sigma$ is called **global Schur complement** and $\Sigma^{(i)}$ are called **local Schur complement**.
+
+Assume we know how to compute $\lambda$ (we sill see it shortly), then, once we know $\lambda$, we can solve each subdomain indipendently from each other (a.k.a. in parallel).
+
+### Solution of the Schur complement system
+
+Let $\vec{\lambda}^{(0)}$ be given then, we start iterating with preconditioned Richardson iterations (you may notice that this is different from the method described [here](/Numerical%20Linear%20Algebra/index.html#stationary-richardson-method) but please notice that they are equivalent):
+
+$$
+P (\underbrace{\lambda^{(k+1)} - \lambda^{(k)}}_\text{increment}) = \theta (\underbrace{\chi - \Sigma \lambda^{(k)}}_\text{residual})
+$$
+
+where $P$ is the preconditioner matrix and $\theta$ is the step.
+
+Instead of actually using Richardson, having rewritten the Richardson iteration in this new, equivalent way, we notice that we got to a new linear system that uses $P$ as a system matrix.
+
+It can be denomstrated that, with specific choices for $P$ and $\theta$, one Richardson iteration is equivalent to one Dirichlet-Neumann/Neumann-Neumann iteration. In particular, the $\theta$ used in the algorithm iteration must be used as a Richardson step and, regarding $P$, for Dirichlet-Neumann it must be $P_{DN} = \Sigma^{(2)}$ while for Neumann-Neumann it must be $P{NN} = (\sigma_1 [\Sigma^{(1)}]^{-1} + \sigma_2 [\Sigma^{(2)}]^{-1})^{-1}$.
+
+We can now compute the specral radius for the two methods:
+
+$$
+\rho_{DN} = \frac{k(P_{DN}^{-1} \Sigma) - 1}{k(P_{DN}^{-1} \Sigma) + 1} \qquad \rho_{NN} = \frac{k(P_{NN}^{-1} \Sigma) - 1}{k(P_{NN}^{-1} \Sigma) + 1}
+$$
+
+Instead of Richardson, it is possible to achieve better convergence through the use of Krylov space methods such as GMRES (if at least one of $P$ and $\Sigma$ are not symmetric) or conjugate gradient (if both $P$ and $\Sigma$ are symmetric). They may be better but they are not equivalent.
+
+::: {.callout .callout-note title="Note"}
+If $A$ is SPD, then, also $\Sigma$ is SPD. In general, if $k(A) = O(h^{-2})$ then $k(\Sigma) = O(h^{-1})$. $\Sigma^{(1)}$ and $\Sigma^{(2)}$ inherit the same properties of $\Sigma$.
+
+It is really important that the condition number or the preconditioned Richarson matrix does not depend on $h$:
+
+$$
+k(P_{DN}^{-1} \Sigma) = O(1) \qquad k(P_{NN}^{-1}) = O(1)
+$$
+:::
+
+As we will see, the multidomain extension does not play so nicely with domain decomposition.
+
+<!-- 31:30 -->
+
+### Multidomain extension
+
+With more than two domains, the linear system can be expressed as
+
+$$
+\begin{bmatrix}
+  A_{11} & 0 & \dots & A_{1\Gamma} \\
+  0 & A_{22} & \dots & A_{2\Gamma} \\
+  \vdots & \vdots & \ddots & \vdots \\
+  A_{\Gamma 1} & A_{\Gamma 2} & \dots & A_{\Gamma\Gamma}
+\end{bmatrix} \begin{bmatrix}
+  \vec{u_1} \\ \vec{u_2} \\ \vdots \\ \vec{\lambda}
+\end{bmatrix} = \begin{bmatrix}
+  \vec{F_1} \\ \vec{F_2} \\ \vdots \\ \vec{F_\Gamma}
+\end{bmatrix}
+$$
+
+We can get to the Schur complement system in the same way as before (write $u$ in function of everything else, then factor $\lambda$): $\Sigma \vec{\lambda} = \vec{\chi}$.
+
+In general, it is not possible to _colorize_ every subdomain in "Dirichlet-color" and "Neumann-color" as every Dirichlet must be surrounded by Neumanns and vice-versa so we will only restrict ourselves to Neumann-Neumann algorithms.
+
+Given this restriction, we can write the generic multidomain preconditioner. Let $D = \operatorname{diag}(\sigma_1, \sigma_2, \dots, \sigma_n)$ and $R$ be the global-to-local conversion matrix (like a permutation matrix but keeps only the relevant nodes), then
+
+$$
+P_{NN} = \left(\sum_j R_{\Gamma j}^T D [\Sigma^{(j)}]^{-1} D R_{\Gamma j} \right)
+$$
+
+The condition number of the preconditioned Schur matrix is
+
+$$
+k(P_{NN}^{-1} \Sigma) \le C H^{-2} \left( 1 + \log\frac{H}{h} \right)^2
+$$
+
+Since it depends on the subdomain size $H$, this new method is not really scalable. Also, since it depends on the mesh granularity $h$, this methos isn't even optimal.
+
+We can restore both properties using a different preconditioner that can accelerate the propagation of information between the different subdomains:
+
+$$
+P_{NN}^{coarse} = \left[ \Sigma_H^{-1} + (\mathbb{I} - \Sigma_H^{-1} \Sigma)P_{NN}^{-1}(\mathbb{I} - \Sigma \Sigma_H^{-1}) \right]^{-1} \qquad \Sigma_H = (R_\Gamma^T A R_\Gamma)^{-1}
+$$
+
+In this case
+
+$$
+k((P_{NN}^{coarse})^{-1} \Sigma) \le C \left( 1 + \log\frac{H}{h} \right)
+$$
+
+while this quantity still depends on $H$ and $h$, it is a logarithmic dependence so it is negligible.
+
 # Appendix
 
 ## Nabla operator
@@ -925,7 +1067,6 @@ $$
 
 This operator can be used to define **divergence**, **gradient**, **curl** (or **rotor**), **laplacian** and **normal derivative**.
 
-<<<<<<< HEAD
 All those types of derivatives, taken on a monodimensional domain, correspond to the simple derivative (you can convince yourself that this is true by explicitly computing a few of those in $d = 1$).
 
 ### Divergence
@@ -937,29 +1078,6 @@ $$
 \left( \sum_{i=1}^d \vec{u_i} \frac{\partial}{\partial x_i} \right) \cdot \left( \sum_{j = 1}^d \vec{u_j} w_j \right) = \sum_{i=1}^d \sum_{j_1}^d (\vec{u_i} \cdot \vec{u_j}) \frac{\partial}{\partial x_i} w_j = \sum_{i = 1}^d \frac{\partial w_i}{\partial x_i} \in \mathbb{R}
 $$
 
-=======
-## Nabla operator
-
-The **nabla** operator (written as $\nabla$) is used to define multiple types of generalized n-dimensional derivatives.
-
-Formally speaking, this operator is defined as
-
-$$
-\nabla = \sum_{i=1}^{d} \vec{u_i} \frac{\partial}{\partial x_i}
-$$
-
-This operator can be used to define **divergence**, **gradient**, **curl** (or **rotor**) and **laplacian**.
-
-### Divergence
-
-Let $\vec{w} : \mathbb{R}^d \to \mathbb{R}^d, d \in \mathbb{N}^+$ then the **divergence operator** applied to $\vec{w}$ is defined as
-
-$$
-\operatorname{div}(\vec{w}) = \nabla \cdot \vec{w} = 
-\left( \sum_{i=1}^d \vec{u_i} \frac{\partial}{\partial x_i} \right) \cdot \left( \sum_{j = 1}^d \vec{u_j} w_j \right) = \sum_{i=1}^d \sum_{j_1}^d (\vec{u_i} \cdot \vec{u_j}) \frac{\partial}{\partial x_i} w_j = \sum_{i = 1}^d \frac{\partial w_i}{\partial x_i} \in \mathbb{R}
-$$
-
->>>>>>> 923b79448b08e56cae9ed2f99af9d19c122f3923
 ### Gradient
 
 Let $v : \Omega \sub \mathbb{R}^d \to \mathbb{R}, d \in\mathbb{N}^+$, then the **gradient** of $v$ is defined as
