@@ -1120,7 +1120,22 @@ $$
 \psi(x) = A e^{+ ikx} + B e^{- ikx} \qquad k = \sqrt{(E - V(x)) \frac{2m}{\hbar^2}}
 $$
 
-Once the formula for the potential is known, it is just a matter of substitution and imposition of $\psi \in \mathcal{C}^1$.
+Once the formula for the potential is known, it is just a matter of substitution and imposition of either $\psi \in \mathcal{C}^1$ (in the case of non infinite barriers) of $\psi \in \mathcal{C}^0$ (in the other cases).
+
+::: {.callout .callout-note title="Important equality"}
+Here we give an important equality that can be considered the Swiss-knife for potential problems. (potential in the sense of potential energy, not in the sense that the problems may not be there. Trust me, they will certainly be on the exam sheet).
+
+$$
+\begin{align*}
+    \psi(x) &= \alpha e^{ikx} + \beta e^{-ikx} \\
+    &= \alpha\cos(kx) + i\alpha\sin(kx) + \beta\cos(kx) - i\beta\sin(kx) \\
+    &= \underbrace{(\alpha + \beta)}_{A} \cos(kx) + \underbrace{i(\alpha - \beta)}_{B} \sin(kx) \\
+    &= A\cos(kx) + B\sin(kx)
+\end{align*}
+$$
+
+Sometimes, expecially when dealing with non-symmetric domains, instead of working with complex exponentials, it may be easier to work with sines and cosines.
+:::
 
 ## Particle in a (potential) box
 
@@ -1140,17 +1155,16 @@ To find the energy eigenstates, we must solve the Schr&ouml;dinger equations, kn
 First, inside the box, the particle is free and is in a superposition of "going to the left" and "going to the right":
 
 $$
-\psi(x) = \alpha e^{ikx} \pm \beta e^{-ikx}
+\psi(x) = \alpha e^{ikx} + \beta e^{-ikx}
 $$
 
-After this, we know that $\psi$ must be continuous with a continuous derivative, so, putting everything all together, we get that
+After this, we know that $\psi$ must be continuous so, putting everything all together, we get that
 
 $$
 \begin{cases}
     |\psi(x)|^2 = 0 & x \le 0 \cup x \ge L \\
-    \psi(x) = \alpha e^{ikx} \pm \beta e^{-ikx} & 0 \lt x \lt L \\
+    \psi(x) = \alpha e^{ikx} + \beta e^{-ikx} & 0 \lt x \lt L \\
     \lim\limits_{x \to 0^+} \psi(x) = \lim\limits_{x \to L^-}\psi(x) = 0 \\
-    \lim\limits_{x \to 0^+} \psi'(x) = \lim\limits_{x \to L^-} \psi'(x) = 0
 \end{cases}
 $$
 
@@ -1171,7 +1185,56 @@ $$
 
 Please note that $n = 0$ would yield a non normalizable eigenstate so it is not acceptable.
 
-If the box is symmetric (i.e. it goes from $-\frac{L}{2}$ to $+\frac{L}{2}$ instead of going from $0$ to $L$) then the **ground state** (n=1) and all the other states with an odd $n$ value are symmetric (in terms ow wave-function) while the ones with an even $n$ value are antisymmetric. <!-- TODO: this does not look right --> [Geogebra](https://www.geogebra.org/m/naprbxmy)
+We can also follow a different computation approach, exploting the equality in the final note of the upper level paragraph.
+
+From 
+
+$$
+\begin{cases}
+    \psi(x) = A\cos(kx) + B\sin(kx) \\
+    \psi(0) = 0 \\
+    \psi(L) = 0
+\end{cases}
+$$
+
+we get that
+
+$$
+\begin{cases}
+    A = 0 \\
+    B\sin(kL) = 0
+\end{cases}
+$$
+
+thus $k = \frac{n\pi}{L}$ and $\psi(x) = B\sin(\frac{n\pi}{L}x)$
+
+If the box is symmetric (i.e. it goes from $-\frac{L}{2}$ to $+\frac{L}{2}$ instead of going from $0$ to $L$) then the **ground state** (n=1) and all the other states with an odd $n$ value are symmetric (in terms ow wave-function) while the ones with an even $n$ value are antisymmetric. We will now derive thi conclusion. Since
+
+$$
+\begin{cases}
+    \psi(x) = A\cos(kx) + B\sin(kx) \\
+    \psi\left(+\frac{L}{2}\right) = 0 \\
+    \psi\left(-\frac{L}{2}\right) = 0 \\
+\end{cases}
+$$
+
+then
+
+$$
+\begin{cases}
+    A\cos\left(k\frac{L}{2}\right) + B\sin\left(k\frac{L}{2}\right) = 0 \\
+    A\cos\left(k\frac{L}{2}\right) - B\sin\left(k\frac{L}{2}\right) = 0 \\
+\end{cases}
+$$
+
+from which
+
+$$
+\psi(x) = \begin{cases}
+    2A\cos\left(\frac{n\pi}{L} x\right) & \text{$n$ odd} \\
+    2B\sin\left(\frac{n\pi}{L} x\right) & \text{$n$ even}
+\end{cases}
+$$
 
 ### Multidimensional version
 
@@ -1376,7 +1439,9 @@ Which gives
 $$
 \begin{cases}
     B = C + D \\
-    -ik_lB = ik_0C - ik_0D
+    -ik_lB = ik_0C - ik_0D \\
+    Ce^{ik_0L} + De^{-ik_0L} = Ee^{ik_rL} \\
+    ik_0Ce^{ik_0L} - ik_0De^{-ik_0L} = ik_rEe^{ik_rL}
 \end{cases}
 $$
 
@@ -1967,13 +2032,12 @@ $$
 
 $m$ is called **magnetic quantum number** and is the quantum number associated with angular momentum (<u>not the mass</u>). We see that, just like energy, angular momentum is quantized as well.
 
-<!-- TODO: how??? -->
 Since $\varphi(\phi_z) = \varphi(\phi_z + 2\pi)$ then $e^{2im\pi} = 1$, therefore $m \in \mathbb{Z}$.
 
 We use $|m\rangle$ to denote particles whose magnetic quantum number is $m$:
 
 $$
-\hat L_z |m\rangle = \hbar m \rangle
+\hat L_z |m\rangle = \hbar m |m\rangle
 $$
 
 There exist an equivalent for the ladder operators:
@@ -2108,7 +2172,7 @@ $$
 \end{align*}
 $$
 
-Thesis follows <!-- TODO: HOW??? -->
+Thesis follows.
 :::
 
 We modify the notation again to keep track of $l$:
@@ -2219,8 +2283,6 @@ The lowest evergy state so far is $(n, l, m) = (1, 0, 0)$ except that, experimen
 ### Stern-Gerlach experiment
 
 Due to the Zeeman effect, atoms in a magnetic field are deflected according to their $m$ state. The Stern-Gerlach experiment consists in shooting silver atoms (coming from a silver coated incandescent filament) through a specially shaped magnetic field. Since silver atoms have all $m = 0$ (in reality is not the atom but the outer electron), they should be deflected all in the same way, except that this does not happen and in the phosphor coated screen used to see where the atoms ends up, we see two spots. This confirms the fact that there must be another internal degree of freedom that interact with magnetic field. 
-
-<!-- TODO: does atom have m=0 or m=1? -->
 
 ::: {.collapsible title="History time"}
 In 1925 Kronig theorized that the undiscovered extra degree of freedom could be some sort of angular momentum, like electron rotation.
