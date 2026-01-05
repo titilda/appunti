@@ -1053,6 +1053,239 @@ $$
 
 while this quantity still depends on $H$ and $h$, it is a logarithmic dependence so it is negligible.
 
+# Navier-Stokes equation
+
+**Navier-Stokes equations** are the one used to precisely describe non-turbolent fluid evolution. We will start from the simple **Stokes equation** before moving on to the more complex **Navier-Stokes** ones in order to start from a simple numerical method that will then be adapted.
+
+## Stokes equation
+
+A stokes equation problem is written like
+
+$$
+\begin{cases}
+  \sigma \vec{u} - \nu \Delta \vec{u} + \nabla p = \vec{f} & \Omega \\
+  \operatorname{div} \vec{u} = 0 & \Omega \\
+  \vec{u} = \vec{\varphi} & \Gamma_D \\
+  \nu \frac{\partial \vec{u}}{\partial \vec{n}} - p \cdot \vec{n} = \psi & \Gamma_N
+\end{cases}
+$$
+
+where $\sigma \ge 0$ is constant, $\nu \gt 0$ is the **viscosity coefficient** (assumed to be constant), $p = P(\vec{x})$ is the pressure of the fluid (unknown), $\vec{u} = \vec{u}(\vec{x})$ is the velocity of the fluid (unknown) and $f = f(\vec{x})$ is the forcing term (given). $\vec{\varphi}$ is the Dirichlet data and $\psi$ is the Neumann data. $\operatorname{div} \vec{u} = 0$ means that the fluid is incompressible.
+
+The first equation imposes the conservation of momentum while the second imposes the conservation of mass.
+
+We can now introduce time dependency to generalize this model to te **unsteady Stokes equations**:
+
+$$
+\begin{cases}
+  \frac{\partial \vec{u}}{\partial t} + \sigma \vec{u} - \nu \Delta \vec{u} + \nabla p = \vec{f} & \Omega, 0 \lt t \lt T \\
+  \operatorname{div} \vec{u} = 0 & \Omega, 0 \lt t \lt T \\
+  \vec{u} = \vec{\varphi} & \Gamma_D \\
+  \nu \frac{\partial \vec{u}}{\partial \vec{n}} - p \cdot \vec{n} = \psi & \Gamma_N
+\end{cases}
+$$
+
+### Weak formulation
+
+In order to obtain the weak formulation for the Stokes equations, we introduce two test functions: $v \in V$ for velocity and $q \in Q$ for pressure, then we integrate.
+
+The momentum equation becomes
+
+$$
+\int_\Omega \sigma \vec{u} \cdot \vec{v} - \int_\Omega \nu \Delta \vec{u} \cdot \vec{v} + \int_\Omega \nabla p \cdot v = \int_\Omega \vec{f} \cdot \vec{v} \qquad \forall \vec{v} \in V \\
+\int_\Omega \sigma \vec{u} \cdot \vec{v} + \int_\Omega \nu \nabla \vec{u} \cdot \nabla \vec{v} - \int_{\partial\Omega} \nu \frac{\partial \vec{u}}{\partial \vec{n}} - \int_\Omega p \operatorname{div} \vec{v} + \int_{\partial\Omega} p \vec{u} \cdot \vec{v} = \int_\Omega \vec{f} \cdot \vec{v} \qquad \forall \vec{v} \in V
+$$
+
+
+and the mass equation becomes
+
+$$
+\int_\Omega \operatorname{div} \vec{v} \cdot q = 0 \qquad \forall q \in Q
+$$
+
+notice that we do not integrate in the case of the mass equation.
+
+Using the [properties of the nabla operator](#nabla-operator), we can now write in the componentwise form of the problem:
+
+$$
+\begin{cases}
+  \frac{\partial u_i}{\partial t} + \sigma u_i - \nu \Delta u_i + \frac{\partial p}{\partial x} + \sum_j u_j \frac{\partial}{\partial x_j} u_i & \forall i = 0, 1, \dots, d \\
+  \sum_j \frac{\partial}{\partial x_i} u_j = 0 & \forall i = 0, 1, \dots, d
+\end{cases}
+$$
+
+Starting again from the weak formulation, we can reach quite easily the equivalent algebraic system. We start by moving all the known terms to the right hand side and factoring $v$ (so taht we can write $\psi$, that can be considered as _given_).
+
+$$
+\int_\Omega \sigma \vec{u} \cdot \vec{v} + \int_\Omega \nu \nabla \vec{u} \cdot \nabla \vec{v} - \int_{\partial\Omega} \nu \frac{\partial \vec{u}}{\partial \vec{n}} - \int_\Omega p \operatorname{div} \vec{v} + \int_{\partial\Omega} p \vec{u} \cdot \vec{v} = \int_\Omega \vec{f} \cdot \vec{v} \qquad \forall \vec{v} \in V \\
+\int_\Omega \sigma \vec{u} \cdot \vec{v} + \int_\Omega \nu \nabla \vec{u} \cdot \nabla \vec{v} - \int_\Omega p \operatorname{div} \vec{v} = \int_\Omega \vec{f} \cdot \vec{v} + \int_\Omega \psi \vec{v} \qquad \forall \vec{v} \in V \\
+$$
+
+Therefore, the complete weak Stokes form is
+
+$$
+\begin{cases}
+  \underbrace{\int_\Omega \sigma \vec{u} \cdot \vec{v} + \int_\Omega \nu \nabla \vec{u} \cdot \nabla \vec{v}}_{a(u, v)} \underbrace{- \int_\Omega p \operatorname{div} \vec{v}}_{b(u, v)} = \int_\Omega \vec{f} \cdot \vec{v} + \int_\Omega \psi \vec{v} & \forall \vec{v} \in V \\
+  \underbrace{\int_\Omega \operatorname{u} \cdot q}_{b(v, u)} = 0 & \forall q \in Q
+\end{cases} \iff \begin{cases}
+  a(\vec{u}, \vec{v}) + b(\vec{v}, p) = F(\vec{v}) & \forall \vec{v} \in V \\
+  b(\vec{u}, q) = 0 & \forall q \in Q
+\end{cases}
+$$
+
+where
+
+$$
+V = \left\{ \vec{v} \in \left[ H^1 (\Omega)\right]^d : \vec{v}|_{}\Gamma_D  = \vec{0} \right\} \equiv \left[ H^1_{\Gamma_D}(\Omega) \right]^d \\
+Q = \begin{cases}
+  L^2(\Omega) & \Gamma_D \ne \emptyset \\
+  L_0^2(\Omega) = \left\{ q \in L^2(\Omega) : \int_\Omega q = 0 \right\} & \Gamma_D = \emptyset
+\end{cases}
+$$
+
+The distinction on $Q$ is due to the fact that when we are dealing with Neumann problems, there are infinite valid solutions defined up to a constant, therefore we choose to accept the only one that has a null average.
+
+### Discretization
+
+Discretizing the problem is easy. Let $\{\varphi_j\}_{j=1}^{N_v}$ and $\{\psi_j\}_{j=1}^{N_q}$ be basis for $V_h$ and $Q_h$, respectively, then
+
+$$
+\begin{cases}
+  a(u_h, v_h) + b(u_h, p_h) = F(v_h) & \forall v_h \in V_h \\
+  b(u_h, q_h) = G(q_h) & \forall q_h \in Q_h
+\end{cases}
+$$
+
+Note that we used $G$ instead of $0$ to account for the case where lifting is needed.
+
+If, as usual, 
+
+$$
+u_h = \sum_j u_j \varphi_j \qquad q_h = \sum_j q_j \psi_j
+$$
+
+then
+
+$$
+\vec{u} = \begin{bmatrix} u_1 \\ \vdots \\ u_{N_v} \end{bmatrix} \qquad \vec{q} = \begin{bmatrix} q_1 \\ \vdots \\ q_{N_q} \end{bmatrix} A_{ij} = a(\varphi_j, \varphi_i) \qquad B_{km} = b(\varphi_m, \varphi_k)
+$$
+
+therefore 
+
+$$
+\begin{cases}
+  A \vec{u} + B \vec{p} = \vec{F} \\
+  B^T \vec{u} = \vec{G}
+\end{cases} \iff \begin{bmatrix}
+  A & B \\ B^T & 0
+\end{bmatrix} \begin{bmatrix}
+  \vec{u} \\ \vec{q}
+\end{bmatrix} = \begin{bmatrix}
+  \vec{F} \\ \vec{G}
+\end{bmatrix}
+$$
+
+We call the system matrix **Stokes matrix** and it is denoted with $S$.
+
+### Well-posedness of the Stokes problem
+
+The Stokes problem is well osed if and only if it has a unique solution, that is equivalent to asking wether $S$ is nonsingular.
+
+::: {.callout .callout-theorem title="Existence and uniqueness of the solution of a Stokes problem"}
+Let $a : V \times V \to \mathbb{R}$ be a bilinear, continuous (with constant $\gamma$) and coercive (with constant $\alpha$) form, $b : V \times Q \to \mathbb{R}$ be a bilienar, continuous (with constant $\delta$) and LBB (with constant $\beta$) (will see later) form, then it exists a unique solution $u_h, p_h$ to the discretized Stokes problem and the solution satisfies both
+
+$$
+\|\vec{u_h}\|_V \le \frac{1}{\alpha} \|F\|_{V'} \qquad \|p_h\|_Q \le \frac{1}{\beta} \left(1 + \frac{\gamma}{\alpha} \right) \|F\|_{V'}
+$$
+
+meaning that the solution is bounded w.r.t. $h$ (stability).
+
+::: {.collapsible title="Proof"}
+Since $a$ is continuous, then
+
+$$
+\exists \gamma \gt 0 : |a(\vec{u_h}, \vec{v_h})| \le M \|\vec{u_h}\|_V \|\vec{v_h}\|_V \qquad \forall \vec{u_h}, \vec{v_h} \in V_h
+$$
+
+Since $a$ is coercive, then
+
+$$
+\exists \alpha \gt 0 : a(\vec{u}, \vec{u}) \gt \alpha \|\vec{u}\|_V^2 \qquad \forall \vec{u_h} \in V_h
+$$
+
+Since $b$ is continuous, then
+
+$$
+\exists \delta \gt 0 : |b(\vec{v_h}, q_h)| \le M \|\vec{v_h}\|_V \|q_h\|_Q \qquad \forall \vec{v_h} \in V_h, q_h \in Q_h
+$$
+
+Since $b$ is LBB, then
+
+$$
+\exists \beta \gt 0 : \forall q_h \in Q_h \ \exists \vec{v_h} \in V_h \ b(\vec{v_h}, q) \ge \beta \|\vec{v_h}\|_V \|q_h\|_Q
+$$
+
+Since
+
+$$
+\begin{align*}
+  |a(\vec{u}, \vec{v})| &= \left| \int_\Omega \sigma \vec{u} \cdot \vec{v} + \int_\Omega \nu \nabla\vec{u} \cdot \nabla\vec{v}\right| \\
+  &\le \left| \int_\Omega \sigma \vec{u} \cdot \vec{v} \right| + \left| \int_\Omega \nu \nabla\vec{u} \cdot \nabla\vec{v}\right| \\
+  &\le \sigma \|\vec{u}\|_{L^2(\Omega)} \|\vec{v}\|_{L^2(\Omega)} + \nu \|\nabla\vec{u}\|_{L^2(\Omega)} \|\nabla\vec{v}\|_{L^2(\Omega)} \\
+  &\le \max(\sigma, \nu) (\|\vec{u}\|_{L^2(\Omega)} \|\vec{v}\|_{L^2(\Omega)} + \|\nabla\vec{u}\|_{L^2(\Omega)} \|\nabla\vec{v}\|_{L^2(\Omega)}) \\
+  &= \max(\sigma, \nu) \left( \begin{bmatrix} \|\vec{u}\|_{L^2(\Omega)} \\ \|\nabla\vec{u}\|_{L^2(\Omega)} \end{bmatrix} \cdot \begin{bmatrix} \|\vec{v}\|_{L^2(\Omega)} \\ \|\nabla\vec{v}\|_{L^2(\Omega)} \end{bmatrix} \right) \\
+  &\le \max(\sigma, \nu) \left( \sqrt{\|\vec{u}\|_{L^2(\Omega)} + \|\nabla\vec{u}\|_{L^2(\Omega)}} \sqrt{\|\vec{v}\|_{L^2(\Omega)} + \|\nabla\vec{v}\|_{L^2(\Omega)}} \right) & (\dagger) \\
+  &= \max(\sigma, \nu) \|\vec{u}\|_V \|\vec{v}\|_V & (\ddagger)
+\end{align*}
+$$
+
+where in $(\dagger)$ we used the Cauchy-Schwarz inequality in $\mathbb{R}^2$ and in $(\ddagger)$ we used the definition of seminorm in $V$, then $\alpha = \max(\sigma, \nu)$.
+
+In the case of $\sigma \gt 0$, it holds that
+
+$$
+a(\vec{v}, \vec{v}) = \int_\Omega \sigma \vec{v}^2 + \int_\Omega \nu (\nabla\vec{v})^2 \ge \min(\sigma, \nu) (\|\vec{v}\|_{L^2(\Omega)}^2 + \|\nabla\vec{v}\|_{L^2(\Omega)}^2) = \min(\sigma, \nu) \|\vec{v}\|_V^2
+$$
+
+In the case of $\sigma = 0$, we can use the Pointcaré inequality:
+
+$$
+a(\vec{v}, \vec{v}) = \nu \|\nabla v\|_{L^2(\Omega)}^2 \ge \frac{1}{C} \|\vec{v}\|_{L^2(\Omega)} \simeq \|\vec{v}\|_V
+$$
+
+In either case we have coercivity, in the first case we can also say that $\alpha = \min(\sigma, \nu)$, in he other case, it is much more comples so we ignore that.
+
+_TBC_ 
+<!-- 1:47:00 dic 2 -->
+:::
+
+## Navier-Stokes equation
+
+The Navier-Stokes equations are just unsteady Stokes equations with an extra nonlinear convection term:
+
+$$
+\begin{cases}
+  \frac{\partial \vec{u}}{\partial t} + \sigma \vec{u} - \nu \Delta \vec{u} + \nabla p + (\vec{u} \cdot \nabla) \vec{u} = \vec{f} & \Omega, 0 \lt t \lt T \\
+  \operatorname{div} \vec{u} = 0 & \Omega, 0 \lt t \lt T \\
+  \vec{u} = \vec{\varphi} & \Gamma_D \\
+  \nu \frac{\partial \vec{u}}{\partial \vec{n}} - p \cdot \vec{n} = \psi & \Gamma_N
+\end{cases}
+$$
+
+We define the **Reynolds number**:
+
+$$
+R_e = \frac{|\vec{u}|L}{\nu}
+$$
+
+where $L$ is a representative for the length of the considered domain and $U$ is a representative for the speed of the system.
+
+If $R_e \lt \lt 1$, then, the nonlinear term is negligible compared to the other ones so we can use the unsteady Stokes framework, otherwise we must use the Navier-Stokes one. In reality, if $R_e \gt \gt 1$, we are working with turbolent flow and even Navier-Stokes fails to work (we must use turbolence models).
+
+::: {.callout .callout-note title="Reynolds number"}
+Basically, $R_e$ is a measurement of the complexity of the phenomenon we are analyzing. If $R_e$ is really high, the phenomenon is really complex and needs to be addressed by really complex models. $R_e$ is the _condition number_ of fluid equations.
+:::
+
 # Appendix
 
 ## Nabla operator
@@ -1099,6 +1332,14 @@ Let $\vec{v} : \Omega \sub \mathbb{R}^d \to \mathbb{R}, d \in \mathbb{N}^+$, the
 
 $$
 \Delta \vec{v} = \nabla \cdot (\nabla v) = \left( \sum_{i=1}^{d} \vec{u_i} \frac{\partial}{\partial x_i} \right) \cdot \left( \sum_{j = 1}^{d} \vec{u_j} \frac{\partial \vec{v}}{\partial x_i} \right) = \sum_{i = 1}^d (\vec{i_j} \cdot \vec{u_j}) \frac{\partial}{\partial x_i} \frac{\partial v}{\partial x_i} = \sum_{i = 1}^d \frac{\partial^2 v}{\partial x_i^2}
+$$
+
+### Notes
+
+A few equalities hold:
+
+$$
+\left[(\vec{u} \cdot \nabla) \vec{u} \right]_i = \sum_j u_j \frac{\partial}{\partial x_j} u_i \qquad \nabla \vec{u} : \nabla \vec{v} = \sum_{i, j} \frac{\partial u_i}{\partial x_j} \frac{\partial u_j}{\partial x_i}
 $$
 
 ## Normal derivative
@@ -1203,6 +1444,12 @@ $$
 \left|\int_\Omega uv\right| \le \|u\|_{L^2(\Omega)} \|v\|_{L^2(\Omega)} \\
 \left|\int_\Omega u'v'\right| \le \|u'\|_{L^2(\Omega)} \|v'\|_{L^2(\Omega)} \\
 \left|\int_\Omega u'v\right| \le \|u'\|_{L^2(\Omega)} \|v'\|_{L^2(\Omega)} \\
+$$
+
+In $\mathbb{R}^n$, the inequality can be expressed as
+
+$$
+\left( \sum_i x_i y_j \right)^2 \le \left( \sum_i x_i^2 \right) \left( \sum_i y_i^2 \right)
 $$
 
 ## Young inequality
