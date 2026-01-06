@@ -735,7 +735,7 @@ from which $|\alpha(R)|^2 = 1$ regardless of the translation amount $R$.
 One possible function that satisfies those requirements is
 
 $$
-\alpha(R) = e^{ikR} \qquad k \in \mathbb{R}
+\alpha(R) = e^{-ikR} \qquad k \in \mathbb{R}
 $$
 
 Given a translation amount $R$, the associated operator $\hat T_R$ has an infinite amount of eigenvalues, indexed with the $k$ value.
