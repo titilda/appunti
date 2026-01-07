@@ -644,6 +644,20 @@ $$
 \hat P_x = -i \hbar\frac{\partial}{\partial x} \qquad \hbar = 1.054 \cdot 10^{-34} Js
 $$
 
+In the same proof, we demonstrate that momentum eigenfunctions are shaped like
+
+$$
+\psi(x) = Ce^{i \frac{p}{\hbar}x}
+$$
+
+where $p$ is the corrisponding eigenvalue.
+
+We can _add_ an arbitrary amount of momentum $q$ to an eigenfunction of momentum by multiplying it by a **position dependent phase factor**:
+
+$$
+\varphi(x) = e^{iqx} C e^{i\frac{p}{\hbar}x} = Ce^{i\frac{p + \hbar q}{\hbar}x}
+$$
+
 ::: {.collapsible title="Two-hours-long proof"}
 
 I'm not joking, this proof is very long. It took me 1 hour and 27 minutes just to write it all down here, you can imagine how much time I spent trying to fully understand it, and I still do not think I have fully grasped everything. This is the fourth time I've rewritten this, finding new errors every time. This is probably the longest proof here on TiTilda.
