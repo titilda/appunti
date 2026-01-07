@@ -2491,3 +2491,6 @@ We kept the left one, and expanded the right section:
 ![](assets/chapter4/examp3.png)
 
 We found only one solution since the other formulation was unfeasible, amd we concluded that the first solution found was the best possible.
+
+### Cutting plane method
+![snip snip](assets/chapter4/Gomorroid.png)
