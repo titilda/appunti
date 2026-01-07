@@ -1741,6 +1741,7 @@ x_4*(y_1+\frac{1}{2}y_2-2 y_3 - 1) &= 0 \quad (4)
 $$
 
 We substitute the values of the $y_i$ variables , and if:
+
 - The expression in the parenthesis evaluates to 0 , then the constraint is said to be **tight** meaning that the corresponding $x_j$ can assume any* value (usually $\geq 0$)
 - The expression in the parenthesis is not zero , then the constraint is said to be **slack** meaning that the only possible value of the corresponding $x_j$ variable is 0 ( otherwise the equality won't hold).
 
