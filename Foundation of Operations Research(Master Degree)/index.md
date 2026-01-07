@@ -1,5 +1,5 @@
 ---
-title: "Foundation of Operational Research"
+title: "Foundation of Operations Research"
 author:
 - "Ortore Joele Andrea"
 ---
@@ -2222,7 +2222,7 @@ Formally:
 
 :::{.callout .callout-property title="bound the ILP"}
 
-For any ILP with max (min) , we have that $z_{ILP} \leq z_{LP}$ ($z_{ILP} \leq z_{LP}$), i.e., the relaxation provides an **upper bound** (lower bound) on the optimal value of an ILP.
+For any ILP with max (min) , we have that $z_{ILP} \leq z_{LP}$ ($z_{ILP} \geq z_{LP}$), i.e., the relaxation provides an **upper bound** (lower bound) on the optimal value of an ILP.
 
 :::
 
@@ -2256,3 +2256,238 @@ $$
 
 So a collection of constraints that defines the same characteristic for different "elements" , in this case if this were the "plant capacity family" each member of this family describes the max capacity of each plant i to store n different types of elements.
 
+### Branch and Bound method
+
+![](assets/chapter4/branchnbound.jpg)
+
+In the previous section we have seen that, in most cases, the optimal solution cannot be found directly through the linear relaxation of the problem, so we need a way to *correct* the relaxed solution into the real one, a possible way to do that is the Branch and Bound method.
+
+But before talking about that we need to introduce two key concepts:
+
+:::{.callout .callout-definition title="Feasibility"}
+
+- **Primal feasibility**: all constraints are satisfied.
+- **Dual feasibility**: all reduced costs have right signs (optimality).
+:::
+
+>What implications do these definitions have?
+
+When we do a step in the primal simplex (normal simplex), we:
+1. maintain primal feasibility.
+2. improve dual feasibility.
+
+We didn't see yet how the dual simplex algorithm works, but we can say that it has the same effect as doing the primal simplex on the dual problem, what happens when we do that is:
+1. we maintain dual feasibility.
+2. we 'repair' primal feasibility (if broken).
+
+We are going to use the dual simplex to keep the solution optimal and to make the new formulation feasible.
+
+### The method
+
+We start by solving the linear relaxation of a problem:
+
+$$
+\begin{align*}
+max \quad &z = 5 x_1 + 4x_2 \\
+& x_1 + x_2 + x_3 = 5\\
+& 10 x_1 + x_2 + x_4 = 45\\
+&x_1,x_2,x_3,x_4 \geq 0
+\end{align*}
+$$
+
+We solve it using primal simplex, and we reach the final tableau:
+
+|       |                 | $x_1$ | $x_2$ | $x_3$           | $x_4$          |
+|-------|-----------------|-------|-------|-----------------|----------------|
+| $-z$  | $-\frac{95}{4}$ | 0     | 0     | $-\frac{10}{4}$ | $-\frac{1}{4}$ | 
+| $x_2$ | $\frac{5}{4}$   | 0     | 1     | $\frac{10}{4}$  | $\frac{1}{4}$  |
+| $x_1$ | $\frac{15}{4}$  | 1     | 0     | $\frac{3}{2}$   | $\frac{1}{4}$  | 
+
+The solution we found: $\underline{x}^T=[\: \frac{15}{4} \quad \frac{5}{4}  \quad 0 \quad 0  \: ]$ with value z = $-\frac{95}{4}$ , is clearly not an "integer" one.
+
+Here comes the Branch and Bound part:
+
+We have two fractional value, we must choose one to start with, there are many techniques to do that , the most common one is to pick the bigger, but there aren't wrong choices, you will eventually reach the solution choosing either of them.
+
+We choose to **branch** on $x_1$ = 3.75 obtaining two new formulations:
+
+```mermaid
+flowchart TD
+A(("(3.75,1.25,0,0)\n z=23.75"))
+A -->|X1<=3| B((...))
+A -->|X1=>4| C((...))
+```
+Starting from the left side, we now have a new constraints, the current solution is now unfeasible, if the graphical method is possible the solution can be trivially found, otherwise we would need tp redo the whole simplex again.....how annoying!!
+
+There is another way, we can use the **dual simplex**:
+
+In the dual simplex we apply the same rules as the primal, but we switch the roles of columns and rows:
+
+First of all lets add the new constraint:
+
+$$
+ x_1 \leq 3
+$$
+
+Let's put it in normal form, by adding a new variable:
+
+$$
+ x_1 + x_5 = 3
+$$
+
+Now let's represent this constraint using non-basic variables , we will use the row of $x_1$:
+
+$$
+x_1 + \frac{3}{2} x_3 + \frac{1}{4} x_4 = \frac{15}{4}
+$$
+
+$$
+x_1 = \frac{15}{4} - \frac{3}{2} x_3 - \frac{1}{4} x_4
+$$
+
+And we put it in our new constraint:
+
+$$
+\frac{15}{4} -\frac{3}{2} x_3 - \frac{1}{4} x_4 + x_5 = 3
+$$
+
+We get
+
+$$
+-\frac{3}{2} x_3 - \frac{1}{4} x_4 + x_5 = - \frac{3}{4}
+$$
+
+And we add it to our tableau:
+
+|       |                 | $x_1$ | $x_2$ | $x_3$           | $x_4$          | $x_5$ |
+|-------|-----------------|-------|-------|-----------------|----------------|-------|
+| $-z$  | $-\frac{95}{4}$ | 0     | 0     | $-\frac{10}{4}$ | $-\frac{1}{4}$ | 0     |
+| $x_2$ | $\frac{5}{4}$   | 0     | 1     | $\frac{10}{4}$  | $\frac{1}{4}$  | 0     |
+| $x_1$ | $\frac{15}{4}$  | 1     | 0     | $\frac{3}{2}$   | $\frac{1}{4}$  | 0     |
+| $x_5$ | $-\frac{3}{4}$  | 0     | 0     | $-\frac{3}{2}$  | $-\frac{1}{4}$ | 1     |
+
+Let's now apply the dual simplex:
+
+$x_5$ is the variable that will exit the basis, to choose the one that enter we look at the columns of that row, and we apply a min ratio test using the reduced costs and the value of the coefficients in that row, we got:
+
+$ x_3: \frac{-\frac{10}{4}}{-\frac{3}{2}} = \frac{5}{3} $
+
+$ x_4: \frac{-\frac{1}{4}}{-\frac{1}{4}} = 1 $
+
+>Note that in this case we don't care that the ratio is negative, we take the smallest in any case.
+
+The variable $x_4$ will enter the basis, now we do a normal pivoting operation, and we got this tableau:
+
+|       |     | $x_1$ | $x_2$ | $x_3$ | $x_4$ | $x_5$ |
+|-------|-----|-------|-------|-------|-------|-------|
+| $-z$  | -23 | 0     | 0     | -1    | 0     | -1    |
+| $x_2$ | 2   | 0     | 1     | 1     | 0     | -1    |
+| $x_1$ | 3   | 0     | 1     | 0     | 0     | 1     |
+| $x_4$ | 3   | 0     | 0     | 6     | 1     | 4     |
+
+We have reached a new optimal solution :$\underline{x}^T=[\: 3 \quad 2  \quad 0 \quad 3 \quad 0  \: ]$ with value z = 23, this is a valid integer solution.
+
+Even though this is a valid solution, we cannot be sure that is the best one.
+
+How can we tell when the best solution is reached?
+
+Now comes the **bound** part.
+
+Lets update our diagram first:
+
+```mermaid
+flowchart TD
+A(("(3.75,1.25,0,0)\n z=23.75"))
+A -->|X1<=3| B(("(3,2,0,3,0)\n z=23"))
+A -->|X1=>4| C((...))
+```
+We now explore the right side, doing the same operation we did before, and we get to a new solution:
+
+```mermaid
+flowchart TD
+A(("(3.75,1.25,0,0)\n z=23.75"))
+A -->|X1<=3| B(("(4,2,0,3,0)\n z=23"))
+A -->|X1=>4| C(("(4,0.83)\n z=23.33"))
+```
+
+Clearly not an integer solution.
+
+We keep going down that path:
+
+```mermaid
+flowchart TD
+A(("(3.75,1.25)\n z=23.75"))
+A -->|X1<=3| B((" (4, 2)\n z=23"))
+A -->|X1=>4| C(("(4, 0.83)\n z=23.33"))
+C -->|X2<=0| D(("(4.5, 0)\n z = 22.5"))
+C -->|X2=>1| E(("..."))
+```
+
+We got a new non integer solution now if we compare its value with the integer one that we found, we see that it is smaller.
+
+What does it mean?
+
+We talked about how the relaxation provides an upper bound of the true solution, if we keep adding new constraints the bound that the relaxation provides get tighter, meaning that the more we branch the smaller the solution gets.
+
+This means that all values that we would get by expanding that node are going to be less than or equal to 22.5, but we already got a valid solution of 23, so none of the values there interest us, we have **bound** that branch.
+
+Let's now see the right side:
+
+Let's take a look at the table representation of the parent node:
+
+|       |                | $x_1$ | $x_2$ | $x_3$ | $x_4$          | $x_5$          |
+|-------|----------------|-------|-------|-------|----------------|----------------|
+| $-z$  | -23.33         | 0     | 0     | -5    | $-\frac{2}{3}$ | $-\frac{5}{3}$ |
+| $x_2$ | 0.833          | 0     | 1     | 1     | $-\frac{2}{3}$ | $-\frac{5}{3}$ |
+| $x_1$ | 4              | 1     | 0     | 0     | 0              | -1             |
+| $x_3$ | $-\frac{1}{6}$ | 0     | 0     | 1     | $\frac{1}{6}$  | $\frac{2}{3}$  |
+
+If we try to add the constraint:
+
+$x_2\geq 0$
+
+Put in normal form:
+
+$x_2-x_6 = 0$
+
+Using the row of $x_2$:
+
+$0.83+\frac{2}{3} x_4 +\frac{5}{3} x_5 - x_6 = 1$
+
+We get:
+$x_6 -\frac{2}{3} x_4 - \frac{5}{3} x_5 = - 0.1666$
+
+This is clearly impossible since $x_6$ is a positive integer and $x_4$ and $x_5$ being non-basic variables are equal to 0.
+
+This formulation is infeasible.
+
+So the final expansion is:
+
+```mermaid
+flowchart TD
+A(("(3.75,1.25)\n z=23.75"))
+A -->|X1<=3| B((" (4, 2)\n z=23"))
+A -->|X1=>4| C(("(4, 0.83)\n z=23.33"))
+C -->|X2<=0| D(("(4.5, 0)\n z = 22.5"))
+C -->|X2=>1| E((unfeasible))
+```
+
+And the solution is the one found in the first step.
+
+### Geometry of branch and bound
+
+Let's look at the previous problem under a geometrical point of view:
+
+This is our original situation:
+
+![](assets/chapter4/examp1.png)
+
+We split our problem in two section and found two new solutions:
+
+![](assets/chapter4/examp2.png)
+
+We kept the left one, and expanded the right section:
+
+![](assets/chapter4/examp3.png)
+
+We found only one solution since the other formulation was unfeasible, amd we concluded that the first solution found was the best possible.
