@@ -2291,7 +2291,7 @@ $$
 \begin{align*}
 max \quad &z = 5 x_1 + 4x_2 \\
 & x_1 + x_2 + x_3 = 5\\
-& 10 x_1 + x_2 + x_4 = 45\\
+& 10 x_1 + 6 x_2 + x_4 = 45\\
 &x_1,x_2,x_3,x_4 \geq 0
 \end{align*}
 $$
@@ -2434,35 +2434,22 @@ This means that all values that we would get by expanding that node are going to
 
 Let's now see the right side:
 
-Let's take a look at the table representation of the parent node:
+We would like to enforce: $x_2 \geq 1$
 
-|       |                | $x_1$ | $x_2$ | $x_3$ | $x_4$          | $x_5$          |
-|-------|----------------|-------|-------|-------|----------------|----------------|
-| $-z$  | -23.33         | 0     | 0     | -5    | $-\frac{2}{3}$ | $-\frac{5}{3}$ |
-| $x_2$ | 0.833          | 0     | 1     | 1     | $-\frac{2}{3}$ | $-\frac{5}{3}$ |
-| $x_1$ | 4              | 1     | 0     | 0     | 0              | -1             |
-| $x_3$ | $-\frac{1}{6}$ | 0     | 0     | 1     | $\frac{1}{6}$  | $\frac{2}{3}$  |
+But if we look at the original problem, in particular the second constraint:
 
-If we try to add the constraint:
+$$
+ 10 x_1 + 6 x_2 \leq 45
+$$
 
-$x_2\geq 0$
+We previously enforced that $x_1 \geq 4$ but if we take the two smallest values that these two can have, being respectively 4 and 1 , we end up with:
 
-Put in normal form:
+$$
+ 40 + 6 \leq 45
+$$
 
-$x_2-x_6 = 0$
+This is clearly not possible, hence the formulation is unfeasible.
 
-Using the row of $x_2$:
-
-$0.83+\frac{2}{3} x_4 +\frac{5}{3} x_5 - x_6 = 1$
-
-We get:
-$x_6 -\frac{2}{3} x_4 - \frac{5}{3} x_5 = - 0.1666$
-
-This is clearly impossible since $x_6$ is a positive integer and $x_4$ and $x_5$ being non-basic variables are equal to 0.
-
-This formulation is infeasible.
-
-So the final expansion is:
 
 ```mermaid
 flowchart TD
