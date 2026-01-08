@@ -2375,6 +2375,7 @@ $x_3: \frac{-\frac{10}{4}}{-\frac{3}{2}} = -\frac{5}{3}$
 
 $x_4: \frac{-\frac{1}{4}}{-\frac{1}{4}} = 1$
 
+>In case of a minimization problem we multiply by -1 the ratio.
 
 The variable $x_4$ will enter the basis, now we do a normal pivoting operation, and we got this tableau:
 
