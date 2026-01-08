@@ -2435,20 +2435,44 @@ Let's now see the right side:
 
 We would like to enforce: $x_2 \geq 1$
 
-But if we look at the original problem, in particular the second constraint:
+Starting from the tableau of our previous solution:
 
-$$
- 10 x_1 + 6 x_2 \leq 45
-$$
+|       |                 | $x_1$ | $x_2$ | $x_3$ | $x_4$          | $x_5$          |
+|-------|-----------------|-------|-------|-------|----------------|----------------|
+| $-z$  | $-\frac{70}{3}$ | 0     | 0     | 0     | $-\frac{2}{3}$ | $-\frac{5}{3}$ |
+| $x_2$ | $\frac{5}{6}$   | 0     | 1     | 0     | $\frac{1}{6}$  | $\frac{5}{3}$  |
+| $x_1$ | 4               | 1     | 0     | 0     | 0              | -1             |
+| $x_3$ | $\frac{1}{6}$   | 0     | 0     | 1     | $-\frac{1}{6}$ | $-\frac{2}{3}$ |
 
-We previously enforced that $x_1 \geq 4$ but if we take the two smallest values that these two can have, being respectively 4 and 1 , we end up with:
+So we build our new constraint:
 
-$$
- 40 + 6 \leq 45
-$$
+$x_2-x_6=1$
 
-This is clearly not possible, hence the formulation is unfeasible.
+We use the definition of $x_2$ in the tableau:
 
+$\frac{5}{6} - \frac{1}{6} x_4 -\frac{5}{3} x_5 -x_6 = 1$
+
+Put in normal form $x_6$:
+
+$\frac{1}{6}x_4 +\frac{5}{3}x_5 +x_6 = -\frac{1}{6}$
+
+Then we add it to the tableau:
+
+|       |                 | $x_1$ | $x_2$ | $x_3$ | $x_4$          | $x_5$          | $x_6$ |
+|-------|-----------------|-------|-------|-------|----------------|----------------|-------|
+| $-z$  | $-\frac{70}{3}$ | 0     | 0     | 0     | $-\frac{2}{3}$ | $-\frac{5}{3}$ | 0     |
+| $x_2$ | $\frac{5}{6}$   | 0     | 1     | 0     | $\frac{1}{6}$  | $\frac{5}{3}$  | 0     |
+| $x_1$ | 4               | 1     | 0     | 0     | 0              | -1             | 0     |
+| $x_3$ | $\frac{1}{6}$   | 0     | 0     | 1     | $-\frac{1}{6}$ | $-\frac{2}{3}$ | 0     |
+| $x_6$ | $-\frac{1}{6}$  | 0     | 0     | 0     | $\frac{1}{6}$  | $\frac{5}{3}$  | 1     |
+
+Two candidates for entering the basis, $x_4$ and $x_5$ but:
+
+$x_4: \frac{-\frac{2}{3}}{\frac{1}{6}} \leq 0$
+
+$x_5: \frac{-\frac{5}{3}}{\frac{5}{3}} \leq 0$
+
+Min ratio test tells us that dual is unbounded, so the primal formulation is unfeasible.
 
 ```mermaid
 flowchart TD
