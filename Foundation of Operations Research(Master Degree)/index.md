@@ -2339,7 +2339,7 @@ $$
 Now let's represent this constraint using non-basic variables , we will use the row of $x_1$:
 
 $$
-x_1 + -\frac{3}{2} x_3 + \frac{1}{4} x_4 = \frac{15}{4}
+x_1 - \frac{3}{2} x_3 + \frac{1}{4} x_4 = \frac{15}{4}
 $$
 
 $$
