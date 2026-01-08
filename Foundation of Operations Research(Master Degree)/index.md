@@ -2302,7 +2302,7 @@ We solve it using primal simplex, and we reach the final tableau:
 |-------|-----------------|-------|-------|-----------------|----------------|
 | $-z$  | $-\frac{95}{4}$ | 0     | 0     | $-\frac{10}{4}$ | $-\frac{1}{4}$ | 
 | $x_2$ | $\frac{5}{4}$   | 0     | 1     | $\frac{10}{4}$  | $\frac{1}{4}$  |
-| $x_1$ | $\frac{15}{4}$  | 1     | 0     | $\frac{3}{2}$   | $\frac{1}{4}$  | 
+| $x_1$ | $\frac{15}{4}$  | 1     | 0     | $-\frac{3}{2}$  | $\frac{1}{4}$  | 
 
 The solution we found: $\underline{x}^T=[\: \frac{15}{4} \quad \frac{5}{4}  \quad 0 \quad 0  \: ]$ with value z = $-\frac{95}{4}$ , is clearly not an "integer" one.
 
@@ -2339,23 +2339,23 @@ $$
 Now let's represent this constraint using non-basic variables , we will use the row of $x_1$:
 
 $$
-x_1 + \frac{3}{2} x_3 + \frac{1}{4} x_4 = \frac{15}{4}
+x_1 + -\frac{3}{2} x_3 + \frac{1}{4} x_4 = \frac{15}{4}
 $$
 
 $$
-x_1 = \frac{15}{4} - \frac{3}{2} x_3 - \frac{1}{4} x_4
+x_1 = \frac{15}{4} + \frac{3}{2} x_3 - \frac{1}{4} x_4
 $$
 
 And we put it in our new constraint:
 
 $$
-\frac{15}{4} -\frac{3}{2} x_3 - \frac{1}{4} x_4 + x_5 = 3
+\frac{15}{4} +\frac{3}{2} x_3 - \frac{1}{4} x_4 + x_5 = 3
 $$
 
 We get
 
 $$
--\frac{3}{2} x_3 - \frac{1}{4} x_4 + x_5 = - \frac{3}{4}
+\frac{3}{2} x_3 - \frac{1}{4} x_4 + x_5 = - \frac{3}{4}
 $$
 
 And we add it to our tableau:
@@ -2364,27 +2364,26 @@ And we add it to our tableau:
 |-------|-----------------|-------|-------|-----------------|----------------|-------|
 | $-z$  | $-\frac{95}{4}$ | 0     | 0     | $-\frac{10}{4}$ | $-\frac{1}{4}$ | 0     |
 | $x_2$ | $\frac{5}{4}$   | 0     | 1     | $\frac{10}{4}$  | $\frac{1}{4}$  | 0     |
-| $x_1$ | $\frac{15}{4}$  | 1     | 0     | $\frac{3}{2}$   | $\frac{1}{4}$  | 0     |
-| $x_5$ | $-\frac{3}{4}$  | 0     | 0     | $-\frac{3}{2}$  | $-\frac{1}{4}$ | 1     |
+| $x_1$ | $\frac{15}{4}$  | 1     | 0     | $-\frac{3}{2}$  | $\frac{1}{4}$  | 0     |
+| $x_5$ | $-\frac{3}{4}$  | 0     | 0     | $\frac{3}{2}$   | $-\frac{1}{4}$ | 1     |
 
 Let's now apply the dual simplex:
 
 $x_5$ is the variable that will exit the basis, to choose the one that enter we look at the columns of that row, and we apply a min ratio test using the reduced costs and the value of the coefficients in that row, we got:
 
-$x_3: \frac{-\frac{10}{4}}{-\frac{3}{2}} = \frac{5}{3}$
+$x_3: \frac{-\frac{10}{4}}{-\frac{3}{2}} = -\frac{5}{3}$
 
 $x_4: \frac{-\frac{1}{4}}{-\frac{1}{4}} = 1$
 
->Note that in this case we don't care that the ratio is negative, we take the smallest in any case.
 
 The variable $x_4$ will enter the basis, now we do a normal pivoting operation, and we got this tableau:
 
 |       |     | $x_1$ | $x_2$ | $x_3$ | $x_4$ | $x_5$ |
 |-------|-----|-------|-------|-------|-------|-------|
-| $-z$  | -23 | 0     | 0     | -1    | 0     | -1    |
+| $-z$  | -23 | 0     | 0     | -4    | 0     | -1    |
 | $x_2$ | 2   | 0     | 1     | 1     | 0     | -1    |
-| $x_1$ | 3   | 0     | 1     | 0     | 0     | 1     |
-| $x_4$ | 3   | 0     | 0     | 6     | 1     | 4     |
+| $x_1$ | 3   | 1     | 0     | 0     | 0     | 1     |
+| $x_4$ | 3   | 0     | 0     | -6    | 1     | -4    |
 
 We have reached a new optimal solution :$\underline{x}^T=[\: 3 \quad 2  \quad 0 \quad 3 \quad 0  \: ]$ with value z = 23, this is a valid integer solution.
 
