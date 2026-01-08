@@ -2506,3 +2506,178 @@ We found only one solution since the other formulation was unfeasible, amd we co
 
 ### Cutting plane method
 ![snip snip](assets/chapter4/Gomorroid.png)
+
+Another possible way to derive the integer solution from the relaxation, is through the **Cutting planes method**.
+
+The idea is based upon this theorem:
+:::{.callout .callout-definition title="Ideal formulation"}
+For any feasible region X of an ILP, there exists an ideal formulation, but the number of constraints can be very large with respect to the size of the original formulation
+:::
+
+What is this ideal formulation?
+
+Basically a formulation where the boundaries of the feasible area lie on integer values, hence solving using simplex give the correct solution.
+
+The concept might seem complicated, but is not so much different than the branch and bound method.
+
+Instead of possibly cutting away large portions of the feasible area , we remove only the strict necessary, and to do that we use **The Gomory fractional cuts**.
+
+### Gomory fractional cuts
+
+![Them cuts be fractional - Gomory](assets/chapter4/Gomory.png)
+
+A Gomory fractional cut is a constraint that "cuts" away the decimal part of variable, specifically:
+
+- Makes the current solution not feasible ( gets cut out).
+- It's satisfied by all integer feasible solutions.
+
+But how do we derive a cut?
+
+Let's see it with an example:
+
+Suppose that we want to find the cut corresponding to this constraint:
+
+$$
+x_1-1.25x_2+0.25x_3 = 3.75
+$$
+
+We expand the term as the sum of their lower bound and the remaining fractional part:
+
+$$
+(1+0)x_1+(-2+0.75)x_2+(0+0.25)x_3 = (3+0.75)
+$$
+
+Now we move all the integers to the right and all the decimal to the left:
+
+$$
+0.75x_2 + 0.25x_3 - 0.75 = 3- x_1 + 2 x_2
+$$
+
+Since on the right we have all integer , their sum must also be an integer, therefore the l.h.s. is also an integer:
+
+$$
+\underbrace{0.75x_2 + 0.25x_3 - 0.75}_{integer} = \underbrace{3- x_1 + 2 x_2}_{integer}
+$$
+
+Also, we can isolate the l.h.s. since the sum of the fractional parts is at least the fractional part of the sum (due to carries), and rewrite it like so:
+
+$$
+0.75x_2 + 0.25x_3 - 0.75 \geq 0
+$$
+
+That is equal to:
+
+$$
+0.75x_2 + 0.25x_3 \geq 0.75
+$$
+
+This is the Gomory cut of our constraint.
+
+#### Back to the method
+
+In order to find the integer solution we:
+
+1. Solve the relaxation.
+2. Pick the variable with the biggest fractional part.
+3. Create a cut and add it as a constraint.
+4. Fix the formulation with dual simplex.
+5. If the solution is reached we stop, otherwise back to step 2.
+
+Let's do an example:
+
+We have a ILP in standard form:
+
+$$
+\begin{align*}
+min \quad &z = -5 x_1-2 x_2 \\
+s.t. \quad &2 x_1 +2 x_2 + x_3 = 5\\
+& 2 x_1-2x_2+x_4 = 3\\
+&x_1,x_2.x_3 \geq 0 , integers
+\end{align*}
+$$
+
+We solve the Relaxation, and we get the final tableau:
+
+|       |               | $x_1$ | $x_2$ | $x_3$         | $x_4$          |
+|-------|---------------|-------|-------|---------------|----------------|
+| $-z$  | 11            | 0     | 0     | $\frac{7}{4}$ | $\frac{3}{4}$  | 
+| $x_2$ | $\frac{1}{2}$ | 0     | 1     | $\frac{1}{4}$ | $-\frac{1}{4}$ |
+| $x_1$ | 2             | 1     | 0     | $\frac{1}{4}$ | $\frac{1}{4}$  | 
+
+We generate a cut for $x_2$:
+
+$$
+\frac{1}{2} = x_2+ \frac{1}{4}x_3 -\frac{1}{4} x_4
+$$
+
+$$
+\begin{align*}
+x_2(1 + 0) + x_3(0+0.25)+x_4(-1+0.75) & = (0 + 0.5)\\
+0.25 x_3 +0.75 x_4- 0.5 &= -x_2+x_4\\
+0.25 x_3+ 0.75 x_4 &\geq 0.5\\
+0.25 x_3+0.75 x_4 -x_5 &= 0.5\\
+x_5 - 0.25 x_3 -0.75 x_4 &= -0.5 \quad (1)
+\end{align*}
+$$
+ We add (1) to the tableau:
+
+|       |                | $x_1$ | $x_2$ | $x_3$          | $x_4$          | $x_5$ |
+|-------|----------------|-------|-------|----------------|----------------|-------|
+| $-z$  | 11             | 0     | 0     | $\frac{7}{4}$  | $\frac{3}{4}$  | 0     |
+| $x_2$ | $\frac{1}{2}$  | 0     | 1     | $\frac{1}{4}$  | $-\frac{1}{4}$ | 0     |
+| $x_1$ | 2              | 1     | 0     | $\frac{1}{4}$  | $\frac{1}{4}$  | 0     |
+| $x_5$ | $-\frac{1}{2}$ | 0     | 0     | $-\frac{1}{4}$ | $-\frac{3}{4}$ | 1     |
+
+Two candidates are available $x_3$ and $x_4$, lets check the ratios:
+
+$$
+x_3: -1 \times \frac{7/4}{-1/4} = 7
+$$
+
+$$
+x_4: -1 \times \frac{3/4}{-3/4} = 1
+$$
+
+The variable $x_4$ will enter the basis, after pivoting we got:
+
+|       |                | $x_1$ | $x_2$ | $x_3$         | $x_4$ | $x_5$          |
+|-------|----------------|-------|-------|---------------|-------|----------------|
+| $-z$  | $\frac{21}{2}$ | 0     | 0     | $\frac{3}{2}$ | 0     | 1              |
+| $x_2$ | $\frac{2}{3}$  | 0     | 1     | $\frac{1}{3}$ | 0     | $-\frac{1}{3}$ |
+| $x_1$ | $\frac{11}{6}$ | 1     | 0     | $\frac{1}{6}$ | 0     | $\frac{1}{3}$  |
+| $x_4$ | $\frac{2}{3}$  | 0     | 0     | $\frac{1}{3}$ | 1     | $-\frac{4}{3}$ |
+
+Still no integer solution, the biggest fractional part is of $x_1$, so we generate a new cut:
+
+$$
+x_6-\frac{1}{6}x_3-\frac{1}{3}x_5 = -\frac{5}{6}
+$$
+
+We add it to the tableau and perform a step of the dual simplex, we end up with:
+
+|       |               | $x_1$ | $x_2$ | $x_3$         | $x_4$ | $x_5$ | $x_6$ |
+|-------|---------------|-------|-------|---------------|-------|-------|-------|
+| $-z$  | 8             | 0     | 0     | 1             | 0     | 0     | 3     |
+| $x_2$ | $\frac{3}{2}$ | 0     | 1     | $\frac{1}{2}$ | 0     | 0     | -1    |
+| $x_1$ | 1             | 1     | 0     | 0             | 0     | 0     | 1     |
+| $x_4$ | 4             | 0     | 0     | 1             | 1     | 0     | -4    |
+| $x_5$ | $\frac{5}{2}$ | 0     | 0     | $\frac{1}{2}$ | 0     | 1     | -3    |
+
+Still no integer solution , we cut again , the biggest fractional is that of $x_5$ , we generate a new cut:
+
+$$
+x_7-\frac{1}{2}x_3 = -\frac{1}{2}
+$$
+
+We perform the usual steps, and we got this tableau:
+
+|       |   | $x_1$ | $x_2$ | $x_3$ | $x_4$ | $x_5$ | $x_6$ | $x_7$ |
+|-------|---|-------|-------|-------|-------|-------|-------|-------|
+| $-z$  | 7 | 0     | 0     | 0     | 0     | 0     | 3     | 2     |
+| $x_2$ | 1 | 0     | 1     | 0     | 0     | 0     | -1    | 1     |
+| $x_1$ | 1 | 1     | 0     | 0     | 0     | 0     | 1     | 0     |
+| $x_4$ | 3 | 0     | 0     | 0     | 1     | 0     | -4    | 2     |
+| $x_5$ | 2 | 0     | 0     | 0     | 0     | 1     | -3    | 1     |
+| $x_3$ | 1 | 0     | 0     | 1     | 0     | 0     | 0     | -2    |
+
+We got our integer solution, we can stop here.
