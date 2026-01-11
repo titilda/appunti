@@ -1534,7 +1534,7 @@ $$
 the hamiltonian can be rewritten as
 
 $$
-\hat H = \frac{1}{2m}\hat P^2 + \frac{1}{2}m\omega^2\hat X^2
+\hat H = \frac{1}{2m}\hat P^2 + \frac{1}{2}\underbrace{m\omega^2}_{k}\hat X^2
 $$
 
 We already said that energy is quantized, so there will be infinite eigenstates for this hamiltonian, indexed by $n \in \mathbb{N}$ (this time including $0$).
