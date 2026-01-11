@@ -1,5 +1,5 @@
 ---
-title: "Foundation of Operational Research"
+title: "Foundation of Operations Research"
 author:
 - "Ortore Joele Andrea"
 ---
@@ -1741,6 +1741,7 @@ x_4*(y_1+\frac{1}{2}y_2-2 y_3 - 1) &= 0 \quad (4)
 $$
 
 We substitute the values of the $y_i$ variables , and if:
+
 - The expression in the parenthesis evaluates to 0 , then the constraint is said to be **tight** meaning that the corresponding $x_j$ can assume any* value (usually $\geq 0$)
 - The expression in the parenthesis is not zero , then the constraint is said to be **slack** meaning that the only possible value of the corresponding $x_j$ variable is 0 ( otherwise the equality won't hold).
 
@@ -2222,7 +2223,7 @@ Formally:
 
 :::{.callout .callout-property title="bound the ILP"}
 
-For any ILP with max (min) , we have that $z_{ILP} \leq z_{LP}$ ($z_{ILP} \leq z_{LP}$), i.e., the relaxation provides an **upper bound** (lower bound) on the optimal value of an ILP.
+For any ILP with max (min) , we have that $z_{ILP} \leq z_{LP}$ ($z_{ILP} \geq z_{LP}$), i.e., the relaxation provides an **upper bound** (lower bound) on the optimal value of an ILP.
 
 :::
 
@@ -2256,3 +2257,427 @@ $$
 
 So a collection of constraints that defines the same characteristic for different "elements" , in this case if this were the "plant capacity family" each member of this family describes the max capacity of each plant i to store n different types of elements.
 
+### Branch and Bound method
+
+![](assets/chapter4/branchnbound.jpg)
+
+In the previous section we have seen that, in most cases, the optimal solution cannot be found directly through the linear relaxation of the problem, so we need a way to *correct* the relaxed solution into the real one, a possible way to do that is the Branch and Bound method.
+
+But before talking about that we need to introduce two key concepts:
+
+:::{.callout .callout-definition title="Feasibility"}
+
+- **Primal feasibility**: all constraints are satisfied.
+- **Dual feasibility**: all reduced costs have right signs (optimality).
+:::
+
+>What implications do these definitions have?
+
+When we do a step in the primal simplex (normal simplex), we:
+1. maintain primal feasibility.
+2. improve dual feasibility.
+
+We didn't see yet how the dual simplex algorithm works, but we can say that it has the same effect as doing the primal simplex on the dual problem, what happens when we do that is:
+1. we maintain dual feasibility.
+2. we 'repair' primal feasibility (if broken).
+
+We are going to use the dual simplex to keep the solution optimal and to make the new formulation feasible.
+
+### The method
+
+We start by solving the linear relaxation of a problem:
+
+$$
+\begin{align*}
+max \quad &z = 5 x_1 + 4x_2 \\
+& x_1 + x_2 + x_3 = 5\\
+& 10 x_1 + 6 x_2 + x_4 = 45\\
+&x_1,x_2,x_3,x_4 \geq 0
+\end{align*}
+$$
+
+We solve it using primal simplex, and we reach the final tableau:
+
+|       |                 | $x_1$ | $x_2$ | $x_3$           | $x_4$          |
+|-------|-----------------|-------|-------|-----------------|----------------|
+| $-z$  | $-\frac{95}{4}$ | 0     | 0     | $-\frac{10}{4}$ | $-\frac{1}{4}$ | 
+| $x_2$ | $\frac{5}{4}$   | 0     | 1     | $\frac{10}{4}$  | $\frac{1}{4}$  |
+| $x_1$ | $\frac{15}{4}$  | 1     | 0     | $-\frac{3}{2}$  | $\frac{1}{4}$  | 
+
+The solution we found: $\underline{x}^T=[\: \frac{15}{4} \quad \frac{5}{4}  \quad 0 \quad 0  \: ]$ with value z = $-\frac{95}{4}$ , is clearly not an "integer" one.
+
+Here comes the Branch and Bound part:
+
+We have two fractional value, we must choose one to start with, there are many techniques to do that , the most common one is to pick the bigger, but there aren't wrong choices, you will eventually reach the solution choosing either of them.
+
+We choose to **branch** on $x_1$ = 3.75 obtaining two new formulations:
+
+```mermaid
+flowchart TD
+A(("(3.75,1.25,0,0)\n z=23.75"))
+A -->|X1<=3| B((...))
+A -->|X1=>4| C((...))
+```
+Starting from the left side, we now have a new constraints, the current solution is now unfeasible, if the graphical method is possible the solution can be trivially found, otherwise we would need tp redo the whole simplex again.....how annoying!!
+
+There is another way, we can use the **dual simplex**:
+
+In the dual simplex we apply the same rules as the primal, but we switch the roles of columns and rows:
+
+First of all lets add the new constraint:
+
+$$
+ x_1 \leq 3
+$$
+
+Let's put it in normal form, by adding a new variable:
+
+$$
+ x_1 + x_5 = 3
+$$
+
+Now let's represent this constraint using non-basic variables , we will use the row of $x_1$:
+
+$$
+x_1 - \frac{3}{2} x_3 + \frac{1}{4} x_4 = \frac{15}{4}
+$$
+
+$$
+x_1 = \frac{15}{4} + \frac{3}{2} x_3 - \frac{1}{4} x_4
+$$
+
+And we put it in our new constraint:
+
+$$
+\frac{15}{4} +\frac{3}{2} x_3 - \frac{1}{4} x_4 + x_5 = 3
+$$
+
+We get
+
+$$
+\frac{3}{2} x_3 - \frac{1}{4} x_4 + x_5 = - \frac{3}{4}
+$$
+
+And we add it to our tableau:
+
+|       |                 | $x_1$ | $x_2$ | $x_3$           | $x_4$          | $x_5$ |
+|-------|-----------------|-------|-------|-----------------|----------------|-------|
+| $-z$  | $-\frac{95}{4}$ | 0     | 0     | $-\frac{10}{4}$ | $-\frac{1}{4}$ | 0     |
+| $x_2$ | $\frac{5}{4}$   | 0     | 1     | $\frac{10}{4}$  | $\frac{1}{4}$  | 0     |
+| $x_1$ | $\frac{15}{4}$  | 1     | 0     | $-\frac{3}{2}$  | $\frac{1}{4}$  | 0     |
+| $x_5$ | $-\frac{3}{4}$  | 0     | 0     | $\frac{3}{2}$   | $-\frac{1}{4}$ | 1     |
+
+Let's now apply the dual simplex:
+
+$x_5$ is the variable that will exit the basis, to choose the one that enter we look at the columns of that row, and we apply a min ratio test using the reduced costs and the value of the coefficients in that row, we got:
+
+$x_3: \frac{-\frac{10}{4}}{-\frac{3}{2}} = -\frac{5}{3}$
+
+$x_4: \frac{-\frac{1}{4}}{-\frac{1}{4}} = 1$
+
+>In case of a minimization problem we multiply by -1 the ratio.
+
+The variable $x_4$ will enter the basis, now we do a normal pivoting operation, and we got this tableau:
+
+|       |     | $x_1$ | $x_2$ | $x_3$ | $x_4$ | $x_5$ |
+|-------|-----|-------|-------|-------|-------|-------|
+| $-z$  | -23 | 0     | 0     | -4    | 0     | -1    |
+| $x_2$ | 2   | 0     | 1     | 1     | 0     | -1    |
+| $x_1$ | 3   | 1     | 0     | 0     | 0     | 1     |
+| $x_4$ | 3   | 0     | 0     | -6    | 1     | -4    |
+
+We have reached a new optimal solution :$\underline{x}^T=[\: 3 \quad 2  \quad 0 \quad 3 \quad 0  \: ]$ with value z = 23, this is a valid integer solution.
+
+Even though this is a valid solution, we cannot be sure that is the best one.
+
+How can we tell when the best solution is reached?
+
+Now comes the **bound** part.
+
+Lets update our diagram first:
+
+```mermaid
+flowchart TD
+A(("(3.75,1.25,0,0)\n z=23.75"))
+A -->|X1<=3| B(("(3,2,0,3,0)\n z=23"))
+A -->|X1=>4| C((...))
+```
+We now explore the right side, doing the same operation we did before, and we get to a new solution:
+
+```mermaid
+flowchart TD
+A(("(3.75,1.25,0,0)\n z=23.75"))
+A -->|X1<=3| B(("(4,2,0,3,0)\n z=23"))
+A -->|X1=>4| C(("(4,0.83)\n z=23.33"))
+```
+
+Clearly not an integer solution.
+
+We keep going down that path:
+
+```mermaid
+flowchart TD
+A(("(3.75,1.25)\n z=23.75"))
+A -->|X1<=3| B((" (4, 2)\n z=23"))
+A -->|X1=>4| C(("(4, 0.83)\n z=23.33"))
+C -->|X2<=0| D(("(4.5, 0)\n z = 22.5"))
+C -->|X2=>1| E(("..."))
+```
+
+We got a new non integer solution now if we compare its value with the integer one that we found, we see that it is smaller.
+
+What does it mean?
+
+We talked about how the relaxation provides an upper bound of the true solution, if we keep adding new constraints the bound that the relaxation provides get tighter, meaning that the more we branch the smaller the solution gets.
+
+This means that all values that we would get by expanding that node are going to be less than or equal to 22.5, but we already got a valid solution of 23, so none of the values there interest us, we have **bound** that branch.
+
+Let's now see the right side:
+
+We would like to enforce: $x_2 \geq 1$
+
+Starting from the tableau of our previous solution:
+
+|       |                 | $x_1$ | $x_2$ | $x_3$ | $x_4$          | $x_5$          |
+|-------|-----------------|-------|-------|-------|----------------|----------------|
+| $-z$  | $-\frac{70}{3}$ | 0     | 0     | 0     | $-\frac{2}{3}$ | $-\frac{5}{3}$ |
+| $x_2$ | $\frac{5}{6}$   | 0     | 1     | 0     | $\frac{1}{6}$  | $\frac{5}{3}$  |
+| $x_1$ | 4               | 1     | 0     | 0     | 0              | -1             |
+| $x_3$ | $\frac{1}{6}$   | 0     | 0     | 1     | $-\frac{1}{6}$ | $-\frac{2}{3}$ |
+
+So we build our new constraint:
+
+$x_2-x_6=1$
+
+We use the definition of $x_2$ in the tableau:
+
+$\frac{5}{6} - \frac{1}{6} x_4 -\frac{5}{3} x_5 -x_6 = 1$
+
+Put in normal form $x_6$:
+
+$\frac{1}{6}x_4 +\frac{5}{3}x_5 +x_6 = -\frac{1}{6}$
+
+Then we add it to the tableau:
+
+|       |                 | $x_1$ | $x_2$ | $x_3$ | $x_4$          | $x_5$          | $x_6$ |
+|-------|-----------------|-------|-------|-------|----------------|----------------|-------|
+| $-z$  | $-\frac{70}{3}$ | 0     | 0     | 0     | $-\frac{2}{3}$ | $-\frac{5}{3}$ | 0     |
+| $x_2$ | $\frac{5}{6}$   | 0     | 1     | 0     | $\frac{1}{6}$  | $\frac{5}{3}$  | 0     |
+| $x_1$ | 4               | 1     | 0     | 0     | 0              | -1             | 0     |
+| $x_3$ | $\frac{1}{6}$   | 0     | 0     | 1     | $-\frac{1}{6}$ | $-\frac{2}{3}$ | 0     |
+| $x_6$ | $-\frac{1}{6}$  | 0     | 0     | 0     | $\frac{1}{6}$  | $\frac{5}{3}$  | 1     |
+
+Two candidates for entering the basis, $x_4$ and $x_5$ but:
+
+$x_4: \frac{-\frac{2}{3}}{\frac{1}{6}} \leq 0$
+
+$x_5: \frac{-\frac{5}{3}}{\frac{5}{3}} \leq 0$
+
+Min ratio test tells us that dual is unbounded, so the primal formulation is unfeasible.
+
+```mermaid
+flowchart TD
+A(("(3.75,1.25)\n z=23.75"))
+A -->|X1<=3| B((" (4, 2)\n z=23"))
+A -->|X1=>4| C(("(4, 0.83)\n z=23.33"))
+C -->|X2<=0| D(("(4.5, 0)\n z = 22.5"))
+C -->|X2=>1| E((unfeasible))
+```
+
+And the solution is the one found in the first step.
+
+### Geometry of branch and bound
+
+Let's look at the previous problem under a geometrical point of view:
+
+This is our original situation:
+
+![](assets/chapter4/examp1.png)
+
+We split our problem in two section and found two new solutions:
+
+![](assets/chapter4/examp2.png)
+
+We kept the left one, and expanded the right section:
+
+![](assets/chapter4/examp3.png)
+
+We found only one solution since the other formulation was unfeasible, amd we concluded that the first solution found was the best possible.
+
+### Cutting plane method
+![snip snip](assets/chapter4/Gomorroid.png)
+
+Another possible way to derive the integer solution from the relaxation, is through the **Cutting planes method**.
+
+The idea is based upon this theorem:
+:::{.callout .callout-definition title="Ideal formulation"}
+For any feasible region X of an ILP, there exists an ideal formulation, but the number of constraints can be very large with respect to the size of the original formulation
+:::
+
+What is this ideal formulation?
+
+Basically a formulation where the boundaries of the feasible area lie on integer values, hence solving using simplex give the correct solution.
+
+The concept might seem complicated, but is not so much different than the branch and bound method.
+
+Instead of possibly cutting away large portions of the feasible area , we remove only the strict necessary, and to do that we use **The Gomory fractional cuts**.
+
+### Gomory fractional cuts
+
+![Them cuts be fractional - Gomory](assets/chapter4/Gomory.png)
+
+A Gomory fractional cut is a constraint that "cuts" away the decimal part of variable, specifically:
+
+- Makes the current solution not feasible ( gets cut out).
+- It's satisfied by all integer feasible solutions.
+
+But how do we derive a cut?
+
+Let's see it with an example:
+
+Suppose that we want to find the cut corresponding to this constraint:
+
+$$
+x_1-1.25x_2+0.25x_3 = 3.75
+$$
+
+We expand the term as the sum of their lower bound and the remaining fractional part:
+
+$$
+(1+0)x_1+(-2+0.75)x_2+(0+0.25)x_3 = (3+0.75)
+$$
+
+Now we move all the integers to the right and all the decimal to the left:
+
+$$
+0.75x_2 + 0.25x_3 - 0.75 = 3- x_1 + 2 x_2
+$$
+
+Since on the right we have all integer , their sum must also be an integer, therefore the l.h.s. is also an integer:
+
+$$
+\underbrace{0.75x_2 + 0.25x_3 - 0.75}_{integer} = \underbrace{3- x_1 + 2 x_2}_{integer}
+$$
+
+Also, we can isolate the l.h.s. since the sum of the fractional parts is at least the fractional part of the sum (due to carries), and rewrite it like so:
+
+$$
+0.75x_2 + 0.25x_3 - 0.75 \geq 0
+$$
+
+That is equal to:
+
+$$
+0.75x_2 + 0.25x_3 \geq 0.75
+$$
+
+This is the Gomory cut of our constraint.
+
+#### Back to the method
+
+In order to find the integer solution we:
+
+1. Solve the relaxation.
+2. Pick the variable with the biggest fractional part.
+3. Create a cut and add it as a constraint.
+4. Fix the formulation with dual simplex.
+5. If the solution is reached we stop, otherwise back to step 2.
+
+Let's do an example:
+
+We have a ILP in standard form:
+
+$$
+\begin{align*}
+min \quad &z = -5 x_1-2 x_2 \\
+s.t. \quad &2 x_1 +2 x_2 + x_3 = 5\\
+& 2 x_1-2x_2+x_4 = 3\\
+&x_1,x_2.x_3 \geq 0 , integers
+\end{align*}
+$$
+
+We solve the Relaxation, and we get the final tableau:
+
+|       |               | $x_1$ | $x_2$ | $x_3$         | $x_4$          |
+|-------|---------------|-------|-------|---------------|----------------|
+| $-z$  | 11            | 0     | 0     | $\frac{7}{4}$ | $\frac{3}{4}$  | 
+| $x_2$ | $\frac{1}{2}$ | 0     | 1     | $\frac{1}{4}$ | $-\frac{1}{4}$ |
+| $x_1$ | 2             | 1     | 0     | $\frac{1}{4}$ | $\frac{1}{4}$  | 
+
+We generate a cut for $x_2$:
+
+$$
+\frac{1}{2} = x_2+ \frac{1}{4}x_3 -\frac{1}{4} x_4
+$$
+
+$$
+\begin{align*}
+x_2(1 + 0) + x_3(0+0.25)+x_4(-1+0.75) & = (0 + 0.5)\\
+0.25 x_3 +0.75 x_4- 0.5 &= -x_2+x_4\\
+0.25 x_3+ 0.75 x_4 &\geq 0.5\\
+0.25 x_3+0.75 x_4 -x_5 &= 0.5\\
+x_5 - 0.25 x_3 -0.75 x_4 &= -0.5 \quad (1)
+\end{align*}
+$$
+ We add (1) to the tableau:
+
+|       |                | $x_1$ | $x_2$ | $x_3$          | $x_4$          | $x_5$ |
+|-------|----------------|-------|-------|----------------|----------------|-------|
+| $-z$  | 11             | 0     | 0     | $\frac{7}{4}$  | $\frac{3}{4}$  | 0     |
+| $x_2$ | $\frac{1}{2}$  | 0     | 1     | $\frac{1}{4}$  | $-\frac{1}{4}$ | 0     |
+| $x_1$ | 2              | 1     | 0     | $\frac{1}{4}$  | $\frac{1}{4}$  | 0     |
+| $x_5$ | $-\frac{1}{2}$ | 0     | 0     | $-\frac{1}{4}$ | $-\frac{3}{4}$ | 1     |
+
+Two candidates are available $x_3$ and $x_4$, lets check the ratios:
+
+$$
+x_3: -1 \times \frac{7/4}{-1/4} = 7
+$$
+
+$$
+x_4: -1 \times \frac{3/4}{-3/4} = 1
+$$
+
+The variable $x_4$ will enter the basis, after pivoting we got:
+
+|       |                | $x_1$ | $x_2$ | $x_3$         | $x_4$ | $x_5$          |
+|-------|----------------|-------|-------|---------------|-------|----------------|
+| $-z$  | $\frac{21}{2}$ | 0     | 0     | $\frac{3}{2}$ | 0     | 1              |
+| $x_2$ | $\frac{2}{3}$  | 0     | 1     | $\frac{1}{3}$ | 0     | $-\frac{1}{3}$ |
+| $x_1$ | $\frac{11}{6}$ | 1     | 0     | $\frac{1}{6}$ | 0     | $\frac{1}{3}$  |
+| $x_4$ | $\frac{2}{3}$  | 0     | 0     | $\frac{1}{3}$ | 1     | $-\frac{4}{3}$ |
+
+Still no integer solution, the biggest fractional part is of $x_1$, so we generate a new cut:
+
+$$
+x_6-\frac{1}{6}x_3-\frac{1}{3}x_5 = -\frac{5}{6}
+$$
+
+We add it to the tableau and perform a step of the dual simplex, we end up with:
+
+|       |               | $x_1$ | $x_2$ | $x_3$         | $x_4$ | $x_5$ | $x_6$ |
+|-------|---------------|-------|-------|---------------|-------|-------|-------|
+| $-z$  | 8             | 0     | 0     | 1             | 0     | 0     | 3     |
+| $x_2$ | $\frac{3}{2}$ | 0     | 1     | $\frac{1}{2}$ | 0     | 0     | -1    |
+| $x_1$ | 1             | 1     | 0     | 0             | 0     | 0     | 1     |
+| $x_4$ | 4             | 0     | 0     | 1             | 1     | 0     | -4    |
+| $x_5$ | $\frac{5}{2}$ | 0     | 0     | $\frac{1}{2}$ | 0     | 1     | -3    |
+
+Still no integer solution , we cut again , the biggest fractional is that of $x_5$ , we generate a new cut:
+
+$$
+x_7-\frac{1}{2}x_3 = -\frac{1}{2}
+$$
+
+We perform the usual steps, and we got this tableau:
+
+|       |   | $x_1$ | $x_2$ | $x_3$ | $x_4$ | $x_5$ | $x_6$ | $x_7$ |
+|-------|---|-------|-------|-------|-------|-------|-------|-------|
+| $-z$  | 7 | 0     | 0     | 0     | 0     | 0     | 3     | 2     |
+| $x_2$ | 1 | 0     | 1     | 0     | 0     | 0     | -1    | 1     |
+| $x_1$ | 1 | 1     | 0     | 0     | 0     | 0     | 1     | 0     |
+| $x_4$ | 3 | 0     | 0     | 0     | 1     | 0     | -4    | 2     |
+| $x_5$ | 2 | 0     | 0     | 0     | 0     | 1     | -3    | 1     |
+| $x_3$ | 1 | 0     | 0     | 1     | 0     | 0     | 0     | -2    |
+
+We got our integer solution, we can stop here.
