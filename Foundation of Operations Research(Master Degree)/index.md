@@ -2371,7 +2371,7 @@ Let's now apply the dual simplex:
 
 $x_5$ is the variable that will exit the basis, to choose the one that enter we look at the columns of that row, and we apply a min ratio test using the reduced costs and the value of the coefficients in that row, we got:
 
-$x_3: \frac{-\frac{10}{4}}{-\frac{3}{2}} = -\frac{5}{3}$
+$x_3: \frac{-\frac{10}{4}}{\frac{3}{2}} = -\frac{5}{3}$
 
 $x_4: \frac{-\frac{1}{4}}{-\frac{1}{4}} = 1$
 
@@ -2681,3 +2681,4 @@ We perform the usual steps, and we got this tableau:
 | $x_3$ | 1 | 0     | 0     | 1     | 0     | 0     | 0     | -2    |
 
 We got our integer solution, we can stop here.
+
