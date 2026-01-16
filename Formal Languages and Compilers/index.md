@@ -125,3 +125,35 @@ To convert this FA into a RegEx using the Brozozowski & McCluskey algorithm, we 
 2. Eliminate state `q2`: Update the transition from `q0` to the accept state to include the path through `q2`: `a b a`.
 
 The final regular expression representing the language recognized by the FA is `a b a`.
+
+### Grammars
+
+A grammar is a set of production rules that define how strings in a language can be generated. A grammar consists of:
+
+- A set of non-terminal symbols (N)
+- A set of terminal symbols (Σ)
+- A set of production rules (P)
+- A start symbol (S)
+
+Grammars can be classified based on the type of production rules they use, following the Chomsky hierarchy.
+
+$$ S \to aSb \ | \ aAb $$
+$$ A \to bAa \ | \ \epsilon $$
+
+Derivations can be represented using parse trees, where the root represents the start symbol, and the leaves represent the terminal symbols of the derived string.
+
+```mermaid
+graph TD
+    S --> a1[a]
+    S --> S1[S]
+    S --> b1[b]
+    S1 --> a2[a]
+    S1 --> A[A]
+    S1 --> b2[b]
+    A --> b3[b]
+    A --> A1[A]
+    A --> a3[a]
+    A1 --> ε[ε]
+```
+
+Grammars can also be ambiguous, meaning that there are multiple parse trees for the same string. To prove ambiguity, one can enumerate all possible derivations for a given string and show that there are multiple distinct parse trees.
