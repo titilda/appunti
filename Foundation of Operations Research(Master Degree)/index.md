@@ -2122,7 +2122,7 @@ s.t.\quad & x_1+x_2+x_3-x_4 \leq 5\\
 \end{align*}
 $$
 
-Everything looks fine until we realize that our optimal solution of producing 4.789 x_1, 2.111 x_2, 3.002 x_3 and 9.12 x_4 **balls** ( completely random numbers) is not achievable since we cannot produce 9.12 units of something.
+Everything looks fine until we realize that our optimal solution of producing $x_1=4.789$, $x_2=2.111$, $x_3=3.002$  and $x_4=9.12$ **balls** ( completely random numbers) is not achievable since we cannot produce 9.12 units of something.
 
 So what is the plan now?
 
