@@ -23,7 +23,7 @@ We will now give the fundamental tools and concepts to understand more advanced 
 
 ## Wave-particle duality
 
-The **wave-particle duality** is at the foundation of the entire field of quantum mechanics. Hoc can you prove that a particle is, in fact, a particle? Consider the following setup, where a beam of particles if thrown into a 50/50 beam-splitter:
+The **wave-particle duality** is at the foundation of the entire field of quantum mechanics. How can you prove that a particle is, in fact, a particle? Consider the following setup, where a beam of particles if thrown into a 50/50 beam-splitter:
 
 ![Image from author](assets/beamsplit-5050.png)
 
@@ -55,7 +55,7 @@ $|u\rangle$ belongs to the Hilbert (i.e. a vector space with a scalar product) s
 - $(\cdot): \mathbb{C} \times \mathcal{H} \to \mathcal{H} \overset{\Delta}{=} \alpha |v\rangle \mapsto |\alpha v\rangle$
 - $\langle \cdot | \cdot \rangle: \mathcal{H} \times \mathcal{H} \to \mathbb{C}$
 
-The first operation is called the **superposition operation**, the third one is the **bracket**.
+The first operation is called the **superposition operation**, the third one is the **braket**.
 
 ::: {.callout .callout-property title="Properties of Hilbert operators"}
 Since $\mathcal{H}$ is an Hilbert space, a few properties holds:
@@ -129,7 +129,7 @@ The probability of observing a specific value $O_j$ when performing a measuremen
 The **Born rule** gives the prorability of observing a given value $O_j$ when performing a measurement on $|u\rangle$:
 
 $$
-P(O = O_j) = \frac{a_j^* a_j}{\langle u | u \rangle} = \frac{}{}
+P(O = O_j) = \frac{a_j^* a_j}{\langle u | u \rangle}
 $$
 :::
 
@@ -269,12 +269,12 @@ $$
 \psi(x) \overset{\Delta}{=} \langle O(x) | u \rangle
 $$
 
-The bracket is computed as
+The braket is computed as
 
 $$
 \begin{align*}
     \langle u | v \rangle &= \int \alpha^*(\xi) \beta(\xi) d\xi \\
-    \langle u | u \rangle &= \int |\alpha(\xi)| d\xi \\
+    \langle u | u \rangle &= \int |\alpha(\xi)|^2 d\xi \\
     \langle O(\xi) | O(\eta) \rangle &= \delta(\xi - \eta) \\
 \end{align*}
 $$
@@ -403,7 +403,7 @@ $$
 Let $u\rangle = \sum \alpha_j |O_j\rangle$ and assume it is normalized (otherwise divide everyhting by $\langle u | u \rangle$), then
 
 $$
-\langle O \rangle = \sum_j O_j P(O_j) = \sum_j O_j |\alpha_j|^2 = \sum o_j \alpha_j^* \alpha_j = \sum_j O_j \langle u | O_j \rangle \langle O_j | u \rangle = \langle u | \left( \sum_j O_j | O_j \rangle \langle O_j | \right) u \rangle = \langle u | \hat O | \rangle
+\langle O \rangle = \sum_j O_j P(O_j) = \sum_j O_j |\alpha_j|^2 = \sum o_j \alpha_j^* \alpha_j = \sum_j O_j \langle u | O_j \rangle \langle O_j | u \rangle = \langle u | \left( \sum_j O_j | O_j \rangle \langle O_j | \right) u \rangle = \langle u | \hat O | u \rangle
 $$
 :::
 
@@ -513,7 +513,7 @@ $$
 \sigma_A\sigma_B \ge \left|\frac{i}{2} \langle u | [\hat A, \hat B]|u\rangle \right|
 $$
 
-This meas that, in a joined measurement of $A$ and $B$, it is impossible to get bot standard deviations low, no matter the precision of the instruments, this uncertainty is intrinsicly built into quantum mechanics: the lowe is one, the higher the other one.
+This meas that, in a joined measurement of $A$ and $B$, it is impossible to get bot standard deviations low, no matter the precision of the instruments, this uncertainty is intrinsically built into quantum mechanics: the lowe is one, the higher the other one.
 
 ::: {.collapsible title="Proof"}
 Let $|u\rangle$ be normalized, then
@@ -622,7 +622,7 @@ $$
 |u\rangle = \int \psi(x) |O(x)\rangle dx
 $$
 
-where the statefunction $psi$ is the **wave function** of the system (i.e. one of the functions whose square norm is the probability density function of the position distribution).
+where the statefunction $\psi$ is the **wave function** of the system (i.e. one of the functions whose square norm is the probability density function of the position distribution).
 
 Let $f(x) = |\psi(x)|^2$, then
 
@@ -665,7 +665,7 @@ I'm not joking, this proof is very long. It took me 1 hour and 27 minutes just t
 We will now demonstrate and derive the momentum operator. The proof will be articulated in multiple steps for better clarity:
 
 1. properties of an isolated system;
-2. translation and momentum commute;
+2. translation and momentum operators commute;
 3. translation eigenstates;
 4. distribution of translation eigenstates;
 5. momentum eigenvalues and operator derivation;
@@ -887,7 +887,7 @@ $$
 Knowing that $v = \frac{P}{m}$ then, we can also say that
 
 $$
-\sigma_{v_x} \sigma_x = \frac{\hbar}{2m}
+\sigma_{v_x} \sigma_x \ge \frac{\hbar}{2m}
 $$
 
 ::: {.collapsible title="Proof"}
