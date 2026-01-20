@@ -146,6 +146,8 @@ Topologically sorting the graph allows to find the equivalent serial schedule of
 > - Only the last consecutive writing operations is mandatory. The others could be swapped.
 > - The graph could be simplified with the _trasitive_ property. (if op1 must be before op2, and op2 must be before op3, op1 is implicitly before op3)
 
+$$\text{Serial} \subseteq \text{CSR} \subseteq \text{VSR} \subseteq \text{All}$$
+
 ### Concurrency Control
 
 Since transactions arrive in real-time, the scheduler must dynamically decide the **execution order**, which might not match the **arrival order**.
@@ -182,11 +184,15 @@ This scheduling strategy generate a new serializable class called **2PL** that i
 
 This class avoid anomalies related to synchronization, removing the _a-posteriori_ hypothesis.
 
+$$\text{Serial} \subseteq \text{2PL} \subseteq \text{CSR} \subseteq \text{VSR} \subseteq \text{All}$$
+
 ##### Strict Two-phase Locking (Strict 2PL)
 
 To avoid anomalies related to abort (dirty reads) we need to implement the **Strict 2PL** that release the locks only after a end-transaction statement.
 
 This introduce _long duration lock_ that will decrease performance, but remove the _commit-only_ hypothesis.
+
+$$\text{Serial} \subseteq \text{Strict 2PL} \subseteq \text{2PL} \subseteq \text{CSR} \subseteq \text{VSR} \subseteq \text{All}$$
 
 ##### Predicate Locking
 
@@ -247,3 +253,54 @@ To avoid deadlock:
 | **SL** | Y | Y | N | Y | N | N |
 | **SIXL** | Y | Y | N | N | N | N |
 | **XL** | Y | N | N | N | N | N |
+
+### Optimistic concurrency control
+
+Another way to manage concurrency is to use an **optimistic** approach that assumes that conflicts are rare and allows transactions to execute without acquiring locks. This is done by assigning timestamps to transactions and using these timestamps to determine the order of execution.
+
+In a distributed system there is no global time, so each transaction is assigned a timestamp (TS) when it starts, formed from the id of the event and the id of the machine (_event-id.machine-id_).
+
+The decisions are made based on the age of a transaction.
+
+The system track the  Read Timestamp (RTM) and the Write Timestamp (WTM) for each piece of data.
+
+- A read operation can happen only if the WTM of the data is older than the TS of the transaction ($TS \ge WTM$), otherwise the transaction is killed;
+- A write operation can happen only if both the WTM and RTM are older than the TS of the transaction ($TS \ge WTM$ and $TS \ge RTM$), otherwise the transaction is killed.
+
+After get killed the transaction restart.
+
+TS class is a subset of CSR, but it will discard serializable transactions.
+
+The basic TS consider only committed transactions. To fix this the transaction should wait for the commit of the transaction that wrote the data.
+
+$$(\text{Serial} \subseteq \text{Strict 2PL}) \nsubseteq \text{TS}_\text{mono} \subseteq \text{CSR} \subseteq \text{VSR} \subseteq \text{All}$$
+
+#### Thomas Write Rule
+
+To reduce the amount of kills it's possible to use the _Thomas Write Rule_ that:
+
+- If $TS < RTM$: kill the transaction;
+- If $TS < WTM$: skip the write operation;
+- Else: perform the write operation.
+
+With this rule the TS class is no more a subset of CSR nor VSR (as $w_2(x), w_1(x)$ has different final writes, as $w_1(x)$ is skipped).
+
+$$\text{TS}_\text{mono} \subseteq \text{TS}_\text{Thomas} \nsubseteq \text{VSR}$$
+
+#### Multiversion Concurrency Control (MVCC)
+
+MVCC allows multiple versions of a data item to exist, enabling readers to access the last committed version without being blocked by writers. Each transaction sees a consistent snapshot of the database at a specific point in time.
+
+In MVCC, when a transaction wants to update a data item, it creates a new version rather than overwriting the existing one. This way, readers can continue to access the old version while the writer works on the new one.
+
+In a theoretical approach, a write operation is killed if $TS < RTM$, and if $TS < WTM$, the branches are shifted to write old data. This allows unordered writes.
+
+In a practical approach, the write operation are killed if $TS < WTM$, to avoid a shift operation.
+
+$$\text{TS}_\text{mono} \subseteq \text{TS}_\text{multi} \nsubseteq \text{VSR}$$
+
+#### Snapshot Isolation
+
+**Snapshot Isolation** is another isolation level of the DBMS.
+
+This level only use the write timestamp and every transaction read a version consistent with its timestamp.
