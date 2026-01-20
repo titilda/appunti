@@ -304,3 +304,64 @@ $$\text{TS}_\text{mono} \subseteq \text{TS}_\text{multi} \nsubseteq \text{VSR}$$
 **Snapshot Isolation** is another isolation level of the DBMS.
 
 This level only use the write timestamp and every transaction read a version consistent with its timestamp.
+
+## Triggers
+
+Triggers uses the _Event-Condition-Action_ (ECA), an action A is fired if a condition C is true of an event E:
+
+- Event: fired on upon a change in the db (insert, delete, update)
+- Condition: a predicate that identify when an operation should be triggered
+- Action: notification or perform db change
+
+A **rule engine** is responsible to monitor the events and execute the action when the condition is true.
+
+```SQL
+CREATE TRIGGER trigger_name
+{BEFORE | AFTER} 
+{INSERT | UPDATE [of column_name] | DELETE} on table_name
+[REFERENCING {OLD | NEW} [TABLE] [AS] reference_name]
+[FOR EACH | FOR EACH {ROW | STATEMENT}]
+[WHEN (condition)]
+BEGIN
+    SQL_statements;
+END;
+```
+
+### Trigger Execution Mode
+
+Triggers can execute either **before** or **after** the triggering event:
+
+- **Before**: Executed prior to the event, often used for validation, data modification, or preventing invalid operations.
+- **After**: Executed following the event, typically for maintaining integrity constraints, logging, or cascading updates.
+
+### Trigger Granularity
+
+Triggers can be defined at different levels of granularity:
+
+- **Row-Level**: Fires once for each affected row in a bulk operation (e.g., INSERT, UPDATE, or DELETE on multiple rows).
+- **Statement-Level**: Fires only once per triggering statement, regardless of the number of affected rows.
+
+### Trigger Transition Variables
+
+Triggers provide access to **transition variables** that represent the state of data before and after the event:
+
+- **OLD**: Contains the values before the change (available for UPDATE and DELETE).
+- **NEW**: Contains the values after the change (available for UPDATE and INSERT).
+
+For row-level triggers, these variables refer to the specific row being processed. For statement-level triggers, they represent the entire set of affected rows as tables.
+
+### Trigger Lifecycle
+
+Triggers follow a specific execution order to ensure proper sequencing:
+
+1. BEFORE statement trigger
+2. BEFORE row trigger
+3. Execute the original event and apply constraints.
+4. AFTER row trigger
+5. AFTER statement trigger
+
+Note: Actions within triggers may trigger additional events, potentially causing cascading effects. Some DBMS restrict modifications to the same table being monitored to prevent infinite loops or inconsistencies.
+
+### Conditional Evaluation
+
+A trigger can include a **WHEN** clause to specify a condition that must be met for the trigger to execute. This allows for more granular control over when the trigger's action is performed.
