@@ -1,7 +1,7 @@
 ---
 title: "Database 2"
 author:
-  - "Andrea lunghi"
+  - "Andrea Lunghi"
 ---
 
 ## Transaction
@@ -141,6 +141,11 @@ Testing if a schedule is conflict-serializable is done by checking if a _conflic
 
 Topologically sorting the graph allows to find the equivalent serial schedule of the graph.
 
+> Tips:
+>
+> - Only the last consecutive writing operations is mandatory. The others could be swapped.
+> - The graph could be simplified with the _trasitive_ property. (if op1 must be before op2, and op2 must be before op3, op1 is implicitly before op3)
+
 ### Concurrency Control
 
 Since transactions arrive in real-time, the scheduler must dynamically decide the **execution order**, which might not match the **arrival order**.
@@ -205,3 +210,40 @@ To avoid waiting problems you could some kill mechanism:
 - Timeout
 - Deadlock prevention: heuristics
 - Deadlock detection: inspect the wait-for graph
+
+##### Deadlock Detection
+
+To detect deacklock in a single machine you can look at the wait-graph, where each transaction is a node and there is an arch from $T_i$ to $T_j$ if $T_i$ is waiting for a resource held by $T_j$.
+
+In a distributed system you need to use a distributed deadlock detection algorithm like the **Obermarck Algorithm**. This algorithm is based on the idea of communicating dependencies between nodes. After some iteration a node can spot a cycle in the dependencies graph, indicating a deadlock.
+
+A dependency is communicated if:
+
+- The transaction wait for an external node;
+- The information is transmitted to the successive (or previous) node iff the transaction has an index grater (or smaller, based on convention) of the waiting one (avoiding redundancy between the two);
+
+> Node A: $N_B \rightarrow T_2 \rightarrow T_3 \rightarrow T_1 \rightarrow N_B$
+>
+> Node B: $N_A \rightarrow T_1 \rightarrow T_4 \rightarrow T_2 \rightarrow N_A$
+>
+> Node A send to Node B: $T_2 \rightarrow T_1$ (sends only distributed dependencies)
+>
+> Node B now can reconstruct the cycle $T_1 \rightarrow T_2 \rightarrow T_1$
+
+The amount of conflict is $O(\frac{1}{n})$ and the probability of a deadlock is $O(\frac{1}{n^2})$, where n is the amount of records in a file. Longer transaction have am higher probability of conflict.
+
+To avoid deadlock:
+
+- **Update Lock**: Instead of requesting a read lock and than a read lock, you directly request an _update lock_, avoiding access in case of double update lock. This method is related to time related;
+- **Hierarchical Locking**: This method is related to the locking granularity(schema, table, fragment, page, tuple, field)
+  - _ISL_: lock a subelement in shared mode;
+  - _IXL_: lock a subelement in exclusive mode;
+  - _SIXL_: lock the element is shared mode and exclusive for subelements (read all and update some row). Locks start from the root and release from the leaves. You can require a lock only if the transaction has a more strict lock on the parent
+
+| Request | Free | ISL | IXL | SL | SIXL | XL |
+| ------- | ---- | --- | --- | -- | ---- | -- |
+| **ISL** | Y | Y | Y | Y | Y | N |
+| **IXL** | Y | Y | Y | N | N | N |
+| **SL** | Y | Y | N | Y | N | N |
+| **SIXL** | Y | Y | N | N | N | N |
+| **XL** | Y | N | N | N | N | N |
