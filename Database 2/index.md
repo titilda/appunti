@@ -494,3 +494,61 @@ They usually store just the field value and a pointer to the actual tuple.
 - **Primary Index**: Built on the **primary key** (unique). Usually determines the physical order of the file.
 - **Clustering Index**: Built on a **non-unique** key, but the file is **sorted** on this key. Tuples with the same key are grouped (clustered) together physically.
 - **Secondary Index**: Built on a non-unique key where the file is **not sorted** on that key. Tuples with the same key are scattered, so the index points to each individual tuple.
+
+## Query Optimization
+
+When a DBMS receives a query, it transforms a declarative statement (SQL) into the most efficient sequence of physical operations. The process follows these stages:
+
+1. **Analysis**: Lexical, syntactic, and semantic validation (e.g., checking if tables exist).
+2. **Translation**: SQL is converted into an internal **Relational Algebra Tree**.
+3. **Algebraic (Logical) Optimization**: Applies heuristic rules to restructure the tree.
+4. **Cost-Based (Physical) Optimization**: Uses statistics to choose specific algorithms and join orders.
+5. **Code Generation**: Produces the executable plan for the storage engine.
+
+### Algebraic Optimization (Heuristics)
+
+This phase uses heuristics to rewrite the query tree without calculating specific costs.
+
+- **Push down selections ($\sigma$)**: Apply `WHERE` filters as early as possible. This reduces the number of tuples passed up the tree, saving memory and CPU.
+- **Push down projections ($\pi$)**: Discard unused columns immediately. This reduces the size of each tuple (shorter rows), allowing more records to fit in the buffer pages.
+- **Combine Selections**: Merge multiple filters into a single operation to avoid scanning the data twice.
+
+### Cost-Based Optimization
+
+The optimizer evaluates different "Physical Plans" and assigns a cost to each based on **Disk I/O**.
+
+#### Statistics
+
+To estimate costs, the DBMS maintains metadata about tables:
+
+- $N_R$: Cardinality (total number of rows in table R).
+- $V(R,A)$: Number of distinct values for attribute A in table R.
+- $B_R$: Number of physical blocks/pages occupied by table R.
+- **Histograms**: Data distribution (to identify if data is uniform).
+
+#### Selectivity & Result Estimation
+
+Selectivity is the probability that a row satisfies a condition.
+
+- **Conjunction (AND)**: . The optimizer evaluates the most selective predicate first.
+- **Disjunction (OR)**: . This is often more expensive as it may require multiple index scans or a full table scan.
+
+#### Sorting
+
+Sorting is required for `ORDER BY` or `DISTINCT`. If the data doesn't fit in RAM, the DBMS uses **External Merge Sort**.
+
+- **Cost Approximation**: $2 * N * (1 + \log_{B-1}{\lceil N / B \rceil})$
+  - $N$: Number of blocks to sort.
+  - $B$: Number of available buffer pages.
+- One "pass" involves reading all blocks and writing them back to disk.
+
+#### Join Strategies
+
+Joins are the most resource-intensive operations. The optimizer chooses based on data size and index availability:
+
+- **Nested Loop Join**: For each row in the outer table, scan the inner table. Simple but inefficient for large tables ($O(T_1 \times T_2)$).
+- **Cached Nested Loop Join**: If the outer table fits in memory, load it once and scan the inner table for each row ($O(T_1 + T_2)$).
+- **Filtered Nested Loop Join**: Filter the outer table first to reduce the number of rows before joining ($O(T_1 + F * T_2)$, where F are the filtered rows).
+- **Scan and Lookup Join**: For each row in the outer table, use an index on the inner table to find matching rows ($O(T_1 + F * \alpha)$).
+- **Merge-Scan Join**: If both tables are sorted on the join key, merge them in a single pass by reading a block from each table at the same time ($O(T_1 + T_2)$).
+- **Hash Join**: If both the table are hash tables hashed on the same function, join can be performed in linear time ($O(T_1 + T_2)$).
