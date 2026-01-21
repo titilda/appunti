@@ -244,7 +244,7 @@ To avoid deadlock:
 - **Hierarchical Locking**: This method is related to the locking granularity(schema, table, fragment, page, tuple, field)
   - _ISL_: lock a subelement in shared mode;
   - _IXL_: lock a subelement in exclusive mode;
-  - _SIXL_: lock the element is shared mode and exclusive for subelements (read all and update some row). Locks start from the root and release from the leaves. You can require a lock only if the transaction has a more strict lock on the parent
+  - _SIXL_: lock the element in shared mode with the intention to lock subelements in exclusive mode;
 
 | Request | Free | ISL | IXL | SL | SIXL | XL |
 | ------- | ---- | --- | --- | -- | ---- | -- |
@@ -365,3 +365,132 @@ Note: Actions within triggers may trigger additional events, potentially causing
 ### Conditional Evaluation
 
 A trigger can include a **WHEN** clause to specify a condition that must be met for the trigger to execute. This allows for more granular control over when the trigger's action is performed.
+
+## Physical Database
+
+Each query goes through multiple components before accessing memory:
+
+- **Query Manager**: Responsible for parsing and optimizing the query.
+- **Access Method Manager**: Transforms the query into read/write requests for the physical data structures.
+- **Buffer Manager**: Intermediary between main memory and the DBMS; it manages access to data pages.
+- **Secondary Store Manager**: Responsible for interacting with the actual secondary memory (disk).
+
+A query can often be executed using multiple methods (execution plans). The DBMS must enumerate them, estimate their costs, and choose the most efficient one.
+
+> Tables are stored in files. Each file is divided into **blocks** in secondary memory, but the DBMS interacts with **pages** in main memory. The page size is defined by the OS. For simplification, we assume the block size is equal to the page size.
+
+Operations involve moving blocks between secondary memory and main memory. Since disk I/O is the system bottleneck, optimization focuses on minimizing the time spent reading/writing to secondary memory.
+
+The **cost** of a query is measured by the number of block transfers (I/O operations) required.
+
+The DBMS manages file organization directly, often bypassing OS primitives to remove overhead.
+
+### Data Structures
+
+The DBMS provides **access methods** to manipulate physical data structures.
+
+A table consists of multiple **tuples** (rows). Each tuple contains multiple **fields** and may be of variable size.
+Tuples are stored in files organized into **blocks**.
+
+A typical block structure:
+
+```mermaid
+packet
+0-3: "Block Header"
+4-7: "Page Header"
+8-13: "Page Dictionary"
+14-15: "Unused"
+16-21: "Tuples"
+22-23: "Checksum"
+24-27: "Block Trailer"
+28-31: "Page Trailer"
+```
+
+Where:
+
+- **Block Header/Trailer**: Control information used by the file system.
+- **Page Header/Trailer**: Control information used by the DBMS.
+- **Page Dictionary**: Contains the offset of each tuple inside the block.
+- **Tuples**: The actual data stored in the block.
+- **Checksum**: Used to verify block integrity.
+
+A block can contain $B$ tuples. This is the **blocking factor**, calculated as:
+$$B = \lfloor SB / SR \rfloor$$
+
+- $SB$: Size of the block.
+- $SR$: Average size of a tuple.
+
+Blocks can be organized in memory using different data structures.
+
+#### Sequential Data Structures
+
+The simplest structure is **Sequential**, where blocks are stored one after another.
+
+There are two types:
+
+- **Entry-Sequenced (Heap)**: Data is added to the end (or start) without sorting. It uses all available space (no fragmentation).
+  - _Pros_: Fast for sequential reading and finding all records (`SELECT *`).
+  - _Cons_: Updates that increase tuple size may require deletion and re-insertion.
+- **Attribute-Sequenced (Ordered)**: Tuples are sorted based on a field value.
+  - _Pros_: Accelerates range queries and specific lookups.
+  - _Cons_: Insertion and updates are expensive as they require maintaining order.
+
+For ordered files, if a block is full during insertion, a shift is required. If no space exists, **overflow blocks** (temporal storage) are used until reorganization is performed.
+Interval lookups on heaps require a full scan. On ordered files, the scan can stop once the sort condition is no longer met.
+
+### Hashing-Based Access Structures
+
+Hashing uses a function to map a **key** to a **bucket** where the data is stored.
+The hash store has $N_b$ buckets, each the size of a block.
+The hash function maps a key to a value in $[0, N_b - 1]$, which is the bucket index.
+
+- _Pros_: Excellent for **point queries** (exact match) if buckets are well-balanced.
+- _Cons_: Inefficient for **range queries** (data is not sorted) and dynamic content (rehashing is costly).
+
+When a bucket reaches max capacity (collision):
+
+- **Closed Hashing**: Store the result in an adjacent bucket.
+- **Open Hashing**: Allocate a new bucket linked to the original one (overflow chain).
+
+The average length of the overflow chain is $\alpha = \frac{T}{B \times N_b}$, where:
+
+- $T$: Number of tuples.
+- $B$: Blocking factor.
+- $N_b$: Number of buckets.
+
+### Tree-Based Structures
+
+Tree structures (usually balanced) restrict the maximum depth of any path.
+The most common implementation is **B+ Trees**:
+
+- **Leaves**: Store all keys and pointers to data (or the data itself). Leaves are linked, facilitating range scans.
+- **Internal Nodes**: Store $n-1$ keys $K$ and $n$ pointers $P$. Pointer $P_i$ points to a subtree with values in the range $[K_{i-1}, K_i]$.
+
+```mermaid
+graph TD
+  Root[Internal Node: 10, 20]
+  Root --> L1[Leaf: 5, 10]
+  Root --> L2[Leaf: 15, 20]
+  Root --> L3[Leaf: 25, 30]
+  L1 -.-> L2
+  L2 -.-> L3
+```
+
+- **Lookups**: $O(\log n)$
+- **Range Operations**: $O(\log n + k)$ (where $k$ is the number of results).
+
+### Indexes
+
+Indexes are auxiliary data structures that speed up search based on specific fields.
+They usually store just the field value and a pointer to the actual tuple.
+
+**Classification by Density:**
+
+- **Dense Index**: Contains an entry for every search key value. Faster to verify existence, but larger in size.
+- **Sparse Index**: Contains entries for only some search key values (e.g., one per block). Requires scanning the block to find the exact record.
+
+**Classification by Key Type:**
+
+- **Primary Index**: Built on the **primary key** (unique). Usually determines the physical order of the file.
+- **Clustering Index**: Built on a **non-unique** key, but the file is **sorted** on this key. Tuples with the same key are grouped (clustered) together physically.
+- **Secondary Index**: Built on a non-unique key where the file is **not sorted** on that key. Tuples with the same key are scattered, so the index points to each individual tuple.
