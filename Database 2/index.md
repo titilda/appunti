@@ -552,3 +552,158 @@ Joins are the most resource-intensive operations. The optimizer chooses based on
 - **Scan and Lookup Join**: For each row in the outer table, use an index on the inner table to find matching rows ($O(T_1 + F * \alpha)$).
 - **Merge-Scan Join**: If both tables are sorted on the join key, merge them in a single pass by reading a block from each table at the same time ($O(T_1 + T_2)$).
 - **Hash Join**: If both the table are hash tables hashed on the same function, join can be performed in linear time ($O(T_1 + T_2)$).
+
+## Ranking
+
+Queries are used for exact results, where all retrieved results are considered equal.
+
+However, some results need to be **ranked** (distinct from mere sorting) based on some measure of quality or preferability.
+
+Quality can be expressed on a spectrum of objectivity:
+
+- **Totally Objective**: Based on an objective and deterministic function applied to the values (e.g., numerical scores or metrics).
+- **Totally Subjective**: The best results are determined by the preferences of a group of people with similar interests (e.g., user votes or ratings).
+
+Ranking introduces a multi-objective optimization problem, where there are $N$ objects described by $M$ parameters, and the goal is to find the best $k$ results.
+
+Ranking can be performed using three main techniques:
+
+### Rank Aggregation
+
+Rank aggregation is used to combine multiple ranked lists into a single consensus ranking. This is particularly useful when different voters or sources provide their own rankings of the same set of elements.
+
+The main approaches are:
+
+#### Borda Voting
+
+**Borda Voting** assigns a score to each position in a ranked list. For example, in a list of n items, the top item receives n points, the second item receives n-1 points, and so on, down to the last item which receives 1 point.
+
+The scores from all lists are summed for each item, and the final ranking is determined by sorting the items based on their total scores.
+
+#### Condorcet Voting
+
+**Condorcet Voting** compares each pair of items across all ranked lists. For each pair, the item that is ranked higher in more lists is considered the winner of that pairwise comparison.
+
+The item that wins the most pairwise comparisons is declared the overall winner. If there is no clear winner (i.e., a cycle exists), additional methods may be needed to resolve the ranking.
+
+#### Metric-Based Approaches
+
+These approaches aim to find a ranking that minimizes the distance to all input rankings based on a specific metric.
+
+The most common metrics are:
+
+- **Kendall Tau Distance**: Measures the number of pairwise disagreements between two rankings. It counts how many pairs of items are in a different order in the two lists.
+- **Spearman's Footrule Distance**: Measures the sum of the absolute differences in positions of items between two rankings.
+
+#### MedRank
+
+**MedRank** is a rank aggregation method that constructs a consensus ranking by iteratively selecting the best choices from multiple ranked lists.
+
+The process continues until k elements are selected that appear in at least half of the lists (median of the lists).
+
+This algorith is **instance-optimal**, meaning it performs as well as any other algorithm for the specific instance of the problem.
+
+### Ranking (top-k)
+
+The goal of **top-k ranking** is to identify the best $k$ elements from a set of $N$ candidates, based on a scoring function $S$ that aggregates $M$ different attributes or parameters.
+
+A naive approach involves calculating the score for every single tuple, which is prohibitively expensive for large datasets.
+
+#### Geometrical Interpretation
+
+Top-k problems can be visualized geometrically by representing each element as a point in an $M$-dimensional space. The "best" elements are those that minimize the distance to an ideal point (e.g., the origin or a maximum value) or maximize a utility function.
+
+This can be implemented using **k-nearest neighbors**. Common distance metrics include:
+
+- **Minkowski Distance**: $d_r(p,q) = \left( \sum_{i=1}^M |p_i - q_i|^r \right)^{\frac{1}{r}}$
+- **Euclidean Distance** ($r=2$): $d_2(p,q) = \sqrt{ \sum_{i=1}^M (p_i - q_i)^2 }$
+- **Manhattan Distance** ($r=1$): $d_1(p,q) = \sum_{i=1}^M |p_i - q_i|$
+- **Chebyshev Distance** ($r=\infty$): $d_\infty(p,q) = \max_{i} |p_i - q_i|$
+
+It's possible to add a weight to each parameter to reflect its importance in the scoring function.
+
+#### Data Access Types
+
+When fetching data from multiple sources (e.g., different indexes or microservices), the DBMS typically uses two types of access:
+
+- **Sorted Access (SA)**: The source returns items one by one in descending order of their score for a specific attribute.
+- **Random Access (RA)**: Given an object ID, the system retrieves the specific attribute value for that object immediately.
+
+#### Scoring Functions
+
+Scoring functions usually rely on the property of **Monotonicity**: if an attribute value increases, the total score must not decrease. Common functions include:
+
+- **SUM**: $\sum_{i=1}^M x_i$
+- **WSUM (Weighted Sum)**: $\sum_{i=1}^M w_i \cdot x_i$
+- **MAX**: $\max(x_1, \ldots, x_M)$
+- **MIN**: $\min(x_1, \ldots, x_M)$
+
+#### B0 Algorithm
+
+The B0 algorithm is a threshold-based approach specifically for the **MAX** (or **MIN**) scoring function.
+
+1. Perform $k$ sorted accesses on each of the $M$ lists.
+2. Collect all seen elements and calculate their total scores, even if partial.
+3. Sort the collected elements and return the top $k$.
+
+#### Fagin's Algorithm (FA)
+
+Fagin's algorithm works for any **monotonic** scoring function.
+
+1. **Sorted Access Phase**: Retrieve elements via sorted access from all $M$ lists until at least $k$ objects have been seen in **every** list.
+2. **Random Access Phase**: For every object seen during the first phase, perform random access to retrieve its missing attribute values.
+3. **Calculation**: Compute the final scores and return the top $k$.
+
+#### Threshold Algorithm (TA)
+
+TA is often more efficient than FA because it can stop much earlier.
+
+1. Perform sorted access on the $M$ lists in parallel.
+2. For every new object seen, immediately use **random access** to fetch all its missing attributes and calculate its total score.
+3. Maintain a "Top-k" buffer of the best $k$ objects found so far.
+4. Define a **Threshold ($\tau$)**: $\tau = S(\text{last\_seen}_1, \dots, \text{last\_seen}_M)$. This represents the maximum possible score any unseen object could achieve.
+5. **Stopping Condition**: Stop when the score of the $k$-th element in the buffer is better than $\tau$.
+
+#### NRA Algorithm (No Random Access)
+
+Used when random access is impossible or too expensive. It calculates bounds for each object:
+
+- **Lower Bound ($LB$)**: Score calculated using seen values and assuming all unseen values are the worst possible (e.g., $0$).
+- **Upper Bound ($UB$)**: Score calculated using seen values and assuming all unseen values are equal to the `last_seen` value from each respective list.
+
+1. Perform sorted access on all lists.
+2. Update $LB$, $UB$, and $\tau$.
+3. Maintain a Top-k buffer based on $LB$.
+4. **Stopping Condition**: Stop when the $k$-th element in the buffer has a lower bound greater greater than the threshold or all the upper bound of the elements outside of the top-k $LB[k] \ge \max{ \max{UB[i], i > k}, \tau}$.
+
+### Skyline
+
+The **Skyline** operator identifies "Pareto-optimal" objects. An object belongs to the Skyline if it is not **dominated** by any other object.
+
+- **Domination**: Object $A$ dominates $B$ ($A \succ B$) if:
+    1. $A$ is at least as good as $B$ in all dimensions ($A_i \ge B_i$ for all $i$).
+    2. $A$ is strictly better than $B$ in at least one dimension ($A_j > B_j$ for some $j$).
+
+The Skyline is useful when a single scoring function cannot be defined, as it provides all potentially "best" candidates regardless of attribute weights.
+
+#### Block-Nested Loop Skyline (BNL)
+
+This approach uses a temporal buffer to store candidate Skyline objects.
+
+1. Initialize an empty **Skyline Buffer** in memory.
+2. For each object in the dataset:
+    - Compare it with all objects in the Skyline Buffer.
+    - If it is dominated by any object in the buffer, discard it.
+    - If it dominates any objects in the buffer, remove those objects from the buffer.
+    - If it is neither dominated nor dominates any object in the buffer, add it to the buffer.
+
+#### Sort-Filter Skyline (SFS)
+
+SFS improves upon BNL by sorting the dataset before processing. With this approach, objects that are in the skyline buffer will never be dominated by later objects.
+
+1. Sort all objects based on a monotonic function (e.g., one of the attributes).
+2. Initialize an empty Skyline Buffer.
+3. For each object in the sorted dataset:
+    - Compare it with all objects in the Skyline Buffer.
+    - If it is dominated by any object in the buffer, discard it.
+    - If it is not dominated by any one, add it to the buffer.
