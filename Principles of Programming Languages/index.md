@@ -128,36 +128,10 @@ Scheme supports a variety of data types, including:
 - **Booleans**: `#t` (true) and `#f` (false)
 - **Characters**: e.g., `#\a`, `#\space`, `#\newline`
 - **Strings**: e.g., `"Hello, World!"`
-- **Vectors**: Fixed-size collections of elements accessed by index, e.g., `#(1 2 3)`, `#("a" "b" "c")`
+- **Vectors**: Fixed-size collections of elements accessed by index, e.g., `(vector 1 2 3)`, `#("a" "b" "c")`
 - **Pairs**: The building block of lists, created with `cons`. A pair consists of a `car` (first element) and a `cdr` (second element), e.g., `(x . y)` or `(cons x y)`
-- **Lists**: Ordered collections of elements, e.g., `(1 2 3)`, `("a" "b" "c")`
 - **Symbols**: Unique identifiers used for symbolic computation or as keys, e.g., `'foo`, `'bar`, `'my-symbol`. Symbols are immutable and efficient to compare.
 - **Procedures**: First-class functions that can be passed as arguments, returned from other functions, and stored in data structures.
-
-##### Vectors
-
-**Vectors** are fixed-size collections of elements that can be accessed by their index. They are created using the `vector` procedure or the `#(...)` notation.
-
-```scheme
-(vector 1 2 3)    ; Creates a vector containing the elements 1, 2, and 3
-#(a b c)          ; Creates a vector containing the elements 'a', 'b', and 'c'
-```
-
-###### Vector Operations
-
-Scheme provides several built-in procedures for manipulating vectors:
-
-- `vector-ref`: Returns the element at a specified index in a vector.
-  
-  ```scheme
-  (vector-ref #(10 20 30) 1) ; Returns 20
-  ```
-
-- `vector-set!`: Sets the element at a specified index in a vector to a new value.
-  
-  ```scheme
-    (vector-set! my-vector 1 42) ; Sets the second element to 42
-  ```
 
 ##### Lists
 
@@ -173,41 +147,6 @@ Lists in Scheme are implemented as linked chains of **pairs**. Each pair's `car`
 ```
 
 The `()` notation represents the empty list, also known as `nil`.
-
-###### List Operations
-
-Scheme provides several built-in procedures for manipulating lists:
-
-- `car`: Returns the first element of a list.
-  
-  ```scheme
-  (car '(1 2 3)) ; Returns 1
-  ```
-
-- `cdr`: Returns the "rest" of the list (everything after the first element).
-  
-  ```scheme
-  (cdr '(1 2 3)) ; Returns (2 3)
-  ```
-
-- `cons`: Constructs a new pair by prepending an element to an existing list.
-  
-  ```scheme
-  (cons 0 '(1 2 3)) ; Returns (0 1 2 3)
-  ```
-
-- `member`: Checks if an element is present in a list and returns the sublist starting from that element if found, or `#f` if not found.
-  
-  ```scheme
-  (member 2 '(1 2 3)) ; Returns (2 3)
-  (member 4 '(1 2 3)) ; Returns #f
-  ```
-
-- `apply`: Applies a procedure to a list of arguments.
-  
-  ```scheme
-  (apply + '(1 2 3 4)) ; Returns 10
-  ```
 
 ### Procedures
 
@@ -258,6 +197,73 @@ To define a procedure with a variable number of arguments (variadic), we can use
       0
       (+ (car numbers) (apply sum (cdr numbers)))))
 ```
+
+#### String Operations
+
+Scheme provides several built-in procedures for manipulating strings:
+
+- `string-append`: Concatenates multiple strings into a single string.
+  
+  ```scheme
+  (string-append "Hello, " "world!") ; Returns "Hello, world!"
+  ```
+
+- `make-string`: Creates a new string of a specified length, optionally filled with a specified character.
+  
+  ```scheme
+  (make-string 5 #\*) ; Returns "*****"
+  ```
+
+#### Vector Operations
+
+Scheme provides several built-in procedures for manipulating vectors:
+
+- `vector-ref`: Returns the element at a specified index in a vector.
+  
+  ```scheme
+  (vector-ref #(10 20 30) 1) ; Returns 20
+  ```
+
+- `vector-set!`: Sets the element at a specified index in a vector to a new value.
+  
+  ```scheme
+    (vector-set! my-vector 1 42) ; Sets the second element to 42
+  ```
+  
+#### List Operations
+
+Scheme provides several built-in procedures for manipulating lists:
+
+- `car`: Returns the first element of a list.
+  
+  ```scheme
+  (car '(1 2 3)) ; Returns 1
+  ```
+
+- `cdr`: Returns the "rest" of the list (everything after the first element).
+  
+  ```scheme
+  (cdr '(1 2 3)) ; Returns (2 3)
+  ```
+
+- `cons`: Constructs a new pair by prepending an element to an existing list.
+  
+  ```scheme
+  (cons 0 '(1 2 3)) ; Returns (0 1 2 3)
+  ```
+
+- `member`: Checks if an element is present in a list and returns the sublist starting from that element if found, or `#f` if not found.
+  
+  ```scheme
+  (member 2 '(1 2 3)) ; Returns (2 3)
+  (member 4 '(1 2 3)) ; Returns #f
+  ```
+
+- `apply`: Applies a procedure to a list of arguments.
+  
+  ```scheme
+  (apply + '(1 2 3 4)) ; Returns 10
+  ```
 
 ### Syntactic Form
 
@@ -354,6 +360,92 @@ The syntax for the `begin` form is as follows:
 
 Where `expression1` to `expressionN` are the expressions to be executed in sequence. The value of the `begin` expression is the value of the last expression executed.
 
+### Predicates
+
+Predicates are procedures that return a boolean value (`#t` for true and `#f` for false).
+
+Some common predicates in Scheme include:
+
+- `null?`: Checks if a list is empty.
+  
+  ```scheme
+  (null? '()) ; Returns #t
+  (null? '(1 2 3)) ; Returns #f
+  ```
+
+- `number?`: Checks if a value is a number.
+  
+  ```scheme
+    (number? 42) ; Returns #t
+    (number? "hello") ; Returns #f
+  ```
+
+- `string?`: Checks if a value is a string.
+  
+  ```scheme
+    (string? "hello") ; Returns #t
+    (string? 42) ; Returns #f
+  ```
+
+- `pair?`: Checks if a value is a pair.
+  
+  ```scheme
+    (pair? '(1 . 2)) ; Returns #t
+    (pair? '(1 2 3)) ; Returns #f
+  ```
+
+- `list?`: Checks if a value is a list.
+  
+  ```scheme
+    (list? '(1 2 3)) ; Returns #t
+    (list? 42) ; Returns #f
+  ```
+
+- `vector?`: Checks if a value is a vector.
+  
+  ```scheme
+    (vector? #(1 2 3)) ; Returns #t
+    (vector? '(1 2 3)) ; Returns #f
+  ```
+
+- `symbol?`: Checks if a value is a symbol.
+  
+  ```scheme
+    (symbol? 'foo) ; Returns #t
+    (symbol? "foo") ; Returns #f
+  ```
+
+To compare two values for equality, Scheme provides several predicates:
+
+- `eq?`: Checks if two values are the same object (reference equality).
+  
+  ```scheme
+  (eq? 'a 'a) ; Returns #t
+  (eq? '(1 2) '(1 2)) ; Returns #f
+  ```
+
+- `eqv?`: Checks if two values are equivalent, considering numeric and character types (value equality for certain types).
+  
+  ```scheme
+    (eqv? 42 42) ; Returns #t
+    (eqv? #\a #\a) ; Returns #t
+  ```
+
+- `equal?`: Checks if two values are structurally equal (recursive equality).
+  
+  ```scheme
+    (equal? '(1 2) '(1 2)) ; Returns #t
+    (equal? "hello" "hello") ; Returns #t
+  ```
+
+The logical operators `and`, `or`, and `not` can be used to combine predicates:
+
+```scheme
+(and (number? x) (> x 0)) ; Checks if x is a positive number
+(or (null? lst) (pair? lst)) ; Checks if lst is empty or a pair
+(not (string? y)) ; Checks if y is not a string
+```
+
 ### Iteration
 
 Scheme does not have traditional looping constructs like `for` or `while` found in imperative programming languages. Instead, iteration is typically achieved through recursion or named let expressions.
@@ -394,6 +486,14 @@ A special case of recursion is **tail recursion**, where the recursive call is t
       (factorial (- n 1) (* n acc)))) ; Tail call
 
 (factorial 5 1) ; Evaluates to 120
+```
+
+To evaluate memory usage of tail-recursive functions, we can use the `trace` procedure to monitor function calls:
+
+```scheme
+(require racket/trace) ; Import the trace module
+(trace factorial)
+(factorial 5 1)
 ```
 
 ### Error
