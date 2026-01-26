@@ -8,45 +8,45 @@ author:
 
 **Scheme** is a minimalist dialect of the Lisp programming language, designed with a focus on simplicity and flexibility.
 
-Scheme is a **functional programming language**, every computation is an **expression** that evaluates to a value, there are no statements or commands.
+Scheme is (mostly) a **functional programming language**: every computation is an **expression** that evaluates to a value, and there are no statements or commands.
 
-> Statements are instructions that perform actions but do not return values, while expressions are constructs that evaluate to produce values.
+> **Statements** are instructions that perform actions but do not return values, while **expressions** are constructs that evaluate to produce values.
 
-The syntax of Scheme is characterized by its use of parentheses to denote function application and its uniform treatment of code and data. This type of syntax is known as **S-expressions** (Symbolic Expressions) and resemble _polish notation_.
+The syntax of Scheme is characterized by its use of parentheses to denote function application and its uniform treatment of code and data. This type of syntax is known as **S-expressions** (Symbolic Expressions) and uses **prefix** (or _Polish_) notation.
 
-Each expression in Scheme is enclosed in parentheses (`(e1 e2 ... en)`), where `e1` is typically a symbol representing a function or operator, and `e2` to `en` are its arguments.
+Each expression in Scheme is enclosed in parentheses (`(operator arg1 ... argn)`), where `operator` is typically a symbol representing a function or special form, and `arg1` to `argn` are its arguments.
 
-The evaluation order of each expression is _unspecified_, meaning that the language does not guarantee a specific order in which the arguments are evaluated, but it ensures that all arguments are evaluated before the function is applied.
+The evaluation order of arguments in an expression is **unspecified**, meaning that the language does not guarantee a specific order in which the arguments are evaluated, but it ensures that all arguments are evaluated before the procedure is applied.
 
-```c
-x == 5 + 3 * 2 + z;
-```
-
-is written in Scheme as:
+For example, the mathematical expression $5 + 3 \cdot 2 + z$ is written in Scheme as:
 
 ```scheme
-(= x (+ 5 (* 3 2) z))
+(+ 5 (* 3 2) z)
+```
+
+It is also possible to use the square brackets `[` and `]` as parentheses for better readability, especially in nested expressions:
+
+```scheme
+(+ 5 [* 3 2] z)
 ```
 
 Scheme is **homoiconic**, meaning that the code and data share the same representation.
 
-> Homoiconicity is natural for machine as code is just memory data, it all depends on how that data is interpreted.
+> **Homoiconicity**: The property where the program structure is similar to its data structure. In Lisp dialects, both code and data are represented as S-expressions (nested lists).
 >
-> In general programming languages are not homoiconic to separate code from data, making it easier to reason about programs.
+> In general, most programming languages are not homoiconic to separate code from data, making it easier to reason about programs.
 
-This uniform syntax allows for powerful metaprogramming capabilities, as code can be manipulated as data structures.
+This uniform syntax allows for powerful **metaprogramming** capabilities, as code can be manipulated as data structures.
 
-> Metaprogramming is the practice of writing programs that can generate, manipulate, or analyze other programs or themselves as data.
+> **Metaprogramming** is the practice of writing programs that can generate, manipulate, or analyze other programs or themselves as data.
 
 ### Variables and Bindings
 
-The scope of variables in Scheme is **Static** (or lexical), meaning that the visibility of a variable is determined by the structure of the code and the location where it is defined.
+The scope of variables in Scheme is **static** (or lexical), meaning that the visibility of a variable is determined by the structure of the code and the location where it is defined.
 
-> Scoping can be either static (lexical) or dynamic.
+> Scoping can be either **static** (lexical) or **dynamic**.
 >
-> In static scoping, the scope of a variable is determined by the program's structure, while in dynamic scoping, the scope is determined by the program's execution context.
->
-> Static scoping is more common in modern programming languages as allows for better predictability as the bindings of variables can be determined at compile time.
+> In **static scoping**, the scope of a variable is determined by the program's structure (at compile time), while in **dynamic scoping**, the scope is determined by the program's execution context (call stack at runtime).
 
 #### Local Variables
 
@@ -116,7 +116,7 @@ The `!` operator is called a **bang** and is used to indicate that a function or
 
 #### Types
 
-Scheme is a **dynamically typed language**, meaning that types are associated with values rather than variables. This allows for greater flexibility in programming, as functions can accept arguments of any type without explicit type declarations.
+Scheme is a **dynamically typed language**, meaning that types are associated with values rather than variables. However, it is also **strongly typed**, as it enforces type safety during runtime operations (e.g., trying to add a number to a string will result in an error).
 
 Scheme supports a variety of data types, including:
 
@@ -124,68 +124,96 @@ Scheme supports a variety of data types, including:
   - Integers (e.g., `42`, `-7`)
   - Floating-point numbers (e.g., `3.14`, `-0.001`)
   - Rational numbers (e.g., `1/2`, `-3/4`)
-  - Complex numbers (e.g., `2+3i`, `-1-4i`)
+  - Complex numbers (e.g., `2+3i`)
 - **Booleans**: `#t` (true) and `#f` (false)
 - **Characters**: e.g., `#\a`, `#\space`, `#\newline`
-- **Strings**: e.g., `"Hello, World!"`, `"Scheme is fun!"`
-- **Vectors**: fixed-size collections of elements, e.g., `#(1 2 3)`, `#("a" "b" "c")`
-- **Pairs**: create a concatenation of two elements, the `car` (Content of the Address Register - first element) and the `cdr` (Contents of the Data Register - second element), e.g., `(x . y)` or `(cons x y)`
-- **Symbols**: symbols used as identifiers or for symbolic computation, e.g., `'foo`, `'bar`, `'my-symbol`
-- **Procedures**: first-class functions that can be passed as arguments, returned from other functions, and stored in data structures.
+- **Strings**: e.g., `"Hello, World!"`
+- **Vectors**: Fixed-size collections of elements accessed by index, e.g., `#(1 2 3)`, `#("a" "b" "c")`
+- **Pairs**: The building block of lists, created with `cons`. A pair consists of a `car` (first element) and a `cdr` (second element), e.g., `(x . y)` or `(cons x y)`
+- **Lists**: Ordered collections of elements, e.g., `(1 2 3)`, `("a" "b" "c")`
+- **Symbols**: Unique identifiers used for symbolic computation or as keys, e.g., `'foo`, `'bar`, `'my-symbol`. Symbols are immutable and efficient to compare.
+- **Procedures**: First-class functions that can be passed as arguments, returned from other functions, and stored in data structures.
 
-### Lists
+##### Vectors
+
+**Vectors** are fixed-size collections of elements that can be accessed by their index. They are created using the `vector` procedure or the `#(...)` notation.
+
+```scheme
+(vector 1 2 3)    ; Creates a vector containing the elements 1, 2, and 3
+#(a b c)          ; Creates a vector containing the elements 'a', 'b', and 'c'
+```
+
+###### Vector Operations
+
+Scheme provides several built-in procedures for manipulating vectors:
+
+- `vector-ref`: Returns the element at a specified index in a vector.
+  
+  ```scheme
+  (vector-ref #(10 20 30) 1) ; Returns 20
+  ```
+
+- `vector-set!`: Sets the element at a specified index in a vector to a new value.
+  
+  ```scheme
+    (vector-set! my-vector 1 42) ; Sets the second element to 42
+  ```
+
+##### Lists
 
 **Lists** are a fundamental data structure in Scheme, used to represent ordered collections of elements. Lists can contain elements of heterogeneous types, including numbers, strings, symbols, and even other lists.
 
-Lists in Scheme are implemented using **pairs**.
+Lists in Scheme are implemented as linked chains of **pairs**. Each pair's `car` contains an element, and its `cdr` points to the next pair (or the empty list).
 
 ```scheme
-(cons 1 (cons 2 (cons 3 ())))   ; This creates the list (1 2 3)
-(1 . (2 . (3 . ())))            ; This creates the list (1 2 3)
-(list 1 2 3)                    ; This creates the list (1 2 3)
-(1 2 3)                         ; This creates the list (1 2 3)
+(cons 1 (cons 2 (cons 3 '())))  ; This creates the list (1 2 3)
+'(1 . (2 . (3 . ())))           ; Pair notation for the same list
+(list 1 2 3)                    ; Procedure calling for the same list
+'(1 2 3)                        ; Quoted literal for the same list
 ```
 
 The `()` notation represents the empty list, also known as `nil`.
 
-#### List Operations
+###### List Operations
 
-Scheme provides several built-in functions for manipulating lists:
+Scheme provides several built-in procedures for manipulating lists:
 
 - `car`: Returns the first element of a list.
   
   ```scheme
-  (car '(1 2 3)) ; This will return 1
+  (car '(1 2 3)) ; Returns 1
   ```
 
-- `cdr`: Returns the rest of the list after removing the first element.
+- `cdr`: Returns the "rest" of the list (everything after the first element).
   
   ```scheme
-    (cdr '(1 2 3)) ; This will return (2 3)
+  (cdr '(1 2 3)) ; Returns (2 3)
   ```
 
-- `cons`: Constructs a new pair (or list) by adding an element to the front of an existing list.
+- `cons`: Constructs a new pair by prepending an element to an existing list.
   
   ```scheme
-  (cons 0 '(1 2 3)) ; This will return (0 1 2 3)
+  (cons 0 '(1 2 3)) ; Returns (0 1 2 3)
   ```
 
 - `member`: Checks if an element is present in a list and returns the sublist starting from that element if found, or `#f` if not found.
   
   ```scheme
-  (member 2 '(1 2 3)) ; This will return (2 3)
-  (member 4 '(1 2 3)) ; This will return #f
+  (member 2 '(1 2 3)) ; Returns (2 3)
+  (member 4 '(1 2 3)) ; Returns #f
   ```
 
 - `apply`: Applies a procedure to a list of arguments.
   
   ```scheme
-  (apply + '(1 2 3 4)) ; This will return 10
+  (apply + '(1 2 3 4)) ; Returns 10
   ```
 
 ### Procedures
 
 In Scheme, procedures (or functions) are first-class citizens, meaning they can be treated like any other data type.
+
+The parameters are passed by **value**, meaning that the actual values of the arguments are passed to the procedure, rather than references to the variables.
 
 #### Lambda Expressions
 
@@ -207,14 +235,22 @@ For example, the following lambda expression defines a function that takes two a
 
 #### Defining Named Procedures
 
-Named procedures can be defined using the `define` keyword. This allows us to create reusable functions that can be called by their name.
+Named procedures can be defined using the `define` keyword.
+
+```scheme
+(define add
+  (lambda (x y)
+    (+ x y)))
+```
+
+Or using the syntactic sugar for procedure definition:
 
 ```scheme
 (define (add x y)
   (+ x y))
 ```
 
-To have an undefined number of arguments, we can use the dot (`.`) notation:
+To define a procedure with a variable number of arguments (variadic), we can use the dot (`.`) notation:
 
 ```scheme
 (define (sum . numbers)
@@ -251,6 +287,25 @@ The `when` expression is a simplified form of conditional branching that only in
 (when condition then-branch)
 ```
 
+##### Cond Expression
+
+The `cond` expression is used for multi-way branching, similar to `switch` or `if-else if-else` in other languages.
+
+```scheme
+(cond
+  (condition1 result1)
+  (condition2 result2)
+  (else result_else))
+```
+
+`cond` can be used to check if a value is a member of a list:
+
+```scheme
+(cond (+ 5 7)
+  ((1 2 3) 'found)
+  (else 'not-found))
+```
+
 #### Quote
 
 The `quote` syntactic form is used to prevent the evaluation of an expression. When an expression is quoted, it is treated as a literal value rather than being evaluated.
@@ -281,10 +336,10 @@ For example:
 
 ##### Eval
 
-To evaluate the quoted expression, the `eval` function can be used:
+To evaluate a quoted expression at runtime, the `eval` function can be used:
 
 ```scheme
-(eval '(1 2 3)) ; This will evaluate to the list (1 2 3)
+(eval '(+ 1 2)) ; Returns 3
 ```
 
 #### Procedural Code Execution
@@ -298,3 +353,53 @@ The syntax for the `begin` form is as follows:
 ```
 
 Where `expression1` to `expressionN` are the expressions to be executed in sequence. The value of the `begin` expression is the value of the last expression executed.
+
+### Iteration
+
+Scheme does not have traditional looping constructs like `for` or `while` found in imperative programming languages. Instead, iteration is typically achieved through recursion or named let expressions.
+
+#### Named Let
+
+Named let is a syntactic form that allows for defining recursive functions in a concise manner. The syntax for named let is as follows:
+
+```scheme
+(let label ((param1 init1)
+                (param2 init2)
+                ...
+                (paramN initN))
+  body)
+```
+
+Where `label` is the name of block, `param1` to `paramN` are the parameters with their initial values, and `body` is the expression that defines the function's behavior.
+
+To perform iteration, the label needs to be called to perform a goto-like jump to the beginning of the block with updated parameters.
+
+```scheme
+(let label ((n 5))
+  (when (>= n 0)
+    (displayln n)
+    (label (- n 1))))
+```
+
+#### Tail Recursion
+
+Recursion is a fundamental concept in Scheme and functional programming in general. It involves defining a function that calls itself to solve a problem by breaking it down into smaller subproblems.
+
+A special case of recursion is **tail recursion**, where the recursive call is the last operation in the function. Tail-recursive functions are optimized by the Scheme interpreter to execute in constant stack space, effectively turning them into iterations.
+
+```scheme
+(define (factorial n acc)
+  (if (= n 0)
+      acc
+      (factorial (- n 1) (* n acc)))) ; Tail call
+
+(factorial 5 1) ; Evaluates to 120
+```
+
+### Error
+
+In scheme errors are raised using the `error` procedure:
+
+```scheme
+(error "An error occurred")
+```
