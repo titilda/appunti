@@ -48,6 +48,12 @@ The scope of variables in Scheme is **static** (or lexical), meaning that the vi
 >
 > In **static scoping**, the scope of a variable is determined by the program's structure (at compile time), while in **dynamic scoping**, the scope is determined by the program's execution context (call stack at runtime).
 
+Variable are stored in the **heap** memory area, which is used for dynamic memory allocation. The heap allows for the creation of variables whose lifetimes are not tied to the function call stack, enabling features like closures.
+
+There is also a **Garbage Collector** (GC) in Scheme that automatically reclaims memory occupied by objects that are no longer reachable or needed by the program.
+
+When a variable is defined as a **constant** the value is immutable and the memory area is marked as read-only to prevent accidental modification. This prevents banging operations.
+
 #### Local Variables
 
 Local variables in Scheme are created using the `let` keyword, which allows for the binding of values to names.
@@ -128,7 +134,7 @@ Scheme supports a variety of data types, including:
 - **Booleans**: `#t` (true) and `#f` (false)
 - **Characters**: e.g., `#\a`, `#\space`, `#\newline`
 - **Strings**: e.g., `"Hello, World!"`
-- **Vectors**: Fixed-size collections of elements accessed by index, e.g., `(vector 1 2 3)`, `#("a" "b" "c")`
+- **Vectors**: Fixed-size collections of elements accessed by index, e.g., `(vector 1 2 3)` (mutable), `#("a" "b" "c")` (immutable)
 - **Pairs**: The building block of lists, created with `cons`. A pair consists of a `car` (first element) and a `cdr` (second element), e.g., `(x . y)` or `(cons x y)`
 - **Symbols**: Unique identifiers used for symbolic computation or as keys, e.g., `'foo`, `'bar`, `'my-symbol`. Symbols are immutable and efficient to compare.
 - **Procedures**: First-class functions that can be passed as arguments, returned from other functions, and stored in data structures.
@@ -148,17 +154,59 @@ Lists in Scheme are implemented as linked chains of **pairs**. Each pair's `car`
 
 The `()` notation represents the empty list, also known as `nil`.
 
+By default list are _immutable_.
+
+##### Structs
+
+Scheme allows the definition of custom data structures using the `struct` construct. They are also called **records**. This enables the creation of new types with named fields. By default, fields are immutable, but is possible to create mutable fields by specifying the `#:mutable` keyword.
+
+```scheme
+(struct person (
+  (name) 
+  (age #:mutable)
+))
+```
+
+A struct is instantiated by calling it as a procedure:
+
+```scheme
+(define alice (person "Alice" 30))
+```
+
+To access the fields of a struct, accessor procedures are automatically generated:
+
+```scheme
+(person-name alice) ; Returns "Alice"
+(person-age alice)  ; Returns 30
+```
+
+To modify a mutable field, a setter procedure is also generated:
+
+```scheme
+(person-age-set! alice 31) ; Updates Alice's age to 31
+```
+
+Structs can also support **inheritance** by specifying a parent struct:
+
+```scheme
+(struct employee person (
+  (employee-id)
+))
+```
+
+Records are not classes and do not support methods or encapsulation like in object-oriented programming.
+
 ### Procedures
 
 In Scheme, procedures (or functions) are first-class citizens, meaning they can be treated like any other data type.
 
-The parameters are passed by **value**, meaning that the actual values of the arguments are passed to the procedure, rather than references to the variables.
+The parameters are passed by **value** (technically _object sharing_ as objects are not copied in the stack but only the reference to the object is passed), meaning that the actual values of the arguments are passed to the procedure, rather than references to the variables.
 
 #### Lambda Expressions
 
 Lambda expressions are used to define _anonymous functions_ in Scheme. Anonymous functions are functions that are defined without a name and can be used as arguments to other functions or assigned to variables. They are a fundamental concept in functional programming.
 
-The syntax for a lambda expression is defined by the `lambda` keyword and is as follows:
+The syntax for a lambda expression is defined by the `lambda` or `λ` keyword and is as follows:
 
 ```scheme
 (lambda (arg1 arg2 ... argn) body)
@@ -230,6 +278,12 @@ Scheme provides several built-in procedures for manipulating vectors:
     (vector-set! my-vector 1 42) ; Sets the second element to 42
   ```
   
+- `vector-for-each`: Applies a procedure to each element of a vector.
+  
+  ```scheme
+  (vector-for-each (lambda (x) (displayln x)) #(1 2 3)) ; Prints 1, 2, and 3 on separate lines
+  ```
+
 #### List Operations
 
 Scheme provides several built-in procedures for manipulating lists:
@@ -264,6 +318,35 @@ Scheme provides several built-in procedures for manipulating lists:
   ```scheme
   (apply + '(1 2 3 4)) ; Returns 10
   ```
+
+Then there are higher-order procedures that operate on lists like:
+
+- `for-each`: Applies a procedure to each element of a list, return void.
+  
+  ```scheme
+  (for-each (lambda (x) (displayln x)) '(1 2 3)) ; Prints 1, 2, and 3 on separate lines
+  ```
+
+- `map`: Applies a procedure to each element of a list and returns a new list of the results.
+  
+  ```scheme
+  (map (lambda (x) (* x 2)) '(1 2 3)) ; Returns (2 4 6)
+  ```
+
+- `filter`: Returns a new list containing only the elements that satisfy a given predicate.
+  
+  ```scheme
+  (filter (lambda (x) (> x 2)) '(1 2 3 4)) ; Returns (3 4)
+  ```
+
+- `foldl` and `foldr`: Reduce a list to a single value by applying a binary procedure from the left ($fold_{left}(f, i, (e_1, e_2, \ldots, e_n)) = f(e_n, f(e_{n-1}, \ldots f(e_1, i)))$) or right ($fold_{right}(f, i, (e_1, e_2, \ldots, e_n)) = f(e_1, f(e_2, \ldots f(e_n, i)))$), respectively. `foldl` is tail-recursive and more efficient.
+  
+  ```scheme
+  (foldl cons '() '(1 2 3)) ; Returns (3 2 1)
+  (foldr cons '() '(1 2 3)) ; Returns (1 2 3)
+  ```
+
+  `foldr` can be implemented using tail recursion, removing the need for the stack but using the heap instead, making it less efficient:
 
 ### Syntactic Form
 
@@ -304,12 +387,15 @@ The `cond` expression is used for multi-way branching, similar to `switch` or `i
   (else result_else))
 ```
 
-`cond` can be used to check if a value is a member of a list:
+##### Case Expression
+
+The `case` expression is used for branching based on the value of a single expression. It compares the value against multiple cases and executes the corresponding result for the first matching case.
 
 ```scheme
-(cond (+ 5 7)
-  ((1 2 3) 'found)
-  (else 'not-found))
+(case expression
+  ((value1 value2 ...) result1)
+  ((value3 value4 ...) result2)
+  (else result_else))
 ```
 
 #### Quote
@@ -364,7 +450,7 @@ Where `expression1` to `expressionN` are the expressions to be executed in seque
 
 Predicates are procedures that return a boolean value (`#t` for true and `#f` for false).
 
-Some common predicates in Scheme include:
+Some common predicates in Scheme include checking the type of a value:
 
 - `null?`: Checks if a list is empty.
   
@@ -415,7 +501,20 @@ Some common predicates in Scheme include:
     (symbol? "foo") ; Returns #f
   ```
 
+- `struct-name?`: Checks if a value is an instance of a specific struct type.
+  
+  ```scheme
+    (person? alice) ; Returns #t if alice is a person struct
+    (person? 42) ; Returns #f
+  ```
+
 To compare two values for equality, Scheme provides several predicates:
+
+- `=`: Checks if two numeric values are equal.
+  
+  ```scheme
+    (= 42 42) ; Returns #t
+    (= 42 43) ; Returns #f
 
 - `eq?`: Checks if two values are the same object (reference equality).
   
@@ -456,9 +555,9 @@ Named let is a syntactic form that allows for defining recursive functions in a 
 
 ```scheme
 (let label ((param1 init1)
-                (param2 init2)
-                ...
-                (paramN initN))
+            (param2 init2)
+            ...
+            (paramN initN))
   body)
 ```
 
@@ -495,6 +594,29 @@ To evaluate memory usage of tail-recursive functions, we can use the `trace` pro
 (trace factorial)
 (factorial 5 1)
 ```
+
+#### Closure
+
+A **closure** is a function that captures the lexical scope in which it was defined, allowing it to access variables from that scope even when invoked outside of it.
+
+```scheme
+(define (make-counter)
+  (let ((count 0))
+    (lambda ()
+      (set! count (+ count 1))
+      count)))
+
+(define counter (make-counter))
+
+(counter) ; Returns 1
+(counter) ; Returns 2
+```
+
+This allows to create iterators and generators that maintain state across invocations.
+
+### Macros
+
+
 
 ### Error
 
