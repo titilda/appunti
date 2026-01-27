@@ -616,7 +616,44 @@ This allows to create iterators and generators that maintain state across invoca
 
 ### Macros
 
+Macros in Scheme are a powerful feature that allows programmers to define new syntactic constructs and transformations at compile time. They enable the creation of custom language features by manipulating the code structure before it is evaluated.
 
+This system is turing complete and allows for advanced metaprogramming techniques that are evaluated at compile time.
+
+Macro definitions use the `define-syntax` and `syntax-rules` constructs.
+
+```scheme
+(define-syntax while
+  (syntax-rules ()
+    ((_ condition body ...)
+      (let loop ()
+        (when condition
+          (begin
+            body ...
+            (loop))
+        ))
+    )
+  ))
+```
+
+where:
+
+- `while` is the name of the macro.
+- `syntax-rules` defines the pattern matching rules for the macro.
+- The pattern `(_ condition body ...)` matches the usage of the macro, where `_` is a wildcard that matches the macro name, `condition` is the loop condition, and `body ...` represents the body of the loop.
+- `...` indicates that there can be zero or more expressions in the body.
+
+```scheme
+(define-syntax let
+  (syntax-rules ()
+    ((_ ((var expr) ...) body ...)
+      ((lambda (var ...) body ...) expr ...))
+  ))
+```
+
+This macro transforms a `let` expression into an equivalent lambda application, `(var expr) ...` represent multiple variable bindings.
+
+Macros in sceme are **hygienic** meaning that they prevents unintended variable capture and name collisions during macro expansion. Unlike traditional macros that operate on raw text substitution, hygienic macros maintain the lexical scope of identifiers, ensuring that macro parameters and locally-bound variables don't inadvertently conflict with variables in the scope where the macro is invoked. This is achieved through automatic renaming of identifiers during expansion, typically by attaching unique tags or timestamps to variable names.
 
 ### Error
 
