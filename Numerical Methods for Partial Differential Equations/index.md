@@ -1255,9 +1255,41 @@ $$
 
 In either case we have coercivity, in the first case we can also say that $\alpha = \min(\sigma, \nu)$, in he other case, it is much more comples so we ignore that.
 
-_TBC_ 
-<!-- 1:47:00 dic 2 -->
+Since
+
+$$
+|b(\vec{v}, q)| = \left| -\int_\Omega q \operatorname{div} \vec{v} \right| \le \|q\|_{L^2(\Omega)} \|\operatorname{div}\vec{v}\|_{L^2(\Omega)} \le \|q\|_{L^2(\Omega)} \|\vec{v}\|_V
+$$
+
+then we have continuity of $b$ with constant $\delta = 1$.
+
+By divinding both sides of the LBB condition by $\|\vec{v}\|_V \|q\|_Q$ we get that what that condition is asking is that the velocity space should be larger enough w.r.t. the pressure space. The largest the space of velocicies, the _more probable_ it is to find a suitable $\beta$ coefficient.
+
+The LBB condition can be rewritten as the **inf sup condition**:
+
+$$
+\exists \beta \gt 0 : \inf_{q_h \in Q_h, q_h \ne 0} \sum_{\vec{v_h} \in V_h, \vec{v_h} \ne 0} \frac{b(\vec{v_h}, q_h)}{\|\vec{v}\|_V \|q_h\|_Q}
+$$
+
+We will not go into details about the LBB condition but if it is satisfied, along with all the other conditions listed here, then $S$ is non-singular, therefore the problem is well posed.
 :::
+:::
+
+::: {.callout .callout-example title="Valid triangulations"}
+Assume we are using triangulation to generate the mesh. Let $\mathbb{P}^n$ be the space of polynomials of degree $n$ and let the velocity space and the pressure space be $\mathbb{P}^r$ and $\mathbb{P}^s$ respectively. If we take $r = $ then we will never get any LBBness. If we take the Taylor-Hood elements (i.e. $r \ge 2, s = r - 1$) then we are guaranteed to always get LBBness. $s = 0, r = 1$ is not LBB. $r = 2, s = 0$ is good.
+:::
+
+### Convergence estimate for Taylor-Hood elements
+
+As stated before, the most general formula to determine Taylor-Hood elements is $\mathbb{P}^{k+1}$ for velocity and $\mathbb{P}^k$ for pressure with $k \ge 2$.
+
+Since Taylor-Hood elements are LBB, they allow for both stability and convergence.
+
+For Taylor-Hood elements, it holds that
+
+$$
+
+$$
 
 ## Navier-Stokes equation
 

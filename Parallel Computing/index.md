@@ -31,7 +31,7 @@ The PRAM model has the following characteristics:
 
 In a PRAM, all the processors executes the same instructions at the same time. For this reason cocurrent writes and/or reads to/from the same memory cell may happen.
 
-PRAM machines can be classified with respect to their ability to perform concurrent reads/writes the memory: reads/writes can be **exclusive** (all processors can concurrently read/write to/from _distinct_ memory cells) or **concurrent** (all processors can concurrently read/write to any memory cellm, even the same one).
+PRAM machines can be classified with respect to their ability to perform concurrent reads/writes the memory: reads/writes can be **exclusive** (all processors can concurrently read/write to/from _distinct_ memory cells) or **concurrent** (all processors can concurrently read/write to any memory cell, even the same one).
 
 While concurrent reads are trivial and are not an issue, what happens when two or more processors try to write something to the same memory cell? Three possible solutions:
 
@@ -40,7 +40,7 @@ While concurrent reads are trivial and are not an issue, what happens when two o
 - **Random CW**: only one randomly chosen processor is allowed to perform the write.
 
 ::: {.callout .callout-example title="Common CW machine"}
-While the _priority_ and _random_ CW machines are trivial to understand, _common_ CW machines may be not so a clarificatory example is provided.
+While the _priority_ and _random_ CW machines are trivial to understand, _common_ CW machines may be not, so a clarificatory example is provided.
 
 Assume you have a machine that has to evaluate the disjunction of a large number of formulae. The way the formulae are read from the input is not of our interest.
 
@@ -69,7 +69,7 @@ $$
 
 As said before, measuring the performance of an algorithm running on a PRAM machine is not trivial: the existence of multiple processors running in parallel makes everything harder. Moreover, not all processors may be running at the same time (this is not in contrast with the fact that each processors run the same instructions at the same time, this will be explained later in this document) so only a fractions of them are working while the others are just idling.
 
-While explaining all the performance metrics involved in the process of measuring, "to solve a problem of input size $n$ will be used as a synonim to "running an algorithm whose input can be expressed as a function of $n$".
+While explaining all the performance metrics involved in the process of measuring, _"to solve a problem of input size $n$"_ will be used as a synonim to _"running an algorithm whose input can be expressed as a function of $n$"_.
 
 Let $T^*(n)$ be the time it takes to solve a problem of input size $n$ on a single processor using the best sequential algorithm currently available, $T_p(n)$ the time it takes to solve the same problem using $p$ processors and $T_\infty(n)$ the time it takes to solve the same problem with any number of processors (read that as "as many processors that can be used").
 
@@ -172,6 +172,8 @@ As we will see in the following sections, the three key point to make an applica
 1. have enough data to feed into the parallel processors;
 2. group similar elaborations with SIMD;
 3. create more threads than the ones that could be supported by the hardware to mask latencies.
+
+!["_I paid for the whole CPU, I'm gonna use the whole CPU_" - u/HoodedDeath3600 from [reddit](https://www.reddit.com/r/pcmemes/comments/q3610j/i_paid_for_the_whole_cpu_im_gonna_use_the_whole/)](assets/full-cpu.png.png)
 
 ## Processor architecture
 
