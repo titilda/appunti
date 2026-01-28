@@ -398,6 +398,14 @@ The `case` expression is used for branching based on the value of a single expre
   (else result_else))
 ```
 
+##### Unless Expression
+
+The `unless` expression is the opposite of the `when` expression. It executes the `then-branch` only if the `condition` evaluates to false.
+
+```scheme
+(unless condition then-branch)
+```
+
 #### Quote
 
 The `quote` syntactic form is used to prevent the evaluation of an expression. When an expression is quoted, it is treated as a literal value rather than being evaluated.
@@ -449,6 +457,8 @@ Where `expression1` to `expressionN` are the expressions to be executed in seque
 ### Predicates
 
 Predicates are procedures that return a boolean value (`#t` for true and `#f` for false).
+
+#### Type Predicates
 
 Some common predicates in Scheme include checking the type of a value:
 
@@ -508,6 +518,8 @@ Some common predicates in Scheme include checking the type of a value:
     (person? 42) ; Returns #f
   ```
 
+#### Equality Predicates
+
 To compare two values for equality, Scheme provides several predicates:
 
 - `=`: Checks if two numeric values are equal.
@@ -537,12 +549,23 @@ To compare two values for equality, Scheme provides several predicates:
     (equal? "hello" "hello") ; Returns #t
   ```
 
+#### Logical Operators
+
 The logical operators `and`, `or`, and `not` can be used to combine predicates:
 
 ```scheme
 (and (number? x) (> x 0)) ; Checks if x is a positive number
 (or (null? lst) (pair? lst)) ; Checks if lst is empty or a pair
 (not (string? y)) ; Checks if y is not a string
+```
+
+#### Custom Predicates
+
+Custom predicates can be defined using lambda expressions or named procedures that should have names ending with a question mark (`?`):
+
+```scheme
+(define (even? n)
+  (= (modulo n 2) 0))
 ```
 
 ### Iteration
@@ -595,9 +618,12 @@ To evaluate memory usage of tail-recursive functions, we can use the `trace` pro
 (factorial 5 1)
 ```
 
-#### Closure
+### Closure
 
-A **closure** is a function that captures the lexical scope in which it was defined, allowing it to access variables from that scope even when invoked outside of it.
+A **closure** is a function that captures the lexical scope in which it was defined, allowing it to access variables from that scope even when invoked outside of it. It is made of two components:
+
+- The environment where the function is created.
+- The function code itself.
 
 ```scheme
 (define (make-counter)
@@ -613,6 +639,30 @@ A **closure** is a function that captures the lexical scope in which it was defi
 ```
 
 This allows to create iterators and generators that maintain state across invocations.
+
+> The react's useState hook is an example of closures in action, where the state variable and its updater function are captured within the closure created by the hook.
+
+With closures, it is possible to implement data encapsulation and information hiding, as the internal state of the closure is not directly accessible from outside, making it similar to object-oriented programming principles.
+
+```scheme
+(struct counter
+  (increase decrease value))
+
+(define (make-counter)
+  (let ((count 0))
+    (counter
+      (lambda ()
+        (set! count (+ count 1)))
+      (lambda ()
+        (set! count (- count 1)))
+      (lambda ()
+        count))))
+
+(define counter (make-counter))
+
+((counter-increase counter)) ; Increases count
+((counter-value counter))    ; Returns current count
+```
 
 ### Macros
 
@@ -654,6 +704,57 @@ where:
 This macro transforms a `let` expression into an equivalent lambda application, `(var expr) ...` represent multiple variable bindings.
 
 Macros in sceme are **hygienic** meaning that they prevents unintended variable capture and name collisions during macro expansion. Unlike traditional macros that operate on raw text substitution, hygienic macros maintain the lexical scope of identifiers, ensuring that macro parameters and locally-bound variables don't inadvertently conflict with variables in the scope where the macro is invoked. This is achieved through automatic renaming of identifiers during expansion, typically by attaching unique tags or timestamps to variable names.
+
+### Continuations
+
+**Continuations** represent "the rest of the computation" at any given point in a program. They capture what the program will do next, allowing you to pause execution, save that state, and resume it later—possibly multiple times or from different contexts.
+
+In Scheme, continuations are accessed using `call/cc` (call-with-current-continuation), a procedure that captures the current continuation and passes it to a function as an argument.
+
+#### Saving Continuations for Later
+
+Continuations become powerful when you save them and invoke them later:
+
+```scheme
+(define saved-k #f)
+
+(+ 1 
+  (call/cc
+    (lambda (k)
+      (set! saved-k k)
+      10))) ; Returns 11
+
+(saved-k 20) ; Returns 21
+```
+
+When calling `(saved-k 20)`, you're saying: "resume the computation from where I captured this continuation, but use `20` instead of `10`." This effectively re-executes `(+ 1 20)`, returning `21`.
+
+#### Early Exit from Loops
+
+A practical use case is breaking out of loops without checking all remaining elements:
+
+```scheme
+(define (search lst target)
+  (call/cc
+    (lambda (exit)
+      (for-each
+        (lambda (x)
+          (if (= x target)
+              (exit x)))
+        lst)
+      #f)))
+
+(search '(1 2 3 4 5) 3) ; Returns 3
+```
+
+When the target is found, calling `exit` abandons the rest of the loop and returns the result immediately.
+
+#### Implementation
+
+Continuations can be implemented using two main techniques:
+
+- **Garbage Collection (GC)**: This strategy doesn't require the stack, it allocate continuations on the heap and relies on garbage collection to reclaim memory when continuations are no longer needed.
+- **Stack Copying**: When the continuation is issued, the stack is copied in the heap as a _continuation object_. When the continuation is invoked, the stack is restored from the continuation object, discarding the current stack.
 
 ### Error
 
