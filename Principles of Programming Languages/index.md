@@ -107,6 +107,8 @@ Global variables in Scheme can be defined using the `define` keyword. These vari
 (* pi (* radius radius)) ; This will evaluate to 78.53975
 ```
 
+Sometimes global variables are defined surrounded by `*` symbols to indicate that they are special or global variables, for example `(define *global-var* '())`.
+
 #### Variable Assignment
 
 In Scheme, variables are immutable by default, meaning that once a variable is bound to a value, it cannot be changed.
@@ -642,32 +644,9 @@ This allows to create iterators and generators that maintain state across invoca
 
 > The react's useState hook is an example of closures in action, where the state variable and its updater function are captured within the closure created by the hook.
 
-With closures, it is possible to implement data encapsulation and information hiding, as the internal state of the closure is not directly accessible from outside, making it similar to object-oriented programming principles.
-
-```scheme
-(struct counter
-  (increase decrease value))
-
-(define (make-counter)
-  (let ((count 0))
-    (counter
-      (lambda ()
-        (set! count (+ count 1)))
-      (lambda ()
-        (set! count (- count 1)))
-      (lambda ()
-        count))))
-
-(define counter (make-counter))
-
-((counter-increase counter)) ; Increases count
-((counter-value counter))    ; Returns current count
-```
-
 ### Macros
 
-Macros in Scheme are a powerful feature that allows programmers to define new syntactic constructs and transformations at compile time. They enable the creation of custom language features by manipulating the code structure before it is evaluated.
-
+Macros in Scheme are a powerful feature that allows programmers to define new syntactic constructs and transformations at compile time. They enable the creation of custom language features by manipulating the code structure before its evaluation.
 This system is turing complete and allows for advanced metaprogramming techniques that are evaluated at compile time.
 
 Macro definitions use the `define-syntax` and `syntax-rules` constructs.
@@ -702,6 +681,17 @@ where:
 ```
 
 This macro transforms a `let` expression into an equivalent lambda application, `(var expr) ...` represent multiple variable bindings.
+
+`syntax-rules` can also define **literals**, which are identifiers that must match exactly during macro expansion and are not treated as pattern variables.
+
+```scheme
+(define-syntax my-if
+  (syntax-rules (else) ; 'else' is a literal keyword
+    ((_ condition then-branch else else-branch)
+      (if condition then-branch else-branch))))
+```
+
+In this example, `else` is a literal—it must appear verbatim in the macro call. If you write `(my-if (> x 0) 1 else 2)`, the `else` keyword is recognized. Using a different identifier would not match the pattern.
 
 #### Hygienic Macros
 
@@ -753,6 +743,20 @@ A practical use case is breaking out of loops without checking all remaining ele
 
 When the target is found, calling `exit` abandons the rest of the loop and returns the result immediately.
 
+#### Goto-like jumps
+
+Continuations can also be used to implement goto-like jumps in the code, allowing for non-linear control flow.
+
+```scheme
+(let ([cc (call/cc (lambda (k) (k k)))])
+  (set! x (add1 x))
+  (if (< x 3)
+    (cc cc)   ; Jump back to the beginning
+    x
+  )
+)
+```
+
 #### Implementation
 
 Continuations can be implemented using two main techniques:
@@ -784,6 +788,155 @@ If at any point the we understand that the current computation path is not leadi
 
 This function create two non-deterministic variables `x` and `y`. At the beginning they are both 0. When the `fail` procedure is called, the last continuation is restored, and `y` becomes 1. If `fail` is called again, `y` becomes 2, and so on. When all values for `y` are exhausted the `y` choice will fail and `x` will be incremented to 1, restarting the cycle for `y`.
 
+### Proto-OO
+
+Scheme does not have built-in support for Object Oriented Programming (OOP) like class-based languages (e.g., Java, C++). However, it is possible to implement OOP concepts using various patterns, such as **struct-based implementation**, **message passing**, and **prototype-based implementation**.
+
+> Object Oriented Programming (OOP) is a programming paradigm based on the concept of "objects", which can contain data and code: data in the form of fields (often known as attributes or properties), and code in the form of procedures (often known as methods).
+
+#### Struct-based Implementation (Records)
+
+**Closures** allow for data encapsulation as the data can be hidden within the closure's environment.
+
+By storing lambdas inside a `struct` (or record), we can create objects where data is hidden within the closure's environment.
+
+```scheme
+(struct counter (inc dec val))
+
+(define (make-counter)
+  (let ((count 0))
+    (counter
+      (lambda () (set! count (+ count 1))) ; inc
+      (lambda () (set! count (- count 1))) ; dec
+      (lambda () count))))                 ; val
+
+(define c (make-counter))
+
+((counter-inc c))   ; Increments count
+((counter-val c))   ; Returns 1
+```
+
+In this pattern, the "object" is a record of functions, and "methods" are invoked by selecting a field and calling the returned lambda.
+
+#### Message Passing Implementation
+
+In the **message passing** pattern, an object is represented as a single procedure (the **dispatcher**).
+
+This procedure accepts a "message" (usually a symbol) and arguments, then decides which internal logic to execute.
+
+> This follows Alan Kay's original vision of OOP, where communication between objects happens through messages rather than direct method calls.
+
+```scheme
+(define (make-counter)
+  (let ((count 0))
+    ;; Local methods
+    (define (inc)     (set! count (+ count 1)))
+    (define (set-val val) (set! count val))
+    (define (get-val)     count)
+  
+    ;; The Dispatcher
+    (lambda (message . args)
+      (case message
+        ((increase) (apply inc args))
+        ((set)      (apply set-val args))
+        ((value)    (apply get-val args))
+        (else (error "Unknown message" message))))))
+
+(define c (make-counter))
+(c 'increase) ; Increments
+(c 'value)    ; Returns 1
+```
+
+##### Delegation and Inheritance
+
+Inheritance is achieved by **delegation**: if the child object doesn't recognize a message, it passes it to a "parent" object.
+
+```scheme
+(define (make-dec-counter)
+  (let ((parent (make-counter)))
+    (define (decrease) (parent 'set (sub1 (parent 'value))))
+    (define (increase) (parent 'set (add1 (parent 'value))))
+  
+    (lambda (message . args)
+      (case message
+        ((decrease) (apply decrease args))        ; new methods
+        ((increase) (apply increase args))        ; override parent methods
+        (else (apply parent (cons message args))) ; delegate to parent
+      )
+    )
+  )
+)
+```
+
+#### Prototype-based Implementation
+
+In prototype-based OO (like JavaScript or Lua), there are no classes. Objects are cloned from existing **prototypes**, and behaviors are added or modified dynamically. 
+
+**Hash tables** are typically used to store fields and methods.
+
+```scheme
+(define new-object make-hash)
+(define clone      hash-copy)
+
+;; Macros for cleaner syntax
+(define-syntax !!
+  (syntax-rules ()
+    ((_ obj key val)
+      (hash-set! obj 'key val))))
+(define-syntax ??
+  (syntax-rules ()
+    ((_ obj key)
+      (hash-ref obj 'key))))
+(define-syntax ->
+  (syntax-rules ()
+    ((_ obj msg arg ...)
+      ((?? obj msg) obj arg ...))))
+
+(define person (new-object))
+(!! person name "Alice")
+(!! person greet
+    (lambda (self) (string-append "Hi, I'm " (?? self name))))
+
+(-> person greet) ; "Hi, I'm Alice"
+```
+
+The `self` argument must be passed explicitly to methods to allow access to the object's local state, mimicking the `this` pointer.
+
+##### Inheritance via Prototype Chain
+
+Inheritance is implemented via a **dispatch chain**: if a property is not found in the current object, the search continues in its `parent` (prototype).
+
+```scheme
+(define (deep-clone obj)
+  (if (not (hash-ref obj '<<parent>> #f))
+    (clone obj)
+    (let* ((cl (clone obj))
+          (par (?? cl <<parent>>)))
+      (!! cl <<parent>> (deep-clone par)))))
+      
+(define (son-of parent)
+  (let ((o (new-object)))
+    (!! o <<parent>> (deep-clone parent))
+    o))
+
+(define (dispatch obj msg)
+  (if (eq? obj 'unknown)
+    (error "Unknown message" msg)
+    (let ((slot (hash-ref obj msg 'unknown)))
+      (if (eq? slot 'unknown)
+        (dispatch (hash-ref obj '<<parent>> 'unknown) msg)
+        slot))))
+
+(define-syntax ??       ;; reader
+  (syntax-rules ()
+    ((_ obj key)
+      (dispatch obj 'key))))
+(define-syntax ->        ;; send message
+  (syntax-rules ()
+    ((_ obj msg arg ...)
+      ((dispatch obj 'msg) obj arg ...))))
+```
+
 ### Error Handling
 
 In scheme errors are raised using the `error` procedure:
@@ -791,3 +944,48 @@ In scheme errors are raised using the `error` procedure:
 ```scheme
 (error "An error occurred")
 ```
+
+To define a custom error handling mechanism we must:
+
+- Define a global variable to hold the stack of error handlers
+- Define a procedure to pop and push error handlers in the stack
+
+  ```scheme
+  (define *error-handlers* '())
+
+  (define (push-error-handler handler)
+    (set! *error-handlers* (cons handler *error-handlers*)))
+  (define (pop-error-handler)
+    (let ((handler (car *error-handlers*)))
+      (set! *error-handlers* (cdr *error-handlers*))
+      handler))
+  ```
+
+- Define a `throw` procedure that invokes the top-most error handler from the stack, or raises an uncaught error if no handler is available.
+
+  ```scheme
+  (define (throw error)
+    (let ((handler (pop-error-handler)))
+      (if handler
+          (handler error)
+          (error "Uncaught error:" error))))
+  ```
+
+- Define a `try-catch` construct that pushes a new error handler onto the stack, executes the `try` block, and pops the handler off the stack afterward.
+
+  ```scheme
+  (define-syntax try
+    (syntax-rules ()
+      ((_ try-block ... (catch error-var catch-block ...))
+        (call/cc (lambda (exit)
+            (push-error-handler (lambda (error)     ; add new error handler
+              (if (equal? error-var error)
+                (exit begin catch-block ...)
+                (throw error))))
+            (let ((result (begin try-block ...)))   ; execute try block
+              (pop-error-handler)                   ; remove error handler
+              result))
+        ))
+    )
+  )
+  ```
