@@ -703,7 +703,11 @@ where:
 
 This macro transforms a `let` expression into an equivalent lambda application, `(var expr) ...` represent multiple variable bindings.
 
+#### Hygienic Macros
+
 Macros in sceme are **hygienic** meaning that they prevents unintended variable capture and name collisions during macro expansion. Unlike traditional macros that operate on raw text substitution, hygienic macros maintain the lexical scope of identifiers, ensuring that macro parameters and locally-bound variables don't inadvertently conflict with variables in the scope where the macro is invoked. This is achieved through automatic renaming of identifiers during expansion, typically by attaching unique tags or timestamps to variable names.
+
+To use global variable, defined at the top level, the name must be surrounded by `*` symbols, for example `(define *global-var* '())`.
 
 ### Continuations
 
@@ -756,7 +760,31 @@ Continuations can be implemented using two main techniques:
 - **Garbage Collection (GC)**: This strategy doesn't require the stack, it allocate continuations on the heap and relies on garbage collection to reclaim memory when continuations are no longer needed.
 - **Stack Copying**: When the continuation is issued, the stack is copied in the heap as a _continuation object_. When the continuation is invoked, the stack is restored from the continuation object, discarding the current stack.
 
-### Error
+### Non-Deterministic Programming
+
+Scheme supports non-deterministic programming through the use of continuations, allowing for the exploration of multiple computation paths.
+
+Using the `choose` construct, we can define non-deterministic choices in our programs. This construct allows us to specify a set of possible values, and the program can explore different paths based on these choices. This construct stores the current continuation before making a choice, enabling backtracking if needed.
+
+If at any point the we understand that the current computation path is not leading to a valid solution, we can use the `fail` procedure to backtrack and explore alternative paths. This construct will restore the last saved continuation, removing the current computation state and allowing the program to try a different choice.
+
+```scheme
+(define (is-the-sum-of sum)
+  (unless (and (>= sum 0)(<= sum 10))
+    (error "out of range" sum))
+  (let ((x (choose ’(0 1 2 3 4 5)))
+        (y (choose ’(0 1 2 3 4 5))))
+    (if (= (+ x y) sum)
+      (list x y)
+      (fail)
+    )
+  )
+)
+```
+
+This function create two non-deterministic variables `x` and `y`. At the beginning they are both 0. When the `fail` procedure is called, the last continuation is restored, and `y` becomes 1. If `fail` is called again, `y` becomes 2, and so on. When all values for `y` are exhausted the `y` choice will fail and `x` will be incremented to 1, restarting the cycle for `y`.
+
+### Error Handling
 
 In scheme errors are raised using the `error` procedure:
 
