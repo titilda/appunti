@@ -699,6 +699,16 @@ Macros in sceme are **hygienic** meaning that they prevents unintended variable 
 
 To use global variable, defined at the top level, the name must be surrounded by `*` symbols, for example `(define *global-var* '())`.
 
+To break hygiene and allow variable capture, the user should pass the variable as a parameter to the macro:
+
+```scheme
+(define-syntax with-temp
+  (syntax-rules ()
+    ((_ var body ...)
+      (let ((var (make-temp)))
+        body ...))))
+```
+
 ### Continuations
 
 **Continuations** represent "the rest of the computation" at any given point in a program. They capture what the program will do next, allowing you to pause execution, save that state, and resume it later—possibly multiple times or from different contexts.
@@ -870,7 +880,7 @@ Inheritance is achieved by **delegation**: if the child object doesn't recognize
 
 #### Prototype-based Implementation
 
-In prototype-based OO (like JavaScript or Lua), there are no classes. Objects are cloned from existing **prototypes**, and behaviors are added or modified dynamically. 
+In prototype-based OO (like JavaScript or Lua), there are no classes. Objects are cloned from existing **prototypes**, and behaviors are added or modified dynamically.
 
 **Hash tables** are typically used to store fields and methods.
 
@@ -989,3 +999,220 @@ To define a custom error handling mechanism we must:
     )
   )
   ```
+
+## Haskell
+
+**Haskell** is a _purely functional programming language_ based on immutability and non-side-effecting functions. It is statically typed with strong type inference and polymorphism.
+
+### Evaluation Strategy
+
+Being purely functional allow the order of evaluation to be irrelevant, allowing **lazy evaluation** of the **redex** (reducible expression). This means that expressions are not evaluated until their values are actually needed, enabling the creation of infinite data structures and improving performance by avoiding unnecessary computations.
+
+> A **redex** is an expression that can be reduced or simplified according to the rules of the language. In functional programming, a redex typically refers to a function application that can be evaluated to produce a result.
+
+When calling a function haskell use **call by need** evaluation strategy, which is an optimization of **call by name**. In call by need, the arguments to a function are not evaluated until they are actually used within the function body, and once evaluated, the result is cached (or "memoized") so that subsequent uses of the same argument do not require re-evaluation.
+
+This is implemented using **thunks**, which are essentially deferred computations. A thunk is a parameterless function that encapsulates an expression to be evaluated later.
+
+> The order of evaluation of call by value is a innermost-first strategy, meaning that the leftmost redexes are evaluated first.
+>
+> In contrast, call by name uses an outermost-first strategy, where the outermost expressions are evaluated first.
+
+Call by name is more robust than call by value (Church-Rosser confluence) because it guarantees that if there is a normal form (a fully reduced expression), as it starts from the root of the expression tree. In contrast, call by value may fail to find a normal form if the evaluation order leads to non-terminating computations, as it starts from the leaves of the expression tree.
+
+#### Scheme implementation of Call by Name
+
+In Scheme, we can simulate call by name using lambda expressions to create promises.
+
+```scheme
+(struct promise (thunk value?) #:mutable)
+
+(define-syntax delay
+  (syntax-rules ()
+    ((_ expr ...)
+      (promise (lambda () expr ...) #f))))
+
+(define (force p)
+  (cond
+    ((not (promise? p)) p)                    ; If not a promise, return as is
+    ((promise-value? p) (promise-value? p))   ; If already evaluated, return cached value
+    (else                                     ; Otherwise, evaluate the thunk
+      (let ((val ((promise-thunk p))))
+        (set-promise-value?! p val)           ; Cache the evaluated value
+        val))))
+```
+
+### Variables
+
+Variables in Haskell are **immutable** by default, meaning that once a variable is assigned a value, it cannot be changed. This immutability is a core principle of functional programming and helps to ensure referential transparency.
+
+#### Haskell Types
+
+Haskell is a statically typed language, meaning that the type of every expression is known at compile time.
+
+Haskell uses **type inference** to automatically deduce the types of expressions without requiring explicit type annotations. This is done using the Hindley-Milner type system, that will infer the least general type for each expression.
+
+To define a variable with an explicit type annotation, we use the `::` operator:
+
+```haskell
+x :: Int
+```
+
+Haskell has several built-in types, including:
+
+- `Integer`: Represents arbitrary-precision integers.
+- `Char`: Represents a single Unicode character.
+- `[a]`: Represents a list of elements of type `a`.
+- `(a, b)`: Represents a tuple containing two elements of types `a` and `b`.
+
+#### User-Defined Types
+
+Haskell allows the creation of custom data types using the `data` keyword. This enables the definition of complex data structures.
+
+Key components include:
+
+- Type Constructor: The name of the new type, used in type signatures.
+- Data Constructor(s): Functions used to create values of the type; these are also used in pattern matching.
+- Sum Types: The `|` operator allows for multiple constructors, representing a choice between different data shapes (c-like unions).
+- Product Types: A single constructor can take multiple arguments (types), grouping different values together (c-like structs).
+
+```haskell
+data Shape = Circle Float | Rectangle Float Float
+```
+
+The type constructor can take parameters to create **parametric types** (generics):
+
+```haskell
+data Maybe a = Null | Just a
+```
+
+To create instances of user-defined types, we use the _data constructors_:
+
+```haskell
+circle :: Shape
+circle = Circle 5.0
+
+rectangle :: Shape
+rectangle = Rectangle 4.0 6.0
+```
+
+##### Accessing Fields
+
+By default, Haskell uses positional notation to define and access the fields of a data constructor. Accessing these values typically requires **pattern matching**.
+
+```haskell
+data Point = Point Float Float
+
+point :: Point
+point = Point 3.0 4.0
+
+pointX :: Point -> Float
+pointX (Point x _) = x  -- Extracts the first field
+```
+
+To simplify access, custom accessor functions can be defined manually:
+
+```haskell
+getX :: Point -> Float
+getX (Point x _) = x
+
+xVal :: Float
+xVal = getX point  -- Accessing the x field
+```
+
+However, Haskell provides **record syntax** to define data types with named fields. This automatically generates accessor functions for each field.
+
+```haskell
+data Point = Point { x :: Float, y :: Float }
+
+point :: Point
+point = Point { x = 3.0, y = 4.0 }
+
+valX :: Float
+valX = x point  -- 'x' is now a function: Point -> Float
+```
+
+#### Type Aliases
+
+Type aliases can be created using the `type` keyword, allowing for more readable code by giving descriptive names to existing types.
+
+```haskell
+type String = [Char]
+```
+
+### Function
+
+Haskell functions are **first-class citizens**, meaning they can be passed as arguments, returned from other functions, and assigned to variables.
+
+A function is defined using the `->` operator to denote the type of its parameters and return value.
+
+```haskell
+add1 :: Int -> Int
+add1 x = x + 1
+```
+
+A function is called by simply providing its arguments:
+
+```haskell
+result :: Int
+result = add1 5  -- result will be 6
+```
+
+#### Infix Operators
+
+Haskell allows functions with two arguments to be used as **infix operators** by enclosing their names in backticks (`` ` ``).
+
+```haskell
+5 `add` 3  -- Equivalent to (add 5 3)
+```
+
+Conversely, an infix operator (non-alphabetical like `+` or `*`) can be used as a prefix function by enclosing it in parentheses `()`.
+
+```haskell
+(+) 5 3  -- Equivalent to (5 + 3)
+```
+
+#### Lambda Functions
+
+Lambda functions are defined using the `\` symbol followed by the parameters, an arrow `->`, and the function body.
+
+```haskell
+\x y -> x + y + 1
+```
+
+#### Currying
+
+In Haskell, all functions are **curried** by default. This means that a function that takes multiple arguments is actually a series of functions that each take a single argument and return another function until all arguments have been provided.
+
+So a function the is $f: \mathbb{N} \times \mathbb{Z} \rightarrow \mathbb{Q}$ is actually represented as $f: \mathbb{N} \rightarrow (\mathbb{Z} \rightarrow \mathbb{Q})$, or simple $f: \mathbb{N} \rightarrow \mathbb{Z} \rightarrow \mathbb{Q}$ (the $\rightarrow$ is right associative).
+
+```haskell
+add :: Integer -> Integer -> Integer
+add x y = x + y
+```
+
+The function `add` takes an integer `x` and returns a new function that takes an integer `y` and returns the sum of `x` and `y`.
+
+##### Partial Application
+
+This allows for **partial application** of functions, where you can provide some of the arguments and get back a new function that takes the remaining arguments.
+
+```haskell
+increment :: Int -> Int
+increment = add 1
+```
+
+The `increment` function is created by partially applying the `add` function with the first argument set to `1`. It takes a single integer argument and adds `1` to it.
+
+#### Polymorphism
+
+Haskell supports **parametric polymorphism**, allowing functions to operate on values of any type without being tied to a specific one. This is achieved using _type variables_.
+
+```haskell
+identity :: a -> a
+identity x = x
+```
+
+The `identity` function takes a value of any type `a` and returns a value of the same type.
+
+> This is similar to generics in languages like Java or C#.
