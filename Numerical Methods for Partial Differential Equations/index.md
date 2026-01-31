@@ -50,7 +50,7 @@ $$
 
 where $g : \Gamma_D \to \mathbb{R}$ is called **Dirichlet data** and $q : \Gamma_N \to \mathbb{R}$ is called **Neumann data**. $\frac{\partial}{\partial n}$ denotes the **normal derivative** (see [appendix](#normal-derivative)).
 
-$\Gamma_D$ is called **Dirichlet boundary**, $\Gamma_D$ is called **Neumann boundary**. They form a partition of $\partial\Omega$:
+$\Gamma_D$ is called **Dirichlet boundary**, $\Gamma_N$ is called **Neumann boundary**. They form a partition of $\partial\Omega$:
 
 $$
 \begin{cases}
@@ -107,7 +107,7 @@ In order to get to the **weak problem** we have to multiply both sides of the PD
 $$
 \begin{align}
   \int_\Omega -(\mu u')' v + b u' v + \sigma u v &= \int_\Omega f v \\
-  \int_\Omega \left( (\mu u')' v' + b u' v + \sigma u v \right) - \left[ \mu u' v \right]_{\partial\Gamma} &=\int_\Omega f v
+  \int_\Omega \left( \mu u' v' + b u' v + \sigma u v \right) - \left[ \mu u' v \right]_{\partial\Gamma} &=\int_\Omega f v
 \end{align}
 $$
 
@@ -124,7 +124,7 @@ The term in the square brackets has to be evaluated immediately: it is $0$ on th
 The weak problem is then written as follows:
 
 $$
-\text{Find $u \in V$ s.t. } \underbrace{\int_\Omega (\mu u' v' + b u' v + \sigma u v) dx}_{a(u, v)} = \underbrace{\int_\Omega f v \, dx+ \sum \gamma v(x_D)}_{F(v)} \qquad \forall v \in V 
+\text{Find $u \in V$ s.t. } \underbrace{\int_\Omega (\mu u' v' + b u' v + \sigma u v) dx}_{a(u, v)} = \underbrace{\int_\Omega f v \, dx+ \sum_{x_D \in \Gamma_D} \gamma v(x_D)}_{F(v)} \qquad \forall v \in V 
 $$
 
 that is equivalent to
@@ -193,7 +193,7 @@ $$
 
 The error in the discretization is bounded: $\|u - u_h\| \le C \cdot h$.
 
-_To be continued_
+<!-- _To be continued_ or idk -->
 
 ## Multidimensional elliptic PDEs
 
@@ -253,13 +253,13 @@ V' = \left\{ F : V \to \mathbb{R} : F \text{ is linear, bounded and } \|F\|_{V'}
 $$
 
 ::: {.callout .callout-property title="Corollary"}
-If the assumptions of the Lax-Milgram lemma are satosfied, then the Galerkin problem has a unique solution and is bounded independently of $h$ (the solution is **stable**):
+If the assumptions of the Lax-Milgram lemma are satisfied, then the Galerkin problem has a unique solution and is bounded independently of $h$ (the solution is **stable**):
 
 $$
 \|u_h\| \lt \frac{1}{\alpha}\|F\|_{V'}
 $$
 
-Moreover, the resulting linear alegraic system will be nonsingular.
+Moreover, the resulting linear algebraic system will be nonsingular.
 :::
 
 We will not proove the Lax-Milgram lemma but we will only see the conditions a specific problem must satisfy to satisfy the assumptions of the lemma.
@@ -399,7 +399,7 @@ $$
 
 This means that the solution is bounded independently on the value of $h$ (**stability** property).
 
-_TODO: NDim generalization_
+<!-- _TODO: NDim generalization_ N,ID'tTIW -->
 
 ## Non homogeneous elliptic PDEs
 
@@ -1276,50 +1276,9 @@ We will not go into details about the LBB condition but if it is satisfied, alon
 :::
 
 ::: {.callout .callout-example title="Valid triangulations"}
-Assume we are using triangulation to generate the mesh. Let $\mathbb{P}^n$ be the space of polynomials of degree $n$ and let the velocity space and the pressure space be $\mathbb{P}^r$ and $\mathbb{P}^s$ respectively. If we take $r = $ then we will never get any LBBness. If we take the Taylor-Hood elements (i.e. $r \ge 2, s = r - 1$) then we are guaranteed to always get LBBness. $s = 0, r = 1$ is not LBB. $r = 2, s = 0$ is good.
+Assume we are using triangulation to generate the mesh. Let $\mathbb{P}^n$ be the space of polynomials of degree $n$ and let the velocity space and the pressure space be $\mathbb{P}^r$ and $\mathbb{P}^s$ respectively. If we take $r = s$ then we will never get any LBBness. If we take the Taylor-Hood elements (i.e. $r \ge 2, s = r - 1$) then we are guaranteed to always get LBBness. $s = 0, r = 1$ is not LBB. $r = 2, s = 0$ is good.
 :::
 
-### Convergence estimate for Taylor-Hood elements
-
-As stated before, the most general formula to determine Taylor-Hood elements is $\mathbb{P}^{k+1}$ for velocity and $\mathbb{P}^k$ for pressure with $k \ge 2$.
-
-Since Taylor-Hood elements are LBB, they allow for both stability and convergence.
-
-For Taylor-Hood elements, it holds that
-
-$$
-\exists C \in \mathbb{R} : \|\vec{u} - \vec{u}_h\|_V + \|p - p_h\|_Q \le C \cdot h^{k+1} \left( \|\vec{u}\|_{\left[H^{(k+2)}(\Omega)\right]^d} \|p\|_{H^{k+1}(\Omega)} \right)
-$$
-
-::: {.callout .callout-note title="Remember!"}
-$k+1$ is the degree of the polynomial associated with velocities.
-
-The order of convergense is _always_ the degree of the polynomial associated with velocities.
-:::
-
-Taylor-Hood elements sets are defined as follows:
-
-$$
-V_h = \left\{ \vec{v}_h \in \left[\mathcal{C}^0(\Omega)\right]^d : \vec{v}_h|_K \in \left( \mathbb{P}^{k+1} \right)^d, \vec{v}_h|_{\Gamma_D} = 0, \forall K \in \mathscr{T}_h \right\} \\
-Q_h = \left\{ q_h \in \begin{cases} L^2_0(\Omega) & \Gamma_D = \empty \\ L^2(\Omega) & \Gamma_D = \empty \end{cases} : q_h|_k \in \mathbb{P}^{K}, \forall K \in \mathscr{T}_h \right\}
-$$
-
-<!-- ### Algebraic system
-
-As usual, we can consider linear forms as if they were matrices, obtaining
-
-$$
-\begin{cases}
-  A \vec{u} + B^T \vec{p} = \vec{F} \\
-  B \vec{u} = \vec{G}
-\end{cases} \iff \underbrace{\begin{bmatrix}
-  A & B^T \\ B & 0
-\end{bmatrix}}_{S} \begin{bmatrix} \vec{u} \\ \vec{p} \end{bmatrix} = \begin{bmatrix} \vec{F} \\ \vec{G} \end{bmatrix}
-$$
-
-$S$ is called **Stokes matrix**. -->
-
-### Non-singularity of $S$
 
 ::: {.callout .callout-theorem title="Well-posedness of the problem"}
 
@@ -1470,6 +1429,46 @@ $$
 therefore, with the given assumptions, $(c)$ is true, thus LBB is violated, hence we can conclude that requiring the LBB condition to be true is equivalent to requiring that $\ker(B^T) = 0$.
 :::
 :::
+
+### Convergence estimate for Taylor-Hood elements
+
+As stated before, the most general formula to determine Taylor-Hood elements is $\mathbb{P}^{k+1}$ for velocity and $\mathbb{P}^k$ for pressure with $k \ge 2$.
+
+Since Taylor-Hood elements are LBB, they allow for both stability and convergence.
+
+For Taylor-Hood elements, it holds that
+
+$$
+\exists C \in \mathbb{R} : \|\vec{u} - \vec{u}_h\|_V + \|p - p_h\|_Q \le C \cdot h^{k+1} \left( \|\vec{u}\|_{\left[H^{(k+2)}(\Omega)\right]^d} \|p\|_{H^{k+1}(\Omega)} \right)
+$$
+
+::: {.callout .callout-note title="Remember!"}
+$k+1$ is the degree of the polynomial associated with velocities.
+
+The order of convergense is _always_ the degree of the polynomial associated with velocities.
+:::
+
+Taylor-Hood elements sets are defined as follows:
+
+$$
+V_h = \left\{ \vec{v}_h \in \left[\mathcal{C}^0(\Omega)\right]^d : \vec{v}_h|_K \in \left( \mathbb{P}^{k+1} \right)^d, \vec{v}_h|_{\Gamma_D} = 0, \forall K \in \mathscr{T}_h \right\} \\
+Q_h = \left\{ q_h \in \begin{cases} L^2_0(\Omega) & \Gamma_D = \empty \\ L^2(\Omega) & \Gamma_D = \empty \end{cases} : q_h|_k \in \mathbb{P}^{K}, \forall K \in \mathscr{T}_h \right\}
+$$
+
+<!-- ### Algebraic system
+
+As usual, we can consider linear forms as if they were matrices, obtaining
+
+$$
+\begin{cases}
+  A \vec{u} + B^T \vec{p} = \vec{F} \\
+  B \vec{u} = \vec{G}
+\end{cases} \iff \underbrace{\begin{bmatrix}
+  A & B^T \\ B & 0
+\end{bmatrix}}_{S} \begin{bmatrix} \vec{u} \\ \vec{p} \end{bmatrix} = \begin{bmatrix} \vec{F} \\ \vec{G} \end{bmatrix}
+$$
+
+$S$ is called **Stokes matrix**. -->
 
 ## Navier-Stokes equation
 
