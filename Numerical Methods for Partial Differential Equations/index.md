@@ -1288,8 +1288,188 @@ Since Taylor-Hood elements are LBB, they allow for both stability and convergenc
 For Taylor-Hood elements, it holds that
 
 $$
+\exists C \in \mathbb{R} : \|\vec{u} - \vec{u}_h\|_V + \|p - p_h\|_Q \le C \cdot h^{k+1} \left( \|\vec{u}\|_{\left[H^{(k+2)}(\Omega)\right]^d} \|p\|_{H^{k+1}(\Omega)} \right)
+$$
+
+::: {.callout .callout-note title="Remember!"}
+$k+1$ is the degree of the polynomial associated with velocities.
+
+The order of convergense is _always_ the degree of the polynomial associated with velocities.
+:::
+
+Taylor-Hood elements sets are defined as follows:
 
 $$
+V_h = \left\{ \vec{v}_h \in \left[\mathcal{C}^0(\Omega)\right]^d : \vec{v}_h|_K \in \left( \mathbb{P}^{k+1} \right)^d, \vec{v}_h|_{\Gamma_D} = 0, \forall K \in \mathscr{T}_h \right\} \\
+Q_h = \left\{ q_h \in \begin{cases} L^2_0(\Omega) & \Gamma_D = \empty \\ L^2(\Omega) & \Gamma_D = \empty \end{cases} : q_h|_k \in \mathbb{P}^{K}, \forall K \in \mathscr{T}_h \right\}
+$$
+
+<!-- ### Algebraic system
+
+As usual, we can consider linear forms as if they were matrices, obtaining
+
+$$
+\begin{cases}
+  A \vec{u} + B^T \vec{p} = \vec{F} \\
+  B \vec{u} = \vec{G}
+\end{cases} \iff \underbrace{\begin{bmatrix}
+  A & B^T \\ B & 0
+\end{bmatrix}}_{S} \begin{bmatrix} \vec{u} \\ \vec{p} \end{bmatrix} = \begin{bmatrix} \vec{F} \\ \vec{G} \end{bmatrix}
+$$
+
+$S$ is called **Stokes matrix**. -->
+
+### Non-singularity of $S$
+
+::: {.callout .callout-theorem title="Well-posedness of the problem"}
+
+If $S$ is non-singular, then LBB is satisfied.
+
+::: {.collapsible title="Proof"}
+The proof will consists in a series of proof for multiple equivalences, namely, we will proove that all of the following are equivalent.
+
+1. $S$ is non-singular.
+2. $R$ is non-singular.
+3. $\ker(B^T) = 0$.
+4. LBB is satisfied.
+
+**Proof that $(1) \iff (2)$**
+
+We remember that
+
+$$
+S = \begin{bmatrix}
+  A & B^T \\ B & 0
+\end{bmatrix}
+$$
+
+Since $a$ is coercive, then $A$ is non-singular therefore it can be inverted:
+
+$$
+\begin{cases}
+  \vec{u} = A^{-1} (\vec{F} - B^T \vec{p}) \\
+  B(A^{-1} (\vec{F} - B^T \vec{p})) = \vec{G}
+\end{cases} \\
+$$
+
+From the second equation we obtain the pressure system:
+
+$$
+\underbrace{BA^{-1}B^T}_{R} \vec{p} = \underbrace{BA^{-1} \vec{F} - \vec{G}}_{\vec{T}}
+$$
+
+Thus, if $R$ is invertible, then we have a unique soluton $\vec{p}$ therefore we also have a unique $\vec{u}$. Hence $S$ is non singular if and only if $R$ is.
+
+**Proof that $(2) \iff (3)$**.
+
+By applying linear algebra properties, we get that
+
+$$
+\vec{p} \in \ker(R) \iff R \vec{p} = 0 \iff (BA^{-1}B^T) \vec{p} = 0 \iff \left( (BA^{-1}B^T) \vec{p}, \vec{q} \right) = 0 \ \forall \vec{q} \iff (A^{-1}B^T \vec{p}, B^T \vec{q}) = 0 \ \forall \vec{q}
+$$
+
+therefore
+
+$$
+R \vec{p} = 0 \implies \vec{p} = 0
+$$
+
+is equivalent to
+
+$$
+(A^{-1}B^T \vec{p}, B^T \vec{q}) = 0 \ \forall \vec{q} \implies \vec{p} = 0
+$$
+
+If we take $\vec{q} = \vec{p}$ then the previous implication is equivalent to
+
+$$
+(A^{-1} \underbrace{B^T \vec{p}}_{\vec{w}}, \underbrace{B^T \vec{p}}_{\vec{w}}) = 0 \implies \vec{p} = 0 \\
+(A^{-1} \vec{w}, \vec{w}) = 0 \implies \vec{p} = 0
+$$
+
+Since $A$ is nonsingular, then
+
+$$
+(A^{-1} \vec{w}, {w}) = 0 \implies \vec{w} = 0
+$$
+
+Since $\vec{w} = 0$ then $B^T \vec{p} = 0$ therefore $\vec{p} \in \ker(B^T)$ hence $\vec{p} = 0 \iff \ker(B^T) = 0 \iff \ker(R) = 0$.
+
+**Proof that $(3) \iff (4)$**
+
+This is aproof by contradiction.
+
+Assume that $\ker(B^T) \ne \{0\}$, then
+
+$$
+\exists \vec{p^*} \in \mathbb{R}^{M_h}, \vec{p^*} \ne 0 : B^T \vec{P^*} = 0
+$$
+
+In such a case, let $\vec{p^*} = [p^*_j]_j$, then
+
+$$
+\exists j : p^*_j \ne 0
+$$
+
+If we discretize, we can write that
+
+$$
+\vec{p^*}_h(\vec{x}) = \sum_m p_m^* \psi_m(\vec{x}) \in Q_h
+$$
+
+and we can observe that
+
+$$
+(\dagger) \qquad \qquad B^T \vec{p^*} = 0 \iff b(\vec{v}_h, p_h^*) = 0 \ \forall \vec{v}_h \in V_h
+$$
+
+We will now prove that $(\dagger)$ is equivalent to the violation of LBB.
+
+Let
+
+$$
+(a) \qquad \qquad \frac{b(\vec{v}_h, q_h)}{\|\vec{v}_h\|_V \|q_h\|_Q} \ge \beta
+$$
+
+We can rewrite the LBB condition as
+
+$$
+\forall q_h \exists \vec{v}_h : (a)
+$$
+
+If in $(a)$ we take $\vec{v}_h \gets -\vec{v}_h$ then we get that
+
+$$
+(b) \qquad \qquad \frac{b(\vec{v_h}, q_h)}{\|\vec{v_h}\|_V \|q_h\|_Q} \le -\beta
+$$
+
+We also observe that we can rewrite the LBB condition as
+
+$$
+\forall q_h \exists \vec{v}_h : (a) \lor (b)
+$$
+
+therefore we can write the negated LBB condition as
+
+$$
+\forall q_h \exists \vec{v}_h : (c)
+$$
+
+where $(c) = \lnot((a) \lor (b))$, namely
+
+$$
+(c) \qquad \qquad -\beta \lt \frac{b(\vec{v}_h, q_h)}{\|\vec{v}_h\|_V \|q_h\|_Q} \lt \beta
+$$
+
+Since $(\dagger)$, then
+
+$$
+\exists p_h^* \in Q_h, \forall \vec{v}_h \in V_h : b(\vec{v}_h, p_h^*) = 0
+$$
+
+therefore, with the given assumptions, $(c)$ is true, thus LBB is violated, hence we can conclude that requiring the LBB condition to be true is equivalent to requiring that $\ker(B^T) = 0$.
+:::
+:::
 
 ## Navier-Stokes equation
 
