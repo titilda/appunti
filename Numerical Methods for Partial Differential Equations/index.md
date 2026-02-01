@@ -286,13 +286,13 @@ The Lax-Milgram lemma requires that
 For what concerns point (1), we take for granted that $V$ is an Hilbert space. We have to choose one of two norms to use in the proofs. We can either choose the **complete norm**
 
 $$
-\|v\| = \sqrt{\|v\|^2_{L^2}(0, 1) + \|v'\|_{L^2(0, 1)}}
+\|v\| = \sqrt{\|v\|^2_{L^2}(0, 1) + \|v'\|^2_{L^2(0, 1)}}
 $$
 
 or the **reduced norm**
 
 $$
-|v| = \sqrt{\|v'\|_{L^2(0, 1)}}
+|v| = \sqrt{\|v'\|^2_{L^2(0, 1)}}
 $$
 
 The reduced norm can be used only with a non-empty Dirichlet boundary. For this proof, we chose to use the complete norm.
@@ -1420,15 +1420,41 @@ $$
 (c) \qquad \qquad -\beta \lt \frac{b(\vec{v}_h, q_h)}{\|\vec{v}_h\|_V \|q_h\|_Q} \lt \beta
 $$
 
-Since $(\dagger)$, then
+If $(c)$ is true (LBB is not satisfied), then it must
 
 $$
-\exists p_h^* \in Q_h, \forall \vec{v}_h \in V_h : b(\vec{v}_h, p_h^*) = 0
+\exists \vec{v}_h \in V_h, q_h \in Q_h : b(\vec{v}_h, q_h) = 0
 $$
 
-therefore, with the given assumptions, $(c)$ is true, thus LBB is violated, hence we can conclude that requiring the LBB condition to be true is equivalent to requiring that $\ker(B^T) = 0$.
+therefore, $(\dagger)$ is also equivalent to the negation of the LBB condition.
+
+Since $(\dagger)$ is also equivalent to the initial assumption, that is, in turn, equivalent to the negation of $(3)$, it follows that $(3)$ is equivalent to the LBB condition (a.k.a. $(4)$). QED.
 :::
 :::
+
+In the previous proof, we saw that there are two equivalent ways to express the fact that LBB is not satisfied. We can either say that
+
+$$
+\exists p_h^* \in Q_h : \forall \vec{v}_h \in V_h b(\vec{v}_h, p_h^*) = 0
+$$
+
+or that
+
+$$
+\exists \vec{p}^* \ne 0 : B\vec{p}^* = 0
+$$
+
+If LBB is not satisfied, we lose uniqueness of the solution.
+
+If an admissible $\vec{p}^*$ exists, this means that there are infinite possible acceptable pressure solutions, shaped like
+
+$$
+\vec{p} + c \vec{p}^* \qquad \forall c \in \mathbb{R}
+$$
+
+$\vec{p}^*$ are called **spurious parasitic modes**.
+
+Since there are infinite pressure solutions, we also lose stability.
 
 ### Convergence estimate for Taylor-Hood elements
 
@@ -1454,21 +1480,6 @@ $$
 V_h = \left\{ \vec{v}_h \in \left[\mathcal{C}^0(\Omega)\right]^d : \vec{v}_h|_K \in \left( \mathbb{P}^{k+1} \right)^d, \vec{v}_h|_{\Gamma_D} = 0, \forall K \in \mathscr{T}_h \right\} \\
 Q_h = \left\{ q_h \in \begin{cases} L^2_0(\Omega) & \Gamma_D = \empty \\ L^2(\Omega) & \Gamma_D = \empty \end{cases} : q_h|_k \in \mathbb{P}^{K}, \forall K \in \mathscr{T}_h \right\}
 $$
-
-<!-- ### Algebraic system
-
-As usual, we can consider linear forms as if they were matrices, obtaining
-
-$$
-\begin{cases}
-  A \vec{u} + B^T \vec{p} = \vec{F} \\
-  B \vec{u} = \vec{G}
-\end{cases} \iff \underbrace{\begin{bmatrix}
-  A & B^T \\ B & 0
-\end{bmatrix}}_{S} \begin{bmatrix} \vec{u} \\ \vec{p} \end{bmatrix} = \begin{bmatrix} \vec{F} \\ \vec{G} \end{bmatrix}
-$$
-
-$S$ is called **Stokes matrix**. -->
 
 ## Navier-Stokes equation
 
