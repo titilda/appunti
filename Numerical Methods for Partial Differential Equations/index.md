@@ -1508,6 +1508,82 @@ If $R_e \lt \lt 1$, then, the nonlinear term is negligible compared to the other
 Basically, $R_e$ is a measurement of the complexity of the phenomenon we are analyzing. If $R_e$ is really high, the phenomenon is really complex and needs to be addressed by really complex models. $R_e$ is the _condition number_ of fluid equations.
 :::
 
+Navier-Stokes problems are an hybrid of Stokes problem and parabolic problem. We use theory from those two to solve Navier-Stokes problems without reinventing the wheel.
+
+::: {.callout .callout-example title="Backward-Euler time discretization of Navier-Stokes problems"}
+
+The application of the Backward-Euler method is equivalent to the application of the $\theta$-method with $\theta = 1$.
+
+The time-discretized Navier-Stokes problem looks like this (we omit boundary conditions in order to favour readability, they are unchanged)
+
+$$
+\begin{cases}
+  \frac{\vec{u}^{n+1} - \vec{u}^n}{\Delta t} - \mu \Delta \vec{u}^{n+1} + (\vec{u}^{n+1} \cdot \nabla) u^{n+1} + \Delta p^{n+1} = \vec{f}^{n+1} \\
+  \operatorname{div}\vec{u}^{n+1} = 0
+\end{cases}
+$$
+
+The space-discretization is now trivial:
+
+$$
+\begin{cases}
+  \int_\Omega \frac{(\vec{u}_h^{n+1} - \vec{u}_h^n) \vec{v}_h}{\Delta t} + \int_\Omega \mu \nabla \vec{u}^{n+1} \cdot \nabla \vec{v}_h + \int_\Omega (\vec{u}^{n+1} \cdot \nabla)\vec{u}^{n+1} \vec{v}_h - \int_\Omega p_h^{n+1} \operatorname{div}(\vec{v}_h) = \int_\Omega f^{n+1} \vec{v}_h + \int_{\Gamma_D} \mu \frac{\partial \vec{u}^{n+1}}{\partial n}\cdot \vec{v}_h \\
+  \int_\Omega \operatorname{div}(\vec{u}^{n+1}) q_h = 0
+\end{cases} \\
+\begin{cases}
+  \frac{1}{\Delta t} \int_\Omega \vec{u}_h^{n+1} \vec{v}_h + \int_\Omega \mu \nabla \vec{u}_h^{n+1} \cdot \nabla \vec{v}_h + \int_\Omega (\vec{u}^{n+1} \cdot \nabla)\vec{u}^{n+1} \vec{v}_h - \int_\Omega p_h^{n+1} \operatorname{div}(\vec{v}_h) = \int_\Omega f^{n+1} \vec{v}_h + \int_{\Gamma_D} \mu \frac{\partial \vec{u}^{n+1}}{\partial n}\cdot \vec{v}_h + \frac{1}{\Delta t} \int_\Omega \vec{u}_h^n \vec{v}_h \\
+  \int_\Omega \operatorname{div}(\vec{u}^{n+1}) q_h = 0
+\end{cases}
+$$
+
+Instead of Backward-Euler, we could also have used Crank-Nicolson without many changes. Forward-Euler cannot be used as it would decouple the two equations so there is no guarantee that the found solutions would also respect the pressure equation.
+:::
+
+We can see that we got to a generalized Stokes problem with an extra term:
+
+$$
+\begin{cases}
+  a(\vec{u}_h^{n+1}, \vec{v}_h) + b(\vec{v}_h, \vec{p}_h^{n+1}) + \int_\Omega (\vec{u}_h^{n+1} \cdot \nabla) u_h^{n+1} = \vec{F}(\vec{v}_h) \\
+  \int_\Omega \operatorname(div) \vec{u}_h^{n+1} q_h = 0
+\end{cases}
+$$
+
+Every "hybrid" can be written like
+
+$$
+\begin{bmatrix}
+  A + C(\vec{u}) & B^T \\ B & 0
+\end{bmatrix} \begin{bmatrix}
+  \vec{u} \\ \vec{p}
+\end{bmatrix} = \begin{bmatrix}
+  \vec{F} \\ \vec{G}
+\end{bmatrix}
+$$
+
+where $C$ is a nonlinear term dependent on $\vec{u}$ and $\vec{G}$ is a generalization of the $0$ to indicate that this also works for non-incompressible fluids.
+
+::: {.callout .callout-theorem title="Well-posedness of NS problem"}
+Under the conditions that makes the General Stokes problem well posed (including, but not limited to, LBB), the NS problem also have a unique solution and is unconditionally stable. Moreover, the following holds:
+
+$$
+\forall t^{n+1} \qquad \|\vec{u}^{n+1} - u_h^{n+1}\|_V + \|\vec{p}^{n+1} - \vec{p}_h^{n+1} \|_Q \le C(\Delta t + h^{k+1}) (\text{Suitable norms of $\vec{u}$ and $\vec{p}$})
+$$
+:::
+
+$\Delta t$ become squared in the case we use Crank-Nicolson.
+
+Since we have nonlinear terms, the system is a nonlinear one. We can linearize it to make it easily solvable.
+
+Instead of using $(\vec{u}^{n+1} \cdot \nabla) \vec{u}^{n+1}$ we can either use $(\vec{u}^n \cdot \nabla) \vec{u}^{n+1}$ or $(\vec{u}^{n+1} \cdot \nabla) \vec{u}^n$. Performing one of those linearization let us use $C(\vec{u}) \equiv C$, eliminating the dependence by $\vec{u}$ from the system matrix.
+
+In such a case, we can define a stability condition:
+
+$$
+\Delta t \le C \frac{h}{\max \|\vec{u}^n\|}
+$$
+
+As there is dependency from $h$, this means that stability is conditional. Convergence results are the same as before and does not change.
+
 # Appendix
 
 ## Nabla operator
