@@ -814,7 +814,7 @@ By storing lambdas inside a `struct` (or record), we can create objects where da
 (struct counter (inc dec val))
 
 (define (make-counter)
-  (let ((count 0))
+  (let ((count 0))                         ; internal state
     (counter
       (lambda () (set! count (+ count 1))) ; inc
       (lambda () (set! count (- count 1))) ; dec
@@ -840,7 +840,7 @@ This procedure accepts a "message" (usually a symbol) and arguments, then decide
 (define (make-counter)
   (let ((count 0))
     ;; Local methods
-    (define (inc)     (set! count (+ count 1)))
+    (define (inc)         (set! count (+ count 1)))
     (define (set-val val) (set! count val))
     (define (get-val)     count)
   
@@ -850,7 +850,7 @@ This procedure accepts a "message" (usually a symbol) and arguments, then decide
         ((increase) (apply inc args))
         ((set)      (apply set-val args))
         ((value)    (apply get-val args))
-        (else (error "Unknown message" message))))))
+        (else       (error "Unknown message" message))))))
 
 (define c (make-counter))
 (c 'increase) ; Increments
@@ -1042,6 +1042,27 @@ In Scheme, we can simulate call by name using lambda expressions to create promi
         val))))
 ```
 
+#### Enforce Evaluation
+
+To enforce evaluation of an expression in Haskell, we can use the `BangPatterns`, the `!` symbol, to indicate that a value should be evaluated immediately (eagerly) rather than lazily.
+
+```haskell
+factorial :: Int -> Int
+factorial 0 = 1
+factorial n = n * factorial (n - 1)  -- Normal lazy evaluation
+factorial' :: Int -> Int
+factorial' 0 = 1
+factorial' !n = n * factorial' (n - 1)  -- Eager evaluation
+```
+
+It is also possible to use the `seq` function to force the evaluation of an expression before proceeding with the rest of the computation.
+
+```haskell
+factorial'' :: Int -> Int
+factorial'' 0 = 1
+factorial'' n = n `seq` (n * factorial'' (n - 1))  -- Force evaluation of n
+```
+
 ### Variables
 
 Variables in Haskell are **immutable** by default, meaning that once a variable is assigned a value, it cannot be changed. This immutability is a core principle of functional programming and helps to ensure referential transparency.
@@ -1052,6 +1073,19 @@ Haskell is a statically typed language, meaning that the type of every expressio
 
 Haskell uses **type inference** to automatically deduce the types of expressions without requiring explicit type annotations. This is done using the Hindley-Milner type system, that will infer the least general type for each expression.
 
+A variable is defined using the `let` keyword:
+
+```haskell
+let x = 5
+```
+
+It is possible to use the `where` keyword to define local variables within a function:
+
+```haskell
+f y = x + y
+  where x = 10
+```
+
 To define a variable with an explicit type annotation, we use the `::` operator:
 
 ```haskell
@@ -1061,9 +1095,35 @@ x :: Int
 Haskell has several built-in types, including:
 
 - `Integer`: Represents arbitrary-precision integers.
+- `Int`: Represents fixed-precision integers.
+- `Float`: Represents floating-point numbers.
+- `Rational`: Represents rational numbers as fractions (`%`).
 - `Char`: Represents a single Unicode character.
 - `[a]`: Represents a list of elements of type `a`.
 - `(a, b)`: Represents a tuple containing two elements of types `a` and `b`.
+
+#### Type Class
+
+Type classes in Haskell are a way to define a set of functions that can operate on different types. They provide a form of polymorphism, allowing functions to work with any type that implements the required interface.
+
+We can define a type class using the `class` keyword:
+
+```haskell
+class Eq a where
+  (==) :: a -> a -> Bool
+  (/=) :: a -> a -> Bool
+```
+
+The type of `==` is `(==) :: (Eq a) => a -> a -> Bool`, meaning that it works for any type `a` that is an instance of the `Eq` type class.
+
+To create an instance of a type class for a specific type, we use the `instance` keyword:
+
+```haskell
+instance Eq Bool where
+  True  == True  = True
+  False == False = True
+  _     == _     = False
+```
 
 #### User-Defined Types
 
@@ -1216,3 +1276,156 @@ identity x = x
 The `identity` function takes a value of any type `a` and returns a value of the same type.
 
 > This is similar to generics in languages like Java or C#.
+
+#### Pattern Matching
+
+In Haskell, **pattern matching** is a powerful feature that allows to define functions by specifying patterns for their arguments. When a function is called, Haskell tries to match the provided arguments against the defined patterns in order from top to bottom.
+
+```haskell
+factorial :: Integer -> Integer
+factorial 0 = 1
+factorial n = n * factorial (n - 1)
+```
+
+Haskell also support **boolean guards** to define conditions for different cases in function definitions.
+
+```haskell
+absolute :: Int -> Int
+absolute x
+  | x < 0     = -x
+  | otherwise = x
+```
+
+It is possible to define a function using the `case` expression, which allows for pattern matching within the function body.
+
+```haskell
+describeList :: [a] -> String
+describeList xs = case xs of
+  []      -> "The list is empty."
+  [x]     -> "The list has one element."
+  (x:y:_) -> "The list has multiple elements."
+```
+
+#### Common Functions
+
+Haskell provides many built-in higher-order functions for working with lists, such as:
+
+- `map`: Applies a function to each element of a list and returns a new list of the results.
+
+  ```haskell
+  map :: (a -> b) -> [a] -> [b]
+  map f [] = []
+  map f (x:xs) = f x : map f xs
+
+  -- Example usage:
+  doubled :: [Int]
+  doubled = map (*2) [1, 2, 3]  -- Returns [2, 4, 6]
+  ```
+
+- `zip`: Combines two lists into a list of pairs.
+
+  ```haskell
+  zip :: [a] -> [b] -> [(a, b)]
+  zip [] _ = []
+  zip _ [] = []
+  zip (x:xs) (y:ys) = (x, y) : zip xs ys
+
+  -- Example usage:
+  paired :: [(Int, Char)]
+  paired = zip [1, 2, 3] ['a', 'b', 'c']  -- Returns [(1,'a'), (2,'b'), (3,'c')]
+  ```
+
+- **List Comprehensions**: A concise way to create lists based on existing lists.
+
+  ```haskell
+  squares :: [Int]
+  squares = [x^2 | x <- [1..10]]  -- Generates a list of squares from 1 to 10
+  ```
+
+- `any`: Checks if any element in a list satisfies a given predicate.
+
+  ```haskell
+  any :: (a -> Bool) -> [a] -> Bool
+  any _ [] = False
+  any p (x:xs) = p x || any p xs
+
+  -- Example usage:
+  hasEven :: Bool
+  hasEven = any even [1, 3, 5, 6]  -- Returns True
+  ```
+
+- `takeWhile`: Takes elements from a list while a predicate holds true.
+
+  ```haskell
+  takeWhile :: (a -> Bool) -> [a] -> [a]
+  takeWhile _ [] = []
+  takeWhile p (x:xs)
+    | p x       = x : takeWhile p xs
+    | otherwise = []
+
+  -- Example usage:
+  leadingEvens :: [Int]
+  leadingEvens = takeWhile even [2, 4, 6, 1, 8]  -- Returns [2, 4, 6]
+  ```
+
+- `foldr` and `foldl`: Reduces a list to a single value by recursively applying a binary function. Due to Haskell's lazy evaluation, `foldr` is more efficient as on `foldl` increase the heap usage.
+
+  ```haskell
+  foldr :: (a -> b -> b) -> b -> [a] -> b
+  foldr _ z []     = z
+  foldr f z (x:xs) = f x (foldr f z xs)
+
+  -- Example usage:
+  sumList :: Int
+  sumList = foldr (+) 0 [1, 2, 3, 4]  -- Returns 10
+  ```
+
+### Infinite Computations
+
+Haskell's call-by-need evaluation allows for the creation and manipulation of **infinite data structures**. Since values are only computed when needed, we can define lists that are theoretically infinite.
+
+```haskell
+ones :: [Int]
+ones = 1 : ones  -- An infinite list of 1
+
+-- alternative notation
+ones = [1..]
+
+numFrom n = n : numFrom (n+1) -- An infinite list of natural numbers starting from n
+squares = map (^2) (numFrom 1) -- An infinite list of squares of natural numbers
+```
+
+We can work with infinite lists using functions like `take`, which retrieves a finite number of elements from the beginning of the list.
+
+```haskell
+firstFiveOnes :: [Int]
+firstFiveOnes = take 5 ones  -- Returns [1, 1, 1, 1, 1]
+```
+
+### Conditional Expressions
+
+Haskell uses the `if <c> then <t> else <e>` construct for conditional expressions. The syntax is as follows:
+
+```haskell
+if condition then trueExpression else falseExpression
+```
+
+An example of implementation using functions would be:
+
+```haskell
+
+if :: Bool -> a -> a -> a
+if True x _ = x
+if False _ y = y
+```
+
+### Error
+
+Haskell represent errors using **bottom type** (denoted as `⊥`), which is defined as `bot = bot`. The bottom type represents non-terminating computations.
+
+Errors can be raised using the `error` function:
+
+```haskell
+error :: String -> a
+error "An error occurred"
+```
