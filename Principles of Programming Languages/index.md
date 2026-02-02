@@ -1073,19 +1073,6 @@ Haskell is a statically typed language, meaning that the type of every expressio
 
 Haskell uses **type inference** to automatically deduce the types of expressions without requiring explicit type annotations. This is done using the Hindley-Milner type system, that will infer the least general type for each expression.
 
-A variable is defined using the `let` keyword:
-
-```haskell
-let x = 5
-```
-
-It is possible to use the `where` keyword to define local variables within a function:
-
-```haskell
-f y = x + y
-  where x = 10
-```
-
 To define a variable with an explicit type annotation, we use the `::` operator:
 
 ```haskell
@@ -1124,6 +1111,80 @@ instance Eq Bool where
   False == False = True
   _     == _     = False
 ```
+
+To enforce a specific type class constraint on a function, we include it in the type signature:
+
+```haskell
+areEqual :: (Eq a) => a -> a -> Bool
+areEqual x y = x == y
+```
+
+This can be extended to multiple constraints:
+
+```haskell
+showAndEq :: (Show a, Eq a) => a -> a -> String
+showAndEq x y = "Are they equal? " ++ show (x == y)
+```
+
+##### Eq Type Class
+
+The `Eq` type class is used for types that support equality testing. It defines two primary methods: `(==)` for equality and `(/=)` for inequality.
+
+```haskell
+class Eq a where
+  (==) :: a -> a -> Bool
+  (/=) :: a -> a -> Bool
+```
+
+##### Ord Type Class
+
+The `Ord` type class is used for types that have an ordering. It defines methods for comparison, such as `<`, `<=`, `>`, and `>=`.
+
+```haskell
+class Eq a => Ord a where
+  compare :: a -> a -> Ordering
+  (<)     :: a -> a -> Bool
+  (<=)    :: a -> a -> Bool
+  (>)     :: a -> a -> Bool
+  (>=)    :: a -> a -> Bool
+```
+
+##### Foldable Type Class
+
+The `Foldable` type class is used for data structures that can be folded to a summary value. It defines methods like `foldr` and `foldl`.
+
+```haskell
+class Foldable t where
+  foldr :: (a -> b -> b) -> b -> t a -> b
+  foldl :: (b -> a -> b) -> b -> t a -> b
+```
+
+##### Functor Type Class
+
+The `Functor` type class is used for types that can be mapped over. It defines the `fmap` method.
+
+```haskell
+class Functor f where
+  fmap :: (a -> b) -> f a -> f b
+```
+
+Functor should satisfy the following laws:
+
+1. **Identity Law**: `fmap id = id`
+2. **Homomorphism**: `fmap (f . g) = fmap f . fmap g`
+
+###### Applicative Type Class
+
+The `Applicative` type class is used for types that support function application within a context. It defines the `<*>` operator and the `pure` function.
+
+```haskell
+class Functor f => Applicative f where
+  pure :: a -> f a
+  (<*>) :: f (a -> b) -> f a -> f b
+```
+
+- `pure` takes a value and puts it into a context.
+- `<*>` applies a function wrapped in a context to a value wrapped in a context.
 
 #### User-Defined Types
 
@@ -1200,6 +1261,35 @@ Type aliases can be created using the `type` keyword, allowing for more readable
 type String = [Char]
 ```
 
+#### Data Structures
+
+Haskell provides several built-in, immutable, data structures, including:
+
+- **Arrays**: Fixed-size collections of elements of the same type, defined in the `Data.Array` module.
+  - To create an array, we can use the `listArray` function, which takes a tuple representing the bounds of the array's indexes and a list of elements.
+  - To update an element in an array, we can use the `//` operator, which creates a new array with the specified updates.
+  - To access an element in an array, we can use the `!` operator.
+
+  ```haskell
+  import Data.Array
+  arr = let m = listArray (0, 4) [10, 20, 30, 40, 50]
+            n = arr // [(2, 99)]  -- Update index 2 to 99
+        in (m ! 2, n ! 2)
+  ```
+
+- `Maps`: Key-value pairs, defined in the `Data.Map` module.
+  - To create a map, we can use the `fromList` function to convert a list of key-value pairs into a map.
+  - To insert a new key-value pair into an existing map, we can use the `insert` function.
+  - To retrieve a value associated with a key, we can use the `!` operator.
+
+  ```haskell
+  import qualified Data.Map as Map
+
+  myMap = let m = fromList [("one", 1), ("two", 2), ("three", 3)]
+              n = insert "four" 4 m
+          in (m ! "two", n ! "four")
+  ```
+
 ### Function
 
 Haskell functions are **first-class citizens**, meaning they can be passed as arguments, returned from other functions, and assigned to variables.
@@ -1216,6 +1306,34 @@ A function is called by simply providing its arguments:
 ```haskell
 result :: Int
 result = add1 5  -- result will be 6
+```
+
+The function `add1` can also be defined using **point-free style**, where the function is defined without explicitly mentioning its arguments.
+
+```haskell
+add1 :: Int -> Int
+add1 = (+ 1)
+```
+
+#### Define variables
+
+To define a variable in Haskell, we use the `let` or `where` keywords.
+
+The `let` keyword allows us to define local variables within an expression:
+
+```haskell
+square :: Int -> Int
+square x = 
+  let y = x * x 
+  in y
+```
+
+The `where` keyword allows us to define local variables at the end of a function definition that will be resolved as substitutions in the function body:
+
+```haskell
+square :: Int -> Int
+square x = y
+  where y = x * x
 ```
 
 #### Infix Operators
@@ -1238,6 +1356,27 @@ Lambda functions are defined using the `\` symbol followed by the parameters, an
 
 ```haskell
 \x y -> x + y + 1
+```
+
+#### Composition
+
+Function composition is achieved using the `(.)` operator, which allows combining two functions into a new function.
+
+```haskell
+(.) :: (b -> c) -> (a -> b) -> a -> c
+(.) f g x = f (g x)
+
+-- Example usage:
+increment :: Int -> Int
+increment = (+1)
+double :: Int -> Int
+double = (*2)
+
+incrementThenDouble :: Int -> Int
+incrementThenDouble = double . increment
+
+result :: Int
+result = incrementThenDouble 3  -- result will be 8
 ```
 
 #### Currying
@@ -1368,16 +1507,30 @@ Haskell provides many built-in higher-order functions for working with lists, su
   leadingEvens = takeWhile even [2, 4, 6, 1, 8]  -- Returns [2, 4, 6]
   ```
 
-- `foldr` and `foldl`: Reduces a list to a single value by recursively applying a binary function. Due to Haskell's lazy evaluation, `foldr` is more efficient as on `foldl` increase the heap usage.
+- `foldr` and `foldl`: Reduces a list to a single value by recursively applying a binary function. Due to Haskell's lazy evaluation, `foldr` is more efficient as `foldl` increase the heap usage. `foldr` is better suited for operations on potentially infinite lists.
 
   ```haskell
   foldr :: (a -> b -> b) -> b -> [a] -> b
   foldr _ z []     = z
   foldr f z (x:xs) = f x (foldr f z xs)
+  foldl _ z []     = z
+  foldl f z (x:xs) = foldl f (f z x) xs
 
   -- Example usage:
   sumList :: Int
   sumList = foldr (+) 0 [1, 2, 3, 4]  -- Returns 10
+  ```
+
+- `concat`: Concatenates a list of lists into a single list.
+
+  ```haskell
+  concat :: [[a]] -> [a]
+  concat [] = []
+  concat (xs:xss) = xs ++ concat xss
+
+  -- Example usage:
+  combined :: [Int]
+  combined = concat [[1, 2], [3, 4], [5]]  -- Returns [1, 2, 3, 4, 5]
   ```
 
 ### Infinite Computations
@@ -1419,6 +1572,60 @@ if True x _ = x
 if False _ y = y
 ```
 
+### Input/Output
+
+Haskell handles input and output operations using the `IO` monad.
+
+The `IO` type encapsulates side-effecting computations, allowing Haskell to maintain its purity while still interacting with the outside world.
+
+```haskell
+main :: IO ()
+main = do
+  putStrLn "Hello, World!"
+```
+
+#### Basic I/O Operations
+
+- `putStrLn`: Outputs a string followed by a newline to the standard output.
+
+  ```haskell
+  putStrLn :: String -> IO ()
+
+  putStrLn "Hello, World!"
+  ```
+
+- `getLine`: Reads a line of input from the standard input.
+
+  ```haskell
+  getLine :: IO String
+
+  name <- getLine
+  ```
+
+- `getChar`: Reads a single character from the standard input.
+
+  ```haskell
+  getChar :: IO Char
+
+  char <- getChar
+  ```
+
+- `print`: Outputs a value to the standard output, converting it to a string using the `Show` type class.
+
+  ```haskell
+  print :: Show a => a -> IO ()
+
+  print 42
+  ```
+
+- `openFile`: Opens a file and returns a handle for reading or writing.
+
+  ```haskell
+  openFile :: FilePath -> IOMode -> IO Handle
+
+  handle <- openFile "example.txt" ReadMode
+  ```
+
 ### Error
 
 Haskell represent errors using **bottom type** (denoted as `⊥`), which is defined as `bot = bot`. The bottom type represents non-terminating computations.
@@ -1428,4 +1635,31 @@ Errors can be raised using the `error` function:
 ```haskell
 error :: String -> a
 error "An error occurred"
+```
+
+#### Maybe Type
+
+The `Maybe` type is used to represent computations that may fail or return no value. It has two constructors: `Just a`, which represents a successful computation with a value of type `a`, and `Nothing`, which represents a failure or absence of value.
+
+```haskell
+data Maybe a = Nothing | Just a
+```
+
+#### Exception Handling
+
+To handle exceptions, Haskell provides the `Control.Exception` module.
+
+This module introduce the `handle` function, which allows us to catch and handle exceptions in `IO` computations.
+
+```haskell
+import Control.Exception
+main :: IO ()
+main = handle handler (do
+    putStrLn "Enter a number:"
+    input <- getLine
+    let number = read input :: Int
+    print (10 `div` number))
+  where
+    handler :: SomeException -> IO ()
+    handler ex = putStrLn $ "Caught an exception: " ++ show ex
 ```
