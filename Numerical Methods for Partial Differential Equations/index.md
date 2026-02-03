@@ -520,7 +520,13 @@ The Galerkin approximation is also called **semidiscretization of the weak parab
 To get to the **fully discretized** problem, the $\theta$-method must be applied.
 
 ::: {.callout .callout-definition title="$\Theta$-method"}
-Let $y^n = y(t^n)$ then $\frac{\partial y}{\partial t}$ in an ODE can be approximated as follows:
+Let $y^n = y(t^n)$ in 
+
+$$
+\frac{\partial y}{\partial t}(t) = f(t, y(t))
+$$
+
+the, it can be approximated like 
 
 $$
 \frac{y^{n+1} - y^{n}}{\Delta t} = \theta f(t^{n+1}, y^{n+1}) + (1 - \theta)f(t^n, y^n) \qquad 0 \le \theta \le 1
@@ -648,7 +654,7 @@ $$
 $$
 :::
 
-While the backward Euler is unconditionally stable, in general, this property depends on the chosen value for $\theta$, in particular, the $\theta$-method is unconditionally stable only for $\theta \ge 0$, otherwise we must have that $\Delta t$ is small enough:
+While the backward Euler is unconditionally stable, in general, this property depends on the chosen value for $\theta$, in particular, the $\theta$-method is unconditionally stable only for $\theta \ge \frac{1}{2}$, otherwise we must have that $\Delta t$ is small enough:
 
 $$
 \Delta t \lt \frac{2}{(1 - 2\theta) \lambda_{max}(A)} \simeq \frac{2}{1 - 2\theta} h^2
@@ -1477,8 +1483,8 @@ The order of convergense is _always_ the degree of the polynomial associated wit
 Taylor-Hood elements sets are defined as follows:
 
 $$
-V_h = \left\{ \vec{v}_h \in \left[\mathcal{C}^0(\Omega)\right]^d : \vec{v}_h|_K \in \left( \mathbb{P}^{k+1} \right)^d, \vec{v}_h|_{\Gamma_D} = 0, \forall K \in \mathscr{T}_h \right\} \\
-Q_h = \left\{ q_h \in \begin{cases} L^2_0(\Omega) & \Gamma_D = \empty \\ L^2(\Omega) & \Gamma_D = \empty \end{cases} : q_h|_k \in \mathbb{P}^{K}, \forall K \in \mathscr{T}_h \right\}
+V_h = \left\{ \vec{v}_h \in \left[\mathcal{C}^0(\Omega)\right]^d : \vec{v}_h|_K \in \left[ \mathbb{P}^{k+1}(K) \right]^d, \vec{v}_h|_{\Gamma_D} = 0, \forall K \in \mathscr{T}_h \right\} \\
+Q_h = \left\{ q_h \in \begin{cases} L^2_0(\Omega) & \Gamma_D = \empty \\ L^2(\Omega) & \Gamma_D = \empty \end{cases} : q_h|_K \in \mathbb{P}^{k}(K), \forall K \in \mathscr{T}_h \right\}
 $$
 
 ## Navier-Stokes equation
@@ -1544,7 +1550,7 @@ We can see that we got to a generalized Stokes problem with an extra term:
 $$
 \begin{cases}
   a(\vec{u}_h^{n+1}, \vec{v}_h) + b(\vec{v}_h, \vec{p}_h^{n+1}) + \int_\Omega (\vec{u}_h^{n+1} \cdot \nabla) u_h^{n+1} = \vec{F}(\vec{v}_h) \\
-  \int_\Omega \operatorname(div) \vec{u}_h^{n+1} q_h = 0
+  \int_\Omega \operatorname{div}(\vec{u}_h^{n+1}) q_h = 0
 \end{cases}
 $$
 
