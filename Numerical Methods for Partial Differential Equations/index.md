@@ -50,7 +50,7 @@ $$
 
 where $g : \Gamma_D \to \mathbb{R}$ is called **Dirichlet data** and $q : \Gamma_N \to \mathbb{R}$ is called **Neumann data**. $\frac{\partial}{\partial n}$ denotes the **normal derivative** (see [appendix](#normal-derivative)).
 
-$\Gamma_D$ is called **Dirichlet boundary**, $\Gamma_D$ is called **Neumann boundary**. They form a partition of $\partial\Omega$:
+$\Gamma_D$ is called **Dirichlet boundary**, $\Gamma_N$ is called **Neumann boundary**. They form a partition of $\partial\Omega$:
 
 $$
 \begin{cases}
@@ -107,7 +107,7 @@ In order to get to the **weak problem** we have to multiply both sides of the PD
 $$
 \begin{align}
   \int_\Omega -(\mu u')' v + b u' v + \sigma u v &= \int_\Omega f v \\
-  \int_\Omega \left( (\mu u')' v' + b u' v + \sigma u v \right) - \left[ \mu u' v \right]_{\partial\Gamma} &=\int_\Omega f v
+  \int_\Omega \left( \mu u' v' + b u' v + \sigma u v \right) - \left[ \mu u' v \right]_{\partial\Gamma} &=\int_\Omega f v
 \end{align}
 $$
 
@@ -124,7 +124,7 @@ The term in the square brackets has to be evaluated immediately: it is $0$ on th
 The weak problem is then written as follows:
 
 $$
-\text{Find $u \in V$ s.t. } \underbrace{\int_\Omega (\mu u' v' + b u' v + \sigma u v) dx}_{a(u, v)} = \underbrace{\int_\Omega f v \, dx+ \sum \gamma v(x_D)}_{F(v)} \qquad \forall v \in V 
+\text{Find $u \in V$ s.t. } \underbrace{\int_\Omega (\mu u' v' + b u' v + \sigma u v) dx}_{a(u, v)} = \underbrace{\int_\Omega f v \, dx+ \sum_{x_D \in \Gamma_D} \gamma v(x_D)}_{F(v)} \qquad \forall v \in V 
 $$
 
 that is equivalent to
@@ -193,7 +193,7 @@ $$
 
 The error in the discretization is bounded: $\|u - u_h\| \le C \cdot h$.
 
-_To be continued_
+<!-- _To be continued_ or idk -->
 
 ## Multidimensional elliptic PDEs
 
@@ -253,13 +253,13 @@ V' = \left\{ F : V \to \mathbb{R} : F \text{ is linear, bounded and } \|F\|_{V'}
 $$
 
 ::: {.callout .callout-property title="Corollary"}
-If the assumptions of the Lax-Milgram lemma are satosfied, then the Galerkin problem has a unique solution and is bounded independently of $h$ (the solution is **stable**):
+If the assumptions of the Lax-Milgram lemma are satisfied, then the Galerkin problem has a unique solution and is bounded independently of $h$ (the solution is **stable**):
 
 $$
 \|u_h\| \lt \frac{1}{\alpha}\|F\|_{V'}
 $$
 
-Moreover, the resulting linear alegraic system will be nonsingular.
+Moreover, the resulting linear algebraic system will be nonsingular.
 :::
 
 We will not proove the Lax-Milgram lemma but we will only see the conditions a specific problem must satisfy to satisfy the assumptions of the lemma.
@@ -286,13 +286,13 @@ The Lax-Milgram lemma requires that
 For what concerns point (1), we take for granted that $V$ is an Hilbert space. We have to choose one of two norms to use in the proofs. We can either choose the **complete norm**
 
 $$
-\|v\| = \sqrt{\|v\|^2_{L^2}(0, 1) + \|v'\|_{L^2(0, 1)}}
+\|v\| = \sqrt{\|v\|^2_{L^2}(0, 1) + \|v'\|^2_{L^2(0, 1)}}
 $$
 
 or the **reduced norm**
 
 $$
-|v| = \sqrt{\|v'\|_{L^2(0, 1)}}
+|v| = \sqrt{\|v'\|^2_{L^2(0, 1)}}
 $$
 
 The reduced norm can be used only with a non-empty Dirichlet boundary. For this proof, we chose to use the complete norm.
@@ -399,7 +399,7 @@ $$
 
 This means that the solution is bounded independently on the value of $h$ (**stability** property).
 
-_TODO: NDim generalization_
+<!-- _TODO: NDim generalization_ N,ID'tTIW -->
 
 ## Non homogeneous elliptic PDEs
 
@@ -1255,9 +1255,231 @@ $$
 
 In either case we have coercivity, in the first case we can also say that $\alpha = \min(\sigma, \nu)$, in he other case, it is much more comples so we ignore that.
 
-_TBC_ 
-<!-- 1:47:00 dic 2 -->
+Since
+
+$$
+|b(\vec{v}, q)| = \left| -\int_\Omega q \operatorname{div} \vec{v} \right| \le \|q\|_{L^2(\Omega)} \|\operatorname{div}\vec{v}\|_{L^2(\Omega)} \le \|q\|_{L^2(\Omega)} \|\vec{v}\|_V
+$$
+
+then we have continuity of $b$ with constant $\delta = 1$.
+
+By divinding both sides of the LBB condition by $\|\vec{v}\|_V \|q\|_Q$ we get that what that condition is asking is that the velocity space should be larger enough w.r.t. the pressure space. The largest the space of velocicies, the _more probable_ it is to find a suitable $\beta$ coefficient.
+
+The LBB condition can be rewritten as the **inf sup condition**:
+
+$$
+\exists \beta \gt 0 : \inf_{q_h \in Q_h, q_h \ne 0} \sum_{\vec{v_h} \in V_h, \vec{v_h} \ne 0} \frac{b(\vec{v_h}, q_h)}{\|\vec{v}\|_V \|q_h\|_Q}
+$$
+
+We will not go into details about the LBB condition but if it is satisfied, along with all the other conditions listed here, then $S$ is non-singular, therefore the problem is well posed.
 :::
+:::
+
+::: {.callout .callout-example title="Valid triangulations"}
+Assume we are using triangulation to generate the mesh. Let $\mathbb{P}^n$ be the space of polynomials of degree $n$ and let the velocity space and the pressure space be $\mathbb{P}^r$ and $\mathbb{P}^s$ respectively. If we take $r = s$ then we will never get any LBBness. If we take the Taylor-Hood elements (i.e. $r \ge 2, s = r - 1$) then we are guaranteed to always get LBBness. $s = 0, r = 1$ is not LBB. $r = 2, s = 0$ is good.
+:::
+
+
+::: {.callout .callout-theorem title="Well-posedness of the problem"}
+
+If $S$ is non-singular, then LBB is satisfied.
+
+::: {.collapsible title="Proof"}
+The proof will consists in a series of proof for multiple equivalences, namely, we will proove that all of the following are equivalent.
+
+1. $S$ is non-singular.
+2. $R$ is non-singular.
+3. $\ker(B^T) = 0$.
+4. LBB is satisfied.
+
+**Proof that $(1) \iff (2)$**
+
+We remember that
+
+$$
+S = \begin{bmatrix}
+  A & B^T \\ B & 0
+\end{bmatrix}
+$$
+
+Since $a$ is coercive, then $A$ is non-singular therefore it can be inverted:
+
+$$
+\begin{cases}
+  \vec{u} = A^{-1} (\vec{F} - B^T \vec{p}) \\
+  B(A^{-1} (\vec{F} - B^T \vec{p})) = \vec{G}
+\end{cases} \\
+$$
+
+From the second equation we obtain the pressure system:
+
+$$
+\underbrace{BA^{-1}B^T}_{R} \vec{p} = \underbrace{BA^{-1} \vec{F} - \vec{G}}_{\vec{T}}
+$$
+
+Thus, if $R$ is invertible, then we have a unique soluton $\vec{p}$ therefore we also have a unique $\vec{u}$. Hence $S$ is non singular if and only if $R$ is.
+
+**Proof that $(2) \iff (3)$**.
+
+By applying linear algebra properties, we get that
+
+$$
+\vec{p} \in \ker(R) \iff R \vec{p} = 0 \iff (BA^{-1}B^T) \vec{p} = 0 \iff \left( (BA^{-1}B^T) \vec{p}, \vec{q} \right) = 0 \ \forall \vec{q} \iff (A^{-1}B^T \vec{p}, B^T \vec{q}) = 0 \ \forall \vec{q}
+$$
+
+therefore
+
+$$
+R \vec{p} = 0 \implies \vec{p} = 0
+$$
+
+is equivalent to
+
+$$
+(A^{-1}B^T \vec{p}, B^T \vec{q}) = 0 \ \forall \vec{q} \implies \vec{p} = 0
+$$
+
+If we take $\vec{q} = \vec{p}$ then the previous implication is equivalent to
+
+$$
+(A^{-1} \underbrace{B^T \vec{p}}_{\vec{w}}, \underbrace{B^T \vec{p}}_{\vec{w}}) = 0 \implies \vec{p} = 0 \\
+(A^{-1} \vec{w}, \vec{w}) = 0 \implies \vec{p} = 0
+$$
+
+Since $A$ is nonsingular, then
+
+$$
+(A^{-1} \vec{w}, {w}) = 0 \implies \vec{w} = 0
+$$
+
+Since $\vec{w} = 0$ then $B^T \vec{p} = 0$ therefore $\vec{p} \in \ker(B^T)$ hence $\vec{p} = 0 \iff \ker(B^T) = 0 \iff \ker(R) = 0$.
+
+**Proof that $(3) \iff (4)$**
+
+This is aproof by contradiction.
+
+Assume that $\ker(B^T) \ne \{0\}$, then
+
+$$
+\exists \vec{p^*} \in \mathbb{R}^{M_h}, \vec{p^*} \ne 0 : B^T \vec{P^*} = 0
+$$
+
+In such a case, let $\vec{p^*} = [p^*_j]_j$, then
+
+$$
+\exists j : p^*_j \ne 0
+$$
+
+If we discretize, we can write that
+
+$$
+\vec{p^*}_h(\vec{x}) = \sum_m p_m^* \psi_m(\vec{x}) \in Q_h
+$$
+
+and we can observe that
+
+$$
+(\dagger) \qquad \qquad B^T \vec{p^*} = 0 \iff b(\vec{v}_h, p_h^*) = 0 \ \forall \vec{v}_h \in V_h
+$$
+
+We will now prove that $(\dagger)$ is equivalent to the violation of LBB.
+
+Let
+
+$$
+(a) \qquad \qquad \frac{b(\vec{v}_h, q_h)}{\|\vec{v}_h\|_V \|q_h\|_Q} \ge \beta
+$$
+
+We can rewrite the LBB condition as
+
+$$
+\forall q_h \exists \vec{v}_h : (a)
+$$
+
+If in $(a)$ we take $\vec{v}_h \gets -\vec{v}_h$ then we get that
+
+$$
+(b) \qquad \qquad \frac{b(\vec{v_h}, q_h)}{\|\vec{v_h}\|_V \|q_h\|_Q} \le -\beta
+$$
+
+We also observe that we can rewrite the LBB condition as
+
+$$
+\forall q_h \exists \vec{v}_h : (a) \lor (b)
+$$
+
+therefore we can write the negated LBB condition as
+
+$$
+\forall q_h \exists \vec{v}_h : (c)
+$$
+
+where $(c) = \lnot((a) \lor (b))$, namely
+
+$$
+(c) \qquad \qquad -\beta \lt \frac{b(\vec{v}_h, q_h)}{\|\vec{v}_h\|_V \|q_h\|_Q} \lt \beta
+$$
+
+If $(c)$ is true (LBB is not satisfied), then it must
+
+$$
+\exists \vec{v}_h \in V_h, q_h \in Q_h : b(\vec{v}_h, q_h) = 0
+$$
+
+therefore, $(\dagger)$ is also equivalent to the negation of the LBB condition.
+
+Since $(\dagger)$ is also equivalent to the initial assumption, that is, in turn, equivalent to the negation of $(3)$, it follows that $(3)$ is equivalent to the LBB condition (a.k.a. $(4)$). QED.
+:::
+:::
+
+In the previous proof, we saw that there are two equivalent ways to express the fact that LBB is not satisfied. We can either say that
+
+$$
+\exists p_h^* \in Q_h : \forall \vec{v}_h \in V_h b(\vec{v}_h, p_h^*) = 0
+$$
+
+or that
+
+$$
+\exists \vec{p}^* \ne 0 : B\vec{p}^* = 0
+$$
+
+If LBB is not satisfied, we lose uniqueness of the solution.
+
+If an admissible $\vec{p}^*$ exists, this means that there are infinite possible acceptable pressure solutions, shaped like
+
+$$
+\vec{p} + c \vec{p}^* \qquad \forall c \in \mathbb{R}
+$$
+
+$\vec{p}^*$ are called **spurious parasitic modes**.
+
+Since there are infinite pressure solutions, we also lose stability.
+
+### Convergence estimate for Taylor-Hood elements
+
+As stated before, the most general formula to determine Taylor-Hood elements is $\mathbb{P}^{k+1}$ for velocity and $\mathbb{P}^k$ for pressure with $k \ge 2$.
+
+Since Taylor-Hood elements are LBB, they allow for both stability and convergence.
+
+For Taylor-Hood elements, it holds that
+
+$$
+\exists C \in \mathbb{R} : \|\vec{u} - \vec{u}_h\|_V + \|p - p_h\|_Q \le C \cdot h^{k+1} \left( \|\vec{u}\|_{\left[H^{(k+2)}(\Omega)\right]^d} \|p\|_{H^{k+1}(\Omega)} \right)
+$$
+
+::: {.callout .callout-note title="Remember!"}
+$k+1$ is the degree of the polynomial associated with velocities.
+
+The order of convergense is _always_ the degree of the polynomial associated with velocities.
+:::
+
+Taylor-Hood elements sets are defined as follows:
+
+$$
+V_h = \left\{ \vec{v}_h \in \left[\mathcal{C}^0(\Omega)\right]^d : \vec{v}_h|_K \in \left( \mathbb{P}^{k+1} \right)^d, \vec{v}_h|_{\Gamma_D} = 0, \forall K \in \mathscr{T}_h \right\} \\
+Q_h = \left\{ q_h \in \begin{cases} L^2_0(\Omega) & \Gamma_D = \empty \\ L^2(\Omega) & \Gamma_D = \empty \end{cases} : q_h|_k \in \mathbb{P}^{K}, \forall K \in \mathscr{T}_h \right\}
+$$
 
 ## Navier-Stokes equation
 
@@ -1285,6 +1507,82 @@ If $R_e \lt \lt 1$, then, the nonlinear term is negligible compared to the other
 ::: {.callout .callout-note title="Reynolds number"}
 Basically, $R_e$ is a measurement of the complexity of the phenomenon we are analyzing. If $R_e$ is really high, the phenomenon is really complex and needs to be addressed by really complex models. $R_e$ is the _condition number_ of fluid equations.
 :::
+
+Navier-Stokes problems are an hybrid of Stokes problem and parabolic problem. We use theory from those two to solve Navier-Stokes problems without reinventing the wheel.
+
+::: {.callout .callout-example title="Backward-Euler time discretization of Navier-Stokes problems"}
+
+The application of the Backward-Euler method is equivalent to the application of the $\theta$-method with $\theta = 1$.
+
+The time-discretized Navier-Stokes problem looks like this (we omit boundary conditions in order to favour readability, they are unchanged)
+
+$$
+\begin{cases}
+  \frac{\vec{u}^{n+1} - \vec{u}^n}{\Delta t} - \mu \Delta \vec{u}^{n+1} + (\vec{u}^{n+1} \cdot \nabla) u^{n+1} + \Delta p^{n+1} = \vec{f}^{n+1} \\
+  \operatorname{div}\vec{u}^{n+1} = 0
+\end{cases}
+$$
+
+The space-discretization is now trivial:
+
+$$
+\begin{cases}
+  \int_\Omega \frac{(\vec{u}_h^{n+1} - \vec{u}_h^n) \vec{v}_h}{\Delta t} + \int_\Omega \mu \nabla \vec{u}^{n+1} \cdot \nabla \vec{v}_h + \int_\Omega (\vec{u}^{n+1} \cdot \nabla)\vec{u}^{n+1} \vec{v}_h - \int_\Omega p_h^{n+1} \operatorname{div}(\vec{v}_h) = \int_\Omega f^{n+1} \vec{v}_h + \int_{\Gamma_D} \mu \frac{\partial \vec{u}^{n+1}}{\partial n}\cdot \vec{v}_h \\
+  \int_\Omega \operatorname{div}(\vec{u}^{n+1}) q_h = 0
+\end{cases} \\
+\begin{cases}
+  \frac{1}{\Delta t} \int_\Omega \vec{u}_h^{n+1} \vec{v}_h + \int_\Omega \mu \nabla \vec{u}_h^{n+1} \cdot \nabla \vec{v}_h + \int_\Omega (\vec{u}^{n+1} \cdot \nabla)\vec{u}^{n+1} \vec{v}_h - \int_\Omega p_h^{n+1} \operatorname{div}(\vec{v}_h) = \int_\Omega f^{n+1} \vec{v}_h + \int_{\Gamma_D} \mu \frac{\partial \vec{u}^{n+1}}{\partial n}\cdot \vec{v}_h + \frac{1}{\Delta t} \int_\Omega \vec{u}_h^n \vec{v}_h \\
+  \int_\Omega \operatorname{div}(\vec{u}^{n+1}) q_h = 0
+\end{cases}
+$$
+
+Instead of Backward-Euler, we could also have used Crank-Nicolson without many changes. Forward-Euler cannot be used as it would decouple the two equations so there is no guarantee that the found solutions would also respect the pressure equation.
+:::
+
+We can see that we got to a generalized Stokes problem with an extra term:
+
+$$
+\begin{cases}
+  a(\vec{u}_h^{n+1}, \vec{v}_h) + b(\vec{v}_h, \vec{p}_h^{n+1}) + \int_\Omega (\vec{u}_h^{n+1} \cdot \nabla) u_h^{n+1} = \vec{F}(\vec{v}_h) \\
+  \int_\Omega \operatorname(div) \vec{u}_h^{n+1} q_h = 0
+\end{cases}
+$$
+
+Every "hybrid" can be written like
+
+$$
+\begin{bmatrix}
+  A + C(\vec{u}) & B^T \\ B & 0
+\end{bmatrix} \begin{bmatrix}
+  \vec{u} \\ \vec{p}
+\end{bmatrix} = \begin{bmatrix}
+  \vec{F} \\ \vec{G}
+\end{bmatrix}
+$$
+
+where $C$ is a nonlinear term dependent on $\vec{u}$ and $\vec{G}$ is a generalization of the $0$ to indicate that this also works for non-incompressible fluids.
+
+::: {.callout .callout-theorem title="Well-posedness of NS problem"}
+Under the conditions that makes the General Stokes problem well posed (including, but not limited to, LBB), the NS problem also have a unique solution and is unconditionally stable. Moreover, the following holds:
+
+$$
+\forall t^{n+1} \qquad \|\vec{u}^{n+1} - u_h^{n+1}\|_V + \|\vec{p}^{n+1} - \vec{p}_h^{n+1} \|_Q \le C(\Delta t + h^{k+1}) (\text{Suitable norms of $\vec{u}$ and $\vec{p}$})
+$$
+:::
+
+$\Delta t$ become squared in the case we use Crank-Nicolson.
+
+Since we have nonlinear terms, the system is a nonlinear one. We can linearize it to make it easily solvable.
+
+Instead of using $(\vec{u}^{n+1} \cdot \nabla) \vec{u}^{n+1}$ we can either use $(\vec{u}^n \cdot \nabla) \vec{u}^{n+1}$ or $(\vec{u}^{n+1} \cdot \nabla) \vec{u}^n$. Performing one of those linearization let us use $C(\vec{u}) \equiv C$, eliminating the dependence by $\vec{u}$ from the system matrix.
+
+In such a case, we can define a stability condition:
+
+$$
+\Delta t \le C \frac{h}{\max \|\vec{u}^n\|}
+$$
+
+As there is dependency from $h$, this means that stability is conditional. Convergence results are the same as before and does not change.
 
 # Appendix
 
