@@ -31,7 +31,7 @@ The PRAM model has the following characteristics:
 
 In a PRAM, all the processors executes the same instructions at the same time. For this reason cocurrent writes and/or reads to/from the same memory cell may happen.
 
-PRAM machines can be classified with respect to their ability to perform concurrent reads/writes the memory: reads/writes can be **exclusive** (all processors can concurrently read/write to/from _distinct_ memory cells) or **concurrent** (all processors can concurrently read/write to any memory cellm, even the same one).
+PRAM machines can be classified with respect to their ability to perform concurrent reads/writes the memory: reads/writes can be **exclusive** (all processors can concurrently read/write to/from _distinct_ memory cells) or **concurrent** (all processors can concurrently read/write to any memory cell, even the same one).
 
 While concurrent reads are trivial and are not an issue, what happens when two or more processors try to write something to the same memory cell? Three possible solutions:
 
@@ -40,7 +40,7 @@ While concurrent reads are trivial and are not an issue, what happens when two o
 - **Random CW**: only one randomly chosen processor is allowed to perform the write.
 
 ::: {.callout .callout-example title="Common CW machine"}
-While the _priority_ and _random_ CW machines are trivial to understand, _common_ CW machines may be not so a clarificatory example is provided.
+While the _priority_ and _random_ CW machines are trivial to understand, _common_ CW machines may be not, so a clarificatory example is provided.
 
 Assume you have a machine that has to evaluate the disjunction of a large number of formulae. The way the formulae are read from the input is not of our interest.
 
@@ -69,7 +69,7 @@ $$
 
 As said before, measuring the performance of an algorithm running on a PRAM machine is not trivial: the existence of multiple processors running in parallel makes everything harder. Moreover, not all processors may be running at the same time (this is not in contrast with the fact that each processors run the same instructions at the same time, this will be explained later in this document) so only a fractions of them are working while the others are just idling.
 
-While explaining all the performance metrics involved in the process of measuring, "to solve a problem of input size $n$ will be used as a synonim to "running an algorithm whose input can be expressed as a function of $n$".
+While explaining all the performance metrics involved in the process of measuring, _"to solve a problem of input size $n$"_ will be used as a synonim to _"running an algorithm whose input can be expressed as a function of $n$"_.
 
 Let $T^*(n)$ be the time it takes to solve a problem of input size $n$ on a single processor using the best sequential algorithm currently available, $T_p(n)$ the time it takes to solve the same problem using $p$ processors and $T_\infty(n)$ the time it takes to solve the same problem with any number of processors (read that as "as many processors that can be used").
 
@@ -149,6 +149,8 @@ $$
 
 Note that, according to Gustafson, the speedup depends only on the number of processors so it is always a good idea to increase processors when the size of the problem increses (linear speedup, Gustafson is optimistic).
 
+Gustafson model is also called **time-fixed**, meaning that, if we add both processors and new data to be processed, the total execution time remains unchanged. In contrast, Amdahl model is called **fixed-serial-time** because the serial part of the program is fixed and does not change.
+
 ::: {.callout .callout-definition title="Strong scaling"}
 **Strong scaling** is the ability of a system to improve performance of a program increasing the number of processors while keeping the problem constant.
 
@@ -172,6 +174,8 @@ As we will see in the following sections, the three key point to make an applica
 1. have enough data to feed into the parallel processors;
 2. group similar elaborations with SIMD;
 3. create more threads than the ones that could be supported by the hardware to mask latencies.
+
+!["_I paid for the whole CPU, I'm gonna use the whole CPU_" - u/HoodedDeath3600 from [reddit](https://www.reddit.com/r/pcmemes/comments/q3610j/i_paid_for_the_whole_cpu_im_gonna_use_the_whole/)](assets/full-cpu.png)
 
 ## Processor architecture
 
@@ -422,12 +426,13 @@ Coalesced memory access happens when the threads in a warp access memory at an o
 
 When multiple threads access caches that may or may not be shared and backed by a bigger and slower memory, it is important to ensure coherence and consistency between all the threads so that no undefined behaviour happens.
 
-**Memory coherence** ensures that a system that reads and writes to a shared cache will behave just the same as if there were no caches. When multiple accesses happens at the same time,
-the result of said accesses must be coherent between all the processors (i.e. if multiple processors read at the same time, they will read the same value and if multiple processors write at the same time, all the processors must agree on what will be actually written).
+**Memory coherence** ensures that a system that reads and writes to a shared cache will behave just the same as if there were no caches (basically, it ensures that all the processors see the ame values when reading from the same cell).
+
+When multiple accesses happens at the same time, the result of said accesses must be coherent between all the processors (i.e. if multiple processors read at the same time, they will read the same value and if multiple processors write at the same time, all the processors must agree on what will be actually written).
 
 Coherence is required because using caches, data is duplicates, so there has to be a way to synchronize changes.
 
-**Memory consistency** defines _when_ the memory writes from one processor will be propagated to all the other processor.
+**Memory consistency** defines _when_ the memory writes from one processor will be propagated to all the other processor or, better, when the changes to the memory applied by one processor are viewed by all the other processors.
 
 Basically, memory consistency defines what a compiler can or cannot do and what precautions the programmer has to take in order to produce functioning programs. It also depends on the hardware configuration.
 
@@ -442,17 +447,15 @@ There are four different types of memory operation orderings:
 - $R_x \to W_y$: a read from $x$ must commit before a subsequent write to $y$
 - $W_x \to W_y$: a write to $x$ must commit before a subsequent write to $y$.
 
-A **sequentially consistent** memory system maintain all the aforementioned four memory operation orderings. In practice, a sequentially consistent system will choose the next instruction to run from a thread at random. Threads will need manual synchronization so that only acceptable code path are followed.
+There are three main consistency models that defines how and when changes to memory by one processor are propagated to all the others.
 
-The sequential consistency is very time consuming, is there a way to relax ordering requirements to allow parallel accesses and save on time? We can place a write buffer between the processor and the memory, violating the $W_x \to R_y$ rule to obtain the **total store ordering** memory system.
+The **sequentially consistent** model consists in enforcing all the four orderings as they appear in the program: when one thread writes, the changes must be propagated to every other thread before anything else happen (basically the entire memory is a big shared area).
 
-In general, we can relax memory operation ordering until it is not possible to keep computation consistent: 
-
-With TSO memory system, a processor can read a variable before the value it has written on another variable is propagated to all the other processors (can move own reads before own writes).
-
-<!-- Processor consistency ??? -->
+This model is really strong but also strongly limits the performances. We can relax the $W_x \to R_y$ rule to obtain the **total store ordering** model. Basically, we place a write buffer between the memory and the processor, allowing it to read a variable before its own changes to another variables are propagated (we move reads before writes).
 
 With TSO, writes are _not_ reordered.
+
+In general, we can relax memory operation ordering until it is not possible to keep computation consistent.
 
 Consistency is not related to the presence of caches: even with multiple processors accessing the same shared memory, it must be guaranteed.
 

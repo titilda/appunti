@@ -2510,6 +2510,7 @@ We found only one solution since the other formulation was unfeasible, amd we co
 Another possible way to derive the integer solution from the relaxation, is through the **Cutting planes method**.
 
 The idea is based upon this theorem:
+
 :::{.callout .callout-definition title="Ideal formulation"}
 For any feasible region X of an ILP, there exists an ideal formulation, but the number of constraints can be very large with respect to the size of the original formulation
 :::
