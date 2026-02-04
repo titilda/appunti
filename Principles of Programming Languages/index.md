@@ -2019,6 +2019,12 @@ X = 10         % Bind X to 10
 Y = X + 5      % Bind Y to 15
 ```
 
+#### Erlang Data Types
+
+Erlang provides several built-in data types:
+
+- **Numbers**: Integers and floating-point numbers.
+
 #### Atoms
 
 Atoms are constants whose value is their own name. They start with a lowercase letter and can include letters, digits, and underscores. They can also starts with `'` and end with `'` to include special characters.
@@ -2029,13 +2035,6 @@ error = 'Error occurred'  % 'Error occurred' is an atom
 ```
 
 They are similar to symbols, are stored in a global table, making comparisons extremely fast, and they are not garbage collected.
-
-#### Erlang Data Types
-
-Erlang provides several built-in data types:
-
-- **Numbers**: Integers and floating-point numbers.
-- **Atoms**: Constants whose value is their own name.
 
 ##### Erlang Tuples
 
@@ -2230,3 +2229,159 @@ case lists:member(a, X) of
   true -> "Contains a";
   false -> "Does not contain a"
 end.
+```
+
+#### Looping
+
+Erlang implements looping using **recursion**. A common pattern is to define a helper function that takes additional parameters to maintain state.
+
+```erlang
+countdown(0) ->
+  ok;
+countdown(N) when N > 0 ->
+  io:format("~p~n", [N]),
+  countdown(N - 1).
+```
+
+### Concurrency
+
+In erlang everything is an actor (independent unit of computation). Each actor has its own state and communicates with other actors through message passing. This model allows for building highly concurrent and distributed systems.
+
+The order of the messages is not guaranteed.
+
+> There are three types of concurrency:
+>
+> - Actor: Each actor is an independent unit of computation that can send and receive messages. Actors do not share state and communicate exclusively through message passing.
+> - Shared Memory: In this model, multiple processes share access to a common memory space. Synchronization mechanisms (like locks or semaphores) are used to manage concurrent access to shared data.
+> - CSP (Communicating Sequential Processes): This model emphasizes communication between processes through channels. Processes communicate by sending and receiving messages over these channels.
+
+The concurrency is done with three main primitives:
+
+- `spawn(Mod, Func, Args)`: Creates a new process to run a specified function.
+- `!` (send operator): Sends a message to a process based on its process identifier (PID). This operation is async.
+- `receive ... end.`: Take the first message in the mailbox that matches a pattern. If no message matches, the process will block until a matching message arrives.
+
+```erlang
+% Define a simple process that receives messages and prints them
+echo() ->
+  receive
+    {From, Message} ->
+      io:format("Received: ~p~n", [Message]),
+      From ! {self(), "Message received!"},  % Send a response back to the sender
+      echo()  % Continue to wait for more messages
+  end.
+
+% Start the echo process and send it a message
+start() ->
+  Pid = spawn(fun echo/0),  % Spawn a new process running the echo function
+  Pid ! {self(), "Hello, Erlang!"}.   % Send a message to the echo process
+```
+
+`self()` returns the PID of the current process, allowing it to send messages back to itself or other processes.
+
+#### Registered Processes
+
+Erlang allows processes to be registered with a name, making it easier to send messages without needing to know the PID.
+
+```erlang
+% Register the echo process with the name 'echo_server'
+start() ->
+  Pid = spawn(fun echo/0),
+  register(echo_server, Pid),  % Register the process with the name 'echo_server'.
+  ok.
+```
+
+#### Library
+
+When implementing concurrent system, is a good practice to export only the necessary functions and keep the internal workings private. This encapsulation helps maintain a clean interface and prevents unintended interactions with the internal state of the module.
+
+```erlang
+-module(echo).
+-export([start/0, send_message/1]).
+
+start() ->
+  Pid = spawn(fun echo/0),
+  register(echo_server, Pid),
+  ok.
+
+send_message(Message) ->
+  echo_server ! {self(), Message}.
+```
+
+#### Timeouts
+
+Erlang's `receive` block can include a timeout clause to handle cases where no messages are received within a specified time frame.
+
+```erlang
+receive
+  Message ->
+    io:format("Received: ~p~n", [Message])
+after 5000 ->  % Timeout after 5000 milliseconds (5 seconds)
+    io:format("No messages received within 5 seconds.~n")
+end.
+```
+
+It is possible to put an actor to `sleep(T)`, where T is in milliseconds:
+
+```erlang
+timer:sleep(1000).  % Sleep for 1000 milliseconds (1 second)
+```
+
+There are also alarms that can be set with `erlang:send_after/3` and `erlang:start_timer/3` to send messages after a certain time interval.
+
+```erlang
+erlang:send_after(2000, self(), timeout).  % Send 'timeout' message to self after 2000 ms
+erlang:start_timer(3000, self(), tick).   % Send 'tick' message to self after 3000 ms
+```
+
+#### Flush
+
+The `flush()` function can be used in the Erlang shell to clear all messages in the current process's mailbox.
+
+```erlang
+flush().
+```
+
+### Let It Crash
+
+Erlang follows the philosophy of "let it crash," which encourages developers to design systems that can recover from failures rather than trying to prevent them entirely. This approach is based on the idea that failures are inevitable in distributed systems, and it's more efficient to handle them gracefully than to avoid them at all costs.
+
+#### Supervisors
+
+Supervisors are special processes that monitor other processes (workers) and restart them if they crash. This helps maintain system stability and ensures that failures are contained and managed effectively.
+
+A supervisor is **linked** to its worker processes, meaning that if a worker crashes, the supervisor is notified and can take appropriate action (like restarting the worker), and if the supervisor crashes, all its linked workers will also crash.
+
+```erlang
+start_master(Count) ->
+  process_flag(trap_exit, true),
+  create_children(Count),
+  master_loop(Count).
+
+create_children(0) -> ok;
+create_children(N) -> 
+  spawn_link(fun worker/0),
+  create_children(N - 1).
+
+master_loop(Count) ->
+  receive
+    {'EXIT', _Pid, normal} ->
+      io:format("A worker has exited normally.~n"),
+      if
+        Count > 0 -> master_loop(Count - 1);  % Continue monitoring if there are still workers
+        true -> io:format("All workers have exited. Shutting down.~n")
+      end;
+    {'EXIT', _Pid, _Reason} ->
+      io:format("A worker has crashed. Restarting...~n"),
+      create_children(1),  % Restart the crashed worker
+      master_loop(Count);
+  end.
+
+worker() ->
+  % Simulate work and potential failure
+  timer:sleep(1000),
+  if
+    random:uniform(10) > 7 -> exit(crash);  % Randomly crash with a 30% chance
+    true -> io:format("Worker is doing work...~n")
+  end.
+```
