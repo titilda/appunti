@@ -1002,27 +1002,46 @@ To define a custom error handling mechanism we must:
 
 ## Haskell
 
-**Haskell** is a _purely functional programming language_ based on immutability and non-side-effecting functions. It is statically typed with strong type inference and polymorphism.
+**Haskell** is a _purely functional programming language_ based on immutability and side-effect-free functions. It is statically typed with strong type inference and polymorphism.
 
 ### Evaluation Strategy
 
-Being purely functional allow the order of evaluation to be irrelevant, allowing **lazy evaluation** of the **redex** (reducible expression). This means that expressions are not evaluated until their values are actually needed, enabling the creation of infinite data structures and improving performance by avoiding unnecessary computations.
+Being purely functional allows the order of evaluation to be irrelevant, enabling **lazy evaluation** of **redexes** (reducible expressions). This means that expressions are not evaluated until their values are actually needed, which:
+
+- Enables the creation of infinite data structures
+- Improves performance by avoiding unnecessary computations
+- Allows more flexible control flow
 
 > A **redex** is an expression that can be reduced or simplified according to the rules of the language. In functional programming, a redex typically refers to a function application that can be evaluated to produce a result.
 
-When calling a function haskell use **call by need** evaluation strategy, which is an optimization of **call by name**. In call by need, the arguments to a function are not evaluated until they are actually used within the function body, and once evaluated, the result is cached (or "memoized") so that subsequent uses of the same argument do not require re-evaluation.
+#### Call by Need
 
-This is implemented using **thunks**, which are essentially deferred computations. A thunk is a parameterless function that encapsulates an expression to be evaluated later.
+When calling a function, Haskell uses **call by need** evaluation strategy, which is an optimization of **call by name**. In call by need:
 
-> The order of evaluation of call by value is a innermost-first strategy, meaning that the leftmost redexes are evaluated first.
->
-> In contrast, call by name uses an outermost-first strategy, where the outermost expressions are evaluated first.
+1. Arguments to a function are not evaluated until they are actually used
+2. Once evaluated, the result is cached ("memoized")
+3. Subsequent uses of the same argument reuse the cached value without re-evaluation
 
-Call by name is more robust than call by value (Church-Rosser confluence) because it guarantees that if there is a normal form (a fully reduced expression), as it starts from the root of the expression tree. In contrast, call by value may fail to find a normal form if the evaluation order leads to non-terminating computations, as it starts from the leaves of the expression tree.
+This is implemented using **thunks**, deferred computations. A thunk is a parameterless function that encapsulates an expression to be evaluated later.
 
-#### Scheme implementation of Call by Name
+**Evaluation Strategies Comparison:**
 
-In Scheme, we can simulate call by name using lambda expressions to create promises.
+| Strategy | Order | Description |
+| ---------- | ------- | ------------- |
+| **Call by Value** | Innermost-first | Evaluates arguments before function application (leftmost redexes first) |
+| **Call by Name** | Outermost-first | Evaluates function application before arguments (outermost redexes first) |
+| **Call by Need** | Outermost-first + memoization | Like call by name, but caches results |
+
+**Why Call by Name is More Robust:**
+
+Call by name is more robust than call by value (Church-Rosser confluence) because it guarantees finding a normal form (fully reduced expression) when one exists. This is because:
+
+- Call by name starts from the root of the expression tree
+- Call by value starts from the leaves and may get stuck in non-terminating sub-computations
+
+#### Scheme Implementation of Call by Name
+
+In Scheme, we can simulate call by name using lambda expressions to create promises (thunks):
 
 ```scheme
 (struct promise (thunk value?) #:mutable)
@@ -1042,44 +1061,79 @@ In Scheme, we can simulate call by name using lambda expressions to create promi
         val))))
 ```
 
-#### Enforce Evaluation
+#### Forcing Strict Evaluation
 
-To enforce evaluation of an expression in Haskell, we can use the `BangPatterns`, the `!` symbol, to indicate that a value should be evaluated immediately (eagerly) rather than lazily.
+Haskell provides mechanisms to override lazy evaluation when needed:
 
-```haskell
-factorial :: Int -> Int
-factorial 0 = 1
-factorial n = n * factorial (n - 1)  -- Normal lazy evaluation
-factorial' :: Int -> Int
-factorial' 0 = 1
-factorial' !n = n * factorial' (n - 1)  -- Eager evaluation
-```
+1. **BangPatterns (`!` symbol)**: Indicates that a value should be evaluated immediately (eagerly) rather than lazily.
 
-It is also possible to use the `seq` function to force the evaluation of an expression before proceeding with the rest of the computation.
+    ```haskell
+    factorial :: Int -> Int
+    factorial 0 = 1
+    factorial n = n * factorial (n - 1)  -- Normal lazy evaluation
 
-```haskell
-factorial'' :: Int -> Int
-factorial'' 0 = 1
-factorial'' n = n `seq` (n * factorial'' (n - 1))  -- Force evaluation of n
-```
+    factorial' :: !Int -> Int
+    factorial' 0 = 1
+    factorial' !n = n * factorial' (n - 1)  -- Eager evaluation
+    ```
+
+2. **The `seq` function**: Forces evaluation of an expression before proceeding with the rest of the computation.
+
+    ```haskell
+    factorial'' :: Int -> Int
+    factorial'' 0 = 1
+    factorial'' n = n `seq` (n * factorial'' (n - 1))  -- Force evaluation of n
+    ```
+
+> **Use Case:** Strict evaluation is useful for preventing space leaks in accumulating parameters and improving performance in specific scenarios.
 
 ### Variables
 
-Variables in Haskell are **immutable** by default, meaning that once a variable is assigned a value, it cannot be changed. This immutability is a core principle of functional programming and helps to ensure referential transparency.
+Variables in Haskell are **immutable** by default, once a variable is bound to a value, it cannot be changed. This immutability is a core principle of functional programming and ensures **referential transparency** (an expression can be replaced by its value without changing program behavior).
 
-#### Haskell Types
+#### Defining Variables
 
-Haskell is a statically typed language, meaning that the type of every expression is known at compile time.
+Haskell provides two keywords for defining local variables: `let` and `where`.
 
-Haskell uses **type inference** to automatically deduce the types of expressions without requiring explicit type annotations. This is done using the Hindley-Milner type system, that will infer the least general type for each expression.
+The `let` keyword allows us to define local variables within an expression:
 
-To define a variable with an explicit type annotation, we use the `::` operator:
+```haskell
+square :: Int -> Int
+square x = 
+  let y = x * x 
+  in y
+```
+
+The `where` keyword allows us to define local variables at the end of a function definition that will be resolved as substitutions in the function body:
+
+```haskell
+square :: Int -> Int
+square x = y
+  where y = x * x
+```
+
+> **Difference:** `let` is an expression (can be used anywhere), while `where` is a declaration (only at function level).
+
+### Type System
+
+Haskell is a **statically typed** language — the type of every expression is known at compile time.
+
+#### Type Inference
+
+Haskell uses **type inference** via the Hindley-Milner type system to automatically deduce types without explicit annotations. The system infers the most general type for each expression.
+
+**Type Annotations:**
+
+The type can be explicitly specified using the `::` operator:
 
 ```haskell
 x :: Int
+x = 42
 ```
 
-Haskell has several built-in types, including:
+#### Built-in Types
+
+Haskell provides several primitive types:
 
 - `Integer`: Represents arbitrary-precision integers.
 - `Int`: Represents fixed-precision integers.
@@ -1089,11 +1143,92 @@ Haskell has several built-in types, including:
 - `[a]`: Represents a list of elements of type `a`.
 - `(a, b)`: Represents a tuple containing two elements of types `a` and `b`.
 
-#### Type Class
+#### Type Aliases
 
-Type classes in Haskell are a way to define a set of functions that can operate on different types. They provide a form of polymorphism, allowing functions to work with any type that implements the required interface.
+Create descriptive names for existing types using the `type` keyword:
 
-We can define a type class using the `class` keyword:
+```haskell
+type String = [Char]
+```
+
+### User-Defined Types
+
+Haskell allows creating custom data types using the `data` keyword.
+
+- **Type Constructor**: The name of the new type (used in type signatures)
+- **Data Constructor(s)**: Functions to create values (also used in pattern matching)
+- **Sum Types** (`|`): Multiple constructors representing alternatives (like C unions)
+- **Product Types**: Single constructor with multiple fields (like C structs)
+
+```haskell
+data Shape = Circle Float | Rectangle Float Float
+```
+
+To create instances of user-defined types, we use the _data constructors_:
+
+```haskell
+circle :: Shape
+circle = Circle 5.0
+
+rectangle :: Shape
+rectangle = Rectangle 4.0 6.0
+```
+
+#### Parametric Types (Generics)
+
+Type constructors can take type parameters:
+
+```haskell
+data Maybe a = Nothing | Just a  -- 'a' is a type variable
+```
+
+#### Accessing Fields
+
+##### Positional Access (Pattern Matching)
+
+By default, fields are accessed via pattern matching:
+
+```haskell
+data Point = Point Float Float
+
+point :: Point
+point = Point 3.0 4.0
+
+pointX :: Point -> Float
+pointX (Point x _) = x  -- Extracts the first field
+```
+
+To simplify access, custom accessor functions can be defined manually:
+
+```haskell
+getX :: Point -> Float
+getX (Point x _) = x
+
+xVal :: Float
+xVal = getX point  -- Accessing the x field
+```
+
+##### Record Syntax (Named Fields)
+
+Record syntax provides named fields and automatically generates accessor functions:
+
+```haskell
+data Point = Point { x :: Float, y :: Float }
+
+point :: Point
+point = Point { x = 3.0, y = 4.0 }
+
+valX :: Float
+valX = x point  -- 'x' is now a function: Point -> Float
+```
+
+### Type Classes
+
+Type classes define a set of functions that can operate on different types, providing **polymorphism** (similar to interfaces in OOP languages). Any type can become an instance of a type class by implementing its required methods.
+
+#### Defining Type Classes
+
+Use the `class` keyword to define a type class:
 
 ```haskell
 class Eq a where
@@ -1101,9 +1236,14 @@ class Eq a where
   (/=) :: a -> a -> Bool
 ```
 
-The type of `==` is `(==) :: (Eq a) => a -> a -> Bool`, meaning that it works for any type `a` that is an instance of the `Eq` type class.
+The type signature `(==) :: (Eq a) => a -> a -> Bool` means:
 
-To create an instance of a type class for a specific type, we use the `instance` keyword:
+- `(Eq a) =>` is a **type constraint** ("for any type `a` that is an instance of `Eq`")
+- The function works for any type implementing the `Eq` type class
+
+#### Creating Instances
+
+Use the `instance` keyword to make a type an instance of a type class:
 
 ```haskell
 instance Eq Bool where
@@ -1112,23 +1252,25 @@ instance Eq Bool where
   _     == _     = False
 ```
 
-To enforce a specific type class constraint on a function, we include it in the type signature:
+#### Using Type Constraints
+
+Enforce type class constraints in a signatures:
 
 ```haskell
+-- Single constraint
 areEqual :: (Eq a) => a -> a -> Bool
 areEqual x y = x == y
-```
 
-This can be extended to multiple constraints:
-
-```haskell
+-- Multiple constraints (comma-separated)
 showAndEq :: (Show a, Eq a) => a -> a -> String
 showAndEq x y = "Are they equal? " ++ show (x == y)
 ```
 
-##### Eq Type Class
+#### Common Type Classes
 
-The `Eq` type class is used for types that support equality testing. It defines two primary methods: `(==)` for equality and `(/=)` for inequality.
+##### Eq
+
+Supports equality testing with two methods:
 
 ```haskell
 class Eq a where
@@ -1136,9 +1278,9 @@ class Eq a where
   (/=) :: a -> a -> Bool
 ```
 
-##### Ord Type Class
+##### Ord
 
-The `Ord` type class is used for types that have an ordering. It defines methods for comparison, such as `<`, `<=`, `>`, and `>=`.
+Supports ordering and comparison operations:
 
 ```haskell
 class Eq a => Ord a where
@@ -1149,9 +1291,11 @@ class Eq a => Ord a where
   (>=)    :: a -> a -> Bool
 ```
 
-##### Foldable Type Class
+> **Note:** `Eq a => Ord a` indicates that `Ord` requires `Eq`, any ordered type must also support equality.
 
-The `Foldable` type class is used for data structures that can be folded to a summary value. It defines methods like `foldr` and `foldl`.
+##### Foldable
+
+For data structures that can be reduced (folded) to a summary value:
 
 ```haskell
 class Foldable t where
@@ -1171,9 +1315,9 @@ instance Foldable List where
   foldr f z (x:xs) = f x (foldr f z xs)
 ```
 
-##### Functor Type Class
+##### Functor
 
-The `Functor` type class is used for types that can be mapped over. It defines the `fmap` method.
+For types that can be mapped over (containers that support applying a function to their contents):
 
 ```haskell
 class Functor f where
@@ -1190,14 +1334,16 @@ instance Functor List where
   fmap f (x:xs) = f x : fmap f xs
 ```
 
-Functor should satisfy the following laws:
+**Functor Laws:**
 
-1. **Identity Law**: `fmap id = id`
-2. **Homomorphism**: `fmap (f . g) = fmap f . fmap g`
+All Functor instances must satisfy:
 
-###### Applicative Type Class
+1. **Identity**: `fmap id = id` (mapping the identity function does nothing)
+2. **Composition**: `fmap (f . g) = fmap f . fmap g` (mapping a composition equals composing the maps)
 
-The `Applicative` type class is used for types that support function application within a context. It defines the `<*>` operator and the `pure` function.
+###### Applicative
+
+Extends Functor to support applying functions wrapped in a context to values wrapped in a context:
 
 ```haskell
 class Functor f => Applicative f where
@@ -1217,18 +1363,22 @@ instance Applicative List where
   fs <*> xs = [f x | f <- fs, x <- xs]
 ```
 
-- `pure` takes a value and puts it into a context.
-- `<*>` applies a function wrapped in a context to a value wrapped in a context. The default implementation is a cartesian product of the contexts, but can also be a zip.
+Where: 
 
-##### Monad Type Class
+- `pure`: Takes a value into the applicative context
+- `<*>`: Applies a wrapped function to a wrapped value (implementation varies: cartesian product or zip-like)
 
-The `Monad` type class is used for types that represent computations called _actions_.
+##### Monad
 
-Monads are used to create a sequence of computations where each computation can depend on the result of the previous one.
+Extends Applicative to represent computations (called _actions_) that can be sequenced, where each computation can depend on the result of the previous one.
 
-They can be used to make **imperative** programming possible in a functional language.
+Monads enable **imperative-style** programming in a functional language while maintaining purity.
 
-It defines the `>>=` operator (_bind_ - compose two action and pass the value produced by the first as an argument to the second), the `>>` operator (sequence two actions, discarding the value produced by the first), and the `return` function (wrap a value in a monadic context).
+**Methods**:
+
+- `>>=` (bind): Sequences two actions, passing the result of the first to the second
+- `>>`: Sequences two actions, discarding the result of the first  
+- `return`: Wraps a value in the monadic context (alias for `pure`)
 
 ```haskell
 class Applicative m => Monad m where
@@ -1251,17 +1401,17 @@ instance Monad List where
   (x:xs) >>= f = f x ++ (xs >>= f)
 ```
 
-A monad should satisfy the following laws:
+**Monad Laws:**
 
-- **Identity**: `return` is the identity for `>>=`:
-  `return a >>= f  ==  f a`
-  `m >>= return  ==  m`
-- **Associativity**:
-  `(m >>= f) >>= g  ==  m >>= (\x -> f x >>= g)`
+All Monad instances must satisfy:
+
+1. **Left Identity**: `return a >>= f  ==  f a`
+2. **Right Identity**: `m >>= return  ==  m`
+3. **Associativity**: `(m >>= f) >>= g  ==  m >>= (\x -> f x >>= g)`
 
 ###### Do Notation
 
-The `do` notation provides a convenient syntax for chaining monadic operations in a sequential manner. It allows us to write monadic code in a more readable way, resembling imperative programming.
+Provides syntactic sugar for chaining monadic operations, making monadic code more readable and imperative-looking.
 
 ```haskell
 example :: Maybe Int
@@ -1271,7 +1421,7 @@ example = do
   return (x + y)
 ```
 
-This is equivalent to:
+Desugared version:
 
 ```haskell
 example :: Maybe Int
@@ -1280,14 +1430,29 @@ example = Just 3 >>= \x ->
               return (x + y)
 ```
 
+List comprehensions are syntactic sugar for the list monad:
+
+```haskell
+-- These three are equivalent:
+do x <- [1, 2]
+   y <- [3, 4]
+   return (x, y)
+
+[1, 2] >>= \x -> [3, 4] >>= \y -> return (x, y)
+
+[(x, y) | x <- [1, 2], y <- [3, 4]]
+
+-- All produce: [(1,3), (1,4), (2,3), (2,4)]
+```
+
 ###### State Monad
 
-The `State` monad encapsulates stateful computations, allowing functions to read and modify a shared state without explicitly passing it as a parameter through the call stack.
+Encapsulates stateful computations, allowing functions to read and modify shared state without explicit parameter passing.
 
-The `State s a` type represents a computation that:
+**Type:** `State s a` represents a computation that:
 
 - Takes an initial state of type `s`
-- Produces a result of type `a` and a modified state
+- Produces a result of type `a` plus a new state of type `s`
 
 ```haskell
 data State s a = State ( s -> (s, a) )
@@ -1339,91 +1504,24 @@ main = do
     print finalState            -- Print the final state (110)
 ```
 
-The `State` contains a function that takes an initial state and returns a tuple of the new state and the result.
+**Key Functions:**
 
-#### User-Defined Types
+- `get`: Retrieves the current state
+- `put`: Replaces the state  
+- `modify`: Applies a function to the state
+- `runState`: Executes a State computation with an initial state
 
-Haskell allows the creation of custom data types using the `data` keyword. This enables the definition of complex data structures.
+### Data Structures
 
-Key components include:
+Haskell provides several built-in **immutable** data structures:
 
-- Type Constructor: The name of the new type, used in type signatures.
-- Data Constructor(s): Functions used to create values of the type; these are also used in pattern matching.
-- Sum Types: The `|` operator allows for multiple constructors, representing a choice between different data shapes (c-like unions).
-- Product Types: A single constructor can take multiple arguments (types), grouping different values together (c-like structs).
+#### Arrays
 
-```haskell
-data Shape = Circle Float | Rectangle Float Float
-```
+Fixed-size collections (`Data.Array` module):
 
-The type constructor can take parameters to create **parametric types** (generics):
-
-```haskell
-data Maybe a = Null | Just a
-```
-
-To create instances of user-defined types, we use the _data constructors_:
-
-```haskell
-circle :: Shape
-circle = Circle 5.0
-
-rectangle :: Shape
-rectangle = Rectangle 4.0 6.0
-```
-
-##### Accessing Fields
-
-By default, Haskell uses positional notation to define and access the fields of a data constructor. Accessing these values typically requires **pattern matching**.
-
-```haskell
-data Point = Point Float Float
-
-point :: Point
-point = Point 3.0 4.0
-
-pointX :: Point -> Float
-pointX (Point x _) = x  -- Extracts the first field
-```
-
-To simplify access, custom accessor functions can be defined manually:
-
-```haskell
-getX :: Point -> Float
-getX (Point x _) = x
-
-xVal :: Float
-xVal = getX point  -- Accessing the x field
-```
-
-However, Haskell provides **record syntax** to define data types with named fields. This automatically generates accessor functions for each field.
-
-```haskell
-data Point = Point { x :: Float, y :: Float }
-
-point :: Point
-point = Point { x = 3.0, y = 4.0 }
-
-valX :: Float
-valX = x point  -- 'x' is now a function: Point -> Float
-```
-
-#### Type Aliases
-
-Type aliases can be created using the `type` keyword, allowing for more readable code by giving descriptive names to existing types.
-
-```haskell
-type String = [Char]
-```
-
-#### Data Structures
-
-Haskell provides several built-in, immutable, data structures, including:
-
-- **Arrays**: Fixed-size collections of elements of the same type, defined in the `Data.Array` module.
-  - To create an array, we can use the `listArray` function, which takes a tuple representing the bounds of the array's indexes and a list of elements.
-  - To update an element in an array, we can use the `//` operator, which creates a new array with the specified updates.
-  - To access an element in an array, we can use the `!` operator.
+- **Create**: `listArray (lower, upper) [elements]`
+- **Update**: `array // [(index, newValue)]` (creates new array)
+- **Access**: `array ! index`
 
   ```haskell
   import Data.Array
@@ -1432,10 +1530,13 @@ Haskell provides several built-in, immutable, data structures, including:
         in (m ! 2, n ! 2)
   ```
 
-- `Maps`: Key-value pairs, defined in the `Data.Map` module.
-  - To create a map, we can use the `fromList` function to convert a list of key-value pairs into a map.
-  - To insert a new key-value pair into an existing map, we can use the `insert` function.
-  - To retrieve a value associated with a key, we can use the `!` operator.
+#### Maps
+
+Key-value pairs (`Data.Map` module):
+
+- **Create**: `fromList [(key1, val1), (key2, val2)]`
+- **Insert**: `insert key value map`
+- **Access**: `map ! key`
 
   ```haskell
   import qualified Data.Map as Map
@@ -1445,11 +1546,17 @@ Haskell provides several built-in, immutable, data structures, including:
           in (m ! "two", n ! "four")
   ```
 
-### Function
+### Functions
 
-Haskell functions are **first-class citizens**, meaning they can be passed as arguments, returned from other functions, and assigned to variables.
+Haskell functions are **first-class citizens**, they can be:
 
-A function is defined using the `->` operator to denote the type of its parameters and return value.
+- Passed as arguments to other functions
+- Returned from functions
+- Assigned to variables
+
+#### Basic Function Definition
+
+Use the `->` operator in type signatures:
 
 ```haskell
 add1 :: Int -> Int
@@ -1463,32 +1570,13 @@ result :: Int
 result = add1 5  -- result will be 6
 ```
 
-The function `add1` can also be defined using **point-free style**, where the function is defined without explicitly mentioning its arguments.
+#### Point-Free Style
+
+Functions can be defined without explicitly mentioning arguments:
 
 ```haskell
 add1 :: Int -> Int
-add1 = (+ 1)
-```
-
-#### Define variables
-
-To define a variable in Haskell, we use the `let` or `where` keywords.
-
-The `let` keyword allows us to define local variables within an expression:
-
-```haskell
-square :: Int -> Int
-square x = 
-  let y = x * x 
-  in y
-```
-
-The `where` keyword allows us to define local variables at the end of a function definition that will be resolved as substitutions in the function body:
-
-```haskell
-square :: Int -> Int
-square x = y
-  where y = x * x
+add1 = (+ 1)  -- Partial application of (+)
 ```
 
 #### Infix Operators
@@ -1545,9 +1633,15 @@ result = double $ increment 3  -- Equivalent to double (increment 3)
 
 #### Currying
 
-In Haskell, all functions are **curried** by default. This means that a function that takes multiple arguments is actually a series of functions that each take a single argument and return another function until all arguments have been provided.
+All functions in Haskell are **curried** by default, meaning that a multi-argument function is actually a chain of single-argument functions.
 
-So a function the is $f: \mathbb{N} \times \mathbb{Z} \rightarrow \mathbb{Q}$ is actually represented as $f: \mathbb{N} \rightarrow (\mathbb{Z} \rightarrow \mathbb{Q})$, or simple $f: \mathbb{N} \rightarrow \mathbb{Z} \rightarrow \mathbb{Q}$ (the $\rightarrow$ is right associative).
+**Mathematical representation**:
+
+A function $f: \mathbb{N} \times \mathbb{Z} \rightarrow \mathbb{Q}$ is represented as:
+
+$$f: \mathbb{N} \rightarrow (\mathbb{Z} \rightarrow \mathbb{Q})$$
+
+Or simply: $f: \mathbb{N} \rightarrow \mathbb{Z} \rightarrow \mathbb{Q}$ (since $\rightarrow$ is right-associative)
 
 ```haskell
 add :: Integer -> Integer -> Integer
@@ -1558,7 +1652,7 @@ The function `add` takes an integer `x` and returns a new function that takes an
 
 ##### Partial Application
 
-This allows for **partial application** of functions, where you can provide some of the arguments and get back a new function that takes the remaining arguments.
+Currying enables **partial application** of functions, meaning that providing only some arguments returns a new function expecting the remaining ones:
 
 ```haskell
 increment :: Int -> Int
@@ -1609,9 +1703,9 @@ describeList xs = case xs of
   (x:y:_) -> "The list has multiple elements."
 ```
 
-#### Common Functions
+#### Common Higher-Order Functions
 
-Haskell provides many built-in higher-order functions for working with lists, such as:
+Haskell's standard library provides powerful functions for list manipulation:
 
 - `map`: Applies a function to each element of a list and returns a new list of the results.
 
@@ -1619,10 +1713,13 @@ Haskell provides many built-in higher-order functions for working with lists, su
   map :: (a -> b) -> [a] -> [b]
   map f [] = []
   map f (x:xs) = f x : map f xs
+  ```
 
-  -- Example usage:
-  doubled :: [Int]
-  doubled = map (*2) [1, 2, 3]  -- Returns [2, 4, 6]
+- `concatMap`: Maps a function over a list and concatenates the results.
+
+  ```haskell
+  concatMap :: (a -> [b]) -> [a] -> [b]
+  concatMap f xs = concat (map f xs)
   ```
 
 - `zip`: Combines two lists into a list of pairs.
@@ -1651,10 +1748,24 @@ Haskell provides many built-in higher-order functions for working with lists, su
   any :: (a -> Bool) -> [a] -> Bool
   any _ [] = False
   any p (x:xs) = p x || any p xs
+  ```
 
-  -- Example usage:
-  hasEven :: Bool
-  hasEven = any even [1, 3, 5, 6]  -- Returns True
+- `all`: Checks if all elements in a list satisfy a given predicate.
+
+  ```haskell
+  all :: (a -> Bool) -> [a] -> Bool
+  all _ [] = True
+  all p (x:xs) = p x && all p xs
+  ```
+
+- `elem`: Checks if an element is present in a list.
+
+  ```haskell
+  elem :: Eq a => a -> [a] -> Bool
+  elem _ [] = False
+  elem y (x:xs)
+    | y == x    = True
+    | otherwise = elem y xs
   ```
 
 - `takeWhile`: Takes elements from a list while a predicate holds true.
@@ -1665,13 +1776,23 @@ Haskell provides many built-in higher-order functions for working with lists, su
   takeWhile p (x:xs)
     | p x       = x : takeWhile p xs
     | otherwise = []
-
-  -- Example usage:
-  leadingEvens :: [Int]
-  leadingEvens = takeWhile even [2, 4, 6, 1, 8]  -- Returns [2, 4, 6]
   ```
 
-- `foldr` and `foldl`: Reduces a list to a single value by recursively applying a binary function. Due to Haskell's lazy evaluation, `foldr` is more efficient as `foldl` increase the heap usage. `foldr` is better suited for operations on potentially infinite lists.
+- `filter`: Filters a list based on a predicate function.
+
+  ```haskell
+  filter :: (a -> Bool) -> [a] -> [a]
+  filter _ [] = []
+  filter p (x:xs)
+    | p x       = x : filter p xs
+    | otherwise = filter p xs
+  ```
+
+- `foldr` and `foldl`: Reduces a list to a single value by recursively applying a binary function.
+  
+  > **Performance Note:** Due to lazy evaluation, `foldr` is generally preferred:
+  > - `foldr` works with infinite lists
+  > - `foldl` can lead to stack overflows unless used with `foldl'` (strict version). It doesn't use stack space, but the lazy nature can cause excessive heap usage.
 
   ```haskell
   foldr :: (a -> b -> b) -> b -> [a] -> b
@@ -1679,10 +1800,6 @@ Haskell provides many built-in higher-order functions for working with lists, su
   foldr f z (x:xs) = f x (foldr f z xs)
   foldl _ z []     = z
   foldl f z (x:xs) = foldl f (f z x) xs
-
-  -- Example usage:
-  sumList :: Int
-  sumList = foldr (+) 0 [1, 2, 3, 4]  -- Returns 10
   ```
 
 - `concat`: Concatenates a list of lists into a single list.
@@ -1697,16 +1814,53 @@ Haskell provides many built-in higher-order functions for working with lists, su
   combined = concat [[1, 2], [3, 4], [5]]  -- Returns [1, 2, 3, 4, 5]
   ```
 
-### Infinite Computations
+- `length`: Returns the number of elements in a list.
 
-Haskell's call-by-need evaluation allows for the creation and manipulation of **infinite data structures**. Since values are only computed when needed, we can define lists that are theoretically infinite.
+  ```haskell
+  length :: [a] -> Int
+  length [] = 0
+  length (_:xs) = 1 + length xs
+  ```
+
+- `reverse`: Reverses a list.
+
+  ```haskell
+  reverse :: [a] -> [a]
+  reverse [] = []
+  reverse (x:xs) = reverse xs ++ [x]
+  ```
+
+- `take`: Takes the first `n` elements from a list.
+
+  ```haskell
+  take :: Int -> [a] -> [a]
+  take _ [] = []
+  take n (x:xs)
+    | n <= 0    = []
+    | otherwise = x : take (n - 1) xs
+  ```
+
+- `drop`: Drops the first `n` elements from a list.
+
+  ```haskell
+  drop :: Int -> [a] -> [a]
+  drop _ [] = []
+  drop n xs@(x:xs')
+    | n <= 0    = xs
+    | otherwise = drop (n - 1) xs'
+  ```
+
+### Infinite Data Structures
+
+Haskell's lazy evaluation enables working with **infinite data structures**. Values are computed only when needed, allowing theoretically infinite lists.
 
 ```haskell
+-- Infinite list of ones
 ones :: [Int]
-ones = 1 : ones  -- An infinite list of 1
+ones = 1 : ones
 
--- alternative notation
-ones = [1..]
+-- Infinite list from n onward  
+ones' = [1, 1..]  -- Alternative notation
 
 numFrom n = n : numFrom (n+1) -- An infinite list of natural numbers starting from n
 squares = map (^2) (numFrom 1) -- An infinite list of squares of natural numbers
@@ -1719,28 +1873,33 @@ firstFiveOnes :: [Int]
 firstFiveOnes = take 5 ones  -- Returns [1, 1, 1, 1, 1]
 ```
 
-### Conditional Expressions
+### Control Flow
 
-Haskell uses the `if <c> then <t> else <e>` construct for conditional expressions. The syntax is as follows:
+#### Conditional Expressions
+
+Haskell provides `if-then-else` expressions:
 
 ```haskell
 if condition then trueExpression else falseExpression
 ```
 
-An example of implementation using functions would be:
+The `else` clause is **mandatory** (since expressions must always return a value).
+
+**Implementation as a function**:
 
 ```haskell
-
-if :: Bool -> a -> a -> a
-if True x _ = x
-if False _ y = y
+if' :: Bool -> a -> a -> a
+if' True  x _ = x
+if' False _ y = y
 ```
+
+#### Haskell Iteration
+
+Haskell uses **recursion with pattern matching** instead of traditional loops:
 
 ### Input/Output
 
-Haskell handles input and output operations using the `IO` monad.
-
-The `IO` type encapsulates side-effecting computations, allowing Haskell to maintain its purity while still interacting with the outside world.
+Haskell handles I/O using the **`IO` monad**, which encapsulates side-effecting operations while maintaining functional purity.
 
 ```haskell
 main :: IO ()
@@ -1748,7 +1907,7 @@ main = do
   putStrLn "Hello, World!"
 ```
 
-The `IO` monad is made using implicitly the `time` type variable to represent the sequence of actions.
+> **Note:** The `IO` monad internally uses an implicit "world state" token to sequence operations.
 
 #### Basic I/O Operations
 
@@ -1784,38 +1943,49 @@ The `IO` monad is made using implicitly the `time` type variable to represent th
   print 42
   ```
 
-- `openFile`: Opens a file and returns a handle for reading or writing.
+#### Command Line Arguments
 
-  ```haskell
-  openFile :: FilePath -> IOMode -> IO Handle
+Haskell provides the `System.Environment` module to access command line arguments.
 
-  handle <- openFile "example.txt" ReadMode
-  ```
+```haskell
+import System.Environment
 
-### Error
+main :: IO ()
+main = do
+  args <- getArgs
+  putStrLn ("Command line arguments: " ++ show args)
 
-Haskell represent errors using **bottom type** (denoted as `⊥`), which is defined as `bot = bot`. The bottom type represents non-terminating computations.
+  progName <- getProgName
+  putStrLn ("Program name: " ++ progName)
+```
 
-Errors can be raised using the `error` function:
+### Haskell Error Handling
+
+#### Bottom Type (⊥)
+
+Represents non-terminating computations and errors. Defined as `⊥ = ⊥` or `bot = bot`.
+
+#### Raising errors
 
 ```haskell
 error :: String -> a
-error "An error occurred"
+error "An error occurred"  -- Terminates program with error message
 ```
 
-#### Maybe Type
+#### Safe Error Handling with Maybe
 
-The `Maybe` type is used to represent computations that may fail or return no value. It has two constructors: `Just a`, which represents a successful computation with a value of type `a`, and `Nothing`, which represents a failure or absence of value.
+The `Maybe` type represents computations that may fail:
 
 ```haskell
 data Maybe a = Nothing | Just a
 ```
 
-#### Exception Handling
+- `Just a`: Successful computation with value of type `a`
+- `Nothing`: Failure or absence of value
 
-To handle exceptions, Haskell provides the `Control.Exception` module.
+#### Exception Handling in IO
 
-This module introduce the `handle` function, which allows us to catch and handle exceptions in `IO` computations.
+The `Control.Exception` module provides exception handling for `IO` operations. This is done with the `handle` function, which takes an exception handler and an `IO` action.
 
 ```haskell
 import Control.Exception
