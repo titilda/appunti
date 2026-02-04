@@ -1999,3 +1999,234 @@ main = handle handler (do
     handler :: SomeException -> IO ()
     handler ex = putStrLn $ "Caught an exception: " ++ show ex
 ```
+
+## Erlang
+
+**Erlang** is a functional programming language designed for building concurrent, distributed, and fault-tolerant systems.
+
+It works with the **BEAM** virtual machine that provides lightweight processes.
+
+The processes in Erlang are isolated and communicate via **message passing**. This model inspired the **Akka** framework in Scala/java and the "Reactive Manifesto" for building responsive systems.
+
+### Erlang Variables
+
+In erlang, variables are **single-assignment**. Once a variable is bound to a value, it cannot be changed. Attempting to rebind a variable results in a runtime error.
+
+All the variable starts with an uppercase letter or underscore (`_`).
+
+```erlang
+X = 10         % Bind X to 10
+Y = X + 5      % Bind Y to 15
+```
+
+#### Atoms
+
+Atoms are constants whose value is their own name. They start with a lowercase letter and can include letters, digits, and underscores. They can also starts with `'` and end with `'` to include special characters.
+
+```erlang
+status = ok               % 'ok' is an atom
+error = 'Error occurred'  % 'Error occurred' is an atom
+```
+
+They are similar to symbols, are stored in a global table, making comparisons extremely fast, and they are not garbage collected.
+
+#### Erlang Data Types
+
+Erlang provides several built-in data types:
+
+- **Numbers**: Integers and floating-point numbers.
+- **Atoms**: Constants whose value is their own name.
+
+##### Erlang Tuples
+
+**Tuples** are used to store fixed-size collections of elements. They are defined using curly braces `{}`, with elements separated by commas.
+
+```erlang
+Point = {3, 4}  % A tuple representing a point (x, y)
+```
+
+Some useful tuple functions:
+
+- `element(N, Tuple)`: Retrieves the N-th element from the tuple (1-based index).
+- `size(Tuple)`: Returns the number of elements in the tuple.
+
+##### Erlang Lists
+
+**Lists** are used to store ordered collections of elements. They are defined using square brackets `[]`, with elements separated by commas.
+
+```erlang
+Numbers = [1, 2, 3, 4, 5]  % A list of numbers
+```
+
+Concatenation of lists is done using the `++` operator or the `|` operator for constructing lists:
+
+```erlang
+List1 = [1, 2, 3].
+List2 = [4, 5, 6].
+
+Combined = List1 ++ List2.  % Results in [1, 2, 3, 4, 5, 6]
+NewList = [0 | List1].      % Results in [0, 1, 2, 3]
+```
+
+Erlang also supports **list comprehensions** for generating lists based on existing lists:
+
+```erlang
+Squares = [X * X || X <- [1, 2, 3, 4, 5]],  % Results in [1, 4, 9, 16, 25]
+```
+
+Some useful list functions:
+
+- `hd(List)`: Returns the head (first element) of the list.
+- `tl(List)`: Returns the tail (all elements except the head) of the list.
+- `length(List)`: Returns the number of elements in the list.
+- `tuple_to_list(Tuple)`: Converts a tuple to a list.
+
+##### Erlang Maps
+
+**Maps** are key-value pairs. They are defined using `#{}` syntax.
+
+```erlang
+Person = #{name => "Alice", age => 30},  % A map with keys 'name' and 'age'
+
+Name = Person#{name},                      % Accessing the value for key 'name'
+UpdatedPerson = Person#{age => 31},        % Updating/Inserting the value for key 'age'
+```
+
+Some useful map functions:
+
+- `maps:get(Key, Map)`: Retrieves the value associated with `Key` in `Map`.
+- `maps:put(Key, Value, Map)`: Inserts or updates the `Key` with `Value` in `Map`.
+- `maps:remove(Key, Map)`: Removes the `Key` from `Map`.
+- `maps:keys(Map)`: Returns a list of all keys in `Map`.
+- `maps:values(Map)`: Returns a list of all values in `Map`.
+- `maps:filtermap(F/2, Map)`: Filters the `Map` based on the predicate function `F/2`.
+- `maps:foreach(F/2, Map)`: Filters the `Map` based on the predicate function `F/2`.
+
+### Erlang Pattern Matching
+
+Erlang uses **pattern matching** extensively for variable binding, function arguments, and control flow.
+
+```erlang
+{A, B} = {10, 20}                 % A is bound to 10, B is bound to 20
+
+{A, A, B} = {1, 1, 2}             % A is 1, B is 2
+{A, A, B} = {1, 2, 3}             % This will result in a runtime error
+
+[A, B | Rest] = [1, 2, 3, 4, 5]   % A=1, B=2, Rest=[3,4,5]
+```
+
+### Erlang Functions
+
+Each function can have multiple clauses, and pattern matching is used to select the appropriate clause based on the arguments.
+
+```erlang
+factorial(0) -> 1;
+factorial(N) -> N * factorial(N - 1).
+```
+
+To use pattern matching the different function instance are separated by `;` and the last one ends with a `.`. The body of each function clause is separated from the head by `->` and inside each statement the lines end with `,`.
+
+All the functions in Erlang are identified by their name and **arity** (number of arguments).
+
+The same name can be used for different functions as long as they have different arities.
+
+```erlang
+add(X, Y) -> X + Y.
+add(X, Y, Z) -> X + Y + Z.
+```
+
+To force the arity, use the `/` symbol:
+
+```erlang
+Result = add(2, 3).        % Calls add/2
+Result2 = add(1, 2, 3).    % Calls add/3
+```
+
+#### Lambda
+
+Anonymous functions (lambdas) are defined using the `fun` keyword:
+
+```erlang
+Add = fun(X, Y) -> X + Y end,
+Result = Add(2, 3).  % Result will be 5
+```
+
+Lambdas can be passed to functions as parameters, but standard functions need to be wrapped like this:
+
+```erlang
+Square = fun (X)-> X*X end.
+lists:map(Square, [1,2,3,4]).  % Results in [1,4,9,16]
+lists:foldr(fun my_function/2, 0, [1,2,3]).
+```
+
+#### Guards
+
+Guards are additional conditions that can be used in function clauses to further refine pattern matching. They are specified after the pattern and before the function body, using the `when` keyword.
+
+```erlang
+absolute(X) when X < 0 -> -X;
+absolute(X) -> X.
+```
+
+Guards uses a specific sub-language to ensure validation in constant time. It allows:
+
+- Comparison operators: `<`, `>`, `=<`, `>=`, `==`, `=/=`, `=:=`
+- Logical operators: `and`, `or`, `xor`, `not`
+- Type testing: `number/1`, `integer/1`, `float/1`, `atom/1`, `list/1`, etc.
+- Arithmetic operations: `+`, `-`, `*`, `/`
+- Other built-in functions: `length/1`, `size/1`, `hd/1`, `tl/1`, etc.
+
+### Modules
+
+Erlang code is organized into **modules**. Each module can contain multiple functions and is compiled separately.
+
+```erlang
+-module(math_utils).
+-export([factorial/1, absolute/1]).
+
+factorial(0) -> 1;
+factorial(N) -> N * factorial(N - 1).
+
+absolute(X) when X < 0 -> -X;
+absolute(X) -> X.
+```
+
+To use the functions from a module, you need to import it:
+
+```erlang
+X = math_utils:factorial(5).  % Calls the factorial function from math_utils module
+```
+
+### Erlang Control Flow
+
+#### If Expressions
+
+Erlang has `if` expressions, which uses guards for conditions. The `if` expression evaluates the guards in order and executes the body of the first guard that evaluates to true:
+
+```erlang
+absolute(X) ->
+  if
+    X < 0 -> -X;
+    true -> X     % 'true' is a catch-all condition
+  end.
+```
+
+#### Case Expressions
+
+Erlang provides `case` expressions for branching based on pattern matching:
+
+```erlang
+case X of
+  0 -> "Zero";
+  1 -> "One";
+  _ -> "Other"
+end.
+```
+
+In the `case` is possible to call custom functions, meaning that an if-like on custom functions would be like:
+
+```erlang
+case lists:member(a, X) of
+  true -> "Contains a";
+  false -> "Does not contain a"
+end.
