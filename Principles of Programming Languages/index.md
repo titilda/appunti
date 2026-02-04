@@ -1156,7 +1156,19 @@ The `Foldable` type class is used for data structures that can be folded to a su
 ```haskell
 class Foldable t where
   foldr :: (a -> b -> b) -> b -> t a -> b
+
   foldl :: (b -> a -> b) -> b -> t a -> b
+  foldl f a bs = foldr (\b g x -> g (f x b)) id bs a
+
+-- example
+
+instance Foldable Maybe where
+  foldr _ z Nothing  = z
+  foldr f z (Just x) = f x z
+
+instance Foldable List where
+  foldr _ z []     = z
+  foldr f z (x:xs) = f x (foldr f z xs)
 ```
 
 ##### Functor Type Class
@@ -1166,6 +1178,16 @@ The `Functor` type class is used for types that can be mapped over. It defines t
 ```haskell
 class Functor f where
   fmap :: (a -> b) -> f a -> f b
+
+-- example
+
+instance Functor Maybe where
+  fmap _ Nothing  = Nothing
+  fmap f (Just x) = Just (f x)
+
+instance Functor List where
+  fmap _ []     = []
+  fmap f (x:xs) = f x : fmap f xs
 ```
 
 Functor should satisfy the following laws:
@@ -1181,10 +1203,143 @@ The `Applicative` type class is used for types that support function application
 class Functor f => Applicative f where
   pure :: a -> f a
   (<*>) :: f (a -> b) -> f a -> f b
+
+-- example
+
+instance Applicative Maybe where
+  pure = Just
+  Nothing <*> _ = Nothing
+  _ <*> Nothing = Nothing
+  (Just f) <*> (Just x) = Just (f x)
+
+instance Applicative List where
+  pure x = [x]
+  fs <*> xs = [f x | f <- fs, x <- xs]
 ```
 
 - `pure` takes a value and puts it into a context.
-- `<*>` applies a function wrapped in a context to a value wrapped in a context.
+- `<*>` applies a function wrapped in a context to a value wrapped in a context. The default implementation is a cartesian product of the contexts, but can also be a zip.
+
+##### Monad Type Class
+
+The `Monad` type class is used for types that represent computations called _actions_.
+
+Monads are used to create a sequence of computations where each computation can depend on the result of the previous one.
+
+They can be used to make **imperative** programming possible in a functional language.
+
+It defines the `>>=` operator (_bind_ - compose two action and pass the value produced by the first as an argument to the second), the `>>` operator (sequence two actions, discarding the value produced by the first), and the `return` function (wrap a value in a monadic context).
+
+```haskell
+class Applicative m => Monad m where
+  (>>=)  :: m a -> (a -> m b) -> m b
+
+  (>>)   :: m a -> m b -> m b
+  m >> k = m >>= \_ -> k
+
+  return :: a -> m a
+  return = pure
+
+-- example
+
+instance Monad Maybe where
+  Nothing >>= _ = Nothing
+  (Just x) >>= f = f x
+
+instance Monad List where
+  [] >>= _ = []
+  (x:xs) >>= f = f x ++ (xs >>= f)
+```
+
+A monad should satisfy the following laws:
+
+- **Identity**: `return` is the identity for `>>=`:
+  `return a >>= f  ==  f a`
+  `m >>= return  ==  m`
+- **Associativity**:
+  `(m >>= f) >>= g  ==  m >>= (\x -> f x >>= g)`
+
+###### Do Notation
+
+The `do` notation provides a convenient syntax for chaining monadic operations in a sequential manner. It allows us to write monadic code in a more readable way, resembling imperative programming.
+
+```haskell
+example :: Maybe Int
+example = do
+  x <- Just 3
+  y <- Just 4
+  return (x + y)
+```
+
+This is equivalent to:
+
+```haskell
+example :: Maybe Int
+example = Just 3 >>= \x ->
+            Just 4 >>= \y ->
+              return (x + y)
+```
+
+###### State Monad
+
+The `State` monad encapsulates stateful computations, allowing functions to read and modify a shared state without explicitly passing it as a parameter through the call stack.
+
+The `State s a` type represents a computation that:
+
+- Takes an initial state of type `s`
+- Produces a result of type `a` and a modified state
+
+```haskell
+data State s a = State ( s -> (s, a) )
+
+instance Functor (State s) where
+  fmap f (State g) = State $ \s ->
+    let (s', x) = g s
+    in (s', f x)
+
+instance Applicative (State s) where
+  pure x = State $ \s -> (s, x)
+
+  (State f) <*> (State g) = State $ \s ->
+    let (s', h) = f s
+        (s'', x) = g s'
+    in (s'', h x)
+
+instance Monad (State s) where
+  (State g) >>= f = State $ \s ->
+    let (s', x) = g s
+        (State h) = f x
+    in h s'
+
+-- runState is used to execute a State computation with an initial state
+runState :: State s a -> s -> (s, a)
+runState (State f) s = f s
+
+-- Example usage of State monad
+get :: State s s
+get = State $ \s -> (s, s)
+
+put :: s -> State s ()
+put newState = State $ \_ -> (newState, ())
+
+modify :: (s -> s) -> State s ()
+modify f = do
+  s <- get
+  put (f s)
+
+main :: IO ()
+main = do
+    let (finalState, result) = runState 
+          (do x <- get          -- Get the state (initially 100)
+              modify (+ 10)     -- Modify the state by adding 10 (state becomes 110)
+              return (x + 1))   -- Return the result of adding 1 to the original state (100)
+          100
+    
+    print result                -- Print the result (101)
+    print finalState            -- Print the final state (110)
+```
+
+The `State` contains a function that takes an initial state and returns a tuple of the new state and the result.
 
 #### User-Defined Types
 
@@ -1379,6 +1534,15 @@ result :: Int
 result = incrementThenDouble 3  -- result will be 8
 ```
 
+#### Function Application Operator
+
+The `$` operator is used for function application and can be used to avoid parentheses.
+
+```haskell
+result :: Int
+result = double $ increment 3  -- Equivalent to double (increment 3)
+```
+
 #### Currying
 
 In Haskell, all functions are **curried** by default. This means that a function that takes multiple arguments is actually a series of functions that each take a single argument and return another function until all arguments have been provided.
@@ -1474,7 +1638,7 @@ Haskell provides many built-in higher-order functions for working with lists, su
   paired = zip [1, 2, 3] ['a', 'b', 'c']  -- Returns [(1,'a'), (2,'b'), (3,'c')]
   ```
 
-- **List Comprehensions**: A concise way to create lists based on existing lists.
+- **List Comprehensions**: A concise way to create lists based on existing lists (This is a monad).
 
   ```haskell
   squares :: [Int]
@@ -1583,6 +1747,8 @@ main :: IO ()
 main = do
   putStrLn "Hello, World!"
 ```
+
+The `IO` monad is made using implicitly the `time` type variable to represent the sequence of actions.
 
 #### Basic I/O Operations
 
