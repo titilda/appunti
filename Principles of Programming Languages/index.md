@@ -1363,7 +1363,7 @@ instance Applicative List where
   fs <*> xs = [f x | f <- fs, x <- xs]
 ```
 
-Where: 
+Where:
 
 - `pure`: Takes a value into the applicative context
 - `<*>`: Applies a wrapped function to a wrapped value (implementation varies: cartesian product or zip-like)
@@ -2581,3 +2581,17 @@ worker() ->
       worker()  % Continue working
   end.
 ```
+
+### Erlang Patterns
+
+- **Spawning Multiple Processes**: To spawn multiple processes for parallel computation, use list comprehensions combined with `spawn`.
+
+    ```erlang
+    Pids = lists:reverse([spawn(fun() -> deep_map_par(self(), X) end) || X <- List])
+    ```
+
+- **Collecting Results**: To collect in order the results from multiple processes, use a list comprehension with `receive`.
+
+    ```erlang
+    Results = [receive {Pid, Result} -> Result end || Pid <- Pids],
+    ```
