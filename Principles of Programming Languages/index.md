@@ -2004,236 +2004,339 @@ main = handle handler (do
 
 **Erlang** is a functional programming language designed for building concurrent, distributed, and fault-tolerant systems.
 
-It works with the **BEAM** virtual machine that provides lightweight processes.
+- Runs on the **BEAM** virtual machine
+- Provides lightweight processes (thousands can run concurrently)
+- Processes are isolated and communicate via **message passing**
+- Hot code swapping (update code without stopping the system)
 
-The processes in Erlang are isolated and communicate via **message passing**. This model inspired the **Akka** framework in Scala/java and the "Reactive Manifesto" for building responsive systems.
+> Erlang's actor model inspired the **Akka** framework (Scala/Java) and influenced the "Reactive Manifesto" for building responsive systems.
 
 ### Erlang Variables
 
-In erlang, variables are **single-assignment**. Once a variable is bound to a value, it cannot be changed. Attempting to rebind a variable results in a runtime error.
+In Erlang, variables are immutable. Once a variable is bound to a value, it cannot be changed. Attempting to rebind a variable results in a runtime error.
 
-All the variable starts with an uppercase letter or underscore (`_`).
+**Naming Convention:**
+
+- Variables start with an **uppercase** letter or underscore (`_`)
+- `_` alone is the "don't care" variable (matches anything, value is ignored)
 
 ```erlang
 X = 10         % Bind X to 10
 Y = X + 5      % Bind Y to 15
+_ = foo()      % Call foo() but ignore the result
 ```
 
-#### Erlang Data Types
+### Data Types
 
 Erlang provides several built-in data types:
 
-- **Numbers**: Integers and floating-point numbers.
+- **Numbers**: Integers and floating-point numbers
+- **Atoms**: Constants whose name is their value
+- **Tuples**: Fixed-size collections
+- **Lists**: Variable-length ordered collections
+- **Maps**: Key-value pairs
+- **Pids**: Process identifiers
 
 #### Atoms
 
-Atoms are constants whose value is their own name. They start with a lowercase letter and can include letters, digits, and underscores. They can also starts with `'` and end with `'` to include special characters.
+Atoms are constants whose value is their own name (similar to symbols in other languages).
+
+**Syntax:**
+
+- Start with a **lowercase** letter, can include letters, digits, underscores
+- Can be enclosed in single quotes (`'...'`) to include spaces or special characters
 
 ```erlang
-status = ok               % 'ok' is an atom
-error = 'Error occurred'  % 'Error occurred' is an atom
+ok                        % Atom
+error                     % Atom  
+'Error occurred'          % Atom with spaces
+'Hello@World!'            % Atom with special characters
 ```
 
-They are similar to symbols, are stored in a global table, making comparisons extremely fast, and they are not garbage collected.
+Atoms are stored in a global atom table (not garbage collected) and are extremely fast to compare (just comparing references)
 
-##### Erlang Tuples
+#### Tuples
 
-**Tuples** are used to store fixed-size collections of elements. They are defined using curly braces `{}`, with elements separated by commas.
+Fixed-size collections of elements, defined using curly braces `{}`.
 
 ```erlang
-Point = {3, 4}  % A tuple representing a point (x, y)
+Point = {3, 4}                    % A tuple representing a point (x, y)
+Person = {person, "Alice", 30}    % Common pattern: {tag, ...data}
 ```
 
-Some useful tuple functions:
+**Common Functions:**
 
-- `element(N, Tuple)`: Retrieves the N-th element from the tuple (1-based index).
-- `size(Tuple)`: Returns the number of elements in the tuple.
+- `element(N, Tuple)`: Retrieves the N-th element (1-based indexing)
+- `size(Tuple)`: Returns the number of elements
 
-##### Erlang Lists
+> **Common Pattern:** Use tuples with an atom tag as the first element: `{ok, Result}`, `{error, Reason}`
 
-**Lists** are used to store ordered collections of elements. They are defined using square brackets `[]`, with elements separated by commas.
+#### Erlang Lists
+
+Ordered, variable-length collections, defined using square brackets `[]`.
 
 ```erlang
-Numbers = [1, 2, 3, 4, 5]  % A list of numbers
+Numbers = [1, 2, 3, 4, 5]         % A list of numbers
+Mixed = [atom, 42, "string"]      % Lists can contain mixed types
+Empty = []                         % Empty list
 ```
 
-Concatenation of lists is done using the `++` operator or the `|` operator for constructing lists:
+**List Operations:**
 
 ```erlang
 List1 = [1, 2, 3].
 List2 = [4, 5, 6].
 
-Combined = List1 ++ List2.  % Results in [1, 2, 3, 4, 5, 6]
-NewList = [0 | List1].      % Results in [0, 1, 2, 3]
+% Concatenation
+List1 ++ List2.      % Results in [1, 2, 3, 4, 5, 6]
+
+% Cons operator |
+[0 | List1].         % Results in [0, 1, 2, 3]
+[H | T] = [1, 2, 3]. % Pattern matching: H=1, T=[2,3]
+
+% Warning: This creates a nested list!
+[List1 | List2].     % Results in [[1, 2, 3], 4, 5, 6]
 ```
 
-Erlang also supports **list comprehensions** for generating lists based on existing lists:
+**Common Functions:**
+
+- `hd(List)`: Returns the head (first element)
+- `tl(List)`: Returns the tail (all elements except the head)
+- `length(List)`: Returns the number of elements
+- `lists:reverse(List)`: Reverses the list
+- `lists:nth(N, List)`: Returns the N-th element (1-based)
+- `lists:map(Fun, List)`: Applies function to each element
+- `lists:filter(Pred, List)`: Filters elements matching predicate
+- `lists:foldl(Fun, Acc, List)`: Left fold (tail recursive)
+- `lists:foldr(Fun, Acc, List)`: Right fold
+
+##### List Comprehensions
+
+Concise syntax for generating lists:
 
 ```erlang
-Squares = [X * X || X <- [1, 2, 3, 4, 5]],  % Results in [1, 4, 9, 16, 25]
+Squares = [X * X || X <- [1, 2, 3, 4, 5]].              % [1, 4, 9, 16, 25]
+Evens = [X || X <- [1, 2, 3, 4, 5], X rem 2 == 0].      % [2, 4]
+Pairs = [{X, Y} || X <- [1, 2], Y <- [a, b]].           % [{1,a}, {1,b}, {2,a}, {2,b}]
 ```
 
-Some useful list functions:
+#### Erlang Maps
 
-- `hd(List)`: Returns the head (first element) of the list.
-- `tl(List)`: Returns the tail (all elements except the head) of the list.
-- `length(List)`: Returns the number of elements in the list.
-- `tuple_to_list(Tuple)`: Converts a tuple to a list.
+Key-value pairs (hash maps), defined using `#{}` syntax.
 
-##### Erlang Maps
-
-**Maps** are key-value pairs. They are defined using `#{}` syntax.
+**Syntax:**
 
 ```erlang
-Person = #{name => "Alice", age => 30},  % A map with keys 'name' and 'age'
+% Creating maps
+Person = #{name => "Alice", age => 30}.
+Empty = #{}.
 
-Name = Person#{name},                      % Accessing the value for key 'name'
-UpdatedPerson = Person#{age => 31},        % Updating/Inserting the value for key 'age'
+% Accessing values
+Name = maps:get(name, Person).     % Returns "Alice" or throws exception
+Age = maps:get(age, Person, 0).    % Returns 30, or 0 if not found
+
+% Updating (creates new map)
+Updated = Person#{age => 31}.      % Update existing key
+Updated2 = Person#{city => "NYC"}. % Add new key
+Updated3 = Person#{age := 31}.     % := requires key to exist
 ```
 
-Some useful map functions:
+**Common Functions:**
 
-- `maps:get(Key, Map)`: Retrieves the value associated with `Key` in `Map`.
-- `maps:put(Key, Value, Map)`: Inserts or updates the `Key` with `Value` in `Map`.
-- `maps:remove(Key, Map)`: Removes the `Key` from `Map`.
-- `maps:keys(Map)`: Returns a list of all keys in `Map`.
-- `maps:values(Map)`: Returns a list of all values in `Map`.
-- `maps:filtermap(F/2, Map)`: Filters the `Map` based on the predicate function `F/2`.
-- `maps:foreach(F/2, Map)`: Filters the `Map` based on the predicate function `F/2`.
+- `maps:get(Key, Map)` / `maps:get(Key, Map, Default)`: Get value
+- `maps:put(Key, Value, Map)`: Insert or update
+- `maps:remove(Key, Map)`: Remove a key
+- `maps:keys(Map)`: List of all keys
+- `maps:values(Map)`: List of all values
+- `maps:size(Map)`: Number of key-value pairs
+- `maps:merge(Map1, Map2)`: Merge two maps
+- `maps:filter(Pred, Map)`: Filter map by predicate
 
 ### Erlang Pattern Matching
 
-Erlang uses **pattern matching** extensively for variable binding, function arguments, and control flow.
+Erlang uses **pattern matching** as a fundamental feature for:
+
+- Variable binding
+- Function clause selection
+- Data extraction
+- Control flow
+
+**Basic Examples:**
 
 ```erlang
-{A, B} = {10, 20}                 % A is bound to 10, B is bound to 20
+% Tuple matching
+{A, B} = {10, 20}.                % A=10, B=20
+{ok, Value} = {ok, 42}.           % Value=42
+{A, A, B} = {1, 1, 2}.            % A=1, B=2 (A must match both positions)
+{A, A, B} = {1, 2, 3}.            % ERROR: A can't be both 1 and 2
 
-{A, A, B} = {1, 1, 2}             % A is 1, B is 2
-{A, A, B} = {1, 2, 3}             % This will result in a runtime error
+% List matching
+[A, B | Rest] = [1, 2, 3, 4, 5].  % A=1, B=2, Rest=[3,4,5]
 
-[A, B | Rest] = [1, 2, 3, 4, 5]   % A=1, B=2, Rest=[3,4,5]
+% Map matching
+#{name := Name} = #{name => "Alice", age => 30}. % Name="Alice"
 ```
 
 ### Erlang Functions
 
-Each function can have multiple clauses, and pattern matching is used to select the appropriate clause based on the arguments.
+Functions are defined with multiple **clauses**, selected by pattern matching on arguments.
+
+**Syntax Rules:**
+
+- Clauses are separated by `;`
+- Last clause ends with `.`
+- Clause head and body separated by `->`
+- Statements within a body separated by `,`
 
 ```erlang
-factorial(0) -> 1;
-factorial(N) -> N * factorial(N - 1).
+factorial(0) -> 1;                    % Base case
+factorial(N) -> N * factorial(N - 1). % Recursive case
 ```
 
-To use pattern matching the different function instance are separated by `;` and the last one ends with a `.`. The body of each function clause is separated from the head by `->` and inside each statement the lines end with `,`.
+#### Function Arity
 
-All the functions in Erlang are identified by their name and **arity** (number of arguments).
+Functions are identified by **name/arity** (name and number of arguments).
 
-The same name can be used for different functions as long as they have different arities.
+The same name can be used for different arities:
 
 ```erlang
-add(X, Y) -> X + Y.
-add(X, Y, Z) -> X + Y + Z.
+add(X, Y) -> X + Y.           % add/2
+add(X, Y, Z) -> X + Y + Z.    % add/3 (different function)
 ```
 
-To force the arity, use the `/` symbol:
+**Referencing Functions:**
+
+Use the `/` notation to specify the specific function:
 
 ```erlang
-Result = add(2, 3).        % Calls add/2
-Result2 = add(1, 2, 3).    % Calls add/3
+Result = add(2, 3).           % Calls add/2
+Result2 = add(1, 2, 3).       % Calls add/3
+Fun = fun add/2.              % Reference to add/2 function
 ```
 
-#### Lambda
+#### Anonymous Functions (Lambdas)
 
-Anonymous functions (lambdas) are defined using the `fun` keyword:
+Defined using the `fun` keyword:
 
 ```erlang
-Add = fun(X, Y) -> X + Y end,
-Result = Add(2, 3).  % Result will be 5
+% Simple lambda
+Add = fun(X, Y) -> X + Y end.
+Result = Add(2, 3).  % Result is 5
+
+% Lambda with multiple clauses
+Abs = fun(X) when X < 0 -> -X;
+         (X) -> X
+      end.
 ```
 
-Lambdas can be passed to functions as parameters, but standard functions need to be wrapped like this:
-
-```erlang
-Square = fun (X)-> X*X end.
-lists:map(Square, [1,2,3,4]).  % Results in [1,4,9,16]
-lists:foldr(fun my_function/2, 0, [1,2,3]).
-```
+> **Note:** Named functions must be referenced with the `fun Name/Arity` syntax when passed as arguments.
 
 #### Guards
 
-Guards are additional conditions that can be used in function clauses to further refine pattern matching. They are specified after the pattern and before the function body, using the `when` keyword.
+Additional conditions that refine pattern matching, specified with the `when` keyword.
 
 ```erlang
 absolute(X) when X < 0 -> -X;
 absolute(X) -> X.
+
+max(X, Y) when X > Y -> X;
+max(_, Y) -> Y.
+
+% Multiple guards with semicolon (OR)
+is_valid(X) when X > 0; X < -10 -> true;
+is_valid(_) -> false.
+
+% Multiple conditions with comma (AND)
+in_range(X) when X > 0, X < 100 -> true;
+in_range(_) -> false.
 ```
 
 Guards uses a specific sub-language to ensure validation in constant time. It allows:
 
-- Comparison operators: `<`, `>`, `=<`, `>=`, `==`, `=/=`, `=:=`
-- Logical operators: `and`, `or`, `xor`, `not`
-- Type testing: `number/1`, `integer/1`, `float/1`, `atom/1`, `list/1`, etc.
-- Arithmetic operations: `+`, `-`, `*`, `/`
-- Other built-in functions: `length/1`, `size/1`, `hd/1`, `tl/1`, etc.
+- **Comparison**: `<`, `>`, `=<`, `>=`, `==`, `/=`, `=:=`, `=/=`
+  - `==`: Value equality (1 == 1.0 is true)
+  - `=:=`: Exact equality (1 =:= 1.0 is false)
+- **Logical**: `and`, `or`, `xor`, `not`
+- **Type tests**: `is_atom/1`, `is_integer/1`, `is_list/1`, `is_tuple/1`, `is_map/1`, etc.
+- **Arithmetic**: `+`, `-`, `*`, `/`, `div`, `rem`
+- **Built-ins**: `length/1`, `tuple_size/1`, `map_size/1`, `hd/1`, `tl/1`, `element/2`
+
+> **Restriction:** User-defined functions cannot be called in guards. Only built-in guard functions are allowed.
 
 ### Modules
 
-Erlang code is organized into **modules**. Each module can contain multiple functions and is compiled separately.
+Erlang code is organized into **modules**, units of compilation and namespace.
+
+**Module Structure:**
 
 ```erlang
+% Module declaration (must match filename: math_utils.erl)
 -module(math_utils).
+
+% Export public functions (name/arity)
 -export([factorial/1, absolute/1]).
 
+% Optional: Import functions from other modules
+-import(lists, [map/2, filter/2]).
+
+% Function definitions
 factorial(0) -> 1;
 factorial(N) -> N * factorial(N - 1).
 
 absolute(X) when X < 0 -> -X;
 absolute(X) -> X.
+
+% Private function (not exported)
+helper(X) -> X * 2.
 ```
 
-To use the functions from a module, you need to import it:
+**Using Modules:**
 
 ```erlang
-X = math_utils:factorial(5).  % Calls the factorial function from math_utils module
+% Call exported function with Module:Function syntax
+X = math_utils:factorial(5).  % 120
+
+% Compile module
+c(math_utils).  % In Erlang shell
 ```
 
 ### Erlang Control Flow
 
 #### If Expressions
 
-Erlang has `if` expressions, which uses guards for conditions. The `if` expression evaluates the guards in order and executes the body of the first guard that evaluates to true:
+The `if` expression uses guard expressions for conditions. Evaluates guards in order and executes the first true branch.
 
 ```erlang
-absolute(X) ->
+classify(X) ->
   if
-    X < 0 -> -X;
-    true -> X     % 'true' is a catch-all condition
+    X < 0 -> negative;
+    X > 0 -> positive;
+    true -> zero    % Catch-all (like 'else')
   end.
 ```
 
 #### Case Expressions
 
-Erlang provides `case` expressions for branching based on pattern matching:
+The `case` expression is based on pattern matching (more powerful than `if` as it allows calling custom functions).
 
 ```erlang
+% Basic case
 case X of
-  0 -> "Zero";
-  1 -> "One";
-  _ -> "Other"
+  0 -> zero;
+  1 -> one;
+  _ -> other  % _ matches anything (catch-all)
 end.
-```
 
-In the `case` is possible to call custom functions, meaning that an if-like on custom functions would be like:
-
-```erlang
+% Case with function calls
 case lists:member(a, X) of
-  true -> "Contains a";
-  false -> "Does not contain a"
+  true -> contains_a;
+  false -> does_not_contain_a
 end.
 ```
 
-#### Looping
+#### Iteration (Recursion)
 
-Erlang implements looping using **recursion**. A common pattern is to define a helper function that takes additional parameters to maintain state.
+Erlang uses **recursion** instead of loops. Use tail recursion for efficiency (constant stack space).
 
 ```erlang
 countdown(0) ->
@@ -2245,143 +2348,236 @@ countdown(N) when N > 0 ->
 
 ### Concurrency
 
-In erlang everything is an actor (independent unit of computation). Each actor has its own state and communicates with other actors through message passing. This model allows for building highly concurrent and distributed systems.
+Erlang is built on the **Actor Model**, everything runs in isolated processes that communicate via message passing.
 
-The order of the messages is not guaranteed.
+- Processes are lightweight (can run millions concurrently)
+- Each process has its own heap and mailbox
+- **No shared memory** between processes
+- Message passing is **asynchronous** (send and continue)
+- Message order between two processes is preserved, but not globally
 
-> There are three types of concurrency:
+> **Concurrency Models Comparison:**
 >
-> - Actor: Each actor is an independent unit of computation that can send and receive messages. Actors do not share state and communicate exclusively through message passing.
-> - Shared Memory: In this model, multiple processes share access to a common memory space. Synchronization mechanisms (like locks or semaphores) are used to manage concurrent access to shared data.
-> - CSP (Communicating Sequential Processes): This model emphasizes communication between processes through channels. Processes communicate by sending and receiving messages over these channels.
+> - **Actor Model** (Erlang): Isolated processes, message passing, no shared state
+> - **Shared Memory** (Java threads): Shared data, locks/mutexes for synchronization
+> - **CSP** (Go): Processes communicate via synchronous channels
 
-The concurrency is done with three main primitives:
+#### Core Primitives
 
-- `spawn(Mod, Func, Args)`: Creates a new process to run a specified function.
-- `!` (send operator): Sends a message to a process based on its process identifier (PID). This operation is async.
-- `receive ... end.`: Take the first message in the mailbox that matches a pattern. If no message matches, the process will block until a matching message arrives.
+1. `spawn` - Create a process:
+
+    ```erlang
+    Pid = spawn(Module, Function, Args).  % Returns process ID
+    Pid = spawn(fun() -> loop() end).     % Spawn with lambda
+    ```
+
+2. `!` - Send a message (asynchronous):
+
+    ```erlang
+    Pid ! {self(), hello}.  % Send message to Pid
+    Pid ! stop.
+    ```
+
+3. `receive` - Receive messages: Takes the first message from the mailbox that matches a pattern. Blocks if no match.
+
+    ```erlang
+    receive
+      {From, Msg} -> 
+        io:format("Received ~p from ~p~n", [Msg, From]);
+      stop -> 
+        ok;
+      _ -> 
+        io:format("Unknown message~n")
+    end.
+    ```
+
+**Complete Example:**
 
 ```erlang
-% Define a simple process that receives messages and prints them
+% Echo server: receives messages and sends responses
 echo() ->
   receive
     {From, Message} ->
       io:format("Received: ~p~n", [Message]),
-      From ! {self(), "Message received!"},  % Send a response back to the sender
-      echo()  % Continue to wait for more messages
+      From ! {self(), "Message received!"},  % Reply to sender
+      echo();  % Tail recursive call to keep process alive
+    stop ->
+      io:format("Stopping echo server~n"),
+      ok  % Terminate (process exits)
   end.
 
-% Start the echo process and send it a message
+% Start the echo server
 start() ->
-  Pid = spawn(fun echo/0),  % Spawn a new process running the echo function
-  Pid ! {self(), "Hello, Erlang!"}.   % Send a message to the echo process
+  Pid = spawn(fun echo/0),              % Create new process
+  Pid ! {self(), "Hello, Erlang!"},     % Send message
+  receive
+    {Pid, Reply} -> io:format("Got reply: ~p~n", [Reply])
+  end,
+  Pid ! stop.  % Stop the server
 ```
 
-`self()` returns the PID of the current process, allowing it to send messages back to itself or other processes.
+**Useful Built-ins:**
+
+- `self()`: Returns PID of current process
+- `is_process_alive(Pid)`: Check if process is running
 
 #### Registered Processes
 
-Erlang allows processes to be registered with a name, making it easier to send messages without needing to know the PID.
+Processes can be registered with **global atom names** for easier access (no need to track PIDs).
 
 ```erlang
-% Register the echo process with the name 'echo_server'
+% Register a process
 start() ->
   Pid = spawn(fun echo/0),
-  register(echo_server, Pid),  % Register the process with the name 'echo_server'.
+  register(echo_server, Pid),  % Register with atom name
   ok.
+
+% Send message using registered name
+echo_server ! {self(), "Hello"}.
 ```
 
-#### Library
+Some useful functions are:
 
-When implementing concurrent system, is a good practice to export only the necessary functions and keep the internal workings private. This encapsulation helps maintain a clean interface and prevents unintended interactions with the internal state of the module.
+- `unregister(Name)`: Unregister a name
+- `whereis(Name)`: Get PID of registered name
+
+#### Encapsulation Pattern
+
+A good practice when implementing modules is to export only public API functions keeping process implementation private.
 
 ```erlang
 -module(echo).
--export([start/0, send_message/1]).
+% Public API
+-export([start/0, send_message/1, stop/0]).
 
+% Public functions
 start() ->
-  Pid = spawn(fun echo/0),
+  Pid = spawn(fun loop/0),      % spawn internal function
   register(echo_server, Pid),
-  ok.
+  {ok, Pid}.
 
 send_message(Message) ->
-  echo_server ! {self(), Message}.
+  echo_server ! {self(), Message},
+  ok.
+
+stop() ->
+  echo_server ! stop,
+  ok.
+
+% Private functions (not exported)
+loop() ->
+  receive
+    {From, Msg} ->
+      From ! {echo, Msg},
+      loop();
+    stop ->
+      ok
+  end.
 ```
 
-#### Timeouts
+#### Timeouts and Timers
 
-Erlang's `receive` block can include a timeout clause to handle cases where no messages are received within a specified time frame.
+**Receive Timeout:**
+
+Handle cases where no matching message arrives within a time limit.
 
 ```erlang
 receive
-  Message ->
-    io:format("Received: ~p~n", [Message])
-after 5000 ->  % Timeout after 5000 milliseconds (5 seconds)
-    io:format("No messages received within 5 seconds.~n")
+  {data, Value} ->
+    io:format("Received: ~p~n", [Value])
+after 5000 ->  % Timeout after 5000 ms (5 seconds)
+    io:format("No message received~n")
+end.
+
+% Timeout of 0: check mailbox without blocking
+receive
+  Msg -> handle(Msg)
+after 0 ->
+    no_message
 end.
 ```
 
-It is possible to put an actor to `sleep(T)`, where T is in milliseconds:
+**Delays:**
 
 ```erlang
-timer:sleep(1000).  % Sleep for 1000 milliseconds (1 second)
+timer:sleep(1000).  % Sleep current process for 1 second
 ```
 
-There are also alarms that can be set with `erlang:send_after/3` and `erlang:start_timer/3` to send messages after a certain time interval.
+**Scheduled Messages:**
 
 ```erlang
-erlang:send_after(2000, self(), timeout).  % Send 'timeout' message to self after 2000 ms
-erlang:start_timer(3000, self(), tick).   % Send 'tick' message to self after 3000 ms
+% Timer with reference (can be cancelled)
+Ref = erlang:start_timer(3000, self(), tick).
+erlang:cancel_timer(Ref).  % Cancel if needed
 ```
 
-#### Flush
+#### Flush Mailbox
 
-The `flush()` function can be used in the Erlang shell to clear all messages in the current process's mailbox.
+The `flush()` function clears all messages in the current process's mailbox:
 
 ```erlang
 flush().
 ```
 
-### Let It Crash
+### Error Handling Philosophy: "Let It Crash"
 
-Erlang follows the philosophy of "let it crash," which encourages developers to design systems that can recover from failures rather than trying to prevent them entirely. This approach is based on the idea that failures are inevitable in distributed systems, and it's more efficient to handle them gracefully than to avoid them at all costs.
+Erlang embraces a unique philosophy: **"Let It Crash"**.
+
+**Core Principles:**
+
+1. Don't defend against every possible error, as failures in distributed system are inevitable
+2. Isolate failures, one process crash doesn't bring down the system
+3. Use supervisors, monitoring processes that restart failed workers
+4. Design for recovery, make restart cheap and state restorable
 
 #### Supervisors
 
-Supervisors are special processes that monitor other processes (workers) and restart them if they crash. This helps maintain system stability and ensures that failures are contained and managed effectively.
+Supervisors are special processes that monitor workers and can restart them on failure.
 
-A supervisor is **linked** to its worker processes, meaning that if a worker crashes, the supervisor is notified and can take appropriate action (like restarting the worker), and if the supervisor crashes, all its linked workers will also crash.
+A supervisor needs to be **linked** to a worker process. This allows to receive exit signals when the worker crashes, and stop the worker when the supervisor crashes.
+
+To be able to handle exit signals, the supervisor process must set `trap_exit` flag to `true`. This converts exit signals into messages (`{'EXIT', Pid, Reason}`) that the supervisor can receive and handle.
 
 ```erlang
-start_master(Count) ->
-  process_flag(trap_exit, true),
-  create_children(Count),
-  master_loop(Count).
+% Start supervisor with N workers
+start_supervisor(Count) ->
+  process_flag(trap_exit, true),  % Convert exit signals to messages
+  spawn_workers(Count),
+  supervisor_loop(Count).
 
-create_children(0) -> ok;
-create_children(N) -> 
-  spawn_link(fun worker/0),
-  create_children(N - 1).
+% Spawn N linked workers
+spawn_workers(0) -> ok;
+spawn_workers(N) -> 
+  spawn_link(fun worker/0),  % Create linked worker
+  spawn_workers(N - 1).
 
-master_loop(Count) ->
+% Supervisor main loop
+supervisor_loop(Count) ->
   receive
-    {'EXIT', _Pid, normal} ->
-      io:format("A worker has exited normally.~n"),
+    {'EXIT', Pid, normal} ->
+      % Worker exited normally
+      io:format("Worker ~p exited normally~n", [Pid]),
+      NewCount = Count - 1,
       if
-        Count > 0 -> master_loop(Count - 1);  % Continue monitoring if there are still workers
-        true -> io:format("All workers have exited. Shutting down.~n")
+        NewCount > 0 -> supervisor_loop(NewCount);
+        true -> io:format("All workers done. Shutting down.~n")
       end;
-    {'EXIT', _Pid, _Reason} ->
-      io:format("A worker has crashed. Restarting...~n"),
-      create_children(1),  % Restart the crashed worker
-      master_loop(Count);
+    
+    {'EXIT', Pid, Reason} ->
+      % Worker crashed - restart it
+      io:format("Worker ~p crashed (~p). Restarting...~n", [Pid, Reason]),
+      spawn_workers(1),  % Restart one worker
+      supervisor_loop(Count)  % Keep same count
   end.
 
+% Worker process (may crash randomly)
 worker() ->
-  % Simulate work and potential failure
   timer:sleep(1000),
-  if
-    random:uniform(10) > 7 -> exit(crash);  % Randomly crash with a 30% chance
-    true -> io:format("Worker is doing work...~n")
+  case rand:uniform(10) of
+    N when N > 7 -> 
+      exit(random_crash);  % 30% chance to crash
+    _ -> 
+      io:format("Worker ~p working...~n", [self()]),
+      worker()  % Continue working
   end.
 ```
