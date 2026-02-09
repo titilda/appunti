@@ -699,6 +699,16 @@ Macros in sceme are **hygienic** meaning that they prevents unintended variable 
 
 To use global variable, defined at the top level, the name must be surrounded by `*` symbols, for example `(define *global-var* '())`.
 
+To break hygiene and allow variable capture, the user should pass the variable as a parameter to the macro:
+
+```scheme
+(define-syntax with-temp
+  (syntax-rules ()
+    ((_ var body ...)
+      (let ((var (make-temp)))
+        body ...))))
+```
+
 ### Continuations
 
 **Continuations** represent "the rest of the computation" at any given point in a program. They capture what the program will do next, allowing you to pause execution, save that state, and resume it later—possibly multiple times or from different contexts.
@@ -804,7 +814,7 @@ By storing lambdas inside a `struct` (or record), we can create objects where da
 (struct counter (inc dec val))
 
 (define (make-counter)
-  (let ((count 0))
+  (let ((count 0))                         ; internal state
     (counter
       (lambda () (set! count (+ count 1))) ; inc
       (lambda () (set! count (- count 1))) ; dec
@@ -830,7 +840,7 @@ This procedure accepts a "message" (usually a symbol) and arguments, then decide
 (define (make-counter)
   (let ((count 0))
     ;; Local methods
-    (define (inc)     (set! count (+ count 1)))
+    (define (inc)         (set! count (+ count 1)))
     (define (set-val val) (set! count val))
     (define (get-val)     count)
   
@@ -840,7 +850,7 @@ This procedure accepts a "message" (usually a symbol) and arguments, then decide
         ((increase) (apply inc args))
         ((set)      (apply set-val args))
         ((value)    (apply get-val args))
-        (else (error "Unknown message" message))))))
+        (else       (error "Unknown message" message))))))
 
 (define c (make-counter))
 (c 'increase) ; Increments
@@ -870,7 +880,7 @@ Inheritance is achieved by **delegation**: if the child object doesn't recognize
 
 #### Prototype-based Implementation
 
-In prototype-based OO (like JavaScript or Lua), there are no classes. Objects are cloned from existing **prototypes**, and behaviors are added or modified dynamically. 
+In prototype-based OO (like JavaScript or Lua), there are no classes. Objects are cloned from existing **prototypes**, and behaviors are added or modified dynamically.
 
 **Hash tables** are typically used to store fields and methods.
 
@@ -989,3 +999,1599 @@ To define a custom error handling mechanism we must:
     )
   )
   ```
+
+## Haskell
+
+**Haskell** is a _purely functional programming language_ based on immutability and side-effect-free functions. It is statically typed with strong type inference and polymorphism.
+
+### Evaluation Strategy
+
+Being purely functional allows the order of evaluation to be irrelevant, enabling **lazy evaluation** of **redexes** (reducible expressions). This means that expressions are not evaluated until their values are actually needed, which:
+
+- Enables the creation of infinite data structures
+- Improves performance by avoiding unnecessary computations
+- Allows more flexible control flow
+
+> A **redex** is an expression that can be reduced or simplified according to the rules of the language. In functional programming, a redex typically refers to a function application that can be evaluated to produce a result.
+
+#### Call by Need
+
+When calling a function, Haskell uses **call by need** evaluation strategy, which is an optimization of **call by name**. In call by need:
+
+1. Arguments to a function are not evaluated until they are actually used
+2. Once evaluated, the result is cached ("memoized")
+3. Subsequent uses of the same argument reuse the cached value without re-evaluation
+
+This is implemented using **thunks**, deferred computations. A thunk is a parameterless function that encapsulates an expression to be evaluated later.
+
+**Evaluation Strategies Comparison:**
+
+| Strategy | Order | Description |
+| ---------- | ------- | ------------- |
+| **Call by Value** | Innermost-first | Evaluates arguments before function application (leftmost redexes first) |
+| **Call by Name** | Outermost-first | Evaluates function application before arguments (outermost redexes first) |
+| **Call by Need** | Outermost-first + memoization | Like call by name, but caches results |
+
+**Why Call by Name is More Robust:**
+
+Call by name is more robust than call by value (Church-Rosser confluence) because it guarantees finding a normal form (fully reduced expression) when one exists. This is because:
+
+- Call by name starts from the root of the expression tree
+- Call by value starts from the leaves and may get stuck in non-terminating sub-computations
+
+#### Scheme Implementation of Call by Name
+
+In Scheme, we can simulate call by name using lambda expressions to create promises (thunks):
+
+```scheme
+(struct promise (thunk value?) #:mutable)
+
+(define-syntax delay
+  (syntax-rules ()
+    ((_ expr ...)
+      (promise (lambda () expr ...) #f))))
+
+(define (force p)
+  (cond
+    ((not (promise? p)) p)                    ; If not a promise, return as is
+    ((promise-value? p) (promise-value? p))   ; If already evaluated, return cached value
+    (else                                     ; Otherwise, evaluate the thunk
+      (let ((val ((promise-thunk p))))
+        (set-promise-value?! p val)           ; Cache the evaluated value
+        val))))
+```
+
+#### Forcing Strict Evaluation
+
+Haskell provides mechanisms to override lazy evaluation when needed:
+
+1. **BangPatterns (`!` symbol)**: Indicates that a value should be evaluated immediately (eagerly) rather than lazily.
+
+    ```haskell
+    factorial :: Int -> Int
+    factorial 0 = 1
+    factorial n = n * factorial (n - 1)  -- Normal lazy evaluation
+
+    factorial' :: !Int -> Int
+    factorial' 0 = 1
+    factorial' !n = n * factorial' (n - 1)  -- Eager evaluation
+    ```
+
+2. **The `seq` function**: Forces evaluation of an expression before proceeding with the rest of the computation.
+
+    ```haskell
+    factorial'' :: Int -> Int
+    factorial'' 0 = 1
+    factorial'' n = n `seq` (n * factorial'' (n - 1))  -- Force evaluation of n
+    ```
+
+> **Use Case:** Strict evaluation is useful for preventing space leaks in accumulating parameters and improving performance in specific scenarios.
+
+### Variables
+
+Variables in Haskell are **immutable** by default, once a variable is bound to a value, it cannot be changed. This immutability is a core principle of functional programming and ensures **referential transparency** (an expression can be replaced by its value without changing program behavior).
+
+#### Defining Variables
+
+Haskell provides two keywords for defining local variables: `let` and `where`.
+
+The `let` keyword allows us to define local variables within an expression:
+
+```haskell
+square :: Int -> Int
+square x = 
+  let y = x * x 
+  in y
+```
+
+The `where` keyword allows us to define local variables at the end of a function definition that will be resolved as substitutions in the function body:
+
+```haskell
+square :: Int -> Int
+square x = y
+  where y = x * x
+```
+
+> **Difference:** `let` is an expression (can be used anywhere), while `where` is a declaration (only at function level).
+
+### Type System
+
+Haskell is a **statically typed** language — the type of every expression is known at compile time.
+
+#### Type Inference
+
+Haskell uses **type inference** via the Hindley-Milner type system to automatically deduce types without explicit annotations. The system infers the most general type for each expression.
+
+**Type Annotations:**
+
+The type can be explicitly specified using the `::` operator:
+
+```haskell
+x :: Int
+x = 42
+```
+
+#### Built-in Types
+
+Haskell provides several primitive types:
+
+- `Integer`: Represents arbitrary-precision integers.
+- `Int`: Represents fixed-precision integers.
+- `Float`: Represents floating-point numbers.
+- `Rational`: Represents rational numbers as fractions (`%`).
+- `Char`: Represents a single Unicode character.
+- `[a]`: Represents a list of elements of type `a`.
+- `(a, b)`: Represents a tuple containing two elements of types `a` and `b`.
+
+#### Type Aliases
+
+Create descriptive names for existing types using the `type` keyword:
+
+```haskell
+type String = [Char]
+```
+
+### User-Defined Types
+
+Haskell allows creating custom data types using the `data` keyword.
+
+- **Type Constructor**: The name of the new type (used in type signatures)
+- **Data Constructor(s)**: Functions to create values (also used in pattern matching)
+- **Sum Types** (`|`): Multiple constructors representing alternatives (like C unions)
+- **Product Types**: Single constructor with multiple fields (like C structs)
+
+```haskell
+data Shape = Circle Float | Rectangle Float Float
+```
+
+To create instances of user-defined types, we use the _data constructors_:
+
+```haskell
+circle :: Shape
+circle = Circle 5.0
+
+rectangle :: Shape
+rectangle = Rectangle 4.0 6.0
+```
+
+#### Parametric Types (Generics)
+
+Type constructors can take type parameters:
+
+```haskell
+data Maybe a = Nothing | Just a  -- 'a' is a type variable
+```
+
+#### Accessing Fields
+
+##### Positional Access (Pattern Matching)
+
+By default, fields are accessed via pattern matching:
+
+```haskell
+data Point = Point Float Float
+
+point :: Point
+point = Point 3.0 4.0
+
+pointX :: Point -> Float
+pointX (Point x _) = x  -- Extracts the first field
+```
+
+To simplify access, custom accessor functions can be defined manually:
+
+```haskell
+getX :: Point -> Float
+getX (Point x _) = x
+
+xVal :: Float
+xVal = getX point  -- Accessing the x field
+```
+
+##### Record Syntax (Named Fields)
+
+Record syntax provides named fields and automatically generates accessor functions:
+
+```haskell
+data Point = Point { x :: Float, y :: Float }
+
+point :: Point
+point = Point { x = 3.0, y = 4.0 }
+
+valX :: Float
+valX = x point  -- 'x' is now a function: Point -> Float
+```
+
+### Type Classes
+
+Type classes define a set of functions that can operate on different types, providing **polymorphism** (similar to interfaces in OOP languages). Any type can become an instance of a type class by implementing its required methods.
+
+#### Defining Type Classes
+
+Use the `class` keyword to define a type class:
+
+```haskell
+class Eq a where
+  (==) :: a -> a -> Bool
+  (/=) :: a -> a -> Bool
+```
+
+The type signature `(==) :: (Eq a) => a -> a -> Bool` means:
+
+- `(Eq a) =>` is a **type constraint** ("for any type `a` that is an instance of `Eq`")
+- The function works for any type implementing the `Eq` type class
+
+#### Creating Instances
+
+Use the `instance` keyword to make a type an instance of a type class:
+
+```haskell
+instance Eq Bool where
+  True  == True  = True
+  False == False = True
+  _     == _     = False
+```
+
+#### Using Type Constraints
+
+Enforce type class constraints in a signatures:
+
+```haskell
+-- Single constraint
+areEqual :: (Eq a) => a -> a -> Bool
+areEqual x y = x == y
+
+-- Multiple constraints (comma-separated)
+showAndEq :: (Show a, Eq a) => a -> a -> String
+showAndEq x y = "Are they equal? " ++ show (x == y)
+```
+
+#### Common Type Classes
+
+##### Eq
+
+Supports equality testing with two methods:
+
+```haskell
+class Eq a where
+  (==) :: a -> a -> Bool
+  (/=) :: a -> a -> Bool
+```
+
+##### Ord
+
+Supports ordering and comparison operations:
+
+```haskell
+class Eq a => Ord a where
+  compare :: a -> a -> Ordering
+  (<)     :: a -> a -> Bool
+  (<=)    :: a -> a -> Bool
+  (>)     :: a -> a -> Bool
+  (>=)    :: a -> a -> Bool
+```
+
+> **Note:** `Eq a => Ord a` indicates that `Ord` requires `Eq`, any ordered type must also support equality.
+
+##### Foldable
+
+For data structures that can be reduced (folded) to a summary value:
+
+```haskell
+class Foldable t where
+  foldr :: (a -> b -> b) -> b -> t a -> b
+
+  foldl :: (b -> a -> b) -> b -> t a -> b
+  foldl f a bs = foldr (\b g x -> g (f x b)) id bs a
+
+-- example
+
+instance Foldable Maybe where
+  foldr _ z Nothing  = z
+  foldr f z (Just x) = f x z
+
+instance Foldable List where
+  foldr _ z []     = z
+  foldr f z (x:xs) = f x (foldr f z xs)
+```
+
+##### Functor
+
+For types that can be mapped over (containers that support applying a function to their contents):
+
+```haskell
+class Functor f where
+  fmap :: (a -> b) -> f a -> f b
+
+-- example
+
+instance Functor Maybe where
+  fmap _ Nothing  = Nothing
+  fmap f (Just x) = Just (f x)
+
+instance Functor List where
+  fmap _ []     = []
+  fmap f (x:xs) = f x : fmap f xs
+```
+
+**Functor Laws:**
+
+All Functor instances must satisfy:
+
+1. **Identity**: `fmap id = id` (mapping the identity function does nothing)
+2. **Composition**: `fmap (f . g) = fmap f . fmap g` (mapping a composition equals composing the maps)
+
+###### Applicative
+
+Extends Functor to support applying functions wrapped in a context to values wrapped in a context:
+
+```haskell
+class Functor f => Applicative f where
+  pure :: a -> f a
+  (<*>) :: f (a -> b) -> f a -> f b
+
+-- example
+
+instance Applicative Maybe where
+  pure = Just
+  Nothing <*> _ = Nothing
+  _ <*> Nothing = Nothing
+  (Just f) <*> (Just x) = Just (f x)
+
+instance Applicative List where
+  pure x = [x]
+  fs <*> xs = [f x | f <- fs, x <- xs]
+```
+
+Where:
+
+- `pure`: Takes a value into the applicative context
+- `<*>`: Applies a wrapped function to a wrapped value (implementation varies: cartesian product or zip-like)
+
+##### Monad
+
+Extends Applicative to represent computations (called _actions_) that can be sequenced, where each computation can depend on the result of the previous one.
+
+Monads enable **imperative-style** programming in a functional language while maintaining purity.
+
+**Methods**:
+
+- `>>=` (bind): Sequences two actions, passing the result of the first to the second
+- `>>`: Sequences two actions, discarding the result of the first  
+- `return`: Wraps a value in the monadic context (alias for `pure`)
+
+```haskell
+class Applicative m => Monad m where
+  (>>=)  :: m a -> (a -> m b) -> m b
+
+  (>>)   :: m a -> m b -> m b
+  m >> k = m >>= \_ -> k
+
+  return :: a -> m a
+  return = pure
+
+-- example
+
+instance Monad Maybe where
+  Nothing >>= _ = Nothing
+  (Just x) >>= f = f x
+
+instance Monad List where
+  [] >>= _ = []
+  (x:xs) >>= f = f x ++ (xs >>= f)
+```
+
+**Monad Laws:**
+
+All Monad instances must satisfy:
+
+1. **Left Identity**: `return a >>= f  ==  f a`
+2. **Right Identity**: `m >>= return  ==  m`
+3. **Associativity**: `(m >>= f) >>= g  ==  m >>= (\x -> f x >>= g)`
+
+###### Do Notation
+
+Provides syntactic sugar for chaining monadic operations, making monadic code more readable and imperative-looking.
+
+```haskell
+example :: Maybe Int
+example = do
+  x <- Just 3
+  y <- Just 4
+  return (x + y)
+```
+
+Desugared version:
+
+```haskell
+example :: Maybe Int
+example = Just 3 >>= \x ->
+            Just 4 >>= \y ->
+              return (x + y)
+```
+
+List comprehensions are syntactic sugar for the list monad:
+
+```haskell
+-- These three are equivalent:
+do x <- [1, 2]
+   y <- [3, 4]
+   return (x, y)
+
+[1, 2] >>= \x -> [3, 4] >>= \y -> return (x, y)
+
+[(x, y) | x <- [1, 2], y <- [3, 4]]
+
+-- All produce: [(1,3), (1,4), (2,3), (2,4)]
+```
+
+###### State Monad
+
+Encapsulates stateful computations, allowing functions to read and modify shared state without explicit parameter passing.
+
+**Type:** `State s a` represents a computation that:
+
+- Takes an initial state of type `s`
+- Produces a result of type `a` plus a new state of type `s`
+
+```haskell
+data State s a = State ( s -> (s, a) )
+
+instance Functor (State s) where
+  fmap f (State g) = State $ \s ->
+    let (s', x) = g s
+    in (s', f x)
+
+instance Applicative (State s) where
+  pure x = State $ \s -> (s, x)
+
+  (State f) <*> (State g) = State $ \s ->
+    let (s', h) = f s
+        (s'', x) = g s'
+    in (s'', h x)
+
+instance Monad (State s) where
+  (State g) >>= f = State $ \s ->
+    let (s', x) = g s
+        (State h) = f x
+    in h s'
+
+-- runState is used to execute a State computation with an initial state
+runState :: State s a -> s -> (s, a)
+runState (State f) s = f s
+
+-- Example usage of State monad
+get :: State s s
+get = State $ \s -> (s, s)
+
+put :: s -> State s ()
+put newState = State $ \_ -> (newState, ())
+
+modify :: (s -> s) -> State s ()
+modify f = do
+  s <- get
+  put (f s)
+
+main :: IO ()
+main = do
+    let (finalState, result) = runState 
+          (do x <- get          -- Get the state (initially 100)
+              modify (+ 10)     -- Modify the state by adding 10 (state becomes 110)
+              return (x + 1))   -- Return the result of adding 1 to the original state (100)
+          100
+    
+    print result                -- Print the result (101)
+    print finalState            -- Print the final state (110)
+```
+
+**Key Functions:**
+
+- `get`: Retrieves the current state
+- `put`: Replaces the state  
+- `modify`: Applies a function to the state
+- `runState`: Executes a State computation with an initial state
+
+### Data Structures
+
+Haskell provides several built-in **immutable** data structures:
+
+#### Arrays
+
+Fixed-size collections (`Data.Array` module):
+
+- **Create**: `listArray (lower, upper) [elements]`
+- **Update**: `array // [(index, newValue)]` (creates new array)
+- **Access**: `array ! index`
+
+  ```haskell
+  import Data.Array
+  arr = let m = listArray (0, 4) [10, 20, 30, 40, 50]
+            n = arr // [(2, 99)]  -- Update index 2 to 99
+        in (m ! 2, n ! 2)
+  ```
+
+#### Maps
+
+Key-value pairs (`Data.Map` module):
+
+- **Create**: `fromList [(key1, val1), (key2, val2)]`
+- **Insert**: `insert key value map`
+- **Access**: `map ! key`
+
+  ```haskell
+  import qualified Data.Map as Map
+
+  myMap = let m = fromList [("one", 1), ("two", 2), ("three", 3)]
+              n = insert "four" 4 m
+          in (m ! "two", n ! "four")
+  ```
+
+### Functions
+
+Haskell functions are **first-class citizens**, they can be:
+
+- Passed as arguments to other functions
+- Returned from functions
+- Assigned to variables
+
+#### Basic Function Definition
+
+Use the `->` operator in type signatures:
+
+```haskell
+add1 :: Int -> Int
+add1 x = x + 1
+```
+
+A function is called by simply providing its arguments:
+
+```haskell
+result :: Int
+result = add1 5  -- result will be 6
+```
+
+#### Point-Free Style
+
+Functions can be defined without explicitly mentioning arguments:
+
+```haskell
+add1 :: Int -> Int
+add1 = (+ 1)  -- Partial application of (+)
+```
+
+#### Infix Operators
+
+Haskell allows functions with two arguments to be used as **infix operators** by enclosing their names in backticks (`` ` ``).
+
+```haskell
+5 `add` 3  -- Equivalent to (add 5 3)
+```
+
+Conversely, an infix operator (non-alphabetical like `+` or `*`) can be used as a prefix function by enclosing it in parentheses `()`.
+
+```haskell
+(+) 5 3  -- Equivalent to (5 + 3)
+```
+
+#### Lambda Functions
+
+Lambda functions are defined using the `\` symbol followed by the parameters, an arrow `->`, and the function body.
+
+```haskell
+\x y -> x + y + 1
+```
+
+#### Composition
+
+Function composition is achieved using the `(.)` operator, which allows combining two functions into a new function.
+
+```haskell
+(.) :: (b -> c) -> (a -> b) -> a -> c
+(.) f g x = f (g x)
+
+-- Example usage:
+increment :: Int -> Int
+increment = (+1)
+double :: Int -> Int
+double = (*2)
+
+incrementThenDouble :: Int -> Int
+incrementThenDouble = double . increment
+
+result :: Int
+result = incrementThenDouble 3  -- result will be 8
+```
+
+#### Function Application Operator
+
+The `$` operator is used for function application and can be used to avoid parentheses.
+
+```haskell
+result :: Int
+result = double $ increment 3  -- Equivalent to double (increment 3)
+```
+
+#### Currying
+
+All functions in Haskell are **curried** by default, meaning that a multi-argument function is actually a chain of single-argument functions.
+
+**Mathematical representation**:
+
+A function $f: \mathbb{N} \times \mathbb{Z} \rightarrow \mathbb{Q}$ is represented as:
+
+$$f: \mathbb{N} \rightarrow (\mathbb{Z} \rightarrow \mathbb{Q})$$
+
+Or simply: $f: \mathbb{N} \rightarrow \mathbb{Z} \rightarrow \mathbb{Q}$ (since $\rightarrow$ is right-associative)
+
+```haskell
+add :: Integer -> Integer -> Integer
+add x y = x + y
+```
+
+The function `add` takes an integer `x` and returns a new function that takes an integer `y` and returns the sum of `x` and `y`.
+
+##### Partial Application
+
+Currying enables **partial application** of functions, meaning that providing only some arguments returns a new function expecting the remaining ones:
+
+```haskell
+increment :: Int -> Int
+increment = add 1
+```
+
+The `increment` function is created by partially applying the `add` function with the first argument set to `1`. It takes a single integer argument and adds `1` to it.
+
+#### Polymorphism
+
+Haskell supports **parametric polymorphism**, allowing functions to operate on values of any type without being tied to a specific one. This is achieved using _type variables_.
+
+```haskell
+identity :: a -> a
+identity x = x
+```
+
+The `identity` function takes a value of any type `a` and returns a value of the same type.
+
+> This is similar to generics in languages like Java or C#.
+
+#### Pattern Matching
+
+In Haskell, **pattern matching** is a powerful feature that allows to define functions by specifying patterns for their arguments. When a function is called, Haskell tries to match the provided arguments against the defined patterns in order from top to bottom.
+
+```haskell
+factorial :: Integer -> Integer
+factorial 0 = 1
+factorial n = n * factorial (n - 1)
+```
+
+Haskell also support **boolean guards** to define conditions for different cases in function definitions.
+
+```haskell
+absolute :: Int -> Int
+absolute x
+  | x < 0     = -x
+  | otherwise = x
+```
+
+It is possible to define a function using the `case` expression, which allows for pattern matching within the function body.
+
+```haskell
+describeList :: [a] -> String
+describeList xs = case xs of
+  []      -> "The list is empty."
+  [x]     -> "The list has one element."
+  (x:y:_) -> "The list has multiple elements."
+```
+
+#### Common Higher-Order Functions
+
+Haskell's standard library provides powerful functions for list manipulation:
+
+- `map`: Applies a function to each element of a list and returns a new list of the results.
+
+  ```haskell
+  map :: (a -> b) -> [a] -> [b]
+  map f [] = []
+  map f (x:xs) = f x : map f xs
+  ```
+
+- `concatMap`: Maps a function over a list and concatenates the results.
+
+  ```haskell
+  concatMap :: (a -> [b]) -> [a] -> [b]
+  concatMap f xs = concat (map f xs)
+  ```
+
+- `zip`: Combines two lists into a list of pairs.
+
+  ```haskell
+  zip :: [a] -> [b] -> [(a, b)]
+  zip [] _ = []
+  zip _ [] = []
+  zip (x:xs) (y:ys) = (x, y) : zip xs ys
+
+  -- Example usage:
+  paired :: [(Int, Char)]
+  paired = zip [1, 2, 3] ['a', 'b', 'c']  -- Returns [(1,'a'), (2,'b'), (3,'c')]
+  ```
+
+- **List Comprehensions**: A concise way to create lists based on existing lists (This is a monad).
+
+  ```haskell
+  squares :: [Int]
+  squares = [x^2 | x <- [1..10]]  -- Generates a list of squares from 1 to 10
+  ```
+
+- `any`: Checks if any element in a list satisfies a given predicate.
+
+  ```haskell
+  any :: (a -> Bool) -> [a] -> Bool
+  any _ [] = False
+  any p (x:xs) = p x || any p xs
+  ```
+
+- `all`: Checks if all elements in a list satisfy a given predicate.
+
+  ```haskell
+  all :: (a -> Bool) -> [a] -> Bool
+  all _ [] = True
+  all p (x:xs) = p x && all p xs
+  ```
+
+- `elem`: Checks if an element is present in a list.
+
+  ```haskell
+  elem :: Eq a => a -> [a] -> Bool
+  elem _ [] = False
+  elem y (x:xs)
+    | y == x    = True
+    | otherwise = elem y xs
+  ```
+
+- `takeWhile`: Takes elements from a list while a predicate holds true.
+
+  ```haskell
+  takeWhile :: (a -> Bool) -> [a] -> [a]
+  takeWhile _ [] = []
+  takeWhile p (x:xs)
+    | p x       = x : takeWhile p xs
+    | otherwise = []
+  ```
+
+- `filter`: Filters a list based on a predicate function.
+
+  ```haskell
+  filter :: (a -> Bool) -> [a] -> [a]
+  filter _ [] = []
+  filter p (x:xs)
+    | p x       = x : filter p xs
+    | otherwise = filter p xs
+  ```
+
+- `foldr` and `foldl`: Reduces a list to a single value by recursively applying a binary function.
+  
+  > **Performance Note:** Due to lazy evaluation, `foldr` is generally preferred:
+  > - `foldr` works with infinite lists
+  > - `foldl` can lead to stack overflows unless used with `foldl'` (strict version). It doesn't use stack space, but the lazy nature can cause excessive heap usage.
+
+  ```haskell
+  foldr :: (a -> b -> b) -> b -> [a] -> b
+  foldr _ z []     = z
+  foldr f z (x:xs) = f x (foldr f z xs)
+  foldl _ z []     = z
+  foldl f z (x:xs) = foldl f (f z x) xs
+  ```
+
+- `concat`: Concatenates a list of lists into a single list.
+
+  ```haskell
+  concat :: [[a]] -> [a]
+  concat [] = []
+  concat (xs:xss) = xs ++ concat xss
+
+  -- Example usage:
+  combined :: [Int]
+  combined = concat [[1, 2], [3, 4], [5]]  -- Returns [1, 2, 3, 4, 5]
+  ```
+
+- `length`: Returns the number of elements in a list.
+
+  ```haskell
+  length :: [a] -> Int
+  length [] = 0
+  length (_:xs) = 1 + length xs
+  ```
+
+- `reverse`: Reverses a list.
+
+  ```haskell
+  reverse :: [a] -> [a]
+  reverse [] = []
+  reverse (x:xs) = reverse xs ++ [x]
+  ```
+
+- `take`: Takes the first `n` elements from a list.
+
+  ```haskell
+  take :: Int -> [a] -> [a]
+  take _ [] = []
+  take n (x:xs)
+    | n <= 0    = []
+    | otherwise = x : take (n - 1) xs
+  ```
+
+- `drop`: Drops the first `n` elements from a list.
+
+  ```haskell
+  drop :: Int -> [a] -> [a]
+  drop _ [] = []
+  drop n xs@(x:xs')
+    | n <= 0    = xs
+    | otherwise = drop (n - 1) xs'
+  ```
+
+### Infinite Data Structures
+
+Haskell's lazy evaluation enables working with **infinite data structures**. Values are computed only when needed, allowing theoretically infinite lists.
+
+```haskell
+-- Infinite list of ones
+ones :: [Int]
+ones = 1 : ones
+
+-- Infinite list from n onward  
+ones' = [1, 1..]  -- Alternative notation
+
+numFrom n = n : numFrom (n+1) -- An infinite list of natural numbers starting from n
+squares = map (^2) (numFrom 1) -- An infinite list of squares of natural numbers
+```
+
+We can work with infinite lists using functions like `take`, which retrieves a finite number of elements from the beginning of the list.
+
+```haskell
+firstFiveOnes :: [Int]
+firstFiveOnes = take 5 ones  -- Returns [1, 1, 1, 1, 1]
+```
+
+### Control Flow
+
+#### Conditional Expressions
+
+Haskell provides `if-then-else` expressions:
+
+```haskell
+if condition then trueExpression else falseExpression
+```
+
+The `else` clause is **mandatory** (since expressions must always return a value).
+
+**Implementation as a function**:
+
+```haskell
+if' :: Bool -> a -> a -> a
+if' True  x _ = x
+if' False _ y = y
+```
+
+#### Haskell Iteration
+
+Haskell uses **recursion with pattern matching** instead of traditional loops:
+
+### Input/Output
+
+Haskell handles I/O using the **`IO` monad**, which encapsulates side-effecting operations while maintaining functional purity.
+
+```haskell
+main :: IO ()
+main = do
+  putStrLn "Hello, World!"
+```
+
+> **Note:** The `IO` monad internally uses an implicit "world state" token to sequence operations.
+
+#### Basic I/O Operations
+
+- `putStrLn`: Outputs a string followed by a newline to the standard output.
+
+  ```haskell
+  putStrLn :: String -> IO ()
+
+  putStrLn "Hello, World!"
+  ```
+
+- `getLine`: Reads a line of input from the standard input.
+
+  ```haskell
+  getLine :: IO String
+
+  name <- getLine
+  ```
+
+- `getChar`: Reads a single character from the standard input.
+
+  ```haskell
+  getChar :: IO Char
+
+  char <- getChar
+  ```
+
+- `print`: Outputs a value to the standard output, converting it to a string using the `Show` type class.
+
+  ```haskell
+  print :: Show a => a -> IO ()
+
+  print 42
+  ```
+
+#### Command Line Arguments
+
+Haskell provides the `System.Environment` module to access command line arguments.
+
+```haskell
+import System.Environment
+
+main :: IO ()
+main = do
+  args <- getArgs
+  putStrLn ("Command line arguments: " ++ show args)
+
+  progName <- getProgName
+  putStrLn ("Program name: " ++ progName)
+```
+
+### Haskell Error Handling
+
+#### Bottom Type (⊥)
+
+Represents non-terminating computations and errors. Defined as `⊥ = ⊥` or `bot = bot`.
+
+#### Raising errors
+
+```haskell
+error :: String -> a
+error "An error occurred"  -- Terminates program with error message
+```
+
+#### Safe Error Handling with Maybe
+
+The `Maybe` type represents computations that may fail:
+
+```haskell
+data Maybe a = Nothing | Just a
+```
+
+- `Just a`: Successful computation with value of type `a`
+- `Nothing`: Failure or absence of value
+
+#### Exception Handling in IO
+
+The `Control.Exception` module provides exception handling for `IO` operations. This is done with the `handle` function, which takes an exception handler and an `IO` action.
+
+```haskell
+import Control.Exception
+main :: IO ()
+main = handle handler (do
+    putStrLn "Enter a number:"
+    input <- getLine
+    let number = read input :: Int
+    print (10 `div` number))
+  where
+    handler :: SomeException -> IO ()
+    handler ex = putStrLn $ "Caught an exception: " ++ show ex
+```
+
+## Erlang
+
+**Erlang** is a functional programming language designed for building concurrent, distributed, and fault-tolerant systems.
+
+- Runs on the **BEAM** virtual machine
+- Provides lightweight processes (thousands can run concurrently)
+- Processes are isolated and communicate via **message passing**
+- Hot code swapping (update code without stopping the system)
+
+> Erlang's actor model inspired the **Akka** framework (Scala/Java) and influenced the "Reactive Manifesto" for building responsive systems.
+
+### Erlang Variables
+
+In Erlang, variables are immutable. Once a variable is bound to a value, it cannot be changed. Attempting to rebind a variable results in a runtime error.
+
+**Naming Convention:**
+
+- Variables start with an **uppercase** letter or underscore (`_`)
+- `_` alone is the "don't care" variable (matches anything, value is ignored)
+
+```erlang
+X = 10         % Bind X to 10
+Y = X + 5      % Bind Y to 15
+_ = foo()      % Call foo() but ignore the result
+```
+
+### Data Types
+
+Erlang provides several built-in data types:
+
+- **Numbers**: Integers and floating-point numbers
+- **Atoms**: Constants whose name is their value
+- **Tuples**: Fixed-size collections
+- **Lists**: Variable-length ordered collections
+- **Maps**: Key-value pairs
+- **Pids**: Process identifiers
+
+#### Atoms
+
+Atoms are constants whose value is their own name (similar to symbols in other languages).
+
+**Syntax:**
+
+- Start with a **lowercase** letter, can include letters, digits, underscores
+- Can be enclosed in single quotes (`'...'`) to include spaces or special characters
+
+```erlang
+ok                        % Atom
+error                     % Atom  
+'Error occurred'          % Atom with spaces
+'Hello@World!'            % Atom with special characters
+```
+
+Atoms are stored in a global atom table (not garbage collected) and are extremely fast to compare (just comparing references)
+
+#### Tuples
+
+Fixed-size collections of elements, defined using curly braces `{}`.
+
+```erlang
+Point = {3, 4}                    % A tuple representing a point (x, y)
+Person = {person, "Alice", 30}    % Common pattern: {tag, ...data}
+```
+
+**Common Functions:**
+
+- `element(N, Tuple)`: Retrieves the N-th element (1-based indexing)
+- `size(Tuple)`: Returns the number of elements
+
+> **Common Pattern:** Use tuples with an atom tag as the first element: `{ok, Result}`, `{error, Reason}`
+
+#### Erlang Lists
+
+Ordered, variable-length collections, defined using square brackets `[]`.
+
+```erlang
+Numbers = [1, 2, 3, 4, 5]         % A list of numbers
+Mixed = [atom, 42, "string"]      % Lists can contain mixed types
+Empty = []                         % Empty list
+```
+
+**List Operations:**
+
+```erlang
+List1 = [1, 2, 3].
+List2 = [4, 5, 6].
+
+% Concatenation
+List1 ++ List2.      % Results in [1, 2, 3, 4, 5, 6]
+
+% Cons operator |
+[0 | List1].         % Results in [0, 1, 2, 3]
+[H | T] = [1, 2, 3]. % Pattern matching: H=1, T=[2,3]
+
+% Warning: This creates a nested list!
+[List1 | List2].     % Results in [[1, 2, 3], 4, 5, 6]
+```
+
+**Common Functions:**
+
+- `hd(List)`: Returns the head (first element)
+- `tl(List)`: Returns the tail (all elements except the head)
+- `length(List)`: Returns the number of elements
+- `lists:reverse(List)`: Reverses the list
+- `lists:nth(N, List)`: Returns the N-th element (1-based)
+- `lists:map(Fun, List)`: Applies function to each element
+- `lists:filter(Pred, List)`: Filters elements matching predicate
+- `lists:foldl(Fun, Acc, List)`: Left fold (tail recursive)
+- `lists:foldr(Fun, Acc, List)`: Right fold
+
+##### List Comprehensions
+
+Concise syntax for generating lists:
+
+```erlang
+Squares = [X * X || X <- [1, 2, 3, 4, 5]].              % [1, 4, 9, 16, 25]
+Evens = [X || X <- [1, 2, 3, 4, 5], X rem 2 == 0].      % [2, 4]
+Pairs = [{X, Y} || X <- [1, 2], Y <- [a, b]].           % [{1,a}, {1,b}, {2,a}, {2,b}]
+```
+
+#### Erlang Maps
+
+Key-value pairs (hash maps), defined using `#{}` syntax.
+
+**Syntax:**
+
+```erlang
+% Creating maps
+Person = #{name => "Alice", age => 30}.
+Empty = #{}.
+
+% Accessing values
+Name = maps:get(name, Person).     % Returns "Alice" or throws exception
+Age = maps:get(age, Person, 0).    % Returns 30, or 0 if not found
+
+% Updating (creates new map)
+Updated = Person#{age => 31}.      % Update existing key
+Updated2 = Person#{city => "NYC"}. % Add new key
+Updated3 = Person#{age := 31}.     % := requires key to exist
+```
+
+**Common Functions:**
+
+- `maps:get(Key, Map)` / `maps:get(Key, Map, Default)`: Get value
+- `maps:put(Key, Value, Map)`: Insert or update
+- `maps:remove(Key, Map)`: Remove a key
+- `maps:keys(Map)`: List of all keys
+- `maps:values(Map)`: List of all values
+- `maps:size(Map)`: Number of key-value pairs
+- `maps:merge(Map1, Map2)`: Merge two maps
+- `maps:filter(Pred, Map)`: Filter map by predicate
+
+### Erlang Pattern Matching
+
+Erlang uses **pattern matching** as a fundamental feature for:
+
+- Variable binding
+- Function clause selection
+- Data extraction
+- Control flow
+
+**Basic Examples:**
+
+```erlang
+% Tuple matching
+{A, B} = {10, 20}.                % A=10, B=20
+{ok, Value} = {ok, 42}.           % Value=42
+{A, A, B} = {1, 1, 2}.            % A=1, B=2 (A must match both positions)
+{A, A, B} = {1, 2, 3}.            % ERROR: A can't be both 1 and 2
+
+% List matching
+[A, B | Rest] = [1, 2, 3, 4, 5].  % A=1, B=2, Rest=[3,4,5]
+
+% Map matching
+#{name := Name} = #{name => "Alice", age => 30}. % Name="Alice"
+```
+
+### Erlang Functions
+
+Functions are defined with multiple **clauses**, selected by pattern matching on arguments.
+
+**Syntax Rules:**
+
+- Clauses are separated by `;`
+- Last clause ends with `.`
+- Clause head and body separated by `->`
+- Statements within a body separated by `,`
+
+```erlang
+factorial(0) -> 1;                    % Base case
+factorial(N) -> N * factorial(N - 1). % Recursive case
+```
+
+#### Function Arity
+
+Functions are identified by **name/arity** (name and number of arguments).
+
+The same name can be used for different arities:
+
+```erlang
+add(X, Y) -> X + Y.           % add/2
+add(X, Y, Z) -> X + Y + Z.    % add/3 (different function)
+```
+
+**Referencing Functions:**
+
+Use the `/` notation to specify the specific function:
+
+```erlang
+Result = add(2, 3).           % Calls add/2
+Result2 = add(1, 2, 3).       % Calls add/3
+Fun = fun add/2.              % Reference to add/2 function
+```
+
+#### Anonymous Functions (Lambdas)
+
+Defined using the `fun` keyword:
+
+```erlang
+% Simple lambda
+Add = fun(X, Y) -> X + Y end.
+Result = Add(2, 3).  % Result is 5
+
+% Lambda with multiple clauses
+Abs = fun(X) when X < 0 -> -X;
+         (X) -> X
+      end.
+```
+
+> **Note:** Named functions must be referenced with the `fun Name/Arity` syntax when passed as arguments.
+
+#### Guards
+
+Additional conditions that refine pattern matching, specified with the `when` keyword.
+
+```erlang
+absolute(X) when X < 0 -> -X;
+absolute(X) -> X.
+
+max(X, Y) when X > Y -> X;
+max(_, Y) -> Y.
+
+% Multiple guards with semicolon (OR)
+is_valid(X) when X > 0; X < -10 -> true;
+is_valid(_) -> false.
+
+% Multiple conditions with comma (AND)
+in_range(X) when X > 0, X < 100 -> true;
+in_range(_) -> false.
+```
+
+Guards uses a specific sub-language to ensure validation in constant time. It allows:
+
+- **Comparison**: `<`, `>`, `=<`, `>=`, `==`, `/=`, `=:=`, `=/=`
+  - `==`: Value equality (1 == 1.0 is true)
+  - `=:=`: Exact equality (1 =:= 1.0 is false)
+- **Logical**: `and`, `or`, `xor`, `not`
+- **Type tests**: `is_atom/1`, `is_integer/1`, `is_list/1`, `is_tuple/1`, `is_map/1`, etc.
+- **Arithmetic**: `+`, `-`, `*`, `/`, `div`, `rem`
+- **Built-ins**: `length/1`, `tuple_size/1`, `map_size/1`, `hd/1`, `tl/1`, `element/2`
+
+> **Restriction:** User-defined functions cannot be called in guards. Only built-in guard functions are allowed.
+
+### Modules
+
+Erlang code is organized into **modules**, units of compilation and namespace.
+
+**Module Structure:**
+
+```erlang
+% Module declaration (must match filename: math_utils.erl)
+-module(math_utils).
+
+% Export public functions (name/arity)
+-export([factorial/1, absolute/1]).
+
+% Optional: Import functions from other modules
+-import(lists, [map/2, filter/2]).
+
+% Function definitions
+factorial(0) -> 1;
+factorial(N) -> N * factorial(N - 1).
+
+absolute(X) when X < 0 -> -X;
+absolute(X) -> X.
+
+% Private function (not exported)
+helper(X) -> X * 2.
+```
+
+**Using Modules:**
+
+```erlang
+% Call exported function with Module:Function syntax
+X = math_utils:factorial(5).  % 120
+
+% Compile module
+c(math_utils).  % In Erlang shell
+```
+
+### Erlang Control Flow
+
+#### If Expressions
+
+The `if` expression uses guard expressions for conditions. Evaluates guards in order and executes the first true branch.
+
+```erlang
+classify(X) ->
+  if
+    X < 0 -> negative;
+    X > 0 -> positive;
+    true -> zero    % Catch-all (like 'else')
+  end.
+```
+
+#### Case Expressions
+
+The `case` expression is based on pattern matching (more powerful than `if` as it allows calling custom functions).
+
+```erlang
+% Basic case
+case X of
+  0 -> zero;
+  1 -> one;
+  _ -> other  % _ matches anything (catch-all)
+end.
+
+% Case with function calls
+case lists:member(a, X) of
+  true -> contains_a;
+  false -> does_not_contain_a
+end.
+```
+
+#### Iteration (Recursion)
+
+Erlang uses **recursion** instead of loops. Use tail recursion for efficiency (constant stack space).
+
+```erlang
+countdown(0) ->
+  ok;
+countdown(N) when N > 0 ->
+  io:format("~p~n", [N]),
+  countdown(N - 1).
+```
+
+### Concurrency
+
+Erlang is built on the **Actor Model**, everything runs in isolated processes that communicate via message passing.
+
+- Processes are lightweight (can run millions concurrently)
+- Each process has its own heap and mailbox
+- **No shared memory** between processes
+- Message passing is **asynchronous** (send and continue)
+- Message order between two processes is preserved, but not globally
+
+> **Concurrency Models Comparison:**
+>
+> - **Actor Model** (Erlang): Isolated processes, message passing, no shared state
+> - **Shared Memory** (Java threads): Shared data, locks/mutexes for synchronization
+> - **CSP** (Go): Processes communicate via synchronous channels
+
+#### Core Primitives
+
+1. `spawn` - Create a process:
+
+    ```erlang
+    Pid = spawn(Module, Function, Args).  % Returns process ID
+    Pid = spawn(fun() -> loop() end).     % Spawn with lambda
+    ```
+
+2. `!` - Send a message (asynchronous):
+
+    ```erlang
+    Pid ! {self(), hello}.  % Send message to Pid
+    Pid ! stop.
+    ```
+
+3. `receive` - Receive messages: Takes the first message from the mailbox that matches a pattern. Blocks if no match.
+
+    ```erlang
+    receive
+      {From, Msg} -> 
+        io:format("Received ~p from ~p~n", [Msg, From]);
+      stop -> 
+        ok;
+      _ -> 
+        io:format("Unknown message~n")
+    end.
+    ```
+
+**Complete Example:**
+
+```erlang
+% Echo server: receives messages and sends responses
+echo() ->
+  receive
+    {From, Message} ->
+      io:format("Received: ~p~n", [Message]),
+      From ! {self(), "Message received!"},  % Reply to sender
+      echo();  % Tail recursive call to keep process alive
+    stop ->
+      io:format("Stopping echo server~n"),
+      ok  % Terminate (process exits)
+  end.
+
+% Start the echo server
+start() ->
+  Pid = spawn(fun echo/0),              % Create new process
+  Pid ! {self(), "Hello, Erlang!"},     % Send message
+  receive
+    {Pid, Reply} -> io:format("Got reply: ~p~n", [Reply])
+  end,
+  Pid ! stop.  % Stop the server
+```
+
+**Useful Built-ins:**
+
+- `self()`: Returns PID of current process
+- `is_process_alive(Pid)`: Check if process is running
+
+#### Registered Processes
+
+Processes can be registered with **global atom names** for easier access (no need to track PIDs).
+
+```erlang
+% Register a process
+start() ->
+  Pid = spawn(fun echo/0),
+  register(echo_server, Pid),  % Register with atom name
+  ok.
+
+% Send message using registered name
+echo_server ! {self(), "Hello"}.
+```
+
+Some useful functions are:
+
+- `unregister(Name)`: Unregister a name
+- `whereis(Name)`: Get PID of registered name
+
+#### Encapsulation Pattern
+
+A good practice when implementing modules is to export only public API functions keeping process implementation private.
+
+```erlang
+-module(echo).
+% Public API
+-export([start/0, send_message/1, stop/0]).
+
+% Public functions
+start() ->
+  Pid = spawn(fun loop/0),      % spawn internal function
+  register(echo_server, Pid),
+  {ok, Pid}.
+
+send_message(Message) ->
+  echo_server ! {self(), Message},
+  ok.
+
+stop() ->
+  echo_server ! stop,
+  ok.
+
+% Private functions (not exported)
+loop() ->
+  receive
+    {From, Msg} ->
+      From ! {echo, Msg},
+      loop();
+    stop ->
+      ok
+  end.
+```
+
+#### Timeouts and Timers
+
+**Receive Timeout:**
+
+Handle cases where no matching message arrives within a time limit.
+
+```erlang
+receive
+  {data, Value} ->
+    io:format("Received: ~p~n", [Value])
+after 5000 ->  % Timeout after 5000 ms (5 seconds)
+    io:format("No message received~n")
+end.
+
+% Timeout of 0: check mailbox without blocking
+receive
+  Msg -> handle(Msg)
+after 0 ->
+    no_message
+end.
+```
+
+**Delays:**
+
+```erlang
+timer:sleep(1000).  % Sleep current process for 1 second
+```
+
+**Scheduled Messages:**
+
+```erlang
+% Timer with reference (can be cancelled)
+Ref = erlang:start_timer(3000, self(), tick).
+erlang:cancel_timer(Ref).  % Cancel if needed
+```
+
+#### Flush Mailbox
+
+The `flush()` function clears all messages in the current process's mailbox:
+
+```erlang
+flush().
+```
+
+### Error Handling Philosophy: "Let It Crash"
+
+Erlang embraces a unique philosophy: **"Let It Crash"**.
+
+**Core Principles:**
+
+1. Don't defend against every possible error, as failures in distributed system are inevitable
+2. Isolate failures, one process crash doesn't bring down the system
+3. Use supervisors, monitoring processes that restart failed workers
+4. Design for recovery, make restart cheap and state restorable
+
+#### Supervisors
+
+Supervisors are special processes that monitor workers and can restart them on failure.
+
+A supervisor needs to be **linked** to a worker process. This allows to receive exit signals when the worker crashes, and stop the worker when the supervisor crashes.
+
+To be able to handle exit signals, the supervisor process must set `trap_exit` flag to `true`. This converts exit signals into messages (`{'EXIT', Pid, Reason}`) that the supervisor can receive and handle.
+
+```erlang
+% Start supervisor with N workers
+start_supervisor(Count) ->
+  process_flag(trap_exit, true),  % Convert exit signals to messages
+  spawn_workers(Count),
+  supervisor_loop(Count).
+
+% Spawn N linked workers
+spawn_workers(0) -> ok;
+spawn_workers(N) -> 
+  spawn_link(fun worker/0),  % Create linked worker
+  spawn_workers(N - 1).
+
+% Supervisor main loop
+supervisor_loop(Count) ->
+  receive
+    {'EXIT', Pid, normal} ->
+      % Worker exited normally
+      io:format("Worker ~p exited normally~n", [Pid]),
+      NewCount = Count - 1,
+      if
+        NewCount > 0 -> supervisor_loop(NewCount);
+        true -> io:format("All workers done. Shutting down.~n")
+      end;
+    
+    {'EXIT', Pid, Reason} ->
+      % Worker crashed - restart it
+      io:format("Worker ~p crashed (~p). Restarting...~n", [Pid, Reason]),
+      spawn_workers(1),  % Restart one worker
+      supervisor_loop(Count)  % Keep same count
+  end.
+
+% Worker process (may crash randomly)
+worker() ->
+  timer:sleep(1000),
+  case rand:uniform(10) of
+    N when N > 7 -> 
+      exit(random_crash);  % 30% chance to crash
+    _ -> 
+      io:format("Worker ~p working...~n", [self()]),
+      worker()  % Continue working
+  end.
+```
+
+### Erlang Patterns
+
+- **Spawning Multiple Processes**: To spawn multiple processes for parallel computation, use list comprehensions combined with `spawn`.
+
+    ```erlang
+    Pids = lists:reverse([spawn(fun() -> deep_map_par(self(), X) end) || X <- List])
+    ```
+
+- **Collecting Results**: To collect in order the results from multiple processes, use a list comprehension with `receive`.
+
+    ```erlang
+    Results = [receive {Pid, Result} -> Result end || Pid <- Pids],
+    ```
