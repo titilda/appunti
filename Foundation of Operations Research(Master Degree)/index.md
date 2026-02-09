@@ -2268,7 +2268,7 @@ But before talking about that we need to introduce two key concepts:
 :::{.callout .callout-definition title="Feasibility"}
 
 - **Primal feasibility**: all constraints are satisfied.
-- **Dual feasibility**: all reduced costs have right signs (optimality).
+- **Dual feasibility**: all reduced costs have right signs.
 :::
 
 >What implications do these definitions have?
