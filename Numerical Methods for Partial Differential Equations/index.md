@@ -1099,7 +1099,7 @@ The momentum equation becomes
 
 $$
 \int_\Omega \sigma \vec{u} \cdot \vec{v} - \int_\Omega \nu \Delta \vec{u} \cdot \vec{v} + \int_\Omega \nabla p \cdot v = \int_\Omega \vec{f} \cdot \vec{v} \qquad \forall \vec{v} \in V \\
-\int_\Omega \sigma \vec{u} \cdot \vec{v} + \int_\Omega \nu \nabla \vec{u} \cdot \nabla \vec{v} - \int_{\partial\Omega} \nu \frac{\partial \vec{u}}{\partial \vec{n}} - \int_\Omega p \operatorname{div} \vec{v} + \int_{\partial\Omega} p \vec{u} \cdot \vec{v} = \int_\Omega \vec{f} \cdot \vec{v} \qquad \forall \vec{v} \in V
+\int_\Omega \sigma \vec{u} \cdot \vec{v} + \int_\Omega \nu \nabla \vec{u} \cdot \nabla \vec{v} - \int_{\partial\Omega} \nu \frac{\partial \vec{u}}{\partial \vec{n}} \vec{v} - \int_\Omega p \operatorname{div} \vec{v} + \int_{\partial\Omega} p \vec{n} \cdot \vec{v} = \int_\Omega \vec{f} \cdot \vec{v} \qquad \forall \vec{v} \in V
 $$
 
 
@@ -1123,7 +1123,7 @@ $$
 Starting again from the weak formulation, we can reach quite easily the equivalent algebraic system. We start by moving all the known terms to the right hand side and factoring $v$ (so taht we can write $\psi$, that can be considered as _given_).
 
 $$
-\int_\Omega \sigma \vec{u} \cdot \vec{v} + \int_\Omega \nu \nabla \vec{u} \cdot \nabla \vec{v} - \int_{\partial\Omega} \nu \frac{\partial \vec{u}}{\partial \vec{n}} - \int_\Omega p \operatorname{div} \vec{v} + \int_{\partial\Omega} p \vec{u} \cdot \vec{v} = \int_\Omega \vec{f} \cdot \vec{v} \qquad \forall \vec{v} \in V \\
+\int_\Omega \sigma \vec{u} \cdot \vec{v} + \int_\Omega \nu \nabla \vec{u} \cdot \nabla \vec{v} - \int_{\partial\Omega} \nu \frac{\partial \vec{u}}{\partial \vec{n}} - \int_\Omega p \operatorname{div} \vec{v} + \int_{\partial\Omega} p \vec{n} \cdot \vec{v} = \int_\Omega \vec{f} \cdot \vec{v} \qquad \forall \vec{v} \in V \\
 \int_\Omega \sigma \vec{u} \cdot \vec{v} + \int_\Omega \nu \nabla \vec{u} \cdot \nabla \vec{v} - \int_\Omega p \operatorname{div} \vec{v} = \int_\Omega \vec{f} \cdot \vec{v} + \int_\Omega \psi \vec{v} \qquad \forall \vec{v} \in V \\
 $$
 
@@ -1484,7 +1484,7 @@ Taylor-Hood elements sets are defined as follows:
 
 $$
 V_h = \left\{ \vec{v}_h \in \left[\mathcal{C}^0(\Omega)\right]^d : \vec{v}_h|_K \in \left[ \mathbb{P}^{k+1}(K) \right]^d, \vec{v}_h|_{\Gamma_D} = 0, \forall K \in \mathscr{T}_h \right\} \\
-Q_h = \left\{ q_h \in \begin{cases} L^2_0(\Omega) & \Gamma_D = \empty \\ L^2(\Omega) & \Gamma_D = \empty \end{cases} : q_h|_K \in \mathbb{P}^{k}(K), \forall K \in \mathscr{T}_h \right\}
+Q_h = \left\{ q_h \in \begin{cases} L^2_0(\Omega) & \Gamma_D = \empty \\ L^2(\Omega) & \Gamma_D \ne \empty \end{cases} : q_h|_K \in \mathbb{P}^{k}(K), \forall K \in \mathscr{T}_h \right\}
 $$
 
 ## Navier-Stokes equation
