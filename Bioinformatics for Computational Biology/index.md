@@ -3146,4 +3146,4 @@ The WGCNA is popular systems biology strategy to explore yhe system-level functi
    - Lastly, the module membership of a gene $i (MM(i) = cor(x_i, ME))$ measures the importance of the gene within the module.
 
 4. Study inter-module relationships and module preservation.
-5. Find jey drivers in interesting modules.
+5. Find key drivers in interesting modules.
