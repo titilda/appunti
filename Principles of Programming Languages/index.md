@@ -158,6 +158,16 @@ The `()` notation represents the empty list, also known as `nil`.
 
 By default list are _immutable_.
 
+It is possible to concatenate `cdr` and `car` of a list to get an element of a list:
+
+```scheme
+(car (cdr '(1 2 3))) ; This will return 2
+(cadr '(1 2 3)) ; This is a shorthand for the previous expression, also returns 2
+
+(car (cdr (cdr '(1 2 3)))) ; This will return 3
+(caddr '(1 2 3)) ; This is a shorthand for the previous expression, also returns 3
+```
+
 ##### Structs
 
 Scheme allows the definition of custom data structures using the `struct` construct. They are also called **records**. This enables the creation of new types with named fields. By default, fields are immutable, but is possible to create mutable fields by specifying the `#:mutable` keyword.
@@ -185,7 +195,7 @@ To access the fields of a struct, accessor procedures are automatically generate
 To modify a mutable field, a setter procedure is also generated:
 
 ```scheme
-(person-age-set! alice 31) ; Updates Alice's age to 31
+(set-person-age! alice 31) ; Updates Alice's age to 31
 ```
 
 Structs can also support **inheritance** by specifying a parent struct:
@@ -711,7 +721,7 @@ To break hygiene and allow variable capture, the user should pass the variable a
 
 ### Continuations
 
-**Continuations** represent "the rest of the computation" at any given point in a program. They capture what the program will do next, allowing you to pause execution, save that state, and resume it later—possibly multiple times or from different contexts.
+**Continuations** represent "the rest of the computation" at any given point in a program. They capture what the program will do next, allowing you to pause execution, save that state, and resume it later, possibly multiple times or from different contexts.
 
 In Scheme, continuations are accessed using `call/cc` (call-with-current-continuation), a procedure that captures the current continuation and passes it to a function as an argument.
 
@@ -1313,6 +1323,16 @@ instance Foldable Maybe where
 instance Foldable List where
   foldr _ z []     = z
   foldr f z (x:xs) = f x (foldr f z xs)
+```
+
+If the data structure has multiple parameters all the parameters, except for the last one, are fixed, and the last one is the target of the computation:
+
+```haskell
+data Llist b a
+
+instance Foldable (Llist b) where
+    foldr _ z Nul           = z
+    foldr f z (Nod a b xs)  = f a (foldr f z xs)
 ```
 
 ##### Functor
@@ -2367,8 +2387,9 @@ Erlang is built on the **Actor Model**, everything runs in isolated processes th
 1. `spawn` - Create a process:
 
     ```erlang
-    Pid = spawn(Module, Function, Args).  % Returns process ID
-    Pid = spawn(fun() -> loop() end).     % Spawn with lambda
+    Pid = spawn(Module, Function, Args).        % Returns process ID
+    Pid = spawn(fun() -> loop() end).           % Spawn with lambda
+    Pid = spawn(fun() -> Fucntion(Args) end)    % Safer way
     ```
 
 2. `!` - Send a message (asynchronous):
