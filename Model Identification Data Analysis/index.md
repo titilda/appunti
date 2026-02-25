@@ -50,12 +50,66 @@ A complete description of an SP requires the knowledge of the probability distri
 
 > e.g. If temperature were a stationary process, today's temperature would tell us a lot about tomorrow's (high correlation, small $\tau$), but very little about the temperature in 100 days (low correlation, large $\tau$). The relationship between days remains the same regardless of whether we are looking at January or July.
 
-### White Noise
+#### White Noise
 
-A **White Noise** (WN) is a purely unpredictable process where there is no correlation between different samples:
+A **White Noise** (WN) is a purely unpredictable SSP where there is no correlation between different samples:
 
 A process $e(t)$ is a white noise ($e(t) ~ \text{WN}(\mu, \lambda^2)$) if it satisfies the following properties:
 
 - **Constant Mean**: $m = \mathbb{E}[e(t)] = \mu$
 - **Constant Variance**: $\mathbb{E}[(e(t_1) - \mu)^2] = \lambda^2$
 - **Zero Covariance**: $\gamma_e(\tau) = \mathbb{E}[(e(t_1) - \mu)(e(t_2) - \mu)] = 0, \forall t \neq 0$
+
+#### Moving Average Processes
+
+A **Moving Average Process** (MA) is a type of stochastic process that is defined as a linear combination of white noise terms.
+
+$$y(t) = \sum_{i=0}^{n} b_i e(t - i)$$
+
+where $e(t)$ is a white noise process, $b_i$ are the coefficients of the white processes, and $n$ is the order of the moving average process.
+
+> Proof that $y(t)$ is a stationary process:
+>
+> $$m_y(t) = \mathbb{E}[y(t)] = \mathbb{E}[\sum_{i=0}^{n} b_i * e(t - i)]$$
+>
+> Since the the sum is a linear operation, we can exchange the sum with the expectation, and since $b_i$ are constants, we get:
+>
+> $$m_y(t) = \sum_{i=0}^{n} b_i * \mathbb{E}[e(t - i)]$$
+>
+> Since $e(t)$ is a white noise process, $\mathbb{E}[e(t - i)] = \mu$, so:
+>
+> $$m_y(t) = \sum_{i=0}^{n} b_i * \mu = \mu * \sum_{i=0}^{n} b_i$$
+>
+> This shows that the mean of $y(t)$ is constant over time, which is a property of stationary processes.
+>
+> ---
+>
+> To show that the covariance function of $y(t)$ only depends on the time difference $\tau$, we can compute the covariance function $\gamma_y(\tau)$:
+>
+> $$\gamma_y(\tau) = \mathbb{E}[(y(t) - m_y)(y(t + \tau) - m_y)]$$
+>
+> Substituting the definition of $y(t)$, we get:
+>
+> $$\gamma_y(\tau) = \mathbb{E}[(\sum_{i=0}^{n} b_i e(t - i) - m_y)(\sum_{j=0}^{n} b_j e(t + \tau - j) - m_y)]]$$
+>
+> Expanding the product, we get:
+>
+> $$\gamma_y(\tau) = \mathbb{E}[\sum_{i=0}^{n} \sum_{j=0}^{n} b_i b_j e(t - i) e(t + \tau - j) - m_y \sum_{i=0}^{n} b_i e(t - i) - m_y \sum_{j=0}^{n} b_j e(t + \tau - j) + m_y^2]$$
+>
+> Since the expectation is a linear operation, we can exchange the expectation with the sum, and since $b_i$ are constants, we get:
+>
+> $$\gamma_y(\tau) = \sum_{i=0}^{n} \sum_{j=0}^{n} b_i b_j \mathbb{E}[e(t - i) e(t + \tau - j)] - m_y \sum_{i=0}^{n} b_i \mathbb{E}[e(t - i)] - m_y \sum_{j=0}^{n} b_j \mathbb{E}[e(t + \tau - j)] + m_y^2$$
+>
+> Since $e(t)$ is a white noise process, $\mathbb{E}[e(t - i)] = m_y$, so we can simplify the expression to:
+>
+> $$\gamma_y(\tau) = \sum_{i=0}^{n} \sum_{j=0}^{n} b_i b_j \mathbb{E}[e(t - i) e(t + \tau - j)] - m_y^2 - m_y^2 + m_y^2$$
+>
+> Since $e(t)$ is a white noise process, $\mathbb{E}[e(t - i) e(t + \tau - j)] = \lambda^2$ if $t - i = t + \tau - j$ (i.e., if $j = i + \tau$), and $0$ otherwise. Therefore, we can simplify the expression to:
+>
+> $$\gamma_y(\tau) = \sum_{i=0}^{n} b_i b_{i + \tau} \lambda^2 - m_y^2$$
+>
+> This shows that the covariance function of $y(t)$ only depends on the time difference $\tau$, which is another property of stationary processes. Therefore, we can conclude that $y(t)$ is a stationary process.
+
+In this case the covariance function $\gamma_y(\tau)$ is non-zero only for $\tau$ values between $-n$ and $n$, which means that the process has a finite memory of $n$ time steps, meaning that the process is _colored_ between $-n$ and $n$, and _white_ otherwise.
+
+The generalization is with an infinite order ($n \to \infty$), where the process can have an infinite memory, and the covariance function can be non-zero for all $\tau$ values.
