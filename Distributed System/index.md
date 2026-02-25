@@ -116,6 +116,10 @@ This style is often implemented in languages that run on a virtual machine (VM),
 
 The ability to receive and execute code from an external source is a major security risk.
 
+##### Client Server
+
+In a client server architecture, the client can request the server to execute a specific task on its behalf. The server performs the computation and returns the result to the client.
+
 ##### Code on Demand
 
 The client retrieves the executable code (or script) from a server and executes it locally.
@@ -202,8 +206,8 @@ The client needs to locate the server that provide the requested service.
 
 This is done through two logics:
 
-- **PortMap**: in system like _Sun RPC_, each server register the services it provide with a portmap daemon that store the mapping between the service UUID and the host/port;
-- **Directory Service**: in system like _DCE RPC_, there is a directory service that store the mapping between the service name and the host/port.
+- **PortMap**: in system like _Sun RPC_, each server register the services it provide with a portmap daemon that store the mapping between the service UUID and the port;
+- **Directory Service**: in system like _DCE RPC_, there is a directory service that store the mapping between the service name and the server.
 
 To conserve resources the server can be **Dynamically Activated** the server once a request arrive.
 
@@ -217,7 +221,11 @@ Using a Lightweight RPC that use a shared memory accessible from the middleware.
 
 **Remote Method Invocation** (RMI) is the object-oriented counterpart to RPC. It allows a process to invoke a method on a remote object residing in another process.
 
-The communication is done through method calls on remote objects (**Stub**) that acts as if they were local. This is done because it's not possible to pass objects by value between two different machines that might use different programming languages.
+Locally the reference to a remote object is held by a **Stub** (or proxy) that provides the same interface as the remote object, allowing the client to invoke methods on it as if it were local.
+
+When a method is invoked the stub is responsible to send it to the remote object, **skeleton** (the server-side proxy) that will execute the method and return the result to the stub.
+
+This is done because it's not possible to pass objects by value between two different machines that might use different programming languages.
 
 In java RMI, as both the client and the server use the same language, it's possible to pass objects, but the code must be available or downloaded dynamically.
 
@@ -298,7 +306,7 @@ Paths can be optimized if some are a subset of others.
 
 **Cyclic** topologies are more _fault-tolerant_ but introduce the problem of _message loops_ (flooding) and uncertainty about delivery paths.
 
-- **Distributed Hash Table** (DHT): Each broker is assigned an ID. Events are hashed to find the successor node (node with an ID greater or equal). The message is routed towards this successor, and routing information is collected along the way to guide the message to actual subscribers.
+- **Distributed Hash Table** (DHT): Each event is associated with a key, obtained by hashing it. Each broker is assigned an ID within the same key space of the events. The broker responsible for an event is the one whose ID is the closest greater than the event key. While forwarding the message to the responsible broker, routing information is collected to guide the message to actual subscribers.
 - **Content-Based Routing**: each broker store a routing table to forward the message based on the content of the message, creating a spanning tree.
   - **Per-Source Routing** (PSR): each broker store a routing table with $<source, \text{next hop}, \text{event type}>$.
   - **Improved Per-Source Forwarding** (iPSF): an optimized version of PSR that aggregate indistinguishable sources.
@@ -585,19 +593,24 @@ When the list becomes empty, the skeleton can be safely collected.
 
 This approach is robust against non-reliable channels, but the still is the problem of race conditions when transferring references.
 
-#### distribute mark-and-sweep
+#### Distributed Mark-and-Sweep
 
-To detect disconnected entities from the root, a mark-and-sweep algorithm can be used.
+To detect disconnected entities (unreachable from any active proxy), a **mark-and-sweep algorithm** can be used.
 
-in a centralized system, the garbage collector starts from the root and marks all reachable objects. Then it sweeps through all objects and deletes those that are unmarked.
+In a centralized system, the garbage collector traverses from a root object, marking all reachable objects. Then it sweeps through memory and deletes unmarked objects.
 
-In a distributed system, each node performs the mark-and-sweep algorithm locally. The process involves:
+In a distributed system, each node performs mark-and-sweep The process involves:
 
-- At the start, each node is marked as _white_ (unvisited).
-- An object, and all the proxies, in a node are marked as _grey_ if it is reachable from the root.
-- When a proxy is marked grey, it sends a message to the node where the actual object resides to mark it grey.
-- Once the proxy receives the ack, it marks itself as _black_ (visited).
-- After the marking phase, each node sweeps through its objects and deletes those that are still white (unreachable).
+1. **Initialization**: All objects, proxies, and skeletons on a node are marked as _white_ (unvisited).
+2. **Marking Phase**:
+    - An object is marked _grey_ if it is reachable from an active proxy.
+    - When an object is marked as _grey_ all its proxy ar marked as _gray_ as well.
+    - When a proxy is marked as _grey_, it sends a message to the associated skeleton to mark it as _grey_ as well.
+    - When the skeleton is marked as _grey_, the skeleton's object is marked as _grey_ (restart the process) as well and a ack message is sent back to the proxy.
+    - Once acknowledged, the proxy marks itself as _black_ (visited).
+3. **Sweep Phase**: After marking completes, each node deletes all skeletons still marked _white_.
+
+This approach requires coordination between nodes to identify which skeletons have reachable proxies. However, it relies on the assumption that all proxy-skeleton connections are discoverable, which can be challenging in asynchronous systems.
 
 ## Synchronization
 
@@ -798,7 +811,9 @@ A **Distributed snapshot** represent the state of all the processes and communic
 
 The snapshot must be **consistent**, meaning that it accurately reflects the state of the system without contradictions (e.g. $P1$ saves its state than sends a message to $P2$, and $P2$ receives the message before saving its own state).
 
-The conceptual tool representing the global state is the **cut**. The cut is a line that intersect all the processes at a specific point in time.
+The conceptual tool representing the global state is the **cut**. The cut is graphically represented as a line that intersect all the processes at a specific point in time.
+
+A formal definition of cut is: a cut is a set of events that contains at most one event from each process, and it represents a global state of the system.
 
 A cut is consistent if for any event $e$ that is included in the cut, all events that happened before $e$ are also included in the cut.
 
@@ -1012,16 +1027,27 @@ The solution must satisfy three properties:
 
 ##### FloodSet Algorithm
 
-The **FloodSet Algorithm** is a method to achieve consensus in a synchronous distributed system with omission failures.
+The **FloodSet Algorithm** is a method to achieve consensus in a synchronous distributed system where processes must agree on a set of values despite the presence of faulty processes.
 
-1. Each process has a set of proposed values. In each round, every process sends its current set of values to all other processes.
-2. Upon receiving sets from other processes, each process updates its own set by taking the union of all received sets.
+**Algorithm Overview:**
 
-To guarantee a $k$-resilience, these processes are repeated for $k + 1$ rounds to guarantee that every non-faulty process receives every value.
+1. Each process $P_i$ maintains a local set $S_i$ initialized with its own proposed value.
+2. In each round $r$ (for $r = 1$ to $k + 1$):
+    - Every process sends its current set $S_i$ to all other processes.
+    - Upon receiving sets from other processes, each process updates its own set by taking the union: $S_i := S_i \cup \{S_j \text{ for all } j\}$.
+3. After $k + 1$ rounds, all non-faulty processes have identical sets containing all values proposed by non-faulty processes.
 
-To solve consensus with $k$ Byzantine failures, the number of processes must be at least $N = 3k + 1$.
+**Correctness:**
 
-With asynchronous systems it's impossible to reach an agreement with even one failure.
+To guarantee $k$-resilience (tolerance of $k$ omission failures), the algorithm requires $k + 1$ rounds because in the worst case, a faulty process could omit sending its value in each round. By round $k + 1$, a value proposed by a non-faulty process is guaranteed to have reached all other non-faulty processes either directly or through intermediaries.
+
+**Byzantine Failures:**
+
+To tolerate $k$ Byzantine failures (where processes may send arbitrary or conflicting values), the system requires at least $N = 3k + 1$ processes. Byzantine processes can send different values to different peers, making agreement harder to achieve.
+
+**Asynchronous Systems:**
+
+In asynchronous systems (where there are no bounds on message delays), it is impossible to reach consensus with even a single crash failure. This is because the system cannot distinguish between a slow process and a crashed process.
 
 ### Reliable Group Communication
 
@@ -1057,7 +1083,7 @@ The system operates in sequential views, where a view is the current set of acti
 This could be implemented by:
 
 - **Failure Detection**: A process detects a change in membership (e.g., another process fails or joins) and multicasts a view change message.
-- **Flush Phase**: All processes stop originating new messages. They multicast all their unstable messages (messages not yet acknowledged by all current members) and send a _flush_ message.
+- **Flush Phase**: All processes stop sending new messages. They multicast all their unstable messages (messages not yet acknowledged by all current members) and send a _flush_ message.
 - **Unstable Message Transfer**: All unstable messages are reliably delivered to all surviving members of the old view.
 - **View Update**: Once all flush messages are received and unstable messages are delivered, all processes atomically switch to the new view (the new set of active members) and resume normal communication.
 
@@ -1491,7 +1517,7 @@ Each operation has an unique ID that the client stores, the server are stateless
 
 When connecting to a replica, the client send the id of the last operation performed by him. If the replica didn't already receive that operation, the replica wait to respond until receiving the latest data.
 
-Guarantee this properties allows to have a _casual consistency_, moving some of the complexity from the server to the client.
+Guarantee this properties allows to have a _causal consistency_, moving some of the complexity from the server to the client.
 
 ### Design Strategies
 

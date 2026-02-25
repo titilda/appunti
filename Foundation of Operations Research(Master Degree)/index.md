@@ -2122,7 +2122,7 @@ s.t.\quad & x_1+x_2+x_3-x_4 \leq 5\\
 \end{align*}
 $$
 
-Everything looks fine until we realize that our optimal solution of producing 4.789 x_1, 2.111 x_2, 3.002 x_3 and 9.12 x_4 **balls** ( completely random numbers) is not achievable since we cannot produce 9.12 units of something.
+Everything looks fine until we realize that our optimal solution of producing $x_1=4.789$, $x_2=2.111$, $x_3=3.002$  and $x_4=9.12$ **balls** ( completely random numbers) is not achievable since we cannot produce 9.12 units of something.
 
 So what is the plan now?
 
@@ -2268,7 +2268,7 @@ But before talking about that we need to introduce two key concepts:
 :::{.callout .callout-definition title="Feasibility"}
 
 - **Primal feasibility**: all constraints are satisfied.
-- **Dual feasibility**: all reduced costs have right signs (optimality).
+- **Dual feasibility**: all reduced costs have right signs.
 :::
 
 >What implications do these definitions have?
@@ -2510,6 +2510,7 @@ We found only one solution since the other formulation was unfeasible, amd we co
 Another possible way to derive the integer solution from the relaxation, is through the **Cutting planes method**.
 
 The idea is based upon this theorem:
+
 :::{.callout .callout-definition title="Ideal formulation"}
 For any feasible region X of an ILP, there exists an ideal formulation, but the number of constraints can be very large with respect to the size of the original formulation
 :::
