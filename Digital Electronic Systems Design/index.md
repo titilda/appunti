@@ -58,3 +58,52 @@ Usually, we can use the interconnect to move information from an FPGA block to t
 <!-- TODO: other components -->
 <!-- TODO: scaling -->
 
+## Real logic circuits
+
+Digital signals are immune to noise, assuming that the **noise margin** is big enough (almost always true). When an electric signal changes to one logic level to another, it happens that for a really short amount of time, the signal is neither high or low. In such a case, the CMOS logic behaves like a class A amplifier and everything is uncertain.
+
+In a logic circuit, we define the **propagation delay** ($t_p$) as the time it takes for the output to fully reflect a change in the input. We also define the **output contamination delay** ($t_c$) as the time it takes for the output to start mutating in response to an input change. Let the input change at time $t$. Between $t + t_c$ and $t + t_p$ the output may **glitch** and change multiple times.
+
+This is the reason why we should _never_ use latches: if the enable signal glitches (that is almost guranteed), the latch may end up memorizing the wrong value.
+
+The maximum theoretical frequency at which that specific circuit can run is $1 / t_p$.
+
+# Powering an FPGA
+
+An FPGA is powered by multiples power lines:
+
+- **VCCINIT**: powers the internal fabric
+- **VCCO**: powers the IO logic; each IO bank may have its own **VCC0#** line with different characteristics
+- **VCCAUX**: used as configuration (bitstream source, etc.)
+- Other power levels used specified in the datasheed, used to power ADC, RAM, etc.
+
+To provide the correct voltages and power-up sequence, we use a **programmable power supply** (i.e. a microcontroller that controls multiple DC-DC converters). If I wanted to use only DC-DC converters, I can use a chain of DC-DC with an enable signal in order to turn on the next one only when the current has reached the correct output level.
+
+# FPGA fabric
+
+_This chapter applies to "Xilinx Series 7 Artix" FPGAs. Other vendors and/or models may have different terminology and/or specifications._
+
+The programmable fabric of an FPGA is a matrix of different kind of **Configurable Logic Block**s (CLBs). The number of cells in an FPGA chip is called the number of **logic elements**.
+
+Each CLB spans over 2 **slices** (2 SLICEL or 1 SLICEL + 1 SLICEM, we will see later). Each slice contains 4 LUTs (called A, B, C and D), 8 lathes/FFs, a number of multiplexers and some carry logic. Each slice is also connected to a **switch matrix** in order to communicate with the interconnect.
+
+Slices can be **SLICEM** if they can store data in distributed RAM or SLICEL if they support additional logic.
+
+Each LUT has six independent inputs and two independent outputs. This means that ech LUT can implement either
+
+- a single 6-inputs 1-output function;
+- two 5-inputs 1-output functions;
+- two 3-inputs 2-outputs functions.
+
+Multiple LUTs can be _grouped_ using F7 and F8 multiplexers. In particular, F7A can be used to implement 7-inputs functions using A and B, F7B can do the same tich C and D while F8 combines all four LUTs to implement 8-inputs functions. Bigger functions require multiple slices.
+
+The 8 other multiplexers are used to route information from/to the outside of the slice and between the LUTs, registers and the carry logic in the slice itself.
+
+The storage elements are 4 FFs and 4 other FFs that can also act as latches. FFs are edge triggered while latches are level-sensitive.
+
+SLICEM LUts are used to also implement distributed ram to store "large" amount of data. The same LUTs may also be configured to act as shift registers.
+
+The carry logic is composed by CARRY4 components that are cascadingly placed in upward vertical fashion and it is used mainly for carry propagation.
+
+In addiotion to all of that, there are also colums of **Block RAM** (BRAM), connected in the same cascading upward vertical fashion. Each one of those is composed of two independend 18kb controllers. BRAM can be used to implmenent "big" memory without constraining timing penalties.
+
