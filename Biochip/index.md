@@ -97,3 +97,9 @@ Reynolds Number: $R_e = \frac{\rho * 2r * v}{\eta}$
 
 - $v:$ fluid velocity $[\frac{m}{s}]$
 - $r:$ channel radius $[m]$
+- $\rho :$ density $[\frac{kg}{m^3}]$
+- $\eta :$ viscosity $[P_a * s]$
+
+$R_e < 2300$ laminar flow.
+
+$R_e > 3000$ turbulent flow. 
