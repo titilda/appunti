@@ -279,3 +279,17 @@ Clausius-Mossoni Factor: $K_{CM}(w) = \frac{\varepsilon_p^* - \varepsilon_m^*}{\
 $Re\{K_{CM}(w)\} \to$ DEP force.
 
 $Im\{K_{CM}(w)\} \to$ Electrorotation.
+
+!["Up: DEP is positive is $\varepsilon_p > \varepsilon_m$ Down: DEP is negative is $\varepsilon_m > \varepsilon_p$"](assets/chapter_one/dep.jpg)
+
+Digital Microfluidics $\to$ based on the manipulation of single droplets.
+
+$2$ way:
+
+- Channel based;
+- Surface based.
+
+How manipulate one droplets:
+
+- Fluids (pomps and same way seen);
+- Electrowetting, use electricity to move the droplet $cos(\theta) = cos(\theta_0) + \frac{1}{2*\gamma} C * V^2$
