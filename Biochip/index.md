@@ -260,6 +260,22 @@ In this case we don't use water but gel $\to$ higher viscosity.
 
 Neutral dielectric particles in liquids can moved by means of DEP, a net force that acts on the particle in a non-uniform electric field (gradient).
 
-- Polarization: ability of the particle to be polarized in an external field $E$, $\vec{p} = \alpha \vec{E}$
+- **Polarization:** ability of the particle to be polarized in an external field $E$, $\vec{p} = \alpha \vec{E}$
 
 $\alpha = \frac{\vec{p}}{\vec{E}} [\frac{cm^2}{V}]$
+
+- **Permittivity:** every material have a permittivity constant, $\varepsilon$, to study the function of frequency we need the complex one, $\varepsilon^* = \varepsilon + \frac{\sigma}{jw}$
+
+$\sigma:$ conductivity
+
+- **DEP Force:** $\vec{F} = \vec{P} * \nabla E = \alpha * \nabla E^2$
+
+For homogeneous spherical particle (radius $r$, permittivity $\varepsilon_p$) in a surrounding medium $\varepsilon_m$ the force is:
+
+$\vec{F} = 2 *\pi * r^3 * \varepsilon_m * Re\{K_{CM}(w)\} * \nabla E^2$
+
+Clausius-Mossoni Factor: $K_{CM}(w) = \frac{\varepsilon_p^* - \varepsilon_m^*}{\varepsilon_p^* + 2*\varepsilon_m^*}$
+
+$Re\{K_{CM}(w)\} \to$ DEP force.
+
+$Im\{K_{CM}(w)\} \to$ Electrorotation.
