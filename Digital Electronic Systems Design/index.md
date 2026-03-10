@@ -107,3 +107,38 @@ The carry logic is composed by CARRY4 components that are cascadingly placed in 
 
 In addiotion to all of that, there are also colums of **Block RAM** (BRAM), connected in the same cascading upward vertical fashion. Each one of those is composed of two independend 18kb controllers. BRAM can be used to implmenent "big" memory without constraining timing penalties.
 
+## IO resources
+
+An FPGA is connected through the ret of the circuit through **IO pins**, which are grouped in **IO banks**. Banks are mainly one of two cathegories: **High Range** (HR), which support a wide range of voltages, and **High Performance** (HP) wich possess better electrical characteristics than HR.
+
+Each IO pin can be conficured to act as DDR, SERDES, etc. and can have a delay line.
+
+Each IO bank is powered by a VCCO (to power the output pins), a VREF (for the differential signals) and a VCCAUX (to power the auxiliary IO logic).
+
+IO ping can be configured to work as **single ended** (one line per signal + one common ground, no static power, no resistance to noise, slower) or **differential** (two lines per signal + one common ref, static power consumption, strong resistance against noise, faster). Single ended standards include LVCMOS, LVTTL, HSTL, PCI and SSTL while differential standards include LVDS, Mini_LVDS, RSDS, PPDS, BLVDS, dHSTL, dSSTL and PCIe.
+
+Single ended IO are accessed using IBUFs and OBUFS while differential ones are accessed using IBUFDSs and OBUFDSs.
+
+The IO pins can be configured for the impedance matching in order to reduce reflection.
+
+The IO logic is comprised of DDR/edge triggered FFs, IDELAYs, ODELAYs, ISERDES and OSERDES.
+
+## Clock resources
+
+All the clocked components inside an FPGA should be synchronized, otherwise undefined behavior may emerge. Signal **jitter** and **skew** must be minimized.
+
+Each FPGA chip includes multiple **Clock Management Tiles** (CMTs), that provide the clock generation and deskewing and jitter filtering functionalities, and the **clock routing resources**, that are used to propagate the clock signal with as less skew and jitter as possible.
+
+Each CMT comprises a single **Phase Locked Loop** (PLL) and a single **Mixed-Mode Clock Manager** (MMCM).
+
+The FPGA fabric is split in different **clock regions** (spanning from the left to the right of the chip and 50 CLBs tall).
+
+Global clock lines can clock and provide control to all the resources on an FPGA chip.
+
+There exists multiple buffers that can be used to access different types of clock:
+
+- **BUFG**s are used to access global clock lines;
+- **BUFH**s are used to access "horizontally" local clock lines;
+- **BUFR**s are used to access "regionally" local clock lines;
+
+It is possible to provide external clock signals to the FPGA connecting them to specific pins that can route said signal into the clock trees.
