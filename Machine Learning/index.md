@@ -249,3 +249,70 @@ Setting the derivative to zero:
 
 $$\nabla l(w) = \sum_{n=1}^N t_n \Phi(x_n)^T - w^T \sum_{n=1}^N \Phi(x_n) \Phi(x_n)^T = 0$$
 $$\hat{w}_{ML} = (\Phi^T \Phi)^{-1} \Phi^T t$$
+
+### Regularization
+
+**Regularization** is a technique to prevent overfitting by adding a penalty term to the loss function that discourages complex models (too many parameters or weights too big).
+
+Modified loss function:
+$$L(w) = \underbrace{L_D(w)}_{\text{error on data}} + \lambda \underbrace{L_w(w)}_{\text{model complexity}}$$
+$$L(w) = \underbrace{\frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2}_{\text{RSS}} + \lambda L_w(w)$$
+
+The **regularization parameter** $\lambda$ controls the tradeoff:
+
+- $\lambda = 0$: Only fit data (standard OLS)
+- $\lambda \to \infty$: Weights forced to zero
+
+#### Ridge Regression (L2 Regularization)
+
+Penalize the **L2 norm** (sum of squares) of weights:
+$$L_w(w) = \frac{1}{2}\|w\|_2^2 = \frac{1}{2} \sum_{j=1}^M w_j^2$$
+
+This encourages smaller weights, but does not set them to zero.
+
+Full loss function:
+$$L(w) = \frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2 + \frac{\lambda}{2} \|w\|_2^2$$
+
+The solution is:
+$$\hat{w}_{\text{ridge}} = (\Phi^T \Phi + \lambda I)^{-1} \Phi^T t$$
+
+#### Lasso Regression (L1 Regularization)
+
+Penalize the **L1 norm** (sum of absolute values):
+$$L_w(w) = \|w\|_1 = \sum_{j=1}^M |w_j|$$
+
+This generates _sparse solutions_, where some weights are exactly zero, effectively performing feature selection, removing irrelevant features from the model.
+
+Full loss function:
+$$L(w) = \frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2 + \lambda \|w\|_1$$
+
+### Bayesian Linear Regression
+
+The **Bayesian Linear Regression** is a probabilistic approach to linear regression that incorporates uncertainty about the model parameters.
+
+Before seeing data, there is an assumption about the distribution of weights, called the **prior distribution**. A common choice is a Gaussian prior:
+$$p(w) = \mathcal{N}(w | w_0, S_0)$$
+
+After observing data, _Bayes' theorem_ is used to update the belief about the weights, resulting in the **posterior distribution**:
+$$\overbrace{p(w|\mathcal{D})}^{\text{posterior}} = \frac{\overbrace{p(\mathcal{D}|w)}^{\text{likelihood}} \, \overbrace{p(w)}^{\text{prior}}}{p(\mathcal{D})}$$
+
+where:
+
+- $p(\mathcal{D}) = \int p(\mathcal{D}|w) p(w) dw$: is the **marginal likelihood**, which normalizes the posterior distribution.
+
+After updating, the weights still maintain a Gaussian distribution (_conjugate prior_):
+$$\overbrace{p(w|t, \Phi, \sigma^2)}^{\text{posterior}} \propto \overbrace{\mathcal{N}(w | w_0, S_0)}^{\text{prior}} \, \overbrace{\mathcal{N}(t | \Phi w, \sigma^2 I)}^{\text{likelihood}} = \mathcal{N}(w | w_N, S_N)$$
+
+where:
+$$w_N = S_N \left( S_0^{-1} w_0 + \frac{\Phi^T t}{\sigma^2} \right)$$
+$$S_N^{-1} = S_0^{-1} + \frac{\Phi^T \Phi}{\sigma^2}$$
+
+> With zero-mean gaussian prior ($w_0 = 0, S_0 = \tau^2 I$), the $w_N$ is the MAP estimator that is equal to the ridge regression solution with $\lambda = \frac{\sigma^2}{\tau^2}$.
+
+#### Predictive Distribution
+
+The Bayesian approach allows to compute the probability distribution of the target for a new input $x$, called the **predictive distribution**:
+$$p(t| x, \mathcal{D}, \sigma^2) = \int \mathcal{N}(t | w^T \phi(x), \sigma^2) \mathcal{N}(w | w_N, S_N) dw = \mathcal{N}(t | w_N^T \phi(x), \sigma^2_N)$$
+
+where:
+$$\sigma^2_N = \underbrace{\sigma^2}_{\text{data noise}} + \underbrace{\phi(x)^T S_N \phi(x)}_{\text{parameters uncertainty}}$$
