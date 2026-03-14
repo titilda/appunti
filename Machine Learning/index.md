@@ -93,3 +93,159 @@ The **direct approach** avoids probability modeling. Instead of learning distrib
 For prediction tasks, you just need the mapping $x \to t$ to be accurate.
 
 This approach is often more straightforward and computationally efficient.
+
+## Linear Regression
+
+The goal is to learn a function that maps input features $x$ to target output $t$. Linear regression models assume this relationship is linear in the parameters (though features can be nonlinearly transformed).
+
+The solution can be found analytically.
+
+$$y(x, w) = w_0 + \sum_{j=1}^{D-1} w_j x_j = w^T \phi(x)$$
+
+where:
+
+- $\phi(x) = (1, x_1, \dots, x_{D-1})$: augmented feature vector
+- $w = (w_0, w_1, \dots, w_{D-1})$: weight vector
+- $w_0$: bias term
+
+Linear models are used:
+
+- **Easy to optimize**: Convex loss function guarantees global optimum
+- **Easy to interpret**: Weights directly show feature importance
+- **Multiple outputs**: Can be extended to predict multiple targets simultaneously as each output is a linear combination of the same features
+
+### Ordinary Least Squares (OLS)
+
+The **Ordinary Least Squares (OLS)** is a direct method that finds the weights that minimize the error on the training data.
+
+Since we cannot compute the true expected loss (the joint distribution is unknown), we approximate it with the **empirical loss** computed from the $N$ training data:
+
+$$L(w) = \frac{1}{2} \sum_{n=1}^N (y(x_n, w) - t_n)^2$$
+
+- The factor $\frac{1}{2}$ is a scale factor for computational convenience.
+
+This is also called **residual sum of squares** (RSS) or **sum of squared errors** (SSE), and can also be written as:
+
+$$RSS(w) = \|\epsilon\|_2^2 = \sum_{n=1}^N \epsilon_n^2$$
+
+where:
+
+- $\epsilon_n = y(x_n, w) - t_n$ is the **residual error** for the n-th training example.
+
+> The **p-norm** of the residuals is a generalization of the loss function and assign a measure of the error from a vector.
+>
+> - For $p=1$, we get the **L1 norm** (sum of absolute errors), that is represented by a diamond-shaped plot.
+> - For $p=2$, we get the **L2 norm** (sum of squared errors), that is represented by a circular plot.
+> - For $p=\infty$, we get the **L-infinity norm** (maximum error), that is represented by a square-shaped plot.
+
+**Matrix Formulation:**
+
+$$L(w) = \frac{1}{2} \text{RSS}(w) = \frac{1}{2} (t - \Phi w)^T (t - \Phi w)$$
+
+where:
+
+- $t = [t_1, \dots, t_N]^T$: vector of target values ($N$-dimensional)
+- $\Phi = [\phi(x_1), \dots, \phi(x_N)]^T$: matrix with samples as rows, features as columns ($N \times M$)
+- $w$: weight/parameter vector ($M$-dimensional)
+
+#### Solution
+
+The solution is found by setting the gradient of the loss to zero:
+
+$$\frac{\partial L(w)}{\partial w} = - \Phi^T (t - \Phi w) = 0$$
+
+The Hessian (second derivative) is:
+$$\frac{\partial^2 L(w)}{\partial w \partial w^T} = \Phi^T \Phi$$
+
+This is positive definite if $\Phi$ has full column rank, ensuring a unique global minimum.
+
+The point where the gradient is zero corresponds to the minimum of the loss function, and in that point there is no correlation between the residuals and the features. This means that the model has captured all the linear relationships in the data, and any remaining error is due to noise.
+
+Solving the gradient for $w$:
+$$\hat{w}_{OLS} = (\Phi^T \Phi)^{-1} \Phi^T t$$
+
+This is the **Ordinary Least Squares (OLS)** solution, which gives the best linear fit to the training data in terms of minimizing the sum of squared errors.
+
+To work properly, OLS requires:
+
+1. **More samples than features**: $N \geq M$
+2. **No redundant features**: Features must be linearly independent, otherwise the matrix is singular and cannot be inverted.
+3. **Computational budget**: Inversion costs $O(M^3)$
+
+#### Linear Model Evaluation
+
+To evaluate the performance of a linear regression model, we use the **Root Mean Squared Error (RMSE)**, which is derived from the residual sum of squares (RSS):
+
+$$E_{\text{RMS}} = \sqrt{\frac{2 * \text{RSS}(\hat{w})}{N}}$$
+
+#### Variance
+
+To estimate the variance of the noise, we can use the residuals from the fitted model:
+$$\hat{\sigma}^2 = \frac{1}{N - M} \sum_{n=1}^N (t_n - \hat{w}^T \phi(x_n))^2$$
+
+where:
+
+- $N$: number of samples
+- $M$: number of parameters (features)
+
+Meaning that more more samples reduce the variance of the noise estimate, while more parameters increase it.
+
+> Based on the **Gauss-Markov theorem**, the OLS estimator is the **Best Linear Unbiased Estimator**, meaning it has the lowest variance among all linear unbiased estimators.
+
+#### Stochastic Gradient Descent (SGD)
+
+This is an iterative optimization algorithm that updates the weights incrementally using one sample at a time, rather than computing the gradient over the entire dataset.
+
+The loss function can be written as the sum of the loss function for each sample $L(w) = \sum_{n=1}^N L(x_n)$.
+
+$$w^{(k+1)} = w^{(k)} - \alpha^{(k)} \nabla L(x_n)$$
+
+For squared loss:
+$$w^{(k+1)} = w^{(k)} - \alpha^{(k)} (w^{(k)T} \phi(x_n) - t_n) \phi(x_n)$$
+
+where:
+
+- $\alpha^{(k)}$: learning rate at iteration $k$
+- $w^{(k)}$: weight vector at iteration $k$
+
+At each iteration, the algorithm performs the following steps:
+
+1. Compute prediction error: $(w^T \phi(x_n) - t_n)$
+2. Compute error gradient: Multiply by the feature vector
+3. Move weights in opposite direction with a step defined by the learning rate $\alpha^{(k)}$: $w := w - \alpha^{(k)} \times (\text{error gradient})$
+
+This method is more efficient for large datasets, as it avoids the costly matrix inversion required by OLS and allows for online learning. However each update is influenced by the noise of a single sample.
+
+SDG can converge to the OLS solution only when the learning rate decays over time and satisfies the Robbins-Monro conditions:
+
+- $\sum_{k=1}^\infty \alpha^{(k)} = \infty$: ensures that the algorithm continues to make progress towards the minimum
+- $\sum_{k=1}^\infty (\alpha^{(k)})^2 < \infty$: ensures that the steps become small enough to converge to the minimum without oscillating around it.
+
+#### Geometric Interpretation
+
+The OLS solution projects the target vector $t$ onto the feature space spanned by columns of $\Phi$:
+
+$$\hat{t} = \Phi \hat{w}_{OLS} = \underbrace{\Phi (\Phi^T \Phi)^{-1} \Phi^T}_{\text{Projection Matrix } P} t$$
+
+The projection $\hat{t}$ should be as close as possible to $t$.
+
+### Maximum Likelihood Estimation (MLE)
+
+The **Maximum Likelihood Estimation (MLE)** is a generative method that try to find the model which is most likely to have generated the observed data.
+
+Assume targets are generated by a function summed with Gaussian noise:
+$$t = f(x) + \epsilon, \quad \epsilon \sim \mathcal{N}(0, \sigma^2)$$
+
+This approach maximizes the **likelihood**, which is the probability of observing the data given the parameters:
+
+$$p(t|X, w, \sigma^2) = \prod_{n=1}^N \mathcal{N}(t_n | w^T \Phi(x_n), \sigma^2)$$
+
+This optimization problem is equivalent to minimizing the sum of squared errors, as maximizing the likelihood corresponds to finding the parameters that make the observed data most probable under the assumed model.
+
+To solve it, we take the logarithm of the likelihood (log-likelihood) to simplify the product into a sum:
+$$\ln p(t|X, w, \sigma^2) = \sum_{n=1}^N \ln \mathcal{N}(t_n | w^T \Phi(x_n), \sigma^2) = - \frac{N}{2} \ln (2\pi \sigma^2) - \frac{1}{2\sigma^2} \text{RSS}(w)$$
+
+Setting the derivative to zero:
+
+$$\nabla l(w) = \sum_{n=1}^N t_n \Phi(x_n)^T - w^T \sum_{n=1}^N \Phi(x_n) \Phi(x_n)^T = 0$$
+$$\hat{w}_{ML} = (\Phi^T \Phi)^{-1} \Phi^T t$$
