@@ -277,3 +277,115 @@ An **Nonlinear Autoregressive Moving Average Exogenous Process** (N-ARMAX) is a 
 $$y(t) = f(y(t-1), y(t-2), ..., y(t-m), e(t), e(t-1), ..., e(t-n), u(t-k), u(t-k-1), ..., u(t-k-p))$$
 
 where $f$ is a nonlinear function that describes the relationship between the past values, white noise terms, and exogenous input terms.
+
+### Frequency Domain Analysis
+
+A single realization of a stochastic process can be analyzed in the time domain $y(t)$ or in the frequency domain ($\Gamma_y(\omega)$, spectrum) using the Fourier Transform.
+
+The **power spectral density** (PSD) of a stationary process is:
+
+$$\Gamma_y(\omega) = \mathbb{F}[\gamma_y(\tau)] = \sum_{\tau=-\infty}^{\infty} \gamma_y(\tau) e^{-j \omega \tau}$$
+
+- $\Gamma_y(\omega)$ is the Discrete Fourier Transform of the covariance function $\gamma_y(\tau)$ so doesn't depend on the specific time points or realization of $y(t)$, but only on the time difference $\tau$.
+
+**Properties:**
+
+- $\Gamma_y(\omega)$ is real and non-negative for all $\omega$.
+  - Even if is an imaginary function, $\mathbb{I}[\Gamma_y(\omega)] = 0$ for all $\omega$.
+- $\Gamma_y(\omega)$ is an even function of $\omega$: $\Gamma_y(\omega) = \Gamma_y(-\omega)$.
+- $\Gamma_y(w) = \Gamma_y(w + 2\pi k)$ for any integer $k$ (periodicity).
+
+All interesting frequencies are between $0$ and $\pi$, which is called the **Nyquist frequency**.
+
+#### Spectral Factorization
+
+For a process $y(t) = W(z) e(t)$ where $e(t)$ is white noise, the output spectrum is related to the input spectrum through the transfer function:
+
+$$\Gamma_y(\omega) = |W(e^{j \omega})|^2 \Gamma_e(\omega)$$
+
+If $e(t) \sim \text{WN}(0, \lambda^2)$ (white noise), then $\Gamma_e(\omega) = \lambda^2$ for all $\omega$, and we get:
+
+$$\Gamma_y(\omega) = \lambda^2 |W(e^{j\omega})|^2$$
+
+#### Inverse Fourier Transform
+
+It is possible to recover the covariance function from the spectrum:
+$$\gamma_y(\tau) = F^{-1}[\Gamma_y(\omega)] = \frac{1}{2\pi} \int_{-\pi}^{\pi} \Gamma_y(\omega) e^{j \omega \tau} d\omega$$
+
+## Sample-Based Estimation
+
+Given a finite realization $(y_1, y_2, \ldots, y_N)$ of a stationary process, we must estimate the mean, covariance, and spectrum from data.
+
+**Quality criteria:**
+
+- **Correctness:** the expected value of the estimator equals the true parameter ($\mathbb{E}[\hat{\theta}] = \theta$).
+- **Consistency:** The Mean Squared Error (MSE) vanishes as $N \to \infty$: $\lim_{N \to \infty} \mathbb{E}[(\hat{\theta}_N - \theta)^2] = 0$.
+
+### Sample Mean Estimator
+
+As the process is stationary, all samples have the same mean. The simpler estimator is the sample average:
+
+$$\hat{m}_N = \frac{1}{N} \sum_{t=1}^{N} y(t)$$
+
+**Correctness:**
+
+$$\mathbb{E}[\hat{m}_N] = \frac{1}{N} \sum_{t=1}^{N} \mathbb{E}[y(t)] = \frac{1}{N} \cdot N \cdot m_y = m_y \quad \checkmark$$
+
+**Consistency:**
+
+$\hat{m}_N$ is consistent when $\gamma_y(\tau) \to 0$. This happens as $N \to \infty$.
+
+### Sample Covariance Estimator
+
+Assuming zero-mean,that is equivalent to subtract $\hat{m}_N$ from the samples, we compute the sample covariance for each lag $\tau$:
+
+$$\hat{\gamma}_N(\tau) = \frac{1}{N - |\tau|} \sum_{t=1}^{N - |\tau|} y(t)\, y(t + |\tau|) \quad 0 \leq |\tau| < N$$
+
+**Correctness:**
+
+$$\mathbb{E}[\hat{\gamma}_N(\tau)] = \frac{1}{N - |\tau|} \sum_{t=1}^{N - |\tau|} \mathbb{E}[y(t) y(t + |\tau|)] = \frac{1}{N - |\tau|} \sum_{t=1}^{N - |\tau|} \gamma_y(\tau) = \gamma_y(\tau) \quad \checkmark$$
+
+**Consistency:**
+
+$\hat{\gamma}_N(\tau)$ is a consistent estimator of $\gamma_y(\tau)$ if $\gamma_y(\tau) \to 0$ as $\tau \to \infty$.
+
+### Sample Spectrum Estimator
+
+The sample of the spectrum is the **periodogram** and is computed as the DFT of the sample covariance:
+
+$$\hat{\Gamma}_N(\omega) = \sum_{\tau=-(N-1)}^{N-1} \hat{\gamma}_N(\tau)\, e^{-j \omega \tau}$$
+
+**Asymptotic Correctness:**
+
+The spectrum should cover all lags $\tau$ from $-\infty$ to $\infty$, but this can only compute it for $|\tau| < N$.
+
+This estimator is consistent as $N \to \infty$,
+$$\mathbb{E}[\hat{\Gamma}_N(\omega)] \to \Gamma_y(\omega)$$
+
+**Not Consistent:**
+
+$$\lim_{N \to \infty} \mathbb{E}[(\hat{\Gamma}_N(\omega) - \Gamma_y(\omega))^2] \to \gamma_y(\omega)^2 \quad, \forall \omega$$
+
+This estimator is not consistent because the variance does not vanish as $N \to \infty$.
+
+#### Averaging
+
+To achieve **consistency**, it is possible to average the periodogram over multiple segments of the data:
+
+$$\hat{\hat{\Gamma}}_N(\omega) = \frac{1}{M} \sum_{m=1}^{M} \hat{\Gamma}_{N/M}^{(m)}(\omega)$$
+
+where $M$ is the number of segments and each segment has length $N/M$.
+
+Increasing $M$ (and thus decreasing the segment length) reduces the variance of the estimator, but increases the consistency.
+
+#### Biased Periodogram
+
+Using the **biased covariance estimator** (denominator $N$ instead of $N - |\tau|$):
+
+$$\hat{\gamma}_N^{\text{biased}}(\tau) = \frac{1}{N} \sum_{t=1}^{N} y(t)\, y(t + |\tau|)$$
+
+The spectrum becomes:
+
+$$\hat{\Gamma}_N(\omega) = \sum_{\tau=-N+1}^{N-1} \hat{\gamma}_N(\tau) e^{-j \omega \tau} = \underbrace{\frac{1}{N} \left| \sum_{t=1}^{N} y(t) e^{-j \omega t} \right|^2}_{\text{DFT of } y(t)}$$
+
+This make computation more efficient, but it is **biased** ($\mathbb{E}[\hat{\Gamma}_N(\omega)] \neq \Gamma_y(\omega)$), but becomes asymptotically unbiased as $N \to \infty$.
