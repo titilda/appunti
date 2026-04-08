@@ -95,3 +95,75 @@ Data centers uses **cold aisle/warm aisle** configuration to maximize the air co
 - **Cold aisle**: Center floor supplies cold air; flows through server intake ports.
 - **Warm aisle**: Rear of servers; hot exhaust air expelled upward.
 - **Containment**: Roof caps on racks prevent cold air bypass, forcing air through servers and maximizing cooling efficiency.
+
+#### Storage
+
+WIth time the data have been moved from local towards cloud providers. This is due:
+
+- Ease of management, with automatic backups and data recovery;
+- Low price;
+- Ease of access everywhere there is an internet connection.
+
+##### File System Abstractions
+
+OS manages data through hierarchical abstractions:
+
+- **Data Blocks**: Smallest units of storage, addressable with **logical block addresses** (LBA).
+- **Clusters**: Groups of contiguous blocks, used to reduce overhead compared to block-level management, reducing the number of read/write operations.
+Inside each cluster there are the actual data and the **Metadata** that consist in the file attributes (name, size, permissions, timestamps) enabling organization and access control.
+
+During data deletion, the cluster is only flagged as deleted, allowing it to be overwritten.
+
+##### Space Allocation
+
+The storage unit is represented as a multiple of the cluster size:
+
+$$\text{Disk Size} = \lceil \frac{\text{File Size}}{\text{Cluster Size}} \rceil \times \text{Cluster Size}$$
+
+when a file is smaller than the cluster size, sime of its space is wasted leading to **internal fragmentation**:
+
+$$\text{Wasted Space} = \text{Disk Size} - \text{File Size}$$
+When a file's clusters are non-contiguous (fragmented), read/write operations require multiple seeks, degrading performance. In these cases it's useful to perform **defragmentation** to rearrange sectors into sequential blocks.
+
+##### Hard Disk Drives
+
+**Physical Structure:**
+
+HDDs contain rotating magnetic _platters_ coated with ferromagnetic material. Data is stored as magnetic patterns organized into:
+
+- **Tracks**: Concentric circles on each platter.
+- **Sectors**: Divisions of tracks, the smallest atomic read/write unit.
+
+The platters are mounted on a spindle and spin at high speeds (RPM). An actuator arm with a **read/write head** moves across the platters to access data.
+
+The entire assembly is enclosed in a sealed case to protect against dust, scratches, and environmental contaminants, while also providing shock resistance.
+
+###### Access Time Components
+
+During the read/write process, several time components contribute to the total access time:
+
+- **Seek Time**: Time for actuator arm to position head over target track. Heuristic: $T_\text{Seek} \approx \frac{T_\text{max}}{3}$
+- **Rotation Delay**: Average time for target sector to rotate under head: $T_\text{Rotation} = \frac{1}{2} \times \frac{60}{\text{RPM}}$
+- **Transfer Time**: Duration to read/write data at disk transfer rate, based on the amount of data and the disk's throughput.
+- **Controller Overhead**: Command processing and disk preparation time.
+
+The total access time is the sum of these components:
+$$T_\text{Access} = T_\text{Seek} + T_\text{Rotation} + T_\text{Transfer} + T_\text{Controller}$$
+
+The **Data locality**, the tendency for related data to be stored close together, can significantly reduce access time by minimizing seek and rotation delays. The locality factor is represented by $\alpha$. The adjusted access time considering locality is:
+
+$$T_\text{Access} = (1-\alpha)(T_\text{Seek} + T_\text{Rotation}) + T_\text{Transfer} + T_\text{Controller}$$
+
+To reduce access time the HDDs include buffer memory that exploits spatial locality by storing neighboring sectors.
+
+Writes target cache first, then flush to platters. This reduces repeated disk access for frequently accessed data.
+
+###### Scheduling
+
+When multiple I/O requests are fired, the disk scheduler determines the order of processing. The goal is to minimize total access time and maximize throughput. This introduces a **Scheduling Delay** as the disk may need to wait for the current request to finish before processing the next one. Common scheduling algorithms include:
+
+- **FCFS (First-Come, First-Served)**: Requests are processed in the order they arrive.
+- **SSTF (Shortest Seek Time First)**: The request with the shortest seek time is processed next, might lead to starvation.
+- **SCAN**: The read/write head moves in one direction, processing requests as it goes, and then reverses direction.
+- **C-SCAN**: The read/write head moves in one direction, processing requests as it goes, and then jumps back to the beginning without reversing direction.
+- **C-LOOK**: Similar to C-SCAN, but reverse at the last I/O request in one direction instead of reaching the extreme end of the disk.
