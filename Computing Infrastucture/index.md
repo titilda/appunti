@@ -225,3 +225,100 @@ Unrecoverable Bit Error Ratio (UBER) differs from HDDs: HDD UBER increases linea
 ###### Storage Area Network (SAN)
 
 **Storage Area Network** is a network that provides block-level access to data, allowing servers to access storage as if it were directly attached.
+
+## Dependability
+
+Systems fail due to: defects, degradation, radiation, design errors, bugs, attacks, and human errors. This leads to economic losses, information loss, physical harm, and reputation damage.
+
+Dependability is a measure of trust toward a system. It comprises five key attributes:
+
+- **Reliability**: Ability of a system to perform its intended functions under specified conditions for a defined period of time.
+- **Availability**: The degree to which a system is operational and accessible when required for use. Formula: $A = \frac{\text{Uptime}}{\text{Uptime} + \text{Downtime}}$
+- **Maintainability**: The ease with which a system can be repaired, modified, and restored to working condition.
+- **Safety**: Absence of catastrophic consequences to users or the environment.
+- **Security**: Protection of a system from unauthorized access and interference, maintaining confidentiality, integrity, non-repudiation, and survivability.
+
+### Fault-Error-Failure Chain
+
+A **fault** is a defect or anomaly in a system.
+
+When a fault is activated, it becomes an **error**, a deviation from correct operation.
+
+If an error is not detected and corrected, it propagates and ultimately causes a **failure**, meaning that the system ceases to perform its intended function.
+
+### Dependability Approaches
+
+Two primary techniques address dependability:
+
+- **Fault Avoidance**: Preventing faults from occurring through rigorous testing, validation, formal verification, and use of fault-tolerant components.
+- **Fault Tolerance**: Building systems that continue operating correctly despite faults through error detection, monitoring, self-recovery mechanisms, redundancy, and graceful degradation.
+
+This is a tradeoff between cost (hardware, performance, and development), performance, and dependability. Design decisions depend on: technologies, requirements, context, and environment.
+
+### Reliability Metrics
+
+Reliability follows an exponential failure model:
+$$R(t) = e^{-\lambda t}$$
+
+where:
+
+- $t$ is the time period of interest
+- $\lambda$ (lambda) is the constant failure rate (failures per unit time)
+- $R(t)$ is the probability that the system operates without failure during time $t$
+
+**Mean Time To Failure** (MTTF): expected time until first failure:
+$$\text{MTTF} = \int_0^\infty R(t) \, dt = \frac{1}{\lambda}$$
+
+**Mean Time To Repair** (MTTR): expected time to detect, repair, and recover:
+$$\text{MTTR} = t_{\text{detect}} + t_{\text{repair}} + t_{\text{recover}}$$
+
+**Mean Time Between Failures** (MTBF): expected time between consecutive failures in repairable systems:
+$$\text{MTBF} = \text{MTTF} + \text{MTTR}$$
+
+**Availability** formula:
+$$A = \frac{\text{MTTF}}{\text{MTTF} + \text{MTTR}} = \frac{\text{uptime}}{\text{uptime} + \text{downtime}}$$
+
+**Failures In Time** (FIT): number of failures per billion device-hours:
+$$\text{FIT} = \frac{10^9}{\text{MTBF}}$$
+
+### Component Lifecycle
+
+A component experiences three phases during its operational lifetime:
+
+- **Infant Mortality**: Early phase with high failure rates; failures occur due to manufacturing defects and design issues.
+- **Useful Life**: This is the primary operating window where the failure rate is relatively low and stable.
+- **Worn-out**: Late phase with increasing failure rate where the component deteriorates due to age and use. Maintenance and eventual replacement become necessary.
+
+System updates and new deployments risk introducing failures into production. Some common strategies mitigate this risk:
+
+- **Staged Rollout**: Deploy changes gradually to an increasing fraction of users or systems detecting issues early before full deployment.
+- **Canary Deployment**: Deploy to a small, representative subset (canaries) to validate behavior in production before rolling out to all systems.
+- **Automatic Rollback**: Monitor deployed changes and automatically revert to a previous stable version if failures or anomalies are detected.
+
+### Reliability Block Diagram
+
+The system structure is represented as a block diagram where each component is a block and links show dependencies.
+
+A system functions if there exists at least one operational path from start to end.
+
+Connections represent two reliability configurations:
+
+- **Series Configuration** (both components required): The system fails if any single component fails. Overall reliability decreases with each additional series component.
+$$R_s(t) = \prod_{i=1}^{n} R_i(t) = e^{-t\sum_{i=1}^{n}\lambda_i}$$
+
+- **Parallel Configuration** (at least one component required): The system continues if any single component survives. Overall reliability increases with redundancy.
+$$R_p(t) = 1 - \prod_{i=1}^{n}(1 - R_i(t))$$
+
+**Standby Redundancy**: A redundant component remains idle until the primary component fails, then automatically activates. This approach approximately doubles the MTTF compared to a single component.
+
+#### r-out-of-n Redundancy
+
+A system that requires $r$ out of $n$ components to function correctly for the system to operate.
+
+The system reliability for r-out-of-n redundancy (assuming identical components, each with reliability $R$):
+
+$$R_{\text{voting}} = \sum_{i=r}^{n} \binom{n}{i} R^i(1-R)^{n-i}$$
+
+This formula sums the probability that at least $r$ components are operational.
+
+When the majority of components must be operational, the reliability of a single component could be higher than the reliability of the entire system, especially when the failure rate $\lambda$ is high.
