@@ -53,7 +53,7 @@ Data center architecture is similar to that of personal computers but at a massi
 
 **Computing Components:**
 
-- **Servers**: Standardized physical machines in rack format (U) providing computational power and storage. Functionally equivalent to regular computers.
+- **Servers**: Standardized physical machines providing computational power and storage. Functionally equivalent to regular computers.
 - **Networking equipment**: Switches, routers, and firewalls connecting servers and providing internet access.
 - **Storage systems**: Additional storage capacity for applications and data.
 
@@ -62,3 +62,36 @@ Data center architecture is similar to that of personal computers but at a massi
 - **Power supply**: Continuous, reliable power delivery. Redundancy includes backup generators and uninterruptible power supplies (UPS) to handle outages.
 - **Cooling systems**: Manage server heat through air conditioning, liquid cooling, or hybrid approaches to maintain optimal operating temperatures.
 - **Failure recovery**: Ensures system availability via batteries, diesel generators, and other redundancy mechanisms.
+
+#### Server
+
+Servers are fundamental computing units in data centers, designed for performance, reliability, and scalability.
+
+##### Form Factors
+
+Servers are made in different standard form factors such us:
+
+- **Rack-mounted** (most common): Standardized units (1U = 44.45 mm height) fitting into vertical racks. Racks integrate power distribution, cooling, networking, and cable management, enabling high density and efficient operations. Excellent space efficiency but complex cable management at scale.
+- **Blade servers**: Vertically oriented, ultra-compact form factor. Highest component density per unit of space but requires specialized cooling due to high power density. These are more expensive than rack-mounted.
+- **Tower servers**: Standalone units resembling desktop computers. Low density with simple cooling/maintenance, and lower cost. Rarely used in modern data centers due to poor scalability and space inefficiency.
+
+##### Components
+
+- **Motherboard**: Central circuit board interconnecting all components.
+- **CPUs**: 1 to 8 processors per server.
+- **RAM**: 2 to 192 DIMM slots for main memory.
+- **Storage**: Multiple hard drives or SSDs for persistent data.
+- **Specialized Hardware** (optional):
+  - **GPUs**: Accelerate parallel compute tasks (machine learning, scientific computing). Communicate via NVLink (high-speed interconnect) to minimize latency bottlenecks.
+  - **TPUs**: Tensor Processing Units specialized for neural network training/inference thanks to optimized matrix operations.
+  - **FPGAs**: Field-Programmable Gate Arrays. Customizable hardware programmed for specific low-latency, application-specific acceleration (real-time processing, network processing).
+
+All components are standardized for quick replacement and maintenance, with hot-swappable parts to minimize downtime.
+
+##### Thermal Management
+
+Data centers uses **cold aisle/warm aisle** configuration to maximize the air cooling efficiency:
+
+- **Cold aisle**: Center floor supplies cold air; flows through server intake ports.
+- **Warm aisle**: Rear of servers; hot exhaust air expelled upward.
+- **Containment**: Roof caps on racks prevent cold air bypass, forcing air through servers and maximizing cooling efficiency.
