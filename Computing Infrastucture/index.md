@@ -167,3 +167,61 @@ When multiple I/O requests are fired, the disk scheduler determines the order of
 - **SCAN**: The read/write head moves in one direction, processing requests as it goes, and then reverses direction.
 - **C-SCAN**: The read/write head moves in one direction, processing requests as it goes, and then jumps back to the beginning without reversing direction.
 - **C-LOOK**: Similar to C-SCAN, but reverse at the last I/O request in one direction instead of reaching the extreme end of the disk.
+
+##### Solid State Drives
+
+SSDs use flash memory (no mechanical parts), managed by a silicon controller and uses the same form factors as HDDs.
+
+At the beginning of its life, an SSD is faster than an HDD because it has no seek time or rotation delay. However, as the SSD fills up and undergoes more write cycles, its performance can degrade, mainly for writes.
+
+Data is organized into:
+
+- **Cell**: Floating gate transistor storing charge (presence/absence = bit). Oxide layer insulates gate, retaining charge without power.
+  - **Cell Density**: SLC (1 bit), MLC (2 bits), TLC (3 bits).
+- **Page**: Smallest readable/writable unit.
+- **Block**: Smallest erasable unit (contains multiple pages).
+
+Each cell has a limited number of write cycles, leading to wear-out as the oxide layer degrades.
+
+Each page can be in one of three states:
+
+- **Valid**: Contains readable data.
+- **Dirty**: Contains obsolete data, eligible for erasure.
+- **Empty**: Block erased, ready for writing.
+
+Writes always target empty pages; updates write to new pages and mark old pages dirty. Blocks containing only dirty pages can be erased. This prevents repeated wear on single cells but introduces challenges:
+
+- **Write Amplification**: When a page update it requires copying valid data to a new block and erasing the old block, leading to more writes than the original update, which can degrade performance and reduce SSD lifespan.
+- **Garbage Collection**: Identifies dirty-heavy blocks, copies valid data to new blocks, erases old blocks, and marks them empty.
+
+To mitigate wear-out, SSDs implement a technique called **Wear Leveling** that distributes write/erase cycles evenly across cells. Periodically relocates data to ensure $\text{max cycles} - \text{min cycles} < e$ (small threshold).
+
+SSDs uses **Flash Translation Layer (FTL)**, a firmware component that manages the mapping between logical block addresses (LBAs) used by the operating system and the physical addresses of the flash memory. Mapping strategies include:
+
+- **Page-level**: Fine-grained but expensive.
+- **Block-level**: Coarser, faster.
+- **Hybrid**: Balances cost and performance.
+
+###### Reliability
+
+Unrecoverable Bit Error Ratio (UBER) differs from HDDs: HDD UBER increases linearly with age while SSD UBER change over time, starting low, increasing as the drive wears out, and then rising sharply near the end of its lifespan.
+
+##### Storage Architectures
+
+###### Direct Attached Storage (DAS)
+
+**Direct Attached Storage** is physically connected to a single server (internal or external via SATA, USB).
+
+- **Pros**: High performance, no network latency.
+- **Cons**: Limited scalability, no sharing, complex backup/recovery.
+
+###### Network Attached Storage (NAS)
+
+**Network Attached Storage** is storage that is connected to a network and has its own IP address, appearing as a file server. It provides file-level access to data over the network, allowing multiple clients to access and share files simultaneously.
+
+- **Pros**: Easy to scale, centralized backup.
+- **Cons**: Network bandwidth bottleneck, higher latency than DAS.
+
+###### Storage Area Network (SAN)
+
+**Storage Area Network** is a network that provides block-level access to data, allowing servers to access storage as if it were directly attached.
