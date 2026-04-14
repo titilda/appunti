@@ -741,3 +741,35 @@ Asymptotically equivalent to FPE.
 $$MDL(n) = \underbrace{\ln(J_N(\hat{\theta}_n))}_{{\text{Fit term}}} + \underbrace{\frac{n}{N} \ln(N)}_{\text{Penalty}}$$
 
 Stronger penalty for model complexity. Tends to select lower order models than AIC/FPE.
+
+## Data Preprocessing
+
+When raw data contains non-stationary components it is necessary to separate the stationary part from the deterministic part before applying identification techniques.
+
+$$y(t) = \underbrace{\tilde{y}(t)}_{\text{stationary}} + \underbrace{D(t)}_{\text{deterministic}}$$
+
+### Trend Removal
+
+**Trend** is a long-term increase or decrease in the data. It can be modeled as a deterministic function of time:
+$$y(t) = \tilde{y}(t) + T(t)$$
+
+where $T(t)$ is the trend component (e.g., polynomial, exponential).
+
+To remove the trend:
+
+1. Estimate trend using polynomial regression (e.g., linear: $T(t) = a + bt$, quadratic: $T(t) = a + bt + ct^2$)
+2. Subtract to obtain stationary residual:
+$$\tilde{y}(t) = y(t) - \hat{T}(t)$$
+
+### Seasonality Removal
+
+**Seasonality** is a repeating pattern in the data with a fixed period. It can be modeled as a periodic function of time:
+$$y(t) = \tilde{y}(t) + S(t)$$
+
+where $S(t)$ is periodic with known period $T$ (if unknown, use spectral analysis to estimate it).
+
+To remove seasonality we need to estimate the seasonal component $S(t)$, which can be done by averaging over complete periods. With $M$ periods in the data:
+$$\hat{S}(t) = \frac{1}{M} \sum_{k=0}^{M - 1} y(t + kT) = \underbrace{\frac{1}{M} \sum_{k=0}^{M - 1} \tilde{y}(t + kT)}_{\mathbb{E}[\tilde{y}(t)] \approx 0} + \frac{1}{M} \sum_{k=0}^{M - 1} S(t + kT) = S(t)$$
+
+Then remove the seasonal component:
+$$\tilde{y}(t) = y(t) - \hat{S}(t)$$
