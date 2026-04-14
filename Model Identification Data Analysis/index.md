@@ -536,3 +536,54 @@ Practical criteria is:
 $$J_N(\theta) = \frac{1}{N} \sum_{t=1}^{N} (y(t) - \hat{y}(t | t-1, \theta))^2$$
 
 A one-step ahead predictor will have an error $\varepsilon(t+1) = y(t + 1) - \hat{y}(t + 1 | t, \theta) = e(t)$, then $J_N(\hat{\theta}_N) = \mathbb{E}[(\varepsilon(t + 1))^2] = \lambda^2$.
+
+### Minimization
+
+Minimization of $J_N(\theta)$ to find the optimal parameters $\hat{\theta} = \arg\min_{\theta} J_N(\theta)$.
+
+#### Minimization of AR(X) models
+
+For AR(X) models, the prediction error is a linear function of the parameters, so the minimization can be solved in closed form by setting the gradient of $J_N(\theta)$ to zero and solving the resulting equations.
+
+$$M_\theta: \quad y(t) = \frac{B(z)}{A(z)} u(t) + \frac{C(z)}{A(z)} e(t)$$
+
+- $C(z) = 1$
+- $A(z) = 1 - a_1 z^{-1} - \cdots - a_m z^{-m}$
+- $B(z) = b_1 z^{-1} + \cdots + b_p z^{-p}$
+- $e(t) \sim \text{WN}(0, \lambda^2)$
+- $\theta = [a_1, a_2, \ldots, a_m, b_1, b_2, \ldots, b_p]^T$
+
+The objective function is:
+$$\hat{\theta}_N = \arg\min_{\theta} \frac{1}{N} \sum_{t=1}^{N} (y(t) - \hat{y}(t | t-1, \theta))^2$$
+
+The regression vector is:
+$$\varphi(t) = [y(t-1), \ldots, y(t-m), u(t-d), \ldots, u(t-d-p+1)]^T$$
+
+meaning that the parametric optimal predictor is a linear combination of the past values of the output and the past values of the input:
+$$\hat{y}(t | t-1, \theta) = \theta^T \varphi(t)$$
+
+Being linear in $\theta$, the cost function is quadratic in $\theta$, making the minimization problem convex and solvable.
+
+The condition for $\hat{\theta}_N$ to be the global minimum are:
+
+- $\hat{\theta}_N$ is a stationary point: $\frac{\partial J_N(\theta)}{\partial \theta} |_{\theta = \hat{\theta}_N} = 0$
+- The Hessian of $J_N(\theta)$ is positive definite (minimum point) at $\hat{\theta}_N$: $\frac{\partial^2 J_N(\theta)}{\partial \theta^2} |_{\theta = \hat{\theta}_N} \succ 0$
+
+To satisfy the first condition, we can set the gradient of $J_N(\theta)$ to zero and solve for $\hat{\theta}_N$ (least-squares normal equations):
+$$\frac{\partial J_N(\theta)}{\partial \theta} = -\frac{2}{N} \sum_{t=1}^{N} (y(t) - \theta^T \varphi(t)) \varphi(t) = 0$$
+
+obtaining the **ordinary least squares**:
+$$\hat{\theta}_N = \left( \underbrace{\sum_{t=1}^{N} \varphi(t) \varphi(t)^T}_\text{information matrix - non singular} \right)^{-1} \left( \sum_{t=1}^{N} y(t) \varphi(t) \right)$$
+
+This allows to compute the optimal model as a function of the data.
+
+To verify that the second condition is satisfied, we can compute the Hessian of $J_N(\theta)$:
+$$\frac{\partial^2 J_N(\theta)}{\partial \theta^2} = \frac{2}{N} \sum_{t=1}^{N} \varphi(t) \varphi(t)^T$$
+
+For any vector $x \neq 0$:
+$$x^T \frac{\partial^2 J_N(\theta)}{\partial \theta^2} x = \frac{2}{N} \sum_{t=1}^{N} (\varphi(t)^T x)^2 \geq 0$$
+
+> This is always non-negative. However, it equals zero if and only if $\varphi(t)^T x = 0$ for all $t$, which indicates a **degenerate case**:
+>
+> - **Experimental identifiability:** Data are not informative enough to capture the system dynamics (e.g., the input doesn't excite relevant frequencies).
+> - **Structural identifiability:** The model class is too flexible; multiple parameter values produce identical predictions, leading to non-unique solutions.
