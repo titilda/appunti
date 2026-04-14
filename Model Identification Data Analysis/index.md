@@ -427,3 +427,57 @@ This gives the **optimal noise-based predictor**:
 $$\boxed{\hat{y}(t + k | t) = \sum_{j=0}^{\infty} w_{j+k} e(t - j)}$$
 
 This formula requires knowledge of the unobservable noise $e(t-j)$.
+
+### Diophantine Decomposition
+
+The key is to decompose the transfer function using _polynomial long division_. Divide $C(z)$ by $A(z)$ for exactly $k$ steps:
+
+$$W(z) = \frac{C(z)}{A(z)} = E_k(z) + z^{-k} \frac{F_k(z)}{A(z)}$$
+
+where:
+
+- **$E_k(z) = e_0 + e_1 z^{-1} + \cdots + e_{k-1} z^{-(k-1)}$**: polynomial of degree $k-1$
+- **$F_k(z)$**: remainder polynomial (degree $< m$)
+
+This factorizes the MA coefficients into two parts:
+
+$$y(t+k) = \underbrace{E_k(z) e(t + k)}_{\text{Prediction error, } \varepsilon(t+k)} + \underbrace{\frac{F_k(z)}{A(z)} e(t)}_{\text{Predictor}}$$
+
+### Converting to Observable Form
+
+The predictor still depends on unobservable noise. Using the **whitening filter** to recover $e(t)$ from $y(t)$:
+
+$$e(t) = \frac{A(z)}{C(z)} y(t)$$
+
+It is possible to rewrite the predictor in terms of the observed data:
+
+$$\boxed{\hat{y}(t + k | t) = \frac{F_k(z)}{C(z)} y(t)}$$
+
+### Prediction Error Evolution
+
+The prediction error variance is:
+$$\boxed{\text{MSE}(k) = \mathbb{E}[\varepsilon(t+k)^2] = \left(\sum_{i=0}^{k-1} e_i^2\right) \lambda^2= var[\varepsilon(t+k)]} $$
+
+and as $k$ increases, more future noise terms $e(t+1), \ldots, e(t+k)$ are included in the prediction error, making the prediction less accurate.
+
+1. $k = 1$ (one-step ahead): Error is minimal as it only considers the immediate future noise: $\text{MSE}(1) = e_0^2 \lambda^2 = \lambda^2$ (as in canonical form, $e_0 = 1$).
+2. $k \to \infty$ (infinite horizon): No information remains useful and the best predictor reverts to the **trivial predictor** $\hat{y} = m_y$ (the mean), and $\text{MSE}(\infty) = \gamma_y(0)$ (the process variance).
+
+The bounds are: $\lambda^2 \leq \text{MSE}(k) \leq \gamma_y(0)$ for all $k \geq 1$.
+
+### Non-Zero Mean Processes
+
+For a process with mean $m_y \neq 0$, the process is unbiased by subtracting the mean from the observed data, and then adding it back to the predictor:
+
+$$\hat{y}(t + k | t) = m_y + \frac{F_k(z)}{C(z)}(y(t) - m_y)$$
+
+### Prediction with Exogenous Inputs
+
+If the system is affected by an exogenous input $u(t)$ (ARMAX model), the optimal predictor decomposes into two components:
+
+$$\boxed{\hat{y}(t + k | t) = \frac{F_k(z)}{C(z)} y(t) + \frac{B_k(z)E_k(z)}{C(z)} u(t + k - d)}$$
+
+where:
+
+- **First term:** Response to past observations (same as before)
+- **Second term:** Response to future inputs, requires knowledge of the input.
