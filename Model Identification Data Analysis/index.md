@@ -57,7 +57,6 @@ A process $e(t)$ is a white noise ($e(t) \sim \text{WN}(\mu, \lambda^2)$) if it 
 - **Zero Covariance**: $\gamma_e(\tau) = \mathbb{E}[(e(t_1) - \mu)(e(t_2) - \mu)] = 0, \forall \tau \neq 0$
 
 > $$\mathbb{E}[e(t)^2] = \lambda^2 + \mu^2$$
->
 > $$\mathbb{E}[e(t) e(t - \tau)] = \mu^2$$
 
 #### Moving Average Processes
@@ -312,6 +311,17 @@ $$\Gamma_y(\omega) = \lambda^2 |W(e^{j\omega})|^2$$
 It is possible to recover the covariance function from the spectrum:
 $$\gamma_y(\tau) = F^{-1}[\Gamma_y(\omega)] = \frac{1}{2\pi} \int_{-\pi}^{\pi} \Gamma_y(\omega) e^{j \omega \tau} d\omega$$
 
+### Canonical Representations
+
+A stationary process can be represented in multiple equivalent ways. The **Canonical Representation** of a process is an unique pair of transfer function $W(z) = \frac{C(z)}{A(z)}$ and white noise $e(t)$ that can generate the process.
+
+This is true if and only if:
+
+- $C(z)$ and $A(z)$ are _monic_ polynomials (leading coefficient is 1, $1 + a_1 z^{-1} + \cdots + a_m z^{-m}$).
+- $C(z)$ and $A(z)$ have _null_ relative degree ($\nu = \text{deg}(C) - \text{deg}(A) = 0$).
+- $C(z)$ and $A(z)$ are _coprime_ (no common factors).
+- $C(z)$ and $A(z)$ are _stable_ (all roots are inside the unit circle).
+
 ## Sample-Based Estimation
 
 Given a finite realization $(y_1, y_2, \ldots, y_N)$ of a stationary process, we must estimate the mean, covariance, and spectrum from data.
@@ -389,3 +399,31 @@ The spectrum becomes:
 $$\hat{\Gamma}_N(\omega) = \sum_{\tau=-N+1}^{N-1} \hat{\gamma}_N(\tau) e^{-j \omega \tau} = \underbrace{\frac{1}{N} \left| \sum_{t=1}^{N} y(t) e^{-j \omega t} \right|^2}_{\text{DFT of } y(t)}$$
 
 This make computation more efficient, but it is **biased** ($\mathbb{E}[\hat{\Gamma}_N(\omega)] \neq \Gamma_y(\omega)$), but becomes asymptotically unbiased as $N \to \infty$.
+
+## Prediction
+
+Given a stationary process in canonical form $y(t) = W(z)e(t)$ with $e(t) \sim \mathcal{N}(0, \lambda^2)$, and an observed realizations data up to time $t$, it is possible to predict $y(t + k)$ for $k \geq 1$.
+
+Since the process is **linear**, the optimal predictor is also linear. The form of the predictor is a combination of the past observed data and the model coefficients $\alpha_i$ that we need to determine:
+$$\hat{y}(t + k | t) = \sum_{i=0}^{\infty} \underbrace{\alpha_i}_{\text{Model}} \underbrace{y(t - i)}_{\text{Data}}$$
+
+The **optimal choice** is the one that minimizes the Mean Squared Error (MSE) of the prediction, that is the expected value of the squared difference between the true value and the predicted value:
+$$J(\hat{y}) = \mathbb{E}[\underbrace{(y(t + k) - \hat{y}(t + k))^2}_{\text{Prediction Error}}]$$
+
+Since $y(t) = \sum_{j=0}^{\infty} w_j e(t-j)$, it is possible to rewrite the predictor as a linear combination of the _past noise terms_:
+
+$$\hat{y}(t + k | t) = \sum_{i=0}^{\infty} \beta_i e(t - i)$$
+
+It is possible to separate the MSE into two parts: one that depends on the **future** noise terms ($j < k$, which are independent of the past data and irreducible), and one that depends on the **past** noise terms ($j \geq k$, which can be reduced by choosing the optimal coefficients $\beta_i$).
+
+$$J(\beta) = \underbrace{\mathbb{E}\left[\left(\sum_{j=0}^{k-1} w_j e(t + k - j)\right)^2\right]}_{\text{Future noise}} + \underbrace{\mathbb{E}\left[\left(\sum_{j=k}^{\infty} (w_j - \beta_{j-k}) e(t + k - j)\right)^2\right]}_{\text{Past noise}}$$
+
+Since the future noise is independent of $\beta$, minimizing $J(\beta)$ is equal to minimize the past noise term ($\hat{\beta}_i = \arg\min_{\beta_i} \mathbb{E}[(\sum_{i=k}^{\infty} (w_{i+k} - \beta_i) e(t - i))^2]$). Setting the past coefficients optimally:
+
+$$\beta_j = w_{j+k} \quad \forall j \geq 0$$
+
+This gives the **optimal noise-based predictor**:
+
+$$\boxed{\hat{y}(t + k | t) = \sum_{j=0}^{\infty} w_{j+k} e(t - j)}$$
+
+This formula requires knowledge of the unobservable noise $e(t-j)$.
