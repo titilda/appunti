@@ -481,3 +481,58 @@ where:
 
 - **First term:** Response to past observations (same as before)
 - **Second term:** Response to future inputs, requires knowledge of the input.
+
+## Identification
+
+Given an input-output dataset $\{u(t), y(t)\}$ of a dynamic system $S$, we want to find a model that can explain the data and predict future values of the output.
+
+The model is found with the **Parametric System Identification** approach, which consists of the following steps:
+
+### Experimental Design
+
+Design an experiment to collect input-output data $\{u(t), y(t)\}_{t=1}^N$ that accurately reflects the system dynamics.
+
+Some key decisions in experimental design are:
+
+- **Experiment length $N$:** Long enough to capture system dynamics and provide sufficient data for reliable estimation, but balancing cost and time constraints.
+- **Input design $u(t)$:** Choose a signal that excites the relevant frequencies: white noise, a constant, a step input, or other sequences that depends on prior knowledge of the system.
+
+### Model class selection
+
+Select a parametric model structure $M(\theta)$ that can represent the system dynamics, where $\theta$ is the vector of parameters to be estimated.
+
+It can be related to:
+
+- _Discrete_ or continuous time.
+- _Linear_ or nonlinear.
+- _Time-invariant_ or time-varying.
+- Static or _dynamic_.
+
+The vector of parameters $\theta$ can contains:
+
+- $a_i$: coefficients of the autoregressive terms.
+- $b_i$: coefficients of the exogenous input terms.
+- $c_i$: coefficients of the moving average terms.
+
+To characterize the model it is also necessary to specify:
+
+- $\lambda^2$: the variance of the white noise.
+- $d$: the pure input/output delay.
+- $m$: the order of the autoregressive part.
+- $n$: the order of the moving average part.
+- $p$: the order of the exogenous input part.
+
+$\Theta$ is the set of admissible models, which is the set of all possible values of $\theta$ that can be used to represent the system dynamics.
+
+### Identification criterion
+
+Choose the identification criterion ($J_N(\theta) \geq 0$) that quantifies the error between the model output and the observed data.
+
+This use predictive approach to system identification, where the model output is compared with the observed data, and the parameters are adjusted to minimize the prediction error.
+
+The ideal objective is $J(\theta) = \mathbb{E}[(y(t + 1) - \hat{y}(t + 1 | t, \theta))^2]$, but it is not computable as it depends on the true system dynamics and the noise distribution.
+
+Practical criteria is:
+$$J_N(\theta) = \frac{1}{N} \sum_{t=1}^{N} (y(t) - \hat{y}(t | t-1, \theta))^2$$
+
+A one-step ahead predictor will have an error $\varepsilon(t+1) = y(t + 1) - \hat{y}(t + 1 | t, \theta) = e(t)$, then $J_N(\hat{\theta}_N) = \mathbb{E}[(\varepsilon(t + 1))^2] = \lambda^2$.
