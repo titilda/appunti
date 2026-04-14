@@ -587,3 +587,70 @@ $$x^T \frac{\partial^2 J_N(\theta)}{\partial \theta^2} x = \frac{2}{N} \sum_{t=1
 >
 > - **Experimental identifiability:** Data are not informative enough to capture the system dynamics (e.g., the input doesn't excite relevant frequencies).
 > - **Structural identifiability:** The model class is too flexible; multiple parameter values produce identical predictions, leading to non-unique solutions.
+
+#### Minimization of ARMA(X) models
+
+For ARMA(X) models, the prediction error is a nonlinear function of the parameters, so the minimization problem is non-convex and cannot be solved in closed form.
+
+$$M_\theta: \quad y(t) = \frac{B(z)}{A(z)} u(t) + \frac{C(z)}{A(z)} e(t)$$
+
+- $C(z) = 1 + c_1 z^{-1} + \cdots + c_n z^{-n}$
+- $A(z) = 1 - a_1 z^{-1} - \cdots - a_m z^{-m}$
+- $B(z) = b_1 z^{-1} + \cdots + b_p z^{-p}$
+- $e(t) \sim \text{WN}(0, \lambda^2)$
+- $\theta = [a_1, a_2, \ldots, a_m, b_0, b_1, \ldots, b_{p-1}, c_1, c_2, \ldots, c_n]^T$
+
+The **1-step-ahead predictor** is:
+$$\hat{y}(t | t - 1, \theta) = \frac{B(z)}{A(z)} u(t - d) + \frac{C(z) - A(z)}{C(z)} y(t)$$
+
+where $\frac{A(z)}{C(z)}$ and $\frac{B(z)}{C(z)}$ are rational functions depending on all parameters $\theta$.
+
+The **prediction error** is:
+$$\varepsilon(t | \theta) = y(t) - \hat{y}(t | t - 1, \theta) = \frac{A(z)}{C(z)} y(t) - \frac{B(z)}{C(z)} u(t-d)$$
+
+Because $\varepsilon(t | \theta)$ depends on $\theta$ through rational functions (not just linear combinations), the cost function $J_N(\theta)$ is **nonlinear** in $\theta$. This makes the problem non-convex and prevents closed-form solutions.
+
+#### Iterative Solution Strategy
+
+Since a closed-form solution does not exist, we use **iterative numerical optimization** to find local minima.
+
+At each iteration, approximate the cost function $J_N(\theta)$ locally using a **second-order Taylor expansion** (quadratic approximation that creates a paraboloid tangent to the cost function). Minimize this simpler quadratic model to obtain the next point, then repeat.
+
+**Quadratic approximation** at iteration $i$:
+$$V^{(i)}(\theta) = J_N(\theta^{(i)}) + g^{(i)}(\theta - \theta^{(i)}) + \frac{1}{2} (\theta - \theta^{(i)})^T H^{(i)} (\theta - \theta^{(i)})$$
+
+where:
+
+- $g^{(i)} = \frac{\partial J_N(\theta)}{\partial \theta}\big|_{\theta = \theta^{(i)}}$ (gradient at current point)
+- $H^{(i)} = \frac{\partial^2 J_N(\theta)}{\partial \theta^2}\big|_{\theta = \theta^{(i)}}$ (Hessian at current point)
+
+By setting the gradient to zero, we find the minimum of the quadratic approximation:
+$$\frac{\partial V^{(i)}(\theta)}{\partial \theta} = g^{(i)} + H^{(i)} (\theta - \theta^{(i)}) = 0$$
+
+Solving for $\theta$:
+$$\boxed{\theta^{(i + 1)} = \theta^{(i)} - [H^{(i)}]^{-1} g^{(i)}}$$
+
+This is the **Newton-Raphson update rule**.
+
+**Gradient computation:**
+$$g^{(i)} = \frac{\partial J_N}{\partial \theta} = \frac{2}{N} \sum_{t = 1}^N \varepsilon(t | t-1, \theta^{(i)}) \frac{\partial \varepsilon(t | t-1, \theta^{(i)})}{\partial \theta}$$
+
+**Hessian computation:**
+$$H^{(i)} = \frac{\partial^2 J_N}{\partial \theta^2} = \frac{2}{N} \sum_{t = 1}^N \left( \frac{\partial \varepsilon(t | t-1, \theta^{(i)})}{\partial \theta} \left(\frac{\partial \varepsilon(t | t-1, \theta^{(i)})}{\partial \theta}\right)^T + \varepsilon(t | t-1, \theta^{(i)}) \frac{\partial^2 \varepsilon(t | t-1, \theta^{(i)})}{\partial \theta^2} \right)$$
+
+The gradient with respect to each parameter $\theta_j$:
+$$\frac{\partial \varepsilon(t | \theta)}{\partial \theta} = \begin{bmatrix} \frac{\partial \varepsilon(t | t-1, \theta)}{\partial a_1} \\ \vdots \\ \frac{\partial \varepsilon(t | t-1, \theta)}{\partial a_m} \\ \frac{\partial \varepsilon(t | t-1, \theta)}{\partial b_1} \\ \vdots \\ \frac{\partial \varepsilon(t | t-1, \theta)}{\partial b_p} \\ \frac{\partial \varepsilon(t | t-1, \theta)}{\partial c_1} \\ \vdots \\ \frac{\partial \varepsilon(t | t-1, \theta)}{\partial c_n} \end{bmatrix} = \begin{bmatrix} \alpha(t - 1) \\ \vdots \\ \alpha(t - m) \\ \beta(t - d) \\ \vdots \\ \beta(t - d - p + 1) \\ \gamma(t - 1) \\ \vdots \\ \gamma(t - n) \end{bmatrix}$$
+
+##### Algorithm Variants
+
+Different balance between accuracy and computational cost:
+
+| **Method** | **Update Rule** | **Pros** | **Cons** |
+| --- | --- | --- | --- |
+| **Newton** | $\theta^{(i+1)} = \theta^{(i)} - [H^{(i)}]^{-1} g^{(i)}$ | Fast convergence near optimum | Hessian inversion expensive as requires 2nd derivatives |
+| **Gradient Descent** | $\theta^{(i+1)} = \theta^{(i)} - \nu g^{(i)}$ | Simple, only 1st derivatives needed | Slow convergence with fixed step-size $\nu$ |
+| **Quasi-Newton** | $\theta^{(i+1)} = \theta^{(i)} - [\tilde{H}^{(i)}]^{-1} g^{(i)}$ | Good balance, approximate Hessian from gradients | Less accurate than Newton |
+
+In the Quasi-Newton method, the second Hessian term (involving $\frac{\partial^2 \varepsilon}{\partial \theta^2}$) is often neglected in practice because it decays faster than the first term as optimization progresses.
+
+$$\boxed{\theta^{(i + 1)} = \theta^{(i)} - \left( \sum_{t = 1}^N \frac{\partial \varepsilon(t | t-1, \theta^{(i)})}{\partial \theta} \left(\frac{\partial \varepsilon(t | t-1, \theta^{(i)})}{\partial \theta}\right)^T \right)^{-1} \left(\sum_{t = 1}^N \varepsilon(t | t-1, \theta^{(i)}) \frac{\partial \varepsilon(t | t-1, \theta^{(i)})}{\partial \theta} \right)}$$
