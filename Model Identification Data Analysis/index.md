@@ -654,3 +654,90 @@ Different balance between accuracy and computational cost:
 In the Quasi-Newton method, the second Hessian term (involving $\frac{\partial^2 \varepsilon}{\partial \theta^2}$) is often neglected in practice because it decays faster than the first term as optimization progresses.
 
 $$\boxed{\theta^{(i + 1)} = \theta^{(i)} - \left( \sum_{t = 1}^N \frac{\partial \varepsilon(t | t-1, \theta^{(i)})}{\partial \theta} \left(\frac{\partial \varepsilon(t | t-1, \theta^{(i)})}{\partial \theta}\right)^T \right)^{-1} \left(\sum_{t = 1}^N \varepsilon(t | t-1, \theta^{(i)}) \frac{\partial \varepsilon(t | t-1, \theta^{(i)})}{\partial \theta} \right)}$$
+
+### Model Validation
+
+The objective is to determine whether the identified model $M(\hat{\theta}_N)$ adequately captures the system dynamics and can reliably predict future outputs, meaning that the assumptions made during identification are valid:
+
+- Correct model structure chosen (system $S$ belongs to model class $\mathcal{M}$)
+- Model order parameters $(m, n, p, k, d)$ are correct
+- Input signal sufficiently exciting (experimental identifiability)
+- Data informative and representative of system dynamics
+
+As $N \to \infty$, the sample cost function converges:
+$$J_N(\theta, S) \to \bar{J}(\theta) = \mathbb{E}[\varepsilon(t | t-1, \theta)^2]$$
+
+The optimal parameters converge to the set:
+$$\Delta = \{\theta^* | \bar{J}(\theta^*) \leq \bar{J}(\theta), \, \forall \theta\}$$
+
+If $\Delta = \{\theta^*\}$ is a singleton, then $\hat{\theta}_N \to \theta^*$ with probability 1. The true system parameters $\theta°$ that generated the data are always in $\Delta$.
+
+Based on whether the true system $S$ is in the model class $\mathcal{M}$ and whether the solution is unique, we can have four possible outcomes:
+
+| System in $\mathcal{M}$? | Unique Solution? | Outcome |
+| --- | --- | --- |
+| **Yes** ($S \in \mathcal{M}$) | **Yes** ($\Delta = \{\theta°\}$) | Model converges to true parameters; prediction error $\to \lambda^2$ |
+| **Yes** ($S \in \mathcal{M}$) | **No** ($\|\Delta\| > 1$) | Model converges to some $\theta^* \in \Delta$ (possibly $\neq \theta°$) and cannot guarantee true solution |
+| **No** ($S \notin \mathcal{M}$) | **Yes** ($\Delta = \{\theta^*\}$) | Converges to best approximation $\theta^* \neq \theta°$ as the true system is not in the model class |
+| **No** ($S \notin \mathcal{M}$) | **No** ($\|\Delta\| > 1$) | The model converges to one of the multiple solutions in $\Delta$, but the true solution is outside the set |
+
+#### Model Order Selection
+
+The **Model Order Selection** process determines the degrees of polynomials $m$ (AR order), $n$ (MA order), and $p$ (exogenous order) that balance _fit quality_ and _model complexity_.
+
+We cannot guarantee the true system $S$ is in the model set, so order selection requires balancing two competing errors:
+
+| Order too low | Order too high |
+| --- | --- |
+| **Under-fitting:** Model cannot capture system dynamics | **Over-fitting:** Model fits noise instead of signal |
+| Prediction error $> \lambda^2$ (systematic component missed) | Prediction error $< \lambda^2$ (noise fitted as signal) |
+| Leads to biased parameter estimates | Leads to poor generalization on new data |
+
+We do not know the true noise variance $\lambda^2$ a priori, so we cannot simply vary the order and check when $J_N(\hat{\theta}_N) \approx \lambda^2$. Instead, we need to use one of three approaches:
+
+##### Whiteness Test
+
+The **whiteness test on residuals** checks whether the identified model has captured all dynamics by testing if residuals are consistent with white noise.
+
+If the true system $S \in \mathcal{M}$, parameters converge $\hat{\theta}_N \to \theta°$, then:
+$$\varepsilon(t | t-1, \theta°) = y(t) - \hat{y}(t | t-1, \theta°) = e(t) \sim \mathcal{N}(0, \lambda^2)$$
+
+The residuals should be **white noise**, meaning:
+
+- Autocorrelation $\gamma_\varepsilon(\tau) \approx 0$ for all lags $\tau > 0$
+- Power spectrum nearly flat across all frequencies
+
+This means that starting from a low-order model, we can increase the order until the residuals pass the whiteness test, indicating that all systematic dynamics have been captured.
+
+##### Cross-Validation
+
+**Cross-validation** evaluates model performance on unseen data to select the order that generalizes best.
+
+1. Split dataset into training ($k$ samples) and validation ($N-k$ samples)
+2. For each candidate order:
+   - Train on first $k$ samples: $\hat{\theta}_k^{(n)} = \arg\min_\theta J_k(\theta)$
+   - Evaluate on remaining data: $J_v(\hat{\theta}_k^{(n)}) = \frac{1}{N-k} \sum_{t=k+1}^N (y(t) - \hat{y}(t|t-1, \hat{\theta}_k^{(n)}))^2$
+3. Select order that minimizes validation error:
+$$\hat{n} = \arg\min_n J_v(\hat{\theta}_k^{(n)})$$
+
+##### Identification using Model Order Penalties
+
+Select model order by balancing fit quality and complexity using a **single dataset** with a penalty term. Each criterion decomposes into:
+$$\text{Criterion} = \text{(fit term)} + \text{(penalty term)}$$
+
+Where when $n$ increases the fit term decreases, but the penalty term increases.
+
+**Final Prediction Error (FPE):**
+$$FPE(n) = \underbrace{\frac{N + n}{N - n}}_{\text{complexity penalty}} \cdot \underbrace{J_N(\hat{\theta}_n)}_{{\text{in-sample fit}}}$$
+
+Approximates the out-of-sample prediction error. Penalty is linear in $n$.
+
+**Akaike Information Criterion (AIC):**
+$$AIC(n) = \underbrace{\ln(J_N(\hat{\theta}_n))}_{{\text{decreases as } n \uparrow}} + \underbrace{2\frac{n}{N}}_{\text{penalty increases as } n \uparrow}$$
+
+Asymptotically equivalent to FPE.
+
+**Minimum Description Length (MDL):**
+$$MDL(n) = \underbrace{\ln(J_N(\hat{\theta}_n))}_{{\text{Fit term}}} + \underbrace{\frac{n}{N} \ln(N)}_{\text{Penalty}}$$
+
+Stronger penalty for model complexity. Tends to select lower order models than AIC/FPE.
