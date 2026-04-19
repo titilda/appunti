@@ -28,8 +28,8 @@ A simpler way to describe a SP is with the **Wide-Sense Characterization** that 
 
 - **Mean**, the average behavior: $m(t) = \mathbb{E}_x[x(t, s)] = \int_\pi x(t, s) * pdf(s) ds$
 - **Covariance Function**, describes the correlation between different points in time: $\gamma(t_1, t_2) = \mathbb{E}[(x(t_1, s) - m(t_1)) (x(t_2, s) - m(t_2))]$.
-  - **Variance**, how data are spread around the mean ($t_1 = t_2$): $\sigma^2(t) = \gamma(t, t) = \mathbb{E}[(x(t, s) - m(t))^2]$
-  - **Correlation Function**, describes the correlation between two points in time: $\mathbb{E}[x(t_1, s) * x(t_2, s)]$
+  - **Variance**, how data are spread around the mean ($t_1 = t_2$): $\gamma(t, t) = \mathbb{E}[(x(t, s) - m(t))^2]$
+- **Correlation Function**, describes the correlation between two points in time: $\tilde{\gamma} = \mathbb{E}[x(t_1, s) * x(t_2, s)]$
 
 ### Stationary Stochastic Process
 
@@ -259,7 +259,8 @@ A single realization of a stochastic process can be analyzed in the time domain 
 
 The **power spectral density** (PSD) of a stationary process is:
 
-$$\Gamma_y(\omega) = \mathbb{F}[\gamma_y(\tau)] = \sum_{\tau=-\infty}^{\infty} \gamma_y(\tau) e^{-j \omega \tau}$$
+$$\Gamma_y(\omega) = \mathbb{F}[\tilde{\gamma}_y(\tau)] = \sum_{\tau=-\infty}^{\infty} \tilde{\gamma}_y(\tau) e^{-j \omega \tau}$$
+$$\Gamma_y(\omega) = \mathbb{F}[\gamma_y(\tau)] = \sum_{\tau=-\infty}^{\infty} \gamma_y(\tau) e^{-j \omega \tau} + \sum_{\tau=-\infty}^{\infty} m^2 e^{-j \omega \tau}$$
 
 - $\Gamma_y(\omega)$ is the Discrete Fourier Transform of the covariance function $\gamma_y(\tau)$ so doesn't depend on the specific time points or realization of $y(t)$, but only on the time difference $\tau$.
 
@@ -281,6 +282,32 @@ $$\Gamma_y(\omega) = |W(e^{j \omega})|^2 \Gamma_e(\omega)$$
 If $e(t) \sim \text{WN}(0, \lambda^2)$ (white noise), then $\Gamma_e(\omega) = \lambda^2$ for all $\omega$, and we get:
 
 $$\Gamma_y(\omega) = \lambda^2 |W(e^{j\omega})|^2$$
+
+1. set all z as positive in $W(z)$.
+2. find all the roots of the numerator and denominator polynomials.
+$$W(z) = \frac{(z - z_1)(z - z_2) \cdots (z - z_n)}{(z - p_1)(z - p_2) \cdots (z - p_m)}$$
+3. replace $z$ with $e^{j \omega}$ to get the spectrum:
+$$\Gamma_y(\omega) = \lambda^2 \frac{|e^{j \omega} - z_1|^2 |e^{j \omega} - z_2|^2 \cdots |e^{j \omega} - z_n|^2}{|e^{j \omega} - p_1|^2 |e^{j \omega} - p_2|^2 \cdots |e^{j \omega} - p_m|^2}$$
+4. $|e^{j \omega} - z|^2 = (e^{j \omega} - z)(e^{-j \omega} - z^*)$ where $z^*$ is the complex conjugate of $z$.
+5. using trigonometric identities, we can rewrite the spectrum as:
+$$\Gamma_y(\omega) = \lambda^2 \frac{\prod_{i=1}^{n} (1 - 2|z_i| \cos(\omega - \angle z_i) + |z_i|^2)}{\prod_{j=1}^{m} (1 - 2|p_j| \cos(\omega - \angle p_j) + |p_j|^2)}$$
+
+The spectrum can be computed analytically by decomposing $W(z)$ into its pole-zero factorization:
+
+1. **Factor $W(z)$ into pole-zero form:** Express the transfer function in terms of its zeros ($z_i$) and poles ($p_j$):
+$$W(z) = \frac{(z - z_1)(z - z_2) \cdots (z - z_n)}{(z - p_1)(z - p_2) \cdots (z - p_m)}$$
+
+2. **Substitute the frequency variable:** Replace $z$ with $e^{j\omega}$ to evaluate the transfer function on the unit circle:
+$$\Gamma_y(\omega) = \lambda^2 \frac{|e^{j \omega} - z_1|^2 |e^{j \omega} - z_2|^2 \cdots |e^{j \omega} - z_n|^2}{|e^{j \omega} - p_1|^2 |e^{j \omega} - p_2|^2 \cdots |e^{j \omega} - p_m|^2}$$
+
+3. **Expand the magnitude squared terms:** where $z^*$ is the complex conjugate of $z$:
+$$|e^{j \omega} - z_i|^2 = (e^{j \omega} - z_i)(e^{-j \omega} - z_i^*)$$
+
+4. **Convert to real form using trigonometric identities:** $e^{j \omega} = \cos(\omega) + j\sin(\omega)$, apply:
+$$|e^{j \omega} - z_i|^2 = 1 - 2|z_i| \cos(\omega - \angle z_i) + |z_i|^2$$
+
+5. **Final spectrum expression:** The result is a real, analytical form:
+$$\Gamma_y(\omega) = \lambda^2 \frac{\prod_{i=1}^{n} (1 - 2|z_i| \cos(\omega - \angle z_i) + |z_i|^2)}{\prod_{j=1}^{m} (1 - 2|p_j| \cos(\omega - \angle p_j) + |p_j|^2)}$$
 
 #### Inverse Fourier Transform
 
