@@ -285,15 +285,6 @@ If $e(t) \sim \text{WN}(0, \lambda^2)$ (white noise), then $\Gamma_e(\omega) = \
 
 $$\Gamma_y(\omega) = \lambda^2 |W(e^{j\omega})|^2$$
 
-1. set all z as positive in $W(z)$.
-2. find all the roots of the numerator and denominator polynomials.
-$$W(z) = \frac{(z - z_1)(z - z_2) \cdots (z - z_n)}{(z - p_1)(z - p_2) \cdots (z - p_m)}$$
-3. replace $z$ with $e^{j \omega}$ to get the spectrum:
-$$\Gamma_y(\omega) = \lambda^2 \frac{|e^{j \omega} - z_1|^2 |e^{j \omega} - z_2|^2 \cdots |e^{j \omega} - z_n|^2}{|e^{j \omega} - p_1|^2 |e^{j \omega} - p_2|^2 \cdots |e^{j \omega} - p_m|^2}$$
-4. $|e^{j \omega} - z|^2 = (e^{j \omega} - z)(e^{-j \omega} - z^*)$ where $z^*$ is the complex conjugate of $z$.
-5. using trigonometric identities, we can rewrite the spectrum as:
-$$\Gamma_y(\omega) = \lambda^2 \frac{\prod_{i=1}^{n} (1 - 2|z_i| \cos(\omega - \angle z_i) + |z_i|^2)}{\prod_{j=1}^{m} (1 - 2|p_j| \cos(\omega - \angle p_j) + |p_j|^2)}$$
-
 The spectrum can be computed analytically by decomposing $W(z)$ into its pole-zero factorization:
 
 1. **Factor $W(z)$ into pole-zero form:** Express the transfer function in terms of its zeros ($z_i$) and poles ($p_j$):
