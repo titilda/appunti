@@ -190,6 +190,8 @@ $$\boxed{\gamma_y(\tau) = a_1^{|\tau|}\, \gamma_y(0) = \frac{a_1^{|\tau|}\, \lam
 
 This will go to zero as $\tau \to \infty$ if $|a_1| < 1$, which is the stability condition for the AR(1) process.
 
+These are the **Yule-Walker equations** that describe the relationship between the coefficients of the AR process and its covariance function.
+
 #### ARMA Processes
 
 An **Autoregressive Moving Average Process** ($\text{ARMA}(m, n)$) is a type of stochastic process that combines the properties of both autoregressive and moving average processes. It is defined as a linear combination of its own past values, a white noise term, and a linear combination of past white noise terms.
@@ -324,6 +326,18 @@ This is true if and only if:
 - $C(z)$ and $A(z)$ have _null_ relative degree ($\nu = \text{deg}(C) - \text{deg}(A) = 0$).
 - $C(z)$ and $A(z)$ are _coprime_ (no common factors).
 - $C(z)$ and $A(z)$ are _stable_ (all roots are inside the unit circle).
+
+If the process is not in canonical form, it can be transformed into canonical form by applying a suitable transformation to the transfer function and the white noise.
+
+$$y(t) = \frac{c z^n + c_1 z^{n-1}}{a z^m + a_1 z^{m-1}} e(t), \quad e(t) \sim \mathcal{N}(\mu, \lambda^2)$$
+
+The first thing to do is to make the polynomials monic by dividing both the numerator and denominator by the leading coefficient of the denominator:
+
+$$y(t) = \frac{1 + \frac{c_1}{c} z^{-1}}{1 + \frac{a_1}{a} z^{-1}} \frac{c}{a}z^{n-m} e(t) = \frac{1 + c' z^{-1}}{1 + a' z^{-1}} z^{n-m} e'(t), \quad e'(t) \sim \mathcal{N}(\frac{c}{a} \mu = \mu', \lambda^2 \cdot \left(\frac{c}{a}\right)^2 = \lambda'^2)$$
+
+Than, if $c'/a' \gt 1$, it is possible to apply the spectral equivalence ($1 + az^{-1} = a(1 + \frac{1}{a}z^{-1})$) transformation to make the process stable:
+
+$$y(t) = \frac{1 + c' z^{-1}}{1 + a' z^{-1}} z^{n-m} e'(t) = \frac{1 + \frac{1}{c'} z^{-1}}{1 + \frac{1}{a'} z^{-1}} z^{n-m} e''(t), \quad e''(t) \sim \mathcal{N}(\frac{c'}{a'} \mu', \lambda'^2 \cdot \left(\frac{c'}{a'}\right)^2)$$
 
 ## Sample-Based Estimation
 
