@@ -201,8 +201,6 @@ graph TD
     B --> E[Next Seed]
 ```
 
----
-
 ### Integrity and Authenticity
 
 A cipher is **malleable** if an attacker can modify the ciphertext to produce predictable changes in the decrypted plaintext without knowing the key. This enables:
@@ -452,3 +450,49 @@ Losing the master password can lock users out of all accounts, and if the passwo
 #### Passwordless Authentication (Passkeys)
 
 **Passkeys** are a modern approach to authentication that eliminates the need for passwords by leveraging asymmetric cryptography and device-based authentication.
+
+## Authorization
+
+Authorization is the process of enforcing access control policies that determine which entities can perform specific operations on resources.
+
+Authorization rules must be converted into policies and enforced by a trusted **reference monitor** that is:
+
+- Non-bypassable (all access must go through it)
+- Tamper-proof (cannot be modified without detection)
+
+Access control can be divided into:
+
+### Discretionary Access Control (DAC)
+
+In **Discretionary Access Control**, the owner of a resource decides who can access it. This is the standard model used in most operating systems.
+
+This is based on a triad of concepts:
+
+- **Subjects**: Active entities (users, groups, processes)
+- **Objects**: Passive resources (files, directories, data)
+- **Actions**: Operations allowed (typically read, write, execute)
+
+#### Access Matrix Representation
+
+The **Access Matrix Model (HRU)** represents permissions as a matrix:
+
+- Rows = subjects, Columns = objects
+- Cells = allowed actions for that subject-object pair
+
+Since the matrix is sparse, efficient storage uses:
+
+- **Authorization Table**: Store only non-empty entries (subject, object, permission triples)
+- **Access Control Lists (ACL)**: For each object, list subjects and their permissions
+- **Capability Lists**: For each subject, list objects and their permissions
+
+Choice depends on subject-to-object cardinality (1:N vs N:1 dominance).
+
+#### Unix File Permissions
+
+Unix implements DAC with a three-part triad for each file:
+
+- **Owner permissions** (user): Read (r), write (w), execute (x)
+- **Group permissions** (group members): Read, write, execute
+- **Other permissions** (everyone else): Read, write, execute
+
+Example: `rwxr-xr--` = owner full access, group read/execute, others read only
