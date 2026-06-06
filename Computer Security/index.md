@@ -556,3 +556,158 @@ Vulnerabilities are standardized using:
 - **CWE (Common Weakness Enumeration)**: Classification of vulnerability types (e.g., buffer overflow, SQL injection)
 - **CVSS (Common Vulnerability Scoring System)**: Numerical severity score (0-10) based on exploitability and impact
 - **CAPEC (Common Attack Pattern Enumeration and Classification)**: Documents attack patterns and techniques
+
+## Buffer Overflows
+
+A buffer overflow occurs when a buffer is allocated on the stack but receives more data than it can hold. Without bounds checking, excess data overwrites adjacent memory.
+
+### Overview
+
+#### Binary Structure
+
+An executable binary (e.g., ELF on Linux) has a structured layout:
+
+- **ELF header**: Metadata about the file (architecture, entry point, section offsets)
+- **Program header**: Maps sections into runtime segments
+- **.text segment**: Executable code (read-only)
+- **.rodata segment**: Read-only data (constants)
+- **.data/.bss segments**: Initialized and uninitialized data
+
+It is possible to reverse-engineer the binary to understand its structure and identify potential vulnerabilities.
+
+#### Process Memory Layout
+
+When the OS creates a process, it allocates a virtual memory space divided into user and kernel regions:
+
+1. **Kernel space**: Protected OS memory (inaccessible from user code)
+2. **User space**: Application memory, containing:
+   - **Stack**: Local variables and function frames; grows downward (from high to low addresses)
+   - **Heap**: Dynamically allocated memory; grows upward
+   - **.text segment**: Program code
+   - **.data/.bss segments**: Global and static variables
+
+When writing in a buffer the data is stored from low to high addresses.
+
+#### CPU Registers
+
+Between the CPU registers, the most relevant for buffer overflow attacks are:
+
+- **ESP (Extended Stack Pointer)**: Marks the top of the stack (most recent push)
+- **EBP (Extended Base Pointer)**: Marks the base of the current function frame (start of local variables)
+- **EIP (Extended Instruction Pointer)**: Holds the address of the next instruction to execute (the "program counter")
+
+#### Function Calls and Stack Frames
+
+When a function is called:
+
+1. **Function prologue** (setup):
+   - Function parameters are pushed onto the stack (in reverse order)
+   - EIP (return address) is pushed automatically by the `call` instruction
+   - `push %ebp` saves the previous frame's base
+   - `mov %esp %ebp` sets EBP to the current ESP (new frame base)
+   - Local variables are allocated by subtracting from ESP
+
+2. **Function body**: Code executes; uses EBP+offset to access parameters and locals
+
+3. **Function epilogue** (cleanup):
+   - `mov %ebp %esp` resets the stack pointer
+   - `pop %ebp` restores the previous frame's base
+   - `ret` pops the return address from the stack and jumps to it
+
+| Stack layout (growing downward) | Stack Frame |
+|---------------------------------|-------------|
+| Argument n                      | Caller      |
+| ...                             | Caller      |
+| Argument 1                      | Caller      |
+| Return address (EIP)            | Caller      |
+| Saved EBP                       | Callee      |
+| Local variable 1                | Callee      |
+| ...                             | Callee      |
+| Local variable n                | Callee      |
+
+### Overflow Attack Techniques
+
+With buffer overflow the attacker can perform some types of attacks:
+
+- **Variable Overwrite Attack**: Overwrite a local variable with security implications (e.g., a flag, permission bit, or authentication token)
+- **Frame Teleporting Attack**: Overwrite the saved EBP (frame pointer) to change which stack frame is restored, redirecting execution context
+- **Return Address Hijacking**: Overwrite the saved return address to jump to attacker-controlled code
+
+#### Return Address Hijacking
+
+The problem with return address hijacking is that the attacker must find a valid memory address to jump to. Three main options exist:
+
+##### Shellcode in the Buffer
+
+The attacker can inject machine code (shellcode) directly into the buffer, and overwrite the return address to point to it. However, this requires knowing the exact address of the buffer in memory, which can be difficult due to variations in memory layout.
+
+To help find the correct address, it is possible to fill memory before the shellcode with **NOP** (no-operation) instructions. If the jump target is slightly off, execution lands on the NOP sled and reach the shellcode:
+
+```plaintext
+[...NOP sled...][SHELLCODE]
+```
+
+This massively increases hit probability without needing exact addresses.
+
+##### Environment Variable Injection
+
+Environment variables are stored in memory at high addresses, accessible to the process at startup. This technique is **local only** (cannot inject from remote input):
+
+1. Set environment variable with shellcode + NOP sled: `export PAYLOAD=$(printf '\x90\x90...\xCC\xCC')`
+2. Attacker determines the variable's address (predictable)
+3. Overflow return address with that address
+4. On function return, execution jumps into the NOP sled and reaches shellcode
+
+This allow to write large shellcode without worrying about buffer size limits.
+
+##### Code Reuse Attacks (Ret-to-libc)
+
+Instead of injecting shellcode, jump to an existing function in the program or C library:
+
+1. Find target function in the binary (e.g., `system()`, `execve()`)
+2. Overwrite return address with the function's address
+3. Set up stack parameters so the function receives correct arguments
+
+Example: Overwrite EIP to jump to `system("/bin/sh")` by:
+
+- Placing `&system()` as the return address
+- Placing "/bin/sh" address as the first parameter on the stack
+
+This technique is more reliable than shellcode injection, as it does not require precise memory layout knowledge and avoids issues with non-executable stacks.
+
+### Buffer Overflow Defenses
+
+There are multiple layers of defense against buffer overflow attacks, implemented at the source code level, compiler level, and operating system level.
+
+**Source-Level Defenses:**
+
+To prevent buffer overflows, developers can:
+
+- **Input validation**: Check buffer sizes before writing; use safe functions (`strncpy` instead of `strcpy`, `snprintf` instead of `sprintf`)
+- **Language choice**: Languages with automatic memory management (Java, Python) prevent manual buffer overflows:
+  - Bounds checking is enforced automatically
+  - No direct memory address access
+  - Stack overflow attacks are not possible
+
+**Compile-Level Defenses:**
+
+The compiler can implement various protections:
+
+- **Warnings**: Modern compilers warn about unsafe functions and missing bounds checks
+- **Stack canaries**: Insert a random value between local variables and control data (return address, saved EBP):
+  1. On function prologue: write canary value to stack
+  2. On function epilogue (before return): verify canary unchanged
+  3. If canary is corrupted, abort execution
+
+To be effective, canaries must:
+
+- Be random and change per execution (attacker cannot predict it)
+- Use xor-based checksums with control data to detect overwrites
+- Terminate with null bytes to prevent string-copy attacks (`strcpy` stops at null)
+
+**OS-Level Defenses:**
+
+The operating system can implement protections that make exploitation more difficult:
+
+- **Non-executable stack (NX bit)**: Separate code and data segments, marking the stack as non-executable
+- **Address Space Layout Randomization (ASLR)**: Randomize the memory layout of processes at each execution, including base addresses of stack, heap, and libraries. This prevents attackers from reliably guessing target addresses for code reuse or shellcode injection.
