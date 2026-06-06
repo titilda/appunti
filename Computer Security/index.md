@@ -388,3 +388,67 @@ A secure password recovery mechanism should include a second authentication fact
 
 - **Temporal credential**: Generate a cryptographically random temporary password (prevents guessing)
 - **Recovery links**: Time-limited links that allow users to reset their password
+
+### Possession Factor: Something You Have
+
+Authentication based on physical objects ensures verification of possession, not necessarily identity (a stolen object can be used).
+
+**Advantages**: Low cost
+
+**Disadvantages**:
+
+- Difficult to deploy (requires physical distribution)
+- Objects must be physically created
+- Exchange should occur in-person with identity verification
+
+The object should be tamper-proof (Any attempt to extract the secret destroys it) or tamper-evident (Breaking the device is visually evident) to prevent unauthorized access to secrets stored within.
+
+Some examples of possession-based authentication include:
+
+- **Smart cards**: Contain cryptographic keys and perform computations; require PIN for two-factor protection and is tamper-resistant
+- **One-Time Passwords (OTP)**: Time-based or static lists;
+
+### Biometric Factor: Something You Are
+
+Authentication based on unique biological or behavioral characteristics. This method verifies identity of the user, not something the user knows or possesses.
+
+This usually involves scanning a biological feature (fingerprint, face geometry, retina, iris, voice, DNA) or behavioral patterns (typing dynamics, gait).
+
+**Advantages**: High security, nothing to remember or carry
+
+**Disadvantages**:
+
+- Complex deployment (new hardware, in-person enrollment, secure storage)
+- Probabilistic matching (threshold-based): Two readings are never identical; systems require tolerance
+- May be invasive (DNA) or privacy-sensitive
+- Can be cloned or mimicked (fingerprints visible in photos, spoofed with synthetic materials)
+- Bio-characteristics change over time; periodic re-enrollment needed
+- The enroll should be kept secure and should be tamper-proof to prevent extraction of biometric data
+- Can be captured without consent
+
+The enrollment process typically involves:
+
+1. Scan biological features multiple times
+2. Extract and record a numerical feature vector
+3. Store vector securely on device (never transmit)
+4. During authentication, compare new scan against stored vector using threshold matching
+
+### Alternative Authentication Methods
+
+#### Single Sign-On (SSO)
+
+Instead of reusing the same password across multiple services, a single trusted identity provider authenticates the user once. Subsequent services rely on the provider's authentication.
+
+The identity provider becomes a single point of failure. If compromised, all connected services are compromised.
+
+#### Password Managers
+
+Password managers manage passwords through a single master credential.
+
+This allow users to have unique, complex passwords for each service without needing to remember them all.
+
+Losing the master password can lock users out of all accounts, and if the password manager is compromised, all stored passwords are at risk.
+
+#### Passwordless Authentication (Passkeys)
+
+**Passkeys** are a modern approach to authentication that eliminates the need for passwords by leveraging asymmetric cryptography and device-based authentication.
