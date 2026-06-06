@@ -529,3 +529,30 @@ Dual of Bell-LaPadula, focused on preventing unauthorized modification:
 
 - **No Write Up**: A subject cannot write to objects at higher integrity levels (prevents low-integrity sources from corrupting high-integrity data)
 - **No Read Down**: A subject cannot read objects at lower integrity levels (prevents low-integrity data from affecting high-integrity operations)
+
+## Software Security
+
+Software must meet functional and non-functional requirements: usability, safety, and security.
+
+Developers typically focus more on functional requirements (easier to validate and test) than security. A **missing functional requirement** is a bug, while a **missing security specification** is a vulnerability.
+
+### Vulnerability Lifecycle
+
+Vulnerabilities follow a lifecycle from discovery to patch deployment:
+
+1. **Vendor unaware**: Vulnerability exists in released software; attackers may discover it
+2. **Zero-day window**: Exploit is discovered but vendor is unaware (attackers have advantage)
+3. **Disclosure**: Vulnerability is reported to vendor
+4. **Patch release**: Vendor develops and releases security patch
+5. **User patching**: End-users deploy the patch; window of exposure closes
+
+Most vendors now and may offer compensation through bug bounty programs for security researchers who report vulnerabilities privately, allowing to fix it before being publicly disclosed.
+
+### Vulnerability Classification Framework
+
+Vulnerabilities are standardized using:
+
+- **CVE (Common Vulnerabilities and Exposures)**: Unique identifier for each publicly disclosed vulnerability
+- **CWE (Common Weakness Enumeration)**: Classification of vulnerability types (e.g., buffer overflow, SQL injection)
+- **CVSS (Common Vulnerability Scoring System)**: Numerical severity score (0-10) based on exploitability and impact
+- **CAPEC (Common Attack Pattern Enumeration and Classification)**: Documents attack patterns and techniques
