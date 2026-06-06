@@ -240,3 +240,64 @@ A secure hash function must resist:
 Combines hash functions with a secret key by including the key as part of the hash input.
 
 This provides integrity and authenticity, but not non-repudiation as the parties with the key can generate valid HMACs.
+
+### Asymmetric Encryption
+
+Symmetric encryption alone cannot provide:
+
+- Authentication (sender cannot be verified)
+- Key agreement over public channels
+- Confidential communication without pre-shared secrets
+
+This is done through **asymmetric encryption**, which uses a pair of keys: a public key (freely distributable) and a private key (kept secret).
+
+The key generation uses one-way functions with trapdoors, where the public key can be easily derived from the private key, but the private key cannot be feasibly derived from the public key without specific information (the trapdoor).
+
+The double keys allow for two main use cases:
+
+- **Public-key encryption**: Sender encrypts with recipient's public key; only recipient (with private key) can decrypt. Provides confidentiality.
+- **Digital signatures**: Sender signs with private key; recipient verifies with sender's public key. Provides authentication and non-repudiation.
+
+The most common algorithm is **RSA**, based on the difficulty of factoring large integers. Another common algorithm is **Elgamal**, based on the discrete logarithm problem.
+
+The problem with asymmetric encryption is that it is computationally expensive and requires larger key sizes for equivalent security compared to symmetric encryption (2048-bit RSA ≈ 256-bit AES). Therefore, it is often used in combination with symmetric encryption in a **hybrid approach**.
+
+#### Hybrid Approach
+
+Hybrid approach uses asymmetric encryption for secure key exchange and symmetric encryption for the actual message:
+
+1. Generate a symmetric key for the actual message
+2. Encrypt the message with symmetric key
+3. Encrypt the symmetric key with recipient's public key
+4. Send both encrypted message and encrypted key
+
+##### Diffie-Hellman Key Exchange
+
+Allows two parties to establish a shared secret over an insecure channel without pre-shared private keys.
+
+1. Define a finite cyclic group $(G, \cdot)$, generator $g$, and numbers $a, b$ (where $\lambda = \text{len}(a) \sim \log_2(|G|)$)
+2. Alice computes $A = g^a$ and sends to Bob
+3. Bob computes $B = g^b$ and sends to Alice
+4. Alice computes shared secret: $s = B^a = g^{ab}$
+5. Bob computes shared secret: $s = A^b = g^{ab}$
+
+This is resistant to passive eavesdropping (attacker would need to solve the discrete logarithm problem).
+
+#### Digital Signatures
+
+To provide both authentication and integrity:
+
+1. Hash the message
+2. Encrypt the hash with the sender's private key
+3. Recipient decrypts with sender's public key and compares to hash of received message
+
+#### Public Key Infrastructure (PKI)
+
+To authenticate public keys, PKI uses a hierarchical trust model where trusted **Certificate Authorities** (CAs) issue digital certificates that bind public keys to identities.
+
+The CA signs a certificate containing the sender's public key and identity information with its private key. Recipients can verify the certificate's authenticity using the CA's public key, which must be trusted.
+
+Certificate revocation can be managed through:
+
+- **Certificate Revocation List (CRL)**: Published list of revoked certificates; recipients check against when verifying
+- **Online Certificate Status Protocol (OCSP)**: Real-time protocol to query CA for certificate status—more up-to-date than CRL
