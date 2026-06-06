@@ -330,3 +330,61 @@ A message's outcome can be encoded using approximately $H(X)$ bits, the minimum 
 The **Min-Entropy** Represents the difficulty of guessing the most likely outcome of a random variable. It is defined as:
 
 $$H_{\infty}(X) = -\log_2 \max_{x \in X} P(x)$$
+
+## Authentication
+
+**Authentication** is the process of verifying a user's claimed identity, while **identification** is simply claiming an identity. Authentication should be mutual—both parties verify each other's identity. It can occur between humans, machines, or both.
+
+Authentication mechanisms rely on factors that can be categorized by type:
+
+### Knowledge Factor: Something You Know
+
+Passwords and secrets are authentication methods based on information that users know.
+
+**Advantages**: Low cost, easy to integrate
+
+**Disadvantages**:
+
+- Authenticates the secret itself, not the entity (if shared, anyone can authenticate as that entity)
+- Difficult for humans to remember
+- Vulnerable to theft, guessing, or cracking
+
+**Vulnerability Sources:**
+
+Secrets can be compromised through:
+
+- Theft (phishing, social engineering)
+- Guessing (weak or predictable secrets)
+- Cracking (brute-force or dictionary attacks)
+
+**Mitigation Strategies:**
+
+- **Complexity**: Enforce password strength through meters (gamification helps adoption). Higher entropy secrets (bits of randomness) are harder to crack. Long passphrases can provide high entropy while being more memorable than complex passwords. Reduce cracking.
+- **Change policy**: Frequent password changes reduce exposure window but harm user experience. Best practices focus on changing passwords after suspected compromise. Reduce snooping.
+- **Non-correlation**: Avoid passwords related to user identity (names, dates, publicly known information). Reduce guessing.
+
+#### Secure Exchange
+
+To avoid sending passwords over insecure channels, it is possble to use **challenge-response protocols**:
+
+1. **Verifier** sends a random challenge (nonce) to avoid replay attacks
+2. **Prover** computes a cryptographic response by hashing the secret with the nonce `hash(password + nonce)`
+3. **Verifier** performs the same computation locally and compares results
+4. For mutual authentication: Prover sends their own challenge for Verifier to respond
+
+Another approach is **Zero-Knowledge Proofs**, where the Prover can demonstrate knowledge of a secret without revealing it. The Prover responds to random challenges in a way that convinces the Verifier they know the secret, without ever transmitting the secret itself.
+
+#### Secure Storage
+
+Passwords should **never** be stored in plaintext and no one should have access to them.
+
+- **Hashing + Salting**: Hash passwords with unique salts (per user). Salts prevent dictionary attacks and can be stored alongside hashes (they're not secret).
+- **Access control**: Restrict access to password storage with strict policies
+- **Caching**: Minimize password caching in intermediate storage (e.g., browser memory, temporary files)
+
+#### Secure Password Recovery
+
+A secure password recovery mechanism should include a second authentication factor to verify the user's identity and should send to the user:
+
+- **Temporal credential**: Generate a cryptographically random temporary password (prevents guessing)
+- **Recovery links**: Time-limited links that allow users to reset their password
