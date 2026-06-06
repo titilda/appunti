@@ -774,3 +774,42 @@ The final payload looks like: `<ADDR_LOWER><ADDR_UPPER>%<N1>c%<pos>$hn%<N2>c%<po
 
 - Warn if format string is not a string literal
 - Count format specifiers vs. arguments provided
+
+## Web Application Security
+
+Web applications are based on the three-tier architecture:
+
+1. **Client (browser)**: Renders HTML, executes JavaScript, sends requests (untrusted)
+2. **Web server**: Processes requests, executes application logic (trusted)
+3. **Database**: Stores data (trusted)
+
+The client is inherently untrusted, as it is under the control of the user and potentially attackers. The server must assume that all client input is malicious and validate it accordingly.
+
+### Input Validation Techniques
+
+The validation of the input can be done in three ways:
+
+- **Allowlisting** (recommended): Accept only known-good input patterns
+- **Blocklisting** (weaker): Reject known-bad patterns, but may miss new attack vectors
+- **Escaping**: Transform special characters into safe representations
+
+### Cross-Site Scripting (XSS)
+
+XSS is a code injection vulnerability allowing attackers to execute malicious JavaScript in victims' browsers. The attacker injects scripts into web pages viewed by other users; the browser executes the script, treating it as legitimate application code.
+
+Allowing to steal cookies, session tokens, or perform actions on behalf of the user.
+
+There are three main types of XSS:
+
+- **Stored XSS**: occurs when malicious scripts are permanently stored on the server (e.g., in a database) and served to all the users who access the affected page. Filter and sanitize should be applied on *both client and server*
+
+- **Reflected XSS**: occurs when malicious scripts are reflected off the server in response to a request, without being stored. The attack is delivered via a crafted URL or form input that is immediately reflected in the response (e.g. `http://example.com?search=<script>...</script>`).
+
+- **DOM-based XSS**: occurs when the vulnerability exists entirely in client-side JavaScript, without any server involvement. For example, if JavaScript code reads `document.location.hash` and directly uses it to populate page content without sanitization, an attacker could craft a URL like `http://example.com#<script>...</script>` to execute arbitrary code in the victim's browser.
+
+#### XSS Defenses
+
+To prevent XSS, developers should implement:
+
+- **Output encoding**: Encode special characters in user input before rendering it in the browser to prevent it from being interpreted as code
+- **Content Security Policy (CSP)**: Define a strict policy for which scripts can execute and where they can load from, reducing the impact of injected scripts
