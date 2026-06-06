@@ -496,3 +496,36 @@ Unix implements DAC with a three-part triad for each file:
 - **Other permissions** (everyone else): Read, write, execute
 
 Example: `rwxr-xr--` = owner full access, group read/execute, others read only
+
+### Mandatory Access Control (MAC)
+
+In **Mandatory Access Control**, the system administrators define a classification for the subjects (**Clarence**) and objects (**Sensitivity**), and the system enforces access based on these classifications.
+
+The classification is based on:
+
+- **Secrecy levels**: Hierarchical ordering of classifications (e.g., unclassified < confidential < secret < top-secret)
+- **Labels**: Tags that indicate the compartments (e.g., "Nuclear", "Crypto")
+
+#### Lattice-Based Access Control
+
+The union of secrecy levels and compartments forms a **lattice** (LBAC) structure that define a partial order (dominance relation) on security levels:
+
+$$\{C_1, L_1\} \geq \{C_2, L_2\}$$
+
+This indicates when one clearance can access data at another classification level.
+
+#### Bell-LaPadula Model (Secrecy-Focused)
+
+Designed to prevent unauthorized information disclosure. Core rules:
+
+- **No Read Up**: A subject with clearance level cannot read objects at higher classification (prevents access to secrets)
+- **No Write Down**: A subject with clearance level cannot write to objects at lower classification (prevents information leakage)
+
+Data can only flow upward in the hierarchy, preventing lower-classification users from accessing secrets.
+
+#### Biba Model (Integrity-Focused)
+
+Dual of Bell-LaPadula, focused on preventing unauthorized modification:
+
+- **No Write Up**: A subject cannot write to objects at higher integrity levels (prevents low-integrity sources from corrupting high-integrity data)
+- **No Read Down**: A subject cannot read objects at lower integrity levels (prevents low-integrity data from affecting high-integrity operations)
