@@ -146,3 +146,97 @@ Computationally secure ciphers rely on the hardness of certain mathematical prob
 - **Discrete Logarithm Problem**: Computing $g^x = y$ is easy; reversing (finding $x$ given $g$ and $y$) is computationally hard
 
 Security is proven by showing that breaking the cipher would solve a known hard problem, believed infeasible with current technology.
+
+### Symmetric Encryption
+
+In symmetric encryption, the same key is used for both encryption and decryption. Both parties must have access to this secret key, creating challenges for key distribution:
+
+- **Distribution requirement**: Key must be shared through a trusted channel—secure not against all attackers, but specifically against the threat agents present.
+- **Scalability limitation**: For $n$ users, the number of required keys grows quadratically: $\frac{n(n-1)}{2}$ keys total.
+
+Some examples of symmetric ciphers include:
+
+- **Substitution ciphers**: Replace each plaintext element with another (e.g., Caesar cipher)
+- **Transposition ciphers**: Rearrange plaintext elements (e.g., rail fence cipher)
+
+**AES (Advanced Encryption Standard)** is the current standard, using 128-bit blocks with key sizes of 128, 192, or 256 bits. Needs $2^{128}$ operations to brute-force a 128-bit key.
+
+#### Pseudorandom Number Generators (CSPRNGs)
+
+A **Cryptographically Secure Pseudorandom Number Generator** is a deterministic function $G: \{0,1\}^\lambda \rightarrow \{0,1\}^{\lambda + l}$ whose output is indistinguishable from random by any efficient (polynomial-time) algorithm.
+
+##### Stream Ciphers
+
+**Stream ciphers** generate a pseudorandom keystream that is XORed with the plaintext to produce ciphertext.
+
+They are efficient for encrypting data of arbitrary length but require careful management of keys and initialization vectors (IVs) to prevent vulnerabilities.
+
+##### Block Ciphers
+
+**Pseudo-Random Permutations (PRP)** are a type of function that is bijective, meaning each input maps to a unique output and vice versa. The function is identified by a key, and for each key, it behaves like a random permutation over the input space.
+
+The simplest block cipher is **Electronic Codebook (ECB)**, which encrypts each block of plaintext independently. However, it is insecure because identical plaintext blocks produce identical ciphertext blocks, revealing patterns in the data.
+A better approach is to use **Counter (CTR) Mode**, which generates a keystream of the length of the plaintext by encrypting a counter for each block and XORing it with the plaintext. The problem with CTR mode is that the counter is predictable.
+
+```mermaid
+graph TD
+    A[Counter] --> B[Encryption Function]
+    C[key] --> B
+    B --> D[Keystream]
+    E[Plaintext block] --> F[XOR]
+    D --> F
+    F --> G[Ciphertext block]
+```
+
+To prevent attacks when reusing keys:
+
+- **Nonce (Number Used Once)**: Use a random value unique for each encryption, based on the ciphertext, making the starting point of the counter unpredictable. Allows the same key for multiple encryptions without producing identical ciphertexts for identical plaintexts.
+- **Rekeying**: Generate a new key for each block by encrypting a random value with the original key. Uses symmetric ratcheting: split the key into two parts—one encrypts the block, the other generates the next key.
+
+```mermaid
+graph TD
+    A[Random Value] --> B[Encryption Function]
+    C[Seed] --> B
+    B --> D[Block Key]
+    B --> E[Next Seed]
+```
+
+---
+
+### Integrity and Authenticity
+
+A cipher is **malleable** if an attacker can modify the ciphertext to produce predictable changes in the decrypted plaintext without knowing the key. This enables:
+
+- Data manipulation attacks
+- Homomorphic encryption (computation on encrypted data with results matching operations on plaintext)
+
+#### Message Authentication Codes (MAC)
+
+The **Message Authentication Code (MAC)** is a short tag generated from a message and a secret key, that is attached to the message. It allows the receiver to verify both the integrity and authenticity of the message.
+
+- `compute_tag(message, key)`: Produces a tag for integrity verification
+- `verify_tag(message, tag, key)`: Returns true if the tag is valid for the message and key
+
+As both sender and receiver share the same key, MACs do not provide non-repudiation (both parties can generate valid tags).
+
+It is implemented using **CBC-MAC** (Cipher Block Chaining Message Authentication Code) that encrypt a block with the key, XOR the output with the next block, and use the final output as the tag.
+
+#### Hash Functions
+
+Hash functions map messages to fixed-size digests unique to the input. They are faster than MAC and provide integrity checks.
+
+A secure hash function must resist:
+
+- **Preimage attack**: Given hash value $h$, it should be infeasible to find input $m$ where $\text{hash}(m) = h$
+- **Second preimage attack**: Given input $m$ and its hash, it should be infeasible to find different $m'$ where $\text{hash}(m') = \text{hash}(m)$
+- **Collision attack**: It should be infeasible to find any two different inputs $m_1 \neq m_2$ where $\text{hash}(m_1) = \text{hash}(m_2)$
+
+**Brute-force resistance**: Secure functions should not be breakable faster than brute-force ($2^{n-1}$ for preimage, $2^{n/2}$ for collisions).
+
+**SHA-2 and SHA-3** are the current standards, producing hash values of 256, 384, or 512 bits.
+
+#### HMAC (Keyed Hash)
+
+Combines hash functions with a secret key by including the key as part of the hash input.
+
+This provides integrity and authenticity, but not non-repudiation as the parties with the key can generate valid HMACs.
