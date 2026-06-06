@@ -928,3 +928,109 @@ The database user account used by the web application should have only the permi
 **Error handling**:
 
 The application should not reveal detailed database error messages to users, as these can provide attackers with information about the database structure and vulnerabilities. Instead, it should log errors server-side for debugging and show generic error messages to users (e.g., "An error occurred") to prevent information leakage.
+
+## Network Protocol Attacks
+
+Network protocols were designed for **efficiency and functionality**, not security. Early protocols assume a cooperative network environment and lack built-in authentication mechanisms.
+
+### Denial of Service (DoS)
+
+**DoS** attacks the *availability* of a service to legitimate users by overwhelming it with traffic or exploiting protocol vulnerabilities.
+
+#### Killer Packets
+
+**Killer packets** are specially crafted packets that exploit vulnerabilities in protocol implementations to crash or destabilize the target system.
+
+- **Ping of Death**: Due to a memory management flaw in the ICMP protocol implementation in some operating systems, it was possible to send an oversized ICMP echo request (ping) that would cause a buffer overflow when the target system attempted to reassemble the fragmented packet. This could lead to a system crash or reboot, effectively denying service to legitimate users.
+
+- **Teardrop**: Use a wrong offset in TCP fragments to create overlapping fragments. When the target system attempts to reassemble the fragments, it encounters a conflict due to the overlapping data
+
+These protocols can only be mitigated at the OS level by patching the vulnerabilities in the protocol implementations, not at protocol level to ensure backward compatibility.
+
+#### Flooding
+
+Servers have finite resources (network bandwidth, processing power, connection limits). Flooding attacks aims to exhaust these resources. This is done by sending more requests than the server can handle.
+
+An attacker uses multiplier factors to amplify the attack, meaning that the server needs to perform more work than the attacker does to process each request.
+
+**Example: SYN flood**:
+
+During the TCP's Three-way handshake, the server allocates resources for each incoming `SYN` request to store the half-open connection state until the handshake completes. An attacker can send a large number of `SYN` packets with spoofed source IP addresses, causing the server to allocate resources for each half-open connection. When the SYN backlog is full, legitimate connection attempts are rejected, resulting in a denial of service.
+
+This can be mitigated with **SYN cookies**, which allow the server to handle SYN floods without allocating resources for half-open connections. Instead of storing connection state in memory, the server computes a hash-based "cookie" that is encoded in the `SYN-ACK` sequence number. The client must return this cookie in the `ACK` packet, and the server validates it against the expected value. This eliminates the need for storing half-open connections and reduces resource consumption during an attack.
+
+#### Distributed Denial of Service (DDoS)
+
+Attacker controls a **botnet** (many compromised hosts) to launch coordinated attacks.
+
+The attacker has the advantage of scale, as they can generate a much larger volume of traffic than a single machine could. This makes it difficult for the target server to distinguish between legitimate traffic and attack traffic, especially if the attack is distributed across many sources.
+
+This cannot be resolved, but only mitigated as it is difficult to block all attack sources without affecting legitimate users.
+
+### Sniffing
+
+**Sniffing** attack the *confidentiality* of data by intercepting and reading network traffic. This is possible because early network protocols do not encrypt data and rely on the assumption of a trusted network environment.
+
+To works the attacker must be in the same network of the victim and should use protocols that doesn't encrypt data (e.g., HTTP, FTP, Telnet).
+
+#### Network Topology
+
+Each computer is connected to a network through a **Network Interface Card** (NIC) receive all the packages on the network segment. Based on the operation mode,the NIC can operate in two modes:
+
+- **Normal operation**: Filter all the frames that are not addressed to its MAC address or broadcast/multicast addresses. Only receives frames intended for it.
+- **Promiscuous mode**: Collects *all* frames on the network segment, not just those addressed to it.
+
+Two main types of network devices determine how traffic is distributed:
+
+- **Hub**: Broadcasts all frames to all connected ports and every machine sees all traffic.
+- **Switch**: Maintains a MAC address table and forwards frames only to the correct physical port, so each machine sees only traffic addressed to it or broadcast traffic.
+
+### Spoofing
+
+**Spoofing** attacks the *integrity* and *authenticity* of data by forging network packet headers to impersonate another host or inject false data. Attacker sends packets claiming to come from a trusted source, exploiting the lack of authentication in early network protocols.
+
+#### ARP Spoofing
+
+**Address Resolution Protocol (ARP)** maps IP addresses to MAC addresses. When a host needs to send a frame to an IP address, it broadcasts an ARP request to find the corresponding MAC address. The host with that IP address responds with an ARP reply containing its MAC address, which is then cached in the ARP table for future use.
+
+The ARP protocol is not authenticated, meaning that any host can send ARP replies claiming to be the owner of a particular IP address. The first response received is accepted and cached without verification, and all the machines on the network that receive the ARP reply will update their ARP tables accordingly.
+
+By sending forged ARP replies, an attacker can intercept, modify, or block traffic to the victim, performing a **Man-in-the-Middle (MITM)** attack.
+
+**ARP Spoofing Defenses**:
+
+- **Static ARP entries**: Manually configure critical machines' ARP mappings (gateway, servers) to prevent overwriting
+- **Network segmentation**: Use switches to limit broadcast domains and reduce attack surface (once the switch table is full, it behaves like a hub, so this is not a complete solution)
+- **ARP monitoring**: Detect suspicious ARP activity (e.g., multiple IPs mapping to the same MAC) and alert administrators
+- **Port security**: Limit MAC addresses per switch port
+
+#### IP Address Spoofing
+
+The IP protocol includes a source IP address field in each packet, but there is no mechanism to verify that the sender is actually the owner of that IP address. This allows attackers to forge the source IP address in packets they send.
+
+Based on the attacker's location relative to the victim, IP spoofing can be categorized into:
+
+- **Remote spoofing**: Attacker is outside the victim's network, meaning they cannot directly receive responses to their spoofed packets and must rely on one-way attacks. This is ineffective if the attack requires interaction or the routers perform ingress filtering to block packets with spoofed source IPs.
+- **Local spoofing**: Attacker is inside the victim's network, allowing them to intercept responses and perform more powerful attacks like MITM, allowing bidirectional communication.
+
+The main challenge with IP spoofing is that TCP connection uses random SEQ numbers to prevent spoofing. To successfully spoof a TCP connection, the attacker must guess or sniff the correct sequence number, which might be difficult, and the client should not send any RST packets to the real server to reset the connection.
+
+#### DNS Spoofing
+
+**Domain Name System (DNS)** resolves domain names to IP addresses. A DNS query is identified by a DNS ID (typically 16-bit, so 65,536 possibilities).
+
+An attacker can respond to the victim's DNS query with a spoofed response containing a fake IP address before the legitimate DNS server responds. One the response arrives all users on the victim's network who resolve that domain will receive the wrong IP address, allowing the attacker to redirect them to malicious sites, performing **DNS cache poisoning**
+
+#### DHCP Spoofing
+
+**Dynamic Host Configuration Protocol (DHCP)** is used to automatically assign IP addresses and network configuration to devices on a local network. When a device connects, it broadcasts a DHCP Discover message.
+
+Thanks to the lack of authentication and the first response wins, an attack can reply to the DHCP Discover with a forged DHCP Offer containing malicious network configuration, such as:
+
+- Attacker-chosen IP address for the client
+- Attacker's IP as the gateway (MITM traffic)
+- Attacker's IP as the DNS server (DNS Poisoning)
+
+#### ICMP Redirect Spoofing
+
+**Internet Control Message Protocol (ICMP)** is used for network diagnostics and error reporting. The ICMP Redirect message is sent by routers to inform hosts of a better route for a particular destination. However, ICMP Redirect messages are not authenticated, and rely on the first 8 bytes of the original packet for validation, which can be easily sniffed and forged by an attacker.
