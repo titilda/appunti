@@ -301,3 +301,32 @@ Certificate revocation can be managed through:
 
 - **Certificate Revocation List (CRL)**: Published list of revoked certificates; recipients check against when verifying
 - **Online Certificate Status Protocol (OCSP)**: Real-time protocol to query CA for certificate status—more up-to-date than CRL
+
+### Information Theory and Entropy
+
+Acquiring information reduces uncertainty about a message. A message source can be modeled as a random variable. Greater variance means higher uncertainty and more information gain.
+
+#### Shannon Entropy
+
+The **entropy** measures the uncertainty or randomness of a random variable.
+
+Defined as:
+
+$$H(X) = -\sum_{x \in X} P(x) \log_2 P(x)$$
+
+where $P(x)$ is the probability of random variable $X$ taking value $x$.
+
+**Properties**:
+
+- Measured in bits
+- Higher entropy = more unpredictable (more information)
+- Lower entropy = more predictable (less information)
+- Example: Constant message has $H(X) = 0$; completely random message has high $H(X)$
+
+A message's outcome can be encoded using approximately $H(X)$ bits, the minimum bits needed to represent information without loss.
+
+#### Min-Entropy
+
+The **Min-Entropy** Represents the difficulty of guessing the most likely outcome of a random variable. It is defined as:
+
+$$H_{\infty}(X) = -\log_2 \max_{x \in X} P(x)$$
