@@ -711,3 +711,66 @@ The operating system can implement protections that make exploitation more diffi
 
 - **Non-executable stack (NX bit)**: Separate code and data segments, marking the stack as non-executable
 - **Address Space Layout Randomization (ASLR)**: Randomize the memory layout of processes at each execution, including base addresses of stack, heap, and libraries. This prevents attackers from reliably guessing target addresses for code reuse or shellcode injection.
+
+## Format String Bugs
+
+Format string vulnerabilities occur when user-controlled input is passed directly to *variadic* functions (`printf`, `scanf`, etc.) without a fixed format string.
+
+When a format string is missing, format specifiers in user input are interpreted:
+
+```c
+char user_input[256];
+gets(user_input);
+printf(user_input);      // Prints stack values without arguments
+```
+
+Since arguments are missing, the user is in control of the format string.
+
+### Reading from Stack
+
+Being in control of the format string allows the attacker to read arbitrary stack values:
+
+- Saved return addresses (information leak)
+- Local variables (including security tokens, canary values)
+- Saved base pointers and other sensitive data
+
+The user can use format specifiers to read values:
+
+- `%x`: Print next stack value as hex
+- `%N$x`: Print the Nth parameter directly (allows skipping forward)
+- Attacker adds known markers to identify position: `MARKER_%x_%x_%x` reveals which offset corresponds to user input
+
+### Writing to Memory
+
+The `%n` format specifier writes the number of characters printed so far to the address pointed by the corresponding argument:
+
+```c
+printf("%x %n", &some_variable);  // Writes number of printed chars to some_variable
+```
+
+This can be exploited to write arbitrary values to arbitrary addresses:
+
+1. Craft address to target in user input: `<ADDR>%<N>c%<pos>$n`
+2. Use `%Nc` to pad output to desired value (take into account already printed characters)
+3. Use `%pos$n` to write that many bytes to the address
+
+The main objective is to overwrite a return address or function pointer to redirect execution flow. This involves writing a 32-bit address, which requires printing 4 billion characters (infeasible). Solution:
+
+- Write in two 16-bit halves using `%hn` (writes 2 bytes instead of 4)
+- First write lower half
+- Then write upper half (address+2)
+- N2 must account for N1 already written (`%n` only increases)
+- If upper half < lower half, swap addresses
+
+The final payload looks like: `<ADDR_LOWER><ADDR_UPPER>%<N1>c%<pos>$hn%<N2>c%<pos+1>$hn`
+
+### String Format Defenses
+
+**Source level**:
+
+- Always provide a fixed format string; never pass user input as format: `printf("%s", user_input)`
+
+**Compiler level**:
+
+- Warn if format string is not a string literal
+- Count format specifiers vs. arguments provided
