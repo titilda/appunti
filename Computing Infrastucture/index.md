@@ -637,6 +637,40 @@ graph TD
     Runtime --> Hardware
 ```
 
+## Cloud Computing
+
+Cloud computing provides on-demand access to a large-scale, publicly available collection of computing, storage, and network resources. Users access resources using a **pay-as-you-go model**, paying only for what they use. This eliminates the need to invest in and maintain physical infrastructure, enabling flexible, scalable IT operations.
+
+This is achieved through a virtualization infrastructure that abstracts physical resources and delivers them as services over the internet, allowing managing, moving, and scaling resources without worrying about underlying hardware.
+
+### Service Models (X-as-a-Service)
+
+Cloud services follow the "X-as-a-Service" model where customers focus on their business needs, not infrastructure management or code deployment. Services are abstracted and delivered through standard interfaces.
+
+- **Software-as-a-Service (SaaS)**: Complete applications hosted and delivered over the web. Users access via web portals or thin clients; require a subscription fee. Examples: Office 365, Salesforce, Google Workspace.
+
+- **Platform-as-a-Service (PaaS)**: Provides a platform for developing, testing, and deploying applications without managing underlying infrastructure. Users focus on application development while the provider handles runtime, middleware, and OS. Examples: Heroku, Firebase.
+
+- **Infrastructure-as-a-Service (IaaS)**: Rents virtualized computing resources (compute, storage, networking). Users manage OS, middleware, and applications; provider manages hardware and virtualization. Examples: AWS EC2, Microsoft Azure VMs, Google Compute Engine.
+
+- **Data-as-a-Service (DaaS)**: Provides data storage and access services without requiring users to manage underlying infrastructure. Users can store, retrieve, and analyze data through APIs or web interfaces. Examples: AWS S3, Google Drive, Dropbox.
+
+- **Communication-as-a-Service (CaaS)**: Provides communication services (voice, video, messaging) over the internet. Examples: Twilio, Zoom, Slack.
+
+- **Machine Learning-as-a-Service (MLaaS):** Provides pre-configured machine learning tools and services for training and inference without managing underlying infrastructure. Users can build, train, and deploy ML models using cloud-based platforms. Examples: AWS SageMaker, Google Vertex AI, Azure ML.
+
+### Cloud Deployment Models
+
+Cloud services are deployed using different models depending on organizational requirements:
+
+- **Private Cloud**: An organization builds and operates its own servers or dedicated infrastructure. Provides complete control over every aspect (security, performance, compliance) but limited scalability and higher operational costs.
+
+- **Community Cloud**: Shared infrastructure among multiple organizations with similar requirements or regulatory constraints. Reduces costs through shared resources while maintaining some isolation and control.
+
+- **Public Cloud**: Large-scale infrastructure offered by cloud providers (AWS, Azure, Google Cloud) for rent. Provides maximum scalability and cost efficiency but less control and potential shared tenancy concerns.
+
+- **Hybrid Cloud**: Combines private and public cloud resources. Organizations maintain sensitive workloads on private infrastructure and use public cloud for non-critical workloads or during peak demand periods.
+
 ## Dependability
 
 Systems fail due to: defects, degradation, radiation, design errors, bugs, attacks, and human errors. This leads to economic losses, information loss, physical harm, and reputation damage.
