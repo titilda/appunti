@@ -88,14 +88,6 @@ Servers are made in different standard form factors such us:
 
 All components are standardized for quick replacement and maintenance, with hot-swappable parts to minimize downtime.
 
-##### Thermal Management
-
-Data centers uses **cold aisle/warm aisle** configuration to maximize the air cooling efficiency:
-
-- **Cold aisle**: Center floor supplies cold air; flows through server intake ports.
-- **Warm aisle**: Rear of servers; hot exhaust air expelled upward.
-- **Containment**: Roof caps on racks prevent cold air bypass, forcing air through servers and maximizing cooling efficiency.
-
 #### Storage
 
 WIth time the data have been moved from local towards cloud providers. This is due:
@@ -109,8 +101,7 @@ WIth time the data have been moved from local towards cloud providers. This is d
 OS manages data through hierarchical abstractions:
 
 - **Data Blocks**: Smallest units of storage, addressable with **logical block addresses** (LBA).
-- **Clusters**: Groups of contiguous blocks, used to reduce overhead compared to block-level management, reducing the number of read/write operations.
-Inside each cluster there are the actual data and the **Metadata** that consist in the file attributes (name, size, permissions, timestamps) enabling organization and access control.
+- **Clusters**: Groups of contiguous blocks, used to reduce overhead compared to block-level management, reducing the number of read/write operations. Inside each cluster there are the actual data and the **Metadata** that consist in the file attributes (name, size, permissions, timestamps) enabling organization and access control.
 
 During data deletion, the cluster is only flagged as deleted, allowing it to be overwritten.
 
@@ -226,6 +217,140 @@ Unrecoverable Bit Error Ratio (UBER) differs from HDDs: HDD UBER increases linea
 
 **Storage Area Network** is a network that provides block-level access to data, allowing servers to access storage as if it were directly attached.
 
+#### Networking
+
+The internal network connecting servers and storage within a data center is called **Interconnect**, or data center network (DCN). When scaling a data center the network might become the bottleneck of the system as all the servers need to communicate with each other.
+
+The bandwidth capacity between the two halves of the network is indicated by the **bisection bandwidth**, which is the minimum bandwidth that must be available between two halves of the network to support full communication between them:
+
+$$l \times L \geq C \times \frac{S}{2}$$
+
+where:
+
+- $l$: number of links between the two network halves
+- $L$: bandwidth capacity of each link
+- $C$: bandwidth required per server
+- $S$: total number of servers
+
+The factor $S/2$ represents traffic flowing between halves. Traffic distribution must be balanced across links to prevent congestion.
+
+The traffic within a DCN can be categorized into two types:
+
+- **East-West (EW) traffic**: Data flowing between servers within the data center. Typically dominates; sources include VM migrations, backups, replication, and distributed computation (e.g., MapReduce, ML training).
+- **North-South (NS) traffic**: Data flowing between data center servers and external networks. Typically lighter than east-west.
+
+The network topology can be divided into three categories:
+
+##### Switch-centric
+
+**Switch-centric** architecture relies on switches to handle routing and forwarding. Switches manage the majority of the traffic, while servers focus on computation.
+
+###### Three-Tier Architecture
+
+The traditional approach uses a hierarchical topology with three layers:
+
+- **Core layer** (top): High-speed switches providing backbone connectivity between aggregation layers.
+- **Aggregation layer** (middle): Switches aggregating traffic from multiple racks, typically serving one row of racks (End-of-Row - EOR).
+- **Access layer** (bottom): Top-of-Rack (ToR) switches directly connecting servers within a rack.
+
+```mermaid
+graph TD
+    subgraph Core Layer
+        C1[Core Switch 1]
+        C2[Core Switch 2]
+    end
+
+    subgraph Aggregation Layer
+        A1[Aggregation Switch 1]
+        A2[Aggregation Switch 2]
+    end
+
+    subgraph Access Layer
+        S1[ToR Switch 1]
+        S2[ToR Switch 2]
+        S3[ToR Switch 3]
+        S4[ToR Switch 4]
+    end
+
+    C1 <--> C2
+    C1 --> A1
+    C1 --> A2
+    C2 --> A1
+    C2 --> A2
+
+    A1 --> S1
+    A1 --> S2
+    A2 --> S3
+    A2 --> S4
+```
+
+To ensure high availability and fault tolerance, all the layers should have redundant connections, between upper layers and between the same layer.
+
+Based on the bandwidth ratios between layers, the network can be classified as:
+
+- **Oversubscribed**: Bandwidth (core-to-aggregation) $<$ bandwidth (aggregation-to-access). Cheaper but can cause congestion.
+- **Non-oversubscribed**: Bandwidth (core-to-aggregation) $\geq$ bandwidth (aggregation-to-access). Prevents congestion but requires higher-capacity core switches.
+
+###### Leaf-Spine Architecture
+
+A modern flat, two-layer topology:
+
+- **Leaf layer** (bottom): Switches directly connecting servers and storage.
+- **Spine layer** (top): High-speed backbone switches providing leaf-to-leaf connectivity.
+
+```mermaid
+graph TD
+    subgraph Spine Layer
+        S1[Spine Switch 1]
+        S2[Spine Switch 2]
+    end
+
+    subgraph Leaf Layer
+        L1[Leaf Switch 1]
+        L2[Leaf Switch 2]
+        L3[Leaf Switch 3]
+        L4[Leaf Switch 4]
+    end
+
+    S1 --> L1
+    S1 --> L2
+    S1 --> L3
+    S1 --> L4
+
+    S2 --> L1
+    S2 --> L2
+    S2 --> L3
+    S2 --> L4
+```
+
+If each leaf switch connects to every spine switch, the topology is called **Clos Topology** (Multi-stage Clos). This fully-interconnected leaf-spine variant enables any server to reach any other via a single hop. With $k$ spine switches and $n$ leaf switches:
+
+- $k \gte n$: Traffic can be rearranged to guarantee a non-blocking path between any two leaves, providing non-blocking bisection bandwidth.
+- $k \gte 2n - 1$: there is always a non-blocking path between any two leaves, regardless of traffic patterns.
+
+This architecture uses homogeneous switches that are cheaper and easier to manage than hierarchical tiers. It also allows for scalability by adding leaf switches without architectural changes.
+
+In the Clos topology, the connection is uni-directional, in case of a bi-directional connection is called  **Folded Clos**.
+
+It is possible to extend this architecture by grouping spine-leaf switches into pods and add a higher-level spine layer to connect the pods together, creating a **Fat Tree** topology.
+
+##### Server-centric
+
+A **Server-centric** architecture is a network design where servers themselves perform routing using their network interfaces (NICs) for switching operations. Servers handle both computation and networking tasks.
+
+This increases the amount of hops between servers but allows more flexible and scalable network design, since servers can be added or removed without affecting overall network topology.
+
+##### Hybrid
+
+A **Hybrid** architecture combines elements of both switch-centric and server-centric designs. Some routing is performed by dedicated switches (especially for core/aggregation layers), while servers perform low-level routing. This approach enables trade-offs between network simplicity and flexibility.
+
+##### Scale-Up Network (HPC Networks)
+
+Designed for high-performance computing (HPC) workloads such as large-scale ML training. Resources are organized into **Pods** (groups of GPUs/accelerators) and the two type of communication is performed:
+
+- **Scale-Up network** (intra-pod): Ultra-low-latency, high-bandwidth interconnect linking accelerators within a pod (e.g., NVLink, InfiniBand). Critical for collective operations.
+- **Scale-Out network** (inter-pod): Connects pods together; higher latency than scale-up. Used for cross-pod data transfers.
+
 ## Dependability
 
 Systems fail due to: defects, degradation, radiation, design errors, bugs, attacks, and human errors. This leads to economic losses, information loss, physical harm, and reputation damage.
@@ -304,10 +429,10 @@ A system functions if there exists at least one operational path from start to e
 Connections represent two reliability configurations:
 
 - **Series Configuration** (both components required): The system fails if any single component fails. Overall reliability decreases with each additional series component.
-$$R_s(t) = \prod_{i=1}^{n} R_i(t) = e^{-t\sum_{i=1}^{n}\lambda_i}$$
+  $$R_s(t) = \prod_{i=1}^{n} R_i(t) = e^{-t\sum_{i=1}^{n}\lambda_i}$$
 
 - **Parallel Configuration** (at least one component required): The system continues if any single component survives. Overall reliability increases with redundancy.
-$$R_p(t) = 1 - \prod_{i=1}^{n}(1 - R_i(t))$$
+  $$R_p(t) = 1 - \prod_{i=1}^{n}(1 - R_i(t))$$
 
 **Standby Redundancy**: A redundant component remains idle until the primary component fails, then automatically activates. This approach approximately doubles the MTTF compared to a single component.
 
