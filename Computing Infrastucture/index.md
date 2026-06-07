@@ -351,6 +351,55 @@ Designed for high-performance computing (HPC) workloads such as large-scale ML t
 - **Scale-Up network** (intra-pod): Ultra-low-latency, high-bandwidth interconnect linking accelerators within a pod (e.g., NVLink, InfiniBand). Critical for collective operations.
 - **Scale-Out network** (inter-pod): Connects pods together; higher latency than scale-up. Used for cross-pod data transfers.
 
+### Building
+
+Data centers allocate approximately 40% of space to IT equipment, the remainder supports cooling, power distribution, and failure recovery.
+
+#### Cooling Systems
+
+IT equipment generates significant heat, which must be dissipated to maintain optimal operating temperatures and prevent hardware damage. There are two main cooling approaches:
+
+- **Open-Loop**: Use passive cooling with ambient air; requires filtering for dust and humidity. Low operational cost but geography-dependent.
+- **Closed-Loop**: Use active cooling systems. Higher operational cost but consistent performance regardless of location.
+
+Data centers uses **cold aisle/warm aisle** configuration to maximize the air cooling efficiency:
+
+- **Cold aisle**: Center floor supplies cold air; flows through server intake ports.
+- **Warm aisle**: Rear of servers; hot exhaust air expelled upward.
+- **Containment**: Roof caps on racks prevent cold air bypass, forcing air through servers and maximizing cooling efficiency.
+
+The closed-loop approach includes:
+
+- **In-Rack Coolers**: Mounted directly in racks to cool high-density server zones.
+- **In-Row Coolers**: Positioned between racks, extracting hot air from warm aisles and returning cooled air to cold aisles.
+
+Cooler system can include **liquid cooling** for high-power devices (GPUs, TPUs), offering superior thermal efficiency.
+
+#### Power Usage
+
+Data centers consume massive amounts of electricity, and only ~45% powers IT equipment. The remainder supports cooling, power conversion, and distribution overhead.
+
+**Power Usage Effectiveness (PUE):** Metric measuring overall facility efficiency, lower is better:
+$$\text{PUE} = \frac{\text{Total Facility Power}}{\text{IT Equipment Power}} \geq 1$$
+
+**Data Center Infrastructure Efficiency (DCIE):** The inverse metric:
+$$\text{DCIE} = \frac{\text{IT Equipment Power}}{\text{Total Facility Power}} \leq 1$$
+
+In case of power failure, data centers must ensure continuous operation and graceful shutdown to prevent data loss and hardware damage. This is achieved through:
+
+- **Uninterruptible Power Supplies (UPS)**: Battery systems providing short-term energy during power loss.
+- **Diesel Generators**: Automatically start when utility power fails. Typical startup delay (~1 minute) requires batteries to bridge the gap until generators are online.
+- **Voltage Regulation**: Stabilizes voltage and filters transient spikes to protect sensitive equipment.
+
+#### Data Center Availability
+
+The availability of a data center is divided into four tiers:
+
+- **Tier 1**: Single non-redundant distribution path serving IT equipment. No redundant components. Expected availability: 99.671% (28.8 hours of downtime per year).
+- **Tier 2**: Redundant distribution paths serving IT equipment. Expected availability: 99.741% (22 hours of downtime per year).
+- **Tier 3**: Multiple independent distribution paths serving IT equipment, components must be dual powered. Expected availability: 99.982% (1.6 hours of downtime per year).
+- **Tier 4**: All cooling components are dual powered. Expected availability: 99.995% (26.3 minutes of downtime per year).
+
 ## Dependability
 
 Systems fail due to: defects, degradation, radiation, design errors, bugs, attacks, and human errors. This leads to economic losses, information loss, physical harm, and reputation damage.
