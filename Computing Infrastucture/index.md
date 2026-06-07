@@ -400,6 +400,134 @@ The availability of a data center is divided into four tiers:
 - **Tier 3**: Multiple independent distribution paths serving IT equipment, components must be dual powered. Expected availability: 99.982% (1.6 hours of downtime per year).
 - **Tier 4**: All cooling components are dual powered. Expected availability: 99.995% (26.3 minutes of downtime per year).
 
+## RAID
+
+RAID (Redundant Array of Independent Disks) is a data storage technology that combines multiple physical disk drives into a single logical unit to improve performance, increase storage capacity, and enhance reliability through redundancy.
+
+This is done in a transparent way to the user, who sees a single logical disk, while the data is distributed across multiple physical disks.
+
+This is done by **striping** data across multiple disks. As there are multiple disks, the read/write operations can be performed in parallel, improving performance.
+
+Striping is performed by dividing data into strip units (dimension of the block) that are written into the stripe width (number of disks) in a round-robin fashion.
+
+Bigger chunks reduces the seek time, but smaller chunks allows for more parallelism.
+
+Increasing the number of disks increases the probability of failure, needs to use redundancy to ensure data integrity and availability.
+
+It is possible to perform data reconstruction using the redundant information, but this process is time-consuming. Thanks to the parity information, it is possible to reconstruct the data of a failed disk by using the data from the remaining disks and the parity information.
+
+RAID usually include a hot spare disk, which is a standby disk that can automatically replace a failed disk without manual intervention. When a disk fails, the RAID controller detects the failure and initiates the reconstruction process using the hot spare, minimizing downtime and ensuring data availability.
+
+There are multiple RAID levels, each with different trade-offs between performance, redundancy, and storage efficiency:
+
+### RAID 0
+
+In RAID 0, data is striped across multiple disks without any redundancy. This provides improved performance and capacity but no fault tolerance. If any disk fails, all data in the array is lost.
+
+| Disk 0  | Disk 1  | Disk 2   | Disk 3   |
+| ------- | ------- | -------- | -------- |
+| Block 0 | Block 1 | Block 2  | Block 3  |
+| Block 4 | Block 5 | Block 6  | Block 7  |
+| Block 8 | Block 9 | Block 10 | Block 11 |
+
+- **Capacity**: $n$ times the capacity of a single disk.
+- **Reliability**: $\text{MTTF}_T = \frac{\text{MTTF}}{n}$ (decreases with more disks).
+
+### RAID 1
+
+RAID 1 uses mirroring, where data is duplicated across two or more disks. This provides high reliability, as the system can continue to operate even if one disk fails. However, it has a storage efficiency of at most 50% since each piece of data is stored on multiple disks.
+
+The read performance can be improved as the system can read from multiple disks in parallel.
+
+No error correction is computed, so the write performance is similar to a single disk.
+
+| Disk 0  | Disk 1  |
+| ------- | ------- |
+| Block 0 | Block 0 |
+| Block 1 | Block 1 |
+| Block 2 | Block 2 |
+
+- **Capacity**: $1$ times the capacity of a single disk (since data is mirrored).
+- **Reliability**: $\text{MTTF}_T = \frac{\text{MTTF}^n * \prod_{i=1}^{n-2} 2^{i}}{n! \text{MTTR}^{n-1}}$
+
+### RAID 01
+
+In RAID 0+1, data is first mirrored across multiple disks (RAID 1) and then stripped (RAID 0).
+
+| Disk 0  | Disk 1  | Disk 2  | Disk 3  |
+| ------- | ------- | ------- | ------- |
+| Block 0 | Block 1 | Block 0 | Block 1 |
+| Block 2 | Block 3 | Block 2 | Block 3 |
+| Block 4 | Block 5 | Block 4 | Block 5 |
+
+- **Capacity**: $\frac{n}{2}$.
+- **Reliability**: $\text{MTTF}_T = \frac{\text{MTTF}^2}{n * \text{MTTR} * G}$, where $G$ is the number of disks in the mirrored pair ($G = n/2$).
+
+### RAID 10
+
+In RAID 1+0, data is first stripped (RAID 0) and then mirrored (RAID 0).
+
+| Disk 0  | Disk 1  | Disk 2  | Disk 3  |
+| ------- | ------- | ------- | ------- |
+| Block 0 | Block 0 | Block 1 | Block 1 |
+| Block 2 | Block 2 | Block 3 | Block 3 |
+| Block 4 | Block 4 | Block 5 | Block 5 |
+
+- **Capacity**: $\frac{n}{2}$.
+- **Reliability**: $\text{MTTF}_T = \frac{\text{MTTF}^2}{n * \text{MTTR}}$.
+
+RAID 1+0 can tolerate multiple disk failures as long as they are not in the same mirrored pair, as losing a disk in RAID 0+1 would result in the loss of the entire array.
+
+### RAID 4
+
+RAID 4 uses a dedicated parity disk to store parity information for error correction. Data is striped across multiple disks, and in the parity disk is stored the parity information computed as the XOR of the data blocks. This allows for data recovery in case of a single disk failure, but the dedicated parity disk can become a bottleneck for write operations.
+
+Each update requires updating the parity information, which can lead to performance degradation, especially for write-intensive workloads.
+
+| Disk 0  | Disk 1  | Disk 2  | Parity Disk       |
+| ------- | ------- | ------- | ----------------- |
+| Block 0 | Block 1 | Block 2 | P0 = B0 ⊕ B1 ⊕ B2 |
+| Block 3 | Block 4 | Block 5 | P1 = B3 ⊕ B4 ⊕ B5 |
+| Block 6 | Block 7 | Block 8 | P2 = B6 ⊕ B7 ⊕ B8 |
+
+The update can be performed in two ways:
+
+- Additive: compute the new parity by XORing all the data blocks, including the new data block.
+- Subtractive: compute the new parity by XORing the old data block, the new data block, and the old parity block.
+
+- **Capacity**: $n-1$.
+- **Reliability**: $\text{MTTF}_T = \frac{\text{MTTF}^2}{n * (n-1) * \text{MTTR}}$.
+
+### RAID 5
+
+RAID 5 is similar to RAID 4 but distributes the parity information across all disks instead of using a dedicated parity disk. This improves write performance by eliminating the bottleneck of a single parity disk, while still providing fault tolerance for a single disk failure.
+
+| Disk 0              | Disk 1            | Disk 2            | Disk 3            |
+| ------------------- | ----------------- | ----------------- | ----------------- |
+| Block 0             | Block 1           | Block 2           | P0 = B0 ⊕ B1 ⊕ B2 |
+| Block 3             | Block 4           | P1 = B3 ⊕ B4 ⊕ B5 | Block 5           |
+| Block 6             | P2 = B6 ⊕ B7 ⊕ B8 | Block 8           | Block 9           |
+| P3 = B9 ⊕ B10 ⊕ B11 | Block 10          | Block 11          | Block 12          |
+
+- **Capacity**: $n-1$.
+- **Reliability**: $\text{MTTF}_T = \frac{\text{MTTF}^2}{n * (n-1) * \text{MTTR}}$.
+
+### RAID 6
+
+RAID 6 extends RAID 5 by adding an additional parity block, allowing for fault tolerance against two simultaneous disk failures. This is achieved by using two different parity calculations, such as XOR and Reed-Solomon codes, to provide redundancy.
+
+This increases the storage overhead and can further degrade write performance due to the additional parity calculations.
+
+| Disk 0              | Disk 1                | Disk 2              | Disk 3              | Disk 4              |
+| ------------------- | --------------------- | ------------------- | ------------------- | ------------------- |
+| Block 0             | Block 1               | Block 2             | P0 = B0 ⊕ B1 ⊕ B2   | Q0 = RS(B0, B1, B2) |
+| Block 3             | Block 4               | P1 = B3 ⊕ B4 ⊕ B5   | Q1 = RS(B3, B4, B5) | Block 5             |
+| Block 6             | P2 = B6 ⊕ B7 ⊕ B8     | Q2 = RS(B6, B7, B8) | Block 8             | Block 9             |
+| P3 = B9 ⊕ B10 ⊕ B11 | Q3 = RS(B9, B10, B11) | Block 11            | Block 12            | Block 13            |
+
+- **Capacity**: $n-2$.
+- **Reliability**: $\text{MTTF}_T = \frac{2 * \text{MTTF}^3}{n * (n-1) * {n-2} * \text{MTTR}^2}$.
+
 ## Dependability
 
 Systems fail due to: defects, degradation, radiation, design errors, bugs, attacks, and human errors. This leads to economic losses, information loss, physical harm, and reputation damage.
