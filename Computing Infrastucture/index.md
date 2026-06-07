@@ -528,6 +528,115 @@ This increases the storage overhead and can further degrade write performance du
 - **Capacity**: $n-2$.
 - **Reliability**: $\text{MTTF}_T = \frac{2 * \text{MTTF}^3}{n * (n-1) * {n-2} * \text{MTTR}^2}$.
 
+## Virtualization
+
+In virtualization, the physical resources of a computer are abstracted and shared among multiple virtual machines (VMs) that run on top of a hypervisor or virtual machine monitor (VMM). Each VM operates as if it has its own dedicated virtual hardware, allowing for isolation and flexibility in resource allocation,  providing the following characteristics:
+
+- **Identical Behavior**: Appears identical to the physical machine for application execution.
+- **Different Resources**: Can expose virtual resource quantities different from the physical machine (e.g., fewer CPU cores, different memory size).
+- **Different Performance**: May exhibit different performance characteristics than the physical machine due to virtualization overhead.
+
+> A program works thanks to different levels of abstraction, each providing a different view of the underlying hardware.
+>
+> - **Problem-oriented language level**: High-level programming languages.
+> - **Assembly language level**: Low-level symbolic instruction representation.
+> - **Operating system level**: ABI (Application Binary Interface) defines the interface between applications and the OS, including system calls, libraries, and services.
+>   - **User instructions**: Executed directly by the application.
+>   - **Privileged instructions**: Executed by the OS kernel only.
+> - **Instruction Set Architecture (ISA) level**: The machine instruction set visible to software.
+> - **Microarchitecture level**: Internal CPU design (caches, pipelines, functional units).
+> - **Digital logic level**: Hardware gates and circuits.
+
+Virtualization can be implemented at various levels of the software stack:
+
+- **System Virtual Machine**: Virtualizes the entire physical machine from the ISA level down to the digital logic level. Runs independently of the host OS, sitting between hardware and guest OS/applications.
+
+  ```mermaid
+  graph TD
+      App[Application] --> GuestOS[Guest OS]
+      GuestOS --> Virtual[Virtualization Software]
+      App --> Virtual
+      Virtual --> Hardware[Physical Hardware]
+  ```
+
+- **Process Virtual Machine**: Virtualizes the execution environment for a single process, providing an abstraction of both the OS and hardware. Allows processes to run on any platform without modification (e.g., JVM, .NET Runtime).
+
+  ```mermaid
+  graph TD
+      App[Application] --> Virtual[Virtualization Software]
+      Virtual --> HostOS[Host OS]
+      HostOS --> Hardware[Physical Hardware]
+      Virtual --> Hardware
+  ```
+
+When the virtual machine's ABI/ISA differs from the physical machine's ISA, **emulation** is necessary to translate instructions from one architecture to another. This translation introduces performance overhead but enables running software compiled for different architectures.
+
+The benefits of virtualization include:
+
+- **Partitioning**: Multiple operating systems can run simultaneously on the same physical machine; hardware resources are divided and allocated independently.
+- **Isolation**: Faults or failures in one VM are confined to that VM, preventing cascading failures. Security is enhanced since VMs are isolated from each other and the host. Resource usage is controlled per VM.
+- **Encapsulation**: VMs can be saved as files, copied, moved between servers, or restored from backup without modifying the application.
+- **Hardware Independence**: Applications run in VMs can be migrated across different physical hardware without modification, enabling flexible resource management and high availability.
+
+### Virtual Machine Managers
+
+**Hypervisor** (or **Virtual Machine Monitor** - VMM) is the software layer that enables virtualization, handling tasks such as resource allocation, scheduling, hibernation, creation, and lifecycle management. It provides an abstraction layer between the physical hardware and the virtual machines. It can be classified into two types:
+
+- **Type 1 (Bare-Metal Hypervisor)**: Runs directly on hardware without a host OS. The hypervisor acts as an optimized OS for virtualization, managing hardware resources and VMs directly. IO services and drivers can be handled via:
+  - **Monolithic approach** (obsolete): Drivers embedded directly in the hypervisor.
+  - **Microkernel approach**: Decouple hardware interaction to a privileged service VM, allowing drivers to be easily updated or swapped.
+
+- **Type 2 (Hosted Hypervisor)**: Built on top of a host OS, relying on host OS services (networking, storage, scheduling). The hypervisor is smaller since the OS handles many operations.
+
+### Virtualization Techniques
+
+#### Paravirtualization
+
+**Paravirtualization** reduces guest OS overhead by avoiding direct hardware interaction. Instead, the guest OS calls hypervisor functionalities via **hypercalls**. This approach requires modifying the guest OS to be _aware_ of virtualization, but it improves performance by reducing the number of VM traps and hypervisor interventions compared to full virtualization.
+
+```mermaid
+graph TD
+    App[Application] --> GuestOS[Guest OS]
+    GuestOS -- Hypercall --> Hypervisor[Hypervisor]
+    Hypervisor -- Operation --> Hardware[Physical Hardware]
+```
+
+#### Full Virtualization
+
+Full virtualization allows unmodified guest operating systems to run on the hypervisor. The hypervisor uses a **trapping mechanism**:
+
+1. Guest OS executes an instruction intended for hardware.
+2. Hardware detects the instruction requires virtualization and traps to the hypervisor.
+3. Hypervisor intercepts the trap and emulates the instruction's effect.
+4. Control returns to the guest OS.
+
+This approach is transparent to the guest OS but introduces more hypervisor overhead than paravirtualization due to frequent trapping and emulation.
+
+```mermaid
+graph TD
+    App[Application] --> GuestOS[Guest OS]
+    GuestOS -- Private Instruction --> Hardware[Physical Hardware]
+    Hardware -- Trap --> Hypervisor[Hypervisor]
+    Hypervisor -- Emulate --> Hardware[Physical Hardware]
+```
+
+### Containers
+
+**Containers** are a lightweight form of virtualization that provides a pre-configured environment for applications, including code, dependencies, libraries, and configurations. Containers share the host OS kernel but run in isolated user spaces, allowing for efficient resource utilization and fast startup times.
+
+The main advantages of containers include:
+
+- **Scalability**: Easy to scale horizontally by launching multiple container instances. Simple to stack multiple containers and deploy in orchestrated clusters.
+- **Portability**: Containers run identically across different hardware platforms and cloud environments.
+
+```mermaid
+graph TD
+    App[Application] --> Runtime[Container Runtime]
+    Runtime --> HostOS[Host OS]
+    HostOS --> Hardware[Physical Hardware]
+    Runtime --> Hardware
+```
+
 ## Dependability
 
 Systems fail due to: defects, degradation, radiation, design errors, bugs, attacks, and human errors. This leads to economic losses, information loss, physical harm, and reputation damage.
