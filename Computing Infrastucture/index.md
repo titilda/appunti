@@ -767,3 +767,114 @@ $$R_{\text{voting}} = \sum_{i=r}^{n} \binom{n}{i} R^i(1-R)^{n-i}$$
 This formula sums the probability that at least $r$ components are operational.
 
 When the majority of components must be operational, the reliability of a single component could be higher than the reliability of the entire system, especially when the failure rate $\lambda$ is high.
+
+## Performance Evaluation
+
+**Performance** of a computer system measures its overall effectiveness, including metrics such as throughput (tasks completed per unit time), latency (response time), and resource utilization.
+
+The evaluation can be performed using three main approaches:
+
+1. **Intuition Analysis**: Informal assessment based on experience. Limited accuracy but fast.
+2. **Experimental Evaluation**: Empirical measurement through actual system tests, prototypes, and benchmarks. Highly accurate but expensive and time-consuming.
+3. **Model-Based Approach**: Create a simplified mathematical or simulation model of the system that captures key characteristics. Model predictions are cheaper and faster than real measurements while maintaining reasonable accuracy. Two main techniques:
+   - **Analytical/Numerical Methods**: Use probability theory and stochastic process theory to derive mathematical solutions.
+   - **Simulation**: Reproduce system behavior by executing traces of the model.
+
+### Queueing Networks
+
+A **Queueing Network Model** is a commonly used performance model representing a system as a collection of interconnected service stations. _Customers_ (requests, transactions, jobs) arrive at stations, wait in _queues_, receive _service_ (server, resource), and may depart or route to other stations.
+
+There are three main types of queueing networks based on customer flow:
+
+- **Open Network**: All the customers arrive from outside and eventually depart. The population is not fixed.
+- **Closed Network**: Fixed number of customers that circulate within the system. No arrivals or departures.
+- **Mixed Network**: Combination of open and closed networks, with some customers arriving from outside and others circulating within the system.
+
+When customers arrive at a station, they may have to wait if the server is busy. The order in which customers are served is determined by the **queue discipline** (scheduling policy):
+
+- **FCFS** (First Come First Serve): Serve customers in arrival order. Fair and common.
+- **LCFS** (Last Come First Serve): Serve most recent arrival first. Stack-like behavior.
+- **RSS** (Random Selection for Service): Serve random customer. No ordering preference.
+- **PRI** (Priority-Based): Serve customers by class/priority level. Higher priority customers served first.
+
+> Queue size can be finite (limited waiting space) or infinite (unlimited waiting space). Finite queues can lead to blocking and lost customers, while infinite queues can lead to unbounded wait times.
+
+Customers move between service stations according to routing decisions:
+
+- **Probabilistic Routing**: Each path has probability $p_i$ assigned; customer chooses path stochastically.
+- **Round Robin**: Requests alternate deterministically among available destinations.
+- **Join Shortest Queue (JSQ)**: Route customer to the service queue with fewest waiting customers, attempting load balancing.
+
+#### Operational Laws
+
+**Operational Laws** are fundamental equations that relate measurable system variables to derive performance metrics. They are based on observable variables and basic principles such as flow conservation and work conservation.
+
+- **Time** $T$: Total observation time
+- **Arrivals** $A$: Total number of arrivals
+- **Completions** $C$: Total number of completions
+- **Busy Time** $B$: Total busy time
+- **Average Population** $N$: Average number of customers in the system
+
+**Flow Balance Principle**: In equilibrium, $A \approx C$ (arrivals equal completions). If $A \neq C$, the system is not in balance (building up queues or draining).
+
+- **Arrival Rate** $\lambda = \frac{A}{T}$ (requests/sec): Frequency at which customers arrive at a resource.
+- **Service Rate** $\mu = \frac{C}{B}$ (customers/sec): Speed at which a server processes customers.
+- **Mean Service Time** $S = \frac{B}{C}$ (time): Average time required to service a customer. Inverse of service rate.
+- **Throughput** $X = \frac{C}{T}$ (customers/sec): Rate at which customers complete service.
+- **Utilization** $U = \frac{B}{T} = X \cdot S$ (time): Indicates how much of the server's capacity is being used.
+- **Average Population** $N = X \cdot R$ (customers): Average number of customers in the system, derived from **Little's Law**.
+
+**Residence Time Components:**
+
+- $W$: Total time customers spend waiting in queues (queuing time).
+
+From which we can derive:
+
+- **Average Residence Time**: $R = \frac{W}{C}$ (time): Average time a customer spends in the system, including both waiting and service time.
+- $N = \frac{W}{T}$
+
+**Interactive Response Time**:
+
+- **Think Time** $Z$: Time between receiving a response and submitting the next request in interactive systems in close loop.
+
+Which leads to the **Interactive Response Time** formula:
+
+$$R = \frac{N}{X} - Z$$
+
+**Visit Ratios and Resource Utilization**:
+
+- **Visit Ratio** $V_k = \frac{C_k}{C}$: Average number of times a request visits resource $k$ during its processing. Calculated as the ratio of completions at resource $k$ to total completions in the system:
+  - $V_k > 1$: Resource $k$ is visited multiple times per request (queuing, loops, retries).
+  - $V_k = 1$: Resource visited exactly once per request.
+  - $V_k < 1$: Resource $k$ not visited by all requests.
+
+- **Demand**: $D_k = S_k \cdot V_k$ (service time × visit ratio) represents the total service time required at resource $k$ per request.
+
+#### Performance Bounds
+
+The bounds of a system are defined by the bottleneck resource, which is the resource with the highest demand $D_\text{max}$.
+
+The bounds can be expressed under two conditions:
+
+- Light load: The bottleneck is the entire system.
+- Heavy load: The bottleneck is the resource with the highest demand, as the pipeline is full and the system is saturated.
+
+##### Open System Bounds
+
+In open system, the saturation point is reached when the arrival rate $\lambda$ equals the throughput $X$:
+
+The throughput bounds: $0 \leq X \leq \frac{U = 1}{D_\text{max}}$
+
+The response time cannot be upper bounded as it can grow indefinitely as the arrival rate approaches the saturation point.
+
+The response time bounds: $R \geq D$
+
+##### Closed System Bounds
+
+In closed system, the saturation point is reached when the number of customers $N$ equals the number of customers required to saturate the bottleneck resource:
+
+$$N^* = \frac{D + Z}{D_\text{max}}$$
+
+The throughput bounds: $\underbrace{\frac{N}{ND + Z}}_\text{Pessimistic} \leq X \leq \underbrace{\min\left(\upperbrace{\frac{1}{D_\text{max}}}^{Heavy}, \upperbrace{\frac{N}{N - Z}}^\text{Light}\right)}_\text{Optimistic}$
+
+The response time bounds: $\underbrace{\max(\upperbrace{D}^\text{Light}, \upperbrace{ND_\text{max} - Z})_\text{Heavy}}_\text{Optimistic} \leq R \leq \underbrace{ND}_\text{Pessimistic}$
