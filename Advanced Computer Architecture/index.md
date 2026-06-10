@@ -4,7 +4,6 @@ author:
   - "Andrea Lunghi"
 ---
 
-
 Computer architecture is fundamentally about **trade-offs**: every design decision involves balancing competing goals.
 
 ## Performance Metrics
@@ -18,7 +17,7 @@ Performance cannot be reduced to a single number. Instead, different metrics cap
 
 **Frequency and Instruction Execution:**
 
-- **CPI (Cycles Per Instruction)**: The average number of clock cycles required to execute one instruction. This directly reflects how efficiently the architecture executes code.
+- **CPI (Cycles Per Instruction)**: The average number of clock cycles required to execute one instruction. This directly reflects how efficiently the architecture executes code. It is based on the ideal CPI (theoretical minimum) and structural hazards, data hazards, and control hazards.
 - **Clock Speed**: The frequency at which the CPU operates, measured in GHz. Raw frequency says little about real-world performance.
 
 $$\text{Performance} = 1 / (\text{Clock Speed} × \text{CPI})$$
@@ -151,13 +150,15 @@ For example there is a WB and a ID stage where both need to access the register 
 
 This is solved by splitting the write and read between two different stages within the same cycle, so that the register file can handle both accesses without conflict. (ID happens during rising edge, WB happens during falling edge)
 
+This can be solved by increasing the number of hardware resources, but this increases cost and complexity.
+
 ##### Data Hazards
 
 **Data Hazards** occur when an instruction depends on data from a previous instruction that has not yet been written to the register file. This is the most critical hazard type because it can cause incorrect computation. There are three subtypes:
 
 - **Read After Write (RAW)**: An instruction reads a register before a previous instruction has written to it. Example: Instr1 writes R1, Instr2 reads R1. This is the _only true data hazard_ that causes incorrect results if unhandled.
-- **Write After Read (WAR)**: An instruction writes to a register before a previous instruction has finished reading from it. Example: Instr1 reads R1, Instr2 writes R1.
-- **Write After Write (WAW)**: Two instructions write to the same register, and their order matters. Example: Instr1 writes R1, Instr2 writes R1.
+- **Write After Read (WAR)**: An instruction writes to a register before a previous instruction has finished reading from it. Example: Instr1 reads R1, Instr2 writes R1. The read must complete before the write.
+- **Write After Write (WAW)**: Two instructions write to the same register, and their order matters. Example: Instr1 writes R1, Instr2 writes R1. Just need to ensure the correct order of writes.
 
 **Solutions for RAW hazards**:
 
@@ -172,4 +173,33 @@ Forwarding eliminates many data hazards without stalling, but some load instruct
 
 ##### Control Hazards
 
-**Control Hazards** occur when a branch instruction reaches the Execute stage, but the pipeline has already fetched instructions from the potentially wrong path. The CPU doesn't know the branch outcome until the condition is evaluated, so intervening instructions may need to be discarded.
+When a branch instruction is encountered, the processor must decide whether to follow the true branch or false branch. However, the branch outcome is not known until the condition is evaluated in the EX stage and the PC is updated in the MEM stage. This means the pipeline has already fetched instructions before knowing which path to take, creating a **control hazard**.
+
+## Branch Prediction
+
+A naive approach to control hazards is to stall the pipeline until the branch outcome is known, but this will incur a significant performance penalty:
+
+- **Stall until resolved**: 3-cycle penalty (simplest but slowest)
+- **Forward from EX to IF**: 2-cycle penalty (better)
+- **Early branch computation in ID**: 1-cycle penalty by computing the branch outcome and **Branch Target Address** (BTA) in the ID stage (faster, but can introduce new RAW hazards)
+
+The presence of branches will change the ideal CPI from 1 to $1 + (\text{branch frequency} \times \text{misprediction penalty})$.
+
+Another approach is to **speculatively fetch** instructions from the predicted path of the branch before the actual outcome is known. This technique is called **Branch Prediction** and if correct, there is **zero penalty**, if wrong, the pipeline flushes and resumes with a **2-cycle misprediction penalty**. The accuracy of prediction is critical to overall performance.
+
+Branch prediction can be categorized into two main types:
+
+### Static Branch Prediction
+
+Static prediction determines the branch outcome at compile time. The prediction is **fixed** for each branch instance and encoded into the binary. This requires no hardware support for tracking branch history.
+
+Some techniques for static branch prediction include:
+
+- **Branch Always Not Taken**: The compiler assumes that the probability of a jump is low, so the branch will not be taken, and it fetches instructions from the next instruction.
+- **Branch Always Taken**: The compiler assumes that the branch will be taken, so it fetches instructions from the branch target address.
+- **Backward Taken, Forward Not Taken**: The compiler assumes that backward branches (loops) are taken and forward branches (if statements) are not taken.
+- **Profile-Driven Prediction**: The compiler collects runtime profiling information to determine the most likely outcome of each branch and generates code accordingly. This can improve performance but requires additional compilation time.
+- **Delayed Branching**: The compiler fills **delay slots** (a fixed number of instruction slots immediately after the branch for its resolution) with independent instructions that execute regardless of the branch outcome. This keeps the pipeline busy while the branch is being resolved. Three strategies:
+  - **From Before**: Move an independent instruction that appears before the branch into the delay slot
+  - **From Target**: Move an instruction from the branch target (useful when the branch is likely taken)
+  - **From Fall-Through**: Use the instruction that would naturally follow (useful when the branch is unlikely)
