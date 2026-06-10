@@ -553,3 +553,27 @@ In an ideal scenario, with unlimited resources and perfect predictions, the only
 Superscalar processors are typically implemented extending the Tomasulo algorithm with multiple buses.
 
 This approach is typically used in high-performance desktop and server CPUs, where maximizing single-thread performance is critical. However, it comes with increased hardware complexity and power consumption due to the need for multiple functional units, reservation stations, and complex scheduling logic.
+
+## Thread Level Parallelism
+
+**Thread Level Parallelism (TLP)** operates across multiple independent execution contexts (threads), which can be scheduled on a single core. Each thread can execute a different instruction stream, reducing the impact of data dependencies and allowing for higher overall throughput.
+
+As superscalar, TLP allows to issue multiple instructions per cycle, but instead of issuing instructions from the same thread, it issues instructions from different threads.
+
+TLP can be implemented in different forms:
+
+### Fine Grained Multithreading
+
+In **Fine-Grained Multithreading**, the processor switches between threads on every clock cycle, allowing it to issue instructions from different threads in a round-robin way.
+
+This approach hides latency effectively, as when one thread stalls, another thread can issue instructions, but it will reduce single-thread performance due to frequent context switching.
+
+### Coarse Grained Multithreading
+
+Instead of switching threads every cycle, **Coarse-Grained Multithreading** only switches threads on long-latency events (e.g., cache miss, exception). This reduces the overhead of context switching and allows better single-thread performance, but it may not hide short stalls effectively.
+
+### Simultaneous Multithreading (SMT)
+
+**Simultaneous Multithreading (SMT)** allows multiple threads to issue and execute instructions simultaneously in the same cycle, sharing the same functional units.
+
+This approach maximizes resource utilization, as different threads can use different functional units, but it can lead to resource contention.
