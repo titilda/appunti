@@ -610,3 +610,34 @@ There are two main types of MIMD architectures:
 
 - **Homogeneous MIMD**: all processors are identical and can execute any instruction stream
 - **Heterogeneous MIMD**: there is a main processor that controls the execution and offloads tasks to specialized processors (e.g., GPU for graphics, DSP for signal processing)
+
+## Memory Models
+
+In a parallel architecture with multiple processors, the way memory is organized and accessed is crucial for performance and programmability. There are two main memory models:
+
+- **Shared-Memory Architecture**: All processors have access to a **common address space**, and communication is **implicit** through shared memory. The architecture is called **Symmetric Multiprocessing (SMP)** or **Uniform Memory Access (UMA)**.
+- **Distributed-Memory Architecture**: Each processor has its **own private memory**, and communication is **explicit** through message passing. Allow to handle more processors and larger memory, but programming is more complex and introduce overhead. This architecture is called **Non-Uniform Memory Access (NUMA)**.
+
+A shared memory space can be implemented both with a single physical memory shared by all processors or with distributed memory where each processor has its own local memory and the system provides a mechanism to access remote memory. This is also valid for the private memory space.
+
+### Cache Coherency
+
+Each processor has a **private cache** for performance. When one processor modifies cached data, other processors may hold stale copies in their caches. To guarantee coherency, the system must ensure that all the writes to a memory location are visible to all processors in a consistent manner (serialization).
+
+#### Snooping Protocol
+
+One protocol to maintain cache coherency is the **Snooping Protocol**, where all caches monitor (snoop) the shared bus for read/write operations. Each cache keeps track of the state of its cache lines and the update on the value are broadcast to all caches.
+
+Based on what happen on after a write operation, the protocol can be classified as:
+
+- **Write-Invalidate**: When a processor writes to a cache line, it invalidates all other caches' copies of that line. The writing processor can perform two operation regarding the main memory:
+  - **Write-Through**: Update the main memory immediately, ensuring that other processors can fetch the updated value without needing to snoop the cache.
+  - **Write-Back**: Delay the update to main memory until the next read attempt, which can reduce memory traffic.
+- **Write-Update**: When a processor writes to a cache line, it broadcasts the new value to all other caches that have a copy of that line, allowing them to update their caches without needing to fetch from memory, but might cause useless updates.
+
+Each cache line is tagged with state information to track its state according to the MESI protocol:
+
+- **Modified (M)**: Only this cache has valid data, main memory is stale. On write, it can avoid inform other caches as has been notified before.
+- **Exclusive (E)**: This cache has valid data, no other cache has it. On write, it can avoid inform other caches as is the only one with the data.
+- **Shared (S)**: Multiple caches have valid (read-only) copies. On write, it must upgrade to Modified and inform other caches to invalidate their copies.
+- **Invalid (I)**: This cache doesn't have valid data. On read, it must fetch from another cache or memory. On write, it must notify other caches to invalidate their copies.
