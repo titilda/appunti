@@ -1160,3 +1160,123 @@ SET was a standard for secure credit card transactions. It allowed the cardholde
    - Payment hash + dual signature, encrypted with processor's public key
 
 This protocol required the cardholder to have a digital certificate and private key, making it complex for consumers to use.
+
+## Malware
+
+**Malware** means "malicious software" and refers to any software designed to violate a security policy.
+
+### Classification
+
+Malware can be classified based on its behavior and propagation mechanisms:
+
+- **Virus**: Self-replicating code that attaches to legitimate programs or files. When the infected program is executed, the virus code runs and can infect other files or programs.
+- **Worm**: Self-replicating malware that spreads autonomously across networks. They exploit network vulnerabilities or uses social engineering (email attachments, file shares)
+- **Trojan Horse**: Malicious code disguised as legitimate software. It does not self-replicate and relies on user deception to spread. Once executed, it can perform various malicious actions (data theft, remote access, etc.)
+
+### Malware Lifecycle
+
+The lifecycle of malware typically involves the following stages:
+
+#### 1. Reproduction
+
+The malware replicates itself to create copies that can spread to other systems. The method of reproduction depends on the type of malware:
+
+- **Viruses**: Append to executables or documents when infected program runs
+- **Worms**: Copy themselves to network shares, email attachments, or vulnerable services
+- **Trojans**: Attacker distributes copies manually
+
+#### 2. Infection
+
+Malware transfers to a new host system through:
+
+- **Network exploits**: Leveraging unpatched vulnerabilities
+- **Social engineering**: Tricking user into executing malware
+
+#### 3. Stealth
+
+Malware attempts to hide its presence to avoid detection:
+
+- **Process hiding**: Concealing running processes from system utilities
+- **File hiding**: Marking files as hidden or modifying file system structures
+- **Registry manipulation**: Modifying Windows registry to hide execution traces
+- **Log deletion**: Removing evidence from system logs
+
+#### 4. Payload
+
+Malware executes its intended malicious actions:
+
+- **Data theft**: Stealing sensitive files, passwords, encryption keys
+- **System damage**: Deleting files, corrupting data, destroying system functionality
+- **Remote access**: Providing attacker with control over compromised system
+- **Botnet participation**: Machine becomes part of attacker-controlled network
+- **Ransomware**: Encrypting user data and demanding payment
+
+### Malware Detection
+
+To detect malware, security software uses various techniques:
+
+#### Signature-Based Detection
+
+Antivirus software relies on a database of known malware signatures (pattern of code characteristic of a specific piece of malware) to identify threats. The antivirus scans files and processes for matches against these signatures.
+
+This allows for fast and efficient detection of known threats, but it is ineffective against new or modified malware that does not match any existing signatures.
+
+#### Behavior-Based Detection
+
+Antivirus monitors the behavior of running programs and processes to identify suspicious activities that may indicate malware, even if the specific signature is unknown.
+
+Some suspicious indicators include:
+
+- Unusual system calls or API usage
+- Unauthorized file/registry modifications
+- Unexpected network connections
+- Privilege escalation attempts
+
+As it does not rely on known signatures, it can detect new malware. However, it can generate false positives and requires careful tuning to balance security and usability.
+
+#### Heuristic-Based Detection
+
+Heuristic analysis uses rules and algorithms to identify potentially malicious code based on its structure and characteristics, even if it does not match known signatures or exhibit suspicious behavior.
+
+### Malware Evasion Techniques
+
+To avoid detection, malware authors use various evasion techniques to make their code harder to analyze and identify:
+
+#### Polymorphism
+
+Malware changes its code or appearance each time it infects a new system.
+
+The original malware encrypts itself with a random key and includes a decryption routine (decryptor) that changes for each variant. When executed, the decryptor decrypts the malware in memory, allowing it to run while maintaining the same functionality.
+
+**Packing** is a common form of polymorphism where the malware is compressed or encrypted to obfuscate its code, making it appear benign to antivirus software.
+
+#### Metamorphism
+
+Malware rewrites its own code syntax to create new version while preserving functionality.
+
+This can be done by reordering instructions, replacing operations with equivalent ones, or inserting dead code to create a different code structure.
+
+```c
+// Original
+a = b + c;
+
+// Metamorphic version
+a = b;
+a += c;
+```
+
+#### Dormant Period
+
+Malware remains inactive for extended time before activating payload.
+
+The trigger factor can be time-based (specific date/time), event-based (system reboots X times, Internet disconnected, specific file created), or manual (attacker remotely commands activation).
+
+This avoid immediate detection, allowing the malware to spread widely before executing its payload, bypassing time-limited security monitoring.
+
+#### Anti-Virtualization
+
+Malware detects if it is running in a virtual machine and alters behavior to avoid detection and analysis.
+
+#### Rootkits
+
+Malware hides its presence by modifying the operating system or kernel itself to intercept system calls and hide evidence of infection. Rootkits can hide processes, files, network connections, registry entries, and even memory pages from standard system utilities and antivirus software.
