@@ -434,3 +434,18 @@ The Scoreboard pipeline is divided into four stages:
 4. **Write Result**: Check for WAR hazards before writing the result back to the register file. Only one instruction can write back per cycle, so if multiple instructions complete in the same cycle, the older instruction is given priority.
 
 This allows to achieve out-of-order execution while maintaining in-order issue.
+
+#### Register Renaming
+
+**Register Renaming** eliminates WAR and WAW hazards by mapping **logical registers** (from instructions) to **physical registers** (actual hardware registers). This is done to decouple the instruction's logical register name from the actual hardware storage.
+
+A **Physical Register File (PRF)** that contains many more registers than the logical register set defined by the ISA is introduced. When an instruction is issued, its destination logical register is renamed to an unused physical register. All subsequent instructions that reference that logical register are updated to use the physical register instead.
+
+This is done by introducing a **Freelist**, implemented as a circular buffer, that tracks which physical registers are currently free and can be allocated for new instructions. The Register file need to track the mapping with the logical registers, so that instructions can read the correct physical register.
+
+With this the lifecycle of an instruction is as follows:
+
+1. **Issue**: Allocate a free physical register for the instruction's destination logical register and update the mapping. Old instruction will still reference the old physical register.
+2. **Read Operands**: Instructions read from the physical registers based on the current mapping.
+3. **Execute**: Perform the operation.
+4. **Write-back**: Write the result to the physical register and free the old physical register if it is no longer needed by any instruction.
