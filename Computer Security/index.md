@@ -1101,3 +1101,62 @@ The connection can be done with two modes:
 
 - **Full-tunnel**: All client traffic goes through the VPN tunnel, providing company level security but increasing latency.
 - **Split-Tunnel**: Only traffic destined for internal resources goes through the VPN tunnel, while other traffic goes directly to the Internet, reducing latency but potentially exposing the client to risks from untrusted networks.
+
+### Communication Security
+
+Remote communication introduces trust factor because the remote host may be untrusted or compromised and the client cannot verify that data reaches the intended destination unmodified.
+
+#### TLS/HTTPS
+
+**HTTPS** is HTTP over TLS (Transport Layer Security). It provides:
+
+- **Confidentiality**: Eavesdroppers cannot read encrypted data
+- **Integrity**: Tampering with data is detectable (message authentication codes)
+- **Authenticity**: Client verifies server identity via certificate (can also authenticate client)
+
+TLS is based on a handshake protocol that establishes a secure session between client and server to agree on encryption parameters and exchange keys. The handshake involves:
+
+1. Client sends:
+   - Supported cipher suites (encryption, hash, key exchange algorithms)
+   - Random nonce
+
+2. ServerHello: Server responds with:
+   - Chosen cipher suite
+   - Random nonce
+   - Certificate containing server's public key (signed by trusted CA)
+
+3. Key Exchange: Client verifies certificate via CA signature, then:
+   - Generates pre-master secret (random value)
+   - Encrypts it with server's public key
+   - Sends encrypted pre-master secret
+
+4. Session Key Derivation: Both parties compute the same session key that will be used for symmetric encryption from:
+   - Pre-master secret
+   - Client random nonce
+   - Server random nonce
+
+The only way to break TLS is to break the underlying cryptographic primitives (e.g., RSA, AES), to compromise the CA infrastructure, or perform social engineering attacks to trick users into accepting fraudulent certificates.
+
+It is possible to use HSTS (HTTP Strict Transport Security) to force clients to use HTTPS and prevent downgrade attacks.
+
+#### SET (Secure Electronic Transaction) Protocol (Historical)
+
+SET was a standard for secure credit card transactions. It allowed the cardholder to send purchase information to the merchant and payment information to the payment processor without either party having access to the other's data, while still allowing both parties to verify the authenticity of the transaction.
+
+1. Cardholder composes two messages:
+   - Purchase information (what, quantity, price)
+   - Payment information (credit card, amount)
+
+2. Create dual signature:
+   - Hash purchase message
+   - Hash payment message
+   - Concatenate hashes and hash again
+   - *Cardholder signs* final hash with private key to proves both messages came from cardholder
+
+3. Send to merchant:
+   - Purchase hash + dual signature, encrypted with merchant's public key
+
+4. Send to payment processor:
+   - Payment hash + dual signature, encrypted with processor's public key
+
+This protocol required the cardholder to have a digital certificate and private key, making it complex for consumers to use.
