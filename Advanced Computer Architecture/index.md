@@ -272,3 +272,120 @@ A GHT is indicated by the tuple $(m, n)$ where:
 - $n$-bit saturating counters in each BHT
 
 The optimal balance between accuracy and hardware complexity is typically achieved with a $(2, 2)$ predictor, which uses the last 2 branch outcomes and 4 BHTs, each with 2-bit counters. This allows the predictor to capture simple correlations between branches without excessive hardware overhead.
+
+## Instruction Level Parallelism
+
+**Instruction Level Parallelism (ILP)** is the technique of executing multiple instructions concurrently by exploiting instruction independence, meaning they have:
+
+- **No data dependencies**: no RAW, WAR, or WAW hazards
+- **No structural dependencies**: instructions do not compete for the same hardware resources
+- **No control dependencies**
+
+To enable ILP, modern processors include multiple functional units specialized for different operation types (ALU, memory, floating-point add, floating-point multiply, etc.), each with its own independent pipeline.
+
+### Issue Stage
+
+To exploit ILP, the processor must determine which instructions can execute in parallel. This is done in the **Issue stage**, which is responsible to check for RAW hazards and structural hazards before allowing instructions to proceed to execution.
+
+> The Issue stage will now ensure that there are no WAR and WAW hazards to proceed with the next instruction.
+
+```mermaid
+graph LR
+  A[IF] --> B[ID]
+  B --> I[Issue]
+  I --> C[ALU]
+  C --> D[Memory]
+  I --> E[Float Add]
+  I --> F[Float Mult]
+  I --> G[Float DIV]
+  D --> H[WB]
+  C --> H
+  E --> H
+  F --> H
+  G --> H
+  H --> I
+```
+
+This architecture uses **in-order issue**, meaning that instructions are issued in the order they appear in the program, but they can execute and complete out of order leading to out-of-order write-back that will be happen in the first half of the cycle allowing reading in the second half of the cycle. In case of multiple WB in the same cycle, the older instruction will be executed first.
+
+### Very Long Instruction Words (VLIW)
+
+**VLIW** uses _static scheduling_, where the compiler is responsible for analyzing dependencies and scheduling independent instructions to execute in parallel. The goal is to achieve CPI < 1 by fetching multiple instructions and issuing them at the same time.
+
+This is achieved by encoding multiple operations (4-16, fixed by the architecture) into a single fixed long instruction word (64–256 bits), where each operation corresponds to a specific functional unit. The hardware simply executes the operations specified in the instruction word without needing complex dynamic scheduling logic.
+
+| Time | ALU Operation 1 | ALU Operation 2 | Memory Operation | FP Add Operation | FP Mul Operation |
+| ---- | --------------- | --------------- | ---------------- | ---------------- | ----------------- |
+| Cycle 1 | Operation A | Operation B | NOP | Operation D | Operation E |
+| Cycle 2 | Operation C | NOP | Operation F | Operation G | Operation H |
+| Cycle 3 | ... | ... | ... | ... | ... |
+
+```mermaid
+graph LR
+  A[IF]
+  B[ID]
+  subgraph Execution Units
+    C[FU 1]
+    D[FU 2]
+    E[FU n]
+  end
+  F[Register File]
+
+  A --> B
+  B --> C
+  B --> D
+  B --> E
+  C <--> F
+  D <--> F
+  E <--> F
+```
+
+#### Static Scheduling
+
+The compiler performs static scheduling by analyzing the instruction stream and determining which instructions can be executed in parallel. The process involves:
+
+1. **Analyze dependencies** between instructions
+2. **Schedule independent operations** into appropriate slots
+3. **Maximize parallelism** trying to fill all available slots
+4. **Insert NOPs** (no-operation) in slots where no independent operation is available to fill the instruction word
+
+The compiler performs scheduling within **dependency-free regions**, where instructions have no dependencies on each other, they can be freely reordered. A **Basic Block** is a sequence of instructions with no branches where the compiler can perform scheduling. A **Trace** is a sequence of basic blocks that include branches.
+
+The compiler needs to perform optimization on these traces to maximize ILP while ensuring correctness.
+
+##### Loop Optimizations
+
+The body of loops are often independent between iterations, allowing some transformations to enable more parallelism.
+
+The structure of a loop can be divided into three parts:
+
+- **Prolog**: Initialization phase where the pipeline fills with instructions
+- **Loop iteration**: Steady-state phase (one iteration per cycle after prolog)
+- **Epilog**: Cleanup phase where the pipeline drains
+
+**Loop Unrolling:**
+
+The compiler replicates the loop body multiple times, increasing the number of independent instructions available for scheduling. For example, unrolling a loop that iterates 4 times into a single iteration that performs 4 operations can expose more parallelism.
+
+```c
+for (int i = 0; i < N; i+=4) {
+    A[i] = B[i] + C[i];
+    A[i+1] = B[i+1] + C[i+1];
+    A[i+2] = B[i+2] + C[i+2];
+    A[i+3] = B[i+3] + C[i+3];
+}
+```
+
+**Loop Pipelining:**
+
+The compiler overlaps the execution of different iterations of the loop, allowing operations from different iterations to execute in parallel. This is achieved by scheduling instructions from iteration $i+1$ before iteration $i$ has completed.
+
+##### Trace Scheduling
+
+Programs are divided into **Basic Blocks** (sequences of instructions with a single entry and exit point and no branches) and **Traces** (sequences of basic blocks that include branches).
+
+Inside a basic block, the compiler can perform aggressive scheduling to maximize ILP. However, basic blocks are often small, limiting the amount of parallelism that can be exploited.
+
+To overcome this, the compiler can perform **trace scheduling**, which allows it to schedule instructions across basic blocks within a trace, effectively treating the entire trace as a single unit for scheduling.
+
+Trace are chosen based on profiling information, selecting the most frequently executed paths through the program. As the path is guessed, the compiler might choose a wrong path, so it needs to insert **compensation code** to ensure correctness in case of misprediction. This compensation code is executed if the actual path taken differs from the predicted path, correcting any side effects of the incorrectly scheduled instructions.
