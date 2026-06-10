@@ -203,3 +203,72 @@ Some techniques for static branch prediction include:
   - **From Before**: Move an independent instruction that appears before the branch into the delay slot
   - **From Target**: Move an instruction from the branch target (useful when the branch is likely taken)
   - **From Fall-Through**: Use the instruction that would naturally follow (useful when the branch is unlikely)
+
+### Dynamic Branch Prediction
+
+Dynamic prediction determines the branch outcome **at runtime** based on historical patterns. The prediction adapts as the branch behaves, making it highly accurate for repeated patterns.
+
+During the fetch stage, the processor uses two components to predict the branch outcome:
+
+- **Branch History Table (BHT)**: A table indexed by the branch instruction address that stores the most recent outcomes of that branch. It predicts whether the branch will be taken or not taken based on historical behavior. The BHT must be initialized with a default policy (e.g., "all not taken") on startup.
+- **Branch Target Buffer (BTB)**: A small cache that stores the target addresses of recently taken branches, indexed by the branch instruction address.
+
+The IF stage uses the BHT to predict the branch outcome and if the prediction is true, it uses the BTB to fetch the BTA instruction. If the prediction is false, it continues fetching the next sequential instruction.
+
+After the execution, these tables are updated based on the actual outcome of the branch, allowing the predictor to learn and improve over time.
+
+As these tables are indexed by the lowest bits of the branch instruction address, they cannot store information for every possible branch, so they are typically small (e.g., 256 entries) it is possible to have collisions where different branches map to the same entry.
+
+The BHT can be seen a state machine:
+
+```mermaid
+graph TD
+  NT --T--> T
+  NT --NT--> NT
+  T --T--> T
+  T --NT--> NT
+```
+
+#### Saturating Counters
+
+With **saturating counters**, the BHT can track not just the last outcome but the last n outcomes, providing a more robust prediction. The prediction only changes after n consecutive mispredictions, which prevents oscillation for branches that alternate between taken and not taken.
+
+The most common implementation is the 2-bit saturating counter, as provides a good balance between accuracy and hardware complexity. This creates four possible states:
+
+- **Strongly Not Taken (SN - 00)**: Very confident the branch will not be taken
+- **Weakly Not Taken (WN - 01)**: Likely not taken
+- **Strongly Taken (ST - 11)**: Very confident the branch will be taken
+- **Weakly Taken (WT - 10)**: Likely taken
+
+```mermaid
+graph TD
+  subgraph False Prediction
+    SN[Strongly Not Taken]
+    WN[Weakly Not Taken]
+  end
+  subgraph True Prediction
+    WT[Weakly Taken]
+    ST[Strongly Taken]
+  end
+  SN --T--> WN
+  SN --NT--> SN
+  WN --T--> ST
+  WN --NT--> SN
+  ST --T--> ST
+  ST --NT--> WT
+  WT --T--> ST
+  WT --NT--> SN
+```
+
+#### Correlating Branch Prediction
+
+BHT predictions only consider the branch's own history, but branch outcomes are often correlated to other branches.
+
+**Global History Table (GHT)** captures the history of multiple branches. It tracks the last $k$ branch outcomes (global history). Instead of indexing the BHT solely by the current branch address, it uses also the global history as the index.
+
+A GHT is indicated by the tuple $(m, n)$ where:
+
+- $m$ bits of global history (leading to $2^m$ separate BHTs)
+- $n$-bit saturating counters in each BHT
+
+The optimal balance between accuracy and hardware complexity is typically achieved with a $(2, 2)$ predictor, which uses the last 2 branch outcomes and 4 BHTs, each with 2-bit counters. This allows the predictor to capture simple correlations between branches without excessive hardware overhead.
