@@ -449,3 +449,71 @@ With this the lifecycle of an instruction is as follows:
 2. **Read Operands**: Instructions read from the physical registers based on the current mapping.
 3. **Execute**: Perform the operation.
 4. **Write-back**: Write the result to the physical register and free the old physical register if it is no longer needed by any instruction.
+
+### Tomasulo Algorithm
+
+**Tomasulo** is a dynamic scheduling algorithm based on distributed controllers named **Reservation Stations (RS)** that are placed before each functional unit. They track the status of instructions waiting to execute, allowing for dynamic scheduling and out-of-order execution while avoiding hazards.
+
+Each Reservation Station holds:
+
+- The operation to perform
+- **Busy flag**: Indicates whether this RS slot is in use
+- $V_j$, $V_k$: **Values** of the source operands (if available)
+- $Q_j$, $Q_k$: **Pointers** to the Reservation Station that will produce the source operands (if not yet ready)
+
+By storing the value of the register instead of a reference to it, Tomasulo performs **register renaming** implicitly, eliminating WAR and WAW hazards.
+
+All the communication is done through the **Common Data Bus (CDB)** a broadcast bus that:
+
+- Carries write-back results from functional units
+- Connects to the inputs of all Reservation Stations
+- Allows write-back results to be immediately captured by waiting operations
+
+Note: The CDB is a serialization point—only one write-back can occur per cycle.
+
+```mermaid
+graph LR
+  A[Instructions]
+  B[Registers]
+  subgraph Execution Units
+    C[RS 1]
+    D[FU 1]
+    E[RS 2]
+    F[FU 2]
+    G[RS n]
+    H[FU n]
+  end
+  I[CDB]
+
+  A --> C
+  B --> C
+  A --> E
+  B --> E
+  A --> G
+  B --> G
+
+  C --> D
+  E --> F
+  G --> H
+
+  D --> I
+  F --> I
+  H --> I
+
+  I --> B
+  I --> C
+  I --> E
+  I --> G
+```
+
+#### Tomasulo Pipeline
+
+Tomasulo's pipeline consists of three main stages:
+
+1. **Issue**: Fetch the instuction and place it in a free Reservation Station. If the source operands are not yet available, store the pointer to the producing RS in $Q_j$ and $Q_k$. If the operands are available, store their values in $V_j$ and $V_k$.
+
+2. **Execution**: When all the operands of an instruction are available, the instruction can begin execution in the corresponding functional unit. If the operands are not available, the RS waits until they are produced.
+
+3. **Write-back**: Once the instruction completes and the CDB is free, the result is broadcast on the CDB with its source RS tag. All Reservation Stations listening for this tag capture the result immediately (**daisy-chaining**), and the RS slot is freed for future instructions.
+
+Tomasulo allows in-order issue and out-of-order execution.
