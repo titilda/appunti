@@ -517,3 +517,39 @@ Tomasulo's pipeline consists of three main stages:
 3. **Write-back**: Once the instruction completes and the CDB is free, the result is broadcast on the CDB with its source RS tag. All Reservation Stations listening for this tag capture the result immediately (**daisy-chaining**), and the RS slot is freed for future instructions.
 
 Tomasulo allows in-order issue and out-of-order execution.
+
+#### ReOrder Buffer
+
+To maintain correct program semantics while allowing out-of-order execution, Tomasulo uses a **ReOrder Buffer (ROB)** to hold the results of instructions to allow **in-order commit**. This allows the processor to recover from mispredictions and exceptions by discarding uncommitted instructions without affecting the memory.
+
+The reorder buffer is placed before the register file and is implemented as a circular buffer with **head** and **tail** pointers. Each entry in the ROB corresponds to an issued instruction and holds:
+
+- The instruction type (ALU/load, store, branch)
+- The destination field, which can be a register or memory address
+- The value
+- Status flags
+
+With the ROB, the instruction lifecycle is as follows:
+
+1. **Issue**: Entry is allocated in the ROB, making it the destination of the instruction (To be issued, there must be a free entry in the ROB)
+2. **Execute**: Result is computed
+3. **Write-back**: Result is written in the CDB and the ROB entry is updated with the result
+4. **Commit**: When the instruction is at the head of the ROB and all prior instructions have committed, the result is written to the register file
+
+> Registers are tagged with their ROB entry, allowing reservation stations to read the value from it if it is not yet committed, reducing stalls.
+
+The commit stage can have three outcomes:
+
+1. **Normal Commit**: Instruction at head of ROB completed successfully, the result is written to the register file, and the ROB entry is freed
+2. **Store Commit**: same as normal commit, but the result is written to memory instead of the register file
+3. **Branch Misprediction**: If branch prediction was wrong, the ROB is flushed, discarding all uncommitted instructions, and the PC is updated to the correct target address.
+
+### Superscalar
+
+**Superscalar** is a dynamic scheduling approach that is able to issue $w$ multiple instructions per cycle (typically 2–8), exploiting more ILP per clock cycle. This allows to achieve an ideal CPI of $1/w < 1$.
+
+In an ideal scenario, with unlimited resources and perfect predictions, the only limiting factor to achieving CPI of $1/w$ is the presence of data dependencies (RAW hazards) between instructions. Checking for this requires performing $w^2 - w$ comparisons per instruction.
+
+Superscalar processors are typically implemented extending the Tomasulo algorithm with multiple buses.
+
+This approach is typically used in high-performance desktop and server CPUs, where maximizing single-thread performance is critical. However, it comes with increased hardware complexity and power consumption due to the need for multiple functional units, reservation stations, and complex scheduling logic.
