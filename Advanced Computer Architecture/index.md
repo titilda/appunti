@@ -577,3 +577,36 @@ Instead of switching threads every cycle, **Coarse-Grained Multithreading** only
 **Simultaneous Multithreading (SMT)** allows multiple threads to issue and execute instructions simultaneously in the same cycle, sharing the same functional units.
 
 This approach maximizes resource utilization, as different threads can use different functional units, but it can lead to resource contention.
+
+## Flynn Taxonomy
+
+Flynn's taxonomy classifies parallel architectures based on **instruction and data streams**:
+
+### Single Instruction Single Data (SISD)
+
+**SISD Architecture** is the traditional sequential execution model where one instruction operates on one data element at a time. This is the simplest form of architecture and is limited by the sequential nature of execution.
+
+### Multiple Instruction Single Data (MISD)
+
+**MISD Architecture** is a rare architecture where a single data stream is processed by multiple processing units that execute different instructions. This is not commonly used in general-purpose computing but can be found in specialized applications such as fault-tolerant systems or regex processing.
+
+### Single Instruction Multiple Data (SIMD)
+
+**SIMD Architecture** executes the same operation on multiple data elements simultaneously. This is ideal for homogeneous data-parallel tasks where the same computation is applied to large datasets (matrices, vectors operations).
+
+To allow SIMD execution, the ISA is extended with **vector instructions** that operate on multiple data elements in parallel. For example, instead of adding two scalar registers (`ADD R1, R2`), a vector addition instruction can add two vectors of registers in one operation (`VADD V1, V2`).
+
+This allows to have a single control unit (with a single program counter) that issues the same instruction to multiple **processing elements** (PEs) that execute the same instruction on different independent data in a synchronized manner.
+
+This architecture is commonly used in applications that require high throughput on large datasets, such as multimedia processing, scientific computing, machine learning, cryptography, and databases.
+
+### Multiple Instruction Multiple Data (MIMD)
+
+**MIMD Architecture** supports multiple independent instruction streams, each executing on different data. This is the most flexible parallelism model. This is ideal for heterogeneous workloads executed on multiple processors.
+
+Each processor run a different program and operate with a private program counter in a asynchronous manner. To introduce some synchronization, processors can use locks or barriers.
+
+There are two main types of MIMD architectures:
+
+- **Homogeneous MIMD**: all processors are identical and can execute any instruction stream
+- **Heterogeneous MIMD**: there is a main processor that controls the execution and offloads tasks to specialized processors (e.g., GPU for graphics, DSP for signal processing)
