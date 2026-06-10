@@ -875,6 +875,6 @@ In closed system, the saturation point is reached when the number of customers $
 
 $$N^* = \frac{D + Z}{D_\text{max}}$$
 
-The throughput bounds: $\underbrace{\frac{N}{ND + Z}}_\text{Pessimistic} \leq X \leq \underbrace{\min\left(\upperbrace{\frac{1}{D_\text{max}}}^{Heavy}, \upperbrace{\frac{N}{N - Z}}^\text{Light}\right)}_\text{Optimistic}$
+The throughput bounds: $\underbrace{\frac{N}{ND + Z}}_\text{Pessimistic} \leq X \leq \underbrace{\min\left(\overbrace{\frac{1}{D_\text{max}}}^{Heavy}, \overbrace{\frac{N}{N - Z}}^\text{Light}\right)}_\text{Optimistic}$
 
-The response time bounds: $\underbrace{\max(\upperbrace{D}^\text{Light}, \upperbrace{ND_\text{max} - Z})_\text{Heavy}}_\text{Optimistic} \leq R \leq \underbrace{ND}_\text{Pessimistic}$
+The response time bounds: $\underbrace{\max(\overbrace{D}^\text{Light}, \overbrace{ND_\text{max} - Z})_\text{Heavy}}_\text{Optimistic} \leq R \leq \underbrace{ND}_\text{Pessimistic}$

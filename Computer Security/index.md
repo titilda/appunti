@@ -1034,3 +1034,70 @@ Thanks to the lack of authentication and the first response wins, an attack can 
 #### ICMP Redirect Spoofing
 
 **Internet Control Message Protocol (ICMP)** is used for network diagnostics and error reporting. The ICMP Redirect message is sent by routers to inform hosts of a better route for a particular destination. However, ICMP Redirect messages are not authenticated, and rely on the first 8 bytes of the original packet for validation, which can be easily sniffed and forged by an attacker.
+
+## Network Security
+
+The main strategy against network attacks is to segment the network into zones of trust and use firewalls to control traffic between them:
+
+- **Trusted zones**: Internal networks with critical systems and data
+- **Untrusted zones**: External networks (Internet)
+- **DMZ (Demilitarized Zone)**: Buffer zone containing public-facing services (web servers, mail servers) with minimal trust and no direct access to internal data
+
+### Firewall
+
+A firewall is a single purpose machine that acts as a trusted intermediary between zones. It intercepts all network traffic (cannot filter internal traffic) and applies security policies through filtering and Network Address Translation (NAT).
+
+Firewall operate based on a set of rules that define which traffic is allowed or denied based on criteria such as source/destination IP address, port number, protocol type, etc. The firewall enforces a default-deny policy, meaning that all traffic is blocked unless explicitly allowed by the rules.
+
+#### Network Address Translation (NAT)
+
+Firewalls often perform **Network Address Translation (NAT)** to allow multiple internal hosts to share a single public IP address.
+
+When a host inside the internal network initiates a connection to an external server, the firewall replaces the source IP address in the outgoing packet with its own public IP address and keeps track of this mapping in a NAT table. When the response comes back, the firewall consults the NAT table to determine which internal host should receive the packet and rewrites the destination IP address accordingly.
+
+#### Packet Filter Firewall
+
+**Packet Filter Firewall** process each packet using only header information. They operate stateless, meaning that each packet is evaluated independently without any knowledge of previous packets and cannot identify responses to outbound requests. They apply simple rules based on source/destination IP, port, protocol type, and IP options.
+
+#### Stateful Packet Filter Firewall
+
+Stateful firewalls extend packet filtering by tracking TCP connection states.
+
+They maintain a state table that records active TCP connections and their states (e.g., SYN, SYN-ACK). This allows them to recognize return traffic as part of an established connection and automatically permit it without needing explicit inbound rules, preventing spoofed responses from reaching internal systems.
+
+As they need to track connection state, they are more resource-intensive than stateless firewalls and this can be used as multiplier factor for DoS attacks.
+
+On TCP connections, the firewall can change the ISN with a random value to prevent sequence number prediction attacks for old protocol implementations.
+
+UDP is a connectionless protocol, so the firewall must rely on timeouts to allow responses to outbound requests.
+
+FTP connections are more complex because they use dynamic ports for data transfer, which requires the firewall to perform inline protocol inspection and dynamic rule creation to allow the necessary connections.
+
+This can be simplified by using **passive mode** FTP, where the client initiates all connections, allowing the firewall to apply more straightforward rules without needing to inspect FTP commands.
+
+#### Circuit-Level Gateway
+
+Legacy firewall technology operating at the TCP/application layer.
+
+The firewall acts as a proxy for TCP connections, establishing separate connections with the client and server.
+
+This isn't transparent and requires the client to explicitly connect to the gateway, which then connects to the server on behalf of the client.
+
+#### Application-Level Proxies
+
+**Application proxies** operate at Layer 7, inspecting and potentially modifying application-layer (http, ftp, smtp) data.
+
+It can be used for advanced filtering and content manipulation, such as blocking specific URLs, filtering out malicious payloads, or enforcing authentication policies.
+
+The proxy can also perform HTTPS inspection by decrypting and re-encrypting traffic, allowing it to inspect encrypted content for threats. However, this requires the proxy to present a trusted certificate to clients.
+
+### Virtual Private Networks (VPN)
+
+VPNs allow remote clients to access internal networks as if they were local, without exposing internal infrastructure to the Internet.
+
+This requires a VPN server running inside the internal network that establishes an encrypted tunnel between the client and the server.
+
+The connection can be done with two modes:
+
+- **Full-tunnel**: All client traffic goes through the VPN tunnel, providing company level security but increasing latency.
+- **Split-Tunnel**: Only traffic destined for internal resources goes through the VPN tunnel, while other traffic goes directly to the Internet, reducing latency but potentially exposing the client to risks from untrusted networks.
