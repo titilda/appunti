@@ -389,3 +389,48 @@ Inside a basic block, the compiler can perform aggressive scheduling to maximize
 To overcome this, the compiler can perform **trace scheduling**, which allows it to schedule instructions across basic blocks within a trace, effectively treating the entire trace as a single unit for scheduling.
 
 Trace are chosen based on profiling information, selecting the most frequently executed paths through the program. As the path is guessed, the compiler might choose a wrong path, so it needs to insert **compensation code** to ensure correctness in case of misprediction. This compensation code is executed if the actual path taken differs from the predicted path, correcting any side effects of the incorrectly scheduled instructions.
+
+## Dynamic Scheduling
+
+**Dynamic Scheduling** allows the CPU to determine at runtime which instructions can execute in parallel. Unlike VLIW, the hardware dynamically resolves dependencies and issues instructions out of program order.
+
+The hardware must track the status of each functional unit:
+
+| Functional Unit | Busy | Operation | Destination Register | Source Register 1 | Source Register 2 |
+|-----------------|------|-----------|----------------------|-------------------|-------------------|
+| ALU             | No   |           |                      |                   |                   |
+| Memory          | Yes  | LOAD      | R4                   | R5                |                   |
+
+This allows to avoid:
+
+- Structural hazards: by checking if the required functional unit is busy
+- RAW hazards: by checking for the source registers of the next instruction in the destination column
+- WAR hazards: by checking if destination register of the next instruction is in the source column of any issued instruction
+- WAW hazards: by checking if destination register of the next instruction is in the destination column of any issued instruction
+
+### Scoreboard
+
+The **Scoreboard** is a centralized **hazard detection unit** positioned between the instruction fetch/decode and the functional units. It tracks the status of all issued instructions and functional units to determine when instructions can safely proceed through the pipeline without causing hazards.
+
+For each functional unit scoreboard tracks:
+
+- Busy flag (whether it has an instruction)
+- Operation being performed
+- Destination register
+- $S_{j,k}$: The source registers $i$ and $j$ of the instruction
+- $Q_{j,k}$: Which FU (if any) has ownership of the source register
+- $R_{j,k}$: Whether the source register is still needed by the instruction
+  - **Yes**: Register is being used by the instruction in Read or Execute stage
+  - **No + $Q_{j,k}$ empty**: Register is free for other instructions to use
+  - **No + $Q_{j,k}$ set**: The instruction is waiting for the register to be produced by the FU indicated in $Q_{j,k}$
+
+#### Scoreboard Pipeline
+
+The Scoreboard pipeline is divided into four stages:
+
+1. **Issue**: Decode the instruction and wait if structural hazards or WAW hazards are present.
+2. **Read Operands**: Wait until there are no RAW hazards then read the source operands from the register file.
+3. **Execute**: Use the functional unit to perform the operation. Each functional unit is characterized by its latency (number of cycles to complete) and the initiation interval (number of cycles before it can accept a new instruction).
+4. **Write Result**: Check for WAR hazards before writing the result back to the register file. Only one instruction can write back per cycle, so if multiple instructions complete in the same cycle, the older instruction is given priority.
+
+This allows to achieve out-of-order execution while maintaining in-order issue.
