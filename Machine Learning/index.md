@@ -116,6 +116,123 @@ The variance can be reduced by:
 - Increase training samples (noise averages out)
 - Decrease model complexity (fewer degrees of freedom to fit noise)
 
+## Model Evaluation and Selection
+
+During training, the model is optimized to minimize the **training error** $L_{\text{train}}$, which is the error on the training data. However, what we really care about is the **generalization error** $L_{\text{true}}$, which is the expected error on new, unseen data.
+
+### Dataset Partitioning
+
+Before training is important to split the data into three independent sets, **randomly assigned**:
+
+- **Training set:** Optimize model parameters. Can be reused for multiple epochs.
+- **Validation set:** Tune hyperparameters and avoid overfitting. Used during training to guide regularization and stopping decisions.
+- **Test set:** Final performance estimate. Touched only once, after all hyperparameter choices are frozen.
+
+More test data gives a more reliable estimate of true error, but removes training samples that could improve the model.
+
+The training and test error can be used to detect underfitting and overfitting:
+
+- **Underfitting:** Both training and test error are high and close to each other. Need to increase model complexity.
+- **Overfitting:** Training error is low but test error is high. Need to reduce model complexity or add more data.
+- **Good fit:** Both training and test error are low and close to each other. Stop here.
+
+### Cross-Validation (CV)
+
+**Cross-validation** is a technique to assess how well a model generalizes to unseen data. Instead of relying on a single train/test split, cross-validation uses multiple splits to provide a more robust estimate of generalization error.
+
+After the validation error is estimated, the model with the lowest validation error is selected and retrained on the entire training set (training + validation) before evaluating on the test set.
+
+#### K-Fold Cross-Validation
+
+**K-Fold Cross-Validation** divides the dataset $\mathcal{D}$ into $k$ equal-sized folds $\mathcal{D}_i$. The model is trained on $k-1$ folds and validated on the remaining fold. This process is repeated $k$ times, with each fold serving as the validation set once.
+
+```mermaid
+packet
+   title Dataset
+   +4: "Training 1"
+   +4: "Training 2"
+   +4: "Training 3"
+   +4: "Training 4"
+   +4: "Training 5"
+   +4: "Training 6"
+   +4: "Training 7"
+   +4: "Validation"
+
+   +4: "Training 1"
+   +4: "Training 2"
+   +4: "Training 3"
+   +4: "Training 4"
+   +4: "Training 5"
+   +4: "Training 6"
+   +4: "Validation"
+   +4: "Training 8"
+```
+
+The final performance estimate is the average of the validation errors across all folds:
+
+$$L_{\text{K-Fold}} = \frac{1}{k} \sum_{i=1}^k \underbrace{\frac{k}{N} \sum_{n \in \mathcal{D}_i} (y_n - f^{(i)}(x_n))^2}_{L_{\text{test}}^{(i)}}$$
+
+where $f^{(i)}$ is the model trained without fold $\mathcal{D}_i$.
+
+The larger the $k$, the more reliable the estimate (bigger training set), but the more expensive it is to compute (more models to train).
+
+This is usually pessimistically biased.
+
+#### Leave-One-Out Cross-Validation (LOO)
+
+**Leave-One-Out Cross-Validation (LOO)** is an extreme case of K-Fold CV where $k = N$.
+
+This means that each fold consists of a single sample, and the model is trained on all other samples. The final performance estimate is the average error across all $N$ folds:
+
+$$L_{\text{LOO}} = \frac{1}{N} \sum_{n=1}^N (y_n - f_{-n}(x_n))^2$$
+
+As the training set is almost the entire dataset, the bias is very low. However, it is computationally expensive, as it requires training $N$ models.
+
+#### Nested Cross-Validation
+
+The **Nested Cross-Validation** is a technique used to evaluate the performance of a model while also selecting its hyperparameters. Using the same dataset for both evaluation and selection can lead to overfitting leading in an overly optimistic estimate of the model's performance.
+
+It involves two levels of cross-validation:
+
+1. **Outer loop (evaluation):** The dataset is split into $k$ folds. For each fold, one fold is held out as the test set, and the remaining $k-1$ folds are used as training set for the inner loop.
+
+2. **Inner loop (selection):** The training set from the outer loop is further split into $k'$ folds. For each fold, one fold is held out as a validation set, and the remaining $k'-1$ folds are used to train models with different hyperparameter settings. The hyperparameters that yield the best average performance on the validation sets are selected.
+
+### Adjustment Techniques
+
+Instead of performing the validation, is possible to adjust the training error to estimate the generalization error. This is done by adding a penalty term that accounts for model complexity, which helps to prevent overfitting.
+
+This can be done with different techniques, such as:
+
+#### Mallows' $C_p$
+
+$$C_p = \frac{1}{N}(L_{\text{train}} + 2D \hat{\sigma}^2)$$
+
+where:
+
+- $D$: number of parameters in the model
+- $\hat{\sigma}^2$: estimate of the noise variance
+
+#### Akaike Information Criterion (AIC)
+
+$$\text{AIC} = 2D - 2 \log L_{\text{max}}$$
+
+where:
+
+- $L_{\text{max}}$: maximum likelihood of the estimated model
+
+#### Bayesian Information Criterion (BIC)
+
+$$\text{BIC} = \frac{1}{N} (L_{\text{train}} + D \log N \hat{\sigma}^2)$$
+
+#### Adjusted $R^2$
+
+$$R_{\text{adj}}^2 = 1 - \frac{L_{\text{train}} / (N - D - 1)}{\text{TSS} / (N - 1)}$$
+
+where:
+
+- $\text{TSS}$: total sum of squares
+
 ### No Free Lunch Theorem
 
 Let $\mathcal{F}$ be the set of *all possible* functions, and $Acc_G(L)$ be the generalization accuracy of learner $L$ on unseen data.
