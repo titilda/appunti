@@ -770,3 +770,81 @@ The VC-dimension measures the size of the largest set of points that the hypothe
 For infinite hypothesis spaces, it's possible to replace $\ln|\mathcal{H}|$ with $\text{VC}(\mathcal{H})$:
 
 $$L_{\text{true}}(h) \leq L_{\text{train}}(h) + \sqrt{\frac{\text{VC}(\mathcal{H}) (\ln \frac{2N}{\text{VC}(\mathcal{H})} + 1) + \ln \frac{4}{\delta}}{N}}$$
+
+## Kernel Methods
+
+A **kernel** is a function that computes similarity between two samples (if they are similar, the kernel outputs a high value; if they are dissimilar, it outputs a low value).
+
+To be a valid kernel, there *must exist* a mapping $\phi$ (doesn't need to be computed) from the input space to a feature space such that the kernel function is equivalent to the dot product in that feature space:
+
+$$k(x, x') = \phi(x)^T \phi(x')$$
+
+and must be:
+
+1. **Symmetric:** $k(x, x') = k(x', x)$
+2. **Positive semidefinite:** For any set of samples $\{x_1, \ldots, x_N\}$, the Gram matrix $K$ with entries $K_{nm} = k(x_n, x_m) = \phi(x_n)^T \phi(x_m)$ has non-negative eigenvalues.
+
+Based on **Mercer's Theorem**, any continuous, symmetric, positive semidefinite kernel can be expressed as a dot product in some feature space. This guarantees the existence of the mapping $\phi$ for valid kernels, even if we never explicitly compute it.
+
+### Kernel Construction
+
+**Kernel tricks** are techniques to construct new kernels from existing ones while ensuring that the resulting function remains a valid kernel. This allows us to create complex kernels that can capture intricate relationships in the data.
+
+If $k_1$ and $k_2$ are valid kernels and $c > 0$, then the following are also valid kernels:
+
+- Scaling: $k(x, x') = c \cdot k_1(x, x')$
+- Addition: $k(x, x') = k_1(x, x') + k_2(x, x')$
+- Multiplication: $k(x, x') = k_1(x, x') \cdot k_2(x, x')$
+- Function wrapper: $k(x, x') = f(x) \cdot k_1(x, x') \cdot f(x')$ (any function $f$)
+- Composition: $k(x, x') = k_1(g(x), g(x'))$ (any function $g$ with non-negative coefficients)
+- Exponential: $k(x, x') = \exp(k_1(x, x'))$
+- Feature subset: $k(x, x') = k_1(x_a, x_a') + k_2(x_b, x_b')$ (different features)
+- Matrix: $k(x, x') = x^T A x'$ (where $A$ is a positive semidefinite matrix)
+
+#### Common Kernels
+
+Some common kernels used in practice are:
+
+- **Linear kernel:** $k(x, x') = x^T x'$
+- **Polynomial kernel:** $k(x, x') = (x^T x' + c)^d$
+- **Radial Basis Function (RBF) kernel:** $k(x, x') = \exp(-\gamma \|x - x'\|^2)$, maps to infinite-dimensional space (Hilbert space)
+- **Sigmoid kernel:** $k(x, x') = \tanh(\kappa x^T x' + \theta)$
+
+### Duality
+
+A traditional approach to linear classification is to map the data into a higher-dimensional space where it becomes linearly separable.
+
+> For example, mapping $x = (x_1, \ldots, x_M)$ to $x' = \phi(x) = (x_1, \ldots, x_M, x_1^2, \ldots, x_M^2, x_1 x_2, \ldots, x_{M-1} x_M)$.
+
+Explicitly computing this mapping $\phi(x)$ can be:
+
+- Computationally expensive (many features to compute)
+- Memory-intensive (store high-dimensional vectors)
+- Or map to infinite-dimensional space (impossible to compute)
+
+The solution to many machine learning problems can be expressed as a linear combination of training samples, not features:
+
+$$w = \sum_{n=1}^N \alpha_n \phi(x_n) = \Phi^T a$$
+
+- $\Phi$: feature matrix of training samples (n row is $\phi(x_n)^T$)
+- $\alpha_n$: weight for each training sample
+
+This means that the model can be expressed in terms of the training samples and their similarities (kernels) rather than the explicit features (**Duality**).
+
+#### Linear Regression Dual Form
+
+The **primal formulation** of linear regression with L2 regularization is:
+$$L_w = \frac{1}{2} \sum_{n=1}^N (w^T \phi(x_n) - t_n)^2 + \frac{\lambda}{2} \|w\|^2$$
+
+By substituting $w = \Phi^T a$, we can express the **dual formulation** entirely in terms of $a$ and the Gram matrix $K = \Phi \Phi^T$:
+
+$$L_a = \frac{1}{2} a^T K K a - a^T K t + \frac{1}{2} t^T t + \frac{\lambda}{2} a^T K a$$
+
+Solving for $a$:
+$$a = (K + \lambda I)^{-1} t$$
+
+The prediction for a new input $x$ can be computed as:
+
+$$y(x) = w^T \phi(x) = a^T \Phi \phi(x) = k(x)^T a$$
+
+- $k(x)$ is defined as $k_n(x) = k(x_n, x)$, the kernel evaluation between the new input and each training sample.
