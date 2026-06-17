@@ -1313,3 +1313,53 @@ where $\alpha$ is the learning rate that controls how much we update our estimat
 >
 > - $\sum_{i=1}^\infty \alpha_i = \infty$: ensures that the learning rate doesn't decrease too quickly.
 > - $\sum_{i=1}^\infty \alpha_i^2 < \infty$: ensures that the learning rate decreases fast enough to stabilize.
+
+## Temporal Difference (TD)
+
+**Temporal Difference (TD)** methods learns using **bootstrapping**, which means that it updates the value of a state based on the estimated value of the next state, allowing online learning using incomplete trajectories.
+
+Using the Bellman equation, we can express the value of a state as the immediate reward plus the discounted value of the next state:
+
+$$V(s_t) = V(s_t) + \alpha \underbrace{\left[\upperbrace{r_{t+1} + \gamma V(s_{t+1})}^{\text{TD target}} - V(s_t)\right]}_{\delta_t = \text{TD error}}$$
+
+TD has a lower variance than Monte Carlo, but is higher bias because it depends on the current value estimates.
+
+TD exploit a markovian problem more efficiently than Monte Carlo, as it only needs the current state and the next state to update the value function.
+
+### TD Lambda
+
+It is possible to combine Monte Carlo and Temporal Difference methods using **TD(λ)**, which perform $n$ steps before bootstrapping and then combine all n-step returns with exponential weights.
+
+The observed return is defined as the **n-step return**:
+
+$$G_t^{(n)} = r_{t+1} + \gamma r_{t+2} + \cdots + \gamma^{n-1} r_{t+n} + \gamma^n V(s_{t+n})$$
+
+Using the parameter $\lambda \in [0, 1]$, it is possible to average all n-step returns with with an exponential weight, to define the **$\lambda$-return**:
+
+$$G_t^{\lambda} = (1 - \lambda) \sum_{n=1}^\infty \lambda^{n-1} G_t^{(n)}$$
+
+The value of $\lambda$ controls the importance of recent versus distant rewards:
+
+- $\lambda = 0$: Equivalent to 1-step TD, high bias, low variance
+- $0 < \lambda < 1$: Weighted average of all n-step returns
+- $\lambda = 1$: Equivalent to MC, low bias, high variance
+
+Using the $\lambda$-return, we can update the value function using the **Forward-View** method, which requires storing the entire trajectory and waiting until the end of the episode to compute the return:
+
+$$V(s_t) = V(s_t) + \alpha(G_t^\lambda - V(s_t))$$
+
+#### Backward-View
+
+By introducing the concept of **eligibility traces**, it is possible to compute updates online, at each step, without waiting for the end of the episode.
+
+At each step the eligibility trace for each state $s$ is updated. The visited state $s_t$ gets an increment of 1, while all states decay by a factor of $\gamma \lambda$:
+
+$$e_t(s) = \gamma \lambda e_{t-1}(s) + \mathbb{1}\{s_t = s\}$$
+
+Than the value function is updated for all states $s$ using the TD error $\delta_t$ weighted by the eligibility trace:
+
+$$V(s) = V(s) + \alpha \delta_t e_t(s) \quad \forall s$$
+
+To avoid the problem of **eligibility trace explosion** (when a state is visited many times in a short period), it is common to use **trace clipping** to limit the maximum value of the eligibility trace:
+
+$$e_t(s) = \begin{cases}\gamma 1 & \text{if } s_t = s \\ \gamma \lambda e_{t-1}(s) & \text{otherwise}\end{cases}$$
