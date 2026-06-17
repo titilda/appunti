@@ -533,3 +533,44 @@ $$w^{(k+1)} = w^{(k)} + \alpha t_n \phi(x_n)$$
 where $\alpha$ is the learning rate (can be set to 1 as each update moves the decision boundary in the correct direction).
 
 The perceptron algorithm can **converge** to a solution if the data is linearly separable, meaning there exists a hyperplane that can perfectly separate the two classes. However, if the data is not linearly separable, the algorithm will never converge and will continue to oscillate indefinitely.
+
+### Probabilistic Discriminative Approach
+
+The **Probabilistic Discriminative Approach** models the posterior class probability $p(C_k|x)$ directly using the observed features, without modeling the input distribution $p(x)$.
+
+**Binary Classification:**
+
+Model the posterior probability of the positive class using the **logistic sigmoid**:
+$$p(C_1|x) = \sigma(w^T \phi(x)) = \frac{1}{1 + e^{-w^T \phi(x)}}$$
+
+The likelihood of the observed data is:
+$$p(t|X, w) = \prod_{n=1}^N y_n^{t_n} (1 - y_n)^{1 - t_n}$$
+
+The negative log of the likelihood is the **cross-entropy loss**:
+$$L(w) = - \sum_{n=1}^N \left[ t_n \ln y_n + (1 - t_n) \ln (1 - y_n) \right]$$
+
+Maximizing the likelihood is equivalent to minimizing the cross-entropy loss. The gradient of the loss with respect to the weights is:
+$$\nabla L(w) = \sum_{n=1}^N \frac{\partial L(w)_n}{\partial w} = \sum_{n=1}^N (y_n - t_n) \phi(x_n)$$
+
+This has the same form as linear regression, but the meaning is different: $y_n$ is now a predicted probability, and $(y_n - t_n)$ measures the deviation from true labels (0 or 1).
+
+**Multi-Class Classification:**
+
+For $K$ classes, use the **softmax function** to model posterior probabilities:
+$$p(C_k|x) = \frac{e^{w_k^T \phi(x)}}{\sum_{j=1}^K e^{w_j^T \phi(x)}}$$
+
+The cross-entropy loss for multi-class classification is:
+$$L(w_1, \dots, w_K) = - \sum_{n=1}^N \sum_{k=1}^K t_{nk} \ln y_{nk}$$
+
+The gradient with respect to the weights for class $k$ is:
+$$\nabla L_{w_k} = \sum_{n=1}^N (y_{nk} - t_{nk}) \phi(x_n)$$
+
+### Probabilistic Generative Approach
+
+The **Probabilistic Generative Approach** models the joint distribution of inputs and outputs $p(x, C_k)$ by learning the class-conditional distributions $p(x|C_k)$ and the class priors $p(C_k)$, understanding how the data is generated. Those are used to infer the posterior class probabilities using Bayes' theorem:
+
+$$p(C_k|x) = \frac{p(x|C_k) p(C_k)}{p(x)}$$
+
+where $p(x) = \sum_{j=1}^K p(x|C_j) p(C_j)$ (marginal likelihood).
+
+This approach allows to generate new data samples from each class. However, it typically requires more parameters and samples.
