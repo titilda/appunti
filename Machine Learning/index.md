@@ -943,3 +943,110 @@ $$b = \frac{1}{|\mathcal{S}|} \sum_{n \in \mathcal{S}} (t_n - \sum_{m=1}^N \alph
 The decision function is:
 
 $$y(x) = \text{sign}\left(\sum_{n=1}^N \alpha_n t_n k(x_n, x) + b\right)$$
+
+## Reinforcement Learning
+
+Reinforcement Learning (RL) is a type of machine learning where an agent learns to make decisions by interacting with an environment.
+
+At each time step $t$, the agent observes the current state $s_t$ of the environment, selects an action $a_t$ based on its policy $\pi(a | s)$, and receives a reward $r_{t+1}$ from the environment. The environment then transitions to a new state $s_{t+1}$ based on the action taken.
+
+```mermaid
+graph LR
+    A[Agent] -- Action --> B[Environment]
+    B -- State --> A
+    B -- Reward --> A
+```
+
+There are two types of rewards:
+
+- **Immediate rewards:** Received at each time step (short-term utility)
+- **Terminal rewards:** Received at the end of an episode (long-term value)
+
+Learning is a trade-off between two competing objectives:
+
+- **Exploration:** The agent tries new actions to discover their effects and learn about the environment.
+- **Exploitation:** The agent uses its existing knowledge to choose actions that have worked well in the past.
+
+The agent must explore limiting the **regret**, which is the difference between the reward it could have received by always taking the best action and the reward it actually received.
+
+The goal of reinforcement learning problems are divided into two main categories:
+
+- **Prediction:** The agent learns to predict the expected cumulative reward for each state given a fixed policy $\pi$. This is often used to evaluate the quality of a policy.
+- **Control:** The agent learns to find the optimal policy that maximizes the expected cumulative reward for each state.
+
+### Cumulative Reward
+
+The agent's objective is to maximize the cumulative reward over time, which can be defined in different ways:
+
+- **Total reward:** $G_t = \sum_{k=0}^T r_{t+k}$ (finite horizon)
+- **Discounted reward:** $G_t = \sum_{k=0}^\infty \gamma^k r_{t+k}$ (infinite horizon, convergence)
+- **Average reward:** $\lim_{n \to \infty} \frac{1}{n} \sum_{k=0}^{n-1} r_{t+k}$ (long-run average performance)
+- **Mean-variance:** Minimize $\text{Var}[G_t]$ alongside mean (risk-sensitive applications)
+
+To avoid the problem of infinite rewards in infinite horizon settings, we often use **discounted rewards** with a discount factor $\gamma \in [0, 1)$ to ensure convergence.
+
+### RL Classification
+
+**Observability:**
+
+- **Fully observable:** The agent has access to the complete state of the environment.
+- **Partially observable:** The agent has access to an approximation of the state (observation) that may not contain all relevant information.
+
+**Time Horizon:**
+
+- **Finite horizon:** The agent interacts with the environment for a fixed number of time steps.
+- **Indefinite horizon:** The agent interacts with the environment until reaching a terminal state.
+- **Infinite horizon:** The agent interacts with the environment indefinitely.
+
+**Continuity:**
+
+- **Discrete:** Finite set of states and/or actions.
+- **Continuous:** Infinite set of states and/or actions.
+
+**Stochasticity:**
+
+- **Deterministic:** The next state and reward are fully determined by the current state and action.
+- **Stochastic:** The next state and reward are probabilistic, introducing uncertainty.
+
+**Stationarity:**
+
+- **Stationary:** The environment's dynamics and reward function do not change over time.
+- **Non-stationary:** The environment's dynamics and/or reward function change over time, requiring the agent to adapt its policy.
+
+**Agent:**
+
+- **Single-agent:** One agent interacts with the environment.
+- **Multi-agent:** Multiple agents interact with the environment and potentially with each other, leading to complex dynamics and strategic behavior.
+
+**Reward Distribution:**
+
+- **Sparse rewards:** Rewards are infrequent, making it difficult for the agent to learn which actions lead to success (e.g. 1 = success, -1 = failure).
+- **Dense rewards:** Rewards are provided frequently, giving the agent more feedback on its actions (e.g. reward proportional to distance to goal).
+
+### RL Techniques
+
+**Model Type:**
+
+- **Model-based:** The agent learns a model of the environment's dynamics and uses it to plan actions.
+- **Model-free:** The agent learns a policy or value function directly from interactions with the environment.
+
+**Policy Type:**
+
+- **On-policy:** The agent learns the value of the policy it is currently following.
+- **Off-policy:** The agent interacts with the environment using one policy but learns about another policy.
+
+**Learning Type:**
+
+- **Online:** The agent learns and updates its policy in real-time as it interacts with the environment.
+- **Off-line:** The agent learns from a fixed dataset of experiences, without interacting with the environment during training.
+
+**Representation:**
+
+- **Tabular:** The agent maintains a table of values for each state-action pair.
+- **Function approximation:** The agent uses a parameterized function to approximate the value function or policy, allowing it to handle large or continuous state and action spaces.
+
+**Learning Paradigm:**
+
+- **Value-based:** The agent learns a value function that estimates the expected cumulative reward for each state or state-action pair, and derives a policy from it.
+- **Policy-based:** The agent directly learns a policy that maps states to actions.
+- **Actor-Critic:** The agent maintains a policy (actor) that selects actions and a value function (critic) that evaluates the quality of the actions taken.
