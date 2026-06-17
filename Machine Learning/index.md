@@ -1121,3 +1121,103 @@ The **Bellman optimality operator** $T^*: \mathbb{R}^{|\mathcal{S}|} \to \mathbb
 $$T^*(V)(s) = \max_{a \in \mathcal{A}} \left[R(s, a) + \gamma \sum_{s' \in \mathcal{S}} P(s' | s, a) V(s')\right]$$
 
 The difference with the Bellman operator is that it uses $\max_a$ instead of $\sum_a \pi(a | s)$, which makes it non-linear and without a closed-form solution. It is also policy-independent, meaning that it does not depend on a specific policy $\pi$.
+
+## Markov Decision Processes
+
+A **Markov Decision Process (MDP)** is a process that satisfies the **Markov property**, meaning that the future state depends only on the current state and action, not on the history of past states and actions.
+
+$$\mathbb{P}(s_{t+1} | s_t, a_t, s_{t-1}, a_{t-1}, \ldots) = \mathbb{P}(s_{t+1} | s_t, a_t)$$
+
+This means that the state $s_t$ contains all the relevant information about to make the best decision and there is no need to remember the history of how we got to that state.
+
+A Markov Decision Process is defined by the tuple $\langle \mathcal{S}, \mathcal{A}, P, R, \gamma, \mu \rangle$:
+
+- $\mathcal{S}$: Finite set of states
+- $\mathcal{A}$: Finite set of actions
+- $P(s' | s, a)$: **State transition probability**, the probability of reaching state $s'$ from state $s$ after action $a$
+- $R(s, a)$: **Reward function**, the expected immediate reward for action $a$ in state $s$
+- $\gamma \in [0, 1]$: **Discount factor**, the weight of future rewards relative to immediate rewards
+  - $\gamma \approx 0$ (myopic): Care only about immediate reward
+  - $\gamma \approx 1$ (farsighted): Care equally about all future rewards
+- $\mu$: **Initial state distribution**, the probability distribution of the initial state $s_0$
+
+Applying a fixed policy $\pi$ transforms the MDP into an **Markov Reward Process (MRP)**, a stochastic process that satisfies the Markov property and has rewards associated with state transitions.
+
+The probability of reaching a state $s'$ from state $s$ under policy $\pi$ is given by:
+
+$$P^\pi(s' | s) = \sum_{a \in \mathcal{A}} \pi(a | s) P(s' | s, a)$$
+
+and the expected reward for being in state $s$:
+
+$$R^\pi(s) = \sum_{a \in \mathcal{A}} \pi(a | s) R(s, a)$$
+
+Solving an MDP means finding the **optimal policy** $\pi^*$ that maximizes the expected cumulative reward for all states. The simplest way to do it is to **brute-force** by enumerating all possible policies and compute their value functions, but this requires to evaluate $|\mathcal{A}|^{|\mathcal{S}|}$ policies, which is intractable for large state and action spaces.
+
+### Dynamic Programming
+
+Dynamic programming problems require having two key properties:
+
+- **Optimal substructure:** The optimal solution can be constructed from optimal solutions of its subproblems. This is true thanks to the recursive nature of the Bellman equation.
+- **Overlapping subproblems:** The same subproblems are solved multiple times. This is true because the Bellman equation is recursive and the same states are visited multiple times.
+
+#### Backtracking
+
+This is a simple recursive approach that solves the problem by starting from the last state and working backwards to the first state. It is guaranteed to find the optimal solution thanks to the **principle of optimality**, which states that the tail of an optimal trajectory is also optimal.
+
+$$V^*(s) = \max_{a \in \mathcal{A}_k} \left[R(s, a) + \sum_{s' \in \mathcal{S}_{k+1}} P(s' | s, a) V^*(s')\right]$$
+
+where $\mathcal{A}_k$ is the set of actions available at time step $k$ and $\mathcal{S}_{k+1}$ is the set of states reachable from state $s$ at time step $k+1$.
+
+This approach require a time complexity of $O(|\mathcal{S}|^2 |\mathcal{A}|)$.
+
+#### Policy Evaluation
+
+The **policy evaluation** method solves the *prediction* problem by computing the value function $V^\pi$ for a given policy $\pi$.
+
+This is done by solving the Bellman equation for $V^\pi$ using either a closed-form solution or an iterative method. The closed-form solution is computationally expensive for large state spaces, while the iterative method is more efficient and converges in $\approx \frac{1}{1 - \gamma}$ iterations.
+
+#### Policy Iteration
+
+The **policy iteration** method solves the *control* problem by alternating between policy evaluation and policy improvement until convergence.
+
+The **Policy Improvement** step updates the policy to be greedy with respect to the current value function, which guarantees that the new policy is at least as good as the old one($$V^{\pi'}(s) \geq V^\pi(s) \quad \forall s$$):
+
+$$\pi'(s) = \arg\max_a Q^\pi(s, a)$$
+
+By starting with an arbitrary policy and iteratively improving it, we can find the optimal policy $\pi^*$ that maximizes the expected cumulative reward for all states.
+
+$$\pi_0 \to V^{\pi_0} \to \pi_1 \to V^{\pi_1} \to \cdots \to \pi^* \to V^{\pi^*} \to \pi^*$$
+
+Each iteration is made by two steps:
+
+- Policy evaluation: $O(|\mathcal{S}|^3)$ (closed-form) or $O(|\mathcal{S}|^2 \frac{\log(1/\epsilon)}{\log(1/\epsilon)})$ (iterative)
+- Policy improvement: $O(\frac{|\mathcal{A}|}{1-\gamma} \log(\frac{|\mathcal{S}|}{1 - \epsilon}))$
+
+#### Value Iteration
+
+The **value iteration** method solves the *control* problem by applying the Bellman optimality operator repeatedly until convergence. It is a more direct approach than policy iteration, as it does not require separate policy evaluation and improvement steps.
+
+$$V_{k+1}(s) = \max_a \left[R(s, a) + \gamma \sum_{s'} P(s' | s, a) V_k(s')\right]$$
+
+By defining $\|V\|_\infty = \max_s |V_(s)|$ is it possible to define the distance between two value functions $V$ and $V'$ as $\|V - V'\|_\infty$. The distance between the value function at each iteration improves by a factor of $\epsilon$:
+
+$$\|V_{k+1} - V_k\|_\infty \leq \epsilon$$
+
+The distance between the value function at iteration $k$ and the optimal value function $V^*$ is bounded by:
+
+$$\|V_k - V^*\|_\infty \leq \frac{2\gamma\epsilon}{1 - \gamma}$$
+
+and can be used as stopping criterion for the value iteration algorithm, as it only converge asymptotically to the optimal value function $V^*$.
+
+The complexity of value iteration is $O(|\mathcal{S}|^2 |\mathcal{A}|)$ per iteration, and requires more iterations to converge than policy iteration, but each iteration is cheaper.
+
+### Linear Programming
+
+It is possible to formulate the MDP problem as a **linear programming** problem, which can be solved using standard linear programming solvers.
+
+$$V^* = \arg\min_V \mu^T V$$
+$$\text{s.t.} \quad V \geq T^* V$$
+
+where $\mu$ is the initial state distribution and $T^*$ is the Bellman optimality operator. The constraints ensure that the value function $V$ is the converged value function.
+
+It is possible to find the optimal policy $\pi^*$ from the duality of the linear programming problem.
