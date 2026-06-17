@@ -1314,6 +1314,39 @@ where $\alpha$ is the learning rate that controls how much we update our estimat
 > - $\sum_{i=1}^\infty \alpha_i = \infty$: ensures that the learning rate doesn't decrease too quickly.
 > - $\sum_{i=1}^\infty \alpha_i^2 < \infty$: ensures that the learning rate decreases fast enough to stabilize.
 
+### Monte Carlo Control
+
+Using Monte Carlo is possible to find the optimal policy $\pi^*$. The policy itereation algorithm can be implemented as follows:
+
+1. **Policy Evaluation:** Use Monte Carlo to estimate $Q^\pi(s, a)$ for the current policy $\pi$.
+2. **Policy Improvement:** Update policy using a $\epsilon$-greedy strategy:
+
+$$\pi(a | s) = \begin{cases} 1 - \epsilon + \frac{\epsilon}{|\mathcal{A}|} & \text{if } a = \arg\max_{a'} Q(s, a') \\ \frac{\epsilon}{|\mathcal{A}|} & \text{otherwise} \end{cases}$$
+
+where:
+
+- With probability $1 - \epsilon$, select the action with the highest estimated value (greedy action).
+- With probability $\epsilon$, select a random action (exploration).
+
+> To reach the optimal policy, the exploration rate $\epsilon$ must converge to a greedy policy, following these conditions:
+>
+> - $\lim_{k \to \infty} \epsilon_k = 0$: The exploration rate must approach zero as time goes to infinity.
+> - $\sum_k \epsilon_k = \infty$: The total exploration must be infinite, ensuring all states are visited infinitely often.
+
+The policy evaluation step can be stopped before computing the exact value function, as the greedy policy improvement step will still lead to an improvement in the policy.
+
+The update policy for each state and action is:
+
+$$Q(s_t, a_t) = Q(s_t, a_t) + \underbrace{\frac{1}{N(s_t, a_t)}}_{\alpha} (G_t - Q(s_t, a_t))$$
+
+> The problem is now defiend by three hyperparameters:
+>
+> - **Behavioral** $\frac{1}{1 - \gamma}$: the Discount factor that controls how much the agent cares about future rewards.
+> - **Learning** $\alpha$: the Learning rate that controls how much the agent updates its value estimates based on new samples.
+> - **Exploration** $\epsilon$: the Exploration rate that controls how much the agent explores versus exploits.
+>
+> Should keep this relationship: $1 - \gamma \ll \alpha \ll \epsilon$
+
 ## Temporal Difference (TD)
 
 **Temporal Difference (TD)** methods learns using **bootstrapping**, which means that it updates the value of a state based on the estimated value of the next state, allowing online learning using incomplete trajectories.
@@ -1363,3 +1396,27 @@ $$V(s) = V(s) + \alpha \delta_t e_t(s) \quad \forall s$$
 To avoid the problem of **eligibility trace explosion** (when a state is visited many times in a short period), it is common to use **trace clipping** to limit the maximum value of the eligibility trace:
 
 $$e_t(s) = \begin{cases}\gamma 1 & \text{if } s_t = s \\ \gamma \lambda e_{t-1}(s) & \text{otherwise}\end{cases}$$
+
+### SARSA
+
+**SARSA** (State-Action-Reward-State-Action) allow to learn the optimal policy, using TD($\lambda$) for the policy evaluation step instead of Monte Carlo.
+
+$$Q(s_t, a_t) = Q(s_t, a_t) + \alpha [r_{t+1} + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t)]$$
+
+**Algorithm:**
+
+```python
+def SARSA(initial_state):
+    s = initial_state
+    a = choose_action_from_policy(s)  # ε-greedy w.r.t. Q
+
+    while not is_terminal(s):
+        r, s_prime = environment.take_action(a)
+        a_prime = choose_action_from_policy(s_prime)  # ε-greedy w.r.t. Q
+
+        # TD update
+        Q[s, a] += alpha * (r + gamma * Q[s_prime, a_prime] - Q[s, a])
+
+        s = s_prime
+        a = a_prime
+```
