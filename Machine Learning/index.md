@@ -405,55 +405,6 @@ Setting the derivative to zero:
 $$\nabla l(w) = \sum_{n=1}^N t_n \Phi(x_n)^T - w^T \sum_{n=1}^N \Phi(x_n) \Phi(x_n)^T = 0$$
 $$\hat{w}_{ML} = (\Phi^T \Phi)^{-1} \Phi^T t$$
 
-### Regularization
-
-**Regularization** is a technique to prevent overfitting by adding a penalty term to the loss function that discourages complex models (too many parameters or weights too big).
-
-Modified loss function:
-$$L(w) = \underbrace{L_D(w)}_{\text{error on data}} + \lambda \underbrace{L_w(w)}_{\text{model complexity}}$$
-$$L(w) = \underbrace{\frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2}_{\text{RSS}} + \lambda L_w(w)$$
-
-The **regularization parameter** $\lambda$ controls the tradeoff:
-
-- $\lambda = 0$: Only fit data (standard OLS)
-- $\lambda \to \infty$: Weights forced to zero
-
-The value of $\lambda$ is choosen usign cross validation, once the value is found it is possible to train the final model.
-
-#### Ridge Regression (L2 Regularization)
-
-Penalize the **L2 norm** (sum of squares) of weights:
-$$L_w(w) = \frac{1}{2}\|w\|_2^2 = \frac{1}{2} \sum_{j=1}^M w_j^2$$
-
-This encourages smaller weights, but does not set them to zero.
-
-Full loss function:
-$$L(w) = \frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2 + \frac{\lambda}{2} \|w\|_2^2$$
-
-The solution is:
-$$\hat{w}_{\text{ridge}} = (\Phi^T \Phi + \lambda I)^{-1} \Phi^T t$$
-
-#### Lasso Regression (L1 Regularization)
-
-Penalize the **L1 norm** (sum of absolute values):
-$$L_w(w) = \|w\|_1 = \sum_{j=1}^M |w_j|$$
-
-This generates *sparse solutions*, where some weights are exactly zero, effectively performing feature selection, removing irrelevant features from the model.
-
-Full loss function:
-$$L(w) = \frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2 + \lambda \|w\|_1$$
-
-#### Elastic Net
-
-The **Elastic Net** is a regularization technique that combines both L1 and L2 penalties to leverage the benefits of both methods.
-
-$$L(w) = \alpha \rho \|w\|_1 + \frac{\alpha (1 - \rho)}{2} \|w\|_2^2$$
-
-where:
-
-- $\alpha$: overall regularization strength
-- $\rho$: balance between L1 and L2 (0 ≤ ρ ≤ 1)
-
 ### Bayesian Linear Regression
 
 The **Bayesian Linear Regression** is a probabilistic approach to linear regression that incorporates uncertainty about the model parameters.
@@ -574,3 +525,122 @@ $$p(C_k|x) = \frac{p(x|C_k) p(C_k)}{p(x)}$$
 where $p(x) = \sum_{j=1}^K p(x|C_j) p(C_j)$ (marginal likelihood).
 
 This approach allows to generate new data samples from each class. However, it typically requires more parameters and samples.
+
+## Model Selection
+
+Adding features without adding data leads to overfitting. More parameters require more samples to estimate them reliably. When features exceed samples ($M > N$), the hypothesis space becomes too large, and variance explodes.
+
+Model selection is the process of finding the right trade-off.
+
+### Feature Selection
+
+**Feature selection** is the process of selecting a subset of relevant features for use in model construction, reducing its complexity and improving generalization.
+
+This is a combinatorial problem, there are $2^M$ possible feature subsets for $M$ features. Searching through all subsets is computationally infeasible for large $M$, so we use meta-heuristics to find good subsets.
+
+#### Filter Methods
+
+**Filter methods** evaluate the relevance of features by their correlation with the target variable. They rank features based on a statistical measure and select the top $k$ features.
+
+This method is fast and independent of the model, but it ignores feature interactions and only captures linear relationships. For example, two features may have low individual correlation with the target but together they could be highly predictive.
+
+The **Pearson correlation coefficient** is a common measure of linear correlation (range $[-1, 1]$) between two variables $x_j$ and $y$:
+
+$$\hat{\rho}(x_j, y) = \frac{\sum_{n=1}^N (x_{j,n} - \bar{x}_j)(y_n - \bar{y})}{\sqrt{\sum_{n=1}^N (x_{j,n} - \bar{x}_j)^2} \sqrt{\sum_{n=1}^N (y_n - \bar{y})^2}}$$
+
+From these correlation coefficients, we can select the top $k$ features with the highest absolute correlation with the target variable.
+
+#### Wrapper Methods
+
+The **wrapper methods** evaluate feature subsets by training a model on them and measuring its performance. This approach accounts for feature interactions and finds subsets optimized for the specific model being used.
+
+There are several strategies for searching through the feature subsets:
+
+##### Brute Force
+
+Try all $\binom{M}{k}$ subsets of size $k$ and evaluate each.
+
+This guarantees finding the optimal subset, but is computationally infeasible for large $M$.
+
+##### Forward Feature Selection
+
+Forward feature selection is a greedy algorithm that starts with an empty feature set and iteratively adds features that improve model performance the most. This process continues until adding more features does not improve performance or a desired number of features is reached.
+
+The **cost** of this method is $O(M^2)$ model evaluations, as each iteration requires evaluating all remaining features.
+
+##### Backward Feature Elimination
+
+Backward feature elimination is the opposite of forward selection. It starts with all features and iteratively removes the one that degrades performance the least. This continues until no further improvement can be made or a desired number of features is reached.
+
+These methods are not guaranteed to find the optimal subset, as they are greedy heuristics. They may miss feature combinations that only work together.
+
+### Regularization
+
+**Regularization** is a technique to prevent overfitting by adding a penalty term to the loss function that discourages complex models (too many parameters or weights too big).
+
+Modified loss function:
+$$L(w) = \underbrace{L_D(w)}_{\text{error on data}} + \lambda \underbrace{L_w(w)}_{\text{model complexity}}$$
+$$L(w) = \underbrace{\frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2}_{\text{RSS}} + \lambda L_w(w)$$
+
+The **regularization parameter** $\lambda$ controls the tradeoff:
+
+- $\lambda = 0$: Only fit data (standard OLS)
+- $\lambda \to \infty$: Weights forced to zero
+
+The value of $\lambda$ is choosen usign cross validation, once the value is found it is possible to train the final model.
+
+#### Ridge Regression (L2 Regularization)
+
+Penalize the **L2 norm** (sum of squares) of weights:
+$$L_w(w) = \frac{1}{2}\|w\|_2^2 = \frac{1}{2} \sum_{j=1}^M w_j^2$$
+
+This encourages smaller weights, but does not set them to zero.
+
+Full loss function:
+$$L(w) = \frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2 + \frac{\lambda}{2} \|w\|_2^2$$
+
+The solution is:
+$$\hat{w}_{\text{ridge}} = (\Phi^T \Phi + \lambda I)^{-1} \Phi^T t$$
+
+#### Lasso Regression (L1 Regularization)
+
+Penalize the **L1 norm** (sum of absolute values):
+$$L_w(w) = \|w\|_1 = \sum_{j=1}^M |w_j|$$
+
+This generates *sparse solutions*, where some weights are exactly zero, effectively performing feature selection, removing irrelevant features from the model.
+
+Full loss function:
+$$L(w) = \frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2 + \lambda \|w\|_1$$
+
+#### Elastic Net
+
+The **Elastic Net** is a regularization technique that combines both L1 and L2 penalties to leverage the benefits of both methods.
+
+$$L(w) = \alpha \rho \|w\|_1 + \frac{\alpha (1 - \rho)}{2} \|w\|_2^2$$
+
+where:
+
+- $\alpha$: overall regularization strength
+- $\rho$: balance between L1 and L2 (0 ≤ ρ ≤ 1)
+
+### Dimension Reduction
+
+**Dimension reduction** is the process of reducing the number of features in a dataset while preserving as much information as possible.
+
+#### Principal Component Analysis (PCA)
+
+**Principal Component Analysis (PCA)** is a linear technique that finds new orthogonal axes (principal components) that capture the maximum variance in the data. By using those axis we can remove the correlation between the features.
+
+The principal components are ordered by the amount of variance they capture. Having more variance means that the component captures more information about the data (Shannon entropy).
+
+To reduce the amount of features, we can project the data onto the first $K$ principal components, which capture the most variance in the data.
+
+The process involves the following steps:
+
+1. **Normalize:** Subtract mean from each feature so data is centered at origin ($\hat{X} = X - \bar{X}$).
+2. **Compute covariance matrix:** $S = \frac{1}{N} \hat{X}^T \hat{X}$
+3. **Find eigenvectors and eigenvalues** of $S$. Eigenvectors ($v_j$) are the principal component directions, while eigenvalues ($\lambda_j$) are the variance along each direction.
+4. **Project data** onto the top $K$ eigenvectors ($X_{\text{proj}} = \hat{X} \underbrace{V_K}_{(v_1| \ldots | v_K)}$).
+
+The **cumulative variance** explained by the top $K$ selected components should contain the majority of the variance in the data (e.g., 90%) to ensure that we are retaining most of the information while reducing dimensionality:
+$$\text{Cumulative Variance}(K) = \frac{\sum_{j=1}^K \lambda_j}{\sum_{j=1}^M \lambda_j}$$
