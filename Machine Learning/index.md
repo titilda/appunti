@@ -50,18 +50,6 @@ where $q$ is a parameter that controls how errors are penalized.
 - For $q=1$ (absolute loss), the model is more robust to outliers.
 - For $q=\infty$ (max loss), only the worst error matters.
 
-### Bias-Variance
-
-- **Bias**: Error due to hypothesis space $H$ being too restrictive to contain the true function. When $|H|$ is small, bias is high.
-- **Variance**: Error due to overfitting to training data. When $|H|$ is large, variance is high.
-
-The tradeoff:
-
-- Small $H$ → high bias, low variance (underfitting)
-- Large $H$ → low bias, high variance (overfitting)
-
-More training samples reduce variance for a given model complexity, reducing the noise.
-
 ### Approaches to Supervised Learning
 
 To solve supervised learning problems, there are three main approaches:
@@ -93,6 +81,56 @@ The **direct approach** avoids probability modeling. Instead of learning distrib
 For prediction tasks, you just need the mapping $x \to t$ to be accurate.
 
 This approach is often more straightforward and computationally efficient.
+
+### Prediction Error
+
+The error given by a model can be decomposed into three components:
+$$\mathbb{E}[L] = \mathbb{E}[(t - y(x))^2] = \underbrace{Var[t] = \sigma^2}_{\text{Noise}} + \underbrace{\mathbb{E}[(f(x) - y(x))^2]}_{\text{Bias}^2} + \underbrace{Var[y(x)]}_{\text{Variance}}$$
+
+The only irreducible error is the noise $\sigma^2$, which is inherent in the data generation process ($t = f(x) + \epsilon$ where $\epsilon \sim \mathcal{N}(0, \sigma^2)$). The bias and variance are controllable through model choice and training.
+
+Bias and variance are in tension: reducing bias typically increases variance, and vice versa. The goal is to find the right balance to minimize total error.
+
+#### Bias
+
+The **Bias** is the error due to the model's assumptions (hypothesis space $H$) being too simple to capture the true function $f$.
+
+It measures how far the average prediction $\mathbb{E}[y(x)]$ is from the true function $f(x)$.
+
+$$\text{bias}^2 = \int (f(x) - \mathbb{E}[y(x)])^2 \, p(x) \, dx$$
+
+A model with high bias is called **underfitting**, meaning that it fails to capture the underlying patterns in the data, leading to poor performance on both training and test data.
+
+It is possible to reduce the bias by increasing model complexity (increasing the size of the hypothesis space $|H|$ by adding more features)
+
+#### Variance
+
+The **Variance** is the error due to the model's sensitivity to fluctuations in the training data. It measures how much the predictions $y(x)$ would change if we trained on a different dataset drawn from the same distribution.
+
+$$\text{variance} = \int \mathbb{E}[(y(x) - \mathbb{E}[y(x)])^2] \, p(x) \, dx$$
+
+A model with high variance is called **overfitting**, meaning that it captures noise in the training data as if it were a true pattern, leading to good performance on training data but poor generalization to new data.
+
+The variance can be reduced by:
+
+- Increase training samples (noise averages out)
+- Decrease model complexity (fewer degrees of freedom to fit noise)
+
+### No Free Lunch Theorem
+
+Let $\mathcal{F}$ be the set of *all possible* functions, and $Acc_G(L)$ be the generalization accuracy of learner $L$ on unseen data.
+
+For any learning algorithm $L$:
+
+$$\frac{1}{|\mathcal{F}|} \sum_{f \in \mathcal{F}} Acc_G(L) = \frac{1}{2}$$
+
+Meaning that averaged over all possible functions, every learning algorithm is no better than random guessing.
+
+This means that there is *no universally superior learning algorithm* as each algorithm will perform well on some problems and poorly on others.
+
+A single algorithm can only be better than random guessing on a subset of problems, where there is some structure that the algorithm can exploit.
+
+By making assumptions about the data, we can design algorithms that perform well on real-world problems, which are not random functions but have underlying patterns (**inductive bias**).
 
 ## Linear Regression
 
@@ -178,7 +216,7 @@ To evaluate the performance of a linear regression model, we use the **Root Mean
 
 $$E_{\text{RMS}} = \sqrt{\frac{2 * \text{RSS}(\hat{w})}{N}}$$
 
-#### Variance
+#### Variance Estimation
 
 To estimate the variance of the noise, we can use the residuals from the fitted model:
 $$\hat{\sigma}^2 = \frac{1}{N - M} \sum_{n=1}^N (t_n - \hat{w}^T \phi(x_n))^2$$
@@ -263,6 +301,8 @@ The **regularization parameter** $\lambda$ controls the tradeoff:
 - $\lambda = 0$: Only fit data (standard OLS)
 - $\lambda \to \infty$: Weights forced to zero
 
+The value of $\lambda$ is choosen usign cross validation, once the value is found it is possible to train the final model.
+
 #### Ridge Regression (L2 Regularization)
 
 Penalize the **L2 norm** (sum of squares) of weights:
@@ -281,10 +321,21 @@ $$\hat{w}_{\text{ridge}} = (\Phi^T \Phi + \lambda I)^{-1} \Phi^T t$$
 Penalize the **L1 norm** (sum of absolute values):
 $$L_w(w) = \|w\|_1 = \sum_{j=1}^M |w_j|$$
 
-This generates _sparse solutions_, where some weights are exactly zero, effectively performing feature selection, removing irrelevant features from the model.
+This generates *sparse solutions*, where some weights are exactly zero, effectively performing feature selection, removing irrelevant features from the model.
 
 Full loss function:
 $$L(w) = \frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2 + \lambda \|w\|_1$$
+
+#### Elastic Net
+
+The **Elastic Net** is a regularization technique that combines both L1 and L2 penalties to leverage the benefits of both methods.
+
+$$L(w) = \alpha \rho \|w\|_1 + \frac{\alpha (1 - \rho)}{2} \|w\|_2^2$$
+
+where:
+
+- $\alpha$: overall regularization strength
+- $\rho$: balance between L1 and L2 (0 ≤ ρ ≤ 1)
 
 ### Bayesian Linear Regression
 
@@ -293,14 +344,14 @@ The **Bayesian Linear Regression** is a probabilistic approach to linear regress
 Before seeing data, there is an assumption about the distribution of weights, called the **prior distribution**. A common choice is a Gaussian prior:
 $$p(w) = \mathcal{N}(w | w_0, S_0)$$
 
-After observing data, _Bayes' theorem_ is used to update the belief about the weights, resulting in the **posterior distribution**:
+After observing data, *Bayes' theorem* is used to update the belief about the weights, resulting in the **posterior distribution**:
 $$\overbrace{p(w|\mathcal{D})}^{\text{posterior}} = \frac{\overbrace{p(\mathcal{D}|w)}^{\text{likelihood}} \, \overbrace{p(w)}^{\text{prior}}}{p(\mathcal{D})}$$
 
 where:
 
 - $p(\mathcal{D}) = \int p(\mathcal{D}|w) p(w) dw$: is the **marginal likelihood**, which normalizes the posterior distribution.
 
-After updating, the weights still maintain a Gaussian distribution (_conjugate prior_):
+After updating, the weights still maintain a Gaussian distribution (*conjugate prior*):
 $$\overbrace{p(w|t, \Phi, \sigma^2)}^{\text{posterior}} \propto \overbrace{\mathcal{N}(w | w_0, S_0)}^{\text{prior}} \, \overbrace{\mathcal{N}(t | \Phi w, \sigma^2 I)}^{\text{likelihood}} = \mathcal{N}(w | w_N, S_N)$$
 
 where:
