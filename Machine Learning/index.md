@@ -848,3 +848,98 @@ The prediction for a new input $x$ can be computed as:
 $$y(x) = w^T \phi(x) = a^T \Phi \phi(x) = k(x)^T a$$
 
 - $k(x)$ is defined as $k_n(x) = k(x_n, x)$, the kernel evaluation between the new input and each training sample.
+
+## Support Vector Machines (SVMs)
+
+**Support Vector Machines (SVMs)** are a linear classifiers that find the optimal hyperplane that maximizes the margin between classes in the feature space.
+
+Starting from the perceptron algorithm ($y(x) = \text{sign}(w^T \phi(x))$), replacing $w$ with its dual representation ($w = \sum_{n=1}^N \alpha_n \phi(x_n)$) gives:
+$$f(x) = \text{sign}\left(\sum_{n=1}^N \alpha_n t_n k(x_n, x)\right)$$
+
+This means that the decision function depends only on the kernel evaluations between the new input and the training samples, weighted by $\alpha_n t_n$.
+
+Of all the training samples, only a subset of them (called **support vectors** $\mathcal{S}$) will have non-zero weights ($\alpha_n > 0$) and contribute to the decision boundary. These are the samples that are closest to the decision boundary. The smaller is the subset of support vectors, the more efficient is the model.
+
+$$f(x) = \text{sign}\left( \sum_{n \in \mathcal{S}} \alpha_n t_n k(x_n, x) + b \right)$$
+
+The weights $\alpha_n$ chosen in a way that maximizes the **margin** that is the distance from the decision boundary to the closest training samples.
+
+### Hard Margin SVM
+
+Hard margin assumes that data are linearly separable in the feature space $\phi(x)$.
+
+The distance from a point $x$ to the decision boundary defined by $t_n(w^T \phi(x_n) + b)$. $t_n \in \{-1, +1\}$ is used to ensure that the sign is always positive for correctly classified samples and negative for misclassified ones.
+
+The weight vector $w$ that maximizes the margin is:
+$$w^* = \arg\max_{w, b} (\frac{1}{\|w\|_2} \min_{n} (t_n (w^T \phi(x_n) + b)))$$
+
+Maximizing the margin is done by solving for $\frac{1}{\|w\|_2}$, that is equivalent of the solution of the following optimization problem:
+$$\min_{w} \quad \frac{1}{2} \|w\|_2^2$$
+
+To avoid setting $w$ to zero we add a constraint that the closest point to the decision boundary has a distance of at least 1.
+$$t_n (w^T \phi(x_n) + b) \geq 1 \quad \forall n$$
+
+### Soft Margin SVM (With Noise)
+
+Real data is rarely perfectly separable. To allow for some misclassifications, we introduce a **slack variables** $\xi_n \geq 0$ to allow constraint violations:
+
+$$t_n (w^T \phi(x_n) + b) \geq 1 - \xi_n \quad \forall n$$
+
+- $\xi_n = 0$: sample on correct side of margin
+- $0 < \xi_n < 1$: sample inside margin but correct side
+- $\xi_n > 1$: sample misclassified
+
+The optimization problem needs to penalize the slack variables to avoid trivial solutions:
+$$\min_{w, b, \xi} \quad \frac{1}{2} \|w\|_2^2 + C \sum_{n=1}^N \xi_n$$
+
+where $C$ is a hyperparameter that controls the trade-off between maximizing the margin and minimizing the classification error.
+
+- Large $C$: each violation is heavily penalized, leading to a low bias, high variance model (overfitting)
+  - $C = \infty$: hard margin (no slack allowed)
+- Small $C$: violations are lightly penalized, leading to a high bias, low variance model (underfitting)
+  - $C = 0$: no penalty for violations (all samples can be misclassified)
+
+### SVM Dual Formulation
+
+To solve the constrained optimization, use the **Lagrangian:**
+
+$$L(w, b, \xi, \alpha, \beta) = \frac{1}{2} \|w\|_2^2 + C \sum_{n=1}^N \xi_n + \sum_{n=1}^N \alpha_n (1 - \xi_n - t_n (w^T \phi(x_n) + b)) - \sum_{n=1}^N \beta_n \xi_n$$
+
+where $\alpha_n, \beta_n \geq 0$ are Lagrange multipliers.
+
+To be optimal, the solution must satisfy the **Karush-Kuhn-Tucker (KKT) conditions**:
+
+1. **Stationarity:** $\nabla L{w^*,b^*,\xi^*} = 0$
+2. **Primal feasibility:** Must satisfy the original constraints:
+   - $t_n (w^T \phi(x_n) + b) \geq 1 - \xi_n$
+   - $\xi_n \geq 0$
+3. **Dual feasibility:** The Lagrange multipliers must be non-negative:
+   - $\alpha_n \geq 0$
+   - $\beta_n \geq 0$
+4. **Complementary slackness:** The product of each Lagrange multiplier and its corresponding constraint must be zero:
+   - $\alpha_n (t_n (w^T \phi(x_n) + b) - 1 + \xi_n) = 0$: either the constraint is active (on the margin) or $\alpha_n = 0$ (not a support vector)
+   - $\beta_n \xi_n = 0$: either $\xi_n = 0$ (no violation) or $\beta_n = 0$ (not penalized)
+
+By setting the derivatives of $L$ with respect to $w, b, \xi$ to zero, we can express $w, b, \xi$ in terms of $\alpha$ and $\beta$.
+
+- By deriving $w$: $w = \sum_{n=1}^N \alpha_n t_n \phi(x_n)$
+- By deriving $b$: $\sum_{n=1}^N \alpha_n t_n = 0$
+- By deriving $\xi_n$: $\alpha_n + \beta_n = C$
+
+Substituting back into the Lagrangian gives the **dual problem** that depends only on $\alpha$ and the kernel function.
+
+$$\max_{\alpha} \quad \sum_{n=1}^N \alpha_n - \frac{1}{2} \sum_{n=1}^N \sum_{m=1}^N \alpha_n \alpha_m t_n t_m k(x_n, x_m)$$
+
+subject to:
+$$0 \leq \alpha_n \leq C \quad \forall n$$
+$$\sum_{n=1}^N \alpha_n t_n = 0$$
+
+### SVM Decision Function
+
+Once $\alpha$ is solved, the bias $b$ is computed as the average over support vectors that lie on the margin (those with $0 < \alpha_n < C$):
+
+$$b = \frac{1}{|\mathcal{S}|} \sum_{n \in \mathcal{S}} (t_n - \sum_{m=1}^N \alpha_m t_m k(x_m, x_n))$$
+
+The decision function is:
+
+$$y(x) = \text{sign}\left(\sum_{n=1}^N \alpha_n t_n k(x_n, x) + b\right)$$
