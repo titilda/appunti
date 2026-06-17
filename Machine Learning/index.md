@@ -1050,3 +1050,74 @@ To avoid the problem of infinite rewards in infinite horizon settings, we often 
 - **Value-based:** The agent learns a value function that estimates the expected cumulative reward for each state or state-action pair, and derives a policy from it.
 - **Policy-based:** The agent directly learns a policy that maps states to actions.
 - **Actor-Critic:** The agent maintains a policy (actor) that selects actions and a value function (critic) that evaluates the quality of the actions taken.
+
+## Policy
+
+The goal of the agent is to learn a **policy** (a function that maps states to actions) that maximizes the cumulative reward over time, which can sacrifice immediate rewards for greater long-term rewards.
+
+A policy $\pi$ define the probability of taking action $a$ in state $s$:
+$$\pi(a | s) = \mathbb{P}(a | s)$$
+
+Given a policy $\pi$, it is possible to compute the **Action-value function** that compute the expected cumulative reward for taking action $a$ in state $s$ and following policy $\pi$:
+
+$$Q^\pi(s, a) = \mathbb{E}_\pi[G_t | S_t = s, A_t = a]$$
+
+This allows us to evaluate the quality of actions in each state and can be used for control purposes.
+
+It is also possible to define the **State-value function** that compute the expected cumulative reward for being in state $s$ (utility) and following policy $\pi$:
+
+$$V^\pi(s) = \mathbb{E}_\pi[G_t | S_t = s]$$
+
+This is equal to the sum of all the action-values weighted by the policy:
+$$V^\pi(s) = \sum_{a \in \mathcal{A}} \pi(a | s) Q^\pi(s, a)$$
+
+### Bellman Equation
+
+**Bellman equation** decomposes the value function into immediate reward plus discounted future value:
+
+$$V^\pi(s) = \mathbb{E}_\pi[\underbrace{r_{t+1}}_{\text{immediate reward}} + \underbrace{\gamma V^\pi(s_{t+1})}_{\text{discounted future value}} | S_t = s] = R^\pi(s) + \gamma \sum_{s' \in \mathcal{S}} P^\pi(s' | s) V^\pi(s')$$
+
+> While the action-value function $Q^\pi(s, a)$ can be expressed as:
+>
+> $$Q^\pi(s, a) = R(s, a) + \gamma \sum_{s' \in \mathcal{S}} P(s' | s, a) \underbrace{\sum_{a' \in \mathcal{A}} \pi(a' | s') Q^\pi(s', a')}_{V^\pi(s')}$$
+
+That can be expressed in matrix form as:
+
+$$V^\pi = R^\pi + \gamma P^\pi V^\pi$$
+
+That has a closed-form linear solution:
+
+$$V^\pi = (I - \gamma P^\pi)^{-1} R^\pi$$
+
+That is always solvable as long as $\gamma < 1$ (ensures invertibility) in $O(|\mathcal{S}|^3)$ time.
+
+### Bellman Operator
+
+It is also possible to solve the Bellman equation iteratively using the **Bellman operator** $T^\pi: \mathbb{R}^{|\mathcal{S}|} \to \mathbb{R}^{|\mathcal{S}|}$ that maps a value function to another value function:
+
+$$T^\pi(V)(s) = \sum_{a \in \mathcal{A}} \pi(a | s) \left[R(s, a) + \gamma \sum_{s' \in \mathcal{S}} P(s' | s, a) V(s')\right]$$
+
+> Equivalently for the action-value function:
+> $$T^\pi(Q)(s, a) = R(s, a) + \gamma \sum_{s' \in \mathcal{S}} P(s' | s, a) \sum_{a' \in \mathcal{A}} \pi(a' | s') Q(s', a')$$
+
+The Bellman operator is a **contraction**, meaning that at each application, it brings value functions closer together by a factor of $\gamma$ to the fixed point $V^\pi$.
+
+$$V_0 \to T^\pi V_0 \to T^\pi(T^\pi V_0) \to \cdots \to V^\pi$$
+
+Each iteration has a computational cost of $O(|\mathcal{S}|^2 |\mathcal{A}|)$ so it becomes more efficient than the closed-form solution for large state spaces. It converges in $\approx \frac{1}{1 - \gamma}$ iterations.
+
+#### Bellman Optimality Operator
+
+The **optimal value function** $V^\pi$ is the unique fixed point of the Bellman operator and is the one that maximizes the expected cumulative reward under policy $\pi$:
+
+$$V^* = \max_\pi V^\pi$$
+
+That for each state $s$:
+
+$$V^*(s) = \max_a \underbrace{R(s, a) + \gamma \sum_{s' \in \mathcal{S}} P(s' | s, a) V^*(s')}_{Q^*(s, a)}$$
+
+The **Bellman optimality operator** $T^*: \mathbb{R}^{|\mathcal{S}|} \to \mathbb{R}^{|\mathcal{S}|}$ is defined as:
+
+$$T^*(V)(s) = \max_{a \in \mathcal{A}} \left[R(s, a) + \gamma \sum_{s' \in \mathcal{S}} P(s' | s, a) V(s')\right]$$
+
+The difference with the Bellman operator is that it uses $\max_a$ instead of $\sum_a \pi(a | s)$, which makes it non-linear and without a closed-form solution. It is also policy-independent, meaning that it does not depend on a specific policy $\pi$.
