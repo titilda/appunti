@@ -1286,3 +1286,30 @@ After observing a reward $r_t \in \{0, 1\}$ for arm $a_t$, the posterior is upda
 - If $r_t = 0$ (failure): $\beta_{a_t} \leftarrow \beta_{a_t} + 1$
 
 > The expected value of the Beta distribution is $\mathbb{E}[\text{Beta}(\alpha, \beta)] = \frac{\alpha}{\alpha + \beta}$.
+
+## Monte Carlo (MC)
+
+**Monte Carlo (MC)** methods are a class of reinforcement learning algorithms that learn from complete episodes of independent experience, called **trajectories**.
+
+Each trajectory consists of a sequence of states, actions, and rewards:
+$$(s_0, a_0, r_1, s_1, a_1, r_2, \ldots, s_T)$$
+
+The expected value of a state $s$ is estimated from the **empirical average** of observed returns.
+
+$$V^\pi(s) = \mathbb{E}_\pi[\underbrace{\sum_{k=0}^T \gamma^k r_{t+k}}_{\text{return from step } t, G_t } | S_t = s] = \frac{1}{N(s)} \sum_{i=1}^{N(s)} G_t^{(i)}$$
+
+If the same state is visited multiple times in the same episode, we can choose how to count it:
+
+- **First-visit MC:** Only count the return from the first time the state is visited in the episode. This gives an unbiased estimate of the value function but can have high variance.
+- **Every-visit MC:** Count each visit as a separate sample and average over all visits. This gives a biased but consistent estimate of the value function and can have lower variance.
+
+To avoid storing all the trajectories, we can update the value function incrementally after each episode using the observed return $G_t$:
+
+$$V(s_t) = V(s_t) + \alpha (G_t - V(s_t))$$
+
+where $\alpha$ is the learning rate that controls how much we update our estimate based on the new sample. For stationary problems, we can use $\alpha = \frac{1}{N(s)}$ to give equal weight to all samples, while for non-stationary problems, we can use a constant $\alpha$ to give more weight to recent samples.
+
+> To guarantee convergence to the true value function, the learning rates must satisfy the Robbins-Monro conditions:
+>
+> - $\sum_{i=1}^\infty \alpha_i = \infty$: ensures that the learning rate doesn't decrease too quickly.
+> - $\sum_{i=1}^\infty \alpha_i^2 < \infty$: ensures that the learning rate decreases fast enough to stabilize.
