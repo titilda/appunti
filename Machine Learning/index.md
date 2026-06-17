@@ -678,3 +678,95 @@ All the models can be trained in parallel, but works better for complex models (
 This methods requires a weak learner with high bias and low variance that performs better than random guessing (error < 0.5) to ensure improve performance and not noisy data.
 
 This time the models are trained sequentially, and each model is influenced by the previous ones, so it cannot be parallelized.
+
+## Sample Complexity
+
+When training a model, the amount of samples available is crucial for its performance. With too few samples, the model may not capture the underlying patterns in the data and will perform poorly on unseen data (overfitting). With too many samples, the model may be unnecessarily complex and computationally expensive.
+
+It's important to understand how many samples are needed to ensure that the model generalizes well to new data.
+
+### PAC-Learning
+
+**Probably Approximately Correct (PAC) learning** provides guarantees on the performance of learning algorithms on finite hypothesis spaces based on the number of training samples.
+
+A concept class (set of concept functions $c$ that can be the target function) $\mathcal{C}$ is **PAC-learnable** if there exists an algorithm $L$ such that:
+
+- for any concept $c \in \mathcal{C}$
+- any distribution over the input space
+- any error threshold better that random guessing ($0 \leq \epsilon \ge 0.5$)
+- with probability at least $1 - \delta$ (confidence, $0 \leq \delta < 0.5$)
+
+The algorithm can learn a hypothesis $h$ such that the true error $L_{\text{true}}(h)$ is at most $\epsilon$, using a number of training samples $N$ that is polynomial in $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$.
+
+An algorithm is **efficiently PAC-learnable** if the runtime is polynomial in $\frac{1}{\epsilon}$, $\frac{1}{\delta}$, and the size of the concept.
+
+#### The Version Space
+
+Inside the hypothesis space $\mathcal{H}$, there is a subset of hypotheses that is consistent with the training data $\mathcal{D}$ (No misclassified examples). This subset is called the **version space**.
+
+$$VS(\mathcal{H}, \mathcal{D}) = \{h \in \mathcal{H} : L_{\text{train}}(h) = 0\}$$
+
+The probability that one of the hypotheses in the version space has true error greater than $\epsilon \in [0, 1]$ is bounded by:
+
+$$\Pr\left(\exists h \in \mathcal{H} : L_{\text{train}}(h) = 0 \land L_{\text{true}}(h) \geq \epsilon\right) \leq |\mathcal{H}| e^{-\epsilon N}$$
+
+This means that with more samples ($N$) or a smaller hypothesis space ($|\mathcal{H}|$), the probability of having a bad hypothesis in the version space decreases exponentially.
+
+By setting the probability of a bad hypothesis to be at most $\delta$, we can derive the sample complexity bound:
+
+$$N \geq \frac{1}{\epsilon} \left(\ln|\mathcal{H}| + \ln \frac{1}{\delta}\right)$$
+
+Equivalently, the error bound is:
+
+$$L_{\text{true}}(h) = \epsilon \leq \frac{1}{N}\left(\ln|\mathcal{H}| + \ln \frac{1}{\delta}\right)$$
+
+In practice this bound is very generous, and the true error is often much smaller than this worst-case bound.
+
+**Proof:**
+
+The event "exists a bad hypothesis" is a disjunction of individual events for each $h$:
+
+$$\Pr(\exists h \in \mathcal{H}: L_{\text{train}}(h) = 0 \land L_{\text{true}}(h) \geq \epsilon) = \bigcup_{h \in \mathcal{H}} \Pr( L_{\text{train}}(h) = 0 \land L_{\text{true}}(h) \geq \epsilon )$$
+
+The probability of a union is at most the sum of probabilities:
+
+$$\leq \sum_{h \in \mathcal{H}_{\text{bad}}} \Pr( L_{\text{train}}(h) = 0 \land L_{\text{true}}(h) \geq \epsilon) \leq \sum_{h \in \mathcal{H}_{\text{bad}}} \Pr( L_{\text{train}}(h) = 0 | L_{\text{true}}(h) \geq \epsilon)$$
+
+The probability that a bad hypothesis has zero training error is the probability that all $N$ samples are correctly classified by $h$, which is at most $(1 - \epsilon)^N$ (since each sample has at least $\epsilon$ chance of being misclassified):
+
+$$\Pr( L_{\text{train}}(h) = 0 | L_{\text{true}}(h) \geq \epsilon) \leq (1 - \epsilon)^N$$
+
+By summing over all bad hypotheses, we get:
+
+$$\sum_{h \in \mathcal{H}_{\text{bad}}} (1 - \epsilon)^N \leq |\mathcal{H}|(1 - \epsilon)^N \leq |\mathcal{H}| e^{-\epsilon N}$$
+
+#### Hoeffding Inequality
+
+The version space is a very strong assumption, as it requires that at least one hypothesis has zero training error. In practice, this is often not the case, especially with noisy data:
+
+$$L_{\text{true}}(h) \leq L_{\text{train}}(h) + \epsilon$$
+
+Using the **Hoeffding inequality** ($\Pr(\overbrace{\mathbb{E}[X]}^{\text{Real Mean}} - \overbrace{\bar{X}}^{\text{Empirical Mean}} > \epsilon) \leq e^{-2N\epsilon^2}$), we can bound the probability that the true error is much larger than the training error, even when the training error is not zero.
+
+$$\Pr(\exists h \in \mathcal{H} : L_{\text{true}}(h) - L_{\text{train}}(h) \geq \epsilon) \leq |\mathcal{H}| e^{-2N\epsilon^2}$$
+
+From which we can derive:
+
+- $N \geq \frac{1}{2\epsilon^2} \left(\ln|\mathcal{H}| + \ln \frac{1}{\delta}\right)$
+- $\epsilon \leq \sqrt{\frac{\ln|\mathcal{H}| + \ln \frac{1}{\delta}}{2N}} = \text{variance}$
+
+### VC-Dimension
+
+PAC is limited to finite hypothesis spaces, but many real-world models have infinite hypothesis spaces. **Vapnik-Chervonenkis (VC) dimension** is based on the amount of points that can be exactly classified.
+
+Given a set of samples $S = \{x_1, x_2, \ldots, x_m\}$, there are $2^m$ possible ways to label these samples (**dichotomies**).
+
+The VC-dimension measures the size of the largest set of points that the hypothesis space $\mathcal{H}$ can **shatter**, meaning that for every possible dichotomy, there exists a hypothesis in $\mathcal{H}$ that is consistent with that labeling.
+
+> In 2D, a linear classifier can shatter any set of 3 points (it can generate all $2^3 = 8$ possible labelings). But no linear classifier can shatter any set of 4 points in general position (some labelings are impossible).
+
+**Rule of thumb:** VC-dimension is often close to the number of parameters, but not always as there could be cases where the amount of parameters is infinite but the VC-dimension is finite and vice versa.
+
+For infinite hypothesis spaces, it's possible to replace $\ln|\mathcal{H}|$ with $\text{VC}(\mathcal{H})$:
+
+$$L_{\text{true}}(h) \leq L_{\text{train}}(h) + \sqrt{\frac{\text{VC}(\mathcal{H}) (\ln \frac{2N}{\text{VC}(\mathcal{H})} + 1) + \ln \frac{4}{\delta}}{N}}$$
