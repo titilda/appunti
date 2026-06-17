@@ -1221,3 +1221,68 @@ $$\text{s.t.} \quad V \geq T^* V$$
 where $\mu$ is the initial state distribution and $T^*$ is the Bellman optimality operator. The constraints ensure that the value function $V$ is the converged value function.
 
 It is possible to find the optimal policy $\pi^*$ from the duality of the linear programming problem.
+
+## Multi-Armed Bandits
+
+**Multi-armed bandits (MAB)** are a simplified version of MDPs where the agent has to choose between multiple actions (arms) that keeps the state constant. The goal is to maximize the cumulative reward over time while balancing exploration and exploitation.
+
+Maximizing the cumulative reward is equivalent to minimizing the **regret**, which is the difference between the reward that could have been obtained by always playing the best arm ($a^* = \arg\max_a \mathbb{E}[R(a)]$) and the reward actually obtained by the agent:
+
+$$L_T = T \cdot \underbrace{R(a^*)}_{R^*} - \sum_{t=1}^T \mathbb{E}[R(a_{i_t})] = \sum_{t=1}^T [R^* - R(a_{i_t})]$$
+
+The regret can be expressed in terms of the number of times each arm is played and the suboptimality gap $\Delta_a = R^* - R(a)$:
+
+$$L_T = \sum_{a \neq a^*} \underbrace{\Delta_a}_{\text{suboptimality gap}} \cdot \underbrace{N_T(a)}_{\text{times arm $a$ played}}$$
+
+The minimum regret that can be achieved by any algorithm is given by the **Lai-Robbins lower bound**, which states that any algorithm must play suboptimal arms logarithmically in $T$:
+
+$$L_T \geq \ln T \sum_{a \neq a^*} \frac{\Delta_a}{\text{KL}(\mathcal{D}_a, \mathcal{D}_{a^*})}$$
+
+where $\text{KL}(\mathcal{D}_a, \mathcal{D}_{a^*})$ is the Kullback-Leibler divergence between the reward distributions of arm $a$ and the optimal arm $a^*$.
+
+To be optimal the total regret must follow this condition:
+$$\lim_{T \to \infty} \frac{L_T}{\ln T} \to 0$$
+
+### Epsilon-Greedy
+
+The **epsilon-greedy** algorithm is a simple and effective strategy for balancing exploration and exploitation in multi-armed bandit problems.
+
+$$\pi(a | s) = \begin{cases}
+1 - \epsilon & \text{if } \hat{Q}(s,a) = \max_{a'} \hat{Q}(s,a') \\
+\frac{\epsilon}{|\mathcal{A}| - 1} & \text{otherwise}
+\end{cases}$$
+
+The algorithm selects the action with the highest estimated value $\hat{Q}(s,a)$ with probability $1 - \epsilon$, and selects a random action with probability $\epsilon$.
+
+#### Upper Confidence Bound (UCB)
+
+The **Upper Confidence Bound (UCB)** algorithm is a **Frequentist approach** (the reward distributions is fixed but unknown) that balances exploration and exploitation by selecting the arm with the highest upper confidence bound on its estimated reward.
+
+Each arm $a$ has an upper bound $U(a)$ on its expected reward, which is computed as:
+$$U(a) = \hat{R}_t(a) + B_t(a) \geq \underbrace{R(a)}_{\text{true reward}}$$
+
+where:
+
+- $\hat{R}_t(a) = \frac{\sum_{s=1}^t r_s \mathbb{1}(a_{i_s} = a)}{N_t(a)}$: empirical mean (exploitation)
+- $B_t(a) = \sqrt{\frac{2 \ln t}{N_t(a)}}$: confidence (exploration bonus)
+
+Selecting the arm with the highest upper bound ($a_i_t = \arg\max_a U(a)$) ensures that the algorithm explores arms with high uncertainty while exploiting arms with high estimated rewards with anexpected regret of $O(8 \ln T \sum_{a \neq a^*} \frac{1}{\Delta_a} + \left(1 + \frac{\pi^2}{3}\right) \sum_{a \neq a^*} \Delta_a)$.
+
+#### Thompson Sampling
+
+The **Thompson Sampling** algorithm is a **Bayesian approach** (each reward distribution is a random variable) that maintains a posterior belief about each arm's reward distribution and samples from the posterior to select the arm to play.
+
+1. Initialize a prior distribution for each arm's reward distribution
+2. At each time step:
+   - Sample a reward estimate from each posterior: $\tilde{\mu}_a \sim \text{Posterior}_a$
+   - Play the arm with highest sample: $a_t = \arg\max_a \tilde{\mu}_a$
+3. Update the posterior of the chosen arm based on observed reward
+
+For Bernulli rewards, the posterior distribution for each arm $a$ is a Beta distribution initialized as $\text{Beta}(\alpha_a = 1, \beta_a = 1)$.
+
+After observing a reward $r_t \in \{0, 1\}$ for arm $a_t$, the posterior is updated as follows:
+
+- If $r_t = 1$ (success): $\alpha_{a_t} \leftarrow \alpha_{a_t} + 1$
+- If $r_t = 0$ (failure): $\beta_{a_t} \leftarrow \beta_{a_t} + 1$
+
+> The expected value of the Beta distribution is $\mathbb{E}[\text{Beta}(\alpha, \beta)] = \frac{\alpha}{\alpha + \beta}$.
