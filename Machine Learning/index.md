@@ -644,3 +644,37 @@ The process involves the following steps:
 
 The **cumulative variance** explained by the top $K$ selected components should contain the majority of the variance in the data (e.g., 90%) to ensure that we are retaining most of the information while reducing dimensionality:
 $$\text{Cumulative Variance}(K) = \frac{\sum_{j=1}^K \lambda_j}{\sum_{j=1}^M \lambda_j}$$
+
+## Model Ensemble
+
+**Model ensemble** is a technique that combines multiple models to improve predictive performance. The idea is that while individual models may have high variance or bias, combining them can lead to better generalization.
+
+### Bagging
+
+**Bagging** is an ensemble method that reduces variance without increasing bias by training $B$ multiple models on different subsets of the independent training data and averaging their predictions.
+
+$$\text{Var}(\hat{y}) = \frac{\text{Var}(y)}{B}$$
+
+1. Generate $B$ bootstrap samples by randomly sampling $N$ observations from the original dataset **with replacement** (reduce the independence but each dataset is still random). Each bootstrap sample has the same size as the original.
+
+2. Train a separate model on each bootstrap sample.
+
+3. **Aggregate predictions:**
+   - Regression: Average predictions across all $B$ models.
+   - Classification: Majority voting (or soft voting if probabilities available).
+
+All the models can be trained in parallel, but works better for complex models (high variance). Simple models have high bias and bagging does not help.
+
+### Boosting
+
+**Boosting** is an ensemble method that reduces bias without increasing variance by sequentially training models, where each new model focuses on the samples that the previous models misclassified.
+
+1. Uniformly initialize sample weights.
+2. Train a weak learner on the weighted data.
+3. Increase weights of misclassified samples.
+4. Repeat.
+5. Combine all learners with weighted voting.
+
+This methods requires a weak learner with high bias and low variance that performs better than random guessing (error < 0.5) to ensure improve performance and not noisy data.
+
+This time the models are trained sequentially, and each model is influenced by the previous ones, so it cannot be parallelized.
