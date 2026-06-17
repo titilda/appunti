@@ -484,3 +484,52 @@ $$p(t| x, \mathcal{D}, \sigma^2) = \int \mathcal{N}(t | w^T \phi(x), \sigma^2) \
 
 where:
 $$\sigma^2_N = \underbrace{\sigma^2}_{\text{data noise}} + \underbrace{\phi(x)^T S_N \phi(x)}_{\text{parameters uncertainty}}$$
+
+## Linear Classification
+
+**Linear classification** assigns an input to one of $K$ classes $C_k$ using linear combinations of features to define decision boundaries (hyperplanes) that separate the input space.
+
+The result of the classification can lead to two types of errors:
+
+- **False positive**: predict positive when true class is negative
+- **False negative**: predict negative when true class is positive
+
+These have different costs in different domains. In medical diagnosis, missing a disease (false negative) is typically more costly than a false alarm (false positive), so models can be biased to minimize one error type.
+
+The model computes a linear score for each class and applies a **nonlinear activation function** ($y(x, w) =  f(x^T w + w_0)$) to map scores ($-\infty$ to $\infty$) to probabilities ($0$ to $1$) or class labels.
+
+The **sigmoid function** is a common choice for binary classification: $\sigma(z) = \frac{1}{1 + e^{-z}}$
+
+For multi-class classification, each class can be modeled with a separate linear function, and the results are stored in a vector of scores. The class with the highest score is selected as the predicted class, creating single connected and convex decision regions.
+
+> Using Linear Regression for classification is a bad idea because it can produce ambiguous regions where multiple classifiers predict positive. It could be modeled with two main approaches:
+>
+> - **One-vs-Rest**: Train $K-1$ binary classifiers, each distinguishing one class from the rest. This can lead to ambiguous regions where multiple classifiers predict positive.
+> - **One-vs-One**: Train $\binom{K}{2}$ binary classifiers for each pair of classes. This can lead to complex decision boundaries and is computationally expensive.
+
+### Discriminant Function Approach
+
+The goal of the **discriminant function approach** is to learn a function that directly assigns each input to a class, without modeling probabilities.
+
+a simple method is to learn $K$ separate linear scoring functions (one per class) and assign the class with the highest score. Then choose the class that has the highest score:
+$$\hat{C} = \arg\max_k (w_k^T \phi(x) + w_{k0})$$
+
+#### Perceptron Algorithm
+
+The **Perceptron** is an online, discriminative learning algorithm for binary classification. The model is a linear function of the input features, and the output is a binary class label determined by the sign (+1 or -1) of it:
+$$y(x) = \text{sign}(\underbrace{w^T \phi(x)}_\text{Distance from decision boundary})$$
+
+The **Loss function** is defined as the sum of the distances of *misclassified* samples from the decision boundary:
+$$L(w) = - \sum_{n \in \mathcal{M}} t_n w^T \phi(x_n)$$
+
+where $\mathcal{M}$ is the set of misclassified samples and $t_n \in \{-1, +1\}$ is the true label.
+
+> OLS is not suitable because it tries to minimize the squared error, which can lead to large errors for outliers and does not focus on the decision boundary. The perceptron loss focuses only on misclassified samples, which is more appropriate for classification tasks.
+
+The **optimization** of the perceptron loss is done on the *stochastic gradient descent on misclassified samples only*:
+
+$$w^{(k+1)} = w^{(k)} + \alpha t_n \phi(x_n)$$
+
+where $\alpha$ is the learning rate (can be set to 1 as each update moves the decision boundary in the correct direction).
+
+The perceptron algorithm can **converge** to a solution if the data is linearly separable, meaning there exists a hyperplane that can perfectly separate the two classes. However, if the data is not linearly separable, the algorithm will never converge and will continue to oscillate indefinitely.
