@@ -85,7 +85,7 @@ This approach is often more straightforward and computationally efficient.
 ### Prediction Error
 
 The error given by a model can be decomposed into three components:
-$$\mathbb{E}[L] = \mathbb{E}[(t - y(x))^2] = \underbrace{Var[t] = \sigma^2}_{\text{Noise}} + \underbrace{\mathbb{E}[(f(x) - y(x))^2]}_{\text{Bias}^2} + \underbrace{Var[y(x)]}_{\text{Variance}}$$
+$$\mathbb{E}[L] = \mathbb{E}[(t - y(x))^2] = \mathbb{E}[t^2] \pm \mathbb{E}[t]^2 + \mathbb{E}[(y(x))^2] \pm \mathbb{E}[(y(x))]^2 - 2 f(x) \mathbb{E}[y(x)] = \\ = \underbrace{Var[t] = \sigma^2}_{\text{Noise}} + \underbrace{\mathbb{E}[(f(x) - y(x))^2]}_{\text{Bias}^2} + \underbrace{Var[y(x)]}_{\text{Variance}}$$
 
 The only irreducible error is the noise $\sigma^2$, which is inherent in the data generation process ($t = f(x) + \epsilon$ where $\epsilon \sim \mathcal{N}(0, \sigma^2)$). The bias and variance are controllable through model choice and training.
 
@@ -440,13 +440,6 @@ $$\sigma^2_N = \underbrace{\sigma^2}_{\text{data noise}} + \underbrace{\phi(x)^T
 
 **Linear classification** assigns an input to one of $K$ classes $C_k$ using linear combinations of features to define decision boundaries (hyperplanes) that separate the input space.
 
-The result of the classification can lead to two types of errors:
-
-- **False positive**: predict positive when true class is negative
-- **False negative**: predict negative when true class is positive
-
-These have different costs in different domains. In medical diagnosis, missing a disease (false negative) is typically more costly than a false alarm (false positive), so models can be biased to minimize one error type.
-
 The model computes a linear score for each class and applies a **nonlinear activation function** ($y(x, w) =  f(x^T w + w_0)$) to map scores ($-\infty$ to $\infty$) to probabilities ($0$ to $1$) or class labels.
 
 The **sigmoid function** is a common choice for binary classification: $\sigma(z) = \frac{1}{1 + e^{-z}}$
@@ -457,6 +450,24 @@ For multi-class classification, each class can be modeled with a separate linear
 >
 > - **One-vs-Rest**: Train $K-1$ binary classifiers, each distinguishing one class from the rest. This can lead to ambiguous regions where multiple classifiers predict positive.
 > - **One-vs-One**: Train $\binom{K}{2}$ binary classifiers for each pair of classes. This can lead to complex decision boundaries and is computationally expensive.
+
+### Classification Results
+
+The result of the classification can lead to four types of output:
+
+- **True positive**: predict positive when true class is positive
+- **True negative**: predict negative when true class is negative
+- **False positive**: predict positive when true class is negative
+- **False negative**: predict negative when true class is positive
+
+These have different costs in different domains. In medical diagnosis, missing a disease (false negative) is typically more costly than a false alarm (false positive), so models can be biased to minimize one error type.
+
+It is possible to evaluate the performance of a classifier using metrics such as:
+
+- **Accuracy**: proportion of correct predictions over total predictions $(\frac{TP + TN}{TP + TN + FP + FN})$
+- **Precision**: proportion of true positives over all predicted positives $(\frac{TP}{TP + FP})$
+- **Recall**: proportion of true positives over all actual positives $(\frac{TP}{TP + FN})$
+- **F1 Score**: harmonic mean of precision and recall $(2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}})$
 
 ### Discriminant Function Approach
 
@@ -484,6 +495,23 @@ $$w^{(k+1)} = w^{(k)} + \alpha t_n \phi(x_n)$$
 where $\alpha$ is the learning rate (can be set to 1 as each update moves the decision boundary in the correct direction).
 
 The perceptron algorithm can **converge** to a solution if the data is linearly separable, meaning there exists a hyperplane that can perfectly separate the two classes. However, if the data is not linearly separable, the algorithm will never converge and will continue to oscillate indefinitely.
+
+**Algorithm:**
+
+```python
+def perceptron(x, t):
+   w = np.zeros(x.shape[1])  # Initialize weights
+
+   misclassified = True
+
+   while misclassified:
+      misclassified = False
+
+      for n in range(len(x)):
+         if np.sign(w.T @ x[n]) != t[n]:  # Check if misclassified
+            w += t[n] * x[n]  # Update weights
+            misclassified = True
+```
 
 ### Probabilistic Discriminative Approach
 
@@ -744,7 +772,7 @@ $$\sum_{h \in \mathcal{H}_{\text{bad}}} (1 - \epsilon)^N \leq |\mathcal{H}|(1 - 
 
 The version space is a very strong assumption, as it requires that at least one hypothesis has zero training error. In practice, this is often not the case, especially with noisy data:
 
-$$L_{\text{true}}(h) \leq L_{\text{train}}(h) + \epsilon$$
+$$L_{\text{true}}(h) \leq \underbrace{L_{\text{train}}(h)}_{\text{Bias}} + \underbrace{\sqrt{\frac{\ln|\mathcal{H}| + \ln \frac{1}{\delta}}{2N}}}_{\text{Variance}}$$
 
 Using the **Hoeffding inequality** ($\Pr(\overbrace{\mathbb{E}[X]}^{\text{Real Mean}} - \overbrace{\bar{X}}^{\text{Empirical Mean}} > \epsilon) \leq e^{-2N\epsilon^2}$), we can bound the probability that the true error is much larger than the training error, even when the training error is not zero.
 
@@ -753,7 +781,6 @@ $$\Pr(\exists h \in \mathcal{H} : L_{\text{true}}(h) - L_{\text{train}}(h) \geq 
 From which we can derive:
 
 - $N \geq \frac{1}{2\epsilon^2} \left(\ln|\mathcal{H}| + \ln \frac{1}{\delta}\right)$
-- $\epsilon \leq \sqrt{\frac{\ln|\mathcal{H}| + \ln \frac{1}{\delta}}{2N}} = \text{variance}$
 
 ### VC-Dimension
 
