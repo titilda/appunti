@@ -308,6 +308,13 @@ graph LR
 
 This architecture uses **in-order issue**, meaning that instructions are issued in the order they appear in the program, but they can execute and complete out of order leading to out-of-order write-back that will be happen in the first half of the cycle allowing reading in the second half of the cycle. In case of multiple WB in the same cycle, the older instruction will be executed first.
 
+These are the requirement that a stage must satisfy to proceed to the next stage:
+
+| Fetch | Decode | Issue  | Execute | Write-back     |
+| ----- | ------ | ------ | ------- | -------------- |
+|       | No WAR | No RAW |         | No multiple WB |
+|       | No WAW |        |         |                |
+
 ### Very Long Instruction Words (VLIW)
 
 **VLIW** uses _static scheduling_, where the compiler is responsible for analyzing dependencies and scheduling independent instructions to execute in parallel. The goal is to achieve CPI < 1 by fetching multiple instructions and issuing them at the same time.
@@ -435,6 +442,15 @@ The Scoreboard pipeline is divided into four stages:
 
 This allows to achieve out-of-order execution while maintaining in-order issue.
 
+These are the requirement that a stage must satisfy to proceed to the next stage:
+
+| Issue          | Read Operands  | Execute | Write-back     |
+| -------------- | -------------- | ------- | -------------- |
+| No structural  | No RAW hazards |         | No WAR hazards |
+| No WAW hazards |                |         | No multiple WB |
+
+> WAR hazards check of instructions that still needs to read operands.
+
 #### Register Renaming
 
 **Register Renaming** eliminates WAR and WAW hazards by mapping **logical registers** (from instructions) to **physical registers** (actual hardware registers). This is done to decouple the instruction's logical register name from the actual hardware storage.
@@ -449,6 +465,13 @@ With this the lifecycle of an instruction is as follows:
 2. **Read Operands**: Instructions read from the physical registers based on the current mapping.
 3. **Execute**: Perform the operation.
 4. **Write-back**: Write the result to the physical register and free the old physical register if it is no longer needed by any instruction.
+
+These are the requirement that a stage must satisfy to proceed to the next stage:
+
+| Issue                       | Read Operands  | Execute | Write-back     |
+| --------------------------- | -------------- | ------- | -------------- |
+| No structural hazards       | No RAW hazards |         | No multiple WB |
+| Physical Register Available |                |         |                |
 
 ### Tomasulo Algorithm
 
@@ -518,6 +541,13 @@ Tomasulo's pipeline consists of three main stages:
 
 Tomasulo allows in-order issue and out-of-order execution.
 
+These are the requirement that a stage must satisfy to proceed to the next stage:
+
+| Issue                       | Execute | Write-back     |
+| --------------------------- | ------- | -------------- |
+| Free RS available           | No RAW  | CDB free       |
+|                             | Free FU |                |
+
 #### ReOrder Buffer
 
 To maintain correct program semantics while allowing out-of-order execution, Tomasulo uses a **ReOrder Buffer (ROB)** to hold the results of instructions to allow **in-order commit**. This allows the processor to recover from mispredictions and exceptions by discarding uncommitted instructions without affecting the memory.
@@ -543,6 +573,13 @@ The commit stage can have three outcomes:
 1. **Normal Commit**: Instruction at head of ROB completed successfully, the result is written to the register file, and the ROB entry is freed
 2. **Store Commit**: same as normal commit, but the result is written to memory instead of the register file
 3. **Branch Misprediction**: If branch prediction was wrong, the ROB is flushed, discarding all uncommitted instructions, and the PC is updated to the correct target address.
+
+These are the requirement that a stage must satisfy to proceed to the next stage:
+
+| Issue                       | Execute | Write-back     | Commit      |
+| --------------------------- | ------- | -------------- | ----------- |
+| Free RS available           | No RAW  | CDB free       | Head of ROB |
+|                             | Free FU |                |             |
 
 ### Superscalar
 
