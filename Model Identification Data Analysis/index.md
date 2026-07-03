@@ -1134,3 +1134,98 @@ flowchart LR
     KF_SPLIT1 -->|"−"| ERR
   end
 ```
+
+#### Multi-Step Prediction
+
+To predict k steps ahead without new measurements:
+
+$$\begin{cases}
+\hat{x}(t+k | t) = F^{k-1}\hat{x}(t+1 | t) \\
+\hat{y}(t+k | t) = H\hat{x}(t + k | t)
+\end{cases}$$
+
+where the 1-step prediction $\hat{x}(t+1|t)$ is known from the previous filter step.
+
+#### Filtered Kalman Filter
+
+In case the matrix $F$ is not invertible, it is used the **filtered gain**:
+
+$$K_0(t) = (P(t) H^T) (H P(t) H^T + V_2)^{-1}$$
+
+#### Time-Varying Systems
+
+When F(t), H(t), or noise covariances vary with time:
+
+1. **Asymptotic stability not guaranteed** even if all instantaneous eigenvalues are in the unit circle
+2. Gain $K(t)$ must be updated at every sampling time (higher computational cost)
+
+It is possible to make the system time-invariant by finding a steady state where the value of $P(t)$ converges to a constant $P(t+1) = P(t) = \bar{P}$ (**Algebraic Riccati Equation, ARE**):
+
+$$\bar{P} = F\bar{P}F^T + V_1 - (F\bar{P}H^T + V_{12})(H\bar{P}H^T + V_2)^{-1}(F\bar{P}H^T + V_{12})^T$$
+
+If $P(t)$ converges to $\bar{P}$, then $K(t)$ converges to $\bar{K}$, than the system becomes time-invariant:
+
+$$\hat{x}(t+1|t) \approx (F - \bar{K}H)\hat{x}(t|t-1) + \bar{K}y(t)$$
+
+The only requirement for stability is that all eigenvalues of $F - \bar{K}H$ must remain in the unit circle.
+
+To **guarantee** that:
+
+- ARE has an unique solution $\bar{P}$
+- The DRE converges: $P(t) \to \bar{P}$ for all initial $P_0 \geq 0$
+- The steady-state gain $\bar{K}$ correspond to an asymptotically stable filter
+
+There are two *sufficient* theorems:
+
+**Theorem 1:**
+
+We require the following assumptions:
+
+- $V_{12} = 0$ (no cross-correlation between noises)
+- System is asymptotically stable (all eigenvalues of F in unit circle)
+
+**Theorem 2:**
+
+By reformulate state noise as: $x(t+1) = Fx(t) + Gu(t) + \Gamma\omega(t)$ where $\omega(t) \sim WN(0, I)$ and $\Gamma\Gamma^T = V_1$, the state is fully controllable from the noise $v_1(t)$.
+
+From this, the following assumptions are required:
+- $V_{12} = 0$
+- $(F, H)$ is **observable**, we can infer state from outputs
+- $(F, \Gamma)$ is **controllable**, noise can affect all states
+
+#### Non-White Noise
+
+Real noise often has temporal correlations (colored noise), violating the white noise assumption.
+
+This is solved by augmenting the state vector to include the noise dynamics, allowing the filter to estimate both the system state and the colored noise.
+
+Augment the state:
+
+$$\tilde{x}(t) = \begin{bmatrix} x_1(t) \\ n(t) \end{bmatrix}$$
+
+Augmented dynamics:
+
+$$\begin{bmatrix} x_1(t+1) \\ n(t+1) \end{bmatrix} = \begin{bmatrix} F & 0 \\ 0 & a \end{bmatrix} \begin{bmatrix} x_1(t) \\ n(t) \end{bmatrix} + \begin{bmatrix} G \\ 0 \end{bmatrix}u(t) + \begin{bmatrix} 0 \\ 1 \end{bmatrix}w(t)$$
+
+$$y(t) = \begin{bmatrix} H & 1 \end{bmatrix} \begin{bmatrix} x_1(t) \\ n(t) \end{bmatrix} + v_2(t)$$
+
+#### Non-Linear Systems
+
+For systems with non-linear dynamics:
+
+$$S: \begin{cases}
+x(t+1) = f(x(t), u(t)) + v_1(t) \\
+y(t) = h(x(t)) + v_2(t)
+\end{cases}$$
+
+where $f(\cdot)$ and $h(\cdot)$ are nonlinear functions.
+
+This is solved using the **Extended Kalman Filter (EKF)**, which linearizes around the current state estimate at each time step:
+
+$$F(t) = \frac{\partial f}{\partial x}\bigg|_{x(t) = \hat{x}(t|t-1)}$$
+
+$$H(t) = \frac{\partial h}{\partial x}\bigg|_{x(t) = \hat{x}(t|t-1)}$$
+
+Then apply the standard Kalman filter equations using these time-varying Jacobian matrices.
+
+This approach doesn't guarantee optimality or stability and requires a high computational cost.
