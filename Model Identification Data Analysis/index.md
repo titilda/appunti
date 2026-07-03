@@ -781,3 +781,81 @@ $$\hat{S}(t) = \frac{1}{M} \sum_{k=0}^{M - 1} y(t + kT) = \underbrace{\frac{1}{M
 
 Then remove the seasonal component:
 $$\tilde{y}(t) = y(t) - \hat{S}(t)$$
+
+## Process Representation
+
+### State-Space Representation
+
+The **state-space model** (SS) describes a linear time discrete system using two equations:
+
+$$\begin{cases} x(t+1) = Fx(t) + Gu(t) & \text{(state equation)} \\ y(t) = Hx(t) + Du(t) & \text{(output equation)} \end{cases}$$
+
+- The state $x(t)$ is an internal representation of the system's memory. The state equation governs how the system evolves.
+- The output equation $y(t)$ defines what we observe.
+
+To be **stable** all the eigenvalues of $F$ must lie strictly inside the unit circle in the complex plane.
+
+#### Matrix Definitions
+
+- **F** (n × n): State transition matrix, determines how the state evolves
+- **G** (n × 1): Input matrix, couples the input to the state
+- **H** (1 × n): Output matrix, maps state to observable output
+- **D** (1 × 1): Feedthrough matrix, direct coupling from input to output. If it's 0, the system is strictly proper.
+
+The same behavior can be represented by different state-space models through similarity transformations. We can apply the transformation $T$ without changing the input-output behavior:
+
+- $F' = TFT^{-1}$
+- $G' = TG$
+- $H' = HT^{-1}$
+- $D' = D$
+
+#### Observability
+
+A system is **fully observable** if the current state can be uniquely determined from a finite sequence of past outputs and inputs.
+
+**Observability Matrix:**
+
+$$O = \begin{bmatrix} H \\ HF \\ HF^2 \\ \vdots \\ HF^{n-1} \end{bmatrix} \quad \text{(n × n)}$$
+
+The observability matrix shows the relationship between the initial state and the outputs. If $\text{rank}(O) = n$, the system is fully observable and each component of the initial state effects the output.
+
+#### Controllability
+
+A system is **fully controllable** if any desired state can be reached from any initial state in finite time using appropriate input sequences.
+
+**Controllability Matrix:**
+
+$$\mathcal{C} = \begin{bmatrix} G & FG & F^2G & \cdots & F^{n-1}G \end{bmatrix} \quad \text{(n × n)}$$
+
+The controllability matrix shows how input actions propagate through the state. If $\text{rank}(\mathcal{C}) = n$, the system is fully controllable and every state dimension can be influenced by the input.
+
+#### State-Space to Transfer Function
+
+Starting from the state-space equations, apply the Z-transform:
+
+$$z \cdot x(t) = F x(t) + G u(t) \quad \rightarrow \quad (zI - F)x(t) = Gu(t)$$
+
+The output transfer function is:
+
+$$y(t) = Hx(t) + Du(t) = [H(zI - F)^{-1}G + D]u(t)$$
+
+$$W(z) = H(zI - F)^{-1}G + D$$
+
+#### State-Space to Impulse Response
+
+Recursively substitute the state equation into the output equation.
+
+For $t = 0, 1, 2, \ldots$ with initial condition $x(0) = 0$ and impulse input $u(t) = \delta(t)$:
+
+$$x(t) = F^{t-1}Gu(0) + F^{t-2}Gu(1) + \cdots + Gu(t-1) = \sum_{j=0}^{t-1} F^j G u(t-1-j)$$
+
+Substituting into the output equation:
+
+$$y(t) = H\sum_{j=0}^{t-1} F^j G u(t-1-j) + Du(t) = \sum_{j=0}^{t} \omega(j) u(t-j)$$
+
+where the **impulse response coefficients** are:
+
+$$\begin{cases}
+\omega(0) = D, \\
+\omega(t) = HF^{t-1}G & \text{for } t \geq 1
+\end{cases}$$
