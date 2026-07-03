@@ -890,3 +890,121 @@ $$H = \begin{bmatrix} b_{n-1} & b_{n-2} & \cdots & b_0 \end{bmatrix}, \quad D = 
 #### Transfer Function to Impulse Response
 
 Perform **long polynomial division** of $B(z)/A(z)$. The quotient coefficients are the impulse response values $\{\omega(0), \omega(1), \omega(2), \ldots\}$.
+
+### Impulse Response Representation
+
+The impulse response directly models input-output behavior:
+
+$$y(k) = \sum_{j=0}^{\infty} \omega(j) u(k-j)$$
+
+This is a **convolution** of the input signal with the impulse response.
+
+#### Impulse Response to Transfer Function
+
+$$W(z) = \sum_{k=0}^{\infty} \omega(k) z^{-k}$$
+
+This requires all infinite impulse response values (usually truncated in practice) and assumes noise-free measurements. It's rarely used directly for identification.
+
+#### Impulse Response to State-Space (4SID)
+
+The **Subspace State-Space System Identification (4SID)** is a non-parametric method that estimates state-space matrices directly from **truncated impulse response data** $\{\omega(0), \omega(1), \ldots, \omega(N)\}$.
+
+> In case the input $u(t_0)$ has value $x$ and is not at time 0, $\omega(0) = \frac{y(t_0)}{x}$
+
+##### Hankel Matrix
+
+The **Hankel matrix** is a matrix constructed from the impulse response samples. It captures the system dynamics.
+
+Given N impulse response samples, construct a Hankel matrix of size $q \times d$ where $q + d - 1 = N$:
+
+$$H_{qd} = \begin{bmatrix}
+\omega(1) & \omega(2) & \cdots & \omega(d) \\
+\omega(2) & \omega(3) & \cdots & \omega(d+1) \\
+\vdots & \vdots & \ddots & \vdots \\
+\omega(q) & \omega(q+1) & \cdots & \omega(q+d-1)
+\end{bmatrix}$$
+
+The rank of the Hankel matrix is bounded by the system order n ($\text{rank}(H_{qd}) \leq n$). By increasing $q$ and $d$, we can find the rank of the system in an iterative way.
+
+The Hankel matrix can be factorized as the product of the **extended observability matrix** and the **extended controllability matrix**:
+
+$$H_{qd} = O_{q} \cdot R_{d}$$
+
+##### Noise Free Case
+
+By setting $q = n + 1$ and $d = n + 1$, we can factor the Hankel matrix into:
+
+$$H_{n+1} = O_{n+1} \cdot R_{n+1}$$
+
+**Estimate F:**
+
+From the observability matrix, we can define two shifted matrices:
+- $O_1 = O_{n+1}(1:n, :)$ (first n rows of $O_{n+1}$)
+- $O_2 = O_{n+1}(2:n+1, :)$ (rows 2 through n+1 of $O_{n+1}$)
+
+From which we can estimate the state transition matrix F:
+
+$$\hat{F} = O_1^{-1} O_2$$
+
+**Estimate H:**
+
+$$\hat{H} = O_{n+1}(1, :)$$
+
+**Estimate G:**
+
+$$\hat{G} = R_{n+1}(:, 1)$$
+
+##### With-Noise Case
+
+Real measurements are corrupted by noise:
+
+$$\tilde{\omega}(k) = \omega(k) + n(k), \quad k = 0, 1, \ldots, N$$
+
+Building the Hankel matrix from noisy data $\tilde{\omega}$ gives:
+
+$$\tilde{H}_{qd} = H_{qd} + N_{qd}$$
+
+where $N_{qd}$ is the noise Hankel matrix.
+
+The presence of the noise matrix $N_{qd}$ increases the rank of $\tilde{H}_{qd}$.
+
+- **If $q \approx d$:** Better model quality but higher computational cost
+- **If $q \ll d$:** Lower computational load but poorer model quality
+
+###### SVD-Based Rank Reduction
+
+The Hankel matrix can be decomposed using **Singular Value Decomposition (SVD)**:
+
+$$\tilde{H}_{qd} = \tilde{U}\tilde{S}\tilde{V}^T$$
+
+where:
+- $\tilde{U}$ (q × q): Left singular vectors
+- $\tilde{S}$ (q × d): Diagonal matrix of singular values $\sigma_1 \geq \sigma_2 \geq \cdots$
+- $\tilde{V}^T$ (d × d): Right singular vectors (transposed)
+
+The values $\sigma_i$ are similar to eigenvalues of $\tilde{H}_{qd}$. They are sorted in descending order.
+
+Ideally the singular values typically show:
+- **Sharp drop:** n largest $\sigma_i$ correspond to system dynamics
+- **Flat region:** remaining $\sigma_i$ correspond to noise
+
+The **rank of the system** can be estimated by selecting the number of singular values in the drop region.
+
+From the rank of the system, we can reconstruct a **denoised Hankel matrix** by keeping only the first n singular values and corresponding vectors:
+
+$$\hat{H}_{qd} = \hat{U}\hat{S}\hat{V}^T$$
+
+where:
+- $\hat{U} = \tilde{U}(:, 1:n) \quad (q \times n)$
+- $\hat{S} = \tilde{S}(1:n, 1:n) \quad (n \times n)$
+- $\hat{V} = \tilde{V}(:, 1:n) \quad (d \times n)$
+
+###### Factorization of Denoised Matrix
+
+It is possible to factor the denoised Hankel matrix into an approximate observability and controllability matrices:
+
+$$\hat{H}_{qd} = \underbrace{\hat{U} \hat{S}^{\frac{1}{2}}}_{\hat{O}} \underbrace{\hat{S}^{\frac{1}{2}} \hat{V}^T}_{\hat{R}}$$
+
+Since $\hat{O}$ is rectangular, it cannot be directly invert. Instead, use least-squares:
+
+$$\hat{F} = (\hat{O}_1^T\hat{O}_1)^{-1}\hat{O}_1^T\hat{O}_2$$
