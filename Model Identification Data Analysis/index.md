@@ -1229,3 +1229,94 @@ $$H(t) = \frac{\partial h}{\partial x}\bigg|_{x(t) = \hat{x}(t|t-1)}$$
 Then apply the standard Kalman filter equations using these time-varying Jacobian matrices.
 
 This approach doesn't guarantee optimality or stability and requires a high computational cost.
+
+## Minimum Variance Control (MVC)
+
+**Minumum Variance Control (MVC)** is a control strategy that aims to track a reference signal $y°(t)$ despite unmeasurable disturbances $e(t)$.
+
+### Optimal Control
+
+The output can be decomposed into a predictable part (based on past data) and an unpredictable part (indipendent from all past data):
+
+$$y(t) = \underbrace{\hat{y}(t|t-k)}_{\text{predictable using data up to } t-k} + \underbrace{\varepsilon(t)}_{\text{unpredictable innovation}}$$
+
+The optimal controller is the one that determines the control input $u(t)$ to minimize the variance of the tracking error $y(t) - y°(t)$:
+
+$$J = var[y(t) - y°(t)] = \mathbb{E}[(\hat{y}(t|t-k) - y°(t) + \varepsilon(t))^2]$$
+
+Since $\varepsilon(t)$ is the indipendent, the cross term vanishes:
+$$J = \mathbb{E}[(\hat{y}(t|t-k) - y°(t))^2] + \mathbb{E}[\varepsilon(t)^2]$$
+
+Also, $\mathbb{E}[\varepsilon(t)^2]$ is independent of the control input $u(t)$, meaning that to minimize J, we must choose $u(t)$ to make the predictable part equal the reference:
+$$\hat{y}(t|t-k) = y°(t) = \frac{B(z)E(z)}{C(z)}u(t-k) + \frac{\tilde{R}(z)}{C(z)}y(t-k)$$
+
+where:
+- $E(z)$ and $\tilde{R}(z)$ come from polynomial division: $\frac{C(z)}{A(z)} = E(z) + z^{-k}\frac{\tilde{R}(z)}{A(z)}$
+
+By setting $\hat{y}(t|t-k) = y°(t)$ and solving for $u(t)$:
+
+$$u(t) = \frac{C(z)}{B(z)E(z)}y°(t) - \frac{\tilde{R}(z)}{B(z)E(z)}y(t)$$
+
+This input will be used for the initial system:
+
+$$y(t) = \frac{B(z)}{A(z)}\underbrace{\left(\frac{C(z)}{B(z)E(z)}y°(t) - \frac{\tilde{R}(z)}{B(z)E(z)}y(t)\right)}_{u(t)}z^{-k} + \frac{C(z)}{A(z)}e(t)$$
+
+#### Controller Architecture
+
+```mermaid
+flowchart LR
+  YI[/"Y°(t)"/]
+  subgraph "Controller"
+    C["C(z)"]
+    S1(" ")
+    R["R̃(z)"]
+    ZK["z⁻ᵏ"]
+    I["1 / B(z)E(z)"]
+  end
+  subgraph "System"
+    E[/"e(t)"/]
+    U["B(t) / A(t)"]
+    N["C(t) / A(t)"]
+    S2(" ")
+  end
+  Y[\"Y(t)"\]
+
+  YI --> C
+  C -->|"+"| S1
+  S1 --> I
+  I -->|"u(t)"| ZK
+  ZK -->|"u(t-k)"| U
+  U -->|"+"| S2
+  E --> N
+  N -->|"+"| S2
+  S2 --> Y
+  S2 --> R
+  R -->|"-"| S1
+```
+
+### Stability Analysis
+
+The stability of the closed-loop system can be analyzed by examining the characteristic polynomial derived from the closed-loop transfer function:
+
+$$L(z) = \frac{1}{B(z)E(z)} \cdot z^{-k} \cdot \frac{B(z)}{A(z)} \cdot \tilde{R}(z)$$
+
+The **Characteristic polynomial** is given by:
+
+$$\chi(z) = L_\text{numerator} \pm L_\text{denominator}$$
+
+In this case the feedback loop is negative, so the characteristic polynomial is:
+
+$$\chi(z) = L_\text{numerator} \pm L_\text{denominator} = B(z) \cdot C(z)$$
+
+The closed-loop system is stable if and only if all roots of $\chi(z)$ lie inside the unit circle, but since both $B(z)$ and $C(z)$ are minimum phase (all roots inside the unit circle), the closed-loop system is **asymptotically stable**.
+
+### Generalized Minimum Variance Control (GMVC)
+
+MVC is optimal as minimize the variance of the tracking error, but it is inflexible for practical scenarios as cannot design a specific behavior of the closed-loop system. GMVC introduces design parameters to shape performance:
+
+$$J = \mathbb{E}\left[(y(t) - P(z)y°(t) + Q(z)u(t))^2\right]$$
+
+where:
+
+- **$P(z)$**: Reference model polynomial,shapes the desired *closed-loop tracking behavior*
+- **$Q(z)$**: Control penalty polynomial, penalizes control effort
