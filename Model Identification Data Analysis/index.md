@@ -859,3 +859,34 @@ $$\begin{cases}
 \omega(0) = D, \\
 \omega(t) = HF^{t-1}G & \text{for } t \geq 1
 \end{cases}$$
+
+### Transfer Function Representation
+
+$$y(t) = \frac{B(z)}{A(z)} z^{-d} u(t) = \frac{b_{n-1} z^{n-1} + \cdots + b_0}{z^n + a_{n-1} z^{n-1} + \cdots + a_0} z^{-d} u(t)$$
+
+where:
+
+- **A(z)**: Denominator polynomial
+- **B(z)**: Numerator polynomial
+- **C(z)**: Noise polynomial (if present)
+- **d**: Pure delay (number of time steps between input change and output change)
+
+It is possible to define a canonical representation of the system in transfer function form ([Canonical Representation](#canonical-representations))
+
+#### Transfer Function to State-Space (Companion Form)
+
+Given a strictly proper transfer function with monic denominator:
+
+$$F = \begin{bmatrix}
+0 & 1 & 0 & \cdots & 0 \\
+0 & 0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+-a_{n-1} & -a_{n-2} & -a_{n-3} & \cdots & -a_0
+\end{bmatrix}, \quad
+G = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 1 \end{bmatrix}$$
+
+$$H = \begin{bmatrix} b_{n-1} & b_{n-2} & \cdots & b_0 \end{bmatrix}, \quad D = 0$$
+
+#### Transfer Function to Impulse Response
+
+Perform **long polynomial division** of $B(z)/A(z)$. The quotient coefficients are the impulse response values $\{\omega(0), \omega(1), \omega(2), \ldots\}$.
