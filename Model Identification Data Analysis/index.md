@@ -1377,3 +1377,59 @@ $$\dot{x}(t) \approx \frac{z - 1}{\Delta T[\alpha z + (1-\alpha)]}$$
 - $\alpha = 0$: Euler Forward
 - $\alpha = 1$: Euler Backward
 - $\alpha = 0.5$: Tustin approximation
+
+## Frequency Response Estimation
+
+For a linear time-invariant system, a sinusoidal input produces a sinusoidal output at the same frequency, but with modified amplitude and phase:
+
+$$u(t) = \sin(\omega t) \quad \Longrightarrow \quad y(t) = B\sin(\omega t + \phi)$$
+
+### Frequency Response Estimation Procedure
+
+The system is stimulated by a sinusoidal input at frequency $\omega$, and the output measured is used to estimate the frequency response at that frequency. The frequency is increased at each measurement until reaching $\omega_H$ (the highest frequency of interest $\omega_H = 3 \, \omega_C$).
+
+The estimated output can be expressed as a linear combination of sine and cosine components:
+
+$$\hat{y}_i(t) = \hat{a_i}\sin(\omega_i t) + \hat{b_i}\cos(\omega_i t)$$
+
+where $\hat{a_i}$ and $\hat{b_i}$ are the coefficients estimated from the measured output by minimizing the squared error between the measured output and the estimated output at each frequency $\omega_i$:
+
+$$\begin{cases}
+\frac{\partial J_N}{\partial \hat{a_i}} = 0 \\
+\frac{\partial J_N}{\partial \hat{b_i}} = 0
+\end{cases}$$
+
+The estimated output can also be expressed in **polar form**:
+
+$$\hat{y}_i(t) = \hat{B_i}\sin(\omega_i t + \hat{\phi_i})$$
+
+where:
+
+- $\hat{B_i} = \frac{\frac{\hat{a_i}}{\cos(\hat{\phi_i})} + \frac{\hat{b_i}}{\sin(\hat{\phi_i})}}{2}$ (estimated gain)
+- $\hat{\phi_i} = \text{atan}(\frac{\hat{b_i}}{\hat{a_i}})$ (estimated phase)
+
+### Frequency Response Estimation Optimization
+
+Given an input $u(t) = A_i \sin(\omega_i t)$, its frequency response can be expressed as:
+
+$$\hat{W}_i(e^{j\omega_i}, \theta) = \frac{\hat{B_i}}{A_i} e^{j\hat{\phi_i}}$$
+
+By defining the generalized transfer function as:
+
+$$\hat{W}(z, \theta) = \frac{\hat{b_0} + \hat{b_1}z^{-1} + \cdots + \hat{b_n}z^{-n}}{1 + \hat{a_1}z^{-1} + \cdots + \hat{a_n}z^{-n}} \cdot z^{-1}, \quad \theta = \begin{bmatrix} b_0 & \cdots & b_n & a_1 & \cdots & a_n \end{bmatrix}^T$$
+
+The optimization is computed across the different frequencies $\omega_i$ by minimizing the cost function:
+
+$$\hat{\theta} = \arg\min_\theta \{J_H(\theta)\} = \arg\min_\theta \left\{\frac{1}{H}\sum_{i=1}^{H} (|\hat{W}(e^{j\omega_i}, \theta) - \hat{W}_i(e^{j\omega_i}, \theta)|)^2\right\}$$
+
+### Weighted Estimation
+
+It is possible to introduce **weights** $\gamma_i$ in the cost function to emphasize certain frequencies over others. This is particularly useful when some frequencies are more critical for system performance (e.g., resonance frequencies):
+
+$$\tilde{J}_H(\theta) = \frac{1}{H}\sum_{i=1}^{H} \gamma_i (|\hat{W}(e^{j\omega_i}, \theta) - \hat{W}_i(e^{j\omega_i}, \theta)|)^2$$
+
+A simple alternative consist in over-sampling the frequency response in the region of interest.
+
+### Unstable Systems
+
+With unstable systems, open-loop experiments are impossible as the system's output will diverge. To overcome this, the system can be stabilized using a feedback controller during the identification process, performing a closed loop experiment.
