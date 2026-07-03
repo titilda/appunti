@@ -1320,3 +1320,60 @@ where:
 
 - **$P(z)$**: Reference model polynomial,shapes the desired *closed-loop tracking behavior*
 - **$Q(z)$**: Control penalty polynomial, penalizes control effort
+
+## Discretization of Analog Systems
+
+Digital controllers interact with the physical world through sensors and actuators, which operate in continuous time. To implement control algorithms on a digital computer, the continuous-time system must be converted into a discrete-time representation with a process called **discretization**.
+
+Discretization introduces two forms of information loss:
+
+- **Sampling**: the continuous-time signal is measured at discrete time intervals, which can lead to missing high-frequency dynamics (aliasing).
+- **quantization**: the continuous amplitude of the signal is rounded to a finite set of values, which reduce precision.
+
+### Sampling Frequency
+
+The sampling frequency $f_s$ (or sampling period $\Delta T$) determines how often the continuous signal is measured:
+
+$$f_s = \frac{1}{\Delta T} \quad \text{(Hz)}, \qquad \omega_s = \frac{2\pi}{\Delta T} \quad \text{(rad/s)}$$
+
+The highest frequency that can be represented without aliasing is the **Nyquist frequency**:
+
+$$f_N = \frac{f_s}{2}, \qquad \omega_N = \frac{\omega_s}{2}$$
+
+To be able to capture closed-loop dynamics accurately, the Nyquist frequency should be at least 10 times the system's closed-loop bandwidth $\omega_C$:
+
+$$\omega_N \geq 10 \, \omega_C$$
+
+### State-Space Discretization
+
+Given a continuous-time state-space system:
+
+$$\begin{cases} \dot{x}(t) = Ax(t) + Bu(t) \\ y(t) = Cx(t) + Du(t) \end{cases}$$
+
+the state-space transformation, given a sampling time $\Delta T$, is:
+
+$$F = e^{A\Delta T}, \qquad G = \int_0^{\Delta T} e^{A\delta}B\, d\delta, \qquad H = C, \qquad D_d = D$$
+
+The discretized system is stable if and only if the eigenvalues of the matrix $A$ lie in the negative half-plane. The poles of the matrix A $\lambda_A$ map to discrete poles $\lambda_F = e^{\lambda_A \Delta T}$.
+
+#### Euler Methods
+
+It is possible to approximate the discretization, and making it more computationally efficient, using **Euler methods**. These methods approximate the derivative $\dot{x}(t)$ with finite differences.
+
+**Euler Backward:**
+
+$$\dot{x}(t) \approx \frac{x(t) - x(t-1)}{\Delta T} = \frac{z-1}{z\Delta T}$$
+
+**Euler Forward:**
+
+$$\dot{x}(t) \approx \frac{x(t+1) - x(t)}{\Delta T} = \frac{z-1}{\Delta T}$$
+
+**Generalized approximation:**
+
+A parameter $\alpha \in [0, 1]$ blends forward and backward Euler:
+
+$$\dot{x}(t) \approx \frac{z - 1}{\Delta T[\alpha z + (1-\alpha)]}$$
+
+- $\alpha = 0$: Euler Forward
+- $\alpha = 1$: Euler Backward
+- $\alpha = 0.5$: Tustin approximation
