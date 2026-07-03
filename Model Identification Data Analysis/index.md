@@ -1008,3 +1008,129 @@ $$\hat{H}_{qd} = \underbrace{\hat{U} \hat{S}^{\frac{1}{2}}}_{\hat{O}} \underbrac
 Since $\hat{O}$ is rectangular, it cannot be directly invert. Instead, use least-squares:
 
 $$\hat{F} = (\hat{O}_1^T\hat{O}_1)^{-1}\hat{O}_1^T\hat{O}_2$$
+
+## Software Sensing
+
+**Software sensing** is a technique that uses mathematical models and measurements to estimate internal system states that cannot be directly observed. It reconstructs the "hidden" dynamics of a system when some states are inaccessible or measured only indirectly.
+
+Given the system's dynamics and the noise characteristics, we can represent the system as:
+
+$$S: \begin{cases}
+x(k+1) = Fx(k) + Gu(k) + v_1(k) & \text{(state evolution)} \\
+y(k) = Hx(k) + Du(k) + v_2(k) & \text{(measurement)}
+\end{cases}$$
+
+where:
+
+- $v_1(k)$: State noise ($1 \times n$) that represents the internal distrurbances
+  - The covariance is defined by the matrix $V_1 = \mathbb{E}[v_1(k)v_1(k)^T]$ (n × n, symmetric, semi-positive definite)
+  - This is usually unknown and must be estimated from data
+- $v_2(k)$: Measurement noise ($1 \times p$) that represents the sensor inaccuracies
+  - The covariance is defined by the matrix $V_2 = \mathbb{E}[v_2(k)v_2(k)^T]$ (p × p, symmetric, positive definite)
+  - This is usually known from sensor specifications or calibration
+
+The correlation between the two noise terms is captured by the **cross-covariance matrix** $V_{12}$ (n × p, semi-positive definite):
+
+$$V_{12} = \mathbb{E}[v_1(k)v_2(k)^T]$$
+
+### Kalman Filter
+
+The **Kalman filter** is a recursive algorithm that estimates the system state $x(t)$ from noisy measurements $y(t)$, creating a digital twin of the system.
+
+This algorithm iterates through two main steps:
+
+1. **Prediction:** Use the system model to predict the next state and output based on the previous estimate and current input.
+2. **Update:** Incorporate the new measurement to refine the state estimate, balancing between trusting the model and the measurement based on their respective uncertainties.
+
+The system is inizialized with an initial state estimate $\hat{x}(0)$ and will converge to the true state as more measurements are processed.
+
+#### One-Step Predictor Form
+
+Compute the **prediction** of the state and output at time $t$ based on information available up to time $t-1$:
+$$\begin{cases}
+\hat{x}(t | t-1) = \underbrace{F\hat{x}(t-1 | t-1)}_{\hat{x}(t|t-1)} + Gu(t) \\
+\hat{y}(t | t-1) = H\hat{x}(t | t-1) + Du(t)
+\end{cases}$$
+
+From the measurement $y(t)$, compute the **feedback error** $e(t)$:
+$$e(t) = y(t) - \hat{y}(t | t-1)$$
+
+Compute the **Kalman gain** $K(t)$, which determines how much to trust the measurement versus the prediction:
+$$k(t) = \text{cross} \cdot \text{output}^{-1} = (F P(t) H^T + V_{12})(H P(t) H^T + V_2)^{-1}$$
+
+where:
+
+- $P(t)$: Covariance of the prediction error ($\mathbb{E}[(x(t) - \hat{x}(t|t-1))(x(t) - \hat{x}(t|t-1))^T] = var[(x(t) - \hat{x}(t|t))]$)
+
+Update the state estimate:
+$$\hat{x}(t | t) = \hat{x}(t | t-1) + K_0(t) e(t)$$
+
+Update the $P(t)$ using the **Differential Riccati Equation (DRE)**:
+$$P(t+1) = \text{state} - \text{cross} \cdot \text{output}^{-1} \cdot \text{cross}^T = (FP(t)F^T + V_1) - (FP(t)H^T + V_{12})(H P(t) H^T + V_2)^{-1}(H P(t) H^T + V_{12})^T$$
+
+The DRE and gain can be defined using three coupled blocks:
+
+| Block | Formula |
+|-------|---------|
+| **State** | $FP(k)F^T + V_1$ |
+| **Output** | $HP(k)H^T + V_2$ |
+| **Cross** | $FP(k)H^T + V_{12}$ |
+
+##### Kalman Filter Diagram
+
+```mermaid
+flowchart LR
+  U[/"u(t)"/]
+
+  U --> G1
+  subgraph System["True System (S)"]
+    direction LR
+    F1["F"]
+    G1["G"]
+    H1["H"]
+    Z1["z⁻¹"]
+    V1_block[/"v₁(t)"/]
+    V2_block[/"v₂(t)"/]
+    SUM1(" ")
+    SUM2(" ")
+    SPLIT1("x(t)")
+
+    G1 -->|"+"| SUM1
+    V1_block -->|"+"| SUM1
+    SUM1 -->|"x(t+1)"| Z1
+    Z1 --> SPLIT1
+    SPLIT1 --> H1
+    V2_block -->|"+"| SUM2
+    H1 -->|"+"| SUM2
+    SPLIT1 --> F1
+    F1 -->|"+"| SUM1
+  end
+
+  SUM2 --> OUT1[\"y(t)"\]
+  SUM2 -->|"+"| ERR
+
+  U --> G2
+  KF_SPLIT1 --> OUT2[\"ŷ(t|t-1)"\]
+
+  subgraph KalmanFilter["Kalman Filter"]
+    direction LR
+    K["K(t)"]
+    F2["F"]
+    G2["G"]
+    H2["H"]
+    Z2["z⁻¹"]
+    ERR("e(t)")
+    KF_SUM1(" ")
+    KF_SPLIT1("ŷ(t|t-1)")
+
+    G2 -->|"+"| KF_SUM1
+    ERR --> K
+    K -->|"+"| KF_SUM1
+    KF_SUM1 -->|"x̂(t+1|t)"| Z2
+    Z2 -->|"x̂(t|t-1)"| H2
+    Z2 --> F2
+    F2 -->|"+"| KF_SUM1
+    H2 --> KF_SPLIT1
+    KF_SPLIT1 -->|"−"| ERR
+  end
+```
