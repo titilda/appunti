@@ -1433,3 +1433,73 @@ A simple alternative consist in over-sampling the frequency response in the regi
 ### Unstable Systems
 
 With unstable systems, open-loop experiments are impossible as the system's output will diverge. To overcome this, the system can be stabilized using a feedback controller during the identification process, performing a closed loop experiment.
+
+## Black Box Identification
+
+**Black box** identification estimates system behavior purely from input-output data, without assuming any internal physical structure.
+
+The *training phase* requires a dataset of input-output pairs $(u(t), y(t))$ collected from the system along with the internal state $x(t)$ used as reference.
+
+$$\hat{x}(t) = \underbrace{S_{ux}(z, \theta)}_{\text{TF from } u(t) \text{ to } x(t)} \cdot u(t) + \underbrace{S_{yx}(z, \theta)}_{\text{TF from } y(t) \text{ to } x(t)} \cdot y(t)$$
+
+where $S_{ux}$ and $S_{yx}$ are matrices of transfer functions (parameterized by $\theta$).
+
+The **cost function** is defined as the mean squared error between the true state $x(t)$ and the estimated state $\hat{x}(t)$:
+
+$$J_M(\theta) = \frac{1}{n}\sum_{t} \left(x(t) - \hat{x}(t)\right)^2$$
+
+Once $\theta$ is estimated by minimizing $J_M(\theta)$, the resulting transfer functions can estimate the state $x(t)$ from any future input-output pair $(u(t), y(t))$.
+
+### Architectures for Black Box Modeling
+
+#### 1. Recurrent Neural Networks
+
+The black box is modeled using a neural network where multiple weighted inputs $a_i$, combined with a bias $b$, passed through a nonlinear (sigmoid) activation function.
+
+It is possible to add a **feedback loop** to the neuron, where the neuron's previous output is fed back as an additional input scaled by a weight $c$. This allows the neuron to retain memory of past inputs and outputs, making it **Dynamic**.
+
+This is a general and flexible method, but it is computationally expensive to train and stability is difficult to guarantee since there are no structural constraints.
+
+#### 2. FIR Structure
+
+Splits the model into a dynamic linear part and a static nonlinear part.
+
+The **linear dynamic part** performs a linear transformation based on the delay operator $z^{-1}$.
+
+The **static nonlinear part** applies a nonlinear transformation $f(\cdot, \theta)$ to the delayed inputs and outputs.
+
+The stability is guaranteed by construction, but for MIMO systems, $f$ must map a high-dimensional space:
+
+$$f(\cdot, \theta): \mathbb{R}^{m \times n_u} \times \mathbb{R}^{p \times (n_y+1)} \to \mathbb{R}^n$$
+
+#### 3. IRR Structure
+Improves on the FIR structure by introducing **recursive feedback** for the static nonlinear part.
+
+The estimated state $\hat{x}(t)$ is fed back into the nonlinear function $f$ as an additional input, allowing the model to retain memory of past states.
+
+This reduces the required $n_u$ and $n_y$ compared to the FIR-like structure, but the stability is not guaranteed since the feedback loop can introduce instability.
+
+#### Meta-Architecture (Physics-Informed Regressors)
+
+When *a-priori* physical knowledge is available, any of the above architectures can be enhanced by adding a **pre-processing** stage that computes **regressors** $R$ with physical meaning from the raw input-output data $(u, y)$. The black-box model is then trained using these regressors instead of the raw data.
+
+The regressor vector can be much smaller than the raw $u, y$ vectors, simplifying the estimation problem.
+
+> **Example:** When identifying a car's dynamics, compute the physical tire force at each wheel as a regressor, rather than feeding raw sensor signals directly into the model.
+
+## Gray Box Identification
+
+**Gray box** identification combines known physical structure with unknown parameters. Prior knowledge about the system's structure is retained, while uncertain or unknown parameters are estimated from data.
+
+The unknown parameters $\theta$ are treated as an extended state variable, allowing the same estimation tools (e.g., Kalman filter) to estimate both the system state $x(t)$ and the parameters $\theta(t)$ simultaneously.:
+
+$$S: \begin{cases}
+x(t+1) = f(x(t), u(t), \theta(t)) + v_1(t) \\
+\theta(t+1) = \theta(t) + v_\theta(t) \\
+y(t) = h(x(t), u(t), \theta(t)) + v_2(t)
+\end{cases}$$
+
+The variance $\lambda_\theta^2$ of $v_\theta(t)$ controls the estimator's behavior:
+
+- A small $\lambda_\theta^2$ assumes the parameters are nearly constant, leading to slow convergence but low variance in the final estimate.
+- A large $\lambda_\theta^2$ allows the parameters to track faster changes, leading to faster convergence but noisier estimates.
