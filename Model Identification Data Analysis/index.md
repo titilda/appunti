@@ -939,6 +939,7 @@ $$H_{n+1} = O_{n+1} \cdot R_{n+1}$$
 **Estimate F:**
 
 From the observability matrix, we can define two shifted matrices:
+
 - $O_1 = O_{n+1}(1:n, :)$ (first n rows of $O_{n+1}$)
 - $O_2 = O_{n+1}(2:n+1, :)$ (rows 2 through n+1 of $O_{n+1}$)
 
@@ -978,6 +979,7 @@ The Hankel matrix can be decomposed using **Singular Value Decomposition (SVD)**
 $$\tilde{H}_{qd} = \tilde{U}\tilde{S}\tilde{V}^T$$
 
 where:
+
 - $\tilde{U}$ (q × q): Left singular vectors
 - $\tilde{S}$ (q × d): Diagonal matrix of singular values $\sigma_1 \geq \sigma_2 \geq \cdots$
 - $\tilde{V}^T$ (d × d): Right singular vectors (transposed)
@@ -985,6 +987,7 @@ where:
 The values $\sigma_i$ are similar to eigenvalues of $\tilde{H}_{qd}$. They are sorted in descending order.
 
 Ideally the singular values typically show:
+
 - **Sharp drop:** n largest $\sigma_i$ correspond to system dynamics
 - **Flat region:** remaining $\sigma_i$ correspond to noise
 
@@ -995,6 +998,7 @@ From the rank of the system, we can reconstruct a **denoised Hankel matrix** by 
 $$\hat{H}_{qd} = \hat{U}\hat{S}\hat{V}^T$$
 
 where:
+
 - $\hat{U} = \tilde{U}(:, 1:n) \quad (q \times n)$
 - $\hat{S} = \tilde{S}(1:n, 1:n) \quad (n \times n)$
 - $\hat{V} = \tilde{V}(:, 1:n) \quad (d \times n)$
@@ -1084,7 +1088,6 @@ flowchart LR
 
   U --> G1
   subgraph System["True System (S)"]
-    direction LR
     F1["F"]
     G1["G"]
     H1["H"]
@@ -1113,7 +1116,6 @@ flowchart LR
   KF_SPLIT1 --> OUT2[\"ŷ(t|t-1)"\]
 
   subgraph KalmanFilter["Kalman Filter"]
-    direction LR
     K["K(t)"]
     F2["F"]
     G2["G"]
@@ -1189,6 +1191,7 @@ We require the following assumptions:
 By reformulate state noise as: $x(t+1) = Fx(t) + Gu(t) + \Gamma\omega(t)$ where $\omega(t) \sim WN(0, I)$ and $\Gamma\Gamma^T = V_1$, the state is fully controllable from the noise $v_1(t)$.
 
 From this, the following assumptions are required:
+
 - $V_{12} = 0$
 - $(F, H)$ is **observable**, we can infer state from outputs
 - $(F, \Gamma)$ is **controllable**, noise can affect all states
@@ -1234,6 +1237,12 @@ This approach doesn't guarantee optimality or stability and requires a high comp
 
 **Minumum Variance Control (MVC)** is a control strategy that aims to track a reference signal $y°(t)$ despite unmeasurable disturbances $e(t)$.
 
+The system $y(t)$ must satisdy the following assumptions:
+
+- $b_0 \ne 0$
+- The roots of $B(z)$ must be inside the unit circle
+- $\frac{C(z)}{A(z)}$ must be in canonical form
+
 ### Optimal Control
 
 The output can be decomposed into a predictable part (based on past data) and an unpredictable part (indipendent from all past data):
@@ -1251,6 +1260,7 @@ Also, $\mathbb{E}[\varepsilon(t)^2]$ is independent of the control input $u(t)$,
 $$\hat{y}(t|t-k) = y°(t) = \frac{B(z)E(z)}{C(z)}u(t-k) + \frac{\tilde{R}(z)}{C(z)}y(t-k)$$
 
 where:
+
 - $E(z)$ and $\tilde{R}(z)$ come from polynomial division: $\frac{C(z)}{A(z)} = E(z) + z^{-k}\frac{\tilde{R}(z)}{A(z)}$
 
 By setting $\hat{y}(t|t-k) = y°(t)$ and solving for $u(t)$:
@@ -1309,6 +1319,14 @@ In this case the feedback loop is negative, so the characteristic polynomial is:
 $$\chi(z) = L_\text{numerator} \pm L_\text{denominator} = B(z) \cdot C(z)$$
 
 The closed-loop system is stable if and only if all roots of $\chi(z)$ lie inside the unit circle, but since both $B(z)$ and $C(z)$ are minimum phase (all roots inside the unit circle), the closed-loop system is **asymptotically stable**.
+
+### Transfer Function Paths
+
+It is possible to derive the transfer function from two points in the diagram as:
+
+$$W_{P1 \rightarrow P2}(z) = \frac{\text{Path from } P1 \text{ to } P2}{L(z) + 1}$$
+
+> If there are some roots that are unstable, they cannot be deleted.
 
 ### Generalized Minimum Variance Control (GMVC)
 
@@ -1372,7 +1390,7 @@ $$\dot{x}(t) \approx \frac{x(t+1) - x(t)}{\Delta T} = \frac{z-1}{\Delta T}$$
 
 A parameter $\alpha \in [0, 1]$ blends forward and backward Euler:
 
-$$\dot{x}(t) \approx \frac{z - 1}{\Delta T[\alpha z + (1-\alpha)]}$$
+$$\dot{x}(t) \approx \frac{z - 1}{\Delta T[\alpha z (1-\alpha)]}$$
 
 - $\alpha = 0$: Euler Forward
 - $\alpha = 1$: Euler Backward
@@ -1380,15 +1398,15 @@ $$\dot{x}(t) \approx \frac{z - 1}{\Delta T[\alpha z + (1-\alpha)]}$$
 
 ## Frequency Response Estimation
 
+To estimate the frequency response of a system, we can use sinusoidal inputs at different frequencies $\omega_i$ and measure the corresponding outputs. The system is tested against a range of frequencies from $0$ to $\omega_H$ (the highest frequency of interest $\omega_H = 3 \, \omega_C$) with a distance between the signals of $\Delta \omega$ and an, optional, decreasing amplitude. This allows us to characterize how the system responds to different frequency components.
+
 For a linear time-invariant system, a sinusoidal input produces a sinusoidal output at the same frequency, but with modified amplitude and phase:
 
 $$u(t) = \sin(\omega t) \quad \Longrightarrow \quad y(t) = B\sin(\omega t + \phi)$$
 
-### Frequency Response Estimation Procedure
+### Removing Noise from Measured Output
 
-The system is stimulated by a sinusoidal input at frequency $\omega$, and the output measured is used to estimate the frequency response at that frequency. The frequency is increased at each measurement until reaching $\omega_H$ (the highest frequency of interest $\omega_H = 3 \, \omega_C$).
-
-The estimated output can be expressed as a linear combination of sine and cosine components:
+In the real world the output is corrupted by noise, so we require to find the noise-cleared version $\hat{y}(t)$, expressed as a linear combination of sine and cosine components:
 
 $$\hat{y}_i(t) = \hat{a_i}\sin(\omega_i t) + \hat{b_i}\cos(\omega_i t)$$
 
@@ -1408,11 +1426,11 @@ where:
 - $\hat{B_i} = \frac{\frac{\hat{a_i}}{\cos(\hat{\phi_i})} + \frac{\hat{b_i}}{\sin(\hat{\phi_i})}}{2}$ (estimated gain)
 - $\hat{\phi_i} = \text{atan}(\frac{\hat{b_i}}{\hat{a_i}})$ (estimated phase)
 
-### Frequency Response Estimation Optimization
-
-Given an input $u(t) = A_i \sin(\omega_i t)$, its frequency response can be expressed as:
+Given an input $u_i(t) = A_i \sin(\omega_i t)$, its frequency response can be expressed as:
 
 $$\hat{W}_i(e^{j\omega_i}, \theta) = \frac{\hat{B_i}}{A_i} e^{j\hat{\phi_i}}$$
+
+### Frequency Response Estimation Optimization
 
 By defining the generalized transfer function as:
 
@@ -1460,9 +1478,9 @@ It is possible to add a **feedback loop** to the neuron, where the neuron's prev
 
 This is a general and flexible method, but it is computationally expensive to train and stability is difficult to guarantee since there are no structural constraints.
 
-#### 2. FIR Structure
+#### 2. Finite Impulse Response Structure
 
-Splits the model into a dynamic linear part and a static nonlinear part.
+The FIR structure splits the model into a dynamic linear part and a static nonlinear part.
 
 The **linear dynamic part** performs a linear transformation based on the delay operator $z^{-1}$.
 
@@ -1472,8 +1490,9 @@ The stability is guaranteed by construction, but for MIMO systems, $f$ must map 
 
 $$f(\cdot, \theta): \mathbb{R}^{m \times n_u} \times \mathbb{R}^{p \times (n_y+1)} \to \mathbb{R}^n$$
 
-#### 3. IRR Structure
-Improves on the FIR structure by introducing **recursive feedback** for the static nonlinear part.
+#### 3. Infinite Impulse Response Structure
+
+The IIR structure improves on the FIR structure by introducing **recursive feedback** for the static nonlinear part.
 
 The estimated state $\hat{x}(t)$ is fed back into the nonlinear function $f$ as an additional input, allowing the model to retain memory of past states.
 
