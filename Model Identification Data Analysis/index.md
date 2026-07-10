@@ -288,19 +288,19 @@ $$\Gamma_y(\omega) = \lambda^2 |W(e^{j\omega})|^2$$
 The spectrum can be computed analytically by decomposing $W(z)$ into its pole-zero factorization:
 
 1. **Factor $W(z)$ into pole-zero form:** Express the transfer function in terms of its zeros ($z_i$) and poles ($p_j$):
-$$W(z) = \frac{(z - z_1)(z - z_2) \cdots (z - z_n)}{(z - p_1)(z - p_2) \cdots (z - p_m)}$$
+$$W(z) = K\frac{\prod_{i=1}^{n} (1 - z_iz^{-1})}{\prod_{j=1}^{m} (1 - p_jz^{-1})}$$
 
 2. **Substitute the frequency variable:** Replace $z$ with $e^{j\omega}$ to evaluate the transfer function on the unit circle:
-$$\Gamma_y(\omega) = \lambda^2 \frac{|e^{j \omega} - z_1|^2 |e^{j \omega} - z_2|^2 \cdots |e^{j \omega} - z_n|^2}{|e^{j \omega} - p_1|^2 |e^{j \omega} - p_2|^2 \cdots |e^{j \omega} - p_m|^2}$$
+$$\Gamma_y(\omega) = \lambda^2 K^2 \frac{\prod_{i=1}^{n} |1 - z_ie^{-j \omega}|^2}{\prod_{j=1}^{m} |1 - p_je^{-j \omega}|^2}$$
 
 3. **Expand the magnitude squared terms:** where $z^*$ is the complex conjugate of $z$:
-$$|e^{j \omega} - z_i|^2 = (e^{j \omega} - z_i)(e^{-j \omega} - z_i^*)$$
+$$|1 - z_ie^{-j \omega}|^2 = (1 - z_ie^{-j \omega})(1 - z_i^*e^{j \omega}) = 1 - |z_i|(e^{j \omega - \angle z_i} - e^{-j \omega + \angle z_i}) = 1 - 2|z_i| \cos(\omega - \angle z_i) + |z_i|^2$$
 
 4. **Convert to real form using trigonometric identities:** $e^{j \omega} = \cos(\omega) + j\sin(\omega)$, apply:
-$$|e^{j \omega} - z_i|^2 = 1 - 2|z_i| \cos(\omega - \angle z_i) + |z_i|^2$$
+$$|1 - z_ie^{-j \omega}|^2 = 1 - 2|z_i| \cos(\omega - \angle z_i) + |z_i|^2$$
 
 5. **Final spectrum expression:** The result is a real, analytical form:
-$$\Gamma_y(\omega) = \lambda^2 \frac{\prod_{i=1}^{n} (1 - 2|z_i| \cos(\omega - \angle z_i) + |z_i|^2)}{\prod_{j=1}^{m} (1 - 2|p_j| \cos(\omega - \angle p_j) + |p_j|^2)}$$
+$$\Gamma_y(\omega) = \lambda^2 K^2 \frac{\prod_{i=1}^{n} (1 - 2|z_i| \cos(\omega - \angle z_i) + |z_i|^2)}{\prod_{j=1}^{m} (1 - 2|p_j| \cos(\omega - \angle p_j) + |p_j|^2)}$$
 
 #### Inverse Fourier Transform
 
@@ -367,6 +367,22 @@ $$\mathbb{E}[\hat{\gamma}_N(\tau)] = \frac{1}{N - |\tau|} \sum_{t=1}^{N - |\tau|
 
 $\hat{\gamma}_N(\tau)$ is a consistent estimator of $\gamma_y(\tau)$ if $\gamma_y(\tau) \to 0$ as $\tau \to \infty$.
 
+#### Biased Sample Covariance Estimator
+
+The biased sample covariance estimator uses $N$ instead of $N - |\tau|$ in the denominator:
+
+$$\boxed{\hat{\gamma}_N^{\text{biased}}(\tau) = \frac{1}{N} \sum_{t=1}^{N - |\tau|} y(t)\, y(t + |\tau|)} \quad 0 \leq |\tau| < N$$
+
+**Not Correct:**
+
+This estimator is not correct:
+
+$$\mathbb{E}[\hat{\gamma}_N^{\text{biased}}(\tau)] = \frac{1}{N} \sum_{t=1}^{N - |\tau|} \mathbb{E}[y(t) y(t + |\tau|)] = \frac{1}{N} \sum_{t=1}^{N - |\tau|} \gamma_y(\tau) = \frac{N - |\tau|}{N} \gamma_y(\tau) \neq \gamma_y(\tau)$$
+
+**Consistency:**
+
+The biased sample covariance estimator is consistent if $N \to \infty$.
+
 ### Sample Spectrum Estimator
 
 The sample of the spectrum is the **periodogram** and is computed as the DFT of the sample covariance:
@@ -375,14 +391,12 @@ $$\hat{\Gamma}_N(\omega) = \sum_{\tau=-(N-1)}^{N-1} \hat{\gamma}_N(\tau)\, e^{-j
 
 **Asymptotic Correctness:**
 
-The spectrum should cover all lags $\tau$ from $-\infty$ to $\infty$, but this can only compute it for $|\tau| < N$.
-
-This estimator is consistent as $N \to \infty$,
+The spectrum should cover all lags $\tau$ from $-\infty$ to $\infty$, but this can only compute it for $|\tau| < N$, meaning that it is correct only if $N \to \infty$,
 $$\mathbb{E}[\hat{\Gamma}_N(\omega)] \to \Gamma_y(\omega)$$
 
 **Not Consistent:**
 
-$$\lim_{N \to \infty} \mathbb{E}[(\hat{\Gamma}_N(\omega) - \Gamma_y(\omega))^2] \to \gamma_y(\omega)^2 \quad, \forall \omega$$
+$$\lim_{N \to \infty} \mathbb{E}[(\hat{\Gamma}_N(\omega) - \Gamma_y(\omega))^2] \to \Gamma_y(\omega)^2 \quad, \forall \omega$$
 
 This estimator is not consistent because the variance does not vanish as $N \to \infty$.
 
@@ -398,13 +412,9 @@ Increasing $M$ (and thus decreasing the segment length) reduces the variance of 
 
 #### Biased Periodogram
 
-Using the **biased covariance estimator** (denominator $N$ instead of $N - |\tau|$):
+Using the **biased covariance estimator** the spectrum becomes:
 
-$$\hat{\gamma}_N^{\text{biased}}(\tau) = \frac{1}{N} \sum_{t=1}^{N} y(t)\, y(t + |\tau|)$$
-
-The spectrum becomes:
-
-$$\hat{\Gamma}_N(\omega) = \sum_{\tau=-N+1}^{N-1} \hat{\gamma}_N(\tau) e^{-j \omega \tau} = \underbrace{\frac{1}{N} \left| \sum_{t=1}^{N} y(t) e^{-j \omega t} \right|^2}_{\text{DFT of } y(t)}$$
+$$\hat{\Gamma}_N(\omega) = \sum_{\tau=-N+1}^{N-1} \hat{\gamma}_N^{\text{biased}}(\tau) e^{-j \omega \tau} = \underbrace{\frac{1}{N} \left| \sum_{t=1}^{N} y(t) e^{-j \omega t} \right|^2}_{\text{DFT of } y(t)}$$
 
 This make computation more efficient, but it is **biased** ($\mathbb{E}[\hat{\Gamma}_N(\omega)] \neq \Gamma_y(\omega)$), but becomes asymptotically unbiased as $N \to \infty$.
 
@@ -464,7 +474,7 @@ $$\boxed{\hat{y}(t + k | t) = \frac{F_k(z)}{C(z)} y(t)}$$
 ### Prediction Error Evolution
 
 The prediction error variance is:
-$$\text{MSE}(k) = \mathbb{E}[\varepsilon(t+k)^2] = \left(\sum_{i=0}^{k-1} e_i^2\right) \lambda^2= var[\varepsilon(t+k)]$$
+$$\text{MSE}(k) = \mathbb{E}[\varepsilon(t+k)^2] = Var[E_k  \cdot e(t)] = \left(\sum_{i=0}^{k-1} e_i^2\right) \lambda^2$$
 
 and as $k$ increases, more future noise terms $e(t+1), \ldots, e(t+k)$ are included in the prediction error, making the prediction less accurate.
 
@@ -862,18 +872,13 @@ $$\begin{cases}
 
 ### Transfer Function Representation
 
-$$y(t) = \frac{B(z)}{A(z)} z^{-d} u(t) = \frac{b_{n-1} z^{n-1} + \cdots + b_0}{z^n + a_{n-1} z^{n-1} + \cdots + a_0} z^{-d} u(t)$$
+$$y(t) = \frac{B(z)}{A(z)} z^{-d} u(t) = \frac{b_{1} z^{n-1} + \cdots + b_n}{z^n + a_1 z^{n-1} + \cdots + a_n} z^{-d} u(t) = \frac{b_0 + b_1 z^{-1} + b_2 z^{-2} + \cdots}{1 + a_1 z^{-1} + a_2 z^{-2} + \cdots} z^{-d} u(t)$$
 
 where:
 
-- **A(z)**: Denominator polynomial
-- **B(z)**: Numerator polynomial
-- **C(z)**: Noise polynomial (if present)
-- **d**: Pure delay (number of time steps between input change and output change)
+- $k$ must be greater than 0 to be strictly proper (no direct feedthrough)
 
-It is possible to define a canonical representation of the system in transfer function form ([Canonical Representation](#canonical-representations))
-
-#### Transfer Function to State-Space (Companion Form)
+#### Transfer Function to State-Space (Realization)
 
 Given a strictly proper transfer function with monic denominator:
 
@@ -881,15 +886,24 @@ $$F = \begin{bmatrix}
 0 & 1 & 0 & \cdots & 0 \\
 0 & 0 & 1 & \cdots & 0 \\
 \vdots & \vdots & \vdots & \ddots & \vdots \\
--a_{n-1} & -a_{n-2} & -a_{n-3} & \cdots & -a_0
+-a_{n} & -a_{n-1} & -a_{n-2} & \cdots & -a_1
 \end{bmatrix}, \quad
 G = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 1 \end{bmatrix}$$
 
-$$H = \begin{bmatrix} b_{n-1} & b_{n-2} & \cdots & b_0 \end{bmatrix}, \quad D = 0$$
+$$H = \begin{bmatrix} b_{n} & b_{n-1} & b_{n-2} & \cdots & b_1 \end{bmatrix}, \quad D = 0$$
 
 #### Transfer Function to Impulse Response
 
 Perform **long polynomial division** of $B(z)/A(z)$. The quotient coefficients are the impulse response values $\{\omega(0), \omega(1), \omega(2), \ldots\}$.
+
+As this would require an infinite number of coefficients, in practice it is possible to compute a analytical form using the geometric series expansion of the transfer function.
+
+$$W(z) = \frac{B(z)}{A(z)} = \frac{C \cdot z^k}{1 - \lambda z^{-m}} = C \cdot z^k \sum_{t=0}^{\infty} (\lambda \cdot z^{-m})^{t} = C \sum_{t=0}^{\infty} \lambda^{t} \cdot z^{-t \cdot m + k} = C \sum_{n=0}^{\infty} \lambda^{\frac{n + k}{m}} \cdot z^{-n}, \quad (n = tm - k)$$
+
+$$\omega(n) = \begin{cases}
+C \cdot \lambda^{\frac{n + k}{m}} & \text{if } n \geq -k \text{ and } (n + k) \mod m \equiv 0  \\
+0 & \text{otherwise}
+\end{cases}$$
 
 ### Impulse Response Representation
 
@@ -1402,19 +1416,19 @@ To estimate the frequency response of a system, we can use sinusoidal inputs at 
 
 For a linear time-invariant system, a sinusoidal input produces a sinusoidal output at the same frequency, but with modified amplitude and phase:
 
-$$u(t) = \sin(\omega t) \quad \Longrightarrow \quad y(t) = B\sin(\omega t + \phi)$$
+$$u(t) = A \sin(\omega t) \quad \Longrightarrow \quad y(t) = B\sin(\omega t + \phi)$$
 
 ### Removing Noise from Measured Output
 
 In the real world the output is corrupted by noise, so we require to find the noise-cleared version $\hat{y}(t)$, expressed as a linear combination of sine and cosine components:
 
-$$\hat{y}_i(t) = \hat{a_i}\sin(\omega_i t) + \hat{b_i}\cos(\omega_i t)$$
+$$\hat{y}_i(t) = a_i\sin(\omega_i t) + b_i\cos(\omega_i t)$$
 
-where $\hat{a_i}$ and $\hat{b_i}$ are the coefficients estimated from the measured output by minimizing the squared error between the measured output and the estimated output at each frequency $\omega_i$:
+By setting the derivative of mean squared error with respect to the coefficients $a_i$ and $b_i$ to zero, we can find the optimal coefficients ($\hat{a_i}$, $\hat{b_i}$) that minimize the error between the measured output and the estimated output:
 
 $$\begin{cases}
-\frac{\partial J_N}{\partial \hat{a_i}} = 0 \\
-\frac{\partial J_N}{\partial \hat{b_i}} = 0
+\frac{\partial J_N}{\partial a_i} = \frac{2}{N}\sum_{k=1}^N - \sin(\omega_i t_k)(y_k - \hat{y}_i(t_k)) = 0 \\
+\frac{\partial J_N}{\partial b_i} = \frac{2}{N}\sum_{k=1}^N - \cos(\omega_i t_k)(y_k - \hat{y}_i(t_k)) = 0
 \end{cases}$$
 
 The estimated output can also be expressed in **polar form**:
@@ -1505,6 +1519,13 @@ When *a-priori* physical knowledge is available, any of the above architectures 
 The regressor vector can be much smaller than the raw $u, y$ vectors, simplifying the estimation problem.
 
 > **Example:** When identifying a car's dynamics, compute the physical tire force at each wheel as a regressor, rather than feeding raw sensor signals directly into the model.
+
+### Black Box vs Kalman Filter
+
+- **Prior Knowledge**:KF uses prior knowledge of the system's structure, while black box identification does not, making it more flexible.
+- **Training Dataset**: KF doesn't strictly require a taining dataset, only for estimate the $V_1$ covariance, while black box identification requires a dataset of input-output pairs.
+- **Interpretability**: KF is a digital twin of the system, while black box might not provide interpretable models.
+- **Unmeasurable States**: KF can estimate unmeasurable states, while black box identification might not provide state estimates unless specifically designed to do so.
 
 ## Gray Box Identification
 
