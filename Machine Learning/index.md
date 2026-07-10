@@ -85,7 +85,9 @@ This approach is often more straightforward and computationally efficient.
 ### Prediction Error
 
 The error given by a model can be decomposed into three components:
-$$\mathbb{E}[L] = \mathbb{E}[(t - y(x))^2] = \mathbb{E}[t^2] \pm \mathbb{E}[t]^2 + \mathbb{E}[(y(x))^2] \pm \mathbb{E}[(y(x))]^2 - 2 f(x) \mathbb{E}[y(x)] = \\ = \underbrace{Var[t] = \sigma^2}_{\text{Noise}} + \underbrace{\mathbb{E}[(f(x) - y(x))^2]}_{\text{Bias}^2} + \underbrace{Var[y(x)]}_{\text{Variance}}$$
+$$\mathbb{E}[L] = \mathbb{E}[(t - y(x))^2] = \mathbb{E}[t^2] \pm \mathbb{E}[t]^2 + \mathbb{E}[(y(x))^2] \pm \mathbb{E}[(y(x))]^2 - 2\mathbb{E}[t \cdot y(x)] \\
+= Var[t] + \mathbb{E}[t]^2 - 2\mathbb{E}[t \cdot y(x)] + \mathbb{E}[(y(x))]^2 + Var[y(x)] \\
+= \underbrace{Var[t]}_{\text{Noise = } \sigma^2} + \underbrace{\mathbb{E}[(f(x) - y(x))^2]}_{\text{Bias}^2} + \underbrace{Var[y(x)]}_{\text{Variance}}$$
 
 The only irreducible error is the noise $\sigma^2$, which is inherent in the data generation process ($t = f(x) + \epsilon$ where $\epsilon \sim \mathcal{N}(0, \sigma^2)$). The bias and variance are controllable through model choice and training.
 
@@ -355,7 +357,7 @@ The loss function can be written as the sum of the loss function for each sample
 
 $$w^{(k+1)} = w^{(k)} - \alpha^{(k)} \nabla L(x_n)$$
 
-For squared loss:
+For squared loss ($L(x_n) = \frac{1}{2} (w^T \phi(x_n) - t_n)^2$), the update rule becomes:
 $$w^{(k+1)} = w^{(k)} - \alpha^{(k)} (w^{(k)T} \phi(x_n) - t_n) \phi(x_n)$$
 
 where:
@@ -371,7 +373,7 @@ At each iteration, the algorithm performs the following steps:
 
 This method is more efficient for large datasets, as it avoids the costly matrix inversion required by OLS and allows for online learning. However each update is influenced by the noise of a single sample.
 
-SDG can converge to the OLS solution only when the learning rate decays over time and satisfies the Robbins-Monro conditions:
+SDG can converge to the OLS solution only when the learning rate decays over time and satisfies the **Robbins-Monro** conditions:
 
 - $\sum_{k=1}^\infty \alpha^{(k)} = \infty$: ensures that the algorithm continues to make progress towards the minimum
 - $\sum_{k=1}^\infty (\alpha^{(k)})^2 < \infty$: ensures that the steps become small enough to converge to the minimum without oscillating around it.
@@ -393,23 +395,23 @@ $$t = f(x) + \epsilon, \quad \epsilon \sim \mathcal{N}(0, \sigma^2)$$
 
 This approach maximizes the **likelihood**, which is the probability of observing the data given the parameters:
 
-$$p(t|X, w, \sigma^2) = \prod_{n=1}^N \mathcal{N}(t_n | w^T \Phi(x_n), \sigma^2)$$
+$$p(t|X, w, \sigma^2) = \prod_{n=1}^N \mathcal{N}(t_n | w^T \phi(x_n), \sigma^2)$$
 
 This optimization problem is equivalent to minimizing the sum of squared errors, as maximizing the likelihood corresponds to finding the parameters that make the observed data most probable under the assumed model.
 
 To solve it, we take the logarithm of the likelihood (log-likelihood) to simplify the product into a sum:
-$$\ln p(t|X, w, \sigma^2) = \sum_{n=1}^N \ln \mathcal{N}(t_n | w^T \Phi(x_n), \sigma^2) = - \frac{N}{2} \ln (2\pi \sigma^2) - \frac{1}{2\sigma^2} \text{RSS}(w)$$
+$$\ln p(t|X, w, \sigma^2) = \sum_{n=1}^N \ln \mathcal{N}(t_n | w^T \phi(x_n), \sigma^2) = - \frac{N}{2} \ln (2\pi \sigma^2) - \frac{1}{2\sigma^2} \text{RSS}(w)$$
 
 Setting the derivative to zero:
 
-$$\nabla l(w) = \sum_{n=1}^N t_n \Phi(x_n)^T - w^T \sum_{n=1}^N \Phi(x_n) \Phi(x_n)^T = 0$$
+$$\nabla l(w) = \sum_{n=1}^N t_n \phi(x_n)^T - w^T \sum_{n=1}^N \phi(x_n) \phi(x_n)^T = 0$$
 $$\hat{w}_{ML} = (\Phi^T \Phi)^{-1} \Phi^T t$$
 
 ### Bayesian Linear Regression
 
-The **Bayesian Linear Regression** is a probabilistic approach to linear regression that incorporates uncertainty about the model parameters.
+The **Bayesian Linear Regression** is a generative probabilistic approach to linear regression that incorporates uncertainty about the model parameters.
 
-Before seeing data, there is an assumption about the distribution of weights, called the **prior distribution**. A common choice is a Gaussian prior:
+Before seeing data, there is an assumption about the distribution of weights, called the **prior distribution**, allowing to include domain knowledge. A common choice is a Gaussian prior:
 $$p(w) = \mathcal{N}(w | w_0, S_0)$$
 
 After observing data, *Bayes' theorem* is used to update the belief about the weights, resulting in the **posterior distribution**:
@@ -520,7 +522,7 @@ The **Probabilistic Discriminative Approach** models the posterior class probabi
 **Binary Classification:**
 
 Model the posterior probability of the positive class using the **logistic sigmoid**:
-$$p(C_1|x) = \sigma(w^T \phi(x)) = \frac{1}{1 + e^{-w^T \phi(x)}}$$
+$$y_n = \sigma(w^T \phi(x_n)) = \frac{1}{1 + e^{-w^T \phi(x_n)}}$$
 
 The likelihood of the observed data is:
 $$p(t|X, w) = \prod_{n=1}^N y_n^{t_n} (1 - y_n)^{1 - t_n}$$
@@ -529,7 +531,7 @@ The negative log of the likelihood is the **cross-entropy loss**:
 $$L(w) = - \sum_{n=1}^N \left[ t_n \ln y_n + (1 - t_n) \ln (1 - y_n) \right]$$
 
 Maximizing the likelihood is equivalent to minimizing the cross-entropy loss. The gradient of the loss with respect to the weights is:
-$$\nabla L(w) = \sum_{n=1}^N \frac{\partial L(w)_n}{\partial w} = \sum_{n=1}^N (y_n - t_n) \phi(x_n)$$
+$$\nabla L(w) = \frac{\partial L(w)}{\partial y_n}\frac{\partial y_n}{\partial w} = \sum_{n=1}^N \frac{\partial L(w)_n}{\partial w} = \sum_{n=1}^N (y_n - t_n) \phi(x_n)$$
 
 This has the same form as linear regression, but the meaning is different: $y_n$ is now a predicted probability, and $(y_n - t_n)$ measures the deviation from true labels (0 or 1).
 
@@ -577,6 +579,12 @@ The **Pearson correlation coefficient** is a common measure of linear correlatio
 $$\hat{\rho}(x_j, y) = \frac{\sum_{n=1}^N (x_{j,n} - \bar{x}_j)(y_n - \bar{y})}{\sqrt{\sum_{n=1}^N (x_{j,n} - \bar{x}_j)^2} \sqrt{\sum_{n=1}^N (y_n - \bar{y})^2}}$$
 
 From these correlation coefficients, we can select the top $k$ features with the highest absolute correlation with the target variable.
+
+#### Embedded Methods
+
+The **embedded methods** perform feature selection as part of the model training process. They incorporate feature selection into the learning algorithm itself.
+
+Some examples are Lasso, Decision trees, etc.
 
 #### Wrapper Methods
 
@@ -721,10 +729,8 @@ A concept class (set of concept functions $c$ that can be the target function) $
 
 - for any concept $c \in \mathcal{C}$
 - any distribution over the input space
-- any error threshold better that random guessing ($0 \leq \epsilon \ge 0.5$)
-- with probability at least $1 - \delta$ (confidence, $0 \leq \delta < 0.5$)
 
-The algorithm can learn a hypothesis $h$ such that the true error $L_{\text{true}}(h)$ is at most $\epsilon$, using a number of training samples $N$ that is polynomial in $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$.
+The algorithm can learn a hypothesis $h$ with a confidence/probability $1 - \delta (\delta < 0.5)$ that the true error is better than random guessing ($L_{\text{true}}(h) < \epsilon < 0.5$), using a number of training samples $N$ that is polynomial in $\frac{1}{\epsilon}$ and $\frac{1}{\delta}$.
 
 An algorithm is **efficiently PAC-learnable** if the runtime is polynomial in $\frac{1}{\epsilon}$, $\frac{1}{\delta}$, and the size of the concept.
 
@@ -746,7 +752,7 @@ $$N \geq \frac{1}{\epsilon} \left(\ln|\mathcal{H}| + \ln \frac{1}{\delta}\right)
 
 Equivalently, the error bound is:
 
-$$L_{\text{true}}(h) = \epsilon \leq \frac{1}{N}\left(\ln|\mathcal{H}| + \ln \frac{1}{\delta}\right)$$
+$$L_{\text{true}}(h) = \epsilon \geq \frac{1}{N}\left(\ln|\mathcal{H}| + \ln \frac{1}{\delta}\right)$$
 
 In practice this bound is very generous, and the true error is often much smaller than this worst-case bound.
 
@@ -758,7 +764,7 @@ $$\Pr(\exists h \in \mathcal{H}: L_{\text{train}}(h) = 0 \land L_{\text{true}}(h
 
 The probability of a union is at most the sum of probabilities:
 
-$$\leq \sum_{h \in \mathcal{H}_{\text{bad}}} \Pr( L_{\text{train}}(h) = 0 \land L_{\text{true}}(h) \geq \epsilon) \leq \sum_{h \in \mathcal{H}_{\text{bad}}} \Pr( L_{\text{train}}(h) = 0 | L_{\text{true}}(h) \geq \epsilon)$$
+$$\leq \sum_{h \in \mathcal{H}} \Pr( L_{\text{train}}(h) = 0 \land L_{\text{true}}(h) \geq \epsilon) \leq \sum_{h \in \mathcal{H}} \Pr( L_{\text{train}}(h) = 0 | L_{\text{true}}(h) \geq \epsilon)$$
 
 The probability that a bad hypothesis has zero training error is the probability that all $N$ samples are correctly classified by $h$, which is at most $(1 - \epsilon)^N$ (since each sample has at least $\epsilon$ chance of being misclassified):
 
@@ -810,6 +816,7 @@ and must be:
 
 1. **Symmetric:** $k(x, x') = k(x', x)$
 2. **Positive semidefinite:** For any set of samples $\{x_1, \ldots, x_N\}$, the Gram matrix $K$ with entries $K_{nm} = k(x_n, x_m) = \phi(x_n)^T \phi(x_m)$ has non-negative eigenvalues.
+3. **Continuous:** The kernel function is continuous with respect to its inputs.
 
 Based on **Mercer's Theorem**, any continuous, symmetric, positive semidefinite kernel can be expressed as a dot product in some feature space. This guarantees the existence of the mapping $\phi$ for valid kernels, even if we never explicitly compute it.
 
@@ -826,7 +833,7 @@ If $k_1$ and $k_2$ are valid kernels and $c > 0$, then the following are also va
 - Composition: $k(x, x') = k_1(g(x), g(x'))$ (any function $g$ with non-negative coefficients)
 - Exponential: $k(x, x') = \exp(k_1(x, x'))$
 - Feature subset: $k(x, x') = k_1(x_a, x_a') + k_2(x_b, x_b')$ (different features)
-- Matrix: $k(x, x') = x^T A x'$ (where $A$ is a positive semidefinite matrix)
+- Matrix: $k(x, x') = x^T A x'$ (where $A$ is a positive semidefinite matrix, $det(A) > 0$)
 
 #### Common Kernels
 
@@ -1472,7 +1479,7 @@ $$\pi(a | s) = \mathcal{1}\{a = \arg\max_{a'} Q(s, a')\}$$
 
 The update rule for Q-Learning is:
 
-$$Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha [r_{t+1} + \gamma \max_{a'} Q(s_{t+1}, a') - Q(s_t, a_t)]$$
+$$Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha [r_{t+1} + \gamma \max_{a'} Q(s', a') - Q(s_t, a_t)]$$
 
 **Algorithm:**
 
