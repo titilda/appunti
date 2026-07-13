@@ -877,6 +877,7 @@ $$y(t) = \frac{B(z)}{A(z)} z^{-d} u(t) = \frac{b_{1} z^{n-1} + \cdots + b_n}{z^n
 where:
 
 - $k$ must be greater than 0 to be strictly proper (no direct feedthrough)
+- The $B(z)$ should have a degree less than the $A(z)$
 
 #### Transfer Function to State-Space (Realization)
 
@@ -1015,7 +1016,7 @@ where:
 
 - $\hat{U} = \tilde{U}(:, 1:n) \quad (q \times n)$
 - $\hat{S} = \tilde{S}(1:n, 1:n) \quad (n \times n)$
-- $\hat{V} = \tilde{V}(:, 1:n) \quad (d \times n)$
+- $\hat{V} = \tilde{V}(1:n, :) \quad (n \times d)$
 
 ###### Factorization of Denoised Matrix
 
@@ -1168,48 +1169,6 @@ In case the matrix $F$ is not invertible, it is used the **filtered gain**:
 
 $$K_0(t) = (P(t) H^T) (H P(t) H^T + V_2)^{-1}$$
 
-#### Time-Varying Systems
-
-When F(t), H(t), or noise covariances vary with time:
-
-1. **Asymptotic stability not guaranteed** even if all instantaneous eigenvalues are in the unit circle
-2. Gain $K(t)$ must be updated at every sampling time (higher computational cost)
-
-It is possible to make the system time-invariant by finding a steady state where the value of $P(t)$ converges to a constant $P(t+1) = P(t) = \bar{P}$ (**Algebraic Riccati Equation, ARE**):
-
-$$\bar{P} = F\bar{P}F^T + V_1 - (F\bar{P}H^T + V_{12})(H\bar{P}H^T + V_2)^{-1}(F\bar{P}H^T + V_{12})^T$$
-
-If $P(t)$ converges to $\bar{P}$, then $K(t)$ converges to $\bar{K}$, than the system becomes time-invariant:
-
-$$\hat{x}(t+1|t) \approx (F - \bar{K}H)\hat{x}(t|t-1) + \bar{K}y(t)$$
-
-The only requirement for stability is that all eigenvalues of $F - \bar{K}H$ must remain in the unit circle.
-
-To **guarantee** that:
-
-- ARE has an unique solution $\bar{P}$
-- The DRE converges: $P(t) \to \bar{P}$ for all initial $P_0 \geq 0$
-- The steady-state gain $\bar{K}$ correspond to an asymptotically stable filter
-
-There are two *sufficient* theorems:
-
-**Theorem 1:**
-
-We require the following assumptions:
-
-- $V_{12} = 0$ (no cross-correlation between noises)
-- System is asymptotically stable (all eigenvalues of F in unit circle)
-
-**Theorem 2:**
-
-By reformulate state noise as: $x(t+1) = Fx(t) + Gu(t) + \Gamma\omega(t)$ where $\omega(t) \sim WN(0, I)$ and $\Gamma\Gamma^T = V_1$, the state is fully controllable from the noise $v_1(t)$.
-
-From this, the following assumptions are required:
-
-- $V_{12} = 0$
-- $(F, H)$ is **observable**, we can infer state from outputs
-- $(F, \Gamma)$ is **controllable**, noise can affect all states
-
 #### Non-White Noise
 
 Real noise often has temporal correlations (colored noise), violating the white noise assumption.
@@ -1246,6 +1205,58 @@ $$H(t) = \frac{\partial h}{\partial x}\bigg|_{x(t) = \hat{x}(t|t-1)}$$
 Then apply the standard Kalman filter equations using these time-varying Jacobian matrices.
 
 This approach doesn't guarantee optimality or stability and requires a high computational cost.
+
+#### Time-Varying Systems
+
+When F(t), H(t), or noise covariances vary with time:
+
+1. **Asymptotic stability not guaranteed** even if all instantaneous eigenvalues are in the unit circle
+2. Gain $K(t)$ must be updated at every sampling time (higher computational cost)
+
+In real world application is used the asymptotic KF.
+
+##### Asymptotic KF
+
+It is possible to make the system time-invariant by finding a steady state where the value of $P(t)$ converges to a constant $P(t+1) = P(t) = \bar{P}$ (**Algebraic Riccati Equation, ARE**):
+
+$$\bar{P} = F\bar{P}F^T + V_1 - (F\bar{P}H^T + V_{12})(H\bar{P}H^T + V_2)^{-1}(F\bar{P}H^T + V_{12})^T$$
+
+If $P(t)$ converges to $\bar{P}$, then $K(t)$ converges to $\bar{K}$, than the system becomes:
+
+$$\hat{x}(t+1|t) \approx (F - \bar{K}H)\hat{x}(t|t-1) + \bar{K}y(t)$$
+
+The only requirement for stability is that all eigenvalues of $F - \bar{K}H$ must remain in the unit circle.
+
+To **guarantee** that:
+
+- ARE has an unique solution $\bar{P}$
+- The DRE converges: $P(t) \to \bar{P}$ for all initial $P_0 \geq 0$
+- The steady-state gain $\bar{K}$ correspond to an asymptotically stable filter
+
+There are two *sufficient* theorems:
+
+**Theorem 1:**
+
+We require the following assumptions:
+
+- $V_{12} = 0$ (no cross-correlation between noises)
+- System is asymptotically stable (all eigenvalues of F in unit circle)
+
+**Theorem 2:**
+
+By reformulate state noise as: $x(t+1) = Fx(t) + Gu(t) + \Gamma\omega(t)$ where $\omega(t) \sim WN(0, I)$ and $\Gamma\Gamma^T = V_1$, the state is fully controllable from the noise $v_1(t)$.
+
+From this, the following assumptions are required:
+
+- $V_{12} = 0$
+- $(F, H)$ is **observable**, we can infer state from outputs
+- $(F, \Gamma)$ is **controllable**, noise can affect all states
+
+If the theorems are not applicable it's possible to use a graphical method:
+
+- Vertical asymptot: $\bar{P}_\text{denom} = 0$
+- Horizontal asymptot: $\lim_{P(t) \to \infty} P(t)$
+- Intersection with axis: $P(t+1) = 0$ and $P(t) = 0$
 
 ## Minimum Variance Control (MVC)
 
@@ -1386,7 +1397,13 @@ the state-space transformation, given a sampling time $\Delta T$, is:
 
 $$F = e^{A\Delta T}, \qquad G = \int_0^{\Delta T} e^{A\delta}B\, d\delta, \qquad H = C, \qquad D_d = D$$
 
-The discretized system is stable if and only if the eigenvalues of the matrix $A$ lie in the negative half-plane. The poles of the matrix A $\lambda_A$ map to discrete poles $\lambda_F = e^{\lambda_A \Delta T}$.
+The discretized system is stable if and only if the eigenvalues of the matrix $A$ lie in the negative half-plane.
+
+The eigenvalues of the matrix A $\lambda_A$ map to discrete eigenvalues $\lambda_F = e^{\lambda_A \Delta T}$.
+
+This process create $n - h - 1$ new hidden zeros that are usually non min-phase:
+
+$$W(s) = \frac{h \text{ zeros}}{n\text{ poles}} \quad \Longrightarrow \quad W(z) = \frac{n - 1 \text{ zeros}}{n\text{ poles}}$$
 
 #### Euler Methods
 
@@ -1404,7 +1421,7 @@ $$\dot{x}(t) \approx \frac{x(t+1) - x(t)}{\Delta T} = \frac{z-1}{\Delta T}$$
 
 A parameter $\alpha \in [0, 1]$ blends forward and backward Euler:
 
-$$\dot{x}(t) \approx \frac{z - 1}{\Delta T[\alpha z (1-\alpha)]}$$
+$$\dot{x}(t) \approx \frac{z - 1}{\Delta T \, [\alpha z + (1 - \alpha)]}$$
 
 - $\alpha = 0$: Euler Forward
 - $\alpha = 1$: Euler Backward
@@ -1543,3 +1560,39 @@ The variance $\lambda_\theta^2$ of $v_\theta(t)$ controls the estimator's behavi
 
 - A small $\lambda_\theta^2$ assumes the parameters are nearly constant, leading to slow convergence but low variance in the final estimate.
 - A large $\lambda_\theta^2$ allows the parameters to track faster changes, leading to faster convergence but noisier estimates.
+
+## Matlab
+
+```matlab
+F = [0 1; -2 -3];
+G = [0; 1];
+H = [1 0];
+D = 0;
+
+% Create the system, Ts is the sampling time
+sys = ss(F, G, H, D, Ts);
+
+O = obsv(sys);
+R = ctrb(sys);
+
+W = tf(sys);
+W = zpk(W); % Convert to zero-pole-gain form
+
+zeros = zero(W);
+poles = pole(W);
+gain = dcgain(W);
+
+bode(sys); % Plot the Bode diagram
+impulse(sys); % Plot the impulse response
+
+y = lsim(sys, u, ts); % Simulate the system response to a given input signal
+y = iddata(us, ys, Ts); % convert a continuous-time signal to discrete-time data
+
+sys = n4sid(data); % Compute the state-space model from input-output data
+[U, S, V] = svd(H); % Compute the singular value decomposition of the Hankel matrix
+
+sys_kf = ss(F, [G I], H, [D 0], Ts); % Create the system for Kalman filter
+[kalman_sys, K, P] = kalman(sys_kf, V1, V2, V12, "current"|"delayed"); % Compute the Kalman filter for the system
+[P, KT, eigs] = idare(F', H', V1, V2, V12, I); % Compute the solution to the discrete-time algebraic Riccati equation
+K = KT'; % Transpose the gain matrix to match the system dimensions
+```
