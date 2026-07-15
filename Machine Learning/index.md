@@ -23,33 +23,6 @@ To define a supervised learning problem, we need:
 
 If $f$ is known, the problem is function approximation. When $f$ is unknown, we estimate it from data using a loss function that accounts for noise.
 
-### Model Evaluation
-
-A model is evaluated based on its **expected loss**, which is the average loss over the all the possible data:
-
-$$\mathbb{E}[L] = \int \int L(t, y(x)) \, p(x, t) dx dt$$
-
-where:
-
-- $L(t, y(x))$: loss function measuring error between true target and prediction
-- $p(x, t)$: true joint distribution of inputs and targets (probability of seeing a particular input-target pair)
-
-Knowing $p(x, t)$ would be equivalent to knowing $f$ (the generating function). The joint distribution is approximated from training data.
-
-The model $y(x)$ that minimizes the expected loss is the **conditional mean** computed as:
-$$y^*(x) = \mathbb{E}[t|x] = \int t \, p(t|x) \, dt$$
-
-#### Loss Functions
-
-A common loss function is the **Minkowski loss**:
-$$L(t, y(x)) = |t - y(x)|^q$$
-
-where $q$ is a parameter that controls how errors are penalized.
-
-- For $q=2$ (squared loss), large errors are penalized more heavily.
-- For $q=1$ (absolute loss), the model is more robust to outliers.
-- For $q=\infty$ (max loss), only the worst error matters.
-
 ### Approaches to Supervised Learning
 
 To solve supervised learning problems, there are three main approaches:
@@ -81,6 +54,33 @@ The **direct approach** avoids probability modeling. Instead of learning distrib
 For prediction tasks, you just need the mapping $x \to t$ to be accurate.
 
 This approach is often more straightforward and computationally efficient.
+
+### Model Evaluation
+
+A model is evaluated based on its **expected loss**, which is the average loss over the all the possible data:
+
+$$\mathbb{E}[L] = \int \int L(t, y(x)) \, p(x, t) dx dt$$
+
+where:
+
+- $L(t, y(x))$: loss function measuring error between true target and prediction
+- $p(x, t)$: true joint distribution of inputs and targets (probability of seeing a particular input-target pair)
+
+Knowing $p(x, t)$ would be equivalent to knowing $f$ (the generating function). The joint distribution is approximated from training data.
+
+The model $y(x)$ that minimizes the expected loss is the **conditional mean** computed as:
+$$y^*(x) = \mathbb{E}[t|x] = \int t \, p(t|x) \, dt$$
+
+#### Loss Functions
+
+A common loss function is the **Minkowski loss**:
+$$L(t, y(x)) = |t - y(x)|^q$$
+
+where $q$ is a parameter that controls how errors are penalized.
+
+- For $q=2$ (squared loss), large errors are penalized more heavily.
+- For $q=1$ (absolute loss), the model is more robust to outliers.
+- For $q=\infty$ (max loss), only the worst error matters.
 
 ### Prediction Error
 
@@ -142,7 +142,7 @@ The training and test error can be used to detect underfitting and overfitting:
 
 **Cross-validation** is a technique to assess how well a model generalizes to unseen data. Instead of relying on a single train/test split, cross-validation uses multiple splits to provide a more robust estimate of generalization error.
 
-After the validation error is estimated, the model with the lowest validation error is selected and retrained on the entire training set (training + validation) before evaluating on the test set.
+After the validation error is estimated, the model is retrained on the entire training set (training + validation) before evaluating on the test set.
 
 #### K-Fold Cross-Validation
 
@@ -206,7 +206,7 @@ Instead of performing the validation, is possible to adjust the training error t
 
 This can be done with different techniques, such as:
 
-#### Mallows' $C_p$
+**Mallows' $C_p$:**
 
 $$C_p = \frac{1}{N}(L_{\text{train}} + 2D \hat{\sigma}^2)$$
 
@@ -215,7 +215,7 @@ where:
 - $D$: number of parameters in the model
 - $\hat{\sigma}^2$: estimate of the noise variance
 
-#### Akaike Information Criterion (AIC)
+**Akaike Information Criterion (AIC):**
 
 $$\text{AIC} = 2D - 2 \log L_{\text{max}}$$
 
@@ -223,11 +223,11 @@ where:
 
 - $L_{\text{max}}$: maximum likelihood of the estimated model
 
-#### Bayesian Information Criterion (BIC)
+**Bayesian Information Criterion (BIC):**
 
 $$\text{BIC} = \frac{1}{N} (L_{\text{train}} + D \log N \hat{\sigma}^2)$$
 
-#### Adjusted $R^2$
+**Adjusted $R^2$:**
 
 $$R_{\text{adj}}^2 = 1 - \frac{L_{\text{train}} / (N - D - 1)}{\text{TSS} / (N - 1)}$$
 
@@ -355,7 +355,7 @@ This is an iterative optimization algorithm that updates the weights incremental
 
 The loss function can be written as the sum of the loss function for each sample $L(w) = \sum_{n=1}^N L(x_n)$.
 
-$$w^{(k+1)} = w^{(k)} - \alpha^{(k)} \nabla L(x_n)$$
+$$w^{(k+1)} = w^{(k)} - \alpha^{(k)} \frac{\partial L(x_n)}{\partial w}$$
 
 For squared loss ($L(x_n) = \frac{1}{2} (w^T \phi(x_n) - t_n)^2$), the update rule becomes:
 $$w^{(k+1)} = w^{(k)} - \alpha^{(k)} (w^{(k)T} \phi(x_n) - t_n) \phi(x_n)$$
@@ -404,7 +404,7 @@ $$\ln p(t|X, w, \sigma^2) = \sum_{n=1}^N \ln \mathcal{N}(t_n | w^T \phi(x_n), \s
 
 Setting the derivative to zero:
 
-$$\nabla l(w) = \sum_{n=1}^N t_n \phi(x_n)^T - w^T \sum_{n=1}^N \phi(x_n) \phi(x_n)^T = 0$$
+$$\frac{\partial l(w)}{\partial w} = \sum_{n=1}^N t_n \phi(x_n)^T - w^T \sum_{n=1}^N \phi(x_n) \phi(x_n)^T = 0$$
 $$\hat{w}_{ML} = (\Phi^T \Phi)^{-1} \Phi^T t$$
 
 ### Bayesian Linear Regression
@@ -1300,7 +1300,7 @@ where:
 - $\hat{R}_t(a) = \frac{\sum_{s=1}^t r_s \mathbb{1}(a_{i_s} = a)}{N_t(a)}$: empirical mean (exploitation)
 - $B_t(a) = \sqrt{\frac{2 \ln t}{N_t(a)}}$: confidence (exploration bonus)
 
-Selecting the arm with the highest upper bound ($a_i_t = \arg\max_a U(a)$) ensures that the algorithm explores arms with high uncertainty while exploiting arms with high estimated rewards with anexpected regret of $O(8 \ln T \sum_{a \neq a^*} \frac{1}{\Delta_a} + \left(1 + \frac{\pi^2}{3}\right) \sum_{a \neq a^*} \Delta_a)$.
+Selecting the arm with the highest upper bound ($a_{i_t} = \arg\max_a U(a)$) ensures that the algorithm explores arms with high uncertainty while exploiting arms with high estimated rewards with anexpected regret of $O(8 \ln T \sum_{a \neq a^*} \frac{1}{\Delta_a} + \left(1 + \frac{\pi^2}{3}\right) \sum_{a \neq a^*} \Delta_a)$.
 
 #### Thompson Sampling
 
@@ -1387,7 +1387,7 @@ $$Q(s_t, a_t) = Q(s_t, a_t) + \underbrace{\frac{1}{N(s_t, a_t)}}_{\alpha} (G_t -
 
 Using the Bellman equation, we can express the value of a state as the immediate reward plus the discounted value of the next state:
 
-$$V(s_t) = V(s_t) + \alpha \underbrace{\left[\upperbrace{r_{t+1} + \gamma V(s_{t+1})}^{\text{TD target}} - V(s_t)\right]}_{\delta_t = \text{TD error}}$$
+$$V(s_t) = V(s_t) + \alpha \underbrace{\left[ \overbrace{r_{t+1} + \gamma V(s_{t+1})}^{\text{TD target}} - V(s_t)\right]}_{\delta_t = \text{TD error}}$$
 
 TD has a lower variance than Monte Carlo, but is higher bias because it depends on the current value estimates.
 
