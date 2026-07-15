@@ -261,10 +261,12 @@ A single realization of a stochastic process can be analyzed in the time domain 
 
 The **power spectral density** (PSD) of a stationary process is:
 
-$$\Gamma_y(\omega) = \mathbb{F}[\tilde{\gamma}_y(\tau)] = \sum_{\tau=-\infty}^{\infty} \tilde{\gamma}_y(\tau) e^{-j \omega \tau}$$
-$$\Gamma_y(\omega) = \mathbb{F}[\gamma_y(\tau)] = \sum_{\tau=-\infty}^{\infty} \gamma_y(\tau) e^{-j \omega \tau} + \sum_{\tau=-\infty}^{\infty} m^2 e^{-j \omega \tau}$$
+$$\Gamma_y(\omega) = \mathbb{F}[\tilde{\gamma}_y(\tau)] = \sum_{\tau=-\infty}^{\infty} \tilde{\gamma}_y(\tau) e^{-j \omega \tau} = \sum_{\tau=-\infty}^{\infty} \gamma_y(\tau) e^{-j \omega \tau} + \sum_{\tau=-\infty}^{\infty} m^2 e^{-j \omega \tau} \\ = \sigma^2[\gamma(0) + 2 \sum_{\tau=1}^{\infty} \gamma(\tau) \cos(\omega \tau)] + m^2 \sum_{\tau=-\infty}^{\infty} \delta(\omega)$$
+
+Where:
 
 - $\Gamma_y(\omega)$ is the Discrete Fourier Transform of the covariance function $\gamma_y(\tau)$ so doesn't depend on the specific time points or realization of $y(t)$, but only on the time difference $\tau$.
+- $\delta$ is the Dirac function, which is a mathematical function that is zero everywhere except at a single point, where it is infinite.
 
 **Properties:**
 
@@ -1353,6 +1355,11 @@ $$W_{P1 \rightarrow P2}(z) = \frac{\text{Path from } P1 \text{ to } P2}{L(z) + 1
 
 > If there are some roots that are unstable, they cannot be deleted.
 
+Some examples are:
+
+- $W_{Y° \rightarrow Y}(z) = z^{-k}$
+- $W_{e \rightarrow Y}(z) = E(z)$
+
 ### Generalized Minimum Variance Control (GMVC)
 
 MVC is optimal as minimize the variance of the tracking error, but it is inflexible for practical scenarios as cannot design a specific behavior of the closed-loop system. GMVC introduces design parameters to shape performance:
@@ -1519,7 +1526,7 @@ The **static nonlinear part** applies a nonlinear transformation $f(\cdot, \thet
 
 The stability is guaranteed by construction, but for MIMO systems, $f$ must map a high-dimensional space:
 
-$$f(\cdot, \theta): \mathbb{R}^{m \times n_u} \times \mathbb{R}^{p \times (n_y+1)} \to \mathbb{R}^n$$
+$$f(\cdot, \theta): \mathbb{R}^{m \times n_u + p \times (n_y+1)} \to \mathbb{R}^n$$
 
 #### 3. Infinite Impulse Response Structure
 
@@ -1542,6 +1549,7 @@ The regressor vector can be much smaller than the raw $u, y$ vectors, simplifyin
 - **Prior Knowledge**:KF uses prior knowledge of the system's structure, while black box identification does not, making it more flexible.
 - **Training Dataset**: KF doesn't strictly require a taining dataset, only for estimate the $V_1$ covariance, while black box identification requires a dataset of input-output pairs.
 - **Interpretability**: KF is a digital twin of the system, while black box might not provide interpretable models.
+- **Tuning**: A small change in a BB require to retrain the entire model.
 - **Unmeasurable States**: KF can estimate unmeasurable states, while black box identification might not provide state estimates unless specifically designed to do so.
 
 ## Gray Box Identification
@@ -1568,6 +1576,7 @@ F = [0 1; -2 -3];
 G = [0; 1];
 H = [1 0];
 D = 0;
+I = eye(n)
 
 % Create the system, Ts is the sampling time
 sys = ss(F, G, H, D, Ts);
