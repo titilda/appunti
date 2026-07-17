@@ -87,7 +87,7 @@ where $q$ is a parameter that controls how errors are penalized.
 The error given by a model can be decomposed into three components:
 $$\mathbb{E}[L] = \mathbb{E}[(t - y(x))^2] = \mathbb{E}[t^2] \pm \mathbb{E}[t]^2 + \mathbb{E}[(y(x))^2] \pm \mathbb{E}[(y(x))]^2 - 2\mathbb{E}[t \cdot y(x)] \\
 = Var[t] + \mathbb{E}[t]^2 - 2\mathbb{E}[t \cdot y(x)] + \mathbb{E}[(y(x))]^2 + Var[y(x)] \\
-= \underbrace{Var[t]}_{\text{Noise = } \sigma^2} + \underbrace{\mathbb{E}[(f(x) - y(x))^2]}_{\text{Bias}^2} + \underbrace{Var[y(x)]}_{\text{Variance}}$$
+= \underbrace{Var[t]}_{\text{Noise = } \sigma^2} + \underbrace{\mathbb{E}[f(x) - y(x)]^2}_{\text{Bias}^2} + \underbrace{Var[y(x)]}_{\text{Variance}}$$
 
 The only irreducible error is the noise $\sigma^2$, which is inherent in the data generation process ($t = f(x) + \epsilon$ where $\epsilon \sim \mathcal{N}(0, \sigma^2)$). The bias and variance are controllable through model choice and training.
 
@@ -349,6 +349,14 @@ Meaning that more more samples reduce the variance of the noise estimate, while 
 
 > Based on the **Gauss-Markov theorem**, the OLS estimator is the **Best Linear Unbiased Estimator**, meaning it has the lowest variance among all linear unbiased estimators.
 
+#### Geometric Interpretation
+
+The OLS solution projects the target vector $t$ onto the feature space spanned by columns of $\Phi$:
+
+$$\hat{t} = \Phi \hat{w}_{OLS} = \underbrace{\Phi (\Phi^T \Phi)^{-1} \Phi^T}_{\text{Projection Matrix } P} t$$
+
+The projection $\hat{t}$ should be as close as possible to $t$.
+
 #### Stochastic Gradient Descent (SGD)
 
 This is an iterative optimization algorithm that updates the weights incrementally using one sample at a time, rather than computing the gradient over the entire dataset.
@@ -377,14 +385,6 @@ SDG can converge to the OLS solution only when the learning rate decays over tim
 
 - $\sum_{k=1}^\infty \alpha^{(k)} = \infty$: ensures that the algorithm continues to make progress towards the minimum
 - $\sum_{k=1}^\infty (\alpha^{(k)})^2 < \infty$: ensures that the steps become small enough to converge to the minimum without oscillating around it.
-
-#### Geometric Interpretation
-
-The OLS solution projects the target vector $t$ onto the feature space spanned by columns of $\Phi$:
-
-$$\hat{t} = \Phi \hat{w}_{OLS} = \underbrace{\Phi (\Phi^T \Phi)^{-1} \Phi^T}_{\text{Projection Matrix } P} t$$
-
-The projection $\hat{t}$ should be as close as possible to $t$.
 
 ### Maximum Likelihood Estimation (MLE)
 
@@ -556,6 +556,57 @@ where $p(x) = \sum_{j=1}^K p(x|C_j) p(C_j)$ (marginal likelihood).
 
 This approach allows to generate new data samples from each class. However, it typically requires more parameters and samples.
 
+### Regularization
+
+**Regularization** is a technique to prevent overfitting by adding a penalty term to the loss function that discourages overly complex models (models with excessively large weights). These methods **shrink** the weights towards zero, effectively reducing model complexity and improving generalization.
+
+Modified loss function:
+$$L(w) = \underbrace{L_D(w)}_{\text{error on data}} + \lambda \underbrace{L_w(w)}_{\text{model complexity}}$$
+$$L(w) = \underbrace{\frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2}_{\text{RSS}} + \lambda L_w(w)$$
+
+The **regularization parameter** $\lambda$ controls the tradeoff:
+
+- $\lambda = 0$: Only fit data (standard OLS)
+- $\lambda \to \infty$: Weights forced to zero
+
+The value of $\lambda$ is choosen usign cross validation, once the value is found it is possible to train the final model.
+
+#### Lasso Regression (L1 Regularization)
+
+Penalize the **L1 norm** (sum of absolute values):
+$$L_w(w) = \|w\|_1 = \sum_{j=1}^M |w_j|$$
+
+This generates *sparse solutions*, where some weights are exactly zero, effectively performing feature selection, removing irrelevant features from the model.
+
+Full loss function:
+$$L(w) = \frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2 + \lambda \|w\|_1$$
+
+This method doesn't have a closed-form solution, but can be iteratively solved using SGD.
+
+#### Ridge Regression (L2 Regularization)
+
+Penalize the **L2 norm** (sum of squares) of weights:
+$$L_w(w) = \frac{1}{2}\|w\|_2^2 = \frac{1}{2} \sum_{j=1}^M w_j^2$$
+
+This encourages smaller weights, but does not set them to zero.
+
+Full loss function:
+$$L(w) = \frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2 + \frac{\lambda}{2} \|w\|_2^2$$
+
+The solution is:
+$$\hat{w}_{\text{ridge}} = (\Phi^T \Phi + \lambda I)^{-1} \Phi^T t$$
+
+#### Elastic Net
+
+The **Elastic Net** is a regularization technique that combines both L1 and L2 penalties to leverage the benefits of both methods.
+
+$$L(w) = \alpha \rho \|w\|_1 + \frac{\alpha (1 - \rho)}{2} \|w\|_2^2$$
+
+where:
+
+- $\alpha$: overall regularization strength
+- $\rho$: balance between L1 and L2 (0 ≤ ρ ≤ 1)
+
 ## Model Selection
 
 Adding features without adding data leads to overfitting. More parameters require more samples to estimate them reliably. When features exceed samples ($M > N$), the hypothesis space becomes too large, and variance explodes.
@@ -610,55 +661,6 @@ Backward feature elimination is the opposite of forward selection. It starts wit
 
 These methods are not guaranteed to find the optimal subset, as they are greedy heuristics. They may miss feature combinations that only work together.
 
-### Regularization
-
-**Regularization** is a technique to prevent overfitting by adding a penalty term to the loss function that discourages complex models (too many parameters or weights too big).
-
-Modified loss function:
-$$L(w) = \underbrace{L_D(w)}_{\text{error on data}} + \lambda \underbrace{L_w(w)}_{\text{model complexity}}$$
-$$L(w) = \underbrace{\frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2}_{\text{RSS}} + \lambda L_w(w)$$
-
-The **regularization parameter** $\lambda$ controls the tradeoff:
-
-- $\lambda = 0$: Only fit data (standard OLS)
-- $\lambda \to \infty$: Weights forced to zero
-
-The value of $\lambda$ is choosen usign cross validation, once the value is found it is possible to train the final model.
-
-#### Ridge Regression (L2 Regularization)
-
-Penalize the **L2 norm** (sum of squares) of weights:
-$$L_w(w) = \frac{1}{2}\|w\|_2^2 = \frac{1}{2} \sum_{j=1}^M w_j^2$$
-
-This encourages smaller weights, but does not set them to zero.
-
-Full loss function:
-$$L(w) = \frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2 + \frac{\lambda}{2} \|w\|_2^2$$
-
-The solution is:
-$$\hat{w}_{\text{ridge}} = (\Phi^T \Phi + \lambda I)^{-1} \Phi^T t$$
-
-#### Lasso Regression (L1 Regularization)
-
-Penalize the **L1 norm** (sum of absolute values):
-$$L_w(w) = \|w\|_1 = \sum_{j=1}^M |w_j|$$
-
-This generates *sparse solutions*, where some weights are exactly zero, effectively performing feature selection, removing irrelevant features from the model.
-
-Full loss function:
-$$L(w) = \frac{1}{2} \sum_{n=1}^N (t_n - w^T \Phi(x_n))^2 + \lambda \|w\|_1$$
-
-#### Elastic Net
-
-The **Elastic Net** is a regularization technique that combines both L1 and L2 penalties to leverage the benefits of both methods.
-
-$$L(w) = \alpha \rho \|w\|_1 + \frac{\alpha (1 - \rho)}{2} \|w\|_2^2$$
-
-where:
-
-- $\alpha$: overall regularization strength
-- $\rho$: balance between L1 and L2 (0 ≤ ρ ≤ 1)
-
 ### Dimension Reduction
 
 **Dimension reduction** is the process of reducing the number of features in a dataset while preserving as much information as possible.
@@ -709,11 +711,14 @@ All the models can be trained in parallel, but works better for complex models (
 2. Train a weak learner on the weighted data.
 3. Increase weights of misclassified samples.
 4. Repeat.
-5. Combine all learners with weighted voting.
+
+The inference is performed by averaging the predictions of all models, weighted by their accuracy during training.
 
 This methods requires a weak learner with high bias and low variance that performs better than random guessing (error < 0.5) to ensure improve performance and not noisy data.
 
 This time the models are trained sequentially, and each model is influenced by the previous ones, so it cannot be parallelized.
+
+The dataset should not be too noisy, as boosting can overfit the noise and reduce generalization.
 
 ## Sample Complexity
 
@@ -792,9 +797,11 @@ From which we can derive:
 
 PAC is limited to finite hypothesis spaces, but many real-world models have infinite hypothesis spaces. **Vapnik-Chervonenkis (VC) dimension** is based on the amount of points that can be exactly classified.
 
-Given a set of samples $S = \{x_1, x_2, \ldots, x_m\}$, there are $2^m$ possible ways to label these samples (**dichotomies**).
+Given a set of samples $S = \{x_1, x_2, \ldots, x_m\}$, there are $2^m$ possible binary labelings of these samples. A **dichotomy** is a labeling of $S$ that can be realized by a hypothesis in $\mathcal{H}$.
 
-The VC-dimension measures the size of the largest set of points that the hypothesis space $\mathcal{H}$ can **shatter**, meaning that for every possible dichotomy, there exists a hypothesis in $\mathcal{H}$ that is consistent with that labeling.
+An hypothesis space $\mathcal{H}$ can **shatter** a set of points $S$ if it can realize all $2^m$ possible dichotomies.
+
+The **VC-dimension** of a hypothesis space $\mathcal{H}$ is the size of the largest set of points that can be shattered by $\mathcal{H}$. It measures the capacity of the model to fit data and is a key concept in statistical learning theory.
 
 > In 2D, a linear classifier can shatter any set of 3 points (it can generate all $2^3 = 8$ possible labelings). But no linear classifier can shatter any set of 4 points in general position (some labelings are impossible).
 
@@ -1214,7 +1221,7 @@ This is done by solving the Bellman equation for $V^\pi$ using either a closed-f
 
 The **policy iteration** method solves the *control* problem by alternating between policy evaluation and policy improvement until convergence.
 
-The **Policy Improvement** step updates the policy to be greedy with respect to the current value function, which guarantees that the new policy is at least as good as the old one($$V^{\pi'}(s) \geq V^\pi(s) \quad \forall s$$):
+The **Policy Improvement** step updates the policy to be greedy with respect to the current value function, which guarantees that the new policy is at least as good as the old one($V^{\pi'}(s) \geq V^\pi(s) \quad \forall s$):
 
 $$\pi'(s) = \arg\max_a Q^\pi(s, a)$$
 
@@ -1233,7 +1240,7 @@ The **value iteration** method solves the *control* problem by applying the Bell
 
 $$V_{k+1}(s) = \max_a \left[R(s, a) + \gamma \sum_{s'} P(s' | s, a) V_k(s')\right]$$
 
-By defining $\|V\|_\infty = \max_s |V_(s)|$ is it possible to define the distance between two value functions $V$ and $V'$ as $\|V - V'\|_\infty$. The distance between the value function at each iteration improves by a factor of $\epsilon$:
+By defining $\|V\|_\infty = \max_s |V(s)|$ is it possible to define the distance between two value functions $V$ and $V'$ as $\|V - V'\|_\infty$. The distance between the value function at each iteration improves by a factor of $\epsilon$:
 
 $$\|V_{k+1} - V_k\|_\infty \leq \epsilon$$
 
@@ -1262,9 +1269,9 @@ It is possible to find the optimal policy $\pi^*$ from the duality of the linear
 
 Maximizing the cumulative reward is equivalent to minimizing the **regret**, which is the difference between the reward that could have been obtained by always playing the best arm ($a^* = \arg\max_a \mathbb{E}[R(a)]$) and the reward actually obtained by the agent:
 
-$$L_T = T \cdot \underbrace{R(a^*)}_{R^*} - \sum_{t=1}^T \mathbb{E}[R(a_{i_t})] = \sum_{t=1}^T [R^* - R(a_{i_t})]$$
+$$L_T = T \cdot \underbrace{R(a^*)}_{R^*} - \sum_{t=1}^T R(a_{i_t}) = \sum_{t=1}^T [R^* - R(a_{i_t})]$$
 
-The regret can be expressed in terms of the number of times each arm is played and the suboptimality gap $\Delta_a = R^* - R(a)$:
+The expected regret, based on the expected values instead of the realizations, can be expressed in terms of the number of times each arm is played and the suboptimality gap $\Delta_a = \mathbb{E}[R^* - R(a)]$:
 
 $$L_T = \sum_{a \neq a^*} \underbrace{\Delta_a}_{\text{suboptimality gap}} \cdot \underbrace{N_T(a)}_{\text{times arm $a$ played}}$$
 
