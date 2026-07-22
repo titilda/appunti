@@ -678,3 +678,23 @@ Each cache line is tagged with state information to track its state according to
 - **Exclusive (E)**: This cache has valid data, no other cache has it. On write, it can avoid inform other caches as is the only one with the data.
 - **Shared (S)**: Multiple caches have valid (read-only) copies. On write, it must upgrade to Modified and inform other caches to invalidate their copies.
 - **Invalid (I)**: This cache doesn't have valid data. On read, it must fetch from another cache or memory. On write, it must notify other caches to invalidate their copies.
+
+#### Directory Based Protocol
+
+The alternative to snooping is called **Directory Based**. With this kind of protocols, each node manages and tracks the status of some memory blocks. If a block belong to a certain node, that node is called **Home Node**.
+
+The home node must track which processors have a copy of the block and if someone has modified it.
+
+Each block in the directory can be in one of three states:
+
+- **Uncached**: No processors has a cached copy of the memory block.
+- **Shared**: One or more processors have cached the memory block.
+- **Modified**: One processor (and only one, the **Owner Block**) has modified the block and memory is not in sync.
+
+To identify which node has a cached copy of the block, every block is associated with a bit array that stores that information (`b[i] == 0` &larr; block not cached by `i`, `b[i] == 1` &larr; block cached by node `i`).
+
+Each cached block can be in one of the three states allowed by the MSI protocol.
+
+When communication between nodes happens, nodes can assume one or more of the following roles: **Home Node**, **Local Node**, **Remote Node**. The Home Node can also be the Local or the Remote for the current transaction.
+
+The communication can happen with many different types of message.
