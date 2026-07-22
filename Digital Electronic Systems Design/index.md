@@ -142,3 +142,20 @@ There exists multiple buffers that can be used to access different types of cloc
 - **BUFR**s are used to access "regionally" local clock lines;
 
 It is possible to provide external clock signals to the FPGA connecting them to specific pins that can route said signal into the clock trees.
+
+# Timing
+
+COnsidering a flip flop, there are some timing requirements on the input and clock signal that are required in order to have the flip flop guaranteed working as epected.
+
+We define
+
+- $t_{c,CQ}$: the contamination delay from the clock event to the output;
+- $t_{p,CQ}$: the propagation delay from the clock event to the output;
+- $t_\text{setup}$: the minimum time the input should remain stable before the clock event;
+- $t_\text{hold}$: the minimum time the input should remain stable before the clock event.
+  
+The same can be applied to D-latches considering the enable signal going from _transparent_ to _memory_ instead of the clock event.
+
+In order to have the guarantee that there are no timing violations, some inequalities must be satisfied. Those inequalities depends on the specific design we are working on but the logic behind it can be generalized. We will now see that.
+
+

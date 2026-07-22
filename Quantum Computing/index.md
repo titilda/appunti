@@ -58,7 +58,19 @@ Gates may operate either on a single qubit or on multiple ones.
 
 Gates can be represented as matrices that left-multiplies the qubit state.
 
+If $|v_{in}\rangle$ gets transformed into $|v_{out}\rangle$ by going through gates $G_1, G_2, \dots, G_n$, then the same exact result can be achieved by using a single gate $\hat G$ defined as
+
+$$
+\hat G = \prod_{i=n}^1 G_i
+$$
+
 ## Single qubit gates
+
+Single qubit gates, as the name implies, work on a single qubit.
+
+::: {.callout .callout-note title="Note"}
+In order to create superposition from base states, all elements of a gate must be non null.
+:::
 
 ### Identity gate
 
@@ -122,6 +134,96 @@ $$
 
 ## Eigenvectors of single qubit gates.
 
-The eigenvectors of a gate are always aligned to the direction around which the rotation is applied by the same gate.
+The eigenvectors of a gate are always aligned (in the Bloch sphere) to the direction around which the rotation is applied by the same gate.
 
+_TODO_
 
+## Generic rotation gates
+
+_TODO_
+
+## Qubit measurement
+
+_TODO_
+
+## Multiple qubits
+
+The state describing a system composed by multiple qubits can be obtained by performing the tensor product of all the qubits' states. The amplitudes associated to each base system state are associated to the probabilities of an hypotetical join mesurement of the single quibits' states. In general, the state of an $n$-qubits system is a $2^n$-dimensional complex vector.
+
+Assume that two distinct states go through two distinct gates. The same result can be achieved by running the tensor product of the states through the tensor product of the gates.
+
+### CNOT gate
+
+The **CNOT** gate acts like a controlled negation on a quibit based on the value of another qubit. It is represented by
+
+$$
+CNOT = \begin{bmatrix}
+  1 & 0 & 0 & 0 \\
+  0 & 1 & 0 & 0 \\
+  0 & 0 & 0 & 1 \\
+  0 & 0 & 1 & 0
+\end{bmatrix}
+$$
+
+### Generic controlled gate
+
+More in general, a generic controlled gate $C_U$ can be represented by the matrix
+
+$$
+C_U = \begin{bmatrix}
+  I & 0 \\ 0 & U
+\end{bmatrix}
+$$
+
+where $I$ is the identity matrix and $U$ is the gate we want to conditionally apply.
+
+### SWAP gate
+
+The swap gate swaps the amplitudes of the two qubits, in the sense that terms like $a_xb_y$ becames $a_yb_x$. It is represented by
+
+$$
+SWAP = \begin{bmatrix}
+  1 & 0 & 0 & 0 \\
+  0 & 0 & 1 & 0 \\
+  0 & 1 & 0 & 0 \\
+  0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+### CCNOT gate
+
+The CCNOT gate, also known as the Toffoli gate, is a cnot gate that flips the target qubit only when the two control qubit are high. It is represented by
+
+$$
+CCNOT = \begin{bmatrix}
+  1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+  0 & 0 & 0 & 0 & 0 & 0 & 1 & 0
+\end{bmatrix}
+$$
+
+## Universal quantum gates
+
+A set of quantum gates is said to be **universal** if an arbitrarily complex quantum circuit can be decomposed in gates belonging to that set. The set of two-qubits gates is universal, the Toffoli + Hadamard set is also universal and so is the set composed by $R_x, R_y, R_z, CNOT$.
+
+## Entanglement
+
+A state is said to be **entangled** if it cannot be written as the tensor product of two or more other states (opposite of **separable states**). The number of possible separable states is negligible compared to the total number of possible quantum states.
+
+An example of entangled states are the **Bell states** $\Phi^+, \Phi^-, \Psi^+, \Psi*-$ where
+
+$$
+|\Phi^+\rangle = \frac{|00\rangle + |11\rangle}{\sqrt{2}} \qquad |\Phi^-\rangle = \frac{|00\rangle - |11\rangle}{\sqrt{2}} \\
+|\Psi^+\rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}} \qquad |\Psi^-\rangle = \frac{|01\rangle - |10\rangle}{\sqrt{2}} 
+$$
+
+While superposition is basis dependent, entanglement is NOT.
+
+Measurement brings the quantum state back to a separable state, therefore measurements destroy entanglement. This means that a measurement may affect more than one qubit.
+
+_To be continued_

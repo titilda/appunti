@@ -44,6 +44,51 @@ Obviously, if the domain requirements are incorrect, the software may not work c
 
 The requirements be **functional** (what whe software must do) **unfeasible functional** (what is not under control of the software but it is necessary for the entire system to work), **non functional** (how the software should do its job) and **technical/constraints** (how the software must be built).
 
+A good requirement statement should consern only one thing (otherwise there are multiple requirements packed together), should be non-ambiguous, should be testable and achieveable by the software.
 
+In order to effectively extract good requirements from an high level description of the task the software should do, one should tell himself a brief fictional scenario whre the user interact with the software, just like a simulation. The idea is to predict how the software will interact with the world in order to doscover all issues "early".
 
+Other tools used to extract requirements may be task observations and surveys.
+
+Since a functional requirement may be really complex to describe, the **use case**s are used to keep a fixed structure. A single use case is comprised of **participating actors** (who is in charge of the interaction withthe software), **entry condition** (when the use case starts), **flow of events** (what happens when the use case is actuated), **exit condition** (when the use case is no longer active), **exceptions** (what kind of errors may emerge and how they should be handled) and **special requirement** (constraints and non functional requirements related to the use case).
+
+A good use case must respect a few requirements itself:
+
+- The use case must be named with a verb that indicates what the user is trying to do
+- The actors must have descriptive names
+- The steps must be written with active verbs, not passive
+- The casual relationship between steps in a use case must be clear
+- There must be a use case for each kind of transaction
+- All the exceptions must be described separately
+- Use cases must not span over two/three pages
+- The steps performed by actors and the ones performed by the system should be easily distinguishable
+
+The interaction between use cases and actors is described with UML diagrams. 
+
+All the requirement engineering process leads to the final result: the **RASD** (Requirement Analysis and Specification Document). The structure of the RASD is the following
+
+- Introduction
+  - Purpose
+  - Scope
+  - Definitions, acronyms, abbreviations
+  - Reference documents
+  - Overview
+- Overall description
+  - Scenarios
+  - User characteristics
+  - Analysis of phenomena
+  - Use cases
+  - Requirements
+  - Domain assumptions
+- Bibliography
+
+# Software design
+
+Software design is the decision about _how_ the software should accomplish its job. Software architecture (i.e. the sum of all the decisions taken while designing software) is composed by a set of structures:
+
+- Components and connectors: describes how the various software modules will expose functionalities (or connect to other exposed ones)
+- Module: describes the structure of the software
+- Deployment: describes the execution environment
+
+_To be continued_
 
