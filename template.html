@@ -276,7 +276,7 @@
 					<p class="mb-0 text-secondary small">
 						This content is no longer actively maintained or updated (and so will be for the forseeable
 						future) and may contain outdated and/or
-						incomplete information.
+						incomplete information. <br>
 						Please consider <a href="https://github.com/titilda/appunti">contributing</a> to this page.
 					</p>
 				</div>
@@ -299,7 +299,7 @@
 						This page is <span class="text-decoration-underline">incomplete</span>.
 					</h5>
 					<p class="mb-0 text-secondary small">
-						This page lacks key details, sections, or comprehensive coverage.
+						This page lacks key details, sections, or comprehensive coverage. <br>
 						Please consider <a href="https://github.com/titilda/appunti">contributing</a> to this page.
 					</p>
 				</div>
@@ -319,8 +319,28 @@
 						This page is a <span class="text-decoration-underline">stub</span>.
 					</h5>
 					<p class="mb-0 text-secondary small">
-						This page is very short and lacks comprehensive details.
+						This page is very short and lacks comprehensive details. <br>
 						Please consider <a href="https://github.com/titilda/appunti">contributing</a> to this page.
+					</p>
+				</div>
+			</div>
+		</div>
+		$endif$
+
+		$if(banners.styling_issues)$
+		<div class="alert alert-light border-0 rounded-0 shadow-sm py-3 px-4 mb-4 bg-body-tertiary border-start border-danger border-4"
+			role="alert">
+			<div class="container-fluid d-flex align-items-center">
+				<div class="fs-3 text-danger me-3 d-flex align-items-center">
+					<i class="bi bi-exclamation-triangle"></i>
+				</div>
+				<div class="flex-grow-1">
+					<h5 class="alert-heading fs-6 fw-bold mb-1 text-danger">
+						This page has <span class="text-decoration-underline">styling issues</span>.
+					</h5>
+					<p class="mb-0 text-secondary small">
+						Reason: $banner.styling_issues$ <br>
+						Please consider <a href="https://github.com/titilda/appunti">contributing</a> a fix to this page.
 					</p>
 				</div>
 			</div>
