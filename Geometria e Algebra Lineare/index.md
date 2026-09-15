@@ -1,6 +1,8 @@
 ---
 title: "Elenco Teoremi con relative dimostrazioni per esame GAL"
 author: "Andrea Oggioni"
+banners:
+  abandoned: true
 ---
 
 # Elenco Teoremi con relative dimostrazioni per esame GAL

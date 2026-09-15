@@ -2,6 +2,8 @@
 title: "Riassuntino di Logica e Algebra"
 author:
 - "Andrea Oggioni"
+banners:
+  styling_issues: "Teoremi e dimostrazioni possono essere trasformati in callouts e collapsibles."
 ---
 
 # Capitolo Uno: Relazioni

@@ -2,6 +2,8 @@
 title: "Biochip"
 author:
     - "Niccolò Papini"
+banners:
+    styling_issues: "Immagini sproporzionatamente grandi,"
 ---
 ## Introduction
 

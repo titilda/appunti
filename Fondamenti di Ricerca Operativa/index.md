@@ -2,6 +2,8 @@
 title: "Riassunto di Fondamenti di Ricerca Operativa"
 author: 
 - "Andrea Oggioni"
+banners:
+  abandoned: true
 ---
 
 # Introduzione

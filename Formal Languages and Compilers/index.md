@@ -2,6 +2,8 @@
 title: "Formal Languages and Compilers"
 author:
   - "Andrea Lunghi"
+banners:
+  stub: true
 ---
 
 ## Language

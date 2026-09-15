@@ -2,6 +2,8 @@
 title: "Riassunto di Fondamenti di Calcolo Numerico"
 author:
 - "Andrea Oggioni"
+banners:
+  styling_issues: "Highlight del codice non correttamente funzionante."
 ---
 
 # Introduzione

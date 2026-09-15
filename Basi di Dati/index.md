@@ -2,6 +2,8 @@
 title: "Basi di Dati"
 author:
 - "Andrea Lunghi"
+banners:
+  abandoned: true
 ---
 
 # Basi di Dati

@@ -1,7 +1,9 @@
 ---
 title: "Bioinformatics for Computational Biology"
 author:
-    - "Niccolò Papini"
+  - "Niccolò Papini"
+banners:
+  styling_issues: "Alcune immagini protette da copyright, alcune immagini sproporzionatamente grandi, immagini che possono essere trasformate in tabelle, paragrafi allineati storti"
 ---
 ## Introduction
 

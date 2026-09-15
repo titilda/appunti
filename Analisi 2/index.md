@@ -4,6 +4,8 @@ author:
 - "Alessandro Modica"
 - "Joele Andrea Ortore"
 - "Andrea Oggioni"
+banners:
+  styling_issues: "Teoremi e dimostrazioni possono essere trasformati in callouts e collapsibles."
 ---
 
 _Questa pagina è la seconda versione, per la prima versione, visitare [questa pagina](/Analisi%202/old.html)_.

@@ -2,6 +2,8 @@
 title: "Fondamenti di Elettronica (FdE)"
 author: 
 - "Niccolò Papini"
+banners:
+  styling_issues: "Immagini sproporzionatamente grandi, formule non correttamente formattate."
 ---
 # Introduzione
 

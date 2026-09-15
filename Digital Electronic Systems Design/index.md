@@ -2,6 +2,8 @@
 title: "Digital Electronic Systems Design"
 author:
   - "Andrea Oggioni"
+banners:
+  incomplete: true
 ---
 
 # Introduction

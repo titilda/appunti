@@ -2,6 +2,8 @@
 title: "Parallel Computing"
 author: 
 - "Andrea Oggioni"
+banners:
+  styling_issues: "Immagini eccessivamente grandi."
 ---
 
 # Introduction

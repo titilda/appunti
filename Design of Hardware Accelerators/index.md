@@ -2,6 +2,8 @@
 title: "Design of Hardware Accelerators"
 author:
   - "Andrea Oggioni"
+banners:
+  stub: true
 ---
 
 # Introduction

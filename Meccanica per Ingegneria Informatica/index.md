@@ -2,6 +2,8 @@
 title: "Meccanica"
 author: 
 - "Niccolò Papini"
+banners:
+  styling_issues: "Immagini sproporzionatamente grandi, teoremi e dimostrazioni possono essere trasformati in callouts e collapsibles."
 ---
 # Introduzione
 

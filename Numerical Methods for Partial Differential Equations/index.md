@@ -2,6 +2,8 @@
 title: "Numerical Methods for Partial Differential Equations Summary"
 author: 
 - "Andrea Oggioni"
+banners:
+  abandoned: true
 ---
 
 # Introduction

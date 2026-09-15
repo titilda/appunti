@@ -2,6 +2,8 @@
 title: "Riassuntino di Fisica"
 author:
 - "Andrea Oggioni"
+banners:
+  abandoned: true
 ---
 
 # Capitolo Uno: Cinematica

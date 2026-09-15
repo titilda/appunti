@@ -1,6 +1,8 @@
 ---
 title: "Riassunto di Analisi I"
 author: "Andrea Oggioni"
+banners:
+  styling_issues: "Teoremi e dimostrazioni possono essere trasformati in callouts e collapsibles."
 ---
 
 # Riassunto di Analisi I

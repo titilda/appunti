@@ -2,6 +2,8 @@
 title: "Advanced Computer Architecture"
 author:
   - "Andrea Lunghi"
+banners:
+  styling_issues: "Some table columns are disproportionately large."
 ---
 
 Computer architecture is fundamentally about **trade-offs**: every design decision involves balancing competing goals.

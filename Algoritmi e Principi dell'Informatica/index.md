@@ -4,6 +4,8 @@ author:
 - "Niccolò Papini"
 - "Andrea Oggioni"
 - "Nadav Moscovici"
+banners:
+  styling_issues: "Immagini troppo grosse, formule non centrate correttamente, macchine a stati disegnabili con mermaid, credo."
 ---
 # Definizioni iniziali
 

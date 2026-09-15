@@ -1,6 +1,9 @@
 ---
 title: "Formulario Cache"
 author: "Nadav Moscovici"
+banners:
+  stub: true
+  abandoned: true
 ---
 
 # Formulario Cache

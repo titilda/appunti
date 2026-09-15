@@ -1,6 +1,9 @@
 ---
 title: "Reti Logiche"
 author: "Niccolò Papini"
+banners:
+  stub: true
+  abandoned: true
 ---
 
 # Introduzione

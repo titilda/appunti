@@ -2,6 +2,8 @@
 title: "Onde Elettromagnetiche e Mezzi Trasmissivi"
 author: 
 - "Alessandro Modica"
+banners:
+  styling_issues: "Immagine al contrario?"
 ---
 
 # Capitolo Uno: Segnali

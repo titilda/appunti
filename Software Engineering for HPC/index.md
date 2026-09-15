@@ -3,10 +3,8 @@ title: Software Engineering for HPC
 author:
   - "Andrea Oggioni"
 banners:
-  wip: true
   abandoned: true
   incomplete: true
-  stub: true
 ---
 
 # Introduction

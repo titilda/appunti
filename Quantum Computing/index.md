@@ -2,6 +2,8 @@
 title: "Quantum Computing"
 author:
   - "Andrea Oggioni"
+banners:
+  stub: true
 ---
 
 # Basics

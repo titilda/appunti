@@ -1,6 +1,9 @@
 ---
 title: "Riassunto di Elettrotecnica"
 author: "Andrea Oggioni"
+banners:
+  abandoned: true
+  styling_issues: "Immagini sproporzionatamente grandi, immagini protette da copyright."
 ---
 
 # Teoria

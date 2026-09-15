@@ -2,6 +2,8 @@
 title: "Foundation of Operations Research"
 author:
 - "Ortore Joele Andrea"
+banners:
+  incomplete: true
 ---
 
 ## Linear Programming 
