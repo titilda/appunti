@@ -111,5 +111,29 @@ The plot of the cumulative variance ration of the first $K$ components can help 
 
 A **biplot** over the first two principal components can be used to understand the correlations between PCs and variablens and between variables themselves.
 
+## Nonlinear reduction
 
+Complex data usually lies on nonlinear spaces called **manifolds** that can be described with few variables. A manifold is shaped like $\phi : \mathbb{R}^n \to \mathbb{R}^m$ with $n < m$. If we can find such a manifold, we can then work within the manifold space, which is lower dimensional.
+
+There are three main approaches to try to work with manifolds. Those approaches will be described in the following subsections.
+
+### Kernel PCA
+
+**Kernel PCA** follows the same approach as standard PCA but it works on a nonlinear mapping of the data instead of working on the data itself. The idea is to apply a nonlinear transofrmation to the nonlinear data in order to make it _more linear_ and then work on it.
+
+Kernel PCA has both advantages (can, for example, untangle circles and complex shapes) and disadvantages (it is usually impossible to go back from mapped data to the original values).
+
+### Local similarity
+
+Local similariti methods are used to map data into another space, preserving proximity between data points: points that are originally close to one each other will be also positioned close in the new space while _hic sunt leones_ holds for distant points and global geometry.
+
+An example of a local similarity method is the **t-distributed Stochastic Neighbour Embedding** (t-SNE). This method is particularly suited for visualization as it can produce nice plots grouping datapoints by similarity.
+
+t-SNE can be parametrized by **perplexity**: it is a parameter determining the amount of "local" a point should be to another in order to be considered in the same neighbourhood. A lower perplexity works with dense clusters while an higher one works with sparser ones.
+
+Another local similarity method is **Uniform Manifold Approximation and Projection** (UMAP) which is a graph based algorithm. First, for each data point, a radius based on its $n$-th nearest neighbour is decided, then two points are considered similar if both point are within each other's radia.
+
+<!-- This may not be correct, TODO: better understand UMAP -->
+
+### Nonlinear mapping learning
 
