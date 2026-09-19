@@ -195,8 +195,51 @@ The distance between clusters is a function that must be chosen before hand. Exa
 
 The idea behind density based clustering is that a cluster is usually identified by an area with an higher density of data points. Algorithms of this kind can untangle complex shapes.
 
-<!-- TODO: 03:28 -->
+One of the density-based clustering algorithms is **Density-Based Spatial Clustering of Applications with Noise** (DBSCAN). This algorithm is able to exclude noisy points from the clustering.
+
+The main idea behind this algorithm is that a point belongs to a cluster if it is close to many points of this cluster. The algorithm needs two parameters to start: **eps** is the maximum thistance two points should be spaced apart for them to be considered neighbors and the **min_points** is the minimum numbers of points used to define a cluster.
+
+Points in clusters with less than **min_points** are considered noise.
+
+DBSCAN is very powerful as it can cluster very complex shaped data while being resilient to outliers and noise but fails when the clusters are really different in term of density. Points near the border of a cluster are also more likely to be assigned to the neighbor cluster, producing incorrect results.
 
 ## Probabilistic clustering
+
+Probabilistic clustering is a technique that assigns to each record the probability for it to be part of each cluster: if a record is likely not part of a cluster, it will get a small probability and the opposite is true for clusters it likely belongs to.
+
+Since this is not an hard assignment, it is possible to have datapoints with high probability of belonging to more than one clusters, so that it is possible to have single data points belonging to multiple clusters.
+
+<!-- TODO: gaussian mixture models 03:38 -->
+
+## Evaluation of clustering results
+
+We will now analyse the metrics most commonly used in the evaluation of clustering results.
+
+The **Within Cluster Sum of Squares** (WSS) is a metric used to determine the intra-cluster variance. The smaller the better. It is computed as
+
+$$
+WSS = \sum_{C \in \text{Clusters}} \sum_{p \in C} \operatorname{Distance}(p, \bar C)^2
+$$
+
+where $\bar C$ is the centroid of cluster $C$.
+
+The WSS metric is useful with algorithms which require the number of clusters to be set. If we plot the WSS over the number of cluster, we can visually see from which point increasing the number of cluster does not improve the WSS much: that is the number of clusters we should choose for our analysis.
+
+Another metricis the silhouette score, which tells us how much clusters are isolated.
+
+Let $a$ be the average distance between a point $i$ in a cluster and all the other points in the same cluster and let $b$ be the average distance between the same point $i$ and all the points in the nearest cluster, then the solhouette score of that chosen point $i$ is computed as
+
+$$
+\operatorname{Sil}(i) = \frac{b - a}{\max(a, b)}
+$$
+
+The silhouette score of an entire cluster is the average silhouette score of its points. The silhouette score of the clustering results is the average of the scores of the clusters.
+
+Silhouette score alone does not mean anything. It is meaningful only when comparing different clustering results: the higher the better.
+
+<!-- TODO: AIC e BIC 03:55 -->
+
+
+
 
 
