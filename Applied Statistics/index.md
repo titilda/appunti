@@ -137,3 +137,66 @@ Another local similarity method is **Uniform Manifold Approximation and Projecti
 
 ### Nonlinear mapping learning
 
+The idea behind this is to learn an **autoencoder**, i.e. the composition of an encoder and a decoder.
+
+<!-- TODO: autoencoders -->
+
+# Clustering
+
+A **clustering** procedure aims at grouping records from a dataset without having the labels provided. It is therefore an **unsupervised learning** method.
+
+Clustering procedures triy to identify clusters by minimizing intra-cluster distance while maximizing the inter-cluster one.
+
+Obviously, there may be many different possible _correct_ clustering in a dataset so the results must be analyzed to understand which cluster represent what.
+
+In order to start a clustering procedure, two things must be defned before-hand: the firs is a **distance function** (which is used to determine the distance between two arbitrary records) and the second one is the **clustering algorithm** used to actually derive clusters.
+
+The distance function is very important: in the case of columns vith very different variances, with the wrong distance function, it is possible to make columns with small variance almost completely neglected (this can be usually solved by normalization). Additionally, when talking about non-real data types (e.g. booleans or strings), the distance between values is not obvious and should be considered carefully.
+
+Given a dataset of only numeric variables, a sample of the most used distance functions is given in the list below:
+
+- **Euclidean distance**: $d_E(x, q): \sqrt{\sum_{i=1}^n(x_i - q_i)^2}$.
+- **Squared euclidean distance**: $d_{E^2}(x, q) = d_E(x, q)^2$. This function is more sensitive to outliers.
+- **Standardized euclidean distance**: $d_{SE}(x, q) = \sqrt{\sum{i=1}^n \frac{1}{s_i^2}(x_i - q_i)^2}$, where $s_i^2$ is the variability on the $i$-th dimension. The idea is to weight each contribution by something that is inversely proportional to the variance of the corresponding columns.
+- Čebyšëv distance: $d_{max}(x, q) = \max_i |x_i - q_i|$. This function is really sensitive to outliers but also robust to noise.
+- **Manhattan distance**: $d_M(x, q) = \sum_{i=1}^n |x_i - q_i|$. This function is useful when working with sparse count and things where the differences must add up.
+- **Correlation based distance**: $d_R(x, q) = 1 - r_{xq}$ where
+  $$
+  r_{xq} = \frac{S_{x, q}}{\sqrt{S_x} \sqrt{S_q}} = \frac{\sum_{i=1}^n (x_i - \bar x)(q_i - \bar q)}{\sum_{i=1}^n (x_i - \bar x)^2 \sum_{i=1}^n (q_i - \bar q)^2}
+  $$
+
+Clustering algorithms may be classified according to multiple parameters: it can be **hard** (all records belong to one and only single cluster) vs **soft** (one record belong to one or more clusters) and **flat** (all clusters are on the same level) vs **hierarchical** (clusters are organized in a tree where the father encompasses al the children).
+
+The four most used clustering techniques are **partition-based clustering**, **hierarchical clustering**, **density-based clustering** and **probabilistic clustering**.
+
+## Partition-based clustering
+
+PArtition-based clustering algorithms try to assign to each record one specific label. They work by initially assigning each point to a cluster (the number of clusters is an input parameter) and then, through an iterative algorithm, refine the assignment many times.
+
+The most used algorithm in this category is **k-means**. This algorithm is randomic, therefore the result may change every time. This algorithm is also very sensitive to outliers (we can attenuate this by using the $k-medoids$ algorithm).
+
+k-means works well with ellipsoidal clusters but cannot untangle complex shapes.
+
+## Hierarchical clustering
+
+Hierarchical clustering does _not_ require the target number of clusters to be defined. This is an itrative procedure.
+
+Algorithm of this kind start by assigning each record to a different cluster (one cluster per record) then, iteratively, the two most close clusters get merged into a single one.
+
+The distance between clusters is a function that must be chosen before hand. Examples are
+
+- **single link**: minimum of the pairwise distances distance between points belonging to the first cluster to points belonging to the second cluster.
+- **average link**: average of the pairwise distances distance between points belonging to the first cluster to points belonging to the second cluster.
+- **complete link**: maximum of the pairwise distances distance between points belonging to the first cluster to points belonging to the second cluster.
+
+**Dendrograms** are used to depict at which distance clusters get merged. Usually, the correct clustering emerges when no merges happens for a long range of distances.
+
+## Density-based clustering
+
+The idea behind density based clustering is that a cluster is usually identified by an area with an higher density of data points. Algorithms of this kind can untangle complex shapes.
+
+<!-- TODO: 03:28 -->
+
+## Probabilistic clustering
+
+
