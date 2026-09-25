@@ -4,6 +4,7 @@ author:
   - "Andrea Oggioni"
 banners:
   wip: true
+  styling_issues: "mermaid timeline is buggy, not known if it is on our side"
 ---
 
 # Introduction
@@ -101,10 +102,62 @@ Those kind of networks are used for three main kind of tasks:
 
 ::: {.callout .callout-theorem title="Universal Approximation Theorem"}
 A single hidden layer feed-forward neural network is S shaped activation functions can approximate any measurable function to any desired degree of accuracy on a compact set.
+
+-- Kurt Hornik, 1991
 :::
 
 The **Universal Approximation Theorem** tells us that there always exist a neural network like described that can be used to approximate any given _useful_ function. The problem lies in the fact that there is no guarantee that a learning algorithm can find the necessary weights or that the neural network does not need to have a gazillion of neurons.
 
 Classification is not included in the set of _measurable functions_. For those, an extra layer of neurons is needed.
 
-<!-- 02:21 -->
+### Supervised learning
+
+We will now see how a neural network can learn to do _something_.
+
+Let $D = \langle x_1, t_1 \rangle, \dots \langle x_N, t_N \rangle$ be a training set. Training a neural network means finding good enough weights $w$ s.t. $g(x_n | w) \sim t_n$ (read that as "$g$ is able to approximate $t_n$"). In order to do this, we need to minimize the sum of squared errors, computed as
+
+$$
+E(w) = \sum_{n=1}^N (t_n - g(x_n | w))
+$$
+
+Formally, the problem can be expressed like
+
+$$
+\argmin_w E(w)
+$$
+
+The square errors are used instead of the plain error in order to make the model lean towards more smaller errors instrad of few big ones.
+
+This is an optimization problem: **gradient descent** (that is the same as **backpropagation**) is used to find the minimum of the error function.
+
+The update rule is the following:
+
+$$
+w^{k+1} = w^k - \eta \left.\frac{\partial E(w)}{\partial w}\right|_{w^k}
+$$
+
+There may be a lot of local minima and gradient descent is notoriously not able to discern between those and the global one. To help preventing this phenomenon, **momentum** ($\alpha$) has been introduced:
+
+$$
+w^{k+1} = w^k - \eta \left.\frac{\partial E(w)}{\partial w}\right|_{w^k} - \alpha \left.\frac{\partial E(w)}{\partial w}\right|_{w^{k-1}}
+$$
+
+::: {.callout .callout-note title="Note"}
+In very high dimensional spaces, usually, it happens that there are many local minima. But it also happen that they are almost equivalent, thus, finding only a good one is enough.
+:::
+
+There are many variations of batch gradient descent, that vary in the amount of memory used and effectiveness (there is usually a tradeoff between the two).
+
+- **Batch gradient descent**: takes into account the entire training set when computing the derivative of the error function
+  $$
+  \frac{\partial E(w)}{\partial w} = \frac{1}{N} \sum_{i=1}^N \frac{\partial E(x_n, w)}{\partial w}
+  $$
+- **Stochastic gradient descent**: uses only the current training tuple
+  $$
+  \frac{\partial E(w)}{\partial w} = \frac{\partial E(x_n, w)}{\partial w}
+  $$
+- **mini-batch gradient descent**: uses subset of the training data
+  $$
+  \frac{\partial E(w)}{\partial w} = \frac{1}{|M|} \sum_{\substack{n \in M, \\ M \in \subseteq {1, \dots, N}}} \frac{\partial E(x_n, w)}{\partial w}
+
+
