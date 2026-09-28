@@ -239,6 +239,36 @@ Silhouette score alone does not mean anything. It is meaningful only when compar
 
 <!-- TODO: AIC e BIC 03:55 -->
 
+# Linear models
+
+A **Linear Model** wants to learn how a target variables vary w.r.t. many other variables in a linear combination.
+
+The simples linear model is the **linear regression**.
+
+The linear regression model can be expressed as $Y = \beta_0 + \beta_1 X + \varepsilon$ where $\beta_i$ are the coefficient to be learned, $X$ is the predictor (used to predict the value of $Y$), $Y$ is the target and $\varepsilon$ is a random variable modelling the error.
+
+With a fixed $X$, $Y$ is a random variable.
+
+We take the following assumprions for granted when talking about the error: the error is **homoscedastic** (i.e. has the same variance everywhere) and it is gaussian-shaped.
+
+It can be proven that, with the **least-square error** method, the optimal model coefficients can be computed with
+
+$$
+\beta_1 = \frac{\sum_{i=1}^n (x_i - \bar x)(y_i - \bar i)}{\sum_{i=1}^n (x_i -  \bar x)^2} \\
+\beta_0 = \bar y - \beta_1 \bar x
+$$
+
+Since we have the measurement error, the $\beta_i$ parameters are only an estimation of the real one. We define the **confidence interval** as the range which contains the real value of $\beta_i$ a given percentage of the time.
+
+<!-- 04_1:22 watch recording or appendix textbook -->
+
+The simple linear regression works with only two variables. If we want to analyze how many variables interact together, we need to switch to the **multiple linear regression model**. This model is almost equivalent to the simpler one, but with more coefficients. here, each coefficient tells us how each variable contributes to the whole estimation of the target variable, keeping all the others fixed.
+
+<!-- TODO: how is this a vector??? 04_2:6 The multiple linear regression model can be expressed in a compact shape. Let $n$ be the number of observations, $p$ the number of parameters and $r = p - 1$ the number of variables, then, we can define $Y \in \mathbb{R}^n$ -->
+
+The estimation of the parameters is similar to the previous case: the method is called **ordinary least squares** and aims at the minimization of he residual sum of squares.
+
+
 
 
 
