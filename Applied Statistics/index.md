@@ -266,7 +266,70 @@ The simple linear regression works with only two variables. If we want to analyz
 
 <!-- TODO: how is this a vector??? 04_2:6 The multiple linear regression model can be expressed in a compact shape. Let $n$ be the number of observations, $p$ the number of parameters and $r = p - 1$ the number of variables, then, we can define $Y \in \mathbb{R}^n$ -->
 
-The estimation of the parameters is similar to the previous case: the method is called **ordinary least squares** and aims at the minimization of he residual sum of squares.
+The estimation of the parameters is similar to the previous case: the method is called **ordinary least squares** and aims at the minimization of the residual sum of squares.
+
+<!-- TODO: giorgio aiutami tu -->
+
+# Logistic regression
+
+Assume we want to predics a binary outcome. This is equivalent to predicting the probability that some event occurs or not. Linear scale is not a good fit for this task because they can go from $-\infty$ to $+\infty$. We want to have a scale that goes from 0 to 1 that somehow resembles a step function centered in 0.
+
+Let $p$ be the probability that some event occurs, then we define the **odds** of this events as the ration between the probability of it happening vs. the probability of it _not_ happening:
+
+$$
+\operatorname{odds} = \frac{p}{1-p}
+$$
+
+Then we define the **log-odds** (or, better, **logit**) of the event as $\log(\operatorname{odds})$.
+
+The log-odds of the vent will be the target of a linear regression model:
+
+$$
+\log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots
+$$
+
+We now define the **sigmoid function**
+
+$$
+\sigma(z) = \frac{1}{1+\exp{(-z)}}
+$$
+
+It holds that
+
+$$
+p = \sigma(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots)
+$$
+
+This is a logistic regression model: it is a linear model which prediction is piped into a sigmoid function.
+
+Let $\beta_j$ be one of the predictors. Keeping all the others fixed, the odds are multiplied by $e^{\beta_j}$ for each unit increase in the predictor.
+
+::: {.callout .callout-note title="Note}
+Remeber. It is not the odds that are predicted by the model. It is the log-odds.
+
+Each unit increase of a predictor, multiplie the odds by the corresponding weight.
+:::
+
+<!-- TODO: categorical predictors? + continuous predictors? -->
+
+It is possible to convert a logistic model into a prediction one by choosing a treshold: the label will be given according to the comparison of the predicted log-odds with said treshold.
+
+## Interactions
+
+It is possible to add interactions between predictors to see how their combination affects the results. As an example
+
+$$
+\log\left(\frec{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2
+$$
+
+To better visualize how one predictor influences the other, it is a good idea to split the model into submodels defined by cases and plot each one on the top of the other. Each case can be a different value or a different range of values a predictor can assume.
+
+## Maximum Likelyhood
+
+As always, the model parameters are estimated using maximum-likelyhood.
+
+<!-- TODO: model evaluation 05:30 -->
+
 
 
 
