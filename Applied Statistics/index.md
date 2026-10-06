@@ -319,7 +319,7 @@ It is possible to convert a logistic model into a prediction one by choosing a t
 It is possible to add interactions between predictors to see how their combination affects the results. As an example
 
 $$
-\log\left(\frec{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2
+\log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2
 $$
 
 To better visualize how one predictor influences the other, it is a good idea to split the model into submodels defined by cases and plot each one on the top of the other. Each case can be a different value or a different range of values a predictor can assume.
@@ -328,10 +328,109 @@ To better visualize how one predictor influences the other, it is a good idea to
 
 As always, the model parameters are estimated using maximum-likelyhood.
 
-<!-- TODO: model evaluation 05:30 -->
+We define the **likelyhood function** $L$ as
 
+$$
+L(\beta) = \prod_{i=1}^n p_i^{y_i} (1 - p_i)^{y_i}
+$$
 
+This comes from the fact that the outcome of a logistic regression is distributed like a Bernoulli distribution.
 
+We define the **log-likelyhood fnction** as the logarithm of the likelyhood:
+
+$$
+\ell(\beta) = \log L(\beta) = \sum_{i=1}^n \left[ y_i \log p_i + (1 - y_i) \log(1 - p_i) \right]
+$$
+
+The maximization of the log-likelyhood function is equivalent to finding the parameters $\beta$ of the model that make the classification as plausible as possible.
+
+## Model evaluation
+
+In order to understand if the whole model is somewhat useful, we define $\ell_{full}$ as the log-likelyhood of the whole model with all the predictors and $\ell_{null}$ as the log-likelyhood of the model containing only the intercept. We compute the **likelyhood ratio** as $2(\ell_{full} - \ell_{null})$: the larger the value, the better is the job done by the predictors in making a better model w.r.t. the intercept-only model.
+
+Another test we can do is to compute the **McFadden's pseudo R^2**:
+
+$$
+R^2_{\text{McFadden}} = 1 - \frac{\ell_{full}}{\ell_{null}}
+$$
+
+<!-- TODO: confidence intervals 05:34 -->
+
+Other useful metrics are summarized in the **confusion matrix**:
+
+<a href="https://www.researchgate.net/figure/Calculation-of-specificity-sensitivity-and-accuracy_fig4_378386094"><img src="https://www.researchgate.net/profile/Binson-V-A/publication/378386094/figure/fig4/AS:11431281266236121@1722787340735/Calculation-of-specificity-sensitivity-and-accuracy.png" alt="Calculation of specificity, sensitivity and accuracy"/></a>
+
+Another source of information is the **ROC curve**: we put the **false positives rate** (i.e. $1 - \text{specificity}$) on the x-axis and the **true positives rate** (i.e. the sensitivity) on the y-axis and then draw a curve varying the treshold. The larger the area under the curve, the better the model. Models with less tha 0.5 times relative AUC are worse than the random models. Models with 1.0 AUC are perfect models.
+
+## Perfect separation
+
+As the coefficient $\beta_1$ determines the steepness of the logit, when perfect separation (or almost perfect, with a point _reeeeeeeally_ close to the treshold on each side), the fitting may fail to converge or produce humongous values for the coefficients.
+
+# Classification
+
+Classification is a supervised learning task that eats data shaped like $(x_i, y_i)$ in order to predict $\bar y$ when given $\bar x$. Classification can be **binary** or **multiclass** (actually, it is probabilities that one input belongs to a given class that are predicted, not directly classes).
+
+Geometrically speaking, a classifier learns how to partition an hyperspace into several distinc regions: one for each label.
+
+A simple algorithm to implement classification is **k-nearest neighbors**: it tries to predict the label of an element using the $k$ nearest ones (probability of a class is proportional to the number of neighbors with same class).
+
+The problem of KNN is that $k$ must be chosen manually: a small $k$ makes the model really sensitive to noise and subject to really high variance, the opposite is true for bigger $k$s. Moreover, KNN is really expensive in terms of computing resources during inference.
+
+Other kinds of classification algorithms includes **logistic regression**, **decision trees**, **random forests**, **boosting**, **neural networks**.
+
+In order to train a classifier, the target is the minimization of the **loss function** (i.e. something similar to the error function). The classifier must also learn how to generalize so that it does not work only with training data but also with new unseen data.
+
+The best model is the one wich has the smaller **generalization loss**. While **training loss** becomes smaller and smaller with each training pass, the generalization error will initially decrease and then start to increase again as the model is unlearning to generalize (**overfitting**).
+
+The training loss is usually always more optimistic and smaller than the generalized one.
+
+In order to have the model learn to generalize with only the training data, one of a few possible techniques must be applied.
+
+The first technique is **cross validation**: it consists in splitting the entire dataset in many small folds ($K$) and, for each fold, train the model uing all the others and validate on that one (pay attention to [data leakage](#data-leakage)).
+
+To _measure_ the performance of the model, **cross validation estimate** is used:
+
+$$
+CV_K = \frac{1}{K} \sum_{k=1}^K \left[ \frac{1}{|\mathcal{D}_k|} \sum_{i \in \mathcal{D}_k} L(y_i \hat f^{(-k)}(x_i)) \right]
+$$
+
+In order to choose the number $K$ of folds in which partition the dataset, hyperparameter tuning is used (i.e. try them all and choose the best). In general, a small number of folds results in a lower training error and in an higher variance (the opposite holds with a big $K$). <!-- TODO: in chse senso varianza? -->
+
+Another technique is called **bootstrapping**. <!-- TODO: non l'ho capito  06:28-33 -->
+
+As said before, having to deal with too many variables can cause serious problems: it is a good idea to try to reduce the number of dimensions, preferring simple models.
+
+There are many many ways to do that. All those methods can be classified in **feature selection** (**filter methods**, **wrappers** and **embeddings**) and **feature extraction**.
+
+Filter methods assings to each dimensions a score and then selects the highest ones. The score does not depend on the final model.
+
+Wrapper methods consists in training models with subsets of features (either starting with one and adding one at a time or starting with all and removing one at a time) and then choosing the best one.
+
+Embedded methods consists in a special model training such that the model itself can learn what the most important features are. The typical mechanisms which can make this magic happen are **coefficient shrinkage** (e.g. **lasso**) and **feature importance** (e.g. **tree-based methods**).  Out of all the rechniques, this is also the one that reduces overfitting the most because it usually can noticeably improve generalization capabilities.
+
+Another source of instability for a model is the ize of it's learned coefficients: the higher the coefficients, the higher the risk of instability. It is a good idea to also penalize a model which coefficients are too big. This is called **regularization**.
+
+With regularization, the loss function acquires the following shape:
+
+$$
+\operatorname{Loss}(\beta) + \lambda \cdot \operatorname{Penalty}(\beta)
+$$
+
+Since regularization penalizes big weights, it already performs a _kind of_ feature selection, setting parameters to zero.
+
+**Ridge regression** is a kind of penalty that is proportional to the $L^2$ norm of the weights. It does not perform feature selection _per se_ because it tends to make weights really small, but not null.
+
+The **LASSO** (_Least Absolure Shrinkage and Selection Operator_) regression, instead uses an $L^1$ penalty rule. With those rule, coefficients are more likely to became exactly zero. LASSO can therefore be used to achieve both regularization and feature selection at the same time.
+
+<!-- sparse model something something 06:48-51 -->
+
+## Data leakage
+
+**Data leakage** is the phenomenon that happens when the validation set influences the training of the model, making its performance look better than what it actually is.
+
+In order to prevent leakage, the training set must actually be split in three (training, validation and test) and not only in two. The new set (the **test** one), must only be used at the very end, after every trial, every tuning and every everything, to unbiasedly evaluate model performance.
+
+<!-- 06: appendix -->
 
 
 
