@@ -10,6 +10,8 @@ banners:
 
 Statistics is concerned with trying to understand the relations between variables in a set of records. Machine Learning, on the other hand, is concerned with trying to perform the correct decision given the same set of records. With that said, there is a lot of overlapping between the two subjects.
 
+[Here](practice.html) you can find another document, which contains practical information about how to apply what it is described here on real datasets.
+
 A set of record is called a **dataset**. Each record is composed by values of some **variables**.
 
 This document assumes basic statistic knowledge like **expected value**, **variance**, etc.
@@ -432,6 +434,111 @@ In order to prevent leakage, the training set must actually be split in three (t
 
 <!-- 06: appendix -->
 
+# Decision trees
 
+Decision trees are an alternative way to perform classification. The partitioning of the hyperspace happens by choosing each time one dimension and putting a treshold. The partitions are therefore hyper-rectangles.
 
+The result is a tree with a condition on each node: for each input, by walking down the tree and taking the correct branches, you end up in the leaf with the correct cathegorization.
+
+In order to decide which treshold is the best one for each node, the RSS is computed for each treshold and the one with the lower RSS is chosen.
+
+Assume we split on variable $x_i$ on a node, the two child nodes may split on completely different variables with respect to each other: this is the **interaction** mechanism, arising when a variable has some influence on the result only if some other variable respect some condition.
+
+How do we decide how much to grow the tree? Me make a BIG one and then we prune it back until an optimal expected performance on new data.
+
+<!-- TODO: pruning 07_1:20-23 -->
+
+Trees work best when the classification can be described as a piecewise function of the search space (in fact, the model they produce is exactly a piecewise function of the search space).
+
+The problem is that a single, well placed, change in the data may cause an entirely different tree: this algorithm is higlhy unstable. The solution is to use **ensembles** of methods. This means to have a number of different variations of various algorithms to make a prediction and use a combination of all those predictions to make the final one.
+
+One can choose to build the algorithm ensemble choosing one or more of the following strategies:
+
+- use of different algorithms;
+- use of multiple instances of the same algorithm with different hyperparameters;
+- use of multiple instances of the same algorithm trained on different samples of the data;
+- use of multiple instances of the same algorith trained on different subsets of predictors.
+
+The idea is that the error of many models, on average, cancels out. The usage of $B$ different algorithm intances multiplies the variance by $1 / B$.
+
+This strategy can also help to speedup the training of the model (also providing best results) if the dataset is too big for one machine: the dataset is split across machines, each one training a different model with a different algorithm.
+
+To create ensembles, there are four main methods:
+
+- bagging;
+- random forests;
+- boosting;
+- stacking.
+
+## Bootstrapping and AGGregatING (Bagging)
+
+**Bagging** is the simple application of bootstrapping: one different tree for each different sample, predictions are averaged (majority wins in case of classification).
+
+<!-- TODO: out of bag cose -->
+
+Trees produced by bagging should _not_ be pruned as the stabilization is already performed by averaging them.
+
+Assume one predictor has a really strong influence on the result: many trees would probably succesfully identify it, making many trees very correlated, defeating the beneficial effect on the variance. To selve this, we use random forests.
+
+## Random forests
+
+Random forests are used in the case of very strong predictors: it is just bagging on random predictor subsets. This way, the trees are forced to consider different predictors.
+
+Assume we use $m$ predictors. As $m$ gets smaller, the tree gains in diversity but the splits may be weaker. Let $p$ be the number of predictors, then common choices are $m \simeq \sqrt p$ for classification and $m \simeq p/3$ for regression.
+
+Regarding the number of trees, it is just a matter of progressively increasing the number of tree until the OOB <!-- TODO: che caspita è? --> stabilizes.
+
+<!-- 08_2:22 -->
+
+## Boosting
+
+Boosting is the technique that consists in fitting a model, then fitting another one on it's residual, then fitting another one of this last one's residual and so on.
+
+_Trust me, boosting works really well. Maybe a bit too well._
+
+Let $\hat f_0(x)$ be the first tree, $\hat h_b(x)$ be the three fitted at step $b$  and $\eta$ be the learning rate, then the complete model can be expressed as
+
+$$
+\hat f_B(x) = \hat f_0(x) + \sum_{b=1}^B \eta \hat h_b(x)
+$$
+
+Any tree that is not the first one, is called **weak learner**, mainly due to the fact that they should contribute only a small amount to the whole model. They only capture small corrections and reduce the risk of overfitting, until the model gets too complex: in that case, boosting, can make the effect of overfitting much worse.
+
+The three hyperparameters for this algorithm are the number of trees $B$ (the higher, the more corrections can be applied), the learning rate $\eta$ (the bigger, the more influential each weak learner is) and the tree depth $B$ (the bigger, the more complex each correction is).
+
+## XGBoost
+
+EXtreme Gradient Boosting (XGBoost) is an optimized version of normal boosting.
+
+The whole model is similar to the one used with normal boosting:
+
+$$
+\hat f_M(x) = \sum_{m=1}^M \eta \hat h_m(x)
+$$
+
+The loss function is
+
+$$
+\mathcal{L} = \sum_{i=1}^n \ell(y_i, \hat y_i) + \sum_{m=1}^M \Omega(h_m)
+$$
+
+where
+
+$$
+\Omega(h) = \gamma T + \frac{1}{2} \lambda \sum_{j=1}^T w_j^2
+$$
+
+where $T$ is the number of leaves in the tree, $w_j$ is the prediction score in the $j$-th leaf, $\gamma$ penalizes adding leaves and $\lambda$ penalizes large leaf weights.
+
+<!-- What was w_j and ell? -->
+
+In addition, each tree should be fitted with both row and column subsampling.
+
+<!-- 08_2:34 utile -->
+
+## Stacking
+
+It is possible to combine ensemble methods and all the other methods above, with a procedure called **stacking**: many models are trained with different algorithms and a **meta learner** learns how to combine their outputs. Obviously, to prevent data leakage, the meta learner should _not_ be trained on the same observations that were used to train the other models.
+
+<!-- 09 -->
 
