@@ -285,7 +285,7 @@ As said before, to implement hardware support for multithreading, multiple Execu
 
 With **Interleaved multithreading**, at the beginning of each time interval, the core decides what thread to run, giving it access to all the ALUs.
 
-Interleaved multithreading can be **coarse** (context switch happens only on long stalls, loke memory stalls) of **fine** (constext switch may happen up to every clock cycle, maximum efficiency).
+Interleaved multithreading can be **coarse** (context switch happens only on long stalls, loke memory stalls) of **fine** (context switch may happen up to every clock cycle, maximum efficiency).
 
 #### Simultaneous multithreading (SMT)
 
