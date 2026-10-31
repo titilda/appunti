@@ -278,3 +278,182 @@ $$\begin{pmatrix} (8,8) & (2,7) \\ (7,2) & (0,0) \end{pmatrix} \qquad \text{Util
 A strategy **dominates** another if it gives a better outcome regardless of what the other player does, based on the rationality assumption.
 
 In the bimatrix above, the second row is strictly dominated by the first, so Player 1 plays row 1; likewise the first column strictly dominates the second for Player 2. Outcome: $(8,8)$.
+
+## Zero-Sum Games
+
+In a **zero-sum game** whatever one player gains, the other loses and it's represented by a triplet $(X, Y, f : X \times Y \to \mathbb{R})$:
+
+- $X$ is the strategy space of Player 1 (Pl1). In the finite case $X = \{1, \dots, n\}$
+- $Y$ is the strategy space of Player 2 (Pl2). In the finite case $Y = \{1, \dots, m\}$
+- $f(x, y)$ is what Pl1 gets from Pl2 when they play $x, y$. The utility of Pl2 is $g(y, x) = -f(x, y)$.
+
+The game is represented by the  **payoff matrix** $P$ that being the utilities opposite, is enough to describe the game without the bi-matrix:
+
+$$P = \begin{pmatrix} p_{11} & \cdots & p_{1m} \\ \vdots & \ddots & \vdots \\ p_{n1} & \cdots & p_{nm} \end{pmatrix}$$
+
+### Conservative values
+
+The **conservative value** of a player is the best guaranteed outcome they can secure, assuming the opponent plays optimally against them.
+
+- Pl1 looks at each row, assumes Pl2 will choose the column that minimizes its lost, and keeps the row that gives the best outcome in the worst-case scenario.
+  - Finite case: $v_1 = \max_i \min_j p_{ij}$ given by playing row $\bar{i}$ ($p_{\bar{i} j} \geq v_1 \forall j$)
+  - General case: $v_1 = \sup_x \inf_y f(x, y)$ given by playing $x = \bar{x}$
+- Pl2 looks at each column, assumes Pl1 will choose the row that maximizes its gain, and keeps the column that gives the best outcome in the worst-case scenario.
+  - Finite case: $v_2 = \min_j \max_i p_{ij}$ given by playing column $\bar{j}$ ($p_{i \bar{j}} \geq v_2 \forall i$)
+  - General case: $v_2 = \inf_y \sup_x f(x, y)$ given by playing $y = \bar{y}$
+
+For any nonempty $X, Y$ and any $f : X \times Y \to \mathbb{R}$:
+
+$$v_1 = \sup_x \inf_y f(x, y) \leq \inf_y \sup_x f(x, y) = v_2$$
+
+> Proof: For all $x, y$:
+>
+> $$\alpha(x) = \inf_{y'} f(x, y') \leq f(x, y) \leq \sup_{x'} f(x', y) = \beta(y)$$
+>
+> Since $\alpha(x) \leq \beta(y) \forall x \in X, y \in Y$, $\sup_x \alpha(x) \leq \inf_y \beta(y)$.
+
+#### Pure optimal strategies
+
+If $v_1 = v_2 = v$, the game has value $v$ and can be solved in pure strategies by:
+
+- Pl1: play row $\bar{i}$ with $p_{\bar{i} j} \geq v \forall j$
+- Pl2: play column $\bar{j}$ with $p_{i \bar{j}} \leq v \forall i$
+
+#### Mixed Strategy
+
+If $v_1 < v_2$, the game has no solution in pure strategies, but it can be solved in **mixed strategies**, represented by $(\Sigma_n, \Sigma_m, f(x, y) = (x, Py))$.
+
+$\Sigma_k$ is the probability distribution ($k = n$ for Pl1, $k = m$ for Pl2) over the pure strategies:
+
+$$\Sigma_k = \{ x = (x_1, \dots, x_k) : x_i \geq 0, \ \sum_{i=1}^k x_i = 1 \}$$
+
+Expected utility is the weighted sum of the payoffs with the product probabilities:
+
+$$f(x, y) = \sum_{i=1}^n \sum_{j=1}^m x_i y_j  p_{ij} = (x, Py)$$
+
+### Convexity
+
+A set $C \subseteq \mathbb{R}^n$ is **convex** if the segment joining any two points of $C$ stays in $C$:
+
+$$\lambda x + (1 - \lambda) y \in C \quad \forall x, y \in C, \forall \lambda \in [0, 1]$$
+
+A **convex combination** of $x_1, \dots, x_n$ is a vector $x = \lambda_1 x_1 + \cdots + \lambda_n x_n$ with $\lambda_i \geq 0$ and $\sum_i \lambda_i = 1$
+
+The **convex hull** of $C$ is the smallest convex set containing $C$:
+
+$$\mathrm{co} C = \bigcap_{A \in \mathcal{C}} A, \quad \mathcal{C} = \{ A : C \subseteq A, A \text{ convex} \}$$
+
+Equivalently, it is the set of all convex combinations of points of $C$:
+
+$$\mathrm{co} C = \{ \sum_{i=1}^n \lambda_i c_i : \lambda_i \geq 0, \ \sum_{i=1}^n \lambda_i = 1, \ c_i \in C, \ n \in \mathbb{N} \}$$
+
+If $C$ is a finite set of points, $\mathrm{co} C$ is a **polytope**.
+
+The **complement** of $C$ is the set of all points in $\mathbb{R}^n$ that are not in $C$: $C^c = \mathbb{R}^n \setminus C$.
+
+The **interior** of $C$ is the set of points that have a neighborhood entirely contained in $C$: $\mathrm{int} C = \{ x \in C : \exists r > 0, B_r(x) \subseteq C \}$.
+
+The **closure** of $C$ is the union of $C$ and its boundary: $\mathrm{cl} C = C \cup \partial C$. It is the set of limits of sequences of points of $C$.
+
+#### Projection
+
+Given a closed convex set $C$ and a point $x \notin C$, the **projection** $p$ of $x$ onto $C$ is the closest point of $C$ to $x$ ($|p - x| \leq |c - x| \forall c \in C$).
+
+$$(x - p, c - p) \leq 0 \quad \forall c \in C$$
+
+- As $C$ is convex, the projection $p$ is unique.
+- The angle at $p$ between $x$ and any $c \in C$ is obtuse.
+
+#### Separation
+
+Given a closed convex set $C$ and a point $\bar{x} \notin C$, it's possible to find a hyperplane characterized by a normal vector $x^* \neq 0$ that separates $\bar{x}$ from $C$.
+
+$$(x^*, c) \geq (x^*, \bar{x}) \quad \forall c \in C$$
+
+> Taking the closest point $p$ ($(\bar{x} - p, c - p) \leq 0$) of $C$ to $\bar{x}$, the hyperplane is given by the normal vector $x^* = p - \bar{x}$ that is orthogonal to the segment joining $\bar{x}$ and $p$.
+>
+> By substitution: $(\bar{x} - p, c - p) = (-x^*, c - \bar{x} - x^*) = -(x^*, c - \bar{x}) + \|x^*\|^2 \leq 0$, so $(x^*, c - \bar{x}) \geq \|x^*\|^2 > 0$ that by linearity:
+>
+> $$(x^*, c) \geq (x^*, \bar{x}) \quad \forall c \in C$$
+>
+> meaning that all the point of $C$ are on one side of the hyperplane with normal vector $x^*$.
+
+For a closed convex $C$ and a point $x$ on its boundary there is a **supporting hyperplane** at $x$.
+
+Given two closed convex sets $A, C$ with $\mathrm{int} A \cap C = \emptyset$, there is a **separating hyperplane** $H = \{ x : (x^*, x) = b \}$ that separates $A$ and $C$ into the two different half-spaces it generates.
+
+$$(x^*, a) \geq b \geq (x^*, c) \quad \forall a \in A, \forall c \in C$$
+
+> Taking the set $\mathrm{int} A - C = \{ x = a - c : a \in \mathrm{int} A, c \in C \}$, as they are disjoint the point $0$ is not in it, and it is convex as the difference of two convex sets.
+>
+> By the separation theorem there is a hyperplane with normal vector $x^* \neq 0$ that separates it from $0$:
+>
+> $$(x^*, a - c) \geq 0 \quad \forall a \in \mathrm{int} A, c \in C$$
+>
+> by linearity $(x^*, a) - (x^*, c) \geq 0$, so $(x^*, a) \geq (x^*, c)$.
+
+### Von Neumann theorem
+
+A **two-player zero-sum game** has always a **rational outcome** in mixed strategies, meaning that there are $\bar{x} \in \Sigma_n$, $\bar{y} \in \Sigma_m$ and a value $v$ such that $v_1 = v_2 = v$.
+
+If a player knows the (mixed) strategy of the other, it can always answer with a pure strategy.
+
+Once Pl1 knows the strategy $\bar{y}$ of Pl2, it need to maximize the utility function $f(x, \bar{y}) = (x, P \bar{y})$ over $x \in \Sigma_n$. The maximum is attained at a vertex of $\Sigma_n$, that is a pure strategy.
+
+There is a distribution $\bar{x}$ over rows such that against every column Pl1 gets at least $v$, and a distribution $\bar{y}$ over columns such that against every row Pl2 pays at most $v$.
+
+> The columns of $P$ are points of $\mathbb{R}^n$ and a mixed strategy of Pl2 is a convex combination of those points $C = \mathrm{co}\{p_{\cdot 1}, \dots, p_{\cdot m}\}$.
+>
+> Taking the set $Q_t = {x \in \mathbb{R}^n : x_i \leq t, \forall i}$ where $t$ is the value of the game.
+>
+> The value $v$ is the highest $t$ for which $Q_t$ and $C$ do not meet ($v = \sup \{ t \geq 0 : Q_t \cap C = \emptyset \}$). meaning $v$ is the lowest ceiling Pl2 can enforce on all rows.
+>
+> For the separation theorem, there is a hyperplane with normal vector $\bar{x}$ that separates $Q_v$ and $C$ such that:
+>
+> $$(\bar{x}, u) \leq b \leq (\bar{x}, w) \quad \forall u \in Q_v, \forall w \in C$$
+>
+> - $\bar{x}$ is a probability distribution (all $\bar{x}_i \geq 0$ and $\sum_i \bar{x}_i = 1$)
+> - $b = v$ (the hyperplane is tangent to $Q_v$)
+
+### Optimal strategies by Linear Programming
+
+The optimal strategy of a game can be found by solving a linear programming problem.
+
+Pl1 chooses $x \in \Sigma_n$ to **maximize** $v$ subject to $(x, p_{\cdot j}) \geq v$ for every column $j$:
+
+$$\begin{aligned} \max_{x, v} \quad & v \\ \text{s.t.} \quad & \sum_{i=1}^n x_i p_{ij} \geq v, \quad j = 1, \dots, m \qquad (P^T x \geq v 1_m) \\ & \sum_{i=1}^n x_i = 1, \quad x_i \geq 0 \end{aligned} \qquad \begin{cases} \max_{x, v} v \\ P^T x \geq v 1_m \\ x \geq 0 \\ (1, x) = 1 \end{cases}$$
+
+Pl2 chooses $y \in \Sigma_m$ to **minimize** $w$ subject to $(p_{i \cdot}, y) \leq w$ for every row $i$:
+
+$$\begin{aligned} \min_{y, w} \quad & w \\ \text{s.t.} \quad & \sum_{j=1}^m y_j p_{ij} \leq w, \quad i = 1, \dots, n \qquad (Py \leq w 1_n) \\ & \sum_{j=1}^m y_j = 1, \ \ y_j \geq 0 \end{aligned} \qquad \begin{cases} \max_{y, w} w \\ Py \leq w 1_n \\ y \geq 0 \\ (1, y) = 1 \end{cases}$$
+
+The two problems are dual to each other.
+
+For the weak duality, let $v, w$ be the optimal values of the primal and dual problems. Then $v \leq w$.
+
+For the strong duality, if the primal and dual are both feasible, then $v = w$.
+
+For the complementary condition, let $\bar{x}, \bar{y}$ be primal and dual feasible. They are simultaneously optimal iff:
+
+$$\begin{cases} \forall i: \ \bar{x}_i > 0 \Rightarrow \sum_{k=1}^m p_{ik} \bar{y}_k = v \\ \forall j: \ \bar{y}_j > 0 \Rightarrow \sum_{k=1}^n p_{kj} \bar{x}_k = v \end{cases}$$
+
+#### Indifference principle
+
+The indifference principle states that in a mixed strategy equilibrium, each player is indifferent among the pure strategies that are played by the other player.
+
+### Fair games
+
+A finite zero-sum game is **fair** if no player has an advantage over the other. In a fair game, the value is $0$, meaning that if both players play optimally, neither player can expect to gain or lose anything on average.
+
+If the $P$ matrix is **antisymmetric** if $p_{ij} = -p_{ji} \forall i, j$ , it's possible to exchange the roles of the players ($P^T = -P$).
+
+> Since $P^T = -P$,by playing the same strategy each player can get 0:
+>
+> $$(Px, x) = (x, P^T x) = -(x, Px) = -(Px, x) \Rightarrow f(x, x) = 0 \forall x$$
+>
+> - $v_1 \leq 0$;
+> - $v_2 \geq 0$.
+>
+> For von Neumann $v_1 = v_2 = v = 0$, as 0 is the only common value.
+>
+> If $\bar{x}$ is optimal for Pl1, then $(\bar{x}, P y) \geq 0 \ \forall y$, which by antisymmetry is $(P \bar{x}, y) \leq 0 \ \forall y$.
