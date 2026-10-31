@@ -359,7 +359,7 @@ The **closure** of $C$ is the union of $C$ and its boundary: $\mathrm{cl} C = C 
 
 Given a closed convex set $C$ and a point $x \notin C$, the **projection** $p$ of $x$ onto $C$ is the closest point of $C$ to $x$ ($|p - x| \leq |c - x| \forall c \in C$).
 
-$$(x - p, c - p) \leq 0 \quad \forall c \in C$$
+$$\langle x - p, c - p \rangle \leq 0 \quad \forall c \in C$$
 
 - As $C$ is convex, the projection $p$ is unique.
 - The angle at $p$ between $x$ and any $c \in C$ is obtuse.
@@ -368,13 +368,13 @@ $$(x - p, c - p) \leq 0 \quad \forall c \in C$$
 
 Given a closed convex set $C$ and a point $\bar{x} \notin C$, it's possible to find a hyperplane characterized by a normal vector $x^* \neq 0$ that separates $\bar{x}$ from $C$.
 
-$$(x^*, c) \geq (x^*, \bar{x}) \quad \forall c \in C$$
+$$\langle x^*, c \rangle \geq \langle x^*, \bar{x} \rangle \quad \forall c \in C$$
 
-> Taking the closest point $p$ ($(\bar{x} - p, c - p) \leq 0$) of $C$ to $\bar{x}$, the hyperplane is given by the normal vector $x^* = p - \bar{x}$ that is orthogonal to the segment joining $\bar{x}$ and $p$.
+> Taking the closest point $p$ ($\langle \bar{x} - p, c - p \rangle \leq 0$) of $C$ to $\bar{x}$, the hyperplane is given by the normal vector $x^* = p - \bar{x}$ that is orthogonal to the segment joining $\bar{x}$ and $p$.
 >
-> By substitution: $(\bar{x} - p, c - p) = (-x^*, c - \bar{x} - x^*) = -(x^*, c - \bar{x}) + \|x^*\|^2 \leq 0$, so $(x^*, c - \bar{x}) \geq \|x^*\|^2 > 0$ that by linearity:
+> By substitution: $\langle \bar{x} - p, c - p \rangle = \langle -x^*, c - \bar{x} - x^* \rangle = -\langle x^*, c - \bar{x} \rangle + \|x^*\|^2 \leq 0$, so $\langle x^*, c - \bar{x} \rangle \geq \|x^*\|^2 > 0$ that by linearity:
 >
-> $$(x^*, c) \geq (x^*, \bar{x}) \quad \forall c \in C$$
+> $$\langle x^*, c \rangle \geq \langle x^*, \bar{x} \rangle \quad \forall c \in C$$
 >
 > meaning that all the point of $C$ are on one side of the hyperplane with normal vector $x^*$.
 
@@ -382,15 +382,15 @@ For a closed convex $C$ and a point $x$ on its boundary there is a **supporting 
 
 Given two closed convex sets $A, C$ with $\mathrm{int} A \cap C = \emptyset$, there is a **separating hyperplane** $H = \{ x : (x^*, x) = b \}$ that separates $A$ and $C$ into the two different half-spaces it generates.
 
-$$(x^*, a) \geq b \geq (x^*, c) \quad \forall a \in A, \forall c \in C$$
+$$\langle x^*, a \rangle \geq b \geq \langle x^*, c \rangle \quad \forall a \in A, \forall c \in C$$
 
 > Taking the set $\mathrm{int} A - C = \{ x = a - c : a \in \mathrm{int} A, c \in C \}$, as they are disjoint the point $0$ is not in it, and it is convex as the difference of two convex sets.
 >
 > By the separation theorem there is a hyperplane with normal vector $x^* \neq 0$ that separates it from $0$:
 >
-> $$(x^*, a - c) \geq 0 \quad \forall a \in \mathrm{int} A, c \in C$$
+> $$\langle x^*, a - c \rangle \geq 0 \quad \forall a \in \mathrm{int} A, c \in C$$
 >
-> by linearity $(x^*, a) - (x^*, c) \geq 0$, so $(x^*, a) \geq (x^*, c)$.
+> by linearity $\langle x^*, a \rangle - \langle x^*, c \rangle \geq 0$, so $\langle x^*, a \rangle \geq \langle x^*, c \rangle$.
 
 ### Von Neumann theorem
 
@@ -398,7 +398,7 @@ A **two-player zero-sum game** has always a **rational outcome** in mixed strate
 
 If a player knows the (mixed) strategy of the other, it can always answer with a pure strategy.
 
-Once Pl1 knows the strategy $\bar{y}$ of Pl2, it need to maximize the utility function $f(x, \bar{y}) = (x, P \bar{y})$ over $x \in \Sigma_n$. The maximum is attained at a vertex of $\Sigma_n$, that is a pure strategy.
+Once Pl1 knows the strategy $\bar{y}$ of Pl2, it need to maximize the utility function $f(x, \bar{y}) = \langle x, P \bar{y} \rangle$ over $x \in \Sigma_n$. The maximum is attained at a vertex of $\Sigma_n$, that is a pure strategy.
 
 There is a distribution $\bar{x}$ over rows such that against every column Pl1 gets at least $v$, and a distribution $\bar{y}$ over columns such that against every row Pl2 pays at most $v$.
 
@@ -410,7 +410,7 @@ There is a distribution $\bar{x}$ over rows such that against every column Pl1 g
 >
 > For the separation theorem, there is a hyperplane with normal vector $\bar{x}$ that separates $Q_v$ and $C$ such that:
 >
-> $$(\bar{x}, u) \leq b \leq (\bar{x}, w) \quad \forall u \in Q_v, \forall w \in C$$
+> $$\langle \bar{x}, u \rangle \leq b \leq \langle \bar{x}, w \rangle \quad \forall u \in Q_v, \forall w \in C$$
 >
 > - $\bar{x}$ is a probability distribution (all $\bar{x}_i \geq 0$ and $\sum_i \bar{x}_i = 1$)
 > - $b = v$ (the hyperplane is tangent to $Q_v$)
@@ -419,13 +419,13 @@ There is a distribution $\bar{x}$ over rows such that against every column Pl1 g
 
 The optimal strategy of a game can be found by solving a linear programming problem.
 
-Pl1 chooses $x \in \Sigma_n$ to **maximize** $v$ subject to $(x, p_{\cdot j}) \geq v$ for every column $j$:
+Pl1 chooses $x \in \Sigma_n$ to **maximize** $v$ subject to $\langle x, p_{\cdot j} \rangle \geq v$ for every column $j$:
 
-$$\begin{aligned} \max_{x, v} \quad & v \\ \text{s.t.} \quad & \sum_{i=1}^n x_i p_{ij} \geq v, \quad j = 1, \dots, m \qquad (P^T x \geq v 1_m) \\ & \sum_{i=1}^n x_i = 1, \quad x_i \geq 0 \end{aligned} \qquad \begin{cases} \max_{x, v} v \\ P^T x \geq v 1_m \\ x \geq 0 \\ (1, x) = 1 \end{cases}$$
+$$\begin{aligned} \max_{x, v} \quad & v \\ \text{s.t.} \quad & \sum_{i=1}^n x_i p_{ij} \geq v, \quad j = 1, \dots, m \\ & \sum_{i=1}^n x_i = 1, \quad x_i \geq 0 \end{aligned} \qquad \begin{cases} \max_{x, v} v \\ P^T x \geq v 1_m \\ x \geq 0 \\ \langle 1, x \rangle = 1 \end{cases}$$
 
-Pl2 chooses $y \in \Sigma_m$ to **minimize** $w$ subject to $(p_{i \cdot}, y) \leq w$ for every row $i$:
+Pl2 chooses $y \in \Sigma_m$ to **minimize** $w$ subject to $\langle p_{i \cdot}, y \rangle \leq w$ for every row $i$:
 
-$$\begin{aligned} \min_{y, w} \quad & w \\ \text{s.t.} \quad & \sum_{j=1}^m y_j p_{ij} \leq w, \quad i = 1, \dots, n \qquad (Py \leq w 1_n) \\ & \sum_{j=1}^m y_j = 1, \ \ y_j \geq 0 \end{aligned} \qquad \begin{cases} \max_{y, w} w \\ Py \leq w 1_n \\ y \geq 0 \\ (1, y) = 1 \end{cases}$$
+$$\begin{aligned} \min_{y, w} \quad & w \\ \text{s.t.} \quad & \sum_{j=1}^m y_j p_{ij} \leq w, \quad i = 1, \dots, n \\ & \sum_{j=1}^m y_j = 1, \ y_j \geq 0 \end{aligned} \qquad \begin{cases} \max_{y, w} w \\ Py \leq w 1_n \\ y \geq 0 \\ \langle 1, y \rangle = 1 \end{cases}$$
 
 The two problems are dual to each other.
 
@@ -449,7 +449,7 @@ If the $P$ matrix is **antisymmetric** if $p_{ij} = -p_{ji} \forall i, j$ , it's
 
 > Since $P^T = -P$,by playing the same strategy each player can get 0:
 >
-> $$(Px, x) = (x, P^T x) = -(x, Px) = -(Px, x) \Rightarrow f(x, x) = 0 \forall x$$
+> $$\langle Px, x \rangle = \langle x, P^T x \rangle = -\langle x, Px \rangle = -\langle Px, x \rangle \Rightarrow f(x, x) = 0 \forall x$$
 >
 > - $v_1 \leq 0$;
 > - $v_2 \geq 0$.
@@ -457,3 +457,230 @@ If the $P$ matrix is **antisymmetric** if $p_{ij} = -p_{ji} \forall i, j$ , it's
 > For von Neumann $v_1 = v_2 = v = 0$, as 0 is the only common value.
 >
 > If $\bar{x}$ is optimal for Pl1, then $(\bar{x}, P y) \geq 0 \ \forall y$, which by antisymmetry is $(P \bar{x}, y) \leq 0 \ \forall y$.
+
+## Nash Equilibrium
+
+A **two-player non-cooperative game** is a quadruple $(X, Y, f : X \times Y \to \mathbb{R}, g : X \times Y \to \mathbb{R})$:
+
+- $X$, $Y$: strategy sets of Player 1 and Player 2
+- $f$ $g$: utility function of Player 1 and Player 2
+
+A **Nash equilibrium profile (NEp)** is a pair $(\bar{x}, \bar{y}) \in X \times Y$ such that
+
+- $f(\bar{x}, \bar{y}) \geq f(x, \bar{y}) \quad \forall x \in X$
+- $g(\bar{x}, \bar{y}) \geq g(\bar{x}, y) \quad \forall y \in Y$
+
+It is _stable with respect to unilateral deviations_, meaning that neither player can improve their utility by changing strategy alone.
+
+In case of games with $n$ players, player $i$ has strategy set $X_i$ and payoff $u_i : X = \prod_{i=1}^n X_i \to \mathbb{R}$.
+
+- A strategy profile is indicated by $x = (x_1, \dots, x_n)$
+- $x_{-i}$ denotes the vector $x$ without the $i$-th component.
+
+Then $\bar{x} = (\bar{x}_i)_{i=1}^n$ is a NEp if:
+
+$$u_i(\bar{x}) \geq u_i(x_i, \bar{x}_{-i}), \quad \forall i, x_i \in X_i$$
+
+**Dominant strategies:**
+
+Suppose $\bar{x}$ is a **(weakly) dominant** strategy for Player 1:
+
+$$f(\bar{x}, y) \geq f(x, y) \quad \forall x, y$$
+
+If $\bar{y}$ maximizes the function $g(\bar{x}, y)$ for Player 2, then $(\bar{x}, \bar{y})$ is a NEp.
+
+- If $\bar{x}$ is **weakly** dominant, other equilibria can exist.
+- If $\bar{x}$ is **strictly** dominant ($f(\bar{x}, y) > f(x, y) \ \forall x \neq \bar{x}, y$), there are no other equilibria.
+
+**Backward induction:**
+
+Backward induction solution is a NEp in every perfect-information game, since players make an optimal choice in every part of the tree. But there can be different equilibria than those given by backward induction.
+
+**Zero-sum games:**
+
+Given a zero-sum game with payoff functions $f$ ($g = -f$), the following are equivalent:
+
+1. $(\bar{x}, \bar{y})$ satisfies $f(x, \bar{y}) \leq f(\bar{x}, \bar{y}) \leq f(\bar{x}, y) \ \forall x \in X$, $y \in Y$ (a NEp)
+2. these are satisfied:
+    - (i) $\inf_y \sup_x f(x, y) = \sup_x \inf_y f(x, y)$;
+    - (ii) $\inf_y f(\bar{x}, y) = \sup_x \inf_y f(x, y)$;
+    - (iii) $\sup_x f(x, \bar{y}) = \inf_y \sup_x f(x, y)$
+
+meaning that the NEp is the optimal solution of the game and $f(\bar{x}, \bar{y}) = v$.
+
+> _Proof (1 implies 2)_:
+>
+> $$v_2 = \inf_y \sup_x f(x, y) \leq \sup_x f(x, \bar{y}) = f(\bar{x}, \bar{y}) = \inf_y f(\bar{x}, y) \leq \sup_x \inf_y f(x, y) = v_1$$
+>
+> Since $v_1 \leq v_2$ always holds, all inequalities are equalities.
+>
+>_Proof (2 implies 1)_:
+>
+>$$\inf_y \sup_x f = \sup_x f(x, \bar{y}) \geq f(\bar{x}, \bar{y}) \geq \inf_y f(\bar{x}, y) = \sup_x \inf_y f$$
+>
+>Because of (i) all inequalities are equalities.
+
+### Existence of Nash equilibria
+
+> A multifunction $F : A \to 2^B$ that assigns to each point of $A$ a subset of $B$ ($2^B$ is the powerset, the set of all subsets of $B$)
+
+The **Best response** is multifunction that maps each strategy of a player to the set of strategies that maximize their utility:
+
+$$BR_1 : Y \to 2^X, \ BR_1(y) = \argmax f(\cdot, y)$$
+$$BR_2 : X \to 2^Y, \ BR_2(x) = \argmax g(x, \cdot)$$
+
+The **best response multifunction** ($BR : X \times Y \to 2^X \times 2^Y$, $BR(x, y) = (BR_1(y), BR_2(x))$) is the set of all strategy profiles that are best responses to each other. EveryNEp is inside $BR$.
+
+#### Kakutani's theorem
+
+Given a compact convex subset of a Euclidean space $Z$ and $F : Z \to 2^Z$ with $F(z)$ nonempty, closed and convex for every $z$, and with closed graph.
+
+Then $F$ has a fixed point $\bar{z} \in Z$ with $\bar{z} \in F(\bar{z})$.
+
+> A closed graph means that if taking a sequence $z_n \to z$ and a sequence of points $u_n \in F(z_n)$ that converges to $u$, then $u \in F(z)$.
+
+#### Nash's theorem
+
+Given a game $(X, Y, f, g)$, suppose:
+
+- $X, Y$ are compact convex subsets of some Euclidean space;
+- $f, g$ are continuous;
+- $x \to f(x, y)$ is quasi-concave for every $y$;
+- $y \to g(x, y)$ is quasi-concave for every $x$.
+
+Then the game has an equilibrium.
+
+> The best response multifunctions $BR_1$ and $BR_2$ are nonempty, closed and convex-valued. Those properties are preserved by the product $BR = BR_1 \times BR_2$.
+>
+> $BR$ is a closed graph: if taking a sequence $(x_n, y_n)$ that converges to $(x, y)$ and a sequence of best responses to those strategies ($(u_n, v_n) \to (u, v)$) $(u, v) \in BR(x, y)$:
+>
+> $$f(u_n, y_n) \geq f(z, y_n) \quad \forall z \in X, \qquad g(x_n, v_n) \geq g(x_n, t) \quad \forall t \in Y$$
+>
+> that the limit is:
+>
+> $$f(u, y) \geq f(z, y) \quad \forall z \in X, \qquad g(x, v) \geq g(x, t) \quad \forall t \in Y$$
+>
+> Now it's possible to use the Kakutani theorem to find a fixed point of $BR$, which is a NEp.
+
+#### Finite games
+
+A finite game $(A, B)$ always admits a Nash equilibrium profile in **mixed strategies**.
+
+- The strategy sets $X$ and $Y$ are simplexes, which are compact and convex;
+- $f(x, y) = \langle x, Ay \rangle$ and $g(x, y) = \langle x, By \rangle$ are continuous and quasi-concave in each variable.
+
+Those are the conditions of Nash's theorem, so there is a NEp $(\bar{x}, \bar{y})$.
+
+Given a finite game $(A, B)$, the set of NEp is found by computing the best response multifunctions $BR_1$ and $BR_2$ and finding their intersections in the $(x, y)$ plane.
+
+The best response functions are found by mutiplying the payoff matrices by the mixed strategy of the opponent, and then maximizing the resulting linear function.
+
+##### Support
+
+Given a mixed NEp $(\bar{x}, \bar{y})$, the **support** ($\operatorname{spt}$) of a mixed strategy is the set of pure strategies that are played with positive probability.
+
+The support of a mixed strategy have a expected payoff equal to the value of the game
+
+$$\operatorname{spt} \bar{x} = \{ i : \sum_j a_{ij} \bar{y}_j = v \}, \qquad \operatorname{spt} \bar{y} = \{ j : \sum_i b_{ij} \bar{x}_i = w \}$$
+
+The pure strategies outside the support have a strictly lower expected payoff than the value of the game:
+
+$$\sum_j a_{ij} \bar{y}_j < v \quad \forall \ i \notin \operatorname{spt} \bar{x}, \qquad \sum_i b_{ij} \bar{x}_i < w \quad \forall \ j \notin \operatorname{spt} \bar{y}$$
+
+In a **fully mixed** equilibrium, all pure strategies are in the support and give the same expected payoff equal to the value of the game.
+
+#### Brute-force algorithm
+
+The brute-force algorithm to find a mixed NEp is:
+
+1. Guess the supports $\operatorname{spt}(\bar{x})$ and $\operatorname{spt}(\bar{y})$.
+2. Ignoring the inequalities, solve the linear system of $n + m + 2$ equations in the unknowns $x, y, v, w$:
+
+$$\begin{cases}\sum_{j=1}^m a_{ij} y_j = v \quad \forall i \in \operatorname{spt}(\bar{x}) \\ \sum_{i=1}^n b_{ij} x_i = w \quad \forall j \in \operatorname{spt}(\bar{y}) \\ \sum_{i=1}^n x_i = 1 \\ \sum_{j=1}^m y_j = 1 \\  x_i = 0 \ \forall i \notin \operatorname{spt}(\bar{x}) \\ y_j = 0 \ \forall j \notin \operatorname{spt}(\bar{y}) \end{cases}$$
+3. Check if the ignored inequalities holds: $x_i \geq 0$, $y_j \geq 0$, $\sum_j a_{ij} y_j \leq v \ \forall i$ and $\sum_i b_{ij} x_i \leq w \ \forall j$. If they hold we have a mixed equilibrium. Otherwise guess other supports.
+
+The number of support pairs is $(2^n - 1)(2^m - 1)$.
+
+### Potential games
+
+Finite game where all players have the same payoff $p : X \to \mathbb{R}$ ($u_i = p \ \forall i$).
+
+Starting from any profile, if some player $i$ has a strategy $x_i'$ with $u_i(x_i', x_{-i}) > u_i(x_i, x_{-i})$, replace $x_i$ with $x_i'$ and repeat. Each iteration strictly increases $p(x)$, so no profile is visited twice.
+
+Once no player can improve its payoff, we have reached a pure NE. This procedure is called **best-response dynamics** and terminates in at most $|X|$ steps.
+
+If the payoff of the player $i$ differs from the common payoff by a term $c_i(x_{-i})$ that depends only on the others, the best-response dynamics is unchanged and still converges to the same pure NE.
+
+$$\tilde{u}_i(x) = u_i(x) + c_i(x_{-i})$$
+
+Meaning that the difference in payoffs doesn't change if the player changes strategy, while the others keep theirs fixed:
+
+$$\Delta \tilde{u}_i(x_i', x_i, x_{-i}) = \Delta u_i(x_i', x_i, x_{-i}) = c(x_{-i})$$
+
+A finite game with strategy sets $X_i$ and payoffs $u_i : X \to \mathbb{R}$ is a **potential game** if it is diff-equivalent to a game with common payoffs.
+
+There is one **potential function** $p : X \to \mathbb{R}$ such that:
+
+$$\Delta u_i(x_i', x_i, x_{-i}) = \Delta p(x_i', x_i, x_{-i}), \quad \forall i, x_i, x_i', x_{-i}$$
+
+The potential function is determined, up to a constant, by fixing an arbitrary profile $\hat{x}$ and setting $p(\hat{x}) = 0$. Then $p$ is determined by changing one player at a time:
+
+$$p(x_{-i}, x_i') = p(x) + \Delta u_i(x_i', x_i, x_{-i})$$
+
+or equivalently by summing the differences along a path from $\hat{x}$ to $x$:
+
+$$p(x) = \sum_{i=1}^n \Delta u_{i}(x_{-i}, x_{i}', x_{i})$$
+
+### Congestion games
+
+A **congestion game** is a potential game where the payoff of each player depends on the number of players using the same resources.
+
+- Each player $i$ has a task that requires some resources from a set $R$. The strategy set $X_i$ contains the subsets $x_i \subseteq R$ that allow it to perform the task.
+- Each resource $r \in R$ has a cost $c_r(n_r)$ depending on the number $n_r = \#\{j : r \in x_j\}$ of players using it, and player $i$ pays only for the resources it uses:
+
+$$u_i(x) = \sum_{r \in x_i} c_r(n_r)$$
+
+For the Rosenthal theorem, the potential function is the sum of the costs of all resources, counted once for each player using them:
+
+$$p(x) = \sum_{r \in R} \sum_{k=1}^{n_r} c_r(k)$$
+
+> Given a profile $x$ and a player $i$, the difference between the potential and the payoff of $i$ is:
+>
+> $$p(x) - u_i(x) = \sum_{r \in R} \sum_{k=1}^{n_r} c_r(k) - \sum_{r \in x_i} c_r(n_r)$$
+>
+> That is equal to the sum of the costs of all resources used by other players ($n_r' = \#\{j \neq i : r \in x_j\}$):
+>
+> $$\sum_{r \in R} \sum_{k=1}^{n_r'} c_r(k)$$
+
+### Social Cost
+
+A configuration $x$ is **Pareto efficient** if it is impossible to increase the utility of a player without decreasing that of another.
+
+The quality of a profile $x$ is measured by a **social cost** $C : X \to \mathbb{R}_+$ (smaller is better). An example is the sum of the costs of all players: $C(x) = \sum_i u_i(x)$.
+
+The optimal social cost is $\mathrm{Opt} = \min_{x \in X} C(x)$. This value is used as a reference for measuring the efficiency of a profile $x$: $\frac{C(x)}{\mathrm{Opt}}$ (1 is optimal).
+
+#### Price of Anarchy and Price of Stability
+
+Given a set of Nash equilibria $NE \subseteq X$, is it possible to determine:
+
+- **Price of Anarchy**($$\mathrm{PoA} = \max_{x \in NE} \frac{C(x)}{\mathrm{Opt}}$$): The worst-case ratio between the social cost of a Nash equilibrium and the optimal social cost.
+- **Price of Stability**($$\mathrm{PoS} = \min_{x \in NE} \frac{C(x)}{\mathrm{Opt}}$$): The best-case ratio between the social cost of a Nash equilibrium and the optimal social cost.
+
+Given a cost-minimization game with potential $p$, if there are constants $\alpha, \beta > 0$ such that:
+
+$$\frac{1}{\alpha} C(x) \leq p(x) \leq \beta C(x) \quad \forall x \in X$$
+
+Then $\mathrm{PoS} \leq \alpha\beta$.
+
+> Given $\bar{x}$ a minimizer of $p$ (that is NEp), we have $p(\bar{x}) \leq p(x)$ for all $x \in X$.
+>
+> $$\frac{1}{\alpha} C(\bar{x}) \leq p(\bar{x}) \leq p(x) \leq \beta C(x) \quad \forall x$$
+>
+> Taking $x$ with $C(x) = \mathrm{Opt}$ gives $C(\bar{x}) \leq \alpha\beta\, \mathrm{Opt}$.
+
+#### Games with utilities
+
+If a game deals with utilities instead of costs, let $U$ be a social utility function and $\mathrm{Opt} = \max_{x \in X} U(x)$. Then
+
+$$\mathrm{PoA} = \frac{\mathrm{Opt}}{\min_{x \in NE} U(x)}, \qquad \mathrm{PoS} = \frac{\mathrm{Opt}}{\max_{x \in NE} U(x)}$$
