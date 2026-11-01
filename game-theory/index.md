@@ -684,3 +684,100 @@ Then $\mathrm{PoS} \leq \alpha\beta$.
 If a game deals with utilities instead of costs, let $U$ be a social utility function and $\mathrm{Opt} = \max_{x \in X} U(x)$. Then
 
 $$\mathrm{PoA} = \frac{\mathrm{Opt}}{\min_{x \in NE} U(x)}, \qquad \mathrm{PoS} = \frac{\mathrm{Opt}}{\max_{x \in NE} U(x)}$$
+
+## Repeated Games
+
+In **repeated games** the same game is played $N$ times.
+
+Given this matrix:
+
+$$\begin{pmatrix} (6, 6) & (0, 10) & (-2, -2) \\ (10, 0) & (1, 1) & (-1, -1) \\ (-2, -2) & (-1, -1) & (-2, -2) \end{pmatrix}$$
+
+In this case the second row and the second column are strictly dominant (with outcome $a$ if played by both, and $d$ if played alone), so it's the (one-shot) equilibrium, but the first row and the first column gives a socially efficient outcome (with outcome $b$).
+
+The players can cooperate to get the socially efficient outcome, but if one player deviates to the second row/column, the third row/column can be used to punish the other player (with outcome $c$).
+
+Based on this it's possible to use the following symmetric strategy to get the socially efficient outcome:
+
+- Play the socially efficient strategy for the first $N - k$ days and the dominant strategy for the last $k$ days, as long as the other player does the same.
+- If on some day the other deviates, from then on play the punishing strategy.
+
+This is a **Nash equilibrium** if $k$ is large enough, so that the threat of punishment is enough to prevent deviations:
+
+$$\frac{(N - k) \cdot b + k \cdot a}{N} \geq \frac{(N - k - 1) \cdot b + d + k \cdot c}{N} \iff k \geq \frac{d - b}{a - c}$$
+
+The expected payoff of the players is:
+
+$$\lim_{N \to \infty} \frac{(N - k) \cdot b + k \cdot a}{N} = b$$
+
+so on average each player can get at least $6 - \alpha$ per turn.
+
+### Infinite repetitions
+
+A **stage game** played initially many times needs the define:
+
+- **Strategy**: the strategy of a player is a function of the past choices of the players $s(\tau) = s(\tau)$.
+- **Payoff**: summing the stage payoff in an infinite horizon diverges, so a discount factor ($0 < \delta < 1$) is needed (with a normalizing factor $1 - \delta$):
+$$u_i(s, t) = (1 - \delta) \sum_{\tau = 0}^{\infty} \delta^{\tau} \, u_i(s(\tau), t(\tau))$$
+
+### Threat values
+
+The **threat value** of a player is the highest utility it can get if the other player punishes it.
+
+- For player 1: $\underline{v}_1 = \min_j \max_i a_{ij}$
+- For player 2: $\underline{v}_2 = \min_i \max_j b_{ij}$
+
+Folk Theorem: for every feasible payoff vector $v = (v_1, v_2) = (a_{\bar{i}\bar{j}}, b_{\bar{i}\bar{j}})$ with $v_i > \underline{v}_i$, there is $\underline{\delta} < 1$ such that for every $\delta > \underline{\delta}$ the repeated game with discount factor $\delta$ has a Nash equilibrium gives the payoffs $v$.
+
+> Given the strategy s: play the strategy that gives $v$ at every stage, unless the opponent deviates at time $t$. In that case play the threat strategy from stage $t + 1$ onwards.
+>
+> (1) s provides the vector $v$:
+>$$u_i(s) = (1 - \delta) \sum_{\tau = 0}^{\infty} \delta^{\tau} v_i = v_i$$
+>
+> (2) s is a Nash equilibrium for all $\delta$ close to 1: let $s_t$ be the strategy "deviate at time $t$". At time $t$ player $i$ gains at most $\max_{i,j} a_{ij}$; after $t$ it gains at most $\underline{v}_1$ (the punishment). So, for Player 1:
+>
+> $$u_1(s_t) \leq (1 - \delta) \Big( \underbrace{\sum_{\tau = 0}^{t-1} \delta^{\tau} v_1}_{\text{following the strategy}} + \delta^{t} \max_{i,j} a_{ij} + \underbrace{\sum_{\tau = t+1}^{\infty} \delta^{\tau} \underline{v}_1}_{\text{punishment}} \Big) = (1 - \delta^{t}) v_1 + (1 - \delta) \delta^{t} \max_{i,j} a_{ij} + \delta^{t+1} \underline{v}_1$$
+>
+> where:
+>
+> - $\sum_{\tau=0}^{t-1} \delta^{\tau} = \frac{1 - \delta^{t}}{1 - \delta}$
+> - $\sum_{\tau = t+1}^{\infty} \delta^{\tau} = \frac{\delta^{t+1}}{1 - \delta}$
+>
+> To have no profitable deviation, we need $u_1(s) \geq u_1(s_t)$:
+>
+> $$v_1 \geq (1 - \delta^{t}) v_1 + (1 - \delta) \delta^{t} \max_{i,j} a_{ij} + \delta^{t+1} \underline{v}_1$$
+> $$\delta^{t} v_1 \geq \delta^{t} (1 - \delta) \max_{i,j} a_{ij} + \delta^{t+1} \underline{v}_1$$
+> $$\delta \, (\max_{i,j} a_{ij} - \underline{v}_1) \geq \max_{i,j} a_{ij} - v_1$$
+>
+> The optimal $\delta$ is:
+>
+> $$\delta_1 = \frac{\max_{i,j} a_{ij} - v_1}{\max_{i,j} a_{ij} - \underline{v}_1}$$
+>
+> The same holds for Player 2 with $\delta_2$. The final condition is $\underline{\delta} = \max(\delta_1, \delta_2)$.
+
+## Correlated equilibria
+
+Given a game $(A, B)$, a **correlated equilibrium** is a generalization of a Nash equilibrium where players can coordinate their strategies through signals from an external source (an arbitrator) that tells them which strategies to play according to a probability distribution ($p = (p_{ij})$) over the strategy profiles.
+
+The players can follow the recommendations of the arbitrator and they have no incentive to deviate from these recommendations given the information they receive.
+
+- For player 1: $\sum_{j \in J} p_{\bar{i} j} \, a_{\bar{i} j} \geq \sum_{j \in J} p_{\bar{i} j} \, a_{i j}$
+- For player 2: $\sum_{i \in I} p_{i \bar{j}} \, b_{i \bar{j}} \geq \sum_{i \in I} p_{i \bar{j}} \, b_{i j}$
+
+These are the **incentive constraints** and they mean that, fixing the probability to the recommendation $\bar{i}$, the expected utility of obeying is at least that of any deviation.
+
+The set of correlated equilibria is a nonempty convex polytope in the space of probability distributions over the strategy profiles with $n^2 + m^2$ dimensions (plus the constraint that the probabilities are non-negative and sum to 1). This means that can be solved by linear programming,.
+
+### Relation with Nash equilibria
+
+A Nash equilibrium $(\bar{x}, \bar{y})$ profile generates a correlated equilibrium with probability distribution $p_{ij} = \bar{x}_i \bar{y}_j$.
+
+> Must holds that changing the strategy of a player does not increase its expected utility $\bar{x}_{\bar{i}} \sum_j \bar{y}_j a_{\bar{i} j} \geq \bar{x}_{\bar{i}} \sum_j \bar{y}_j a_{ij}$
+>
+> When $\bar{x}_{\bar{i}} = 0$ the inequality is trivial; when $\bar{x}_{\bar{i}} > 0$ we can divide both sides by $\bar{x}_{\bar{i}}$, that is the expected utility of Player 1 if it chooses row $\bar{i}$ (row $i$) given that Player 2 plays his equilibrium strategy $\bar{y}$:
+>
+> $\sum_j \bar{y}_j a_{\bar{i} j} \geq \sum_j \bar{y}_j a_{ij}$
+>
+> This holds as the pure strategy $\bar{i}$ is one of the best reactions to $\bar{y}$.
+
+If a row $\bar{i}$ is strictly dominated, then $p_{\bar{i} j} = 0$ for every $j$.
