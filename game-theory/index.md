@@ -736,7 +736,7 @@ Folk Theorem: for every feasible payoff vector $v = (v_1, v_2) = (a_{\bar{i}\bar
 >
 > (2) s is a Nash equilibrium for all $\delta$ close to 1: let $s_t$ be the strategy "deviate at time $t$". At time $t$ player $i$ gains at most $\max_{i,j} a_{ij}$; after $t$ it gains at most $\underline{v}_1$ (the punishment). So, for Player 1:
 >
-> $$u_1(s_t) \leq (1 - \delta) \Big( \underbrace{\sum_{\tau = 0}^{t-1} \delta^{\tau} v_1}_{\text{following the strategy}} + \delta^{t} \max_{i,j} a_{ij} + \underbrace{\sum_{\tau = t+1}^{\infty} \delta^{\tau} \underline{v}_1}_{\text{punishment}} \Big) = (1 - \delta^{t}) v_1 + (1 - \delta) \delta^{t} \max_{i,j} a_{ij} + \delta^{t+1} \underline{v}_1$$
+> $$u_1(s_t) \leq (1 - \delta) ( \underbrace{\sum_{\tau = 0}^{t-1} \delta^{\tau} v_1}_{\text{following the strategy}} + \delta^{t} \max_{i,j} a_{ij} + \underbrace{\sum_{\tau = t+1}^{\infty} \delta^{\tau} \underline{v}_1}_{\text{punishment}} ) = (1 - \delta^{t}) v_1 + (1 - \delta) \delta^{t} \max_{i,j} a_{ij} + \delta^{t+1} \underline{v}_1$$
 >
 > where:
 >
@@ -781,3 +781,139 @@ A Nash equilibrium $(\bar{x}, \bar{y})$ profile generates a correlated equilibri
 > This holds as the pure strategy $\bar{i}$ is one of the best reactions to $\bar{y}$.
 
 If a row $\bar{i}$ is strictly dominated, then $p_{\bar{i} j} = 0$ for every $j$.
+
+## Cooperative Games
+
+A **cooperative game** is a game where players can form coalitions (sets of players). It is characterized by a pair $(N, V)$ where:
+
+- $N$ is the set of all players
+- $V : 2^N \to \mathbb{R}^n$ is a **utility multifunction** such that given a coalition $A \subseteq N$, $V(A)$ is the set of utility vectors that the players in $A$ obtain.
+
+> If V(A) is a cost multifunction all the inequalities are reversed.
+
+### Transferable Utility Games
+
+A **transferable utility (TU) game** is a cooperative game where the utility can be divided among the players. It is characterized by the **side-payment function** $v : 2^N \to \mathbb{R}$ (with $v(\emptyset) = 0$) that assigns to each coalition $A$ the maximum utility that the players in $A$ can obtain.
+
+A TU game is also a cooperative game where the utility multifunction $V(A)$ is defined as:
+
+$$V(A) = \{ (x_i)_{i \in A} : \sum_{i \in A} x_i \leq v(A) \}$$
+
+> Some example are:
+>
+> - **Weighted majority games**: $v(A) = 1$ if $\sum_{i \in A} w_i \geq q$, $v(A) = 0$ otherwise.
+> - **Bankruptcy games**: $v(A) = \max(0, E - \sum_{i \notin A} d_i)$, where $E$ is the estate and $d_i$ are the claims of the players.
+
+Let $\mathbb{G}(N)$ be the set of all cooperative (TU) games with player set $N$ with $S_1, \dots, S_{2^n - 1}$ coalitions.
+
+The vector $(v_1, \dots, v_{2^n - 1})$ with $v_j = v(S_j)$ represents a game and $\mathbb{G}(N)$ is isomorphic to $\mathbb{R}^{2^n - 1}$.
+
+A game can be:
+
+- **Additive**: $v(A \cup B) = v(A) + v(B) \quad \forall A \cap B = \emptyset$.
+- **Superadditive**: $v(A \cup B) \geq v(A) + v(B) \quad \forall A \cap B = \emptyset$.
+- **Subadditive**: $v(A \cup B) \leq v(A) + v(B) \quad \forall A \cap B = \emptyset$.
+
+#### Simple games
+
+A TU game $v \in \mathbb{G}(N)$ is **simple** if:
+
+- binary: $v(S) \in \{0, 1\}$ for every nonempty $S$;
+- monotone: $A \subseteq C \Rightarrow v(A) \leq v(C)$;
+- $v(N) = 1$.
+
+A coalition $A$ is winning if $v(A) = 1$, losing if $v(A) = 0$.
+
+The **minimal winning coalitions** are the coalitions $A$ such that:
+
+- $v(A) = 1$
+- $v(B) = 0 \quad \forall B \subsetneq A$.
+
+### Imputations
+
+A **solution concept** (or **solution**) is a multifunction that assigns to each game $v \in \mathbb{G}(N)$ a **solution vector** $x \in \mathbb{R}^n$ that assigns a utility (or cost) $x_i$ to each player $i$.
+
+$$S: \mathbb{G}(N) \to \mathbb{R}^n$$
+
+An **imputation** $I: \mathbb{G}(N) \to \mathbb{R}^n$ is a solution that satisfies:
+
+- **individual rationality**: each player gets at least what it can get by itself ($x_i \geq v(\{i\}) \ \forall i \in N$).
+- The total utility is distributed ($\sum_i x_i = v(N)$).
+  - **Feasibility**: the total utility is not exceeded ($\sum_i x_i \leq v(N)$);
+  - **Efficiency**: the total utility is distributed ($\sum_i x_i \geq v(N)$).
+
+The imputation set is a closed convex polytope in $\mathbb{R}^n$:
+
+$$I(v) = \{ x \in \mathbb{R}^n : \sum_i x_i = v(N), \ x_i \geq v(\{i\}) \ \forall i \in N \}$$
+
+### The core
+
+The **core** $C: \mathbb{G}(N) \to \mathbb{R}^n$ is a subset of the imputations that are **coalitionally rational**, meaning that each coalition $S$ gets at least what it can get by itself ($\sum_{i \in S} x_i \geq v(S) \ \forall S \subseteq N$).
+
+The core is a closed convex polytope in $\mathbb{R}^n$:
+
+$$ C(v) = \{ x \in I(v) : \sum_{i \in S} x_i = v(N), \ \sum_{i \in S} x_i \geq v(S) \ \forall S \subseteq N \} $$
+
+#### Veto players
+
+A player $i$ is a **veto player** if $v(A) = 0$ for every $A$ with $i \notin A$.
+
+Given a simple game $v$, the core is nonempty iff there is at least one veto player. If a veto player exists, the core is the closed convex polytope with the vectors $(0, \dots, 1, \dots, 0)$ as extreme points, where the 1 is a veto player.
+
+> If there isn't a veto player, then $\forall i$ there is a winning coalition $A_i \notni i$ with $v(A_i) = 1$. As the game is monotone, $N \setminus \{i\}$ is winning $\forall i$.
+>
+> Suppose there is a core vector $x \in C(v)$, the coalition receives at least its value, that must be less than the total utility distributed by the core:
+>
+> $$\sum_{j \neq i} x_j \geq v(N \setminus \{i\}) = 1$$
+>
+> summing over $i = 1, \dots, n$ gives $(n - 1) \sum_j x_j \geq n$ that is contradicting $\sum_j x_j = 1$.
+
+#### LP formulation
+
+Given a game $v \in \mathbb{G}(N)$, the core is nonempty iff the following linear program has optimal value $v(N)$:
+
+$$\begin{cases}\min \sum_{i=1}^n x_i \\ \text{s.t.} \quad \sum_{i \in S} x_i \geq v(S) \ \forall S \subseteq N \end{cases}$$
+
+The dual problem is:
+
+$$\begin{cases}\max \sum_{S \subseteq N} \lambda_S v(S) \\ \text{s.t.} \quad \sum_{S : i \in S \subseteq N} \lambda_S = 1 \ \forall i \in N \\ \quad \lambda_S \geq 0 \end{cases}$$
+
+The coefficient $\lambda_S$ indicates how much (in percentage) the coalition $S$ represents the players.
+
+The core is nonempty iff the optimal value of the dual problem is less than or equal to $v(N)$, meaning that the weighted values of the coalitions cannot exceed the utility of the grand coalition.
+
+> Since the primal has at least one finite solution, for the fundamental duality theorem the dual too and there is no duality gap.
+>
+> So the core is nonempty iff the dual value $V \leq v(N)$.
+
+#### Balanced families
+
+A family $(S_1, \dots, S_m)$ of coalitions is **balanced** if there is **balancing vector** $\lambda = (\lambda_1, \dots, \lambda_m)$ such that:
+
+- $\lambda_k > 0 \ \forall k = 1, \dots, m$;
+- $\sum_{k : i \in S_k} \lambda_k = 1 \ \forall i \in N$.
+
+The coefficients $\lambda_k$, from the point of view of the players, represent how much they contribute to the coalitions of the family. The sum of the contributions of each player over all coalitions is 1.
+
+A balanced family is **minimal** if there is no sub-family that is balanced (no coalition can be erased without destroying the balance).
+
+In this case the balancing vector is **unique**.
+
+### Nucleolus
+
+The **excess** of a coalition $A$ over an imputation $x$ is the dissatisfaction of $A$ with the assignment $x$ (what it could get alone, minus what it is offered):
+
+$$e(A, x) = v(A) - \sum_{i \in A} x_i$$
+
+It's possible to define the **lexicographic vector** $\theta(x) \in \mathbb{R}^{2^n - 1}$ attached to the imputation $x$ that represent the excesses of all coalitions listed in decreasing order:
+
+- $\theta_j(x) = e(A, x)$ for some $A \subseteq N$;
+- $\theta_1(x) \geq \theta_2(x) \geq \cdots \geq \theta_{2^n - 1}(x)$.
+
+The **nucleolus** is the solution $\nu : \mathbb{G}(N) \to \mathbb{R}^n$ such that $\nu(v)$ is the set of imputations $x$ that minimizes the excesses in lexicographic order: $\theta(x) \leq_L \theta(y) \ \forall y \in I(v)$.
+
+If $C(v) \neq \emptyset$, then $\nu(v) \in C(v)$.
+
+> A core has $\theta_1(x) \leq 0 \ \forall x \in C(v)$, meaning that the largest excess is non-positive.
+>
+> The nucleolus minimizes the excesses, so $\theta_1(\nu(v)) \leq 0$. Then $\nu(v)$ is in the core.
