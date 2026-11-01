@@ -846,7 +846,7 @@ The imputation set is a closed convex polytope in $\mathbb{R}^n$:
 
 $$I(v) = \{ x \in \mathbb{R}^n : \sum_i x_i = v(N), \ x_i \geq v(\{i\}) \ \forall i \in N \}$$
 
-### The core
+### Core
 
 The **core** $C: \mathbb{G}(N) \to \mathbb{R}^n$ is a subset of the imputations that are **coalitionally rational**, meaning that each coalition $S$ gets at least what it can get by itself ($\sum_{i \in S} x_i \geq v(S) \ \forall S \subseteq N$).
 
@@ -917,3 +917,65 @@ If $C(v) \neq \emptyset$, then $\nu(v) \in C(v)$.
 > A core has $\theta_1(x) \leq 0 \ \forall x \in C(v)$, meaning that the largest excess is non-positive.
 >
 > The nucleolus minimizes the excesses, so $\theta_1(\nu(v)) \leq 0$. Then $\nu(v)$ is in the core.
+
+## Power Indices
+
+A **one-point solution** $\phi : \mathbb{G}(N) \to \mathbb{R}^n$ is a solution that assigns a single value to each player in a game, and it satisfies the following properties:
+
+1. **Efficiency**: $\sum_{i=1}^n \phi_i(v) = v(N) \ \forall v \in \mathbb{G}(N)$.
+2. **Symmetry**: if two player are symmetric ($v(A \cup \{i\}) = v(A \cup \{j\}) \ \forall A \subseteq N \setminus \{i, j\}$), then they have the same value ($\phi_i(v) = \phi_j(v)$).
+3. **Null player**: if a player doesn't contribute to any coalition ($v(A) = v(A \cup \{i\}) \ \forall A \notni i$), then it get nothing ($\phi_i(v) = 0$).
+4. **Additivity**: $\phi(v + w) = \phi(v) + \phi(w) \ \forall v, w \in \mathbb{G}(N)$.
+
+### Shapley value
+
+The **marginal contribution** of a player $i$ to a coalition $S$ is the difference between the value of the coalition with and without the player:
+
+$$m_i(v, S) = v(S \cup \{i\}) - v(S), \quad S \notni i$$
+
+The **Shapley value** $\sigma : \mathbb{G}(N) \to \mathbb{R}^n$ is a one-point solution that satisfies the four properties above. It's the weighted sum of all marginal contributions of the player $i$:
+
+$$\sigma_i(v) = \sum_{S \subseteq N \setminus \{i\}} \frac{s!\,(n - s - 1)!}{n!} (v(S \cup \{i\}) - v(S)), \quad s = |S|, n = |N|$$
+
+The weight represents the probability that the coalition $S$ is formed before player $i$ joins, when players arrive in a random order.
+
+> **Efficiency**: Take the coefficient of each value $v(S)$:
+>
+> - $v(N)$ appears $n$ times (once for each player, with $S = N \setminus \{i\}$, $s = n - 1$), each time with coefficient $\frac{(n-1)!0!}{n!} = \frac{1}{n}$, meaning that the sum of the coefficients is 1.
+> - For any other coalition $S \neq N$ with $|S| = t$, $v(S)$ appears with a **positive** coefficient $\frac{(t-1)!(n-t)!}{n!}$, $t$ times (once for every $i \in S$, with $S = S \setminus \{i\}$): total $\frac{t!(n-t)!}{n!}$.
+> - It also appears with a **negative** coefficient $-\frac{t!(n-t-1)!}{n!}$, $n - t$ times (once for every $i \notin S$, with $S = T$): total $-\frac{t!(n-t)!}{n!}$.
+>
+> The two totals cancel, so $v(N)$ has coefficient 1 and every $S \neq N$ has coefficient 0: $\sum_i \sigma_i(v) = v(N)$.
+
+> **Symmetry**: If $i, j$ are symmetric, split the sum into coalitions not containing $i, j$ and coalitions containing $j$ but not $i$:
+>
+> $$\sigma_i(v) = \sum_{S \not\ni i,j} \frac{s!(n - s - 1)!}{n!} (v(S \cup \{i\}) - v(S)) + \sum_{S \not\ni i,j} \frac{(s+1)!(n - s - 2)!}{n!} (v(S \cup \{i, j\}) - v(S \cup \{j\}))$$
+>
+> the same expression for $\sigma_j(v)$ with $i, j$ exchanged.
+>
+> The terms are equal because $v(S \cup \{i\}) = v(S \cup \{j\})$, so $\sigma_i(v) = \sigma_j(v)$.
+
+### Semivalues
+
+A **probabilistic power index** on the set of simple games is a one-point solution $\psi : \mathbb{G}(N) \to \mathbb{R}^n$ that relax the efficiency requirement of the Shapley value. It is a weighted sum of the marginal contributions of the player $i$ by the probability $p_i(S)$:
+
+$$\psi_i(v) = \sum_{S \in 2^{N \setminus \{i\}}} p_i(S)  m_i(v, S)$$
+
+A probabilistic power index is a **semivalue** if there is a vector $(p_0, \dots, p_{n-1})$ such that:
+
+$$\psi_i(v) = \sum_{S \in 2^{N \setminus \{i\}}} p_s  m_i(v, S), \quad s = |S|$$
+
+where:
+
+- $p_s \geq 0$ is the weight of coalitions of size $s$;
+- $\sum_{s=0}^{n-1} \binom{n-1}{s} p_s = 1$.
+
+If $p_s > 0$ for all $s$ the semivalue is **regular**.
+
+| Semivalue | Weights $p_s$ | Meaning |
+| --- | --- | --- |
+| **Shapley** | $\dfrac{s!(n-s-1)!}{n!}$ | average over orders |
+| **Banzhaf** | $\dfrac{1}{2^{n-1}}$ | all coalitions equally likely |
+| **Binomial** ($0 < q < 1$) | $q^s (1 - q)^{n - s - 1}$ | each other player joins independently with probability $q$ |
+| **Marginal** | $p_{n-1} = 1$, others $0$ | $v(N) - v(N \setminus \{i\})$ |
+| **Dictatorial** | $p_0 = 1$, others $0$ | $v(\{i\})$ |
