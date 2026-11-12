@@ -319,7 +319,7 @@ The data parallel model is very similar to SIMD: it consists in using a set of p
 
 GPUs were once designed and used to actually process graphics. Graphics were (and still are) processed by shaders and undergo lots of parallelizable operations (mostly matrix-vector multiplications and pixel-wise operations). In 2004, someone at Stanford noticed that telling GPUs something on the line of "_Heyyy, those are pixels, don't worry. Can you process those pixels for me, please?_" while feeding actual data to be processed into the GPU would actually work. Three years later, in 2007, the guy down below decided that selling GPUs built specifically to be used as a general purpose processor without any workaround would also be a good idea. Boy was he right!
 
-![Jen-Hsun Huang, CEO at NVIDIA. Image from Wikipedia.](https://upload.wikimedia.org/wikipedia/commons/0/05/JensenHuangSC18.jpg)
+![Jen-Hsun Huang, CEO (now ex) at NVIDIA. Image from Wikipedia.](https://upload.wikimedia.org/wikipedia/commons/0/05/JensenHuangSC18.jpg)
 
 In this section, we'll analyze only CUDA compatible architectures (i.e. 99% NVIDIA GPUs, 1% brands that you'll ever hear once in the news announced as _The company that will single handedly stop NVIDIA domination_ before them ending up forever _into the shadow realm_).
 
